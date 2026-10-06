@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. Check that this folder is a git repository with a first commit, and that it is not in OneDrive. If not, ask the owner.
+1. Check that this folder is a git repository with a first commit, and that it is not in OneDrive. If not, ask the owner. The owner gave the folder a new name. The documents and three diagram scripts (`02-make-diagram.py`, `03-make-diagram.py`, `04-make-diagram.py`) still have the old name `mock-builder-v3`. The three scripts have a fixed path and do not run until it is corrected. Show the owner the changes first (rule 23). Do not change the name in decision 0001 (rule 26). Record the new name in the journal.
 2. Show the owner a short plan for the control program, in plain words. Wait for a yes (rule 8). Then write the control with a fake writer, fake checkers and one test for each case. The first tests: the path with no failure, and the 10 cases (a) to (j) of the second review, as far as decision 0038 keeps them. No test makes a model call.
 3. Items 6 to 10 of the table below have no answer. The code and its tests give the answers. Show the owner each answer, one at a time, short, as a story, before it is final. Record the answers in a new decision file.
 4. When the tests pass: correct decisions 0027 to 0036 so that they describe the code (decision 0038, part 7). In the same work, correct the other findings of the second review. Tell the owner what changes, and wait for a yes (rule 23). Then ask the owner which diagrams to make again.
@@ -133,6 +133,8 @@ Not decided:
 6. Then the owner confirms the text of decisions 0019 to 0036.
 7. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 8. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1.
+
+A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program of next step 2 is not a pipeline step. It gets a decision file and a journal entry.
 
 ### The 10 serious items of the second review, after decision 0038
 
