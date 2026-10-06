@@ -1,0 +1,60 @@
+{
+  "call_4a": {
+    "name": "submit_answer",
+    "description": "Answer the exam question. Select the options that are correct.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["answered", "cannot_decide"] },
+        "selected": {
+          "type": "array",
+          "description": "The letters of the options that you select. Empty when status is cannot_decide.",
+          "items": { "type": "string", "enum": ["A", "B", "C", "D", "E"] }
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why you select these options, or why you cannot decide."
+        }
+      },
+      "required": ["status", "selected", "reason"]
+    }
+  },
+  "call_4b": {
+    "name": "submit_check",
+    "description": "Give one result for each of the rules B1 to B6.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule": { "type": "string", "enum": ["B1", "B2", "B3", "B4", "B5", "B6"] },
+              "result": { "type": "string", "enum": ["pass", "fail", "cannot_decide"] },
+              "finding": {
+                "type": ["string", "null"],
+                "description": "What is wrong and which option. Null when result is pass."
+              },
+              "letter": {
+                "type": ["string", "null"],
+                "description": "The letter of the option that the finding is about. Null when the finding is not about one option."
+              },
+              "point": {
+                "type": ["string", "null"],
+                "description": "The ID of the guide point that the finding uses, for example 1.2-K2. Null when no point applies."
+              }
+            },
+            "required": ["rule", "result", "finding", "letter", "point"]
+          }
+        },
+        "features": {
+          "type": "array",
+          "description": "Each name of a feature of a Claude product or of MCP that the question, the options or the reasons use. Empty when they use none.",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["results", "features"]
+    }
+  }
+}

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 2: write the question</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 758px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .box.mdl { border-color: var(--model); background: var(--model-bg); }
+  .box.mdl .what { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 2: one API call writes one question</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. For each of the 60 slots of a mock, code builds one request, a model fills a form, and code completes the record. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 758" width="1000" height="758" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M388,115 C414,115 414,319 438,319"/>
+      <path class="flow" d="M388,183 C414,183 414,319 438,319"/>
+      <path class="flow" d="M388,251 C414,251 414,319 438,319"/>
+      <path class="flow" d="M388,319 C414,319 414,319 438,319"/>
+      <path class="flow" d="M388,387 C414,387 414,319 438,319"/>
+      <path class="flow" d="M388,455 C414,455 414,319 438,319"/>
+      <path class="flow" d="M388,523 C414,523 414,319 438,319"/>
+      <path class="flow" d="M612,319 C636,319 636,259 658,259" marker-end="url(#a)"/>
+      <path class="flow" d="M612,319 C636,319 636,379 658,379" marker-end="url(#a)"/>
+      <path class="flow" d="M300,683 H356" marker-end="url(#a)"/>
+      <path class="flow" d="M640,683 H696" marker-end="url(#a)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>Code builds the request, and the model fills the form</div>
+    <div class="panel" style="left:20px;top:38px;width:380px;height:528px"></div>
+    <div class="ptitle" style="left:34px;top:46px">What code sends<small>the request</small></div>
+    <div class="panel" style="left:650px;top:163px;width:330px;height:278px"></div>
+    <div class="ptitle" style="left:664px;top:171px">What comes back<small>one of two answers</small></div>
+    <div class="shead" style="top:588px"><i>2</i>Code completes the record of the question</div>
+    <div class="box step nonum row" data-step="rules" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:84px;width:356px;height:62px"><div class="head"><span class="name">The rules for a good question</span></div><p class="what">Fixed text. The same for each call.</p></div><div class="box step nonum row" data-step="examples" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:152px;width:356px;height:62px"><div class="head"><span class="name">3 sample questions</span></div><p class="what">From the records file. Examples of the form.</p></div><div class="box step nonum row" data-step="story" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:220px;width:356px;height:62px"><div class="head"><span class="name">The story of the scenario</span></div><p class="what">From the records file.</p></div><div class="box step nonum row" data-step="ts" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:288px;width:356px;height:62px"><div class="head"><span class="name">The task statement</span></div><p class="what">From the records file. One point is marked.</p></div><div class="box step nonum row" data-step="tech" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:356px;width:356px;height:62px"><div class="head"><span class="name">The 14 technologies</span></div><p class="what">From the records file. What the guide names.</p></div><div class="box step nonum row" data-step="slot" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:424px;width:356px;height:62px"><div class="head"><span class="name">The slot</span></div><p class="what">From the plan of step 1.</p></div><div class="box step nonum row" data-step="form" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:492px;width:356px;height:62px"><div class="head"><span class="name">The form</span></div><p class="what">The blanks that the model must fill.</p></div><div class="box step nonum mdl" data-step="writer" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:440px;top:264px;width:170px;height:110px"><div class="head"><span class="name">The writer</span><span class="tag t-model">One model call</span></div><p class="what">Writes one question for one slot.</p></div><div class="box nonum stop" style="left:425px;top:446px;width:200px;height:82px"><div class="head"><span class="name">If the call fails</span></div><p class="what">No record is saved. The program reports the slot.</p></div><div class="box step nonum " data-step="written" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:662px;top:209px;width:306px;height:100px"><div class="head"><span class="name">A question</span><span class="tag t-owner">Usual</span></div><p class="what">The question, and each option with &quot;correct&quot; or &quot;wrong&quot; and a reason.</p></div><div class="box step nonum " data-step="cannot" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:662px;top:329px;width:306px;height:100px"><div class="head"><span class="name">&quot;Cannot write&quot;</span><span class="tag t-open">Possible</span></div><p class="what">With a reason. The program reports the slot.</p></div><div class="box step nonum " data-step="letters" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:624px;width:280px;height:118px"><div class="head"><span class="name">Gives the letters</span><span class="tag t-code">Code</span></div><p class="what">Mixes the options and gives them A to D. The model does not select the letters.</p></div><div class="box step nonum " data-step="ids" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:360px;top:624px;width:280px;height:118px"><div class="head"><span class="name">Adds the IDs</span><span class="tag t-code">Code</span></div><p class="what">Example: M1-S17-T1 is mock 1, slot 17, try 1.</p></div><div class="box step nonum " data-step="save" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:700px;top:624px;width:280px;height:118px"><div class="head"><span class="name">Saves one file</span><span class="tag t-code">Code</span></div><p class="what">One file for each try. Then step 3 checks the question.</p></div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 04. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"rules": {"title": "The rules for a good question", "who": "Fixed text", "cls": "io", "sent": ["One list of exact rules for a good question. It is the same for each call.", "The writer and the checker of step 4 use the same list.", "The list is not written yet. It comes with the design of step 4."], "points": [{"id": "4.1-K1", "text": "The importance of explicit criteria over vague instructions (e.g., \"flag comments only when claimed behavior contradicts actual code behavior\" vs \"check that comments are accurate\")", "ctx": "From task statement 4.1: Design prompts with explicit criteria to improve precision and reduce false positives"}], "why": "The guide wrote this point for the review of code. Here it applies to a question: an exact rule gives the same result each time. A vague rule does not.", "example": "", "examplehead": "", "examplenote": ""}, "examples": {"title": "3 sample questions", "who": "From the records file", "cls": "io", "sent": ["3 of the 12 sample questions of the exam guide. They show the writer the form and the level of an exam question.", "Code takes them from scenarios that are not the scenario of the slot. So the writer cannot copy the scene of an example."], "points": [{"id": "4.2-K1", "text": "Few-shot examples as the most effective technique for achieving consistently formatted, actionable output when detailed instructions alone produce inconsistent results", "ctx": "From task statement 4.2: Apply few-shot prompting to improve output consistency and quality"}, {"id": "4.2-S2", "text": "Including few-shot examples that demonstrate specific desired output format (location, issue, severity, suggested fix) to achieve consistency", "ctx": "From task statement 4.2: Apply few-shot prompting to improve output consistency and quality"}], "why": "The guide wrote these points for output in a fixed format. Here the examples show the writer what a good exam question is.", "example": "", "examplehead": "", "examplenote": ""}, "story": {"title": "The story of the scenario", "who": "From the records file", "cls": "io", "sent": ["The story of the scenario of the slot. Each question of the mock is inside the story of its scenario."], "example": "You are building a multi-agent research system using the Claude Agent SDK. A coordinator agent delegates to specialized subagents: one searches the web, one analyzes documents, one synthesizes findings, and one generates reports. The system researches topics and produces comprehensive, cited reports.", "examplehead": "Example: the story of scenario 3", "examplenote": "", "why": "", "points": []}, "ts": {"title": "The task statement, with the point marked", "who": "From the records file", "cls": "io", "sent": ["The task statement of the slot with all its points.", "The point of the slot is marked. The question must test that point. The other points show the writer what is near it."], "example": "Task statement 1.2: Orchestrate multi-agent systems with coordinator-subagent patterns\n\n   1.2-K1  Hub-and-spoke architecture where a coordinator agent manages all inter-subagent communication, error handling, and information routing\n>> 1.2-K2  How subagents operate with isolated context—they do not inherit the coordinator's conversation history automatically\n   1.2-K3  The role of the coordinator in task decomposition, delegation, result aggregation, and deciding which subagents to invoke based on query complexity\n   1.2-K4  Risks of overly narrow task decomposition by the coordinator, leading to incomplete coverage of broad research topics\n   1.2-S1  Designing coordinator agents that analyze query requirements and dynamically select which subagents to invoke rather than always routing through the full pipeline\n   1.2-S2  Partitioning research scope across subagents to minimize duplication (e.g., assigning distinct subtopics or source types to each agent)\n   1.2-S3  Implementing iterative refinement loops where the coordinator evaluates synthesis output for gaps, re-delegates to search and analysis subagents with targeted queries, and re-invokes synthesis until coverage is sufficient\n   1.2-S4  Routing all subagent communication through the coordinator for observability, consistent error handling, and controlled information flow", "examplehead": "Example: task statement 1.2, with point 1.2-K2 marked", "examplenote": "", "why": "", "points": []}, "tech": {"title": "The 14 technologies", "who": "From the records file", "cls": "io", "sent": ["Section 17 of the exam guide lists 14 technologies and concepts.", "A question depends only on features that the guide names. The writer gets this list for that rule."], "example": "Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration\nModel Context Protocol (MCP) — MCP servers, MCP tools, MCP resources, isError flag, tool descriptions, tool distribution, .mcp.json configuration, environment variable expansion\nClaude Code — CLAUDE.md configuration hierarchy (user/project/directory), .claude/rules/ with YAML frontmatter path-scoping, .claude/commands/ for slash commands, .claude/skills/ with SKILL.md frontmatter (context: fork, allowed-tools, argument-hint), plan mode, direct execution, /memory command, /compact, --resume, fork_session, Explore subagent\n...", "examplehead": "Example: the first 3 of the 14", "examplenote": "", "why": "", "points": []}, "slot": {"title": "The slot", "who": "From the plan of step 1", "cls": "io", "sent": ["One of the 60 slots of the plan. It says what this one question must be.", "A multiple-choice question has 4 options and 1 correct answer. A multiple-response question has 5 options and 2 correct answers.", "The exam guide gives no number for a multiple-response question. \"5 options, 2 correct\" is a guess."], "example": "{\n  \"slot_id\": \"M1-S17\",\n  \"scenario\": 3,\n  \"task_statement\": \"1.2\",\n  \"point\": \"1.2-K2\",\n  \"type\": \"multiple_choice\",\n  \"options\": 4,\n  \"select\": 1\n}", "examplehead": "Example: slot 17 of mock 1", "examplenote": "", "why": "", "points": []}, "form": {"title": "The form that the model must fill", "who": "Fixed text", "cls": "io", "sent": ["The blanks of the answer, as a JSON schema. The API forces the model to answer in this form. The model cannot answer with free text.", "A form stops format errors. It does not stop content errors, for example 3 options in place of 4. Step 3 checks those."], "example": "{\n  \"name\": \"submit_question\",\n  \"description\": \"Return one exam question for the slot, or say that you cannot write it.\",\n  \"input_schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"status\": {\n        \"type\": \"string\",\n        \"enum\": [\"written\", \"cannot_write\"]\n      },\n      \"question\": {\n        \"type\": [\"string\", \"null\"],\n        \"description\": \"The text of the question. Null when status is cannot_write.\"\n      },\n      \"options\": {\n        \"type\": \"array\",\n        \"description\": \"The answer options, with no letters. Empty when status is cannot_write.\",\n        \"items\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"text\": { \"type\": \"string\" },\n            \"correct\": { \"type\": \"boolean\" },\n            \"reason\": {\n              \"type\": \"string\",\n              \"description\": \"Why this option is correct or wrong.\"\n            }\n          },\n          \"required\": [\"text\", \"correct\", \"reason\"]\n        }\n      },\n      \"cannot_write_reason\": {\n        \"type\": [\"string\", \"null\"],\n        \"description\": \"Why the slot cannot be written. Null when status is written.\"\n      }\n    },\n    \"required\": [\"status\", \"question\", \"options\", \"cannot_write_reason\"]\n  }\n}", "examplehead": "The form (draft, not tested against the API)", "points": [{"id": "4.3-K1", "text": "Tool use (tool_use) with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, eliminating JSON syntax errors", "ctx": "From task statement 4.3: Enforce structured output using tool use and JSON schemas"}, {"id": "4.3-S3", "text": "Forcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a particular extraction runs before enrichment steps", "ctx": "From task statement 4.3: Enforce structured output using tool use and JSON schemas"}, {"id": "4.3-K3", "text": "That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "ctx": "From task statement 4.3: Enforce structured output using tool use and JSON schemas"}], "why": "The guide wrote these points for the extraction of data from documents. Here they apply to a question: the model fills a form, so code can read each answer with no guess.", "examplenote": ""}, "writer": {"title": "The writer", "who": "One model call", "cls": "model", "sent": ["One call of the plain API writes one question.", "The call is new each time. It does not know the other questions of the mock.", "The model is a setting. We select it at the test before the first full run."], "why": "One call makes one record. If one question fails, the program writes that one again and the others do not change.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "written": {"title": "The answer: a question", "who": "The filled form", "cls": "io", "sent": ["The model returns the question, and each option with \"correct\" or \"wrong\" and a reason.", "The options have no letters.", "Each option has its own reason. Later the answer key is built from these reasons."], "example": "{\n  \"status\": \"written\",\n  \"question\": \"You want to create a custom /review slash command that runs your team's standard code review checklist. This command should be available to every developer when they clone or pull the repository. Where should you create this command file?\",\n  \"options\": [\n    {\n      \"text\": \"In the .claude/commands/ directory in the project repository\",\n      \"correct\": true,\n      \"reason\": \"(why this option is correct or wrong)\"\n    },\n    {\n      \"text\": \"In ~/.claude/commands/ in each developer's home directory\",\n      \"correct\": false,\n      \"reason\": \"(why this option is correct or wrong)\"\n    },\n    {\n      \"text\": \"In the CLAUDE.md file at the project root\",\n      \"correct\": false,\n      \"reason\": \"(why this option is correct or wrong)\"\n    },\n    {\n      \"text\": \"In a .claude/config.json file with a commands array\",\n      \"correct\": false,\n      \"reason\": \"(why this option is correct or wrong)\"\n    }\n  ],\n  \"cannot_write_reason\": null\n}", "examplehead": "Example: the form, filled with sample question 4 of the guide", "examplenote": "The reasons are left out in this example.", "why": "", "points": []}, "cannot": {"title": "The answer: \"cannot write\"", "who": "The filled form", "cls": "open", "sent": ["The model can answer \"cannot write\", with a reason. Example: the point of the slot does not fit the story of the scenario.", "The program reports the slot. It does not invent a question."], "points": [{"id": "4.3-S4", "text": "Designing schema fields as optional (nullable) when source documents may not contain the information, preventing the model from fabricating values to satisfy required fields", "ctx": "From task statement 4.3: Enforce structured output using tool use and JSON schemas"}], "why": "The guide wrote this point for the extraction of data. Here it applies to a question: if the model must fill each blank, it invents a question for a slot that does not fit. That question looks good and is bad.", "example": "", "examplehead": "", "examplenote": ""}, "letters": {"title": "Code gives the letters", "who": "Code", "cls": "code", "sent": ["Code mixes the options and gives them the letters. A seed controls the sequence, so the same seed gives the same letters.", "The model does not select the letters."], "why": "In the 12 sample questions of the exam guide, the correct answer is A 10 times. A model that sees those examples copies that. Then a participant can guess the answer.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "ids": {"title": "Code adds the IDs", "who": "Code", "cls": "code", "sent": ["Code adds the ID of the question, the slot, the number of the try, the model and the date.", "M1-S17-T1 is mock 1, slot 17, try 1."], "example": "{\n  \"question_id\": \"M1-S17-T1\",\n  \"slot_id\": \"M1-S17\",\n  \"try\": 1,\n  \"model\": \"(the model of the call)\",\n  \"date\": \"(the date of the call)\"\n}", "examplehead": "Example: the fields that code adds", "why": "Each later verdict names exactly one question and one try.", "examplenote": "", "points": []}, "save": {"title": "Code saves one file", "who": "Code", "cls": "code", "sent": ["Code saves the record as one JSON file for each try, for example runs/mock-01/questions/M1-S17-T1.json.", "A new try makes a new file. No file is written over.", "Then step 3 checks the question."], "why": "The record of each try stays. So we can see later how a question changed.", "example": "", "examplehead": "", "examplenote": "", "points": []}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

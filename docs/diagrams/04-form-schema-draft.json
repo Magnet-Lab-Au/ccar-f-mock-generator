@@ -1,0 +1,38 @@
+{
+  "name": "submit_question",
+  "description": "Return one exam question for the slot, or say that you cannot write it.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["written", "cannot_write"]
+      },
+      "question": {
+        "type": ["string", "null"],
+        "description": "The text of the question. Null when status is cannot_write."
+      },
+      "options": {
+        "type": "array",
+        "description": "The answer options, with no letters. Empty when status is cannot_write.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": { "type": "string" },
+            "correct": { "type": "boolean" },
+            "reason": {
+              "type": "string",
+              "description": "Why this option is correct or wrong."
+            }
+          },
+          "required": ["text", "correct", "reason"]
+        }
+      },
+      "cannot_write_reason": {
+        "type": ["string", "null"],
+        "description": "Why the slot cannot be written. Null when status is written."
+      }
+    },
+    "required": ["status", "question", "options", "cannot_write_reason"]
+  }
+}

@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 8: build the files</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 712px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .hot { position: absolute; cursor: pointer; }
+  .hot:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .hot[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--ink); }
+  .cap { position: absolute; font-size: 12.5px; color: var(--muted); text-align: center; }
+  .alab { position: absolute; font-size: 12px; font-weight: 600; color: var(--muted); line-height: 1.25; text-align: center; }
+  .sk { display: block; height: 7px; border-radius: 4px; background: var(--line); margin: 7px 0; }
+  .card { position: absolute; width: 246px; height: 204px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .card.back { background: var(--bg); }
+  .card.hot:hover { border-color: var(--muted); }
+  .chead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--muted); }
+  .idchip { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .optrow { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+  .optrow .sk { margin: 0; flex: none; }
+  .chip { flex: none; width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 11px; display: grid; place-items: center; }
+  .optrow.ok .chip { background: var(--owner); border-color: var(--owner); color: var(--panel); }
+  .optrow.ok .sk { background: var(--owner); opacity: .5; }
+  .tick { font-style: normal; font-size: 11px; font-weight: 700; color: var(--owner); margin-left: auto; }
+  .sheet { width: 450px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12.5px; }
+  .sheet:hover { border-color: var(--muted); }
+  .sheet .bar { height: 28px; display: flex; align-items: center; gap: 8px; padding: 0 10px; font-weight: 700; background: var(--bg); }
+  .xl { width: 14px; height: 14px; border-radius: 3px; background: var(--owner); }
+  .r { display: grid; grid-template-columns: 74px 104px 68px 62px 1fr; height: 32px; border-top: 1px solid var(--line); }
+  .r > span { display: flex; align-items: center; padding: 0 8px; overflow: hidden; white-space: nowrap; border-left: 1px solid var(--line); }
+  .r > span:first-child { border-left: none; font-variant-numeric: tabular-nums; }
+  .r .sk { margin: 0; }
+  .r.h > span { font-weight: 700; font-size: 12px; color: var(--muted); }
+  .r .fill { background: var(--owner-bg); }
+  .r.h .fill { color: var(--owner); }
+  .good { color: var(--owner); } .bad { color: var(--fail); }
+  .caret { width: 2px; height: 16px; background: var(--ink); }
+  .noview { text-align: left; display: flex; align-items: center; gap: 8px; }
+  .eye { flex: none; width: 22px; height: 12px; border: 1.5px solid var(--muted); border-radius: 50%; position: relative; }
+  .eye::after { content: ''; position: absolute; left: -3px; right: -3px; top: 4px; border-top: 1.5px solid var(--fail); transform: rotate(-28deg); }
+  .person { width: 142px; text-align: center; padding: 6px 4px 8px; border-radius: 12px; }
+  .person:hover { background: var(--owner-bg); }
+  .person svg { position: static; display: block; margin: 0 auto 4px; }
+  .person b { display: block; font-size: 15px; }
+  .person small, .filebox small { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .filebox { width: 132px; height: 62px; padding: 12px 12px 0; background: var(--panel); border: 1.5px solid var(--line); border-radius: 4px 0 4px 4px; font-size: 13px; }
+  .filebox:hover { border-color: var(--muted); }
+  .filebox::before { content: ''; position: absolute; right: -1.5px; top: -1.5px; border-style: solid; border-width: 0 16px 16px 0; border-color: transparent var(--bg) transparent transparent; }
+  .filebox::after { content: ''; position: absolute; right: -1.5px; top: -1.5px; width: 16px; height: 16px; border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); background: var(--panel); border-radius: 0 0 0 3px; }
+  .gpanel { width: 470px; height: 204px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 16px; }
+  .gpanel:hover { border-color: var(--muted); }
+  .gpanel h4 { margin: 0; font-size: 15px; }
+  .big { position: absolute; left: 16px; top: 44px; font-size: 44px; font-weight: 700; line-height: 1; color: var(--owner); }
+  .big small { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+  .gwrap { position: absolute; left: 150px; top: 44px; }
+  .gwrap span { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; }
+  .g60 { display: grid; grid-template-columns: repeat(15, 15px); gap: 4px; }
+  .g60 i { height: 15px; border-radius: 4px; }
+  .g60 .on { background: var(--owner); }
+  .g60 .off { background: var(--line); opacity: .55; }
+  .g60 .risk { border: 1.5px dashed var(--fail); background: var(--fail-bg); }
+  .gpanel p { position: absolute; left: 16px; right: 16px; bottom: 10px; margin: 0; font-size: 13px; color: var(--muted); }
+  .blabel { position: absolute; left: 20px; width: 170px; }
+  .blabel b { display: block; font-size: 15px; } .blabel small { color: var(--muted); font-size: 12.5px; }
+  .seg { height: 60px; padding: 9px 14px; border: 1.5px solid; }
+  .seg b { display: block; font-size: 14px; } .seg small { font-size: 12.5px; }
+  .seg.first { border-radius: 10px 0 0 10px; } .seg.last { border-radius: 0 10px 10px 0; }
+  .seg.g { background: var(--owner-bg); border-color: var(--owner); }
+  .seg.g b { color: var(--owner); }
+  .seg.a { background: var(--open-bg); border-color: var(--open); }
+  .seg.a b { color: var(--open); }
+  .seg.x { background: var(--fail-bg); border-color: var(--fail); }
+  .seg.x b { color: var(--fail); }
+  .card.tall { height: 236px; }
+  .stamps { display: flex; gap: 5px; margin-top: 12px; }
+  .stamp { font-size: 10.5px; font-weight: 700; color: var(--owner); background: var(--owner-bg); border: 1px solid var(--owner); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  .stamp::before { content: '\2713  '; }
+  .gate, .fp, .jfile, .grp, .dpanel { background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; }
+  .gate:hover, .fp:hover, .jfile:hover, .grp:hover, .dpanel:hover, .jmini:hover { border-color: var(--muted); }
+  .gate { width: 290px; height: 134px; padding: 12px 16px; border-color: var(--code); }
+  .gate h4, .grp h4, .dpanel h4 { margin: 0 0 8px; font-size: 14.5px; }
+  .ck { margin: 5px 0; padding-left: 24px; position: relative; font-size: 13.5px; }
+  .ck::before { content: '\2713'; position: absolute; left: 0; top: -1px; width: 17px; height: 17px; border-radius: 50%; background: var(--code); color: var(--panel); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+  .fp { width: 290px; height: 82px; padding: 10px 14px; }
+  .fprow { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12.5px; }
+  .fpc { font: 12px/1 ui-monospace, Consolas, monospace; padding: 5px 8px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); }
+  .fpc.no { border-color: var(--fail); color: var(--fail); }
+  .fprow em { margin-left: auto; font-style: normal; font-weight: 700; font-size: 12.5px; }
+  .yes { color: var(--owner); } .nope { color: var(--fail); }
+  .failnote { position: absolute; width: 290px; padding: 7px 12px; border: 1.5px dashed var(--fail); border-radius: 10px; background: var(--fail-bg); font-size: 12.5px; }
+  .jfile { width: 290px; height: 128px; overflow: hidden; }
+  .jfile .bar { height: 30px; display: flex; align-items: center; gap: 8px; padding: 0 12px; font-weight: 700; font-size: 13px; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .jf { flex: none; width: 13px; height: 16px; border-radius: 2px; background: var(--code); display: inline-block; }
+  .fbody { display: flex; gap: 12px; padding: 12px 14px; }
+  .fbody.col { display: block; padding: 9px 14px; }
+  .qn { flex: none; width: 26px; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .fl { flex: 1; } .fl .sk:first-child { margin-top: 3px; }
+  .chips { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+  .chips small { margin-left: auto; font-size: 11.5px; color: var(--muted); }
+  .arow { display: flex; align-items: center; gap: 6px; height: 25px; }
+  .arow .sk { margin: 0 0 0 6px; flex: none; width: 45% !important; }
+  .okc { background: var(--owner); border-color: var(--owner); color: var(--panel); }
+  .grp { width: 219px; height: 150px; padding: 10px 14px; }
+  .story { background: var(--code-bg); border-radius: 8px; padding: 5px 10px 4px; margin-bottom: 9px; }
+  .story small { font-size: 11px; font-weight: 700; color: var(--code); }
+  .story .sk { margin: 5px 0; background: var(--code); opacity: .35; }
+  .g15 { display: grid; grid-template-columns: repeat(15, 1fr); gap: 3px; }
+  .g15 i { height: 10px; border-radius: 3px; background: var(--muted); opacity: .55; }
+  .grp > span { display: block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .jmini { width: 122px; height: 68px; padding: 10px 12px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; }
+  .jmini b { margin-left: 8px; font-size: 14px; } .jmini small { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+  .pers { position: absolute; width: 96px; text-align: center; }
+  .pers svg { position: static; display: block; margin: 0 auto 2px; }
+  .pers b { font-size: 13px; }
+  .dpanel { width: 290px; height: 124px; padding: 10px 14px; }
+  .dbar { display: flex; align-items: center; gap: 8px; height: 16px; }
+  .dbar small { width: 62px; font-size: 11.5px; color: var(--muted); }
+  .dbar i { height: 8px; border-radius: 4px; background: var(--owner); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 8: code builds the two files of the mock</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. This is the last step. Code builds the files that the portal uses, and only from records that passed each check. Nobody edits the files by hand. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 712" width="1000" height="712" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M288,160 H342" marker-end="url(#a)"/>
+      <path class="flow" d="M640,150 C664,150 664,110 686,110" marker-end="url(#a)"/>
+      <path class="flow" d="M640,150 C664,150 664,248 686,248" marker-end="url(#a)"/>
+      <path class="flow" d="M146,630 H258" marker-end="url(#a)"/>
+      <path class="flow" d="M486,630 H374" marker-end="url(#a)"/>
+      <path class="flow" d="M616,630 H686" marker-end="url(#a)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>Code builds the files only from records that passed each check</div>
+    <div class="card tall back" style="left:36px;top:66px"></div><div class="card tall back" style="left:28px;top:58px"></div>
+    <div class="hot card tall" data-step="rec" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The question records" style="left:20px;top:50px"><div class="chead"><span class="idchip">M1-S17</span><span class="sc">fingerprint a41f</span></div><span class="sk" style="width:96%"></span><span class="sk" style="width:70%"></span><div class="optrow"><b class="chip">A</b><span class="sk" style="width:62%"></span></div><div class="optrow ok"><b class="chip">B</b><span class="sk" style="width:55%"></span><em class="tick">correct</em></div><div class="optrow"><b class="chip">C</b><span class="sk" style="width:66%"></span></div><div class="optrow"><b class="chip">D</b><span class="sk" style="width:48%"></span></div><div class="stamps"><span class="stamp">step 3</span><span class="stamp">step 4</span><span class="stamp">step 6</span></div></div>
+    <div class="cap" style="left:20px;top:300px;width:262px">60 question records. Each one passed its checks.</div>
+    <div class="hot gate" data-step="gate" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Three checks before the build" style="left:346px;top:50px"><h4>Before it builds, code checks</h4><p class="ck">Each of the 60 slots has a question.</p><p class="ck">Each question has all its verdicts.</p><p class="ck">No record changed after its check.</p></div>
+    <div class="hot fp" data-step="fp" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The fingerprint" style="left:346px;top:194px"><div class="fprow"><span class="fpc">record a41f</span><b>=</b><span class="fpc">check a41f</span><em class="yes">build</em></div><div class="fprow"><span class="fpc no">record 9c2e</span><b>&ne;</b><span class="fpc">check a41f</span><em class="nope">stop</em></div></div>
+    <div class="failnote" style="left:346px;top:286px">A check fails: code builds no file and names the cause.</div>
+    <div class="hot jfile" data-step="qfile" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The questions file" style="left:690px;top:50px"><div class="bar"><i class="jf"></i>mock-01.questions.json</div><div class="fbody"><b class="qn">17</b><div class="fl"><span class="sk" style="width:92%"></span><span class="sk" style="width:60%"></span><div class="chips"><b class="chip">A</b><b class="chip">B</b><b class="chip">C</b><b class="chip">D</b><small>no answers</small></div></div></div></div>
+    <div class="hot jfile" data-step="afile" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The answers file" style="left:690px;top:188px"><div class="bar"><i class="jf"></i>mock-01.answers.json</div><div class="fbody col"><div class="arow"><b class="qn">17</b><b class="chip okc">B</b><span class="sk" style="width:58%"></span></div><div class="arow"><b class="qn">18</b><b class="chip okc">D</b><span class="sk" style="width:66%"></span></div><div class="arow"><b class="qn">19</b><b class="chip okc">A</b><b class="chip okc">C</b><span class="sk" style="width:50%"></span></div></div></div>
+    <div class="shead" style="top:346px"><i>2</i>The 60 questions are in groups by scenario, as in the exam</div>
+    <div class="hot grp" data-step="seq" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The sequence of the questions" style="left:20px;top:382px"><h4>Scenario group 1</h4><div class="story"><small>the story</small><span class="sk" style="width:94%"></span><span class="sk" style="width:72%"></span></div><div class="g15"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>questions 1 to 15</span></div>
+    <div class="hot grp" data-step="seq" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The sequence of the questions" style="left:267px;top:382px"><h4>Scenario group 2</h4><div class="story"><small>the story</small><span class="sk" style="width:94%"></span><span class="sk" style="width:72%"></span></div><div class="g15"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>questions 16 to 30</span></div>
+    <div class="hot grp" data-step="seq" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The sequence of the questions" style="left:514px;top:382px"><h4>Scenario group 3</h4><div class="story"><small>the story</small><span class="sk" style="width:94%"></span><span class="sk" style="width:72%"></span></div><div class="g15"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>questions 31 to 45</span></div>
+    <div class="hot grp" data-step="seq" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The sequence of the questions" style="left:761px;top:382px"><h4>Scenario group 4</h4><div class="story"><small>the story</small><span class="sk" style="width:94%"></span><span class="sk" style="width:72%"></span></div><div class="g15"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>questions 46 to 60</span></div>
+    <div class="shead" style="top:546px"><i>3</i>Two files, so that the answers stay away until the end</div>
+    <div class="hot jmini" data-step="during" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="During the mock" style="left:20px;top:596px"><i class="jf"></i><b>questions</b><small>no answers</small></div>
+    <div class="alab" style="left:150px;top:592px;width:96px">during<br>the mock</div>
+    <div class="pers" style="left:262px;top:586px"><svg viewBox="0 0 90 78" width="60" height="52" aria-hidden="true"><circle cx="45" cy="24" r="17" style="fill:var(--muted)"/><path d="M11,78 C11,54 28,46 45,46 C62,46 79,54 79,78 Z" style="fill:var(--muted)"/></svg><b>A participant</b></div>
+    <div class="alab" style="left:374px;top:592px;width:96px">after<br>the mock</div>
+    <div class="hot jmini" data-step="after" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="After the mock" style="left:490px;top:596px"><i class="jf"></i><b>answers</b><small>and reasons</small></div>
+    <div class="hot dpanel" data-step="domains" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="A result for each domain" style="left:690px;top:582px"><h4>The result for each domain</h4><div class="dbar"><small>Domain 1</small><i style="width:104px"></i></div><div class="dbar"><small>Domain 2</small><i style="width:72px"></i></div><div class="dbar"><small>Domain 3</small><i style="width:118px"></i></div><div class="dbar"><small>Domain 4</small><i style="width:88px"></i></div><div class="dbar"><small>Domain 5</small><i style="width:60px"></i></div></div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 10. Design of 6 October 2026. Status of the step: planned. The step is not built. The cards, the files and the bars are drawings. They show the form, not real questions or real results. Each exam guide text in a popup is the exact text of the guide.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"rec": {"title": "The question records", "who": "From steps 2 to 7", "cls": "io", "sent": ["The stored question records are the one true copy of the questions. Each record has the question, the options, the marks and the reasons.", "Each record also has the results of its checks: step 3, step 4 and step 6, and the mark of the owner if the owner read the question."], "why": "If a question is in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw. So the files are built from the records, and nobody edits a file by hand.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "gate": {"title": "Three checks before the build", "who": "Code", "cls": "code", "sent": ["Each of the 60 slots has a question.", "Each question has its verdicts from steps 3, 4 and 6, and the mark of the owner if the owner read it.", "No record changed after its check.", "If one check fails, code builds no file and names the cause."], "why": "A file for participants must have only questions that passed each check.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "fp": {"title": "The fingerprint", "who": "Code", "cls": "code", "sent": ["Each check saves a fingerprint of the record that it checked. A fingerprint is a short code that code calculates from the text of the record. If one letter of the text changes, the fingerprint changes.", "Before the build, code calculates the fingerprint of each record again and compares.", "A different fingerprint shows that the record changed after its check. Then the build stops, and the record must pass the checks again."], "why": "The rule is that nobody edits a record after its check. A rule alone does not make sure of that. With the fingerprint, code can prove that the question in the mock is the question that the checks saw.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "qfile": {"title": "The questions file", "who": "File", "cls": "io", "sent": ["The 60 questions with their options and letters. The file has no answers and no reasons.", "Each question has its domain, its task statement and its point.", "Code adds the line \"Select 2.\" to each multiple-response question."], "example": "{\n  \"number\": 17,\n  \"question_id\": \"M1-S17-T2\",\n  \"domain\": 1,\n  \"task_statement\": \"1.2\",\n  \"point\": \"1.2-K2\",\n  \"type\": \"multiple_choice\",\n  \"select\": 1,\n  \"question\": \"(the text of the question)\",\n  \"options\": [\n    {\n      \"letter\": \"A\",\n      \"text\": \"(option A)\"\n    },\n    {\n      \"letter\": \"B\",\n      \"text\": \"(option B)\"\n    },\n    {\n      \"letter\": \"C\",\n      \"text\": \"(option C)\"\n    },\n    {\n      \"letter\": \"D\",\n      \"text\": \"(option D)\"\n    }\n  ]\n}", "examplehead": "Example: one question in the file", "points": [{"id": "Section 3", "text": "each item states how many responses to select", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "Code adds the line that says how many answers to select. So the line cannot be missing or wrong.", "examplenote": ""}, "afile": {"title": "The answers file", "who": "File", "cls": "io", "sent": ["For each question: the correct letters, and the reason of each option.", "The reasons are the explanation that a participant reads after the mock."], "example": "{\n  \"number\": 17,\n  \"question_id\": \"M1-S17-T2\",\n  \"correct\": [\n    \"B\"\n  ],\n  \"reasons\": [\n    {\n      \"letter\": \"A\",\n      \"correct\": false,\n      \"reason\": \"(why A is wrong)\"\n    },\n    {\n      \"letter\": \"B\",\n      \"correct\": true,\n      \"reason\": \"(why B is correct)\"\n    },\n    \"...\"\n  ]\n}", "examplehead": "Example: one entry in the file", "examplenote": "", "why": "", "points": []}, "seq": {"title": "The sequence of the questions", "who": "Code", "cls": "code", "sent": ["The 60 questions are in 4 groups, one for each scenario. Each group starts with the story of its scenario and has 15 questions.", "Inside a group, a seed sets the sequence. The same seed gives the same sequence."], "points": [{"id": "Section 5", "text": "Each scenario presents a realistic production context that frames a set of questions.", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "A mock has the same form as the exam. In the exam, a participant reads the story of a scenario and then answers its questions.", "example": "", "examplehead": "", "examplenote": ""}, "during": {"title": "During the mock: the questions", "who": "The portal", "cls": "io", "sent": ["The portal shows the questions file to the participant.", "The answers are in a different file. So they are not in the page that the participant has open."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "after": {"title": "After the mock: the answers", "who": "The portal", "cls": "io", "sent": ["After the mock, the portal shows the correct answers and the reason of each option.", "The format of the portal is not known yet. A converter from these two files to that format comes later."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "domains": {"title": "A result for each domain", "who": "The portal", "cls": "io", "sent": ["Each question in the file has its domain. So the portal can show the share of correct answers for each of the 5 domains.", "The bars in the picture are an example. They are not real results."], "points": [{"id": "Section 3", "text": "Pass/fail with scaled score (100–1,000), plus percent-correct by domain on the score report", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "The exam reports a result for each domain. A mock that does the same shows a participant where to study more.", "example": "", "examplehead": "", "examplenote": ""}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-step]'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+# Handoff: start here
+
+Date: 5 October 2026. Updated on 7 October 2026. This file gives a new session what it needs to continue.
+
+From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
+
+## Words
+
+| Word | Meaning |
+|---|---|
+| The owner | The person who directs this work. The owner passed the CCAR-F exam. |
+| CCAR-F | The exam "Claude Certified Architect – Foundations" |
+| Mock | A practice exam paper. "Mock" and "paper" are the same thing. |
+| The portal | MagnetLab Academy, a learning site for people who prepare for the exam. A separate project builds it. |
+| Participant | A person who uses the portal |
+| The first build | Two things together: an assistant made five mocks in August 2026 in a chat session, and a review repaired them in September 2026 |
+| `CCAR-F Mocks v2` | A second attempt, of 2 October 2026. It made decisions and records. It made no mocks. |
+| Cowork | The Claude desktop product that the discussions ran in until 7 October 2026 |
+| Claude Code | The Anthropic product that writes the program, from 7 October 2026 (decisions 0002 and 0038). It reads `CLAUDE.md` at the start of each session. |
+| The control | The part of the program that decides what happens next to a slot or to a mock: the loop, the limits, the statuses and the decisions of the owner |
+| Session | One chat with the assistant |
+| The exam guide, or "the guide" | The official guide of the CCAR-F exam, `reference/exam-guide.md` |
+| The build guide | "How the Mocks Are Built": the pages in `docs/build-guide/` that show participants how the program makes the mocks |
+
+## The goal
+
+1. Build a program that writes and checks mocks for the CCAR-F exam. The portal will launch with these mocks.
+2. Document the build during the work: each decision, each diagram and each run. Later a portal page will show participants how the program makes the mocks, as a worked example of the exam guide.
+
+## The build guide "How the Mocks Are Built"
+
+The build guide is a product of this work. It has the same weight as the program. It is the portal page of goal 2.
+
+- **Source.** The Reason section of each decision. Each Reason stands on the exam guide. The build guide does not use the section "How we decided", and it does not tell the history of the first build.
+- **Structure.** One section for each pipeline step. Each section has a short explanation, one diagram, and a table of the exam guide points that the step uses. The sections are files in `docs/build-guide/`, one file for each pipeline step.
+- **Status.** Each section has the status "planned" or "built". A section becomes "built" only when a run record shows the step.
+
+No section exists yet. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Rule 18 still applies to the portal page "How the Mocks Are Built New".
+
+## Read these files first, in this sequence
+
+1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
+2. `README.md`: what is in this folder.
+3. `docs/journal.md`: the top entry.
+4. `docs/decisions/`: decisions 0001 to 0038. Read decision 0038 before the step files: it changes the control. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
+
+Read these only when you need them:
+
+- `reference/guide-records.json`: the records of the exam guide for code. Step 0 made it on 6 October 2026. It is the one source of guide text for code and for scripts.
+- `reference/exam-guide.md`: the exam guide. Section 3 has the exam details. Section 5 has the 6 scenarios. Section 6 has the 30 task statements. Section 9 has 12 sample questions.
+- `reference/task-statements-and-points.md`: the 30 task statements and their 240 points, with IDs. It is the file for people.
+- `docs/reviews/`: the reports of the independent reviewers. `review-decisions-0024-to-0037.md` is necessary for the next step. `review-decisions-0026-to-0036.md` is the first review of the step files.
+- `reference/practice-audit-first-build.md`: History of the first build. Not a source for the design.
+
+## Where we are
+
+State on 7 October 2026.
+
+- Decisions 0001 to 0038 exist. The owner confirmed the text of 0001 to 0018, of 0037 and of 0038. Rule 26 applies to those files. The owner agreed to each decision from 0019 to 0036, but did not confirm the full text of those files.
+- Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
+- Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
+- Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.
+- **Each of the 9 steps has a design decision and a diagram. The design is not complete.** A first review found 14 serious items in decisions 0026 to 0036. Decision 0037 (third session of 6 October 2026) has an answer to each one, and the owner confirmed its text. Decisions 0024, 0027 and 0029 to 0036 were changed and have those answers. Where decision 0037 and a step file disagree, tell the owner.
+- **A second review checked the changed files.** Of the 14 items, 8 are closed and 6 are closed in part. The reviewers found 3 new errors and 10 new serious items. A programmer who has only the decision files still meets cases with no path. The report is `docs/reviews/review-decisions-0024-to-0037.md`. Read it before you continue. In the table below, "Designed" means: a decision and a diagram exist. It does not mean: ready for code.
+- **Decision 0038 stops the cycle of reviews.** The fixes of the first review made the 10 new items. All of them are in the control. The theme: too much automatic repair, designed before one real run. So the control is simple for mock 1. One automatic loop stays: a question that fails step 3 or step 4 goes to step 5, with the limits of decisions 0033 and 0037. Each other failure waits for the owner. Step 6 sends no question back. The owner accepts a mock with a command before step 8 builds the files.
+- **The control is written as code with tests, not designed further in words.** A fake writer and fake checkers give the answers that a test tells them to give. No test makes a model call. When the tests pass, decisions 0027 to 0036 are corrected so that they describe the code.
+- Where decision 0038 and an older file disagree, decision 0038 is correct. Decisions 0027 to 0036 and diagrams 02 to 10 do not agree with it yet.
+
+| Step | Decision | Diagram | State |
+|---|---|---|---|
+| 0. Prepare the guide records | 0028 | 03 | Designed, and the step ran. The file `reference/guide-records.json` exists. |
+| 1. Plan the mock | 0027 | 02 | Designed |
+| 2. Write the question | 0029 | 04 | Designed |
+| The rules for a good question (17 rules) | 0030 | none | Decided |
+| 3. Check by code | 0031 | 05 | Designed |
+| 4. Check by a model | 0032 | 06 | Designed |
+| 5. Try again | 0033 | 07 | Designed |
+| 6. Check the complete mock | 0034 | 08 | Designed |
+| 7. The owner marks the questions | 0035 | 09 | Designed |
+| 8. Build the files | 0036 | 10 | Designed |
+
+- Code that exists: `src/step0_prepare_guide_records.py` and `src/check_guide_records.py`. No other code of the pipeline exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
+- The checks of the records file: a second script passed 41 of 41 checks. An independent reviewer found no errors (`docs/reviews/review-guide-records.md`). The comparison of `reference/exam-guide.md` with the original guide is not done.
+- No agreed step uses a subagent, MCP or the Agent SDK. Each model step is a call of the plain API with a fixed answer form (decisions 0029 and 0032). The owner asked why, and said: "keep the simple api".
+- One mock needs these model calls when no question fails: 60 writer calls, 60 blind answers, 60 rule checks, and 8 calls of step 6 (2 for each scenario).
+- The design names three folders that do not exist yet. The program makes them: `runs/mock-01/` (the plan, the question records, the verdict records, the marks record, the decisions of the owner and the report), `marking/` (the Excel files that the owner fills) and `mocks/` (the two files of each mock).
+- `docs/lessons.md` is private history of the first build. It is not a source for the design.
+
+### How the owner wants the work (from the second session of 6 October)
+
+- Short answers in the chat. Do not overload the owner. Write in Simplified Technical English.
+- For the design of a step: one proposal with all details, with the exact file format and the exact fields. If the owner does not understand the proposal, tell it as the story of one question.
+- Do not hand the owner a design that is not specific. The owner asked: where does this text come from, which file, which fields?
+- A diagram of a step shows what a reader must understand, not a list of what the code does. It has hover popups with a real example from the files. It has no element that is not necessary. A script makes each one: `docs/diagrams/NN-make-diagram.py`.
+- A diagram shows the thing itself, not a box with its name. Examples: a question card with options, a sheet with rows and the columns that the owner fills, 60 squares for the size of a sample, a bar with zones for a limit. The owner said "the visuals could be better" for diagrams 02 to 08, and "much better" for diagram 09. Diagrams 09 and 10 have this form. The owner said that the older diagrams do not have to be made again.
+- Make the diagram of a step when its decision is made. Do not postpone it.
+- From the third session of 6 October: make each explanation short, and tell it as the story of one question from the start. The owner asked for a more simple explanation of 4 of the 14 items. A table of fields is too much for the first explanation.
+- The owner discussed the 14 items one at a time, with one question for each item. That worked well.
+- Explain in plain words what code does. Do not show code to the owner if the owner did not ask for it.
+
+## What a finished mock is
+
+Decision 0003: a mock has the same form as the exam. These are the facts from the exam guide (Sections 3, 4 and 5):
+
+- 60 questions and 120 minutes.
+- 4 scenarios, from the 6 scenarios of the guide.
+- Multiple-choice and multiple-response questions. Each question says how many answers to select.
+- The approximate domain weights 27%, 18%, 20%, 20% and 15%.
+
+Also decided:
+
+- The program writes each question new. The build never reads the old questions (decision 0004).
+- The two owner rulings of 29 September 2026 apply. Ruling 1 is in decisions 0005 and 0007. Ruling 2 is in decision 0006.
+- The exam guide is the only source of facts in the first version (decision 0008).
+- The numbers of one mock (decision 0027): 16, 11, 12, 12 and 9 questions for the 5 domains. 15 questions for each scenario. At least 1 question for each of the 30 task statements. 52 multiple-choice and 8 multiple-response questions, 2 in each scenario.
+- The program selects the 4 scenarios at random, from 11 of the 15 possible sets (decision 0027).
+- A finished mock is two JSON files: the questions, and the answers with the reasons (decision 0036). The format that the portal reads is not known. A converter comes later.
+- A multiple-choice question has 4 options and 1 correct answer. A multiple-response question has 5 options and 2 correct answers (decision 0029). The number 8 and the form "5 options, 2 correct" are guesses with no source.
+
+Not decided:
+
+- How many mocks the program makes.
+- If a later version can use other sources than the exam guide (decision 0008 covers the first version only).
+
+## The next steps
+
+1. Check that this folder is a git repository with a first commit, and that it is not in OneDrive. If not, ask the owner.
+2. Show the owner a short plan for the control program, in plain words. Wait for a yes (rule 8). Then write the control with a fake writer, fake checkers and one test for each case. The first tests: the path with no failure, and the 10 cases (a) to (j) of the second review, as far as decision 0038 keeps them. No test makes a model call.
+3. Items 6 to 10 of the table below have no answer. The code and its tests give the answers. Show the owner each answer, one at a time, short, as a story, before it is final. Record the answers in a new decision file.
+4. When the tests pass: correct decisions 0027 to 0036 so that they describe the code (decision 0038, part 7). In the same work, correct the other findings of the second review. Tell the owner what changes, and wait for a yes (rule 23). Then ask the owner which diagrams to make again.
+5. Then an independent review of the changed files (rule 15).
+6. Then the owner confirms the text of decisions 0019 to 0036.
+7. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
+8. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1.
+
+### The 10 serious items of the second review, after decision 0038
+
+| # | Item | Result |
+|---|---|---|
+| 1 | Rule A11 has three different texts. | Closed by decision 0038, part 8. Decisions 0030 and 0031 do not have the new text yet. |
+| 2 | A slot that goes back keeps the status `passed`. | Closed by decision 0038, part 9 |
+| 3 | Step 6 asks the owner before the marking. | Removed. Step 6 sends no question back, and the owner sees its findings after the marking. |
+| 4 | After `ignore`, the scenario cannot pass step 6. | Closed. The owner accepts the mock with a command. |
+| 5 | The count of the runs of step 6 | Removed. The owner starts each round. |
+| 6 | The values of `state` have no meaning. `id` in `owner-decisions.json` has no definition, and a finding of step 6 has no ID. | Open. The code and its tests give the answer. |
+| 7 | `new_point` has no place to store the new point. No file says if `plan.json` changes, or how the new point stays different from the points of the other slots. | Open. The code and its tests give the answer. |
+| 8 | After `more_tries` or `new_point`, no file says if the next call is a request of step 2 or of step 5, or which failed try it shows. | Open. The code and its tests give the answer. |
+| 9 | A call that fails 3 times leaves no record. So the report has no source for `errors` after a new start. | Open. The code and its tests give the answer. |
+| 10 | The exact conditions before step 8 builds the files | Open. The code and its tests give the answer. |
+
+For each new reason:
+
+- Take each exam guide text from `reference/guide-records.json` with a script. Do not type it.
+- The guide wrote many points for a different context, for example code review or data extraction. When a reason uses such a point, say the context in the same file. The second review found 11 uses where a file does not do that.
+- Do not say that a design is complete before a reviewer has checked it.
+- When you make one file more exact, make each file that has the same rule agree. Rule A11 is the example.
+
+In the workbook, the owner completes the three yellow columns. The assistant can write agreed notes there after a discussion. The column "Suggested decision" is a first suggestion from the audit. It is not a decision, and it is not a source for the design.
+
+## Things that are open
+
+| Open item | Note |
+|---|---|
+| The text of decisions 0019 to 0036 | The owner agreed to each decision. The owner has not confirmed the full text of these 18 files. The owner confirmed the text of decision 0037. |
+| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. |
+| The other findings of the second review | 3 errors of reviewer A, 11 uses of a guide point with the context not stated, 4 other findings, 7 statements about a product with no source, 4 minor contradictions, 6 old statements, and minor gaps in the cases (e), (g) and (h). They are in the report. They are not in this table one by one. |
+| Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |
+| The findings of the first review on the diagrams | 10 diagram errors of the first review are not corrected. Diagrams 02 to 10 also show the design before decision 0037. |
+| Items that the decisions list as "not decided yet" | Each decision from 0027 to 0036 has a list "Not decided yet". The review said that this table does not have each of those items. Read those lists in the decision files. |
+| A false sentence in diagram 06 | The popup of rule B4 says: "The plan gives each point of the guide its share of questions." That is false. It is not corrected yet. |
+| The copy of the exam guide | `reference/exam-guide.md` is a copy of a file in the Claude project "CPN Learning path". The comparison with the original, character for character, is not done. The assistant can read the original only as text in the chat, not as a file. The assistant asked the owner if the original file is on the computer. The owner did not answer yet. |
+| The number of mocks | Not decided. It also decides how the program selects the scenarios across mocks, and how it prevents the same scene in two different mocks. |
+| A task statement that does not fit its scenario | The plan does not prevent it (decision 0027). The writer can answer `cannot_write`. Then the slot gets the status `open`, and the owner decides (decision 0037). An automatic path is decided after the test of decision 0024. |
+| Numbers | Decided, but each one is a guess or has a margin with no source, and can change after the test: 3 tries for one slot (decision 0033), 3 runs of step 6 for one scenario and 3 runs of a call that fails (decision 0037), the limits of rules A6 and A7 (decision 0031), at most 2 questions with the same wrong idea (decision 0034), and the bad marks that stop a mock: more than 6 of 60 for mock 1, 2 or more of 20 for a later mock (decision 0035). Not decided: when the sample of the owner goes below 20. |
+| Rule B6 | Decided in decision 0037: the model lists the feature names, and code searches them in the records file. Not decided: a part of a word against a complete word, a plural, and if a name on the list "out of scope" of Section 17 counts as named. |
+| Rule A5 | The exact list of words is not decided (decision 0031). |
+| The 5 texts with a backslash | 5 texts of the records file have a backslash from the file format. A step that shows them must handle it (`docs/reviews/review-guide-records.md`). |
+| The models and the cost | Not decided: the model of the writer and of the two check calls. The test of decision 0024 decides. An estimate of the assistant, of 7 October 2026, from word counts: one mock costs 8 to 12 US dollars with Claude Opus 5.5 and 4 to 6 with Claude Sonnet 5.5. The complete project with 5 mocks: 50 to 100 US dollars. Check the price page of Anthropic again before the first run. |
+| The format of the portal | Not known. Step 8 writes our own two files. A converter for the portal comes later (decision 0036). |
+| The fingerprint | Decided in decisions 0036 and 0037. Not decided: the sequence and the encoding of the fields. |
+| The correct letters | Not decided: if the correct letters are spread well over a mock (decisions 0034 and 0036). |
+| The answer forms | The JSON schemas in decisions 0029, 0032 and 0034 are drafts. Nobody tested them against the API. The assistant did not check the exact names of the API parameters in the Anthropic documentation. |
+| The Agent SDK | Decision 0002 names it. The design of all 9 steps is complete, and no step uses it (decisions 0012, 0029, 0032 and 0034). So a new decision must say so. It is not written yet. |
+| Version control | Decided on 7 October 2026: a folder in WSL with a private repository on GitHub. The owner makes it. Check it at the start (next step 1). |
+| Which product writes the code | Decided on 7 October 2026: the work moves to Claude Code now (decisions 0002 and 0038). The two scripts of step 0 and the four check scripts were written in Cowork. |
+| The audit | 52 of its 240 rows had one check, not two. These are the rows with a weak fit or no fit. |
+| The portal pages | Two prototype pages exist on claude.ai. "How the Mocks Are Built Old" shows the first build and the audit. "How the Mocks Are Built New" shows a design of 2 October that is not the design of this folder. |
+| Diagram 01 | It shows the pipeline of the first session of 6 October. It does not show the two calls of step 4, the two calls of step 6 or the limit of 3 tries. |
+| Diagrams 02 to 08 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 09 and 10 have the form that the owner wants. Diagrams 02, 04 and 07 also have statements that are old, because later decisions closed them. |
+
+## Where the old material is
+
+You do not need it for the design. It is here if the owner asks. Each folder is in OneDrive, in `C:\Users\shekh\OneDrive\Desktop\Learning\CPN Learning pathway\CCAR-F\`. After the move to WSL they are not next to this folder. Rule 27 applies: do not change them.
+
+| Folder | Content |
+|---|---|
+| `CCAR-F Mocks v2/` | The second attempt: an older decision file, and the record of the first build in `reference/first-build/` |
+| `Mocks/` | The five mocks of August 2026 and the question bank |
+| `CCAR-F Portal Mocks/` | The five mocks after the review of September 2026 |
+| `CCAR-F Study Pack/` and the numbered files in `CCAR-F/` | Study files of the owner, and some records of the first build (files 06, 10 and 11). Many of them are personal. |
+
+## What the owner says to start
+
+"Read `HANDOFF.md` in `mock-builder-v3` and follow it."

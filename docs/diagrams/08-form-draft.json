@@ -1,0 +1,37 @@
+{
+  "name": "submit_scenario_check",
+  "description": "Give one result for each rule of this call. Call 6a has the rules D1 and D4. Call 6b has the rules D2 and D3.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "rule": { "type": "string", "enum": ["D1", "D2", "D3", "D4"] },
+            "result": { "type": "string", "enum": ["pass", "fail", "cannot_decide"] },
+            "findings": {
+              "type": "array",
+              "description": "Empty when result is pass.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "question_ids": {
+                    "type": "array",
+                    "description": "The IDs of the questions that the finding names.",
+                    "items": { "type": "string" }
+                  },
+                  "detail": { "type": "string" }
+                },
+                "required": ["question_ids", "detail"]
+              }
+            }
+          },
+          "required": ["rule", "result", "findings"]
+        }
+      }
+    },
+    "required": ["results"]
+  }
+}

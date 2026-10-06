@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 3: check by code</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 804px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .box.row .num { width: 34px; height: 34px; font-size: 14px; }
+  .box.fail .name { color: var(--fail); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 3: code checks each question against 7 exact rules</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. Before a model looks at a question, code checks the rules that have one exact answer. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 804" width="1000" height="804" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M250,262 C276,262 276,342 296,342" marker-end="url(#a)"/>
+      <path class="flow" d="M250,422 C276,422 276,342 296,342" marker-end="url(#a)"/>
+      <path class="flow" d="M700,342 C724,342 724,262 746,262" marker-end="url(#a)"/>
+      <path class="failp" d="M700,342 C724,342 724,422 746,422" marker-end="url(#af)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>One question goes through 7 rules</div>
+    <div class="panel" style="left:300px;top:38px;width:400px;height:574px"></div>
+    <div class="ptitle" style="left:314px;top:46px">The 7 rules<small>group A of the 13 rules for a good question</small></div>
+    <div class="shead" style="top:634px"><i>2</i>Code saves the verdict</div>
+    <div class="box step nonum hdr row" data-step="hdr" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:84px;width:376px;height:60px"><div class="head"><span class="name">Code checks 7 rules</span><span class="tag t-code">Code</span></div><p class="what">Each rule has one exact answer.</p></div><div class="box step row" data-step="A1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:150px;width:376px;height:60px"><div class="num">A1</div><div class="head"><span class="name">The form is complete</span></div><p class="what">Each option has a text, a mark and a reason.</p></div><div class="box step row" data-step="A2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:215px;width:376px;height:60px"><div class="num">A2</div><div class="head"><span class="name">The number of options</span></div><p class="what">4 or 5, as the slot says.</p></div><div class="box step row" data-step="A3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:280px;width:376px;height:60px"><div class="num">A3</div><div class="head"><span class="name">The number of correct options</span></div><p class="what">1 or 2, as the slot says.</p></div><div class="box step row" data-step="A4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:345px;width:376px;height:60px"><div class="num">A4</div><div class="head"><span class="name">No equal options</span></div><p class="what">No two options have the same text.</p></div><div class="box step row" data-step="A5" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:410px;width:376px;height:60px"><div class="num">A5</div><div class="head"><span class="name">No letters in the text</span></div><p class="what">No &quot;Option B&quot;, no &quot;all of the above&quot;.</p></div><div class="box step row" data-step="A6" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:475px;width:376px;height:60px"><div class="num">A6</div><div class="head"><span class="name">The length</span></div><p class="what">Question 25 to 110 words. Option 5 to 45.</p></div><div class="box step row" data-step="A7" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:312px;top:540px;width:376px;height:60px"><div class="num">A7</div><div class="head"><span class="name">The correct option is not much longer</span></div><p class="what">At most 1.3 times the wrong options.</p></div><div class="box step nonum " data-step="q" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:214px;width:230px;height:96px"><div class="head"><span class="name">The question record</span></div><p class="what">The question and its options, from step 2.</p></div><div class="box step nonum " data-step="slot" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:374px;width:230px;height:96px"><div class="head"><span class="name">The slot</span></div><p class="what">What the question must be, from the plan.</p></div><div class="box step nonum " data-step="pass" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:750px;top:207px;width:230px;height:110px"><div class="head"><span class="name">Pass</span><span class="tag t-owner">Usual</span></div><p class="what">No rule fails. Step 4 checks the question next.</p></div><div class="box step nonum fail" data-step="fail" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:750px;top:367px;width:230px;height:110px"><div class="head"><span class="name">Fail</span></div><p class="what">A rule fails. The question goes back to the writer with the findings.</p></div><div class="box step nonum " data-step="rec" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:670px;width:300px;height:118px"><div class="head"><span class="name">The verdict record</span><span class="tag t-io">File</span></div><p class="what">One new file for each check: the question, the verdict and the findings.</p></div><div class="box step nonum " data-step="finding" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:350px;top:670px;width:300px;height:118px"><div class="head"><span class="name">A finding is exact</span><span class="tag t-code">Code</span></div><p class="what">It names the rule and the detail, so the writer knows what to change.</p></div><div class="box step nonum stop" data-step="err" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:680px;top:670px;width:300px;height:118px"><div class="head"><span class="name">An error is not a pass</span></div><p class="what">If code cannot read the question, it reports an error.</p></div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 05. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took it from the records file, and measured the 12 sample questions.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"q": {"title": "The question record", "who": "From step 2", "cls": "io", "sent": ["The record that step 2 saved for one try: the question, and each option with its letter, its mark \"correct\" or \"wrong\" and its reason."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "slot": {"title": "The slot", "who": "From the plan of step 1", "cls": "io", "sent": ["The slot says what the question must be: the scenario, the point, the number of options and the number of correct answers.", "Code compares the question with its slot."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "hdr": {"title": "Step 3: code checks 7 rules", "who": "Code", "cls": "code", "sent": ["Each of these 7 rules has one exact answer. So code checks them, and not a model.", "The step is cheap and fast. It runs before the model check of step 4, so a question with a simple defect does not use a model call.", "The rules that need judgment are the work of step 4, for example \"only the marked answer is correct\"."], "points": [{"id": "1.4-K1", "text": "The difference between programmatic enforcement (hooks, prerequisite gates) and prompt-based guidance for workflow ordering", "ctx": "From task statement 1.4: Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "1.4-K2", "text": "When deterministic compliance is required (e.g., identity verification before financial operations), prompt instructions alone have a non-zero failure rate", "ctx": "From task statement 1.4: Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "4.3-K3", "text": "That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "ctx": "From task statement 4.3: Enforce structured output using tool use and JSON schemas"}, {"id": "4.4-K4", "text": "The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)", "ctx": "From task statement 4.4: Implement validation, retry, and feedback loops for extraction quality"}], "why": "The guide wrote these points for workflows and for the extraction of data. Here they apply to a question record: the form of step 2 stops format errors, but it cannot count the options. So code checks the content.", "example": "", "examplehead": "", "examplenote": ""}, "A1": {"title": "Rule A1: the form is complete", "who": "Code", "cls": "code", "sent": ["The record has a question. Each option has a text, a mark \"correct\" or \"wrong\", and a reason. No text is empty."], "example": "{\n  \"rule\": \"A1\",\n  \"detail\": \"Option C has no reason.\"\n}", "examplehead": "Example of a finding", "why": "The answer key is built from the reasons. An option with no reason leaves a hole in the answer key.", "examplenote": "", "points": []}, "A2": {"title": "Rule A2: the number of options", "who": "Code", "cls": "code", "sent": ["The question has the number of options that its slot says: 4 for multiple-choice, 5 for multiple-response."], "example": "{\n  \"rule\": \"A2\",\n  \"detail\": \"The question has 5 options. The slot says 4.\"\n}", "examplehead": "Example of a finding", "why": "The form of step 2 cannot count. Code can.", "examplenote": "", "points": []}, "A3": {"title": "Rule A3: the number of correct options", "who": "Code", "cls": "code", "sent": ["The number of options that are marked correct is the number that the slot says: 1 for multiple-choice, 2 for multiple-response."], "example": "{\n  \"rule\": \"A3\",\n  \"detail\": \"2 options are marked correct. The slot says 1.\"\n}", "examplehead": "Example of a finding", "why": "The question tells the participant how many answers to select. The marks must agree with that number.", "examplenote": "", "points": []}, "A4": {"title": "Rule A4: no equal options", "who": "Code", "cls": "code", "sent": ["No two options have the same text."], "example": "{\n  \"rule\": \"A4\",\n  \"detail\": \"Options B and D have the same text.\"\n}", "examplehead": "Example of a finding", "why": "Two equal options are one option.", "examplenote": "", "points": []}, "A5": {"title": "Rule A5: no letters in the text", "who": "Code", "cls": "code", "sent": ["No text names a letter or a different option. Examples: \"Option B\", \"all of the above\", \"none of the above\"."], "example": "{\n  \"rule\": \"A5\",\n  \"detail\": \"The reason of option A has the words \\\"Option B\\\".\"\n}", "examplehead": "Example of a finding", "why": "Code mixes the options and gives the letters. A text that names a letter becomes wrong when the sequence changes.", "examplenote": "", "points": []}, "A6": {"title": "Rule A6: the length", "who": "Code", "cls": "code", "sent": ["The question has 25 to 110 words. Each option has 5 to 45 words.", "These limits come from the 12 sample questions of the exam guide. A script measured them: the questions have 33 to 91 words, and the options have 7 to 35 words. Each limit is that range with a small margin."], "example": "{\n  \"rule\": \"A6\",\n  \"detail\": \"The question has 140 words. The limit is 110.\"\n}", "examplehead": "Example of a finding", "why": "The sample questions show the form of the exam. A mock question that is much longer or much shorter trains the wrong pace.", "examplenote": "", "points": []}, "A7": {"title": "Rule A7: the correct option is not much longer", "who": "Code", "cls": "code", "sent": ["The correct option is at most 1.3 times as long as the average of the wrong options.", "In the 12 sample questions of the exam guide, the largest value is 1.21."], "example": "{\n  \"rule\": \"A7\",\n  \"detail\": \"The correct option has 40 words. The wrong options have 18 words on average. The limit is 1.3 times.\"\n}", "examplehead": "Example of a finding", "why": "If the correct option is always the longest, a participant can guess the answer from its length.", "examplenote": "", "points": []}, "pass": {"title": "Pass", "who": "Usual", "cls": "owner", "sent": ["No rule fails.", "The question goes to step 4. There a model checks the rules that need judgment."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "fail": {"title": "Fail", "who": "Back to the writer", "cls": "stop", "sent": ["One rule or more fails.", "The question goes to step 5. The writer gets the question and the exact findings, and writes it again.", "The new question goes through this check again."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "rec": {"title": "The verdict record", "who": "File", "cls": "io", "sent": ["Code saves each verdict as one new file, for example runs/mock-01/checks/M1-S17-T1-step3.json.", "No file is written over. So the record of each check stays."], "example": "{\n  \"question_id\": \"M1-S17-T1\",\n  \"step\": 3,\n  \"verdict\": \"fail\",\n  \"findings\": [\n    {\n      \"rule\": \"A6\",\n      \"detail\": \"The question has 140 words. The limit is 110.\"\n    }\n  ],\n  \"date\": \"(the date of the check)\"\n}", "examplehead": "Example: a verdict \"fail\"", "examplenote": "", "why": "", "points": []}, "finding": {"title": "A finding is exact", "who": "Code", "cls": "code", "sent": ["Each finding names the rule and the detail: what is wrong, where, and what the limit is."], "points": [{"id": "4.4-K1", "text": "Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction", "ctx": "From task statement 4.4: Implement validation, retry, and feedback loops for extraction quality"}], "why": "The guide wrote this point for the extraction of data. Here it applies to a question: the writer of step 5 gets the exact findings, so it knows what to change.", "example": "", "examplehead": "", "examplenote": ""}, "err": {"title": "An error is not a pass", "who": "The step stops", "cls": "stop", "sent": ["If the file of the question is missing or cannot be read, the step reports an error.", "It never says \"pass\" for a question that it did not read."], "points": [{"id": "5.3-K4", "text": "Why silently suppressing errors (returning empty results as success) or terminating entire workflows on single failures are both anti-patterns", "ctx": "From task statement 5.3: Implement error propagation strategies across multi-agent systems"}], "why": "The guide wrote this point for agents that report errors. Here it applies to a check: an empty result must not look like a success.", "example": "", "examplehead": "", "examplenote": ""}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

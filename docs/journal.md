@@ -1,0 +1,180 @@
+# Journal
+
+One entry for each work session. Newest entry first.
+
+## 7 October 2026
+
+This entry continues the third session of 6 October. The work went on after midnight.
+
+- The owner and the assistant started to close the 10 new serious items one at a time. The owner agreed to item 1 (rule A11) and saw a suggestion for item 2.
+- The owner then said: "I suspect that if we fix these new 10 issues and review we will keep finding more and the cycle will continue." The assistant agreed: the first review found 14 items, and the fixes made 10 new ones.
+- The owner asked what the theme of the problems is. The answer: too much automatic repair, designed before one real run. The rules for a question are stable. The 9 steps stay.
+- Decided: a simple control for mock 1, written as code with tests (decision 0038). The owner confirmed its text. It closes 3 of the 10 items, removes 2, and gives 5 to the code and its tests. It also corrects one sentence of decision 0037.
+- A correction: the assistant said first that the simple control removes most of the 10 items. It removes 2.
+- Decided: the work moves to Claude Code now. The folder moves out of OneDrive, to a folder in WSL with a private repository on GitHub. The owner makes the repository and copies the folder.
+- The assistant read the Anthropic documentation on 7 October 2026 (code.claude.com/docs/en/memory): Claude Code reads `CLAUDE.md` in the project folder at the start of each session, and that file can import other files with `@`. It does not read `HANDOFF.md` automatically. The product treats these files as context and does not enforce them.
+- A new file, `CLAUDE.md`, imports `WORKING-RULES.md` and says to read `HANDOFF.md` first. It has two more rules: no API key in the repository, and a test of the control makes no model call.
+- The owner asked how many API credits the project needs. The assistant read the Anthropic price page on 7 October 2026 and estimated 50 to 100 US dollars for 5 mocks: 8 to 12 dollars for one mock with Claude Opus 5.5, 4 to 6 with Claude Sonnet 5.5. The token numbers are an estimate from word counts. The model and the number of mocks are not decided.
+- `HANDOFF.md`, `README.md` and this journal have the state of the end of this session. The owner said yes to these changes before the assistant made them.
+
+**Open**
+
+- The control program and its tests do not exist.
+- Items 6 to 10 of the second review have no answer yet.
+- Decisions 0027 to 0036 and diagrams 02 to 10 do not agree with decision 0038.
+- The other findings of the second review are not corrected.
+- No independent reviewer checked decisions 0037 and 0038 after decision 0038.
+
+Next: see "The next steps" in `HANDOFF.md`.
+
+## 6 October 2026, third session
+
+- The assistant read `HANDOFF.md` and the files that it names. It did not read diagrams 02 to 08.
+- The assistant showed one proposal with an answer for each of the 14 serious items of the review. The owner asked to discuss them one at a time, and said yes to each one.
+- The owner asked for a more simple explanation of items 8, 10, 12 and 14. The first explanations were too long.
+- Item 8: the owner asked if code or a model must do the search for rule B6. Agreed: code.
+- Item 12: the owner asked how the properties of the sample questions stay in the new questions. A script measured the 12 sample questions. Agreed: four new code rules, A8 to A11.
+- A correction: the assistant said that 6 of the 11 sets have a scenario with 12 questions of one domain. The correct number is 9.
+- Decision 0037 has the 14 answers. The owner confirmed its text.
+- Two scripts are in `docs/decisions/`: `0037-check-scenario-tables.py` and `0037-check-sample-properties.py`. The assistant ran both in the folder. The results agree with decision 0037.
+- The assistant showed the owner a list of the changes for decisions 0024, 0027 and 0029 to 0036, and five details that were new. The owner said yes. The assistant changed the 10 files. A script took each guide text from the records file.
+- Six things were not in the list. The assistant told the owner after the change: the file `docs/diagrams/06-forms-draft.json` got the fields `letter` and `features`, each changed file got a line "Changed", rule A11 got an exact method in decision 0031, a failed count against the plan (rule C2) stops step 6 with an error, the record of step 6 got field names, and two items went into "Not decided yet".
+- Two independent agents reviewed decisions 0024 and 0027 to 0037. The owner said yes to the 2 agents before they started. Result: each of the 26 guide quotes is exact, and each list "Exam guide points" agrees with its Reason. Of the 14 serious items, 8 are closed and 6 are closed in part. The reviewers found 3 new errors and 10 new serious items. The report is `docs/reviews/review-decisions-0024-to-0037.md`.
+- One of the new serious items is an error of the assistant: it wrote a more exact method for rule A11 in decision 0031, and did not make decisions 0030 and 0037 agree.
+- `HANDOFF.md`, `README.md` and this journal have the state of the end of this session. The owner said yes to these changes before the assistant made them.
+
+**Open**
+
+- The 10 new serious items of the second review are open. The other findings of that review are not corrected.
+- Decision 0037 has one sentence that is too strong (point 1.4-K2). The owner confirmed its text, so the correction needs a new file (rule 26).
+- Diagrams 02 to 10 show the design before decision 0037.
+- The owner has not confirmed the full text of decisions 0019 to 0036.
+- The list of open items is in `HANDOFF.md`.
+
+Next: see "The next steps" in `HANDOFF.md`.
+
+## 6 October 2026, second session
+
+- The assistant read `HANDOFF.md` and the files that it names. It changed no file before the owner said so.
+- The owner asked for short answers in the chat.
+- Decided: the build guide does not show MCP, subagents, hooks or sessions at work (decision 0026). The owner accepted MCP and subagents first, and hooks and sessions after a second question. The assistant changed the new file of decision 0026 for the second answer before it told the owner. It told the owner after.
+- The owner asked how long the work needs. The assistant estimated 6 to 10 sessions. The owner asked if the design needs that long. The answer was no: the time comes from one question for each detail.
+- Agreed: a faster method for the design of the steps. One proposal for each step, and the owner accepts or changes it. This changes rule 1 (rule 30 in `WORKING-RULES.md`).
+- Decided the design of step 1, the plan of a mock (decision 0027). The owner looked at each detail and said yes to each one. The assistant found one weak point after the proposal and told the owner: a task statement can be a bad fit for a scenario.
+- Diagram 02 (step 1). The owner said that the first version was hard to read and asked for the hover popups of diagram 01. The assistant made it again with popups. The owner said: "It is better".
+- The assistant showed a proposal for step 2. The owner said that it was not specific: no source for the story of the scenario, no records for code, no output format, no fields. The owner was right. Agreed: step 0 is designed before step 2, and each design names the exact file format and the exact fields.
+- Decided the design of step 0 (decision 0028). The owner asked why all records are in one file, and what a point is.
+- Step 0 ran. `src/step0_prepare_guide_records.py` made `reference/guide-records.json`: 5 domains, 6 scenarios, 30 task statements, 240 points, 12 sample questions and the 3 lists of Section 17.
+- The checks of the records file. Check 2: `src/check_guide_records.py` passed 41 of 41 checks. Check 3: one independent agent found no errors, and listed 7 observations (`docs/reviews/review-guide-records.md`). Check 1, the comparison of our copy of the guide with the original, is not done. The assistant can read the original only as text in the chat.
+- Diagram 03 (step 0). The owner said that the first version was a copy of the form of diagram 02 and had elements that are not necessary. The assistant made it again with a different idea: a document for people becomes records for code. The owner accepted it. Diagrams 04 to 07 have this form.
+- Decided the design of step 2, the writer call (decision 0029). The owner did not understand the second proposal. The assistant told it as the story of one question. The owner asked to see the JSON schema and accepted it.
+- The owner asked three questions on the architecture: why no subagent reviews the output in the same call, if the API can have subagents, and why the build does not use the SDK. The assistant read the Anthropic documentation: the Messages API is stateless and has no subagents. The owner said: "keep the simple api". The answers are in decision 0029.
+- Diagram 04 (step 2).
+- Decided the 13 rules for a good question (decision 0030).
+- Decided the design of step 3, the code check (decision 0031). A script measured the 12 sample questions for the limits of rules A6 and A7: `docs/decisions/0031-check-sample-lengths.py`.
+- The assistant wanted to make the diagram of step 3 later, together with the diagram of step 4. The owner asked for it. The assistant made diagram 05. Rule 13 says to make each diagram when its decision is made.
+- Decided the design of step 4 (decision 0032): two calls for each question, a blind answer and then a rule check. The owner did not understand the first proposal. The assistant told it as a story. The owner asked what happens when the blind call is wrong. The answer is in the Reason of decision 0032. The owner also decided that call 4b always runs.
+- A correction: the assistant said that the checker gets about 8000 words of guide text. A script counted about 5300 words. Decision 0032 has the correct number.
+- Diagram 06 (step 4).
+- Decided the design of step 5, the new try (decision 0033): the request of step 2 plus the failed question and its findings, at most 3 tries, then an open slot in the report. The owner asked if the answer is structured output. The answer was yes: the same form as in step 2.
+- Diagram 07 (step 5).
+- For each diagram from 02 to 07, a browser test in Chromium checked that each box opens its popup, that the popup stays in the window and that it closes. The tests passed. The test scripts are not in this folder.
+- After that update, the session went on.
+- Decided the design of step 6 (decision 0034). The owner asked if one API call is good enough for so many questions. The assistant said that it is 4 calls with 15 questions each, and changed the proposal to two calls for each scenario, each with one job.
+- Diagram 08 (step 6).
+- Decided the design of step 7 (decision 0035): the Excel marking file, the marks record, and the bad marks that stop a mock. The assistant added the folder `marking/` when it wrote the file, and told the owner after.
+- The first diagram 09 (step 7) had the form of diagrams 03 to 08. The owner said: "the visuals could be better". The assistant made diagram 09 again as a sample in a new visual form: the thing itself, not a box with its name. The owner said: "much better". The owner said that the older diagrams do not have to be made again.
+- Decided the design of step 8 (decision 0036): two JSON files for each mock, groups by scenario, and a fingerprint that stops the build when a record changed after its check.
+- Diagram 10 (step 8), in the new visual form.
+- Each of the 9 steps now has a design decision and a diagram. The assistant told the owner that the design of all 9 steps is complete. That was too early.
+- Two independent agents reviewed decisions 0026 to 0036, the text of diagrams 02 to 10 and `HANDOFF.md`. The owner said yes to the 2 agents before they started. Result: each quoted guide text is exact and each number about the guide is true. But the reviewers found 4 serious contradictions, 10 serious gaps, 4 serious diagram errors and 2 serious handoff errors, and 13 of 47 uses of a guide point are not fair or do not state their context. The report is `docs/reviews/review-decisions-0026-to-0036.md`.
+- The assistant corrected `HANDOFF.md`, `README.md` and this journal, with the yes of the owner: the design is not complete, and the 14 serious items are the next step. No decision file and no diagram is changed yet.
+- `HANDOFF.md`, `README.md` and this journal were updated a second time, with the yes of the owner.
+- (First update:) `HANDOFF.md`, `README.md`, `src/README.md` and `WORKING-RULES.md` have the state of the end of this session. The owner said yes to these changes before the assistant made them. The change of `src/README.md` was not in the list that the owner saw.
+
+**Open**
+
+- The 14 serious items of the review are open. The other findings of the review are not corrected.
+- The owner has not confirmed the full text of decisions 0019 to 0036.
+- A decision on the Agent SDK is not written: no step uses it.
+- Check 1 of the records file is not done. The assistant asked the owner if the original guide file is on the computer. The owner did not answer yet.
+- The folder is not a git repository.
+- The list of open items is in `HANDOFF.md`.
+
+Next: see "The next steps" in `HANDOFF.md`.
+
+## 6 October 2026, first session
+
+- The owner confirmed Part B of `WORKING-RULES.md`, with one change: rule 26 permits a change to the status line of a decision file.
+- The owner confirmed the text of decision 0001, with one change: 3.4-K1 is not in the list of exam guide points, because the decision does not use plan mode.
+- The owner confirmed the text of decision 0002, with three changes. Option 3 now says: the Claude API for a step that is one request with a fixed output format, the Agent SDK for a step in which the model works in a loop with tools. The last line of the Reason now says "the Agent SDK". The note on Scenario 6 now says "JSON schemas", because the guide does not name the API there. The assistant checked the product facts in the Anthropic documentation (platform.claude.com and code.claude.com).
+- A diff checked each of the three files. No independent reviewer checked them.
+- Decided that a mock has the same form as the exam (decision 0003).
+- Decided that the build does not use the questions of the first build (decision 0004). The owner asked about bias, and the assistant changed its recommendation from option 1 to option 2.
+- Decided that ruling 1 of 29 September applies: a question depends only on features that the exam guide names (decision 0005).
+- Decided that ruling 2 of 29 September applies, with two limits from the original text (decision 0006). The assistant read the original briefs in `CCAR-F Mocks v2/reference/first-build/rubric/`. The owner gave read access to `CCAR-F Mocks v2` and `CCAR-F Portal Mocks` for that.
+- Decided that ruling 1 covers each text that a participant sees, also the explanation (decision 0007, adds to 0005).
+- Decided that the exam guide is the only source of facts in the first version (decision 0008). The owner asked how a documentation source would work, and the assistant suggested a form that is recorded in 0008 and not decided.
+- Decided step 1 of the pipeline: code makes the plan of a mock, a list of 60 slots (decision 0009).
+- Decided step 2 of the pipeline: a model writes one question for one slot, in one API call (decision 0010).
+- Decided step 3 of the pipeline: code checks each question against the rules that have an exact answer (decision 0011).
+- Decided step 4 of the pipeline: an independent model call checks each question, as a plain API call (decision 0012). The owner asked if the pipeline needs subagents. The answer is in 0012: not for independence, and no agreed step needs the Agent SDK.
+- Decided step 5 of the pipeline: a failed question goes back to the writer with the findings, up to a limit of tries (decision 0013).
+- Decided step 6 of the pipeline: the program checks the complete mock, with a code count and one model call for each scenario (decision 0014).
+- Decided step 7 of the pipeline: the owner marks a random sample of each mock, with no verdict in view (decision 0015).
+- Decided step 8 of the pipeline: code builds the mock files from the question records, and nobody edits an output file by hand (decision 0016).
+- Decided step 0 of the pipeline: prepare the guide records, one time for each version of the guide (decision 0017). The owner corrected the assistant two times: the 240 points exist already, and the work must be documented as a step.
+
+**After the decisions**
+
+- The owner did not confirm that the list of steps 0 to 8 is complete. The owner asked if everything is covered.
+- The assistant compared the steps with the 22 lessons in `docs/lessons.md`. The owner then asked where the lessons come from, and if the assistant had used them for the design. The answer was yes, for most reasons and for the sequence of the steps.
+- The owner decided: `docs/lessons.md` is private history of the first build. It is not a source for the design. The file stays in the folder.
+- The assistant made a table that compares the reason of each step with the exam guide: 3 steps full, 5 in part, 1 none. The owner accepted the table.
+- The Reason section of decisions 0003 to 0017 is new. The rule: the reason is an exam guide point with its ID, or a section of the guide, or a ruling of the owner, or one plain sentence. A Reason has no lesson number and no F number. Decisions 0010 and 0016 have a plain reason and no exam guide point.
+- Each decision from 0003 to 0017 has a new section "How we decided", below the Reason.
+- Decision 0004 no longer says that `docs/lessons.md` stays in use.
+- Decisions 0001 and 0002 did not change. Each names the first build in its reason.
+- Decided: for each step we decide what it receives, what it returns and what can fail, and the final script also checks that each answer in the workbook names a step that exists (decision 0018).
+- A script compared each quoted exam guide text in decisions 0001 to 0017 with `reference/task-statements-and-points.md`: 20 quotes, 0 differ. The same check for the three quotes in decision 0018: 0 differ.
+
+**Other files**
+
+- `HANDOFF.md`: the lesson is out of the list "Read these files first". The sections "Where we are", "What a finished mock is", "The next steps" and "Things that are open" have the state of 6 October. A new section describes the build guide. The table "Words" has "the exam guide" and "the build guide".
+- `README.md` and `docs/lessons.md`: the label "Private history of the first build. Not a source for the design." `docs/lessons.md` also says that lesson 3 leaves out the two limits of ruling 2.
+- New folder `docs/build-guide/` with a README. The build guide "How the Mocks Are Built" is a product of this work, with the same weight as the program. No section exists.
+- New diagram `docs/diagrams/01-pipeline-overview.html`: the 9 steps on one page, with the path of a question that fails. Each box opens a popup with the exam guide points of its step. A script took each exam guide text from the points file. A test in Chromium passed 26 of 26 checks. The assistant wrote the sentences "receives, does, returns" and "Why here" in the popups.
+- `docs/diagrams/README.md` lists diagram 01. Its rule is now: a diagram for participants uses plain words and no decision numbers, and the decision file names its diagram. Decisions 0009 to 0017 name diagram 01 in the line "Diagram".
+- The owner confirmed the text of decisions 0003 to 0018. Each of the 16 files has the line "Text confirmed by the owner: 6 October 2026". Rule 26 applies to them.
+- One independent agent reviewed decisions 0003 to 0018 against the exam guide: 41 uses, 14 agree, 26 agree in part, 1 does not agree. Each quote was exact. The report is `docs/reviews/review-decisions-0003-to-0018.md`.
+- Decided: one file corrects the errors that the review found (decision 0019). The 26 "in part" results stay, and the build guide and the popups will name the context of each point. The owner approved a short form of the text of 0019. The owner did not confirm its full text.
+- Decided: a question from step 5 goes through the checks again (decision 0020).
+- Decided: a bad mark of the owner sends the question to step 5, and too many bad marks stop the mock (decision 0021).
+- Decided: the owner reads all 60 questions of mock 1, then 20 of each later mock (decision 0022).
+- Decided: the checker has a third verdict, "cannot decide" (decision 0023).
+- Decided: a test of the writer and of the checker comes before the first full run (decision 0024).
+- The owner confirmed that the list of steps 0 to 8 is complete for one mock (decision 0025). The design of each step can start.
+- Diagram 01 has decisions 0019 to 0025: the new question is checked again, "cannot decide", the bad mark, the size of the sample and the test before the first full run. Each point in a popup names its task statement. The browser test passed 26 of 26 checks.
+- `HANDOFF.md` and `README.md` have the state of the end of 6 October. `README.md` lists `docs/build-guide/` and `docs/reviews/`.
+
+**Open**
+
+- No independent reviewer checked decisions 0001, 0002 and 0019 to 0025, `HANDOFF.md`, or diagram 01 and the sentences in its popups.
+- Not decided: how the program prevents the same scene in two different mocks, and how many mocks the program makes.
+- The owner has not confirmed the text of decisions 0019 to 0025.
+- The folder is not a git repository.
+- The owner has not decided if the build guide must also show MCP and subagents at work. The pipeline uses none.
+
+Next: see "The next steps" in `HANDOFF.md`.
+
+## 5 October 2026
+
+- Decided to start clean in this folder (decision 0001).
+- Decided that the build is a program with the Claude API and the Agent SDK (decision 0002).
+- Made the file `reference/task-statements-and-points.md`. An independent reviewer confirmed all 240 points against the exam guide copy.
+- Made the workbook `docs/coverage/task-statement-decisions.xlsx`. No decision is filled in yet.
+- Started a discussion of task statement 1.1 and stopped it. The assistant had assumed a pipeline sequence that nobody had agreed on.
+- Wrote `HANDOFF.md`, `WORKING-RULES.md` and `docs/lessons.md` for a new session. Two independent reviewers checked the first version, and a third reviewer checked the second version. The assistant applied the corrections of the third reviewer. Nobody reviewed that last version.
+- Not done: version control. The folder is not a git repository yet.
+
+Next: see "The next steps" in `HANDOFF.md`.

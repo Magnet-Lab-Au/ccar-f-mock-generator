@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 1: plan the mock</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 1080px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .group { position: absolute; left: 24px; top: 138px; width: 572px; height: 764px; border: 1.5px solid var(--code); border-radius: 14px; }
+  #pop table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 8px 0 2px; }
+  #pop th, #pop td { text-align: left; padding: 3px 6px 3px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  #pop th { font-size: 12px; color: var(--muted); }
+  #pop td + td, #pop th + th { text-align: right; white-space: nowrap; padding-right: 0; padding-left: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 1: plan the mock</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. Code makes the plan of one mock: a list of 60 slots. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+
+  <div class="legend">
+    <span class="key"><span class="tag t-code">Code</span> no model works</span>
+    <span class="key"><span class="swatch"></span> the usual path</span>
+    <span class="key"><span class="swatch f"></span> the step fails</span>
+  </div>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 1080" width="1000" height="1080" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M310,110 V134" marker-end="url(#a)"/>
+      <path class="flow" d="M310,358 V374" marker-end="url(#a)"/>
+      <path class="flow" d="M310,490 V506" marker-end="url(#a)"/>
+      <path class="flow" d="M310,622 V638" marker-end="url(#a)"/>
+      <path class="flow" d="M310,754 V770" marker-end="url(#a)"/>
+      <path class="flow" d="M310,902 V930" marker-end="url(#a)"/>
+      <path class="failp" d="M596,566 H696" marker-end="url(#af)"/>
+    </svg>
+    <div class="group"></div>
+    <div class="box step  nonum" data-step="IN" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:10px;width:540px;height:100px"><div class="head"><span class="name">What the step receives</span><span class="tag t-io">Input</span></div><p class="what">The guide records, a mock number and a seed.</p><p class="ts">Step 0 makes the guide records.</p></div><div class="box step hdr nonum" data-step="S" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:150px;width:540px;height:88px"><div class="head"><span class="name">Step 1: plan the mock</span><span class="tag t-code">Code</span></div><p class="what">Code makes the plan in 5 parts. No model works.</p><p class="ts">Exam guide: task statements 1.4 and 1.6</p></div><div class="box step " data-step="1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:246px;width:540px;height:112px"><div class="num">1</div><div class="head"><span class="name">Select 4 scenarios</span><span class="tag t-code">Code</span></div><p class="what">Selects 4 of the 6 scenarios at random, from the 11 sets that fit.</p><p class="ts">Exam guide: Section 5. The limit to 11 sets is not from the guide.</p></div><div class="box step " data-step="2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:378px;width:540px;height:112px"><div class="num">2</div><div class="head"><span class="name">Share the 60 questions</span><span class="tag t-code">Code</span></div><p class="what">15 questions for each scenario. 16, 11, 12, 12 and 9 questions for the 5 domains.</p><p class="ts">Exam guide: Section 4. The number 15 is not from the guide.</p></div><div class="box step " data-step="3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:510px;width:540px;height:112px"><div class="num">3</div><div class="head"><span class="name">Select the task statements</span><span class="tag t-code">Code</span></div><p class="what">Each of the 30 task statements gets at least 1 question.</p><p class="ts">Not from the exam guide. Plain reason.</p></div><div class="box step " data-step="4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:642px;width:540px;height:112px"><div class="num">4</div><div class="head"><span class="name">Select one point for each question</span><span class="tag t-code">Code</span></div><p class="what">Each question gets one point of its task statement, at random.</p><p class="ts">Not from the exam guide. Plain reason.</p></div><div class="box step " data-step="5" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:774px;width:540px;height:112px"><div class="num">5</div><div class="head"><span class="name">Set the question type</span><span class="tag t-code">Code</span></div><p class="what">2 questions of each scenario are multiple-response. The other 52 are multiple-choice.</p><p class="ts">Exam guide: Section 3. The number 8 is a guess.</p></div><div class="box step  nonum" data-step="OUT" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:934px;width:540px;height:130px"><div class="head"><span class="name">What the step returns</span><span class="tag t-io">Output</span></div><p class="what">One plan file with 60 slots and the seed. Example of a slot: scenario 3, task statement 1.2, point 1.2-K2, multiple-choice, select 1 answer.</p><p class="ts">The same seed gives the same plan.</p></div><div class="box step stop nonum" data-step="F" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:700px;top:500px;width:270px;height:132px"><div class="head"><span class="name">The step stops</span><span class="tag t-stop">No plan</span></div><p class="what">A record is missing, or the counts do not add up to 60. The step names the cause and writes no plan.</p></div>
+    <div class="lbl" style="left:604px;top:540px">the step fails</div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popsent"></div>
+      <h3>The exam guide says</h3>
+      <ul id="poppoints"></ul>
+      <h3>Why here</h3>
+      <p id="popwhy"></p>
+      <span class="status" id="popstatus"></span>
+    </div>
+  </div>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h2>What the exam guide gives</h2>
+      <ul>
+        <li>From the guide: 60 questions, 4 of the 6 scenarios, the 5 domain weights and the two question types.</li>
+        <li>Not from the guide: 15 questions for each scenario, 8 multiple-response questions, 1 question for each task statement, one point for each slot, and the limit to 11 sets of scenarios. Each of these has a plain reason. The detail on each box gives it.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Not decided yet</h2>
+      <ul>
+        <li>A task statement can be a bad fit for a scenario, also when its domain fits. The plan does not prevent this.</li>
+        <li>How many answers and how many options a multiple-response question has.</li>
+        <li>The format of the plan file.</li>
+        <li>How the program selects the scenarios across more than one mock.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>Diagram 02. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"IN": {"title": "What the step receives", "cls": "io", "who": "Input", "status": "planned", "points": [], "none": "No exam guide text. Plain reason.", "sent": ["The guide records: the 6 scenarios and their primary domains, the 5 domain weights, and the 30 task statements with their 240 points.", "A mock number.", "A seed. A seed is a number that controls the random selections."], "why": "Step 0 makes the guide records. The seed has a plain reason: the same seed gives the same plan, so we can make a plan again and compare it, for example after a change to the code."}, "S": {"title": "Step 1: plan the mock", "cls": "code", "who": "Code", "status": "planned", "none": "No exam guide text. Plain reason.", "sent": ["Code makes the plan of one mock, in 5 parts.", "The plan is a list of 60 slots. Each slot says what one question must be.", "No model works in this step."], "points": [{"id": "1.4-K2", "text": "When deterministic compliance is required (e.g., identity verification before financial operations), prompt instructions alone have a non-zero failure rate", "ctx": "From task statement 1.4: Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "1.6-K1", "text": "When to use fixed sequential pipelines (prompt chaining) versus dynamic adaptive decomposition based on intermediate findings", "ctx": "From task statement 1.6: Design task decomposition strategies for complex workflows"}, {"id": "1.6-S1", "text": "Selecting task decomposition patterns appropriate to the workflow: prompt chaining for predictable multi-aspect reviews, dynamic decomposition for open-ended investigation tasks", "ctx": "From task statement 1.6: Design task decomposition strategies for complex workflows"}], "why": "The guide wrote these points for workflows with a fixed sequence and for reviews. Here they apply to a plan: the counts of a mock must be the same each time, and the work is known before it starts, so code makes a fixed plan."}, "1": {"title": "Part 1: select 4 scenarios", "cls": "code", "who": "Code", "status": "planned", "none": "No exam guide text. Plain reason.", "sent": ["The exam uses 4 of its 6 scenarios. So 15 sets of 4 scenarios are possible.", "The step selects one set at random. It uses only the 11 sets in which each question fits a primary domain of its scenario.", "It does not use these 4 sets: 1-2-3-4, 1-2-5-6, 2-3-5-6 and 2-4-5-6."], "table": {"head": ["Scenario", "Primary domains"], "rows": [["1. Customer Support Resolution Agent", "1, 2, 5"], ["2. Code Generation with Claude Code", "3, 5"], ["3. Multi-Agent Research System", "1, 2, 5"], ["4. Developer Productivity with Claude", "1, 2, 3"], ["5. Claude Code for Continuous Integration", "3, 4"], ["6. Structured Data Extraction", "4, 5"]]}, "points": [{"id": "Section 5", "text": "During the exam, 4 scenarios are presented and picked at random from the full set of the 6 scenarios below.", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "The limit to 11 sets is not from the guide. The exam can use all 15 sets. Example: scenarios 1, 2, 3 and 4 have no scenario with Domain 4 as a primary domain, but a mock needs 12 questions of Domain 4. Those questions would be forced into a story that does not fit them. A script checked all 15 sets."}, "2": {"title": "Part 2: share the 60 questions", "cls": "code", "who": "Code", "status": "planned", "none": "No exam guide text. Plain reason.", "sent": ["Each scenario gets 15 questions.", "Each domain gets its number of questions: 16, 11, 12, 12 and 9.", "Each question is in a primary domain of its scenario."], "table": {"head": ["Domain", "Weight", "Questions"], "rows": [["1. Agentic Architecture & Orchestration", "27%", "16"], ["2. Tool Design & MCP Integration", "18%", "11"], ["3. Claude Code Configuration & Workflows", "20%", "12"], ["4. Prompt Engineering & Structured Output", "20%", "12"], ["5. Context Management & Reliability", "15%", "9"], ["Total", "100%", "60"]]}, "points": [{"id": "Section 4", "text": "The percentages indicate the approximate proportion of scored items drawn from each domain.", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "Each number is the weight for 60 questions, rounded. Example: 27% of 60 is 16.2, so Domain 1 has 16 questions. The guide gives no number of questions for each scenario. The reason for 15 is plain: equal parts."}, "3": {"title": "Part 3: select the task statements", "cls": "code", "who": "Code", "status": "planned", "points": [], "none": "No exam guide text. Plain reason.", "sent": ["Each of the 30 task statements gets at least 1 question.", "Each domain has more questions than task statements. The step selects at random which task statements get the other questions.", "Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question. The step gives the other 3 questions to task statements that it selects at random."], "why": "Each mock then covers the complete guide."}, "4": {"title": "Part 4: select one point for each question", "cls": "code", "who": "Code", "status": "planned", "points": [], "none": "No exam guide text. Plain reason.", "sent": ["Each task statement has 6 to 10 points. A point is one thing to know or one skill.", "The step selects one point of the task statement for each question, at random."], "why": "The writer and the checker know exactly what the question must test. With no point, the writer selects a part of the task statement, and the same part can come again and again."}, "5": {"title": "Part 5: set the question type", "cls": "code", "who": "Code", "status": "planned", "none": "No exam guide text. Plain reason.", "sent": ["Multiple-choice: the participant selects 1 answer.", "Multiple-response: the participant selects 2 or more answers.", "The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions."], "points": [{"id": "Section 3", "text": "Multiple-choice and multiple-response items; each item states how many responses to select", "ctx": "A fact about the exam. It is not a task statement point."}], "why": "The guide gives no number for each type. All 12 sample questions of the guide are multiple-choice. The number 8 is a guess. It has no source."}, "OUT": {"title": "What the step returns", "cls": "io", "who": "Output", "status": "planned", "points": [], "none": "No exam guide text. Plain reason.", "sent": ["One plan file with 60 slots and the seed.", "A slot has an ID, the scenario, the task statement, one point, the question type and the number of answers to select.", "Example: Slot 17: scenario 3, task statement 1.2, point 1.2-K2, multiple-choice, select 1 answer."], "why": "Step 2 writes one question for each slot. The later checks compare each question with its slot."}, "F": {"title": "The step stops", "cls": "stop", "who": "The step stops", "status": "planned", "points": [], "none": "No exam guide text. Plain reason.", "sent": ["A guide record is missing, or the counts of the plan do not add up to 60.", "The step stops with an error that names the cause.", "It writes no plan."], "why": "A plan with wrong counts makes a mock with wrong counts. So the step stops, and it does not write a wrong plan."}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popsent'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.table) {
+      var tb = el('table'), tr = el('tr');
+      d.table.head.forEach(function (h) { tr.appendChild(el('th', null, h)); }); tb.appendChild(tr);
+      d.table.rows.forEach(function (r) { var x = el('tr'); r.forEach(function (c) { x.appendChild(el('td', null, c)); }); tb.appendChild(x); });
+      s.appendChild(tb);
+    }
+    var ul = document.getElementById('poppoints'); ul.textContent = '';
+    if (d.points.length === 0) {
+      ul.appendChild(el('li', 'none', d.none));
+    } else {
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text));
+        li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+    }
+    document.getElementById('popwhy').textContent = d.why;
+    document.getElementById('popstatus').textContent = 'Status: ' + d.status;
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

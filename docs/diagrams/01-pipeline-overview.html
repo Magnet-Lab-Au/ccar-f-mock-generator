@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The pipeline: 9 steps</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>The pipeline: 9 steps from the exam guide to a finished mock</h1>
+  <p class="sub">This diagram shows the design. No step is built yet. A mock has 60 questions. Each question goes down the page. A question that fails goes to the right and comes back through the checks. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+
+  <div class="legend">
+    <span class="key"><span class="tag t-code">Code</span> no model works</span>
+    <span class="key"><span class="tag t-model">One model call</span> a model reads and writes one time</span>
+    <span class="key"><span class="tag t-owner">The owner</span> a person</span>
+    <span class="key"><span class="swatch"></span> the usual path</span>
+    <span class="key"><span class="swatch f"></span> the path of a question that fails</span>
+  </div>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 1180" width="1000" height="1180" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M310,122 V236" marker-end="url(#a)"/>
+      <path class="flow" d="M310,352 V372" marker-end="url(#a)"/>
+      <path class="flow" d="M310,488 V508" marker-end="url(#a)"/>
+      <path class="flow" d="M310,624 V644" marker-end="url(#a)"/>
+      <path class="flow" d="M310,760 V780" marker-end="url(#a)"/>
+      <path class="flow" d="M310,896 V916" marker-end="url(#a)"/>
+      <path class="flow" d="M310,1032 V1052" marker-end="url(#a)"/>
+      <path class="failp" d="M580,590 H650 V675 H696" marker-end="url(#af)"/>
+      <path class="failp" d="M580,704 H696" marker-end="url(#af)"/>
+      <path class="failp" d="M580,840 H650 V740 H696" marker-end="url(#af)"/>
+      <path class="failp" d="M835,780 V816" marker-end="url(#af)"/>
+      <path class="failp" d="M835,630 V532 H586" marker-end="url(#af)"/>
+      <path class="failp" d="M580,976 H985 V705 H976" marker-end="url(#af)"/>
+    </svg>
+
+    <div class="band" style="top:142px"><span>Step 0 runs one time for each version of the exam guide.</span></div>
+    <div class="band" style="top:196px"><span>Steps 1 to 8 run for each mock.</span></div>
+
+    <div class="box step " data-step="0" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:10px;width:540px;height:112px"><div class="num">0</div><div class="head"><span class="name">Prepare the guide records</span><span class="tag t-open">Code or a person: not decided</span></div><p class="what">Puts the text of the exam guide into checked files. A reviewer checks them against the guide.</p><p class="ts">Exam guide: task statements 1.3 and 5.6</p></div><div class="box step " data-step="1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:240px;width:540px;height:112px"><div class="num">1</div><div class="head"><span class="name">Plan the mock</span><span class="tag t-code">Code</span></div><p class="what">Makes 60 slots. Each slot says what one question must be: the scenario, the topic and the type.</p><p class="ts">Exam guide: task statements 1.4 and 1.6</p></div><div class="box step " data-step="2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:376px;width:540px;height:112px"><div class="num">2</div><div class="head"><span class="name">Write the question</span><span class="tag t-model">One model call</span></div><p class="what">Writes one question for one slot. 60 slots give 60 calls.</p><p class="ts">Exam guide: no point. Plain engineering reason.</p></div><div class="box step " data-step="3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:512px;width:540px;height:112px"><div class="num">3</div><div class="head"><span class="name">Check by code</span><span class="tag t-code">Code</span></div><p class="what">Checks each question against the rules that have an exact answer, for example the format and the counts.</p><p class="ts">Exam guide: task statements 1.4, 4.3, 4.4 and 5.3</p></div><div class="box step " data-step="4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:648px;width:540px;height:112px"><div class="num">4</div><div class="head"><span class="name">Check by a model</span><span class="tag t-model">One model call</span></div><p class="what">A new call checks the rules that need judgment. It does not see the notes of the writer.</p><p class="ts">Exam guide: task statements 4.6 and 3.6</p></div><div class="box step fail" data-step="5" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:700px;top:630px;width:270px;height:150px"><div class="num">5</div><div class="head"><span class="name">Try again</span><span class="tag t-model">One model call</span></div><p class="what">The writer gets the failed question and the findings, and writes it again.</p><p class="ts">Exam guide: task statement 4.4</p></div><div class="box step stop" data-step="L" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:700px;top:820px;width:270px;height:150px"><div class="head"><span class="name">The limit of tries is reached</span></div><p class="what">The slot stays open. The program reports it. The mock is not complete, and the owner decides.</p><p class="ts">Exam guide: task statement 4.4</p></div><div class="box step " data-step="6" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:784px;width:540px;height:112px"><div class="num">6</div><div class="head"><span class="name">Check the complete mock</span><span class="tag t-code">Code</span><span class="tag t-model">One call for each scenario</span></div><p class="what">Counts the 60 questions against the plan. Reads each scenario as a whole and finds repeats.</p><p class="ts">Exam guide: task statements 4.6 and 1.6</p></div><div class="box step " data-step="7" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:920px;width:540px;height:112px"><div class="num">7</div><div class="head"><span class="name">The owner marks the questions</span><span class="tag t-owner">The owner</span></div><p class="what">Marks all 60 questions of mock 1, then 20 of each later mock. Does not see the verdict of the checker.</p><p class="ts">Exam guide: task statement 5.5</p></div><div class="box step " data-step="8" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:40px;top:1056px;width:540px;height:112px"><div class="num">8</div><div class="head"><span class="name">Build the files</span><span class="tag t-code">Code</span></div><p class="what">Makes the mock and the answer key from the stored questions. Nobody edits the files by hand.</p><p class="ts">Exam guide: no point. Plain engineering reason.</p></div>
+
+    <div class="lbl" style="left:588px;top:570px">fails</div>
+    <div class="lbl" style="left:586px;top:683px">fails or</div>
+    <div class="lbl" style="left:586px;top:708px">cannot decide</div>
+    <div class="lbl" style="left:588px;top:844px">fails</div>
+    <div class="lbl" style="left:842px;top:789px">too many tries</div>
+    <div class="lbl" style="left:600px;top:504px">the new question is checked again</div>
+    <div class="lbl" style="left:588px;top:956px">bad mark</div>
+
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popsent"></div>
+      <h3>The exam guide says</h3>
+      <ul id="poppoints"></ul>
+      <h3>Why here</h3>
+      <p id="popwhy"></p>
+      <span class="status" id="popstatus"></span>
+    </div>
+  </div>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h2>The path of a question that fails</h2>
+      <ul>
+        <li>A question can fail at step 3, step 4 or step 6. The checker of step 4 can also say "cannot decide". The owner can mark a question bad in step 7.</li>
+        <li>In each case it goes to step 5. The writer gets the question and the exact findings, and writes it again. The new question goes through the checks again.</li>
+        <li>The number of tries has a limit. After the limit, the slot stays open and the owner decides.</li>
+        <li>Too many bad marks of the owner stop the mock. The rules of the checker are corrected, and all 60 questions are checked again.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Before the first full run</h2>
+      <ul>
+        <li>The writer makes about 10 questions. The owner reads them.</li>
+        <li>The checker must pass the 12 sample questions of the exam guide, and fail questions that are damaged on purpose.</li>
+      </ul>
+      <h2 style="margin-top:12px">Not decided yet</h2>
+      <ul>
+        <li>If code or a person makes the files of step 0.</li>
+        <li>The exact input and output of each step. The detail on each box gives only what is decided.</li>
+        <li>The limit of tries, and how many bad marks are too many.</li>
+        <li>How the program prevents the same scene in two different mocks.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>Diagram 01. Design of 6 October 2026. Status of each step: planned. No step is built. Each exam guide text is the exact text of the guide. The guide wrote many of these points for a different context. Each popup names the task statement of each point.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"0": {"num": "0", "cls": "open", "who": "Code or a person: not decided", "name": "Prepare the guide records", "line": "Puts the text of the exam guide into checked files. A reviewer checks them against the guide.", "sent": ["It receives the exam guide.", "It puts the task statements, the scenarios, the domain weights, the sample questions and the lists of Section 17 into record files with IDs, and a reviewer checks each record against the guide.", "It returns checked record files. Each later step takes guide text from them by ID."], "why": "The guide wrote these points for agents that pass findings to other agents. Here they apply to record files: each later step takes guide text from these records by ID, so each question keeps the link to its source.", "points": [{"id": "1.3-S2", "text": "Using structured data formats to separate content from metadata (source URLs, document names, page numbers) when passing context between agents to preserve attribution", "ts": "1.3", "tstitle": "Configure subagent invocation, context passing, and spawning"}, {"id": "5.6-K1", "text": "How source attribution is lost during summarization steps when findings are compressed without preserving claim-source mappings", "ts": "5.6", "tstitle": "Preserve information provenance and handle uncertainty in multi-source synthesis"}, {"id": "5.6-K2", "text": "The importance of structured claim-source mappings that the synthesis agent must preserve and merge when combining findings", "ts": "5.6", "tstitle": "Preserve information provenance and handle uncertainty in multi-source synthesis"}], "status": "planned", "ts": "Exam guide: task statements 1.3 and 5.6"}, "1": {"num": "1", "cls": "code", "who": "Code", "name": "Plan the mock", "line": "Makes 60 slots. Each slot says what one question must be: the scenario, the topic and the type.", "sent": ["It receives the guide records: the scenarios and the domain weights.", "It makes a list of 60 slots for one mock. Each slot says what one question must be: the scenario, the task statement and the question type.", "It returns the plan."], "why": "The guide wrote these points for workflows with a fixed sequence and for reviews. Here they apply to a plan: the counts of a mock must be the same each time, and the work is known before it starts, so code makes a fixed plan.", "points": [{"id": "1.4-K2", "text": "When deterministic compliance is required (e.g., identity verification before financial operations), prompt instructions alone have a non-zero failure rate", "ts": "1.4", "tstitle": "Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "1.6-S1", "text": "Selecting task decomposition patterns appropriate to the workflow: prompt chaining for predictable multi-aspect reviews, dynamic decomposition for open-ended investigation tasks", "ts": "1.6", "tstitle": "Design task decomposition strategies for complex workflows"}, {"id": "1.6-K1", "text": "When to use fixed sequential pipelines (prompt chaining) versus dynamic adaptive decomposition based on intermediate findings", "ts": "1.6", "tstitle": "Design task decomposition strategies for complex workflows"}], "status": "planned", "ts": "Exam guide: task statements 1.4 and 1.6"}, "2": {"num": "2", "cls": "model", "who": "One model call", "name": "Write the question", "line": "Writes one question for one slot. 60 slots give 60 calls.", "sent": ["It receives one slot and the parts of the guide that the slot needs.", "One model call writes one question for that slot.", "It returns one question record with one ID."], "why": "One call makes one record with one ID, so each later verdict connects to exactly one question. If one question fails, the program writes that one again and the others do not change.", "points": [], "status": "planned", "ts": "Exam guide: no point. Plain engineering reason."}, "3": {"num": "3", "cls": "code", "who": "Code", "name": "Check by code", "line": "Checks each question against the rules that have an exact answer, for example the format and the counts.", "sent": ["It receives one question record and its slot.", "It checks the question against the rules that have an exact answer, for example the format, the agreement with the slot and the number of correct answers.", "It returns \"pass\", or \"fail\" with the findings. A question that fails goes to step 5."], "why": "The guide wrote these points for workflows, for data extraction and for agents that report errors. Here they apply to a check of a question record: these rules have one correct answer each, so code enforces them, and an empty or wrong record cannot pass as a success.", "points": [{"id": "1.4-K1", "text": "The difference between programmatic enforcement (hooks, prerequisite gates) and prompt-based guidance for workflow ordering", "ts": "1.4", "tstitle": "Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "1.4-K2", "text": "When deterministic compliance is required (e.g., identity verification before financial operations), prompt instructions alone have a non-zero failure rate", "ts": "1.4", "tstitle": "Implement multi-step workflows with enforcement and handoff patterns"}, {"id": "4.3-K3", "text": "That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "ts": "4.3", "tstitle": "Enforce structured output using tool use and JSON schemas"}, {"id": "4.4-K4", "text": "The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}, {"id": "5.3-K4", "text": "Why silently suppressing errors (returning empty results as success) or terminating entire workflows on single failures are both anti-patterns", "ts": "5.3", "tstitle": "Implement error propagation strategies across multi-agent systems"}], "status": "planned", "ts": "Exam guide: task statements 1.4, 4.3, 4.4 and 5.3"}, "4": {"num": "4", "cls": "model", "who": "One model call", "name": "Check by a model", "line": "A new call checks the rules that need judgment. It does not see the notes of the writer.", "sent": ["It receives a question that passed step 3, and the text of the guide. It does not receive the notes of the writer.", "A new model call checks the question against the rules that need judgment, for example that only the marked answer is correct.", "It returns one of three verdicts: \"pass\", \"fail\" or \"cannot decide\", each with its findings. \"Fail\" and \"cannot decide\" send the question to step 5."], "why": "The guide wrote these points for the review of code. Here they apply to the review of a question: the writer keeps its own reasoning, so a new call that does not see the notes of the writer checks the question. Point 4.6-S3 applies only if the checker reports a confidence value. That is not decided.", "points": [{"id": "4.6-K1", "text": "Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}, {"id": "4.6-K2", "text": "Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}, {"id": "4.6-S1", "text": "Using a second independent Claude instance to review generated code without the generator's reasoning context", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}, {"id": "3.6-K4", "text": "Session context isolation: why the same Claude session that generated code is less effective at reviewing its own changes compared to an independent review instance", "ts": "3.6", "tstitle": "Integrate Claude Code into CI/CD pipelines"}, {"id": "4.6-S3", "text": "Running verification passes where the model self-reports confidence alongside each finding to enable calibrated review routing", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}], "status": "planned", "ts": "Exam guide: task statements 4.6 and 3.6"}, "5": {"num": "5", "cls": "model", "who": "One model call", "name": "Try again", "line": "The writer gets the failed question and the findings, and writes it again.", "sent": ["It receives the slot, the failed question and the exact findings. The findings come from step 3, step 4, step 6 or a bad mark of the owner.", "A new model call writes the question for that slot again. The number of tries has a limit.", "It returns a new question record. The new question goes through the checks again."], "why": "The guide wrote these points for data extraction. Here they apply to a question: the writer gets the exact findings for the next try. The guide does not give a limit of tries. The limit has a plain reason: with no limit, a slot that cannot pass makes the program try with no end.", "points": [{"id": "4.4-K1", "text": "Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}, {"id": "4.4-S1", "text": "Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}, {"id": "4.4-K2", "text": "The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}, {"id": "4.4-S2", "text": "Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}], "status": "planned", "ts": "Exam guide: task statement 4.4"}, "6": {"num": "6", "cls": "code", "who": "Code, and one model call for each scenario", "name": "Check the complete mock", "line": "Counts the 60 questions against the plan. Reads each scenario as a whole and finds repeats.", "sent": ["It receives the 60 questions that passed steps 3 and 4, and the plan.", "Code counts the questions against the plan. One model call for each scenario reads all questions of that scenario together and looks for a repeated scene and a repeated wrong option.", "It returns the questions that fail. Those go to step 5."], "why": "The guide wrote these points for the review of code in many files. Here they apply to questions: steps 3 and 4 are the pass for each question, and this step is the pass across the questions.", "points": [{"id": "4.6-K3", "text": "Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}, {"id": "4.6-S2", "text": "Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "ts": "4.6", "tstitle": "Design multi-instance and multi-pass review architectures"}, {"id": "1.6-K2", "text": "Prompt chaining patterns that break reviews into sequential steps (e.g., analyze each file individually, then run a cross-file integration pass)", "ts": "1.6", "tstitle": "Design task decomposition strategies for complex workflows"}], "status": "planned", "ts": "Exam guide: task statements 4.6 and 1.6"}, "7": {"num": "7", "cls": "owner", "who": "The owner", "name": "The owner marks the questions", "line": "Marks all 60 questions of mock 1, then 20 of each later mock. Does not see the verdict of the checker.", "sent": ["The owner receives all 60 questions of mock 1. For each later mock the owner receives a random sample of 20, 5 from each scenario. No verdict is in view.", "The owner marks each question good or bad, with one reason.", "The step returns the marks. A question with a bad mark goes to step 5. Too many bad marks stop the mock: the rules of the checker are corrected and all 60 questions are checked again."], "why": "The guide wrote these points for data extraction. Here they apply to questions: the owner marks questions from each scenario, and the result is shown for each part, so that one total cannot hide a bad part.", "points": [{"id": "5.5-K2", "text": "Stratified random sampling for measuring error rates in high-confidence extractions and detecting novel error patterns", "ts": "5.5", "tstitle": "Design human review workflows and confidence calibration"}, {"id": "5.5-S1", "text": "Implementing stratified random sampling of high-confidence extractions for ongoing error rate measurement and novel pattern detection", "ts": "5.5", "tstitle": "Design human review workflows and confidence calibration"}, {"id": "5.5-K1", "text": "The risk that aggregate accuracy metrics (e.g., 97% overall) may mask poor performance on specific document types or fields", "ts": "5.5", "tstitle": "Design human review workflows and confidence calibration"}, {"id": "5.5-S2", "text": "Analyzing accuracy by document type and field to verify consistent performance across all segments before reducing human review", "ts": "5.5", "tstitle": "Design human review workflows and confidence calibration"}], "status": "planned", "ts": "Exam guide: task statement 5.5"}, "8": {"num": "8", "cls": "code", "who": "Code", "name": "Build the files", "line": "Makes the mock and the answer key from the stored questions. Nobody edits the files by hand.", "sent": ["It receives the stored question records of a mock that passed step 7.", "Code builds the mock file and the answer key from the records. Nobody edits a file by hand.", "It returns the two files for the portal."], "why": "If a question exists in two places and a person can edit one of them, the two can disagree. With one true copy, a question in a mock is always the question that passed the checks.", "points": [], "status": "planned", "ts": "Exam guide: no point. Plain engineering reason."}, "L": {"num": "", "cls": "stop", "who": "The program stops", "name": "The limit of tries is reached", "line": "The slot stays open. The program reports it. The mock is not complete, and the owner decides.", "sent": ["It receives a slot for which the limit of tries is reached, or a slot that got \"cannot decide\" two times.", "The program stops the tries for that slot, keeps the slot open and reports it.", "It returns an open slot. The mock is not complete, and the owner decides."], "why": "These points say when a new try cannot help. The guide wrote them for data extraction, and it does not give a limit of tries. The limit has a plain reason: with no limit, the program tries with no end.", "points": [{"id": "4.4-K2", "text": "The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}, {"id": "4.4-S2", "text": "Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)", "ts": "4.4", "tstitle": "Implement validation, retry, and feedback loops for extraction quality"}], "status": "planned", "ts": "Exam guide: task statement 4.4"}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = (d.num !== '' ? 'Step ' + d.num + ': ' : '') + d.name;
+    var s = document.getElementById('popsent'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    var ul = document.getElementById('poppoints'); ul.textContent = '';
+    if (d.points.length === 0) {
+      ul.appendChild(el('li', 'none', 'No exam guide point. Plain engineering reason.'));
+    } else {
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text));
+        li.appendChild(el('span', 'pctx', 'From task statement ' + p.ts + ': ' + p.tstitle)); ul.appendChild(li);
+      });
+    }
+    document.getElementById('popwhy').textContent = d.why;
+    document.getElementById('popstatus').textContent = 'Status: ' + d.status;
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

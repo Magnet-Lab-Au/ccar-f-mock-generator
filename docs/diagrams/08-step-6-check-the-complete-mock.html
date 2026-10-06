@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 6: check the complete mock</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 754px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .box.row .num { width: 34px; height: 34px; font-size: 14px; background: var(--model); color: var(--panel); }
+  .box.crow .num { background: var(--code); }
+  .box.mdl { border-color: var(--model); background: var(--model-bg); }
+  .box.mdl .what { color: var(--ink); }
+  .box.fail .name { color: var(--fail); }
+  .cell { position: absolute; width: 21px; height: 21px; border-radius: 5px; background: var(--panel); border: 1.5px solid var(--line); }
+  .cell.hi { background: var(--model-bg); border-color: var(--model); }
+  .gnote { position: absolute; font-size: 12.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 6: the mock is checked as a whole</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. Steps 3 and 4 look at one question. Some defects show only when many questions are read together, for example two questions with the same scene. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 754" width="1000" height="754" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M240,424 C266,424 266,354 286,354" marker-end="url(#a)"/>
+      <path class="flow" d="M240,424 C266,424 266,494 286,494" marker-end="url(#a)"/>
+      <path class="flow" d="M510,354 H556" marker-end="url(#a)"/>
+      <path class="flow" d="M510,494 H556" marker-end="url(#a)"/>
+      <path class="flow" d="M320,679 H346" marker-end="url(#a)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>Code counts all 60 questions</div>
+    <div class="panel" style="left:20px;top:38px;width:470px;height:190px"></div>
+    <div class="ptitle" style="left:34px;top:48px">One mock<small>4 scenarios, 15 questions each</small></div>
+    <i class="cell" style="left:50px;top:88px"></i><i class="cell" style="left:77px;top:88px"></i><i class="cell" style="left:104px;top:88px"></i><i class="cell" style="left:131px;top:88px"></i><i class="cell" style="left:158px;top:88px"></i><i class="cell" style="left:185px;top:88px"></i><i class="cell" style="left:212px;top:88px"></i><i class="cell" style="left:239px;top:88px"></i><i class="cell" style="left:266px;top:88px"></i><i class="cell" style="left:293px;top:88px"></i><i class="cell" style="left:320px;top:88px"></i><i class="cell" style="left:347px;top:88px"></i><i class="cell" style="left:374px;top:88px"></i><i class="cell" style="left:401px;top:88px"></i><i class="cell" style="left:428px;top:88px"></i><i class="cell" style="left:50px;top:118px"></i><i class="cell" style="left:77px;top:118px"></i><i class="cell" style="left:104px;top:118px"></i><i class="cell" style="left:131px;top:118px"></i><i class="cell" style="left:158px;top:118px"></i><i class="cell" style="left:185px;top:118px"></i><i class="cell" style="left:212px;top:118px"></i><i class="cell" style="left:239px;top:118px"></i><i class="cell" style="left:266px;top:118px"></i><i class="cell" style="left:293px;top:118px"></i><i class="cell" style="left:320px;top:118px"></i><i class="cell" style="left:347px;top:118px"></i><i class="cell" style="left:374px;top:118px"></i><i class="cell" style="left:401px;top:118px"></i><i class="cell" style="left:428px;top:118px"></i><i class="cell hi" style="left:50px;top:148px"></i><i class="cell hi" style="left:77px;top:148px"></i><i class="cell hi" style="left:104px;top:148px"></i><i class="cell hi" style="left:131px;top:148px"></i><i class="cell hi" style="left:158px;top:148px"></i><i class="cell hi" style="left:185px;top:148px"></i><i class="cell hi" style="left:212px;top:148px"></i><i class="cell hi" style="left:239px;top:148px"></i><i class="cell hi" style="left:266px;top:148px"></i><i class="cell hi" style="left:293px;top:148px"></i><i class="cell hi" style="left:320px;top:148px"></i><i class="cell hi" style="left:347px;top:148px"></i><i class="cell hi" style="left:374px;top:148px"></i><i class="cell hi" style="left:401px;top:148px"></i><i class="cell hi" style="left:428px;top:148px"></i><i class="cell" style="left:50px;top:178px"></i><i class="cell" style="left:77px;top:178px"></i><i class="cell" style="left:104px;top:178px"></i><i class="cell" style="left:131px;top:178px"></i><i class="cell" style="left:158px;top:178px"></i><i class="cell" style="left:185px;top:178px"></i><i class="cell" style="left:212px;top:178px"></i><i class="cell" style="left:239px;top:178px"></i><i class="cell" style="left:266px;top:178px"></i><i class="cell" style="left:293px;top:178px"></i><i class="cell" style="left:320px;top:178px"></i><i class="cell" style="left:347px;top:178px"></i><i class="cell" style="left:374px;top:178px"></i><i class="cell" style="left:401px;top:178px"></i><i class="cell" style="left:428px;top:178px"></i>
+    <div class="gnote" style="left:50px;top:206px;background:var(--bg);padding:0 6px">the two calls of part 2 read one scenario at a time</div>
+    <div class="shead" style="top:256px"><i>2</i>Two model calls read the 15 questions of one scenario together</div>
+    <div class="shead" style="top:584px"><i>3</i>What happens with a finding</div>
+    <div class="box step row crow" data-step="C1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:530px;top:38px;width:450px;height:60px"><div class="num">C1</div><div class="head"><span class="name">Each slot is full</span></div><p class="what">Each of the 60 slots has one question that passed.</p></div><div class="box step row crow" data-step="C2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:530px;top:103px;width:450px;height:60px"><div class="num">C2</div><div class="head"><span class="name">The counts agree with the plan</span></div><p class="what">Scenario, domain, task statement and type.</p></div><div class="box step row crow" data-step="C3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:530px;top:168px;width:450px;height:60px"><div class="num">C3</div><div class="head"><span class="name">No equal questions</span></div><p class="what">No two questions have the same text.</p></div><div class="box step nonum " data-step="q15" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:376px;width:220px;height:96px"><div class="head"><span class="name">The 15 questions</span></div><p class="what">All questions of one scenario, together.</p></div><div class="box step nonum mdl" data-step="c6a" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:290px;top:298px;width:220px;height:112px"><div class="head"><span class="name">6a. The scenes</span><span class="tag t-model">One model call</span></div><p class="what">One job: compare the scenes.</p></div><div class="box step nonum mdl" data-step="c6b" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:290px;top:438px;width:220px;height:112px"><div class="head"><span class="name">6b. The wrong options</span><span class="tag t-model">One model call</span></div><p class="what">One job: find wrong ideas that repeat.</p></div><div class="box step row" data-step="D1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:560px;top:292px;width:420px;height:60px"><div class="num">D1</div><div class="head"><span class="name">No two questions have the same scene</span></div><p class="what">The same problem and the same correct action.</p></div><div class="box step row" data-step="D4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:560px;top:357px;width:420px;height:60px"><div class="num">D4</div><div class="head"><span class="name">No question gives away another</span></div><p class="what">No question has the answer of a different question.</p></div><div class="box step row" data-step="D2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:560px;top:432px;width:420px;height:60px"><div class="num">D2</div><div class="head"><span class="name">No wrong idea repeats too often</span></div><p class="what">In at most 2 questions of the scenario.</p></div><div class="box step row" data-step="D3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:560px;top:497px;width:420px;height:60px"><div class="num">D3</div><div class="head"><span class="name">At most one confidence option</span></div><p class="what">Ruling 2 of the owner.</p></div><div class="box step nonum fail" data-step="fail" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:620px;width:300px;height:118px"><div class="head"><span class="name">A rule fails</span></div><p class="what">The question with the highest slot number goes back to the writer, with the finding.</p></div><div class="box step nonum " data-step="again" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:350px;top:620px;width:300px;height:118px"><div class="head"><span class="name">Checked again</span></div><p class="what">Steps 3 and 4 check the new question. Then this step checks the scenario again.</p></div><div class="box step nonum " data-step="cd" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:680px;top:620px;width:300px;height:118px"><div class="head"><span class="name">Cannot decide</span><span class="tag t-open">Possible</span></div><p class="what">The finding goes into the report. The owner sees it in step 7.</p></div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 08. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"C1": {"title": "Rule C1: each slot is full", "who": "Code", "cls": "code", "sent": ["Each of the 60 slots has exactly one question that passed steps 3 and 4."], "example": "{\n  \"rule\": \"C1\",\n  \"detail\": \"Slot M1-S41 has no question that passed.\"\n}", "examplehead": "Example of a finding", "why": "This step reads the mock as a whole. A hole in the mock makes each count wrong. So the step does not start before each slot is full.", "examplenote": "", "points": []}, "C2": {"title": "Rule C2: the counts agree with the plan", "who": "Code", "cls": "code", "sent": ["Code counts the questions for each scenario, each domain, each task statement and each question type. Each count agrees with the plan of step 1."], "example": "{\n  \"rule\": \"C2\",\n  \"detail\": \"Domain 4 has 11 questions. The plan says 12.\"\n}", "examplehead": "Example of a finding", "why": "The plan gives the mock the form of the exam. After many new tries, code makes sure that the mock still agrees with its plan.", "examplenote": "", "points": []}, "C3": {"title": "Rule C3: no two questions have the same text", "who": "Code", "cls": "code", "sent": ["No two questions of the mock have the same text."], "example": "{\n  \"rule\": \"C3\",\n  \"detail\": \"Questions M1-S07-T1 and M1-S52-T2 have the same text.\"\n}", "examplehead": "Example of a finding", "why": "Code finds an exact copy for no cost. A copy with different words is the work of the model call.", "examplenote": "", "points": []}, "q15": {"title": "The 15 questions of one scenario", "who": "From steps 2 to 5", "cls": "io", "sent": ["All questions of one scenario that passed steps 3 and 4.", "Call 6a gets each question with its options and marks. Call 6b gets the wrong options with their reasons.", "15 questions with their options are about 1900 words, if they have the length of the sample questions of the exam guide."], "why": "A mock has 4 scenarios. So a mock has 4 of these sets, and 8 calls in this step.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "c6a": {"title": "Call 6a: the scenes", "who": "One model call", "cls": "model", "sent": ["A model call reads the 15 questions of one scenario together. It has one job: to compare the scenes of the questions.", "For each of its 2 rules it returns \"pass\", \"fail\" or \"cannot decide\". A finding names the questions by their IDs."], "points": [{"id": "4.6-K3", "text": "Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "ctx": "From task statement 4.6: Design multi-instance and multi-pass review architectures"}, {"id": "4.6-S2", "text": "Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "ctx": "From task statement 4.6: Design multi-instance and multi-pass review architectures"}], "why": "The guide wrote these points for the review of code in many files. Here a question is the file: steps 3 and 4 are the pass for each question, and this step is the pass across the questions. Each call has one job, so that its attention is not divided.", "example": "", "examplehead": "", "examplenote": ""}, "c6b": {"title": "Call 6b: the wrong options", "who": "One model call", "cls": "model", "sent": ["A second model call reads the wrong options of the same 15 questions. It has one job: to find a wrong idea that repeats.", "For each of its 2 rules it returns \"pass\", \"fail\" or \"cannot decide\"."], "why": "A writer call sees only its own slot. It cannot know which wrong ideas the other questions use. Only a call that reads the questions together can count them.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "D1": {"title": "Rule D1: no two questions have the same scene", "who": "One model call", "cls": "model", "sent": ["Two questions have the same scene when they have the same problem and the same correct action."], "example": "{\n  \"rule\": \"D1\",\n  \"result\": \"fail\",\n  \"findings\": [\n    {\n      \"question_ids\": [\n        \"M1-S33-T1\",\n        \"M1-S38-T1\"\n      ],\n      \"detail\": \"Both questions describe a subagent that times out, and both ask how the error goes back to the coordinator.\"\n    }\n  ]\n}", "examplehead": "Example of a finding", "why": "A writer call sees only its own slot. So two writer calls can write the same scene. Two questions with the same scene test one thing two times.", "examplenote": "", "points": []}, "D4": {"title": "Rule D4: no question gives away another", "who": "One model call", "cls": "model", "sent": ["No question gives away the answer of a different question."], "example": "{\n  \"rule\": \"D4\",\n  \"result\": \"fail\",\n  \"findings\": [\n    {\n      \"question_ids\": [\n        \"M1-S35-T1\",\n        \"M1-S33-T1\"\n      ],\n      \"detail\": \"The text of question M1-S35-T1 says that the coordinator gets structured error context. That is the correct answer of question M1-S33-T1.\"\n    }\n  ]\n}", "examplehead": "Example of a finding", "why": "If one question answers another, a participant gets a point without the knowledge.", "examplenote": "", "points": []}, "D2": {"title": "Rule D2: no wrong idea repeats too often", "who": "One model call", "cls": "model", "sent": ["No wrong idea is a wrong option in more than 2 questions of the scenario.", "The number 2 is a guess. It can change after the first runs."], "example": "{\n  \"rule\": \"D2\",\n  \"result\": \"fail\",\n  \"findings\": [\n    {\n      \"question_ids\": [\n        \"M1-S31-T1\",\n        \"M1-S36-T2\",\n        \"M1-S40-T1\",\n        \"M1-S44-T1\"\n      ],\n      \"detail\": \"The idea \\\"use a model with a larger context window\\\" is a wrong option in 4 questions.\"\n    }\n  ]\n}", "examplehead": "Example of a finding", "why": "If the same wrong idea comes again and again, a participant can mark it wrong without thought.", "examplenote": "", "points": []}, "D3": {"title": "Rule D3: at most one confidence option", "who": "One model call", "cls": "model", "sent": ["At most one wrong option of the scenario is this option: a model rates its own confidence, and the rating is used as a filter, a threshold or a trigger.", "A use of confidence that the exam guide teaches as correct does not count. The option also does not count when it is the correct answer."], "example": "{\n  \"rule\": \"D3\",\n  \"result\": \"fail\",\n  \"findings\": [\n    {\n      \"question_ids\": [\n        \"M1-S32-T1\",\n        \"M1-S45-T1\"\n      ],\n      \"detail\": \"Each of these 2 questions has a wrong option in which the model rates its own confidence and a threshold sends the case to a person.\"\n    }\n  ]\n}", "examplehead": "Example of a finding", "points": [{"id": "5.2-K3", "text": "Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "ctx": "From task statement 5.2: Design effective escalation and ambiguity resolution patterns"}], "why": "The guide wrote this point for escalation in customer support. It shows that this wrong option is fair. But if it comes many times, a participant can mark it wrong without thought. So the owner set a limit of one for each scenario.", "examplenote": ""}, "fail": {"title": "A rule fails: one question goes back", "who": "Back to the writer", "cls": "stop", "sent": ["Each finding names the questions. When a finding names two questions or more, the question with the highest slot number goes to step 5. Code selects it, not the model.", "The writer gets the finding and the text of the other question. So it can write a different scene."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "again": {"title": "Checked again", "who": "Steps 3, 4 and 6", "cls": "io", "sent": ["The new question goes through steps 3 and 4.", "Then this step checks that scenario again: the code count and both calls."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "cd": {"title": "Cannot decide: into the report", "who": "The owner", "cls": "open", "sent": ["A call can answer \"cannot decide\" for a rule.", "Then the finding goes into the report of the run. The owner sees it in step 7. No question is written again for it."], "why": "A finding of this step names two questions or more. If the call cannot decide, the program does not know which question to write again. So a person looks at it.", "example": "", "examplehead": "", "examplenote": "", "points": []}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

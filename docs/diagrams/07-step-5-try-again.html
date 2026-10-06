@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 5: try again</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 692px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .box.mdl { border-color: var(--model); background: var(--model-bg); }
+  .box.mdl .what { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Step 5: a failed question goes back to the writer with the findings</h1>
+  <p class="sub">This diagram shows the design. The step is not built yet. The step runs only for a question that did not pass. A question that passes the checks does not come here. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 692" width="1000" height="692" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M368,284 C398,284 398,368 426,368"/>
+      <path class="flow" d="M368,368 C398,368 398,368 426,368"/>
+      <path class="flow" d="M368,452 C398,452 398,368 426,368"/>
+      <path class="flow" d="M612,368 C636,368 636,308 656,308" marker-end="url(#a)"/>
+      <path class="flow" d="M820,358 V386" marker-end="url(#a)"/>
+      <path class="failp" d="M220,619 H266" marker-end="url(#af)"/>
+      <path class="failp" d="M470,619 H516" marker-end="url(#af)"/>
+      <path class="failp" d="M720,619 H766" marker-end="url(#af)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>Four steps can send a question back</div>
+    <div class="shead" style="top:164px"><i>2</i>The writer gets the question and the exact findings</div>
+    <div class="panel" style="left:20px;top:200px;width:360px;height:302px"></div>
+    <div class="ptitle" style="left:34px;top:210px">What code sends<small>the request</small></div>
+    <div class="shead" style="top:528px"><i>3</i>At most 3 tries for one slot</div>
+    <div class="box step nonum " data-step="s3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:38px;width:225px;height:100px"><div class="head"><span class="name">Step 3</span><span class="tag t-code">Code</span></div><p class="what">A code rule fails.</p></div><div class="box step nonum " data-step="s4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:265px;top:38px;width:225px;height:100px"><div class="head"><span class="name">Step 4</span><span class="tag t-model">One model call</span></div><p class="what">A rule fails, or &quot;cannot decide&quot;.</p></div><div class="box step nonum " data-step="s6" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:510px;top:38px;width:225px;height:100px"><div class="head"><span class="name">Step 6</span></div><p class="what">The check of the complete mock names the question.</p></div><div class="box step nonum " data-step="s7" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:755px;top:38px;width:225px;height:100px"><div class="head"><span class="name">Step 7</span><span class="tag t-owner">The owner</span></div><p class="what">The owner marks the question bad.</p></div><div class="box step nonum row" data-step="req" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:246px;width:336px;height:76px"><div class="head"><span class="name">The request of step 2</span></div><p class="what">The rules, the examples, the story, the task statement, the slot and the form.</p></div><div class="box step nonum row" data-step="failed" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:330px;width:336px;height:76px"><div class="head"><span class="name">The failed question</span></div><p class="what">Only the last try.</p></div><div class="box step nonum row" data-step="findings" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:32px;top:414px;width:336px;height:76px"><div class="head"><span class="name">The findings</span></div><p class="what">Each one names its step, its rule and its detail.</p></div><div class="box step nonum mdl" data-step="writer" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:430px;top:312px;width:180px;height:112px"><div class="head"><span class="name">The writer</span><span class="tag t-model">One model call</span></div><p class="what">Writes the question again.</p></div><div class="box step nonum " data-step="new" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:660px;top:258px;width:320px;height:100px"><div class="head"><span class="name">A new question record</span><span class="tag t-io">File</span></div><p class="what">The next try, for example M1-S17-T2. The same form as in step 2.</p></div><div class="box step nonum " data-step="again" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:660px;top:390px;width:320px;height:100px"><div class="head"><span class="name">Checked again</span></div><p class="what">Steps 3 and 4 check it as a new question.</p></div><div class="box step nonum " data-step="t1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:20px;top:564px;width:200px;height:110px"><div class="head"><span class="name">Try 1</span></div><p class="what">The first question, from step 2.</p></div><div class="box step nonum " data-step="t2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:270px;top:564px;width:200px;height:110px"><div class="head"><span class="name">Try 2</span></div><p class="what">The writer gets try 1 and its findings.</p></div><div class="box step nonum " data-step="t3" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:520px;top:564px;width:200px;height:110px"><div class="head"><span class="name">Try 3</span></div><p class="what">The writer gets try 2 and its findings.</p></div><div class="box step nonum stop" data-step="open" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" style="left:770px;top:564px;width:210px;height:110px"><div class="head"><span class="name">The slot stays open</span></div><p class="what">The program writes a report. The owner decides.</p></div><div class="lbl" style="left:226px;top:596px">fails</div><div class="lbl" style="left:476px;top:596px">fails</div><div class="lbl" style="left:726px;top:596px">fails</div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 07. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"s3": {"title": "From step 3: a code rule fails", "who": "Code", "cls": "code", "sent": ["Step 3 found that one of the 7 exact rules fails."], "example": "{\n  \"step\": 3,\n  \"rule\": \"A6\",\n  \"detail\": \"The question has 140 words. The limit is 110.\"\n}", "examplehead": "Example of a finding", "examplenote": "", "why": "", "points": []}, "s4": {"title": "From step 4: a rule fails, or \"cannot decide\"", "who": "One model call", "cls": "model", "sent": ["Step 4 found that the blind answer is different from the marks, or that one of the 6 rules fails.", "The verdict \"cannot decide\" also sends the question here, with its reason."], "example": "{\n  \"step\": 4,\n  \"rule\": \"B1\",\n  \"detail\": \"The blind call selected option C. The writer marked option B. (Then the reason of the blind call.)\"\n}", "examplehead": "Example of a finding", "examplenote": "", "why": "", "points": []}, "s6": {"title": "From step 6: the check of the complete mock", "who": "Code and a model", "cls": "io", "sent": ["Step 6 reads all questions of one scenario together. It can name a question, for example when two questions have the same scene.", "The design of step 6 is not complete. So the form of its findings is not decided."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "s7": {"title": "From step 7: a bad mark of the owner", "who": "The owner", "cls": "owner", "sent": ["The owner marks a question bad, with one reason. That reason is the finding."], "example": "{\n  \"step\": 7,\n  \"rule\": null,\n  \"detail\": \"(the reason of the owner)\"\n}", "examplehead": "Example of a finding", "examplenote": "", "why": "", "points": []}, "req": {"title": "The request of step 2", "who": "The same as in step 2", "cls": "io", "sent": ["All parts of the request of step 2: the rules, the 3 sample questions, the story, the task statement, the 14 technologies, the slot and the form.", "The model answers in the same form as in step 2. So each try has the same form, and steps 3 and 4 check each try in the same way."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "failed": {"title": "The failed question", "who": "From the last try", "cls": "io", "sent": ["The complete record of the last failed try: the question, the options, the marks and the reasons.", "The writer does not see the tries before that. So the request stays short."], "points": [{"id": "4.4-S1", "text": "Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction", "ctx": "From task statement 4.4: Implement validation, retry, and feedback loops for extraction quality"}], "why": "The guide wrote this point for the extraction of data. Here the \"document\" is the request of step 2, the \"failed extraction\" is the failed question, and the \"validation errors\" are the findings.", "example": "", "examplehead": "", "examplenote": ""}, "findings": {"title": "The findings", "who": "From the checks", "cls": "io", "sent": ["The list of findings of the last try. Each finding names its step, its rule and its detail."], "example": "[\n  {\n    \"step\": 3,\n    \"rule\": \"A6\",\n    \"detail\": \"The question has 140 words. The limit is 110.\"\n  },\n  {\n    \"step\": 4,\n    \"rule\": \"B1\",\n    \"detail\": \"The blind call selected option C. The writer marked option B. (Then the reason of the blind call.)\"\n  }\n]", "examplehead": "Example: a list of two findings", "points": [{"id": "4.4-K1", "text": "Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction", "ctx": "From task statement 4.4: Implement validation, retry, and feedback loops for extraction quality"}], "why": "The guide wrote this point for the extraction of data. Here it applies to a question: with the exact findings the writer knows what to change. With no findings it can make the same error again.", "examplenote": ""}, "writer": {"title": "The writer", "who": "One model call", "cls": "model", "sent": ["A new call of the plain API. It is the writer of step 2, with two more parts in the request.", "It can also answer \"cannot write\"."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "new": {"title": "A new question record", "who": "File", "cls": "io", "sent": ["A new record with the next try number. M1-S17-T2 is try 2 of slot 17.", "The record of try 1 stays. No file is written over. So we can see later how the question changed."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "again": {"title": "Checked again", "who": "Steps 3 and 4", "cls": "io", "sent": ["The new question is a new text. A check of the old text says nothing about the new text.", "So steps 3 and 4 check it as a new question. The checker does not see the earlier findings."], "why": "A checker that sees the earlier findings looks only for those findings.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "t1": {"title": "Try 1", "who": "Step 2", "cls": "io", "sent": ["The first question for the slot, from step 2.", "If it passes the checks, the slot is full and this step does not run."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "t2": {"title": "Try 2", "who": "Step 5", "cls": "io", "sent": ["The writer gets try 1 and its findings, and writes the question again."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "t3": {"title": "Try 3", "who": "Step 5", "cls": "io", "sent": ["The writer gets try 2 and its findings, and writes the question again.", "It does not get try 1.", "This is the last try for the slot."], "example": "", "examplehead": "", "examplenote": "", "why": "", "points": []}, "open": {"title": "The slot stays open", "who": "The program stops", "cls": "stop", "sent": ["After 3 tries with no pass, the program stops the tries for this slot.", "It writes the slot into the report of the run, with each try and its findings.", "The mock is not complete. The owner decides what happens to the slot."], "example": "{\n  \"slot_id\": \"M1-S17\",\n  \"status\": \"open\",\n  \"tries\": [\n    {\n      \"question_id\": \"M1-S17-T1\",\n      \"verdict\": \"fail\",\n      \"findings\": \"(the findings of try 1)\"\n    },\n    {\n      \"question_id\": \"M1-S17-T2\",\n      \"verdict\": \"fail\",\n      \"findings\": \"(the findings of try 2)\"\n    },\n    {\n      \"question_id\": \"M1-S17-T3\",\n      \"verdict\": \"fail\",\n      \"findings\": \"(the findings of try 3)\"\n    }\n  ]\n}", "examplehead": "Example: an open slot in the report", "points": [{"id": "4.4-K2", "text": "The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "ctx": "From task statement 4.4: Implement validation, retry, and feedback loops for extraction quality"}, {"id": "1.1-S3", "text": "Avoiding anti-patterns such as parsing natural language signals to determine loop termination, setting arbitrary iteration caps as the primary stopping mechanism, or checking for assistant text content as a completion indicator", "ctx": "From task statement 1.1: Design and implement agentic loops for autonomous task execution"}], "why": "The first point says that some errors do not go away with a new try. The guide wrote it for the extraction of data, and it gives no number. The number 3 is a guess. The limit is not the main way to stop. The main way to stop is a question that passes. The second point names the opposite as an error.", "examplenote": ""}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.box.step'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>
