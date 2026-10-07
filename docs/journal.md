@@ -2,6 +2,22 @@
 
 One entry for each work session. Newest entry first.
 
+## 8 October 2026
+
+This entry continues the second session of 7 October. The work went on after midnight.
+
+- Mock 1 ran: 60 questions passed steps 3 and 4, and step 6 checked the 4 scenarios. One slot (M1-S47) failed 3 tries. The owner selected `more_tries` (decision D001 in `runs/mock-01/owner-decisions.json`), and it passed on its fourth try. The command line did not accept `--mock` before the action. The assistant fixed it and added a test. Mock 1 cost $14.60.
+- The owner marked all 60 questions blind. The blind result: 60 good.
+- After the blind marking, a second review by a Claude model in Cowork (not a person) marked the questions blind too, and then compared. By the four checks it also found 60 good. It found 7 problems of the mock as a set, and the owner asked it to write them into the marking file as 7 bad marks with reasons. So the 7 bad marks are not blind marks of the owner. The notes of the second review: `docs/reviews/M1-round1-second-review-notes.md`.
+- 7 bad marks reach the stop limit of decision 0035. The assistant said that the program applies that limit, and suggested that the 7 do not count, because they are not blind marks and steps 3 and 4 did not fail. The owner agreed.
+- The blind file was not in git: only the empty file of the program was committed. The owner had sent the blind file to the Cowork session before the second review, and it came back from there unchanged: SHA-256 a30c0145b79a727ae34c7a4feafec362e8dd6b59cc483cb8ceb85fe19cd7b0e5. The assistant checked the fingerprint, 60 marks, all good, no reasons, and the same 60 question IDs as round 1 of the program. It did not open and save the file. Five columns are hidden in it. The owner hid them while marking. The blind file is now `marking/M1-round1.xlsx`. The file with the 7 bad marks is `marking/M1-round1-second-review.xlsx`.
+- A new line in the check at the end of a session in `CLAUDE.md`: a marking file that the owner filled is committed before anybody else reads it.
+- The assistant checked the six probable causes of the second review against the plan and the code. True: twin points (two points of one task statement), scenario 5 with 12 of 15 questions from Domain 4, step 6 inside one scenario, no rule on the longest option in the set (29 of 52 by words, 34 of 52 by characters, chance about 13), and multiple-response slots on a point with one idea. False as written: the writer of S30 did not get sample question 1 as an example. The probable cause is the point 1.4-K2 itself.
+
+**Open**
+
+- The 7 problems of the second review and the 19 findings of step 6 wait for decisions of the owner.
+
 ## 7 October 2026, second session
 
 The first session in Claude Code.

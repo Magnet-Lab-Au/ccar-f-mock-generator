@@ -19,3 +19,4 @@ Before a session stops, check the record and show the owner the result:
 2. Each decision that the owner made in this session has its file in `docs/decisions/`.
 3. `HANDOFF.md` has the new state and the next step.
 4. Each pipeline step that was built in this session has its build guide section and a correct diagram.
+5. A marking file that the owner filled is committed before anybody else reads it.
