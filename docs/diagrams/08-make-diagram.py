@@ -252,7 +252,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 6: code and two model calls check the mock as a whole</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. Steps 3 and 4 look at one question. Some defects show only when many questions are read together, for example two questions with the same scene. Step 6 finds them, and the owner decides. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 6. The step is built, and it ran in the test of 7 October 2026: call 6a found two questions with the same scene that the test put in on purpose. Steps 3 and 4 look at one question. Some defects show only when many questions are read together, for example two questions with the same scene. Step 6 finds them, and the owner decides. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -265,7 +265,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039). Status of the step: planned. The step is not built. The control around the step exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039). Status of the step: built. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

@@ -40,13 +40,14 @@ record_ids = {'question_id': 'M1-S17-T1', 'slot_id': 'M1-S17', 'try': 1, 'model'
 D = {
  'rules': dict(title='The rules for a good question', who='Fixed text', cls='io',
    sent=['One list of exact rules for a good question. It is the same for each call.',
-         'The writer and the checker of step 4 use the same list.',
-         'The list is not written yet. It comes with the design of step 4.'],
+         'The writer and the checkers use the same list: 18 rules, A1 to A11 for code and B1 to B7 for a model.',
+         'Two instructions have no rule of their own: the options of a question have the same form, and each actor has one name. Rule B7 checks the second one.'],
    points=[point('4.1-K1')],
    why='The guide wrote this point for the review of code. Here it applies to a question: an exact rule gives the same result each time. A vague rule does not.'),
  'examples': dict(title='3 sample questions', who='From the records file', cls='io',
    sent=['3 of the 12 sample questions of the exam guide. They show the writer the form and the level of an exam question.',
-         'Code takes them from scenarios that are not the scenario of the slot. So the writer cannot copy the scene of an example.'],
+         'Code takes them from scenarios that are not the scenario of the slot. So the writer cannot copy the scene of an example.',
+         'Code mixes the options, removes the letters, marks the correct option and leaves out the explanation.'],
    points=[point('4.2-K1'), point('4.2-S2')],
    why='The guide wrote these points for output in a fixed format. Here the examples show the writer what a good exam question is.'),
  'story': dict(title='The story of the scenario', who='From the records file', cls='io',
@@ -66,15 +67,16 @@ D = {
          'The exam guide gives no number for a multiple-response question. "5 options, 2 correct" is a guess.'],
    example=js_(slot), examplehead='Example: slot 17 of mock 1'),
  'form': dict(title='The form that the model must fill', who='Fixed text', cls='io',
-   sent=['The blanks of the answer, as a JSON schema. The API forces the model to answer in this form. The model cannot answer with free text.',
+   sent=['The blanks of the answer, as a JSON schema. The request carries it as structured outputs, in the field output_config.format. The API makes the answer agree with the schema.',
+         'A deviation from the exam guide. The guide teaches a forced tool call for this (4.3-S3, below). The current Claude models reject a forced tool call. The page "Define tools" of the Anthropic documentation, section "Controlling Claude\'s output", subsection "Forcing tool use", says for Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1: "any and tool return a 400 error", and to use "structured outputs when you need a response in a fixed JSON shape". So this build uses structured outputs. A copy of the page, read on 7 October 2026, is in docs/sources/.',
          'A form stops format errors. It does not stop content errors, for example 3 options in place of 4. Step 3 checks those.'],
-   example=SCHEMA, examplehead='The form (draft, not tested against the API)',
+   example=SCHEMA, examplehead='The form (the draft schema, used in the test of 7 October 2026)',
    points=[point('4.3-K1'), point('4.3-S3'), point('4.3-K3')],
-   why='The guide wrote these points for the extraction of data from documents. Here they apply to a question: the model fills a form, so code can read each answer with no guess.'),
+   why='The guide wrote these points for the extraction of data from documents. Here they apply to a question: the model fills a form, so code can read each answer with no guess. The purpose of 4.3-K1 and 4.3-S3 stays: an answer that agrees with a schema. Only the method changes.'),
  'writer': dict(title='The writer', who='One model call', cls='model',
    sent=['One call of the plain API writes one question.',
          'The call is new each time. It does not know the other questions of the mock.',
-         'The model is a setting. We select it at the test before the first full run.'],
+         'The model is a setting. The first value is Claude Opus 5.5 at effort "high". The test before the first full run used it.'],
    why='One call makes one record. If one question fails, the program writes that one again and the others do not change.'),
  'written': dict(title='The answer: a question', who='The filled form', cls='io',
    sent=['The model returns the question, and each option with "correct" or "wrong" and a reason.',
@@ -84,11 +86,11 @@ D = {
    examplenote='The reasons are left out in this example.'),
  'cannot': dict(title='The answer: "cannot write"', who='The filled form', cls='open',
    sent=['The model can answer "cannot write", with a reason. Example: the point of the slot does not fit the story of the scenario.',
-         'The program reports the slot. It does not invent a question.'],
+         'The slot is open at once, and the owner decides. The program does not invent a question.'],
    points=[point('4.3-S4')],
    why='The guide wrote this point for the extraction of data. Here it applies to a question: if the model must fill each blank, it invents a question for a slot that does not fit. That question looks good and is bad.'),
  'letters': dict(title='Code gives the letters', who='Code', cls='code',
-   sent=['Code mixes the options and gives them the letters. A seed controls the sequence, so the same seed gives the same letters.',
+   sent=['Code mixes the options and gives them the letters. The seed of the plan controls the sequence, so the same answer always gets the same letters.',
          'The model does not select the letters.'],
    why='In the 12 sample questions of the exam guide, the correct answer is A 10 times. A model that sees those examples copies that. Then a participant can guess the answer.'),
  'ids': dict(title='Code adds the IDs', who='Code', cls='code',
@@ -124,9 +126,9 @@ for i, (key, name, what) in enumerate(rows):
     yc = top + RH // 2
     paths.append('<path class="flow" d="M388,%d C414,%d 414,%d 438,%d"/>' % (yc, yc, MID, MID))
 boxes.append(box('writer', 440, 264, 170, 110, 'The writer', 'Writes one question for one slot.', 'One model call', 'model', extra='mdl'))
-boxes.append(box('', 425, 446, 200, 82, 'If the call fails', 'No record is saved. The program reports the slot.', extra='stop'))
+boxes.append(box('', 425, 446, 200, 82, 'If the call fails', 'Code runs it again, at most 3 times. Then an error record.', extra='stop'))
 boxes.append(box('written', 662, 209, 306, 100, 'A question', 'The question, and each option with "correct" or "wrong" and a reason.', 'Usual', 'owner'))
-boxes.append(box('cannot', 662, 329, 306, 100, '"Cannot write"', 'With a reason. The program reports the slot.', 'Possible', 'open'))
+boxes.append(box('cannot', 662, 329, 306, 100, '"Cannot write"', 'With a reason. The slot is open, and the owner decides.', 'Possible', 'open'))
 for yc in (259, 379):
     paths.append('<path class="flow" d="M612,%d C636,%d 636,%d 658,%d" marker-end="url(#a)"/>' % (MID, MID, yc, yc))
 boxes.append(box('letters', 20, 624, 280, 118, 'Gives the letters', 'Mixes the options and gives them A to D. The model does not select the letters.', 'Code', 'code'))
@@ -180,7 +182,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 2: one API call writes one question</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. For each of the 60 slots of a mock, code builds one request, a model fills a form, and code completes the record. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 2. The step is built, and it ran in the test of 7 October 2026. For each of the 60 slots of a mock, code builds one request, a model fills a form, and code completes the record. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -199,7 +201,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 04. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
+  <footer>Diagram 04. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043). Status of the step: built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

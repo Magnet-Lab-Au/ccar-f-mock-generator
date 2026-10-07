@@ -30,11 +30,10 @@ D = {
    sent=['The stored question records are the one true copy of the questions. Each record has the question, the options, the marks and the reasons.',
          'Each record also has the results of its checks: step 3, step 4 and step 6, and the mark of the owner if the owner read the question.'],
    why='If a question is in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw. So the files are built from the records, and nobody edits a file by hand.'),
- 'gate': dict(title='Three checks before the build', who='Code', cls='code',
-   sent=['Each of the 60 slots has a question.',
-         'Each question has its verdicts from steps 3, 4 and 6, and the mark of the owner if the owner read it.',
-         'No record changed after its check.',
-         'If one check fails, code builds no file and names the cause.'],
+ 'gate': dict(title='Six conditions before the build', who='Code', cls='code',
+   sent=['The build starts only after the command "accept" of the owner. Then code checks six conditions:',
+         '1. Each of the 60 questions passed steps 3 and 4, and no question changed after its checks. 2. Step 6 checked the current questions of each scenario. 3. Each finding of step 6 has a decision of the owner. 4. Each question that needs a mark has a mark. 5. The bad marks are below the stop limit. 6. No call failed in the last run.',
+         'If one condition is false, code builds no file and lists the causes.'],
    why='A file for participants must have only questions that passed each check.'),
  'fp': dict(title='The fingerprint', who='Code', cls='code',
    sent=['Each check saves a fingerprint of the record that it checked. A fingerprint is a short code that code calculates from the text of the record. If one letter of the text changes, the fingerprint changes.',
@@ -44,7 +43,7 @@ D = {
  'qfile': dict(title='The questions file', who='File', cls='io',
    sent=['The 60 questions with their options and letters. The file has no answers and no reasons.',
          'Each question has its domain, its task statement and its point.',
-         'Code adds the line "Select 2." to each multiple-response question.'],
+         'Each question has the field "select", 1 or 2. The portal shows it as the line "Select 1." or "Select 2."'],
    example=js_(q_example), examplehead='Example: one question in the file',
    points=[fact('Section 3', 'each item states how many responses to select')],
    why='Code adds the line that says how many answers to select. So the line cannot be missing or wrong.'),
@@ -80,9 +79,9 @@ opt = lambda letter, w, ok=False: '<div class="optrow%s"><b class="chip">%s</b>%
 stamps = ''.join('<span class="stamp">%s</span>' % t for t in ('step 3', 'step 4', 'step 6'))
 card = ('<div class="chead"><span class="idchip">M1-S17</span><span class="sc">fingerprint a41f</span></div>'
         + sk(96) + sk(70) + opt('A', 62) + opt('B', 55, True) + opt('C', 66) + opt('D', 48) + '<div class="stamps">%s</div>' % stamps)
-gate = ('<h4>Before it builds, code checks</h4>'
-        '<p class="ck">Each of the 60 slots has a question.</p>'
-        '<p class="ck">Each question has all its verdicts.</p>'
+gate = ('<h4>After "accept", code checks</h4>'
+        '<p class="ck">Each question passed its checks.</p>'
+        '<p class="ck">Each finding and mark is settled.</p>'
         '<p class="ck">No record changed after its check.</p>')
 fp = ('<div class="fprow"><span class="fpc">record a41f</span><b>=</b><span class="fpc">check a41f</span><em class="yes">build</em></div>'
       '<div class="fprow"><span class="fpc no">record 9c2e</span><b>&ne;</b><span class="fpc">check a41f</span><em class="nope">stop</em></div>')
@@ -197,7 +196,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 8: code builds the two files of the mock</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. This is the last step. Code builds the files that the portal uses, and only from records that passed each check. Nobody edits the files by hand. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 8. The step is built, but it has not run yet. This is the last step. Code builds the files that the portal uses, and only from records that passed each check. Nobody edits the files by hand. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -210,7 +209,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 10. Design of 6 October 2026. Status of the step: planned. The step is not built. The cards, the files and the bars are drawings. They show the form, not real questions or real results. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 10. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0036 and 0039). Status of the step: built, not run yet. The cards, the files and the bars are drawings. They show the form, not real questions or real results. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

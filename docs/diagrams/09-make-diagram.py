@@ -22,17 +22,19 @@ def js_(obj):
 
 d22 = open(root + '/docs/decisions/0022-the-owner-reads-all-60-questions-of-mock-1-then-20-of-each-mock.md', encoding='utf-8').read()
 assert 'a clean sample of 20 permits up to 6' in d22
-columns = '\n'.join(['Question ID', 'Scenario', 'Point that the question must test', 'Question', 'Option A to option D (or E)',
-                     'Correct answer', 'Reason of each option', 'Mark        <- the owner fills this', 'Reason      <- the owner fills this'])
-marks = [{'question_id': 'M1-S17-T1', 'mark': 'good', 'reason': None, 'round': 1, 'date': '(the date)'},
-         {'question_id': 'M1-S18-T2', 'mark': 'bad', 'reason': '(the reason of the owner)', 'round': 1, 'date': '(the date)'}]
+columns = '\n'.join(['Question ID', 'Scenario', 'Point', 'Point text', 'Question', 'Select', 'A', 'B', 'C', 'D', 'E',
+                     'Correct answer', 'Reasons of the options', 'Mark                            <- the owner fills this',
+                     'Reason (needed for a bad mark)  <- the owner fills this'])
+marks = [{'question_id': 'M1-S17-T1', 'try': 1, 'mark': 'good', 'reason': '', 'round': 1, 'date': '(the date)', 'fingerprint': '(64 characters)'},
+         {'question_id': 'M1-S18-T2', 'try': 2, 'mark': 'bad', 'reason': '(the reason of the owner)', 'round': 1, 'date': '(the date)', 'fingerprint': '(64 characters)'}]
 D = {
  'mock': dict(title='The mock after step 6', who='60 questions', cls='io',
-   sent=['Each of the 60 questions passed the code check, the two model checks and the check of the complete mock.',
-         'So each question that the owner reads is a question that the checks call good.']),
+   sent=['Each of the 60 questions passed the code check and the two model checks, and step 6 checked the complete mock.',
+         'Step 6 can have findings. The owner sees them only after the marks, so that the marks are blind.']),
  'file': dict(title='Code builds the marking file', who='Code', cls='code',
    sent=['Code builds one Excel file. It has one row for each question.',
-         'The file shows no verdict of a checker.'],
+         'The file shows no verdict of a checker.',
+         'The sheet is protected with no password. Only the two columns of the owner can change, and sorting is off, so that a mark cannot move to a different question.'],
    example=columns, examplehead='The columns of the file',
    why='The owner must see the point that the question must test. If the file does not show it, the owner cannot judge if the question tests it.'),
  'owner': dict(title='The owner marks each question', who='The owner', cls='owner',
@@ -42,7 +44,7 @@ D = {
    why='The guide wrote these points for the extraction of data: a person checks a sample of the results that the system is sure of. Here each question in the file passed all checks. So each bad mark shows an error that the checks did not find.'),
  'read': dict(title='Code reads the marks', who='Code', cls='code',
    sent=['Code reads the file. If a mark is missing, or a bad mark has no reason, code does not accept the file and names the rows.',
-         'Code saves the marks as a record. It shows the bad marks for each scenario and each domain.'],
+         'Code saves the marks of each round as one record, for example runs/mock-01/marks/round-1.json. It shows the bad marks for each scenario and each domain.'],
    example=js_(marks), examplehead='Example: two marks in the record',
    points=[point('5.5-K1')],
    why='The guide wrote this point for the extraction of data. Here it applies to the marks: one total can hide a bad part. 3 bad marks in one domain show a different problem than 3 bad marks in 3 domains.'),
@@ -57,12 +59,14 @@ D = {
    points=[point('5.5-S2')],
    why='The guide wrote this point for the extraction of data. Here it applies to the marks: the owner reads less only after the results are good in each scenario and each domain.'),
  'good': dict(title='All marks are good', who='Go on', cls='owner',
-   sent=['Each question in the file has the mark "good".', 'Step 8 builds the files of the mock.']),
+   sent=['Each question in the file has the mark "good".',
+         'Then the owner sees the findings of step 6, and selects "ignore" or "rewrite" for each one.',
+         'Then the owner gives the command "accept". Code checks six conditions, and step 8 builds the files of the mock.']),
  'bad': dict(title='Some marks are bad', who='Back to the writer', cls='stop',
    sent=['A question with a bad mark goes to step 5. The reason of the owner is the finding.',
          'The new question goes through steps 3, 4 and 6. Then the owner gets a new file with only the new questions.']),
  'stop': dict(title='Too many marks are bad: the mock stops', who='The mock stops', cls='stop',
-   sent=['Mock 1: more than 6 bad marks of 60. A later mock: 2 or more bad marks of 20. Both numbers are guesses.',
+   sent=['Mock 1: more than 6 bad marks of 60. A later mock: 2 or more bad marks of 20. Both numbers are guesses. Only the bad marks of the first round count.',
          'The mock is not released. We correct the rules of the checker. Then all 60 questions go through the checks again.'],
    why='A bad mark says two things: this question is bad, and the checker passed a bad question. Many bad marks show that the checker is wrong, not only the questions. In a sample, more bad questions are probably in the part that the owner did not read.'),
 }
@@ -95,7 +99,7 @@ sheet = ('<div class="bar"><i class="xl"></i>M1-round1.xlsx</div>'
          + row([('', 'M1-S04'), ('', sk(58)), ('', 'D'), ('fill', '<i class="caret"></i>'), ('fill', '')]))
 person = ('<svg viewBox="0 0 90 78" width="90" height="78" aria-hidden="true"><circle cx="45" cy="24" r="17" style="fill:var(--owner)"/>'
           '<path d="M11,78 C11,54 28,46 45,46 C62,46 79,54 79,78 Z" style="fill:var(--owner)"/></svg><b>The owner</b><small>"good" or "bad", and one reason for a bad mark</small>')
-record = '<b>marks.json</b><small>the marks record</small>'
+record = '<b>round-1.json</b><small>the marks record</small>'
 
 def grid(on, risk=()):
     out = []
@@ -237,7 +241,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 7: a person is the last check</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. Each check before this step is code or a model. This step shows if those checks are right: a person reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 7. The step is built, and it ran in the test of 7 October 2026: the owner marked 10 questions. Each check before this step is code or a model. This step shows if those checks are right: a person reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -250,7 +254,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 09. Design of 6 October 2026. Status of the step: planned. The step is not built. The question card and the sheet are drawings. They show the form, not real questions. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 09. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0035, 0038 and 0039). Status of the step: built. The question card and the sheet are drawings. They show the form, not real questions. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

@@ -35,17 +35,18 @@ def res(rule, finding, pt=None, result='fail'):
 
 verdict = {'question_id': 'M1-S17-T1', 'step': 4,
            'blind_answer': {'selected': ['C'], 'reason': '(the reason of the blind call)', 'agrees': False},
-           'results': '(one result for each rule B1 to B6)', 'verdict': 'fail',
+           'results': '(one result for each rule B1 to B7)', 'verdict': 'fail',
            'findings': ['(the list that the writer of step 5 gets)'], 'model': '(the model of the check)', 'date': '(the date of the check)'}
 EH = 'Example of a result "fail"'
 D = {
  'qblind': dict(title='The question, with no answer key', who='From step 2', cls='io',
    sent=['Code takes the question and its options, with their letters.',
-         'Code leaves out the marks "correct" and "wrong", and the reasons. So the model cannot see the answer key.']),
+         'Code leaves out the marks "correct" and "wrong", and the reasons. So the model cannot see the answer key.',
+         'The call also gets the text of the exam guide.']),
  'c4a': dict(title='Call 4a: the blind answer', who='One model call', cls='model',
    sent=['A new model call answers the question, as a second expert does. It has the text of the exam guide, but not the answer key.',
          'It returns the letters that it selects, and its reason. It can also say "cannot decide".',
-         'Before the first full run, this call must answer the 12 sample questions of the exam guide. Their correct answers are known.'],
+         'Before the first full run, this call answered the 12 sample questions of the exam guide, and 12 of 12 were right (test of 7 October 2026).'],
    why='A wrong answer key is the worst defect of a mock. A checker that sees the answer key usually agrees with it. A checker that does not see the key must find the answer alone.'),
  'cmp': dict(title='Code compares the two answers', who='Code', cls='code',
    sent=['Code compares the letters of the blind answer with the marks of the writer.',
@@ -62,7 +63,8 @@ D = {
          'Both calls of this step get this text.'],
    why='A wrong option often comes from a different task statement than the one of the slot. And one rule asks what the guide names. So the checker needs the complete guide, not a slice.'),
  'c4b': dict(title='Call 4b: the rule check', who='One model call', cls='model',
-   sent=['A new model call checks the 6 rules. It did not write the question.',
+   sent=['A new model call checks the 7 rules. It did not write the question.',
+         'Each call answers in a fixed form. The form is sent as structured outputs, not as a forced tool call, because the current models reject a forced tool call (see the diagram of step 2).',
          'For each rule it returns "pass", "fail" or "cannot decide". A "fail" has a finding, and the ID of the guide point that the finding uses.',
          'Code checks that each point ID exists. A point ID that does not exist shows that the checker invented a source.',
          'The call gives no confidence number. Such a number has no meaning before a person has marked questions to compare it with.'],
@@ -90,11 +92,17 @@ D = {
    why='In the exam, each scenario frames a set of questions. A question that contradicts its story confuses the participant.'),
  'B6': dict(title='Rule B6: only features that the guide names', who='One model call', cls='model',
    sent=['No text depends on a feature that the exam guide does not name. This applies to the question, the options and the reasons.',
-         'Where the guide has its own word for a thing, the text uses that word.'],
+         'Where the guide has its own word for a thing, the text uses that word.',
+         'The model lists each feature name. Code searches each name in the records file of the guide. It ignores capital letters, and it finds a name only as a complete word or words. So "Vision" is not found inside "provisions".'],
    example=res('B6', 'Option B depends on a setting "maxTurns". The guide does not name it. The guide says "iteration caps".', '1.1-S3'), examplehead=EH,
    why='A question on a feature that the guide does not name trains a participant for a thing that the exam does not test.'),
+ 'B7': dict(title='Rule B7: one name for each actor, and clear sentences', who='One model call', cls='model',
+   sent=['Each actor has one name in the question, the options and the reasons.',
+         'A reader understands each sentence at the first reading.'],
+   example=res('B7', 'The synthesis actor is called "synthesis subagent" in the question and "synthesis agent" in the options. Use one name for each actor.'), examplehead=EH,
+   why='The owner marked a question bad because it used two names for one actor and was hard to read. A word limit for each sentence does not catch this: the sample questions of the guide have sentences of up to 42 words. So a model checks it.'),
  'pass': dict(title='Verdict: pass', who='Usual', cls='owner',
-   sent=['The blind answer agrees with the marks, and each of the 6 rules has the result "pass".',
+   sent=['The blind answer agrees with the marks, and each of the 7 rules has the result "pass".',
          'When all 60 questions of the mock passed, step 6 checks the complete mock.']),
  'fail': dict(title='Verdict: fail', who='Back to the writer', cls='stop',
    sent=['The blind answer is different from the marks, or one rule or more fails.',
@@ -120,37 +128,38 @@ boxes, paths = [], []
 # section 1
 boxes.append(box('qblind', 20, 38, 230, 112, 'The question alone', 'The question and the options. No marks and no reasons.'))
 boxes.append(box('c4a', 300, 38, 220, 112, '4a. The blind answer', 'A second expert answers the question alone.', 'One model call', 'model', extra='mdl'))
-boxes.append(box('cmp', 570, 38, 200, 112, 'Code compares', 'The blind answer against the marks of the writer.', 'Code', 'code'))
+boxes.append(box('cmp', 570, 38, 200, 112, 'Code compares', 'The blind answer and the marks.', 'Code', 'code'))
 boxes.append(box('', 820, 38, 160, 50, 'The same', '', extra='chip ok'))
-boxes.append(box('', 820, 100, 160, 50, 'Different: B1 fails', '', extra='chip bad'))
+boxes.append(box('', 820, 100, 160, 50, 'B1 fails', '', extra='chip bad'))
 paths.append('<path class="flow" d="M250,94 H296" marker-end="url(#a)"/>')
 paths.append('<path class="flow" d="M520,94 H566" marker-end="url(#a)"/>')
 paths.append('<path class="flow" d="M770,94 C794,94 794,63 816,63" marker-end="url(#a)"/>')
 paths.append('<path class="failp" d="M770,94 C794,94 794,125 816,125" marker-end="url(#af)"/>')
 # section 2
-rows = [('B1', 'Only the marked options are correct', 'No other option is correct.'),
-        ('B2', 'Each wrong option has a guide reason', 'And its reason says so.'),
+rows = [('B1', 'The marked options are correct', 'No other option is correct.'),
+        ('B2', 'Each wrong option: a reason', 'A reason that the guide gives.'),
         ('B3', 'Each reason is true', 'It agrees with the exam guide.'),
         ('B4', 'The question tests its point', 'The point that the slot names.'),
         ('B5', 'The question is inside its story', 'It does not contradict the scenario.'),
-        ('B6', 'Only what the guide names', 'No feature that the guide does not name.')]
+        ('B6', 'Only what the guide names', 'No feature that the guide does not name.'),
+        ('B7', 'One name for each actor', 'Each sentence is clear at once.')]
 for i, (key, name, what) in enumerate(rows):
     boxes.append(rowbox(key, 582, 262 + i * 65, 386, 60, key, name, what))
-MID = 454
-boxes.append(box('rec', 20, 326, 230, 96, 'The complete record', 'The question, the marks and the reasons.'))
-boxes.append(box('guide', 20, 486, 230, 96, 'The exam guide text', 'About %d words. Both calls get it.' % round(n_words, -2)))
-boxes.append(box('c4b', 300, 398, 220, 112, '4b. The rule check', 'One result for each of the 6 rules.', 'One model call', 'model', extra='mdl'))
-for yc in (374, 534):
+MID = 487
+boxes.append(box('rec', 20, 359, 230, 96, 'The complete record', 'The question, the marks and the reasons.'))
+boxes.append(box('guide', 20, 519, 230, 96, 'The exam guide text', 'About %d words. Both calls get it.' % round(n_words, -2)))
+boxes.append(box('c4b', 300, 431, 220, 112, '4b. The rule check', 'One result for each of the 7 rules.', 'One model call', 'model', extra='mdl'))
+for yc in (407, 567):
     paths.append('<path class="flow" d="M250,%d C276,%d 276,%d 296,%d" marker-end="url(#a)"/>' % (yc, yc, MID, MID))
 paths.append('<path class="flow" d="M520,%d H566" marker-end="url(#a)"/>' % MID)
 # section 3
-boxes.append(box('pass', 20, 716, 300, 118, 'Pass', 'Each rule passes. The question waits for the check of the complete mock.', 'Usual', 'owner'))
-boxes.append(box('fail', 350, 716, 300, 118, 'Fail', 'A rule fails. The question goes back to the writer with the findings.', extra='fail'))
-boxes.append(box('cd', 680, 716, 300, 118, 'Cannot decide', 'Back to the writer with the reason. The second time, the owner decides.', 'Possible', 'open'))
+boxes.append(box('pass', 20, 781, 300, 118, 'Pass', 'Each rule passes. The question waits for the check of the complete mock.', 'Usual', 'owner'))
+boxes.append(box('fail', 350, 781, 300, 118, 'Fail', 'A rule fails. The question goes back to the writer with the findings.', extra='fail'))
+boxes.append(box('cd', 680, 781, 300, 118, 'Cannot decide', 'Back to the writer with the reason. The second time, the owner decides.', 'Possible', 'open'))
 
 extra_css = g3[g3.index("extra_css = '''") + 15:g3.index("'''\na = js.index")]
-extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 850px; }')
-assert '850px' in extra_css
+extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 915px; }')
+assert '915px' in extra_css
 extra_css += '''  .box.row .num { width: 34px; height: 34px; font-size: 14px; background: var(--model); color: var(--panel); }
   .box.mdl { border-color: var(--model); background: var(--model-bg); }
   .box.mdl .what { color: var(--ink); }
@@ -178,25 +187,25 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 4: a model checks each question two times</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. Some rules need judgment, so a model checks them. First a model answers the question without the answer key. Then a second call checks 6 rules with the answer key. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 4. The step is built, and it ran in the test of 7 October 2026. Some rules need judgment, so a model checks them. First a model answers the question without the answer key. Then a second call checks 7 rules with the answer key. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
-    <svg viewBox="0 0 1000 850" width="1000" height="850" aria-hidden="true">
+    <svg viewBox="0 0 1000 915" width="1000" height="915" aria-hidden="true">
       ''' + marker + '''
       ''' + '\n      '.join(paths) + '''
     </svg>
     <div class="shead" style="top:2px"><i>1</i>Without the answer key: does a second expert select the same answer?</div>
-    <div class="shead" style="top:176px"><i>2</i>With the answer key: does the question pass 6 rules?</div>
-    <div class="panel" style="left:570px;top:212px;width:410px;height:452px"></div>
-    <div class="ptitle" style="left:584px;top:222px">The 6 rules<small>group B of the 13 rules for a good question</small></div>
-    <div class="shead" style="top:680px"><i>3</i>Code makes the verdict</div>
+    <div class="shead" style="top:176px"><i>2</i>With the answer key: does the question pass 7 rules?</div>
+    <div class="panel" style="left:570px;top:212px;width:410px;height:517px"></div>
+    <div class="ptitle" style="left:584px;top:222px">The 7 rules<small>group B of the 18 rules for a good question</small></div>
+    <div class="shead" style="top:745px"><i>3</i>Code makes the verdict</div>
     ''' + ''.join(boxes) + '''
     ''' + popdiv + '''
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
