@@ -356,6 +356,8 @@ class Control:
                   "point": request["point"], "select": slot["select"],
                   "request": request["step"], "shown_try": request["shown_try"],
                   "status": answer["status"], "date": self.today()}
+        if answer.get("model"):
+            record["model"] = answer["model"]
         if answer["status"] == "written":
             record["question"] = answer["question"]
             record["options"] = answer["options"]
@@ -367,6 +369,9 @@ class Control:
         record = {"question_id": question["question_id"], "step": step,
                   "verdict": v["verdict"], "findings": v["findings"],
                   "fingerprint": fingerprint(question), "date": self.today()}
+        # Step 4 adds its own fields: blind_answer, results, features, model (decision 0032).
+        for key, value in v.items():
+            record.setdefault(key, value)
         self._write_new(record, "checks", "%s-step%d.json" % (question["question_id"], step))
 
     def _current_questions(self, scenario):

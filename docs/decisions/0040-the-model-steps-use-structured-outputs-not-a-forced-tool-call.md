@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026
 - Diagram: none. The diagrams of steps 2, 4 and 6 show it when those steps are built.
 
 ## Question
