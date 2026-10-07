@@ -43,9 +43,11 @@ The first session in Claude Code.
 - The bad mark of T-M1-S05 had no rule. The assistant first recommended an instruction to the writer only. The owner asked if that is enough. It is not (1.4-K2). A script measured the sentences: length did not cause the bad mark, so a code rule for length would not help. Decided: a writer instruction and a new rule B7 in call 4b (decision 0043).
 - A check of B7 ran ($0.82): T-M1-S05 failed on B7, as expected. 3 of the 9 good questions also failed on B7, with true findings: two names for one actor. The owner said that cost is not a concern and asked what is best. Agreed: B7 stays strict for mock 1.
 
+- Part 4 of the test ran ($0.40): the writer made 7 more questions of scenario 3, and the assistant wrote one copy with the same scene as T-M1-S06. Call 6a found the copy (D1). Step 6 also found real problems of the writer: one more pair with the same scene, four pairs that give away an answer (D4), and one wrong idea in three questions (D2). The whole test cost $3.86.
+
 **Open**
 
-- Part 4 of the test (step 6 with two questions of the same scene) has not run.
+- The owner has not confirmed the text of decisions 0042 and 0043.
 - Rule B7 is stricter than the marks of the owner. In mock 1, the report shows how often it fails.
 - The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).

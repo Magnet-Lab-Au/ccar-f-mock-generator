@@ -1,0 +1,657 @@
+{
+  "scenario": 3,
+  "questions": [
+    {
+      "question_id": "T-M1-S01",
+      "slot_id": "M1-S01",
+      "try": 1,
+      "point": "2.5-K3",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "In your research system, the report-generation subagent has saved a long draft report as a markdown file. The synthesis subagent then reports that one citation, whose text appears exactly once in the file, lists the wrong publication year. All other content in the report must stay exactly as it is. Which built-in tool usage best fits this change?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Use Glob with a pattern built from the citation text to find the matching line and rewrite it.",
+          "correct": false,
+          "reason": "The guide describes Glob as matching file paths by name or extension patterns; it neither searches file contents nor edits them."
+        },
+        {
+          "letter": "B",
+          "text": "Use Edit to replace the incorrect citation text, relying on its unique match to locate and change only that passage.",
+          "correct": true,
+          "reason": "The guide names Edit as the tool for targeted modifications that use unique text matching, and the citation text is unique here."
+        },
+        {
+          "letter": "C",
+          "text": "Use Write to regenerate the whole report file from the subagent's memory of its contents, including the corrected year.",
+          "correct": false,
+          "reason": "Write is for full file operations; rewriting the whole file without first reading it risks changing content that must stay as it is."
+        },
+        {
+          "letter": "D",
+          "text": "Use Grep to search for the citation pattern and correct the publication year directly within the matching line.",
+          "correct": false,
+          "reason": "The guide describes Grep as a content search tool for finding patterns in files; it does not modify file contents."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S02",
+      "slot_id": "M1-S02",
+      "try": 1,
+      "point": "2.3-K2",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "During testing, logs show the synthesis subagent repeatedly running its own web searches mid-synthesis, pulling in unvetted sources instead of combining the findings that the web search subagent already returned. Its configuration includes the same web search tool as the search subagent, added just in case it might help. Its system prompt clearly describes its synthesis role. What is the most likely cause of this behavior?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "The synthesis agent has access to a tool outside its specialization, and agents given such tools tend to misuse them instead of staying within their role.",
+          "correct": true,
+          "reason": "The guide states that agents with tools outside their specialization tend to misuse them, using a synthesis agent attempting web searches as the example."
+        },
+        {
+          "letter": "B",
+          "text": "The synthesis agent's tool_choice is set to \"auto\", which tells the model to prefer calling web searches over reasoning about provided findings.",
+          "correct": false,
+          "reason": "Per the guide, \"auto\" lets the model choose whether to call a tool; it does not create a preference for searching. The real cause is the out-of-role tool being available."
+        },
+        {
+          "letter": "C",
+          "text": "The coordinator passes findings in a structured format, which the synthesis agent cannot interpret and therefore replaces with fresh web searches.",
+          "correct": false,
+          "reason": "The guide recommends structured data for passing findings between agents. The misuse comes from giving the synthesis agent a tool outside its role."
+        },
+        {
+          "letter": "D",
+          "text": "The web search subagent returns too few results, which forces the synthesis agent to compensate by running additional searches on its own.",
+          "correct": false,
+          "reason": "The search subagent did return findings, and nothing forces extra searches. The guide attributes this misuse to out-of-specialization tool access, and complex gaps should route through the coordinator."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S03",
+      "slot_id": "M1-S03",
+      "try": 1,
+      "point": "5.6-S2",
+      "select": 2,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Your multi-agent research system's report generation subagent produces reports that readers find misleading. Findings supported by many credible sources appear alongside findings that sources dispute, all stated with equal certainty. Cautious source wording such as \"preliminary results suggest\" is rewritten as definitive statements, and details about study design are dropped. Which changes to how reports are structured best address these problems?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Rewrite all findings in a consistent, confident tone and a single uniform format so the report reads as one coherent narrative.",
+          "correct": false,
+          "reason": "This removes source characterizations and the distinction between established and contested findings, and the guide warns against forcing all content into one uniform format."
+        },
+        {
+          "letter": "B",
+          "text": "For each contested claim, have the synthesis agent select the value reported by the most sources and present it as settled.",
+          "correct": false,
+          "reason": "The guide says conflicts between credible sources should be annotated with source attribution, not resolved by arbitrarily selecting one value."
+        },
+        {
+          "letter": "C",
+          "text": "Organize the report into explicit sections that separate well-established findings from contested findings, keeping source attribution for each claim.",
+          "correct": true,
+          "reason": "The guide recommends structuring reports with explicit sections that distinguish well-established findings from contested ones."
+        },
+        {
+          "letter": "D",
+          "text": "Keep each source's original characterization of its claims, including hedging language and methodological context such as sample size and study design.",
+          "correct": true,
+          "reason": "The guide calls for preserving original source characterizations and methodological context in reports instead of restating claims as definitive."
+        },
+        {
+          "letter": "E",
+          "text": "Remove contested findings from the final report so that readers see only conclusions that all sources agree on.",
+          "correct": false,
+          "reason": "The guide wants contested findings kept in a clearly marked section, so dropping them discards information the report should show."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S04",
+      "slot_id": "M1-S04",
+      "try": 1,
+      "point": "1.2-S3",
+      "select": 2,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Your coordinator delegates a query about global battery recycling regulations. The synthesis subagent returns a draft that thoroughly covers the European Union and United States but says almost nothing about Asian markets, which the query explicitly requested. The coordinator currently passes every synthesis output straight to the report subagent. Which changes would best implement an iterative refinement loop for this system?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Allow the synthesis subagent to call the web search subagent directly for missing sources, bypassing the coordinator to reduce round trips.",
+          "correct": false,
+          "reason": "The guide routes all subagent communication through the coordinator for observability, consistent error handling and controlled information flow. The coordinator also drives the re-delegation."
+        },
+        {
+          "letter": "B",
+          "text": "Have the coordinator re-delegate to the search and analysis subagents with targeted queries for each gap, then re-invoke synthesis until coverage is sufficient.",
+          "correct": true,
+          "reason": "The guide describes re-delegating targeted queries to search and analysis subagents and re-invoking synthesis until coverage is sufficient."
+        },
+        {
+          "letter": "C",
+          "text": "Instruct the synthesis subagent to fill any missing regions from its own general knowledge so the report is produced without further delegation.",
+          "correct": false,
+          "reason": "The guide's loop fills gaps by re-delegating to search and analysis subagents. Filling gaps from general knowledge gives no sources for the cited report."
+        },
+        {
+          "letter": "D",
+          "text": "Have the coordinator rerun the full pipeline with the original unchanged query whenever the report subagent output appears incomplete.",
+          "correct": false,
+          "reason": "The guide calls for targeted queries aimed at identified gaps. Rerunning the same broad query duplicates work and does not target the missing coverage."
+        },
+        {
+          "letter": "E",
+          "text": "Add a coordinator step that evaluates each synthesis output against the original query to identify coverage gaps before invoking the report subagent.",
+          "correct": true,
+          "reason": "The guide's refinement loop starts with the coordinator evaluating synthesis output for gaps, such as the missing Asian markets."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S05",
+      "slot_id": "M1-S05",
+      "try": 1,
+      "point": "1.1-S2",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Your web search subagent runs its own agentic loop. When Claude returns stop_reason \"tool_use\", your code executes the requested search and then sends the next request containing only the system prompt and the original research question. Logs show the subagent keeps requesting the same search and never reaches \"end_turn\". What change most directly fixes this behavior?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Append the assistant's tool_use response and the corresponding tool result to the conversation history before sending the next request to Claude.",
+          "correct": true,
+          "reason": "Tool results must be added to the conversation context between iterations so the model can use the new information to reason about its next action."
+        },
+        {
+          "letter": "B",
+          "text": "Check each response for assistant text saying the search is complete and terminate the loop when it appears.",
+          "correct": false,
+          "reason": "The guide names parsing natural language signals or checking assistant text as a completion indicator as anti-patterns; the loop should follow stop_reason."
+        },
+        {
+          "letter": "C",
+          "text": "Replace the loop with a pre-configured sequence that runs one search and always passes results to the synthesis subagent.",
+          "correct": false,
+          "reason": "This swaps model-driven decision-making for a fixed tool sequence and ignores the real cause, which is that tool results are missing from the conversation context."
+        },
+        {
+          "letter": "D",
+          "text": "Add an iteration cap of five loops so the subagent stops after a fixed number of repeated search requests.",
+          "correct": false,
+          "reason": "The guide names arbitrary iteration caps as the primary stopping mechanism as an anti-pattern, and the cap does not give the model the search results."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S06",
+      "slot_id": "M1-S06",
+      "try": 1,
+      "point": "2.5-S1",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Your research system must report how widely a deprecated function, parse_legacy_config, is still used in an open-source repository that is checked out locally. The document analysis subagent has the built-in tools available. Before it traces any usage, it must find every place in the codebase that calls this function. Which tool selection should the subagent make for this first step?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Use Read to load every source file in the repository upfront and then scan each one for calls to the function.",
+          "correct": false,
+          "reason": "The guide advises building understanding incrementally, starting with Grep and then reading selectively, instead of reading all files upfront."
+        },
+        {
+          "letter": "B",
+          "text": "Use Glob with the pattern **/*parse_legacy_config* to find every file in the repository that calls the function.",
+          "correct": false,
+          "reason": "Glob matches file paths by name or extension patterns. It does not search file contents, so it cannot find the files that call a function."
+        },
+        {
+          "letter": "C",
+          "text": "Use Edit with parse_legacy_config as the anchor text so that each unique match reveals a file that calls it.",
+          "correct": false,
+          "reason": "Edit is for targeted modifications that use unique text matching. It is not a search tool, and it fails when the anchor text is not unique."
+        },
+        {
+          "letter": "D",
+          "text": "Use Grep to search file contents across the repository for the pattern parse_legacy_config and list every matching call site.",
+          "correct": true,
+          "reason": "Grep is the built-in tool for content search across a codebase, such as finding all callers of a function by name."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S07",
+      "slot_id": "M1-S07",
+      "try": 1,
+      "point": "2.1-S4",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "In your research system, the document analysis subagent has three tools with clearly differentiated descriptions: extract_data_points, summarize_content, and verify_claim_against_source. Its system prompt includes the instruction \"Whenever a document contains claims, make sure to check them carefully.\" Logs show that the subagent calls verify_claim_against_source on most requests, even when the coordinator asks only for extracted figures or summaries. What change most effectively fixes this tool selection problem?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Expand the verify_claim_against_source description with more edge cases and boundary explanations so the subagent recognizes when verification is unnecessary.",
+          "correct": false,
+          "reason": "The descriptions are already well written. The misrouting comes from the system prompt instruction, which can override even good descriptions, so this does not fix the cause."
+        },
+        {
+          "letter": "B",
+          "text": "Merge the three tools into one generic analyze_document tool so the subagent no longer has to choose between similar options.",
+          "correct": false,
+          "reason": "The guide recommends splitting generic tools into purpose-specific tools with defined contracts. Merging them reverses this and leaves the prompt issue in place."
+        },
+        {
+          "letter": "C",
+          "text": "Set tool_choice to force extract_data_points on every document request so verification is never selected when it is unnecessary.",
+          "correct": false,
+          "reason": "Forcing one tool stops the subagent from choosing summarize_content or verify_claim_against_source when a task needs them. It also leaves the keyword-sensitive prompt instruction in place."
+        },
+        {
+          "letter": "D",
+          "text": "Review the subagent's system prompt and reword the claims instruction so it no longer creates a keyword association that overrides the tool descriptions.",
+          "correct": true,
+          "reason": "The tool descriptions are already clear. The keyword-sensitive wording in the system prompt creates an unintended tool association, so the prompt must be reviewed and fixed."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S08",
+      "slot_id": "M1-S08",
+      "try": 1,
+      "point": "1.6-K1",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Your coordinator agent runs every research topic through a fixed sequence: web search, document analysis, synthesis, then report generation. For open-ended topics, the web search subagent often uncovers unexpected subtopics, such as a regulatory angle, that need their own investigation. The fixed sequence ignores these findings, and the final reports miss important coverage. Which task decomposition strategy should the coordinator use for these open-ended topics?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Use dynamic adaptive decomposition, where the coordinator generates new subtasks based on what each step discovers.",
+          "correct": true,
+          "reason": "The guide recommends dynamic decomposition for open-ended investigation tasks, because adaptive plans generate subtasks based on intermediate findings."
+        },
+        {
+          "letter": "B",
+          "text": "Have the coordinator plan all subtasks once at the start and then execute that plan without changes.",
+          "correct": false,
+          "reason": "A static upfront plan is still a fixed decomposition; the guide says open-ended tasks need a plan that adapts as new information is discovered."
+        },
+        {
+          "letter": "C",
+          "text": "Keep the fixed sequence and run it three times per topic, then merge the three resulting reports.",
+          "correct": false,
+          "reason": "Repeating the same fixed pipeline does not generate subtasks from intermediate findings, so the unexpected subtopics still go uninvestigated."
+        },
+        {
+          "letter": "D",
+          "text": "Extend the fixed sequence with extra predefined steps that cover every subtopic the team can anticipate in advance.",
+          "correct": false,
+          "reason": "Fixed sequential pipelines suit predictable workflows; subtopics in open-ended research cannot all be anticipated, so predefined steps still miss new findings."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S09",
+      "slot_id": "M1-S09",
+      "try": 1,
+      "point": "2.1-K4",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "The document analysis subagent has three tools: extract_data_points, summarize_content, and verify_claim_against_source. Each tool description states its inputs, its outputs, and when to use it instead of the other two tools. The subagent's system prompt says: 'Verify that you understand each document before you respond.' Testing shows that the subagent calls verify_claim_against_source on most documents, even for summary-only requests. What is the most likely cause?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "The tool descriptions are too minimal, so the subagent cannot reliably tell the three similar tools apart.",
+          "correct": false,
+          "reason": "The descriptions already state inputs, outputs and when to use each tool, so minimal descriptions are not the cause here."
+        },
+        {
+          "letter": "B",
+          "text": "The tool_choice setting is 'any', which forces the subagent to call verify_claim_against_source on each request.",
+          "correct": false,
+          "reason": "The 'any' option only requires the model to call some tool and lets it choose which one, so it does not force one specific tool."
+        },
+        {
+          "letter": "C",
+          "text": "The word 'verify' in the system prompt creates an unintended association with verify_claim_against_source that overrides its clear description.",
+          "correct": true,
+          "reason": "Keyword-sensitive wording in a system prompt can create unintended tool associations that override well-written tool descriptions, so the prompt needs review."
+        },
+        {
+          "letter": "D",
+          "text": "The subagent has too many tools available, which degrades its selection reliability across similar options.",
+          "correct": false,
+          "reason": "Three purpose-specific tools form a small, focused set; selection degrades with many tools, which is not the case here."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S10",
+      "slot_id": "M1-S10",
+      "try": 1,
+      "point": "1.7-S1",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "Yesterday, you ran a long investigation of solid-state battery suppliers with the coordinator agent in a session named \"battery-suppliers\". The web search subagent and the document analysis subagent gathered many sources, and nothing in those sources has changed overnight. Today you want to continue that specific investigation with its prior context. Which approach should you take?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Use --resume with the session name \"battery-suppliers\" to continue that specific prior conversation with its existing context.",
+          "correct": true,
+          "reason": "The guide names --resume <session-name> for continuing a specific prior conversation, and resumption fits when the prior context is mostly valid."
+        },
+        {
+          "letter": "B",
+          "text": "Use fork_session on the \"battery-suppliers\" session to create an independent branch, and continue the investigation in that new branch.",
+          "correct": false,
+          "reason": "The guide describes fork_session for creating independent branches that explore divergent approaches, which this single continuing investigation does not need."
+        },
+        {
+          "letter": "C",
+          "text": "Start a new session with a structured summary of yesterday's findings, because a resumed session always carries stale tool results.",
+          "correct": false,
+          "reason": "The guide recommends a fresh session with an injected summary only when prior tool results are stale, and here the prior context is still valid."
+        },
+        {
+          "letter": "D",
+          "text": "Start a new session and have the coordinator agent send all searches and document analyses to the subagents again to rebuild the context.",
+          "correct": false,
+          "reason": "Repeating the full exploration discards valid prior context, while the guide says to resume a named session when that context is mostly valid."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S11",
+      "slot_id": "M1-S11",
+      "try": 1,
+      "point": "1.2-K1",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "In your research system, the web search subagent has finished, and its results must reach the document analysis subagent. A teammate proposes that the web search subagent call the document analysis subagent directly to save a step. Any failure in the document analysis subagent must be handled consistently, and the team wants to observe all information flow. Which design should you use?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Have both subagents write to a shared scratchpad file that each one reads, so results move without passing through the coordinator.",
+          "correct": false,
+          "reason": "A shared file between subagents moves information outside the coordinator, which the hub-and-spoke pattern requires to route all information and handle errors."
+        },
+        {
+          "letter": "B",
+          "text": "Let each subagent handle its own errors and send its results to the next subagent in a fixed pipeline order.",
+          "correct": false,
+          "reason": "Each subagent handles its own errors and passes results onward, which removes the coordinator's central routing and consistent error handling."
+        },
+        {
+          "letter": "C",
+          "text": "Let the web search subagent invoke the document analysis subagent directly and handle any failure that the analysis step reports.",
+          "correct": false,
+          "reason": "Direct subagent-to-subagent calls bypass the coordinator, so the team loses observability, consistent error handling and controlled information flow."
+        },
+        {
+          "letter": "D",
+          "text": "Have the web search subagent return its results to the coordinator, which routes them to the document analysis subagent and handles any failure.",
+          "correct": true,
+          "reason": "In the hub-and-spoke architecture, the coordinator manages all inter-subagent communication, error handling and information routing, so the team gets observability and consistent error handling."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S12",
+      "slot_id": "M1-S12",
+      "try": 1,
+      "point": "5.3-K3",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "The web search subagent times out while it queries a news archive for one subtopic. Before the timeout, it already retrieved two relevant articles from another source. It returns only the status \"search unavailable\" to the coordinator. Why does this error response weaken the coordinator's ability to recover?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "It hides the failure type, the attempted query, the partial results, and possible alternatives, which the coordinator needs to choose a recovery action.",
+          "correct": true,
+          "reason": "The guide says that generic statuses like \"search unavailable\" hide valuable context. Structured error context (failure type, attempted query, partial results, alternatives) enables intelligent coordinator recovery decisions."
+        },
+        {
+          "letter": "B",
+          "text": "It lets the research continue, although the coordinator should stop the entire workflow as soon as any single search by a subagent fails.",
+          "correct": false,
+          "reason": "The guide names the termination of entire workflows on single failures as an anti-pattern."
+        },
+        {
+          "letter": "C",
+          "text": "It is a problem only because it is free text, and a boolean failure flag would give the coordinator everything it needs to recover.",
+          "correct": false,
+          "reason": "A boolean flag is just as generic. The guide says that the coordinator needs structured context: failure type, what was attempted, partial results and alternatives."
+        },
+        {
+          "letter": "D",
+          "text": "It reports a failure, although the web search subagent should return an empty result marked as success so that synthesis continues without interruption.",
+          "correct": false,
+          "reason": "The guide names silent error suppression (returning empty results as success) as an anti-pattern. It also says that access failures must be distinguished from valid empty results."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S13",
+      "slot_id": "M1-S13",
+      "try": 1,
+      "point": "1.4-S1",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "In your research system, logs show that in 9% of runs the coordinator delegates to the report generation subagent before the synthesis subagent has returned its findings. These reports contain claims without source citations. The team requires that every report is built only from a completed synthesis. What change would most reliably enforce this ordering?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Add few-shot examples to the coordinator's prompt that show it waiting for the synthesis results before it delegates the report generation task.",
+          "correct": false,
+          "reason": "Few-shot examples are still prompt-based guidance, so the coordinator can still skip the step and the failure rate stays above zero."
+        },
+        {
+          "letter": "B",
+          "text": "Add a hook that intercepts the coordinator's call to the report generation subagent and blocks it until the synthesis subagent has returned its findings.",
+          "correct": true,
+          "reason": "A programmatic prerequisite that blocks the downstream call until the prerequisite step has completed gives deterministic enforcement of the workflow order."
+        },
+        {
+          "letter": "C",
+          "text": "Add a rule to the coordinator's system prompt stating that the synthesis subagent must always finish before the report generation subagent starts.",
+          "correct": false,
+          "reason": "This is prompt-based guidance, and the guide states that prompt instructions alone have a non-zero failure rate when deterministic compliance is required."
+        },
+        {
+          "letter": "D",
+          "text": "Add a classifier that analyzes each research request and enables only the subagents that are appropriate for that request type.",
+          "correct": false,
+          "reason": "This changes which subagents are available, but it does not block the report generation call until the prerequisite synthesis step has completed."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S14",
+      "slot_id": "M1-S14",
+      "try": 1,
+      "point": "1.5-K2",
+      "select": 1,
+      "status": "written",
+      "model": "claude-opus-5-5",
+      "cannot_write_reason": null,
+      "question": "In your research system, the web search subagent sometimes sends queries containing confidential client project names to the external search tool, which violates company policy. The system prompt already forbids such queries, but logs show occasional violations. The compliance team requires a guarantee that no confidential name ever reaches the external search tool. What is the most effective way to meet this requirement?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Add a hook that intercepts outgoing search tool calls, checks each query against the confidential name list, and blocks matching calls before they execute.",
+          "correct": true,
+          "reason": "A hook that intercepts outgoing tool calls enforces the compliance rule deterministically and stops the violating call before it is executed."
+        },
+        {
+          "letter": "B",
+          "text": "Have the coordinator scan the findings of the web search subagent for confidential names before it passes them to the synthesis subagent.",
+          "correct": false,
+          "reason": "The check happens after the search has run, so it cannot stop the outgoing call that already sent the confidential name to the external search tool."
+        },
+        {
+          "letter": "C",
+          "text": "Rewrite the system prompt with stronger warnings and few-shot examples that show the subagent how to phrase queries without confidential names.",
+          "correct": false,
+          "reason": "Prompt instructions give only probabilistic compliance, and the guide says hooks are the right choice when business rules require guaranteed compliance."
+        },
+        {
+          "letter": "D",
+          "text": "Add a PostToolUse hook that removes confidential project names from the search results before the subagent processes them.",
+          "correct": false,
+          "reason": "A PostToolUse hook transforms tool results after the call has run, so the query with the confidential name has already reached the external search tool."
+        }
+      ]
+    },
+    {
+      "question_id": "T-M1-S15",
+      "slot_id": "M1-S15",
+      "try": 1,
+      "select": 1,
+      "status": "written",
+      "question": "The research team must find out which modules of a locally cloned open-source project still call the deprecated function load_old_settings. The document analysis subagent can use the built-in tools. Its first step is to list every place in the code that calls this function. Which tool should the document analysis subagent use for this first step?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Use Grep to search the contents of the project files for load_old_settings and list each matching call.",
+          "correct": true,
+          "reason": "Grep searches file contents, so it finds each caller of a function by its name."
+        },
+        {
+          "letter": "B",
+          "text": "Use Glob with the pattern **/*load_old_settings* to find each file that calls the function.",
+          "correct": false,
+          "reason": "Glob matches file paths by name or extension patterns. It does not search file contents."
+        },
+        {
+          "letter": "C",
+          "text": "Use Read to load each source file of the project first, and then look in each file for the calls.",
+          "correct": false,
+          "reason": "The guide advises to start with Grep and read files selectively, not to read all files first."
+        },
+        {
+          "letter": "D",
+          "text": "Use Write to add a log line to the function so that each call reports its caller during a run.",
+          "correct": false,
+          "reason": "Write is for full file operations. It changes the code and does not search for the callers."
+        }
+      ],
+      "point": "1.3-K2"
+    }
+  ],
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "T-M1-S06",
+            "T-M1-S15"
+          ],
+          "detail": "Both questions have the same scene. The document analysis subagent must find every call site of a deprecated function in a locally checked-out repository, and the correct action in both is to use Grep to search file contents for the function name. Only the function name differs, and the distractors are near-identical (Glob path pattern, Read all files upfront)."
+        },
+        {
+          "question_ids": [
+            "T-M1-S07",
+            "T-M1-S09"
+          ],
+          "detail": "Both questions have the same scene. The document analysis subagent has the same three clearly described tools and overcalls verify_claim_against_source because of keyword-sensitive wording in its system prompt. The correct resolution in both is to recognize the prompt keyword association and review or reword the system prompt. S07 frames it as a fix and S09 as a cause, but S09's own reason concludes that the prompt needs review."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "T-M1-S07",
+            "T-M1-S09"
+          ],
+          "detail": "S07's correct option D states that the system prompt wording creates a keyword association that overrides the tool descriptions. That is exactly S09's correct answer C, and S09's stem and answer in turn give away S07's fix."
+        },
+        {
+          "question_ids": [
+            "T-M1-S06",
+            "T-M1-S15"
+          ],
+          "detail": "Each question tells the other's answer. S06 option D says to Grep file contents for the deprecated function name to list every call site, and its reason calls Grep the tool for finding all callers of a function. This directly gives away S15's answer A, and S15 likewise gives away S06."
+        },
+        {
+          "question_ids": [
+            "T-M1-S04",
+            "T-M1-S11"
+          ],
+          "detail": "S04 option A's reason states that all subagent communication routes through the coordinator for observability, consistent error handling and controlled information flow. This gives away S11's correct answer D."
+        },
+        {
+          "question_ids": [
+            "T-M1-S13",
+            "T-M1-S14"
+          ],
+          "detail": "S14 option C's reason states that hooks are the right choice when business rules require guaranteed compliance, which gives away S13's correct hook answer B. S13 option C's reason says prompt instructions alone have a non-zero failure rate when deterministic compliance is required, which points to S14's hook answer A."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "T-M1-S01",
+            "T-M1-S06",
+            "T-M1-S15"
+          ],
+          "detail": "The wrong idea that Glob can search file contents (e.g., to find a citation line or calls to a function) is a wrong option in three questions: S01 A, S06 B and S15 B. This exceeds the limit of 2."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "error": null,
+  "same_scene_found": true,
+  "cost": {
+    "calls": 9,
+    "input_tokens": 39355,
+    "output_tokens": 12244,
+    "dollars": 0.4
+  }
+}

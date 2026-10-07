@@ -20,6 +20,7 @@ from control import CallFailed, RunStopped
 from model_call import ModelCall
 from step2_write import Writer
 from step4_check_model import ModelCheck
+from step6_check_scenario import ScenarioCheck
 from step7_marking import Marking, MarkingError
 from steps import ROOT, load_records
 
@@ -217,6 +218,65 @@ def part_b7(records, model_call):
     return result
 
 
+# Part 4 (decisions 0034 part 7 and 0042): a copy that the assistant wrote by hand.
+# It has the same scene as T-M1-S06: the same problem (find every caller of a
+# deprecated function in a local repository) and the same correct action (Grep).
+SAME_SCENE = {
+    "question_id": "T-M1-S15", "slot_id": "M1-S15", "try": 1, "select": 1, "status": "written",
+    "question": ("The research team must find out which modules of a locally cloned open-source project still call the "
+                 "deprecated function load_old_settings. The document analysis subagent can use the built-in tools. "
+                 "Its first step is to list every place in the code that calls this function. "
+                 "Which tool should the document analysis subagent use for this first step?"),
+    "options": [
+        {"letter": "A", "text": "Use Grep to search the contents of the project files for load_old_settings and list each matching call.",
+         "correct": True, "reason": "Grep searches file contents, so it finds each caller of a function by its name."},
+        {"letter": "B", "text": "Use Glob with the pattern **/*load_old_settings* to find each file that calls the function.",
+         "correct": False, "reason": "Glob matches file paths by name or extension patterns. It does not search file contents."},
+        {"letter": "C", "text": "Use Read to load each source file of the project first, and then look in each file for the calls.",
+         "correct": False, "reason": "The guide advises to start with Grep and read files selectively, not to read all files first."},
+        {"letter": "D", "text": "Use Write to add a log line to the function so that each call reports its caller during a run.",
+         "correct": False, "reason": "Write is for full file operations. It changes the code and does not search for the callers."},
+    ],
+}
+
+
+def part4(records, plan, model_call):
+    """Step 6 on a set of 15 questions of scenario 3 with two questions of the same
+    scene: T-M1-S06 and the copy T-M1-S15. Call 6a must name both (rule D1)."""
+    p1 = load("part1.json")
+    have = {e["slot"]["slot_id"]: e["question"] for e in p1["questions"] if e.get("question")}
+    writer = Writer(records, model_call, plan["seed"])
+    scenario = plan["scenarios"][0]
+    questions = []
+    for slot in [s for s in plan["slots"] if s["scenario"] == scenario]:
+        if slot["slot_id"] in have:
+            questions.append(have[slot["slot_id"]])
+        elif slot["slot_id"] == SAME_SCENE["slot_id"]:
+            questions.append(dict(SAME_SCENE, point=slot["point"]))
+        else:
+            request = {"slot": slot, "point": slot["point"], "step": 2, "shown_try": None,
+                       "failed_question": None, "findings": [], "other_questions": []}
+            answer, cause = retry(writer.write, request)
+            if answer is None or answer["status"] != "written":
+                raise RunStopped("The writer gave no question for %s: %s" % (slot["slot_id"], cause))
+            questions.append({"question_id": "T-%s" % slot["slot_id"], "slot_id": slot["slot_id"], "try": 1,
+                              "point": slot["point"], "select": slot["select"], **answer})
+            print("%s: written" % slot["slot_id"])
+    results, cause = retry(ScenarioCheck(plan, model_call).check, scenario, questions)
+    found = False
+    for r in results or []:
+        for f in r["findings"]:
+            if r["rule"] == "D1" and {"T-M1-S06", "T-M1-S15"} <= set(f["question_ids"]):
+                found = True
+    result = {"scenario": scenario, "questions": questions, "results": results, "error": cause,
+              "same_scene_found": found, "cost": cost(model_call)}
+    save("part4.json", result)
+    for r in results or []:
+        print("%s %s %s" % (r["rule"], r["result"], [(f["question_ids"], f["detail"][:120]) for f in r["findings"]]))
+    print("Same scene of T-M1-S06 and T-M1-S15 found: %s" % found)
+    return result
+
+
 def load_plan():
     with open(os.path.join(ROOT, "runs", "mock-01", "plan.json"), encoding="utf-8") as f:
         return json.load(f)
@@ -224,7 +284,7 @@ def load_plan():
 
 def main(argv=None):
     p = argparse.ArgumentParser(description="The test of decisions 0024 and 0042.")
-    p.add_argument("part", choices=["part1", "part2", "part3", "b7"])
+    p.add_argument("part", choices=["part1", "part2", "part3", "b7", "part4"])
     a = p.parse_args(argv)
     records = load_records()
     model_call = ModelCall()
@@ -235,8 +295,10 @@ def main(argv=None):
             r = part2(records, model_call)
         elif a.part == "part3":
             r = part3(records, model_call)
-        else:
+        elif a.part == "b7":
             r = part_b7(records, model_call)
+        else:
+            r = part4(records, load_plan(), model_call)
     except RunStopped as e:
         print("Stopped: %s" % e)
         print("Cost so far: %s" % json.dumps(cost(model_call)))
