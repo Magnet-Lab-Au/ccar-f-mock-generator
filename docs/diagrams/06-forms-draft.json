@@ -21,7 +21,7 @@
   },
   "call_4b": {
     "name": "submit_check",
-    "description": "Give one result for each of the rules B1 to B6.",
+    "description": "Give one result for each of the rules B1 to B7.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -30,7 +30,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "rule": { "type": "string", "enum": ["B1", "B2", "B3", "B4", "B5", "B6"] },
+              "rule": { "type": "string", "enum": ["B1", "B2", "B3", "B4", "B5", "B6", "B7"] },
               "result": { "type": "string", "enum": ["pass", "fail", "cannot_decide"] },
               "finding": {
                 "type": ["string", "null"],

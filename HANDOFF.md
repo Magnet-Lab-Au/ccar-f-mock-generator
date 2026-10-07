@@ -42,7 +42,7 @@ The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the 
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0042. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+4. `docs/decisions/`: decisions 0001 to 0043. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
 5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
 
 Read these only when you need them:
@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. All steps have code and tests, and `src/steps.py` connects them to the control. The command line is `src/run.py`. The key is in `~/.bashrc` (run the program with `bash -ic` from a shell that started before the key was added). The test of decisions 0024 and 0042 ran: parts 1 to 3 met each bar, for $2.64. Results: `runs/test-0024/`. Next: part 4 (step 6), the bad mark of T-M1-S05 (clarity of the writer), then mock 1. After each step runs for real: its build guide section and its diagram (the rule below).
+1. All steps have code and tests, and `src/steps.py` connects them to the control. The command line is `src/run.py`. The key is in `~/.bashrc` (run the program with `bash -ic` from a shell that started before the key was added). The test of decisions 0024 and 0042 ran: parts 1 to 3 met each bar, for $2.64. Results: `runs/test-0024/`. Rule B7 and a writer instruction answer the bad mark of T-M1-S05 (decision 0043). Next: a check of B7 with call 4b, part 4 (step 6), then mock 1. After each step runs for real: its build guide section and its diagram (the rule below).
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 

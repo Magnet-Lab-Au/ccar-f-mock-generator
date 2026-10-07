@@ -163,6 +163,8 @@ class TestWriter(unittest.TestCase):
         text = request_text(self.request(), RECORDS)
         self.assertIn("A11. The question is not a negative question.", text)
         self.assertIn("B6.", text)
+        self.assertIn("B7. Each actor has one name", text)
+        self.assertIn("Use one name for one actor.", text)
         self.assertIn(">>> %s:" % SLOT["point"], text)
         scen = next(s for s in RECORDS["scenarios"] if s["id"] == SLOT["scenario"])
         self.assertIn(scen["story"][:80], text)
@@ -225,7 +227,7 @@ def blind_for(question, status="answered"):
 def check_4b(results=None, features=()):
     rs = results or {}
     return {"results": [{"rule": r, "result": rs.get(r, ("pass",))[0], "finding": rs.get(r, (None, None))[1],
-                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6"]],
+                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6", "B7"]],
             "features": list(features)}
 
 
@@ -257,7 +259,7 @@ class TestModelCheck(unittest.TestCase):
         q = question_of(SLOT)
         _, client = self.run_check(blind_for(q), check_4b(), q)
         text = client.requests[1]["messages"][0]["content"]
-        for part in ("B1.", "B6.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
+        for part in ("B1.", "B6.", "B7.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
             self.assertIn(part, text)
 
     def test_the_rule_check_gets_the_complete_guide_text(self):

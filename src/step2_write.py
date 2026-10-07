@@ -46,7 +46,11 @@ B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
 B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature.
 
-One more instruction: the options of a question have the same form. Example: all are actions, or all are places, or all are causes.
+B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading.
+
+Two more instructions:
+- The options of a question have the same form. Example: all are actions, or all are places, or all are causes.
+- Use one name for one actor. Write each sentence so that a reader understands it at the first reading. (Decision 0043.)
 
 The question does not say how many answers to select. Code adds the line "Select 1." or "Select 2." to each question. Do not give letters to the options. Code gives the letters."""
 

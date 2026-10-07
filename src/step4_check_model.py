@@ -1,7 +1,7 @@
 """Step 4: a blind answer, then a rule check (decisions 0012, 0023, 0030, 0032, 0037 and 0040).
 
 Call 4a answers the question with no marks and no reasons. Call 4b checks the
-rules B1 to B6 with the complete record and the guide text. Code checks each
+rules B1 to B7 with the complete record and the guide text. Code checks each
 answer, searches the feature names in the records file, and makes the verdict.
 A model does not make the verdict.
 """
@@ -14,14 +14,15 @@ from step2_write import plain
 
 DESC_4A, SCHEMA_4A = load_form("06-forms-draft.json", "call_4a")
 DESC_4B, SCHEMA_4B = load_form("06-forms-draft.json", "call_4b")
-RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6"]
+RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6", "B7"]
 
 RULES_TEXT = """B1. Each option that is marked correct is correct, and no other option is correct.
 B2. Each wrong option is wrong for a reason that the guide gives, and its reason says so.
 B3. Each reason is true and agrees with the guide.
 B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
-B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any."""
+B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any.
+B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)"""
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
@@ -128,7 +129,7 @@ class ModelCheck:
         letters = {o["letter"] for o in question["options"]}
         results = answer.get("results") if isinstance(answer, dict) else None
         if not isinstance(results, list) or sorted(r.get("rule") for r in results) != RULES_B:
-            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B6.")
+            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B7.")
         for r in results:
             if r.get("result") not in ("pass", "fail", "cannot_decide"):
                 raise CallFailed("Call 4b: rule %s has no valid result." % r.get("rule"))
