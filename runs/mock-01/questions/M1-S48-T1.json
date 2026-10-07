@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S48-T1",
+  "slot_id": "M1-S48",
+  "try": 1,
+  "point": "4.6-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to generate code fixes and test cases for pull requests. After generation, the same session is instructed to review its own output before posting feedback. These self-reviews rarely flag problems, but human reviewers later find subtle bugs in the generated code. Which change most effectively improves the detection of these subtle issues?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start a second Claude instance and pass it the generator's full reasoning transcript so that it understands each design decision.",
+      "correct": false,
+      "reason": "The guide says the reviewer should work without the generator's reasoning context, and passing the transcript brings back the self-review limitation."
+    },
+    {
+      "letter": "B",
+      "text": "Add an instruction in the same session telling Claude to critically re-examine its generated code before posting the review.",
+      "correct": false,
+      "reason": "The guide states that self-review instructions are less effective, because the model keeps its reasoning context and is less likely to question its own decisions."
+    },
+    {
+      "letter": "C",
+      "text": "Enable extended thinking in the generating session so that Claude reasons more thoroughly when it reviews its own output.",
+      "correct": false,
+      "reason": "The guide states that independent review instances are more effective at catching subtle issues than extended thinking in the same session."
+    },
+    {
+      "letter": "D",
+      "text": "Run a second, independent Claude instance that reviews the generated code without receiving the generator's reasoning context or session history.",
+      "correct": true,
+      "reason": "The guide states that an independent review instance without prior reasoning context catches subtle issues more effectively than self-review."
+    }
+  ]
+}

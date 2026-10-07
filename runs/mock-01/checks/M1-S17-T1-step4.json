@@ -1,0 +1,108 @@
+{
+  "question_id": "M1-S17-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for option B says that the guide names max_tokens as a limit on output length. The guide only lists max_tokens under Claude API technologies and never describes what it does, so the reason attributes a claim to the guide that the guide does not make. The option's premise, that max_tokens gives room to store tool results, is also left uncorrected.",
+      "letter": "B",
+      "point": "2.4-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "cbbd6012353a79406d1a49274a2282e23582a476657b0759df07d6d940594a35",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "D"
+    ],
+    "reason": "Exposing content catalogs such as database schemas and documentation hierarchies as MCP resources gives the agent visibility into the available data without exploratory tool calls (2.4-K4, 2.4-S5). The other options do not address the problem: raising max_tokens only affects output length, forcing tool_choice 'any' would add tool calls, and changing the configuration scope does not reveal what content exists.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for option B says that the guide names max_tokens as a limit on output length. The guide only lists max_tokens under Claude API technologies and never describes what it does, so the reason attributes a claim to the guide that the guide does not make. The option's premise, that max_tokens gives room to store tool results, is also left uncorrected.",
+      "letter": "B",
+      "point": "2.4-K4"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP resources",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "get_customer",
+      "found": true
+    },
+    {
+      "name": "max_tokens",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": ".mcp.json",
+      "found": true
+    },
+    {
+      "name": "~/.claude.json",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

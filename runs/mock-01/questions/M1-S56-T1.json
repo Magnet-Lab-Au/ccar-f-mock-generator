@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S56-T1",
+  "slot_id": "M1-S56",
+  "try": 1,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code reviews on every pull request and reports findings in three categories: security, bugs, and comment accuracy. Most comment-accuracy findings turn out to be false positives. Developers now dismiss all review findings, including correct security warnings. What should you do first to restore developer trust while keeping the review useful?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Temporarily disable the comment-accuracy category while you rewrite its criteria, and keep the security and bug categories running.",
+      "correct": true,
+      "reason": "The guide recommends temporarily disabling high false-positive categories to restore trust while the prompts for those categories are improved. This keeps the accurate categories active."
+    },
+    {
+      "letter": "B",
+      "text": "Keep all three categories active and add a note asking developers to double-check comment-accuracy findings before acting on them.",
+      "correct": false,
+      "reason": "The guide states that high false-positive categories undermine confidence in accurate categories. Keeping the noisy category active continues to erode trust in the security and bug findings."
+    },
+    {
+      "letter": "C",
+      "text": "Add an instruction to the review prompt telling Claude to only report high-confidence findings in all three categories.",
+      "correct": false,
+      "reason": "The guide states that general instructions like 'only report high-confidence findings' fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "D",
+      "text": "Turn off the entire automated review until the prompts for all three categories have been rewritten and tested again.",
+      "correct": false,
+      "reason": "The guide recommends disabling only the high false-positive categories. Turning off everything throws away the accurate security and bug findings that the review still provides."
+    }
+  ]
+}

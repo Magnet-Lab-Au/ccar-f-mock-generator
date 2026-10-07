@@ -1,0 +1,125 @@
+{
+  "mock": 1,
+  "scenario": 5,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S53-T2",
+            "M1-S54-T1"
+          ],
+          "detail": "The stem of M1-S53-T2 says that outputs can pass the schema yet fail semantic checks. That is the key insight M1-S54-T1 tests: a count mismatch is a semantic error that schema enforcement cannot prevent. In the other direction, the correct option B of M1-S54-T1 says to add a check and retry with the specific error. That answers M1-S53-T2, whose correct option A is to retry with the specific validation errors."
+        },
+        {
+          "question_ids": [
+            "M1-S48-T1",
+            "M1-S60-T1"
+          ],
+          "detail": "The correct option D of M1-S48-T1 is an independent reviewer that does not receive the generator's reasoning context. This points to the cause M1-S60-T1 asks for, which is that the same session keeps its generation reasoning. In the other direction, the correct option C of M1-S60-T1 names retained reasoning context as the reason self-review fails. This leads directly to the fix in M1-S48-T1, which is an independent instance without that context."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S47-T4",
+            "M1-S49-T1",
+            "M1-S56-T1"
+          ],
+          "detail": "The same wrong idea is a wrong option in three questions: a general prompt instruction fixes output quality without specific criteria or examples. The options are M1-S47-T4 C ('be thorough and consistent'), M1-S49-T1 D ('be conservative ... only when highly confident') and M1-S56-T1 C ('only report high-confidence findings'). Each reason cites the guide's point that general instructions fail compared to specific criteria or examples."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S49-T1",
+            "M1-S56-T1"
+          ],
+          "detail": "More than one wrong option uses the model's own confidence as a filter, threshold or trigger. M1-S49-T1 B outputs a confidence score per finding and drops findings below a fixed threshold. M1-S49-T1 D lets a higher severity be assigned only when the model is highly confident, which is a confidence trigger. M1-S56-T1 C tells Claude to report only high-confidence findings, which is a self-confidence filter. None of these is the guide-endorsed use: calibrated field-level scores used to route items to human review."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M1-SC5-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S53-T2",
+        "M1-S54-T1"
+      ],
+      "detail": "The stem of M1-S53-T2 says that outputs can pass the schema yet fail semantic checks. That is the key insight M1-S54-T1 tests: a count mismatch is a semantic error that schema enforcement cannot prevent. In the other direction, the correct option B of M1-S54-T1 says to add a check and retry with the specific error. That answers M1-S53-T2, whose correct option A is to retry with the specific validation errors."
+    },
+    {
+      "id": "M1-SC5-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S48-T1",
+        "M1-S60-T1"
+      ],
+      "detail": "The correct option D of M1-S48-T1 is an independent reviewer that does not receive the generator's reasoning context. This points to the cause M1-S60-T1 asks for, which is that the same session keeps its generation reasoning. In the other direction, the correct option C of M1-S60-T1 names retained reasoning context as the reason self-review fails. This leads directly to the fix in M1-S48-T1, which is an independent instance without that context."
+    },
+    {
+      "id": "M1-SC5-R1-F3",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S47-T4",
+        "M1-S49-T1",
+        "M1-S56-T1"
+      ],
+      "detail": "The same wrong idea is a wrong option in three questions: a general prompt instruction fixes output quality without specific criteria or examples. The options are M1-S47-T4 C ('be thorough and consistent'), M1-S49-T1 D ('be conservative ... only when highly confident') and M1-S56-T1 C ('only report high-confidence findings'). Each reason cites the guide's point that general instructions fail compared to specific criteria or examples."
+    },
+    {
+      "id": "M1-SC5-R1-F4",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M1-S49-T1",
+        "M1-S56-T1"
+      ],
+      "detail": "More than one wrong option uses the model's own confidence as a filter, threshold or trigger. M1-S49-T1 B outputs a confidence score per finding and drops findings below a fixed threshold. M1-S49-T1 D lets a higher severity be assigned only when the model is highly confident, which is a confidence trigger. M1-S56-T1 C tells Claude to report only high-confidence findings, which is a self-confidence filter. None of these is the guide-endorsed use: calibrated field-level scores used to route items to human review."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M1-S46-T1": "bf7a793d47a80ad917190cec07d660a9bb26e719ac91986f325db10b689c8f04",
+    "M1-S47-T4": "1cfab8230a11bcb5f48264c6d2e1c8ed920a1a4cd23d03158e281ba2207ae52f",
+    "M1-S48-T1": "490abf3b0ad1e02a100ad69921ad0845a789405487fd3ec7e77048a744303460",
+    "M1-S49-T1": "59a95955cf1dbdd9a78d4792c771cd9ce4f6a7927b199b596cb15c67db73f33a",
+    "M1-S50-T1": "5c6445f4abbd156ddd6f6833655d3d2a604532c48a4a61d06ee780f1146abee8",
+    "M1-S51-T2": "c700f573e04b95565630015ff606689a1f0fb4a3c1a057376d9bef52737c6fb3",
+    "M1-S52-T1": "c7288453e6e71a853658c6defd27e0410aea1d0bd411650bf6b7f16a8177ab95",
+    "M1-S53-T2": "3810d3dc18e55b1b06ccba952385cd0838a95921d5c182e2fa2f064d45c862b3",
+    "M1-S54-T1": "f5d33fecbf3899efd712dee5d21688b7192de9deab64c8cd5252c5a4ac35fa8f",
+    "M1-S55-T1": "f86e950b60a57db2664d57e64b1126d4c705edde71ba1004e845fb022b950f4b",
+    "M1-S56-T1": "dae8e6c198126ddf78ec5625a0e5da9d89e330cd8d2793e4aac13b13ffcdb268",
+    "M1-S57-T1": "5cd90831b40c68810be59ce8f2ed3357744d1c5acd6e2563667a68bf6bfa473c",
+    "M1-S58-T1": "8be2da8c8e6e6196786319a93e8c761dcf6e088724e2caa6fe4edc75afba8bef",
+    "M1-S59-T1": "a4ec0975aad627092a28ca2927fca6ca256c720dc793bb13fd9971a0a761f079",
+    "M1-S60-T1": "9a18322025575157c15459171805ffd73405e3e36247bdad7c5a0f51edbfbb65"
+  },
+  "date": "2026-10-07"
+}

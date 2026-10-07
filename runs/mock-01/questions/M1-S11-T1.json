@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S11-T1",
+  "slot_id": "M1-S11",
+  "try": 1,
+  "point": "1.2-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, a teammate proposes that the web search subagent send its results directly to the document analysis subagent. The teammate also wants the document analysis subagent to call the web search subagent itself whenever a search fails. You want the design to follow a hub-and-spoke architecture. How should communication, error handling, and information routing be organized?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Each subagent sends its results directly to the next subagent in the pipeline, and the coordinator receives only the final report.",
+      "correct": false,
+      "reason": "Direct subagent-to-subagent communication bypasses the coordinator, so the system loses observability, consistent error handling, and controlled information flow."
+    },
+    {
+      "letter": "B",
+      "text": "Each subagent inherits the coordinator's full conversation history, so it can contact other subagents when it needs their data.",
+      "correct": false,
+      "reason": "Subagents operate with isolated context and do not automatically inherit the coordinator's history, and inter-subagent communication should go through the coordinator."
+    },
+    {
+      "letter": "C",
+      "text": "Each subagent writes its results to a common store that all other subagents read, and each subagent handles its own errors.",
+      "correct": false,
+      "reason": "Letting every subagent read everything and handle its own errors removes controlled information flow and consistent error handling, which the coordinator is meant to provide."
+    },
+    {
+      "letter": "D",
+      "text": "The coordinator receives every subagent result and error, then decides which information to route to which subagent next.",
+      "correct": true,
+      "reason": "In hub-and-spoke architecture the coordinator manages all inter-subagent communication, error handling, and information routing, which gives observability and consistent error handling."
+    }
+  ]
+}

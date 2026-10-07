@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S37-T1",
+  "slot_id": "M1-S37",
+  "try": 1,
+  "point": "5.4-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to explore a large legacy codebase before a refactoring. Early in a long session, Claude identified specific classes such as OrderReconciler and LedgerSyncService. Several hours later, Claude gives answers that contradict its earlier findings. It also describes \"typical patterns\" for such systems instead of naming those classes. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The project CLAUDE.md file lacks the team's coding standards, so Claude cannot apply project conventions to its answers.",
+      "correct": false,
+      "reason": "Missing conventions do not explain why Claude forgets classes it found in this session; the guide links this symptom pattern to context degradation."
+    },
+    {
+      "letter": "B",
+      "text": "Context has degraded over the extended session, so Claude no longer reliably uses the specific classes it discovered earlier.",
+      "correct": true,
+      "reason": "The guide names inconsistent answers and references to \"typical patterns\" instead of earlier-discovered classes as the signs of context degradation in extended sessions."
+    },
+    {
+      "letter": "C",
+      "text": "The Grep tool returned incomplete search results, so Claude never found the classes that the codebase actually contains.",
+      "correct": false,
+      "reason": "Claude did find and name the classes earlier, so the search worked; losing them later in a long session is the guide's sign of context degradation."
+    },
+    {
+      "letter": "D",
+      "text": "The session ran in direct execution instead of plan mode, so Claude skipped the exploration of the codebase entirely.",
+      "correct": false,
+      "reason": "Claude did explore and found the specific classes early on; the later drift toward generic patterns is the guide's sign of context degradation."
+    }
+  ]
+}

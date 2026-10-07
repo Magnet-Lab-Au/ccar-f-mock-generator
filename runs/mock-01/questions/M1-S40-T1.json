@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S40-T1",
+  "slot_id": "M1-S40",
+  "try": 1,
+  "point": "3.1-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team's repository has a services/billing directory whose code follows strict currency-rounding conventions that apply nowhere else in the repository. You want Claude Code to apply these conventions automatically whenever it works on billing files. Every teammate should also receive the conventions through version control. Where should you place these instructions?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Put them in the root CLAUDE.md of the repository, so that the project-level configuration applies them to every directory of the project.",
+      "correct": false,
+      "reason": "The project-level file is shared, but it applies the billing conventions to the whole project instead of scoping them to the billing directory."
+    },
+    {
+      "letter": "B",
+      "text": "Put them in ~/.claude/CLAUDE.md on your own machine, so that the user-level configuration applies them whenever you work on billing code.",
+      "correct": false,
+      "reason": "User-level instructions apply only to that one user and are not shared with teammates through version control."
+    },
+    {
+      "letter": "C",
+      "text": "Put them in a custom slash command file in .claude/commands/ that each developer runs before editing billing code.",
+      "correct": false,
+      "reason": "A slash command runs only when a developer invokes it, so it gives no automatic, scoped configuration like the CLAUDE.md hierarchy does."
+    },
+    {
+      "letter": "D",
+      "text": "Put them in a CLAUDE.md file inside the services/billing directory, so that a directory-level configuration covers only that part of the repository.",
+      "correct": true,
+      "reason": "A directory-level CLAUDE.md in a subdirectory scopes the instructions to that directory, and it lives in the repository, so version control shares it with the team."
+    }
+  ]
+}

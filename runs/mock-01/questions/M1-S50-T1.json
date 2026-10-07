@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S50-T1",
+  "slot_id": "M1-S50",
+  "try": 1,
+  "point": "4.5-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in the CI/CD pipeline for several workloads. To cut costs, a lead proposes moving one workload to the Message Batches API. This API gives 50% cost savings, but processing can take up to 24 hours and has no guaranteed latency SLA. Which workload is the best fit for the Message Batches API?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Pull request feedback that developers wait for before they continue to edit and push their next commit.",
+      "correct": false,
+      "reason": "Developers wait for this feedback, so the workflow is blocking, and the guide says batch processing is inappropriate for blocking workflows."
+    },
+    {
+      "letter": "B",
+      "text": "Nightly test case generation for code merged during the day, with results that developers review the next morning.",
+      "correct": true,
+      "reason": "This workload is non-blocking and latency-tolerant, and the guide names nightly test generation as appropriate for batch processing."
+    },
+    {
+      "letter": "C",
+      "text": "The pre-merge code review check that must finish before a developer is allowed to merge a pull request.",
+      "correct": false,
+      "reason": "A pre-merge check is a blocking workflow, and the guide says it belongs on the synchronous API because batch processing has no guaranteed latency SLA."
+    },
+    {
+      "letter": "D",
+      "text": "The automated review that the deployment pipeline must complete before it releases an urgent hotfix to production.",
+      "correct": false,
+      "reason": "The release waits on this review, so the workflow is blocking and needs the synchronous API rather than a batch with up to 24 hours of processing."
+    }
+  ]
+}

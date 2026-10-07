@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S52-T1",
+  "slot_id": "M1-S52",
+  "try": 1,
+  "point": "4.3-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with --json-schema so that each code review finding is returned as structured output. The schema has a required category field whose enum lists only security, performance, and style. Reviewers notice that findings about accessibility and licensing are labeled as style, which misleads the teams that triage findings by category. Which schema change best handles such findings while keeping the category field machine-readable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add an \"other\" value to the category enum together with a category_detail string field that describes the finding when \"other\" is chosen.",
+      "correct": true,
+      "reason": "The guide names enum fields with an \"other\" value plus a detail string as the schema pattern for extensible categories, so known categories stay consistent and new kinds of findings are captured accurately."
+    },
+    {
+      "letter": "B",
+      "text": "Make the category field optional so that the model can leave it out whenever a finding matches none of the three enum values.",
+      "correct": false,
+      "reason": "The guide uses optional fields for information that may be missing from the source, but here every finding still needs a category; the guide's pattern for unlisted categories is \"other\" plus a detail string."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the three enum values and add a prompt instruction that tells the model to pick the closest category for every finding.",
+      "correct": false,
+      "reason": "This still forces accessibility and licensing findings into wrong categories, which is the mislabeling problem; the guide adds an \"other\" value plus a detail string for extensible categories."
+    },
+    {
+      "letter": "D",
+      "text": "Replace the category enum with a free-text string field so that the model can describe any kind of finding in its own words.",
+      "correct": false,
+      "reason": "Free text removes the fixed category values that triage depends on; the guide keeps the enum and extends it with an \"other\" value plus a detail string instead."
+    }
+  ]
+}

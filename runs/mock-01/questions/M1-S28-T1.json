@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S28-T1",
+  "slot_id": "M1-S28",
+  "try": 1,
+  "point": "1.1-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent uses the Claude Agent SDK and the MCP tools get_customer, lookup_order, process_refund, and escalate_to_human. A teammate proposes that the code run a fixed sequence for every request: get_customer, then lookup_order, then process_refund. However, billing disputes and account issues often need different steps, and the right next step often depends on what a tool returns. Which design best fits this situation?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the code call get_customer and lookup_order first for every request, and then let Claude choose between process_refund and escalate_to_human.",
+      "correct": false,
+      "reason": "The first steps are still a pre-configured tool sequence. Claude cannot choose a different next tool from the context, for example when an account issue needs no order lookup."
+    },
+    {
+      "letter": "B",
+      "text": "Let Claude decide which tool to call in each iteration, based on the request and on the tool results already in the conversation.",
+      "correct": true,
+      "reason": "This is model-driven decision-making. Claude reasons about which tool to call next from the context, so the agent can adapt to each request and to new tool results."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the fixed sequence, but add a decision tree in code that picks a branch from keywords in the customer's first message.",
+      "correct": false,
+      "reason": "This is a pre-configured decision tree. Its branches are fixed before the agent runs, so it cannot react to information that later tool results reveal."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the fixed sequence, and end the loop in code after the third tool returns, whatever the stop_reason value is.",
+      "correct": false,
+      "reason": "This keeps a pre-configured tool sequence. It also ignores stop_reason, which the agentic loop must inspect to decide whether to continue or to terminate."
+    }
+  ]
+}

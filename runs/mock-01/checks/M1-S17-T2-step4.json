@@ -1,0 +1,95 @@
+{
+  "question_id": "M1-S17-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "87394503f218d516e50ba92301c478093942e25fc04c55171f78764ed047670c",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "D"
+    ],
+    "reason": "MCP resources expose content catalogs, such as documentation hierarchies and database schemas, so the agent can see the available data without exploratory tool calls (2.4-K4, 2.4-S5). C covers the policy document catalog and D covers the data-field schemas. Batch API (A) only lowers cost, does not support multi-turn tool calling and does not fit a live agent. Moving the config to user scope (B) changes nothing about visibility. Forcing tool_choice 'any' (E) would add tool calls rather than remove them.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "MCP resources",
+      "found": true
+    },
+    {
+      "name": ".mcp.json",
+      "found": true
+    },
+    {
+      "name": "~/.claude.json",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

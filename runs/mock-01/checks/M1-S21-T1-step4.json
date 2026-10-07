@@ -1,0 +1,86 @@
+{
+  "question_id": "M1-S21-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "dd0ce14572a9f3d764d666186350213aac523fc945741d9bde0925428cbeffe1",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "These disputes are open-ended investigations whose path depends on what each tool result reveals. Dynamic adaptive decomposition lets the agent add new subtasks, such as looking up the linked account, as findings emerge. Options A and C are fixed plans that cannot adapt to new findings. Option D escalates cases unnecessarily, which undermines the first-contact resolution target.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "get_customer",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "process_refund",
+      "found": true
+    },
+    {
+      "name": "escalate_to_human",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

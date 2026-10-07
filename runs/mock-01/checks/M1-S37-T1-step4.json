@@ -1,0 +1,86 @@
+{
+  "question_id": "M1-S37-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "90b1002ca4c2fb43e25a75d190f6c215cced267d8d1e2ebb3272b01f1f823860",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "This matches 5.4-K1. In extended sessions, context degrades, so the model starts giving inconsistent answers and refers to 'typical patterns' instead of the specific classes it found earlier. C is wrong because the classes were found. D is wrong because exploration did happen. A does not explain why answers changed over time.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "direct execution",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S45-T1",
+  "slot_id": "M1-S45",
+  "try": 1,
+  "point": "5.4-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "You are using Claude Code to plan a refactoring of the refund module in a large monorepo. Before you change any code, you need answers to several specific questions, such as which test files cover refunds and which services depend on the refund flow. In an earlier attempt, the main session read dozens of files directly, and verbose output filled its context before the plan was finished. Which approach best keeps the main session focused on the overall refactoring plan?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the main session read every file in the refund module first, so that it holds complete detail before it answers any of the questions.",
+      "correct": false,
+      "reason": "This repeats the failure: verbose discovery output fills the main context, and the guide says extended sessions then degrade into inconsistent answers."
+    },
+    {
+      "letter": "B",
+      "text": "Spawn subagents to investigate each specific question, such as finding all refund test files, and have them return concise findings to the main session that coordinates the plan.",
+      "correct": true,
+      "reason": "The guide recommends delegating specific investigations to subagents, which isolates verbose exploration output while the main agent keeps high-level coordination."
+    },
+    {
+      "letter": "C",
+      "text": "Copy the full source of the refund module into the project CLAUDE.md file, so that every session loads all the code at startup.",
+      "correct": false,
+      "reason": "This loads large amounts of verbose content into every session's context, the opposite of isolating exploration output in subagents as the guide recommends."
+    },
+    {
+      "letter": "D",
+      "text": "Run every investigation in the main session, and start a fresh session for each new question so that each question begins with an empty context.",
+      "correct": false,
+      "reason": "Fresh sessions discard earlier findings, so no session keeps the high-level understanding that the guide assigns to a coordinating main agent."
+    }
+  ]
+}

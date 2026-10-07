@@ -1,0 +1,131 @@
+{
+  "mock": 1,
+  "scenario": 2,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S34-T1",
+            "M1-S38-T1"
+          ],
+          "detail": "Both questions share one scene. The problem is a large change across many files with an open design choice (an HTTP client migration across about 50 files, a logging replacement across services). The correct action in both is to start in plan mode so that Claude Code explores and designs before editing. S38 only asks for the reason behind the same action."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S38-T1",
+            "M1-S34-T1"
+          ],
+          "detail": "The S38 stem says that direct execution on a multi-file logging change caused costly reverted edits, and that the team will 'start in plan mode' for a similar change. This gives away the S34 answer: plan mode for a large multi-file migration. In turn, S34 option B states that plan mode lets Claude Code explore and design the approach before any file is changed. That is the correct answer to S38."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S32-T1",
+            "M1-S33-T1",
+            "M1-S40-T2",
+            "M1-S36-T1"
+          ],
+          "detail": "The wrong idea 'put the team configuration in the personal user-level location (~/.claude/CLAUDE.md or ~/.claude/skills/), which is not shared through version control' is a wrong option in more than 2 questions: S32-T1 A, S33-T1 D, S40-T2 B, and in a close variant S36-T1 C."
+        },
+        {
+          "question_ids": [
+            "M1-S32-T1",
+            "M1-S33-T1",
+            "M1-S40-T2",
+            "M1-S43-T1"
+          ],
+          "detail": "The wrong idea 'put scoped conventions in the root project CLAUDE.md so they load for every file or package' is a wrong option in 4 questions: S32-T1 C, S33-T1 A, S40-T2 D and S43-T1 D."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M1-SC2-R1-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M1-S34-T1",
+        "M1-S38-T1"
+      ],
+      "detail": "Both questions share one scene. The problem is a large change across many files with an open design choice (an HTTP client migration across about 50 files, a logging replacement across services). The correct action in both is to start in plan mode so that Claude Code explores and designs before editing. S38 only asks for the reason behind the same action."
+    },
+    {
+      "id": "M1-SC2-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S38-T1",
+        "M1-S34-T1"
+      ],
+      "detail": "The S38 stem says that direct execution on a multi-file logging change caused costly reverted edits, and that the team will 'start in plan mode' for a similar change. This gives away the S34 answer: plan mode for a large multi-file migration. In turn, S34 option B states that plan mode lets Claude Code explore and design the approach before any file is changed. That is the correct answer to S38."
+    },
+    {
+      "id": "M1-SC2-R1-F3",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S32-T1",
+        "M1-S33-T1",
+        "M1-S40-T2",
+        "M1-S36-T1"
+      ],
+      "detail": "The wrong idea 'put the team configuration in the personal user-level location (~/.claude/CLAUDE.md or ~/.claude/skills/), which is not shared through version control' is a wrong option in more than 2 questions: S32-T1 A, S33-T1 D, S40-T2 B, and in a close variant S36-T1 C."
+    },
+    {
+      "id": "M1-SC2-R1-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S32-T1",
+        "M1-S33-T1",
+        "M1-S40-T2",
+        "M1-S43-T1"
+      ],
+      "detail": "The wrong idea 'put scoped conventions in the root project CLAUDE.md so they load for every file or package' is a wrong option in 4 questions: S32-T1 C, S33-T1 A, S40-T2 D and S43-T1 D."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M1-S31-T2": "c2266e4d1e7893cb1e3434a8321cf4778caee692cde413cdd51444140cb84ea8",
+    "M1-S32-T1": "f33d0d297c08556f2c97c08d36d5753678aaeab7640e96bfeb7684016ce87a47",
+    "M1-S33-T1": "30c17e9d76156da97c52498bdb9ffcee7dde234cd7066c3f53167dbc82dd6aad",
+    "M1-S34-T1": "e3a37df0a8c75023d97c32c1810e5de9ac87ac53c330100d06a1ea55c99daa25",
+    "M1-S35-T1": "7c65983e8505d6dc7fcb87257fcbeef457e6257228388dee26ddd33e0d54d839",
+    "M1-S36-T1": "1e32d63037cfdfb864d23ae81deeb0a5eaece03ff3c83084b5ee5bba2a25a6ef",
+    "M1-S37-T1": "90b1002ca4c2fb43e25a75d190f6c215cced267d8d1e2ebb3272b01f1f823860",
+    "M1-S38-T1": "b3f8f1543621e12cfc547cca86089c7809d5592affd6ef504534e65b2e43afd7",
+    "M1-S39-T1": "fbcd1669b45ecb874944581a58a8bc2818f03f43e500d01a2547a27b2a3351cf",
+    "M1-S40-T2": "043a76dd61e78974ddd0215770b6f135eb50a5986dd7fbd5dd7329a63bbb7fd7",
+    "M1-S41-T1": "019065de1a1de9d693d4aa815e051bea96cc868e75860c2c66bb00f4ec690ddc",
+    "M1-S42-T1": "a96cc44ecf7cdebdef212069ab93a577146126c6d3698148877b60c278616d59",
+    "M1-S43-T1": "79d2751b303458b0792739bd03338044a5359a8589f6dee9a338cb397f345a37",
+    "M1-S44-T1": "d87d328262352de72bb2372139eb4c0ac54baba89d6f55fe33233770f33089f8",
+    "M1-S45-T2": "5873a8783cdf9398481db8ed353541c5b6b9c588120bf91e85dfd0dfaa9b1735"
+  },
+  "date": "2026-10-07"
+}

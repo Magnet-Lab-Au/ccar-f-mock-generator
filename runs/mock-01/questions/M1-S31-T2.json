@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S31-T2",
+  "slot_id": "M1-S31",
+  "try": 2,
+  "point": "3.6-K4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S31-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to generate a new payment validation module. A developer then asks the generation session, which is the Claude Code session that wrote the code, to review the changes before merging. The review reports no problems, but a teammate later finds several logic errors in the module. Which change would most effectively improve the quality of this review?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Ask the generation session to report its findings with --output-format json and --json-schema so that the results are machine-parseable.",
+      "correct": false,
+      "reason": "These flags only make the output structured; the review still runs in the generation session, so it stays less effective than an independent review instance."
+    },
+    {
+      "letter": "B",
+      "text": "Resume the generation session with --resume so that the review keeps full knowledge of the original design decisions.",
+      "correct": false,
+      "reason": "Resuming the generation session carries over its context, and the guide says that a review in the generation session is less effective than an independent review instance."
+    },
+    {
+      "letter": "C",
+      "text": "Add an instruction in the generation session that tells Claude to review its own changes more critically before approving them.",
+      "correct": false,
+      "reason": "The review still runs in the generation session, so the session context isolation problem that the guide describes remains."
+    },
+    {
+      "letter": "D",
+      "text": "Run the review in an independent review instance of Claude Code that starts without the context of the generation session.",
+      "correct": true,
+      "reason": "The guide states that an independent review instance reviews changes more effectively than the generation session, which keeps the context in which it produced the code."
+    }
+  ]
+}

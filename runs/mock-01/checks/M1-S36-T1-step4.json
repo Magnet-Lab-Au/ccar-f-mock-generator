@@ -1,0 +1,106 @@
+{
+  "question_id": "M1-S36-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "1e32d63037cfdfb864d23ae81deeb0a5eaece03ff3c83084b5ee5bba2a25a6ef",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "A project-scoped skill in .claude/skills/ that is committed to version control is shared with the whole team and can be invoked on demand. Its SKILL.md frontmatter supports context: fork for an isolated sub-agent context, allowed-tools for restricting tools, and argument-hint for prompting developers for the target module. The other options fail: CLAUDE.md is always loaded and cannot enforce these settings through prose, ~/.claude/skills/ is personal and not shared, and .claude/rules/ handles path-scoped conventions rather than invocable workflows.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "SKILL.md",
+      "found": true
+    },
+    {
+      "name": ".claude/skills/",
+      "found": true
+    },
+    {
+      "name": "context: fork",
+      "found": true
+    },
+    {
+      "name": "allowed-tools",
+      "found": true
+    },
+    {
+      "name": "argument-hint",
+      "found": true
+    },
+    {
+      "name": "~/.claude/skills/",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

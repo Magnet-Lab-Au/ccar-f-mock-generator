@@ -1,0 +1,87 @@
+{
+  "question_id": "M1-S58-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "8be2da8c8e6e6196786319a93e8c761dcf6e088724e2caa6fe4edc75afba8bef",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "C"
+    ],
+    "reason": "A command file in the project's .claude/commands/ that is committed to the repo is shared through version control, so every developer gets it on clone or pull. A file in that one developer's ~/.claude/commands/ is personal and not visible to teammates, which suits the experimental variant. CLAUDE.md does not define slash commands. Putting the file in each developer's home directory is not distributed through the repo. Committing the experimental variant would expose it to the whole team.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    },
+    {
+      "name": "~/.claude/commands/",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

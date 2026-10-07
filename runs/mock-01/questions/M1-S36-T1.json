@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S36-T1",
+  "slot_id": "M1-S36",
+  "try": 1,
+  "point": "3.2-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team wants a reusable dependency-audit workflow in Claude Code that every developer can invoke on demand from the shared repository. The workflow should run in an isolated sub-agent context and be limited to specific tools during execution. It should also prompt developers for a target module when they invoke it without arguments. Where and how should you define this workflow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add the workflow instructions to the project CLAUDE.md file and describe the isolation, tool limits, and required module parameter in plain prose.",
+      "correct": false,
+      "reason": "CLAUDE.md is always loaded for universal standards, while on-demand task-specific workflows belong in skills, and prose in CLAUDE.md does not configure fork isolation, tool restriction, or argument hints."
+    },
+    {
+      "letter": "B",
+      "text": "Create a SKILL.md file in .claude/skills/ whose frontmatter sets context: fork, allowed-tools, and argument-hint, and commit that file to version control.",
+      "correct": true,
+      "reason": "Skills in the project .claude/skills/ directory use SKILL.md frontmatter to configure context: fork for isolation, allowed-tools for tool restriction, and argument-hint for parameter prompts, and the repository shares them with the team."
+    },
+    {
+      "letter": "C",
+      "text": "Create a SKILL.md file in ~/.claude/skills/ on your own machine with the same frontmatter settings for fork, tools, and argument hint.",
+      "correct": false,
+      "reason": "Skills in ~/.claude/skills/ are personal and do not reach teammates, so this location does not meet the requirement that every developer can invoke the workflow from the shared repository."
+    },
+    {
+      "letter": "D",
+      "text": "Create a rule file in .claude/rules/ whose YAML frontmatter lists path patterns for the target modules that the audit should cover.",
+      "correct": false,
+      "reason": "The YAML frontmatter in .claude/rules/ scopes conventions to file paths; it does not define an on-demand workflow with fork isolation, allowed tools, or an argument hint."
+    }
+  ]
+}

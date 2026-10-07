@@ -1,0 +1,84 @@
+{
+  "question_id": "M1-S47-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "Option E says \"Make the few-shot examples cover…\". The definite article points to examples that the stem never introduces; they appear only in option D. A reader who meets E on its own cannot tell at first reading which examples are meant. E also reads as a refinement of D rather than as an independent change.",
+      "letter": "E",
+      "point": "4.2-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "ad94ac886d2009d91f46e20d868f1d48988b1d2fb46b9be8abd25eb59a42e994",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D",
+      "E"
+    ],
+    "reason": "Detailed instructions alone are already producing inconsistent output, and few-shot examples are the most effective fix for that. Complete examples showing location, issue, severity, and suggested fix demonstrate the exact format (D). Covering varied finding types in that same format helps the model apply it consistently to new cases (E). Longer rules (A), vague exhortations (C), and confidence scores (B) do not fix the missing fields.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "Option E says \"Make the few-shot examples cover…\". The definite article points to examples that the stem never introduces; they appear only in option D. A reader who meets E on its own cannot tell at first reading which examples are meant. E also reads as a refinement of D rather than as an independent change.",
+      "letter": "E",
+      "point": "4.2-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "system prompt",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

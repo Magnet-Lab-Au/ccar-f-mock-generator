@@ -1,0 +1,83 @@
+{
+  "question_id": "M1-S53-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question and options call the input 'the original diff' and the result 'the failed output'. The reason for A calls them 'the original document' and 'the failed extraction', and the reason for D also says 'the failed extraction'. Two things have two names each. 'Extraction' does not fit a code review story, so a reader must stop to map the terms. The reasons should say 'the original diff' and 'the failed output'.",
+      "letter": "A",
+      "point": "4.4-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "aafbc6226e2e5e448afd0607dfc0237756d15246b973d87ecef8f60a96089d41",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Retry-with-error-feedback (4.4-K1, 4.4-S1): include the original input, the failed output, and the specific validation errors so the model can correct the semantic problem. Tightening the schema won't fix semantic errors. Blind or generic retries give the model no guidance.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question and options call the input 'the original diff' and the result 'the failed output'. The reason for A calls them 'the original document' and 'the failed extraction', and the reason for D also says 'the failed extraction'. Two things have two names each. 'Extraction' does not fit a code review story, so a reader must stop to map the terms. The reasons should say 'the original diff' and 'the failed output'.",
+      "letter": "A",
+      "point": "4.4-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "--json-schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

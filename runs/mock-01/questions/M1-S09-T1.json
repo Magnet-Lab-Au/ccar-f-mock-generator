@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S09-T1",
+  "slot_id": "M1-S09",
+  "try": 1,
+  "point": "2.1-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "The document analysis subagent in your research system has three tools: extract_data_points, summarize_content, and verify_claim_against_source. Each tool description states its purpose, input format, example queries, edge cases, and when to use it versus the other two tools. The subagent's system prompt says, \"Always verify every claim you find in a document.\" Logs show the subagent calling verify_claim_against_source on most documents, even when the coordinator requests only data extraction. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The tool descriptions are too minimal for the model to reliably distinguish among the three similar tools.",
+      "correct": false,
+      "reason": "The guide links minimal descriptions to unreliable selection, but the scenario states that each description is detailed and differentiates the tools."
+    },
+    {
+      "letter": "B",
+      "text": "The tool descriptions lack input formats and example queries, so the model guesses when verification applies.",
+      "correct": false,
+      "reason": "The guide recommends input formats and example queries in descriptions, but the scenario states that the descriptions already include them."
+    },
+    {
+      "letter": "C",
+      "text": "The system prompt's wording ties the keyword \"verify\" to the verification tool and overrides the clear tool descriptions.",
+      "correct": true,
+      "reason": "The guide states that keyword-sensitive instructions in a system prompt can create unintended tool associations that override well-written tool descriptions."
+    },
+    {
+      "letter": "D",
+      "text": "The three tool descriptions overlap so closely that the model misroutes extraction requests to the verification tool.",
+      "correct": false,
+      "reason": "The guide links misrouting to ambiguous or overlapping descriptions, but the scenario states that each description explains when to use it versus the other tools."
+    }
+  ]
+}

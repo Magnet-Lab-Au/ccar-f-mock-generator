@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S15-T1",
+  "slot_id": "M1-S15",
+  "try": 1,
+  "point": "1.3-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the coordinator receives web search results from the web search subagent and document analysis outputs from the document analysis subagent. It then invokes the synthesis subagent through the Task tool with the prompt \"Synthesize the findings gathered so far on renewable energy storage\" and nothing else. The synthesis subagent returns a generic summary that cites none of the gathered sources. What is the most likely cause of this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The coordinator gave goals instead of step-by-step procedures, so the synthesis subagent disregarded the findings it had inherited.",
+      "correct": false,
+      "reason": "The guide recommends goal-based coordinator prompts, and the subagent inherits no findings; the findings were missing from its prompt."
+    },
+    {
+      "letter": "B",
+      "text": "The synthesis subagent does not inherit the coordinator's context, so the findings needed to be included directly in its prompt.",
+      "correct": true,
+      "reason": "Per the guide, subagents do not automatically inherit parent context, so the coordinator must pass the complete prior findings explicitly in the subagent's prompt."
+    },
+    {
+      "letter": "C",
+      "text": "The synthesis subagent's allowedTools lacks \"Task\", so it could not retrieve the outputs that the earlier subagents produced.",
+      "correct": false,
+      "reason": "Per the guide, \"Task\" in allowedTools lets a coordinator spawn subagents; context reaches a subagent only through its prompt."
+    },
+    {
+      "letter": "D",
+      "text": "The earlier outputs sit in shared memory, and the synthesis subagent reads that memory only after an explicit refresh call.",
+      "correct": false,
+      "reason": "The guide states that subagents do not share memory between invocations, so no shared memory holds the earlier outputs."
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "question_id": "M1-S42-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "a96cc44ecf7cdebdef212069ab93a577146126c6d3698148877b60c278616d59",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "D"
+    ],
+    "reason": "Compaction loses exact values, so the per-bug facts need to be kept as structured data. A scratchpad file holds them across context boundaries (5.4-S2). A case-facts block placed in each prompt, outside the summarized history, keeps them exact (5.1-S1). Pasting the raw output (A) wastes context, a prose recap (B) blurs the values, and compacting more often (E) loses even more detail.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "/compact",
+      "found": true
+    },
+    {
+      "name": "scratchpad files",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

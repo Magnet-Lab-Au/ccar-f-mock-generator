@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S18-T1",
+  "slot_id": "M1-S18",
+  "try": 1,
+  "point": "1.5-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your compliance team requires that no refund above $500 is ever processed without human approval. The system prompt of the support agent already states this rule clearly. In testing, however, the agent still called process_refund for amounts above $500 in about 3% of the cases. Which change best guarantees that the agent follows this rule?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add few-shot examples to the system prompt that show the agent escalating refund requests above $500 to a human.",
+      "correct": false,
+      "reason": "Few-shot examples improve the behavior of the model but remain prompt-based, so they cannot guarantee compliance the way a hook can."
+    },
+    {
+      "letter": "B",
+      "text": "Instruct the agent to state the refund amount and confirm that it is within policy before it calls process_refund.",
+      "correct": false,
+      "reason": "A self-check instruction depends on the model following the prompt, so it gives probabilistic compliance and is not a deterministic guarantee."
+    },
+    {
+      "letter": "C",
+      "text": "Rewrite the refund rule in the system prompt with more emphatic wording and place it at the very start of the prompt.",
+      "correct": false,
+      "reason": "Stronger prompt wording is still prompt-based enforcement, which gives only probabilistic compliance, so some violations can still occur."
+    },
+    {
+      "letter": "D",
+      "text": "Add a hook that intercepts outgoing process_refund calls, blocks amounts above $500, and redirects the case to escalate_to_human.",
+      "correct": true,
+      "reason": "A tool call interception hook enforces the business rule deterministically, so it gives the guaranteed compliance that the rule requires."
+    }
+  ]
+}

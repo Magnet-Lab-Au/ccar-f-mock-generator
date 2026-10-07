@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S49-T1",
+  "slot_id": "M1-S49",
+  "try": 1,
+  "point": "4.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code reviews on every pull request and labels each finding as critical, major, or minor. Developers report that similar issues get different severity labels across pull requests. For example, an unchecked null dereference is labeled critical in one review and minor in another. Which change to the review prompt would most effectively make severity classification consistent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "List the severity labels critical, major, and minor in the prompt and tell Claude to apply each label accurately.",
+      "correct": false,
+      "reason": "This is a vague instruction without explicit criteria, and the guide states that explicit criteria work better than vague instructions."
+    },
+    {
+      "letter": "B",
+      "text": "Ask Claude to output a confidence score with each finding and drop any finding whose score falls below a fixed threshold.",
+      "correct": false,
+      "reason": "The guide recommends specific criteria rather than confidence-based filtering, and dropping findings leaves the severity levels without definitions."
+    },
+    {
+      "letter": "C",
+      "text": "Define explicit criteria for each severity level and include concrete code examples that illustrate a typical finding at each level.",
+      "correct": true,
+      "reason": "The guide states that explicit severity criteria with concrete code examples for each level achieve consistent classification."
+    },
+    {
+      "letter": "D",
+      "text": "Instruct Claude to be conservative and assign a higher severity level only when it is highly confident about the finding.",
+      "correct": false,
+      "reason": "The guide states that general instructions like \"be conservative\" or \"only report high-confidence findings\" fail compared to specific categorical criteria."
+    }
+  ]
+}

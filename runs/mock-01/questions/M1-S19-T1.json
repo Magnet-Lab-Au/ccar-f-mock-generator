@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S19-T1",
+  "slot_id": "M1-S19",
+  "try": 1,
+  "point": "2.3-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent must call get_customer as its very first action in every conversation, before it uses lookup_order or process_refund. In testing, the agent sometimes calls lookup_order first, and sometimes it replies with a clarifying question in plain text. Which tool_choice configuration best guarantees the required first step while letting the agent continue the workflow afterward?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Set tool_choice to {\"type\": \"tool\", \"name\": \"get_customer\"} on every turn of the conversation, including follow-up turns.",
+      "correct": false,
+      "reason": "Forcing the same tool on every turn stops the agent from calling lookup_order or process_refund, while the guide forces only the first call and handles later steps in follow-up turns."
+    },
+    {
+      "letter": "B",
+      "text": "Set tool_choice to \"auto\" on the first turn and add a system prompt instruction to call get_customer first.",
+      "correct": false,
+      "reason": "\"auto\" lets the model return text or pick any tool, so a prompt instruction gives no guarantee that get_customer is called first."
+    },
+    {
+      "letter": "C",
+      "text": "Set tool_choice to \"any\" on the first turn so that the model must call a tool instead of replying with text.",
+      "correct": false,
+      "reason": "\"any\" guarantees that the model calls some tool rather than returning text, but the model still chooses which tool, so it could call lookup_order first."
+    },
+    {
+      "letter": "D",
+      "text": "Set tool_choice to {\"type\": \"tool\", \"name\": \"get_customer\"} on the first turn, then handle the later steps in follow-up turns.",
+      "correct": true,
+      "reason": "Forced tool selection ensures that this specific tool is called first, and the guide pairs it with processing subsequent steps in follow-up turns."
+    }
+  ]
+}

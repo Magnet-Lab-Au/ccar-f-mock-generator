@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S10-T1",
+  "slot_id": "M1-S10",
+  "try": 1,
+  "point": "1.7-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday you investigated why the synthesis subagent in your multi-agent research system drops citations from web search results. You did this work in a Claude Code session that you named citation-loss-investigation. No code in the research system has changed since then, so the earlier analysis is still valid. Today you want to continue that exact investigation. What should you do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start a fresh session and have Claude explore the coordinator and subagent code again from the beginning.",
+      "correct": false,
+      "reason": "Full re-exploration discards valid prior context, while --resume continues the named session that already holds this analysis."
+    },
+    {
+      "letter": "B",
+      "text": "Use fork_session on yesterday's session to create a new branch, and then continue the investigation in that branch.",
+      "correct": false,
+      "reason": "fork_session creates independent branches to explore divergent approaches from a shared baseline, not to simply continue one investigation."
+    },
+    {
+      "letter": "C",
+      "text": "Start a fresh session and inject a structured summary of yesterday's findings before you continue the investigation.",
+      "correct": false,
+      "reason": "Starting fresh with an injected summary is the better choice when prior tool results are stale, but here no code changed and the prior context is valid."
+    },
+    {
+      "letter": "D",
+      "text": "Run Claude Code with --resume citation-loss-investigation so that the named session continues with its earlier context.",
+      "correct": true,
+      "reason": "Named session resumption with --resume <session-name> continues a specific prior conversation, and resumption fits when the prior context is mostly valid."
+    }
+  ]
+}

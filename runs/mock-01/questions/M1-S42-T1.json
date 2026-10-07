@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S42-T1",
+  "slot_id": "M1-S42",
+  "try": 1,
+  "point": "5.1-S2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "You are using Claude Code in one long session to fix four bugs from your tracker. Each bug has a ticket ID, an affected file, a count of failing tests, and a status. After the conversation was compacted, Claude mixed up which failing test count belonged to which ticket and described the statuses only vaguely. Which changes best preserve this per-bug information for the rest of the session?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Paste the complete raw test output for all four bugs into every new message so that no detail can be lost.",
+      "correct": false,
+      "reason": "Verbose outputs accumulate in context and consume tokens out of proportion to their relevance; the guide recommends keeping only the relevant fields."
+    },
+    {
+      "letter": "B",
+      "text": "Ask Claude to merge all four bugs into one short prose recap paragraph and rely on that recap for the later steps.",
+      "correct": false,
+      "reason": "A prose recap is a vague summary that mixes the issues together; the guide recommends structured, separately persisted issue data instead."
+    },
+    {
+      "letter": "C",
+      "text": "Keep a structured record per bug with its ticket ID, file, failing test count, and status in a scratchpad file, and update it after each fix.",
+      "correct": true,
+      "reason": "Persisting structured issue data in a separate layer, such as a scratchpad file, keeps each bug's exact facts apart from summarized history in a multi-issue session."
+    },
+    {
+      "letter": "D",
+      "text": "Include a structured facts block that lists each ticket ID, file, failing test count, and status in every prompt, outside the summarized history.",
+      "correct": true,
+      "reason": "A persistent facts block kept outside summarized history prevents progressive summarization from blurring the numbers and statuses of each issue."
+    },
+    {
+      "letter": "E",
+      "text": "Run /compact more often so that the summarized history stays short and Claude can focus on the bug it is fixing now.",
+      "correct": false,
+      "reason": "More summarization increases the progressive summarization risk: exact numbers and statuses are condensed into vague summaries, which caused the problem."
+    }
+  ]
+}

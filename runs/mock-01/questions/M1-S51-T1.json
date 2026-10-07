@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S51-T1",
+  "slot_id": "M1-S51",
+  "try": 1,
+  "point": "3.6-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team adds a pipeline step that runs Claude Code with the command claude \"Review this pull request for bugs and security issues\". The step never finishes, and the CI system kills the job only when it reaches its time limit. The logs show that Claude Code started an interactive session and is waiting for input. What is the most effective way to fix this pipeline step?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a rule to the project CLAUDE.md file that tells Claude Code to finish every review without asking the user questions.",
+      "correct": false,
+      "reason": "The guide describes CLAUDE.md as the way to give project context such as review criteria; it does not change the execution mode, so the session still waits for input."
+    },
+    {
+      "letter": "B",
+      "text": "Add the --output-format json flag to the command so the pipeline receives machine-parseable output without any user interaction.",
+      "correct": false,
+      "reason": "The guide describes --output-format json as a way to enforce structured output in CI; it does not switch Claude Code to non-interactive mode, so the hang remains."
+    },
+    {
+      "letter": "C",
+      "text": "Add the -p flag to the command so Claude Code processes the prompt, prints its result, and exits without waiting for input.",
+      "correct": true,
+      "reason": "The guide names the -p (or --print) flag as the way to run Claude Code in non-interactive mode in automated pipelines, which prevents interactive input hangs."
+    },
+    {
+      "letter": "D",
+      "text": "Increase the time limit of the CI job so Claude Code has enough time to complete the review before the job is killed.",
+      "correct": false,
+      "reason": "The step hangs because Claude Code waits for interactive input; a longer time limit only delays the failure, while the guide says the -p flag prevents the hang."
+    }
+  ]
+}

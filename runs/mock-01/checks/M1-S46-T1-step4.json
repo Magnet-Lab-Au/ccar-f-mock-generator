@@ -1,0 +1,78 @@
+{
+  "question_id": "M1-S46-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "bf7a793d47a80ad917190cec07d660a9bb26e719ac91986f325db10b689c8f04",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Batch results are not guaranteed to come back in submission order. The custom_id field exists to correlate each batch request with its response, so a deterministic ID derived from the file path is the reliable choice. A depends on ordering, which is not guaranteed. C fails because the batch API cannot run tools across multiple turns within one request. D depends on the model echoing text correctly, which is probabilistic and fragile to parse.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "custom_id",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

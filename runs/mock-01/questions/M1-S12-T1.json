@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S12-T1",
+  "slot_id": "M1-S12",
+  "try": 1,
+  "point": "5.3-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the web search subagent hits a timeout on one query. The web search subagent returns only the status \"search unavailable\" to the coordinator. The coordinator then cannot tell whether to retry, try a different query, or continue with other sources. What is the main problem with this way of reporting the error?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The subagent reports the failure at all, when it should return an empty result marked as success so the workflow keeps running.",
+      "correct": false,
+      "reason": "The guide calls silently suppressing errors by returning empty results as success an anti-pattern, because it hides the failure from the coordinator."
+    },
+    {
+      "letter": "B",
+      "text": "The status fails to stop the whole research workflow, which is the safe response whenever any single subagent fails.",
+      "correct": false,
+      "reason": "The guide calls terminating entire workflows on single failures an anti-pattern, because the coordinator can often recover or continue with partial results."
+    },
+    {
+      "letter": "C",
+      "text": "The subagent sends the error to the coordinator, when subagents should resolve every failure locally and never propagate any errors.",
+      "correct": false,
+      "reason": "The guide says subagents recover locally from transient failures but propagate errors they cannot resolve, together with what was attempted and partial results."
+    },
+    {
+      "letter": "D",
+      "text": "The generic status hides the failure type, the attempted query, and any partial results, so the coordinator cannot choose an informed recovery action.",
+      "correct": true,
+      "reason": "The guide says generic statuses like \"search unavailable\" hide valuable context, while structured error context lets the coordinator make intelligent recovery decisions."
+    }
+  ]
+}

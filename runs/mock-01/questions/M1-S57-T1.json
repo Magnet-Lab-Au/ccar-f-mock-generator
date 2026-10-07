@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S57-T1",
+  "slot_id": "M1-S57",
+  "try": 1,
+  "point": "4.2-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review pull requests. The review prompt has detailed written rules, yet the model handles ambiguous cases inconsistently, such as a catch block that logs an error and then continues. In some runs it flags this as a bug, and in other runs it ignores it. Which change to the prompt most effectively improves consistency on these ambiguous cases?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Expand the written rules with more detailed descriptions of when a catch block that logs and continues should count as a bug.",
+      "correct": false,
+      "reason": "The guide states that detailed instructions alone produce inconsistent results, and that few-shot examples are the most effective fix for this."
+    },
+    {
+      "letter": "B",
+      "text": "Add one example for every code pattern found in past reviews, each showing only the final verdict without any explanation of the decision.",
+      "correct": false,
+      "reason": "The guide calls for a few targeted examples that show reasoning. Many verdict-only examples teach matching of pre-specified cases instead of judgment that generalizes to novel patterns."
+    },
+    {
+      "letter": "C",
+      "text": "Add several examples of clear-cut cases, such as obvious injection flaws and clean code, so the model sees what each verdict looks like.",
+      "correct": false,
+      "reason": "Clear-cut examples do not demonstrate how to handle the ambiguous cases. The guide says the examples should target ambiguous scenarios."
+    },
+    {
+      "letter": "D",
+      "text": "Add two to four examples of ambiguous cases, each showing the chosen verdict and the reasoning for why it was chosen over a plausible alternative verdict.",
+      "correct": true,
+      "reason": "The guide recommends 2-4 targeted few-shot examples for ambiguous scenarios that show the reasoning for why one action was chosen over plausible alternatives."
+    }
+  ]
+}

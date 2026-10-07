@@ -1,0 +1,86 @@
+{
+  "question_id": "M1-S27-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "a0dc37ec74d6dc402aa75f11f31958a04375eba8e51f659839cb6a748d19fbfb",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "The goal is to find files by name pattern, and Glob is the built-in tool for that. The pattern **/*.test.ts matches every test file in any nested directory. Grep searches file contents instead, and Read is inefficient and unreliable for finding files.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

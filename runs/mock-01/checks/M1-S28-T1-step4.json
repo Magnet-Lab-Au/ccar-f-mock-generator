@@ -1,0 +1,74 @@
+{
+  "question_id": "M1-S28-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "b960d465cefa1b8cb430da17249283f7611acaa96a9409de8ad876e20ec2af7b",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Billing disputes and account issues need different steps, and the right next step depends on what each tool returns. That calls for model-driven decisions: Claude picks the next tool in each loop iteration, using the request and the tool results already in the conversation. A still forces a fixed prefix of calls. C relies on a brittle keyword decision tree. D ignores stop_reason and uses an arbitrary cutoff.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "stop_reason",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

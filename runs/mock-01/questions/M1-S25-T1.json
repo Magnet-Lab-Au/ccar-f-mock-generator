@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S25-T1",
+  "slot_id": "M1-S25",
+  "try": 1,
+  "point": "1.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "A customer writes that their account is a mess: some charges look wrong, a return was never credited, and other things may also be off. The customer cannot say exactly what is wrong or how the problems relate. How should the agent decompose this request to resolve it on first contact?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Write the complete list of subtasks from the customer's message at the start, then execute that list unchanged even when lookups reveal related problems.",
+      "correct": false,
+      "reason": "The guide values plans that generate subtasks from what each step discovers. A plan that stays unchanged after new dependencies appear loses that value."
+    },
+    {
+      "letter": "B",
+      "text": "Run a fixed pipeline that always checks billing first, then returns, then account settings, in the same order no matter what each earlier step finds.",
+      "correct": false,
+      "reason": "The guide says fixed sequential pipelines suit predictable multi-aspect reviews. This request is an open-ended investigation, so it needs dynamic decomposition based on intermediate findings."
+    },
+    {
+      "letter": "C",
+      "text": "Call escalate_to_human right away, because a request that combines several unclear account problems is too complex for the agent to resolve on its own.",
+      "correct": false,
+      "reason": "The guide does not treat complexity alone as a reason to escalate. The agent can investigate this request itself, and escalating at once works against the 80%+ first-contact resolution target."
+    },
+    {
+      "letter": "D",
+      "text": "Use get_customer and lookup_order to map the account, identify the highest-impact problems, then follow a prioritized plan that changes as connections between problems are discovered.",
+      "correct": true,
+      "reason": "The guide says to decompose open-ended tasks by first mapping the structure and finding high-impact areas. The agent then follows a prioritized plan that adapts as dependencies are discovered."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S58-T1",
+  "slot_id": "M1-S58",
+  "try": 1,
+  "point": "3.2-K1",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in the CI pipeline to review pull requests. Developers want a /pre-review slash command that applies the same review checklist locally before they push, and every developer must get it when they clone or pull the repository. One developer also wants an experimental variant of this command that teammates do not see. Which actions meet these needs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Create the /pre-review command file in the .claude/commands/ directory of the project repository and commit it.",
+      "correct": true,
+      "reason": "Project-scoped commands in .claude/commands/ are shared through version control, so every developer gets them on clone or pull."
+    },
+    {
+      "letter": "B",
+      "text": "Define the /pre-review command inside the CLAUDE.md file at the project root and commit it.",
+      "correct": false,
+      "reason": "The guide places slash commands in .claude/commands/; CLAUDE.md holds always-loaded standards and does not define slash commands."
+    },
+    {
+      "letter": "C",
+      "text": "Create the experimental command file in the ~/.claude/commands/ directory in that developer's home directory.",
+      "correct": true,
+      "reason": "User-scoped commands in ~/.claude/commands/ are personal, so teammates do not see the experimental variant."
+    },
+    {
+      "letter": "D",
+      "text": "Create the /pre-review command file in the ~/.claude/commands/ directory in each developer's home directory.",
+      "correct": false,
+      "reason": "The ~/.claude/commands/ directory is user-scoped and personal, so it is not shared through version control and developers do not get it on clone or pull."
+    },
+    {
+      "letter": "E",
+      "text": "Create the experimental command file in the .claude/commands/ directory of the project repository and commit it.",
+      "correct": false,
+      "reason": "The .claude/commands/ directory is project-scoped and shared through version control, so every teammate would see the experimental variant."
+    }
+  ]
+}

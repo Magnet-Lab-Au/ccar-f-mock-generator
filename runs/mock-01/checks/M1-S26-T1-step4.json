@@ -1,0 +1,75 @@
+{
+  "question_id": "M1-S26-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "012da04830b2f37651a8ae72a11f32ec19cd41d8bed44e93ac7ef59d43058877",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "E"
+    ],
+    "reason": "Structured handoff protocols (1.4-K3, 1.4-S3): requiring schema fields for customer ID, root cause, refund amount, and recommended action, and compiling a structured summary before escalating, give the human agents the context they cannot get from the transcript. A, C and D all leave the human agent without that context.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "escalate_to_human",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

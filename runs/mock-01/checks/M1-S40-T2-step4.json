@@ -1,0 +1,82 @@
+{
+  "question_id": "M1-S40-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "043a76dd61e78974ddd0215770b6f135eb50a5986dd7fbd5dd7329a63bbb7fd7",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "A directory-level CLAUDE.md in services/billing is version-controlled, so every teammate receives it. It also loads automatically whenever Claude works on files in that directory. A requires a manual step each time, B is user-level and not shared with teammates, and D applies the conventions to the whole repo, adding irrelevant context.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

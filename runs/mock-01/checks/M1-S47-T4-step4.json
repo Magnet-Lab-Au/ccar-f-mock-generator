@@ -1,0 +1,83 @@
+{
+  "question_id": "M1-S47-T4",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "1cfab8230a11bcb5f48264c6d2e1c8ed920a1a4cd23d03158e281ba2207ae52f",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "D"
+    ],
+    "reason": "Detailed instructions alone already give inconsistent output, so few-shot examples are the most effective fix. Option D shows complete comments with location, issue, severity and suggested fix in the exact format. Option B gives 2-4 examples that cover different kinds of findings, all in one complete format. Longer rules (A) and vague requests to be consistent (C) do not help, and the Batches API (E) does not affect format and does not suit blocking PR checks.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "system prompt",
+      "found": true
+    },
+    {
+      "name": "Message Batches API",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

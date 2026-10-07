@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S22-T1",
+  "slot_id": "M1-S22",
+  "try": 1,
+  "point": "2.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Logs from your customer support agent show that when process_refund fails, the agent often calls it three or four more times with the same input. Most of these failures are refunds that fall outside the return policy, but some are backend timeouts. Every failure currently returns the message \"Operation failed\" with the isError flag set. Which change best prevents the wasted retry attempts while keeping recovery possible for timeouts?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Return an errorCategory and an isRetryable boolean, marking policy violations as non-retryable and timeouts as retryable.",
+      "correct": true,
+      "reason": "Structured metadata lets the agent tell retryable transient errors from non-retryable business errors, so it stops retrying policy violations but can still retry timeouts."
+    },
+    {
+      "letter": "B",
+      "text": "Have process_refund return a successful empty result for policy violations, so the agent sees no error to retry.",
+      "correct": false,
+      "reason": "The guide says failures must be kept distinct from valid empty results, and hiding the failure leaves the agent unable to explain it to the customer."
+    },
+    {
+      "letter": "C",
+      "text": "Make process_refund retry every failure internally with exponential backoff before it returns the generic error to the agent.",
+      "correct": false,
+      "reason": "Policy violations are non-retryable, so retrying them wastes attempts, and the generic error still blocks a good recovery decision."
+    },
+    {
+      "letter": "D",
+      "text": "Add a system prompt rule that limits the agent to at most two retries of any failed process_refund call.",
+      "correct": false,
+      "reason": "The error stays generic, so the agent still wastes retries on policy violations and cannot tell which failures are worth retrying."
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "question_id": "M1-S07-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "f8dd39243c961fee5f8afccc48df58cea733eb5b26de1555e7c52738012e5b17",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The tool descriptions are already well differentiated, so they are not the cause. The system prompt's keyword-triggered instruction ('Whenever a request mentions a report, summarize it first') overrides those descriptions and pushes the subagent toward summarize_content. Rewriting that instruction removes the root cause (2.1-K4, 2.1-S4). Expanding the description (C) treats a symptom. Merging the tools (A) undoes good tool design. Forcing extract_data_points on every request (D) breaks the cases that legitimately need summarize_content or verify_claim_against_source.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

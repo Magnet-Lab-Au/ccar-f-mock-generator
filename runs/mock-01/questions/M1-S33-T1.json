@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S33-T1",
+  "slot_id": "M1-S33",
+  "try": 1,
+  "point": "3.3-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team's root CLAUDE.md contains a long section of Terraform conventions that apply only to files under the terraform/ directory. Developers report that these conventions load in every Claude Code session, even when they edit frontend code, which adds irrelevant context and token usage. You want the conventions to load automatically, but only when Claude Code edits Terraform files. What should you do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep the conventions in the root CLAUDE.md and add a heading telling Claude to apply them only to Terraform files.",
+      "correct": false,
+      "reason": "The root CLAUDE.md still loads in every session, so the conventions keep consuming context and tokens when developers edit unrelated files."
+    },
+    {
+      "letter": "B",
+      "text": "Move the conventions into a custom slash command in .claude/commands/ that developers run before they edit Terraform files.",
+      "correct": false,
+      "reason": "A slash command loads only when a developer invokes it on demand, so the conventions do not load automatically when Terraform files are edited."
+    },
+    {
+      "letter": "C",
+      "text": "Move the conventions into a .claude/rules/ file whose YAML frontmatter sets paths: [\"terraform/**/*\"] so they load only for matching files.",
+      "correct": true,
+      "reason": "Path-scoped rules in .claude/rules/ with a glob in the YAML frontmatter paths field load only when matching files are edited, which reduces irrelevant context and tokens."
+    },
+    {
+      "letter": "D",
+      "text": "Move the conventions into each developer's user-level ~/.claude/CLAUDE.md file so that they stay out of the project configuration.",
+      "correct": false,
+      "reason": "User-level configuration is not shared with the team through version control, and it still loads in every session regardless of which files are edited."
+    }
+  ]
+}

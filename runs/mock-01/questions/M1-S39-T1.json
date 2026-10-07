@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S39-T1",
+  "slot_id": "M1-S39",
+  "try": 1,
+  "point": "5.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses a custom slash command in Claude Code that has subagents analyze several internal design documents. A coordinator then passes their findings to a synthesis step that writes an API reference. One subagent finds that two credible design documents state different request timeout values for the same endpoint. How should the subagent handle this conflict in its findings?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Finish the analysis, include both timeout values with their source documents, and annotate the conflict so the coordinator decides how to reconcile it.",
+      "correct": true,
+      "reason": "The guide says to complete document analysis with conflicting values included and explicitly annotated, and to let the coordinator decide how to reconcile them before synthesis."
+    },
+    {
+      "letter": "B",
+      "text": "Finish the analysis and report only the timeout value from the newer document, since newer documents usually reflect the current design.",
+      "correct": false,
+      "reason": "This arbitrarily selects one value and drops the other source; the guide says to annotate conflicts with source attribution instead of picking one value."
+    },
+    {
+      "letter": "C",
+      "text": "Finish the analysis and report the average of the two timeout values, so the synthesis step receives a single consistent number.",
+      "correct": false,
+      "reason": "Averaging invents a value that no source states and hides the conflict; the guide says to keep both values with source attribution and annotate the conflict."
+    },
+    {
+      "letter": "D",
+      "text": "Stop the analysis and return an error to the coordinator, so no findings reach synthesis until a developer resolves the conflict.",
+      "correct": false,
+      "reason": "The guide says the subagent should complete the analysis with the conflict annotated, rather than halt, and the coordinator then reconciles it."
+    }
+  ]
+}

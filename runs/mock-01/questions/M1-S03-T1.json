@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S03-T1",
+  "slot_id": "M1-S03",
+  "try": 1,
+  "point": "5.6-S2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your multi-agent research system produces a report on the health effects of a new food additive. Reviewers find that the synthesis subagent presents every finding in the same confident tone. Several claims rest on one small preliminary study, and two credible sources disagree on a key figure, but readers cannot see this in the report. Which changes should you require in how the synthesis subagent writes the report?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep each source's original characterization of its claim, such as preliminary or peer-reviewed, together with its methodological context like sample size.",
+      "correct": true,
+      "reason": "The guide says reports should preserve original source characterizations and methodological context, which shows how strong each claim is."
+    },
+    {
+      "letter": "B",
+      "text": "Resolve each disagreement by reporting only the value from the source that the synthesis subagent judges most reliable, so readers get one clear figure.",
+      "correct": false,
+      "reason": "The guide says conflicting statistics from credible sources should be annotated with source attribution rather than settled by selecting one value."
+    },
+    {
+      "letter": "C",
+      "text": "Organize the report into explicit sections that separate well-established findings from contested findings, with the conflicting sources named for each contested claim.",
+      "correct": true,
+      "reason": "The guide recommends report sections that explicitly distinguish well-established findings from contested ones, so readers can see where sources disagree."
+    },
+    {
+      "letter": "D",
+      "text": "Remove methodological details such as sample sizes and study designs from the report body to keep the findings concise and readable.",
+      "correct": false,
+      "reason": "The guide says the report should preserve methodological context, so removing it hides why some findings are weaker than others."
+    },
+    {
+      "letter": "E",
+      "text": "Rewrite all findings in one uniform, confident tone so the report reads consistently and avoids confusing readers with hedged language.",
+      "correct": false,
+      "reason": "A uniform confident tone hides the difference between established and contested findings and drops the original source characterizations that the guide says to preserve."
+    }
+  ]
+}

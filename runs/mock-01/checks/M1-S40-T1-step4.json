@@ -1,0 +1,95 @@
+{
+  "question_id": "M1-S40-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The team members have two names. The question calls them 'teammates', but option C and its reason call them 'each developer' and 'a developer'. One name should be used throughout.",
+      "letter": "C",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "c42ebd15d7d901e3fb16c62fd4cfd2aaf0513edcee062f52c615c5561cce1e1c",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "The conventions apply only to one directory, should load automatically, and must be shared via version control. A CLAUDE.md inside services/billing is a directory-level config: it is committed with the repo and applies only to that part of the codebase. The root CLAUDE.md would apply the conventions everywhere. User-level config is not shared with teammates. A slash command must be run manually, so it is not automatic.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The team members have two names. The question calls them 'teammates', but option C and its reason call them 'each developer' and 'a developer'. One name should be used throughout.",
+      "letter": "C",
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    },
+    {
+      "name": "slash commands",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

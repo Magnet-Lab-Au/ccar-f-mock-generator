@@ -1,0 +1,82 @@
+{
+  "question_id": "M1-S16-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "bd637eac62f3fae33c48f45c413090935be6a2354bf4497f6e9ee2f98b32563f",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 5.2-S2, explicit customer requests for a human agent should be honored immediately without first attempting investigation. Sentiment- and confidence-based triggers (A, C) are unreliable proxies, and D ignores the explicit request.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "get_customer",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "escalate_to_human",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

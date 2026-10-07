@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S13-T1",
+  "slot_id": "M1-S13",
+  "try": 1,
+  "point": "1.4-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the coordinator agent must call verify_citations on the synthesis subagent's findings before it calls generate_report. Logs show that in 8% of runs, the coordinator agent skips verify_citations and calls generate_report directly, so some reports contain unverified claims. The system prompt already instructs the coordinator agent to verify citations first. What change would most reliably fix this ordering problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rewrite the system prompt for the coordinator agent in stronger terms, stating that verify_citations is mandatory before every generate_report call.",
+      "correct": false,
+      "reason": "This is still prompt-based guidance, and prompt instructions alone have a non-zero failure rate when deterministic compliance is required."
+    },
+    {
+      "letter": "B",
+      "text": "Add few-shot examples that show the coordinator agent always calling verify_citations before generate_report, even for short reports.",
+      "correct": false,
+      "reason": "Few-shot examples are also prompt-based guidance, so they can lower the skip rate but cannot guarantee the required ordering."
+    },
+    {
+      "letter": "C",
+      "text": "Add a programmatic prerequisite that blocks generate_report calls until verify_citations has returned a successful result for the current findings.",
+      "correct": true,
+      "reason": "A programmatic prerequisite blocks the downstream tool call until the prerequisite step completes, so the required ordering is enforced deterministically."
+    },
+    {
+      "letter": "D",
+      "text": "Add a routing classifier that analyzes each research request and enables only the subset of tools appropriate for that request type.",
+      "correct": false,
+      "reason": "Both tools are needed for every report, so restricting the tool subset does not block generate_report until verify_citations has completed."
+    }
+  ]
+}

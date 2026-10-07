@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S54-T1",
+  "slot_id": "M1-S54",
+  "try": 1,
+  "point": "4.4-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with --json-schema so that each pull request review returns structured findings. Every output parses and matches the schema. However, in some reports the critical_count field does not equal the number of findings with critical severity. Which conclusion about this error is accurate?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It shows that the schema is not being enforced, so switching to tool use with a JSON schema will eliminate the mismatch.",
+      "correct": false,
+      "reason": "Tool use with a JSON schema eliminates syntax errors, but it does not eliminate semantic errors such as values that do not sum correctly."
+    },
+    {
+      "letter": "B",
+      "text": "It is a semantic validation error that schema enforcement cannot prevent, so add a check comparing the counts and retry with that specific error.",
+      "correct": true,
+      "reason": "Schema enforcement removes syntax errors only. Values that do not add up are semantic errors, so they need separate validation, and a retry that includes the specific error can fix them."
+    },
+    {
+      "letter": "C",
+      "text": "It is a schema syntax error, so marking critical_count as required in the schema will prevent the mismatch from recurring.",
+      "correct": false,
+      "reason": "The output already parses and matches the schema. A count that does not match the list is a semantic error, and marking a field as required does not enforce consistency between values."
+    },
+    {
+      "letter": "D",
+      "text": "It shows that the needed information is absent from the diff, so retries cannot fix it and the report should be discarded.",
+      "correct": false,
+      "reason": "The findings list is in the output, so the information is present. Retries fail when information is absent from the source, but they can correct inconsistent values when they include specific validation errors."
+    }
+  ]
+}

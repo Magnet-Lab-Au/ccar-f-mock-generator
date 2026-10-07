@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S02-T1",
+  "slot_id": "M1-S02",
+  "try": 1,
+  "point": "2.3-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, every subagent receives the same full set of 18 tools, including web search. Logs show that the synthesis agent often runs its own web searches instead of combining the findings that the coordinator passes to it. Its reports then cite sources that the web search agent never checked. What is the most likely cause of this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The synthesis agent does not inherit the coordinator's conversation history, so it must search the web again to rebuild the context of the task.",
+      "correct": false,
+      "reason": "The guide says that the coordinator must pass context explicitly in the subagent's prompt. Here the coordinator already passes the findings, so the synthesis agent does not need to search again."
+    },
+    {
+      "letter": "B",
+      "text": "The synthesis agent has too few tools for reliable selection, because tool selection becomes more reliable as an agent receives more tools.",
+      "correct": false,
+      "reason": "The guide says the opposite: giving an agent too many tools, such as 18 instead of 4-5, degrades tool selection reliability."
+    },
+    {
+      "letter": "C",
+      "text": "The synthesis agent has tool_choice set to \"auto\", and this setting forces the model to call a tool on every turn instead of returning text.",
+      "correct": false,
+      "reason": "With \"auto\", the model decides whether to call a tool. The guide says that \"any\" is the setting that guarantees a tool call, so \"auto\" does not explain the extra searches."
+    },
+    {
+      "letter": "D",
+      "text": "The synthesis agent can reach web search tools outside its specialization, and agents with such tools tend to misuse them instead of doing their own role.",
+      "correct": true,
+      "reason": "The guide says that agents with tools outside their specialization tend to misuse them, and it uses a synthesis agent that attempts web searches as its example."
+    }
+  ]
+}

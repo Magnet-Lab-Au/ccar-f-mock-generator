@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S44-T1",
+  "slot_id": "M1-S44",
+  "try": 1,
+  "point": "5.5-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code in a pipeline that writes docstrings for functions across several services. Each docstring receives a confidence score, and the pipeline commits docstrings above a threshold without human review. The team wants to measure the ongoing error rate of these high-confidence docstrings and to detect error patterns that it has never seen before. Which approach best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have reviewers check only the docstrings that developers later report as wrong in pull request comments.",
+      "correct": false,
+      "reason": "This sample is neither random nor stratified, so it gives a biased error rate and cannot systematically detect novel error patterns as the guide describes."
+    },
+    {
+      "letter": "B",
+      "text": "Have reviewers regularly check a stratified random sample of high-confidence docstrings, drawn from each service and function type.",
+      "correct": true,
+      "reason": "The guide names stratified random sampling of high-confidence outputs as the method for ongoing error rate measurement and novel error pattern detection."
+    },
+    {
+      "letter": "C",
+      "text": "Send only the low-confidence docstrings to reviewers, because docstrings above the threshold have already proven reliable.",
+      "correct": false,
+      "reason": "This leaves the error rate of high-confidence docstrings unmeasured, and the guide requires sampling them to catch errors and novel patterns."
+    },
+    {
+      "letter": "D",
+      "text": "Track one overall acceptance rate for all docstrings and raise the threshold only if that rate drops.",
+      "correct": false,
+      "reason": "The guide warns that an aggregate accuracy metric can mask poor performance on specific segments, so it cannot reliably reveal segment errors or new patterns."
+    }
+  ]
+}

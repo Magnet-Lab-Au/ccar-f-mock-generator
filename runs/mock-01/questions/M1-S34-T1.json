@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S34-T1",
+  "slot_id": "M1-S34",
+  "try": 1,
+  "point": "3.4-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team must replace an in-house HTTP client library with a new library across about 50 files in the repository. Two integration approaches are possible, and each approach needs different infrastructure. A teammate wants Claude Code to start editing files right away. Which way of working with Claude Code fits this task best?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use direct execution for each file, because each single edit is a small, well-scoped change to one function.",
+      "correct": false,
+      "reason": "The task as a whole has architectural implications and two valid integration approaches, so it needs plan mode; direct execution fits only changes whose overall scope is simple and clear."
+    },
+    {
+      "letter": "B",
+      "text": "Start in plan mode so that Claude Code explores the codebase and designs the migration approach before any file is changed.",
+      "correct": true,
+      "reason": "Plan mode is designed for large-scale, multi-file changes with multiple valid approaches and architectural decisions, and it allows safe exploration and design before changes are committed, which prevents costly rework."
+    },
+    {
+      "letter": "C",
+      "text": "Give the whole migration to the Explore subagent so that its verbose output stays out of the main conversation context.",
+      "correct": false,
+      "reason": "The Explore subagent isolates verbose discovery output and returns summaries to preserve context; it does not replace plan mode for deciding the architecture of a large migration."
+    },
+    {
+      "letter": "D",
+      "text": "Use direct execution and let Claude Code edit the files one after another, fixing problems as they appear during the migration.",
+      "correct": false,
+      "reason": "Direct execution is for simple, well-scoped changes; using it for a migration across many files with an open choice of approach risks costly rework."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S26-T1",
+  "slot_id": "M1-S26",
+  "try": 1,
+  "point": "1.4-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent calls escalate_to_human for a billing dispute after it confirms a duplicate charge that exceeds its refund limit. The human agents who receive escalations cannot see the conversation transcript. They report that they spend several minutes re-asking customers for details. Which two changes best address this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep each escalation note to one short free-form sentence, so the human agent can read it quickly between calls.",
+      "correct": false,
+      "reason": "A short free-form note leaves out the structured fields the guide names, such as customer ID, root cause, refund amount and recommended action."
+    },
+    {
+      "letter": "B",
+      "text": "Define the escalate_to_human input schema with required fields for customer ID, root cause, refund amount, and recommended action.",
+      "correct": true,
+      "reason": "Required schema fields make every handoff carry the customer ID, root cause, refund amount and recommended action, so the human agent can act without the transcript."
+    },
+    {
+      "letter": "C",
+      "text": "Pass only the customer ID, so the human agent can look up the orders and work out the root cause from backend records.",
+      "correct": false,
+      "reason": "The guide says a handoff should include root cause, refund amount and recommended action, so the human agent should not have to repeat the investigation."
+    },
+    {
+      "letter": "D",
+      "text": "Have the agent tell the customer to restate the full problem to the human agent after the transfer completes.",
+      "correct": false,
+      "reason": "This shifts the work back to the customer and gives no structured handoff summary, which the guide requires when the human agent lacks the transcript."
+    },
+    {
+      "letter": "E",
+      "text": "Have the agent compile a structured summary of its findings and its recommended next step before it calls escalate_to_human.",
+      "correct": true,
+      "reason": "The guide calls for structured handoff summaries with root cause analysis and recommended actions when the human agent lacks the transcript."
+    }
+  ]
+}

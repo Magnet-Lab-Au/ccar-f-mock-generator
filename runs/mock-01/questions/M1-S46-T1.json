@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S46-T1",
+  "slot_id": "M1-S46",
+  "try": 1,
+  "point": "4.5-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline submits a nightly Message Batches API job that generates test cases for 400 source files, with one request per file. When the batch completes, the pipeline must attach each generated test suite to the correct source file before it opens pull requests. Which approach most reliably correlates each response with its originating request?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rely on the position of each result in the returned output, assuming that position matches the order in which the requests were submitted.",
+      "correct": false,
+      "reason": "The guide designates custom_id, not result position, as the way to correlate batch requests with their responses."
+    },
+    {
+      "letter": "B",
+      "text": "Assign each request a custom_id derived from its source file path, then match each returned result to its file by that custom_id.",
+      "correct": true,
+      "reason": "The guide names custom_id fields as the mechanism for correlating batch request/response pairs."
+    },
+    {
+      "letter": "C",
+      "text": "Give each request a lookup tool that Claude calls during processing to fetch the file path, so the response carries the lookup result.",
+      "correct": false,
+      "reason": "The guide states the batch API does not support multi-turn tool calling within a single request, so tools cannot run mid-request."
+    },
+    {
+      "letter": "D",
+      "text": "Instruct Claude in each prompt to echo the file path at the top of its generated tests, then parse that text to identify the file.",
+      "correct": false,
+      "reason": "Parsing model-generated text is fragile; the guide provides custom_id fields specifically for request/response correlation."
+    }
+  ]
+}

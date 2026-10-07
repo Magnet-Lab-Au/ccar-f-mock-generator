@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S23-T2",
+  "slot_id": "M1-S23",
+  "try": 2,
+  "point": "1.3-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S23-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support coordinator agent, built with the Claude Agent SDK, should delegate complex billing disputes to a billing subagent that has its own AgentDefinition. The coordinator's allowedTools list contains get_customer, lookup_order, process_refund and escalate_to_human. In testing, the coordinator never delegates and handles every billing dispute itself. Which change lets the coordinator spawn the billing subagent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add the MCP tools of the billing subagent to the coordinator's allowedTools so that the coordinator can reach the subagent through those tools.",
+      "correct": false,
+      "reason": "Access to the subagent's MCP tools does not spawn a subagent; the guide names the Task tool as the mechanism for spawning subagents, and \"Task\" must be in allowedTools."
+    },
+    {
+      "letter": "B",
+      "text": "Add \"Task\" to the coordinator's allowedTools, because the Task tool is the mechanism that spawns subagents.",
+      "correct": true,
+      "reason": "The guide names the Task tool as the mechanism for spawning subagents, and allowedTools must include \"Task\" for a coordinator to invoke subagents."
+    },
+    {
+      "letter": "C",
+      "text": "Set tool_choice to \"any\" so that the coordinator is forced to call a tool on each turn and therefore delegates to the billing subagent.",
+      "correct": false,
+      "reason": "Forcing a tool call only makes the coordinator choose among its allowed tools; subagents are spawned through the Task tool, so \"Task\" must still be in allowedTools."
+    },
+    {
+      "letter": "D",
+      "text": "Add an instruction to the coordinator's system prompt that tells the coordinator to delegate every billing dispute to the billing subagent.",
+      "correct": false,
+      "reason": "A prompt instruction cannot give the coordinator a tool it lacks; without \"Task\" in allowedTools, the coordinator has no mechanism to spawn the subagent."
+    }
+  ]
+}

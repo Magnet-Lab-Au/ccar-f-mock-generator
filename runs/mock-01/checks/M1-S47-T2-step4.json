@@ -1,0 +1,92 @@
+{
+  "question_id": "M1-S47-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The reviewing actor has more than one name. The question calls it Claude Code, options A and E call it Claude, and the reason for option B calls it the model. The question, the options and the reasons should use one name throughout.",
+      "letter": "B",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "2b65764bb720ef838cb2da637e93a67daa84c98b601d1057ae79f0c38cac1983",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "C"
+    ],
+    "reason": "When detailed instructions alone still produce inconsistent output, few-shot examples are the most effective fix. Option C directly shows the complete format with location, issue, severity, and suggested fix. Option B gives 2-4 examples across different finding types, all in one complete format, so the model applies that format to every kind of finding. Option A (vague exhortation), option D (longer rules, more of what already failed) and option E (batching doesn't affect format, and adds latency to PR review) would not fix the inconsistency.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The reviewing actor has more than one name. The question calls it Claude Code, options A and E call it Claude, and the reason for option B calls it the model. The question, the options and the reasons should use one name throughout.",
+      "letter": "B",
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "system prompt",
+      "found": true
+    },
+    {
+      "name": "Message Batches API",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

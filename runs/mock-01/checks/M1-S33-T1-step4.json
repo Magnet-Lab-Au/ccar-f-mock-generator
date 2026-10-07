@@ -1,0 +1,102 @@
+{
+  "question_id": "M1-S33-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "30c17e9d76156da97c52498bdb9ffcee7dde234cd7066c3f53167dbc82dd6aad",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Path-scoped rules in .claude/rules/ with YAML frontmatter paths: [\"terraform/**/*\"] load automatically, and only when Claude edits matching files. This removes irrelevant context from other sessions. A still loads the text every time. B requires a manual step. D is not shared with the team and still loads globally.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    },
+    {
+      "name": "paths",
+      "found": true
+    },
+    {
+      "name": "YAML frontmatter",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    },
+    {
+      "name": "slash command",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,74 @@
+{
+  "question_id": "M1-S55-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "f86e950b60a57db2664d57e64b1126d4c705edde71ba1004e845fb022b950f4b",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "A required field forces the model to fill in a value even when the pull request has no ticket, so it invents one. Making linked_ticket_id optional and nullable lets the summary return null (task 4.3-S4). The other options fail: a prompt instruction is only probabilistic, a retry loop can't recover information that is absent and invented IDs may still pass a format check, and free text loses the structured output.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "--json-schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

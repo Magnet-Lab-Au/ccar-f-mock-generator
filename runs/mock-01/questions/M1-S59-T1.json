@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S59-T1",
+  "slot_id": "M1-S59",
+  "try": 1,
+  "point": "3.5-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "You use Claude Code to refine the script that posts automated review findings as pull request comments in your CI pipeline. Testing shows three problems: the finding schema stores line numbers as strings, the deduplication step compares line numbers as numbers, and the comment placement step maps findings to diff lines with those line numbers. A change to the type of the line number field changes what the other two steps must do. Which approach should you take to communicate these problems to Claude Code?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Report one problem per message and wait for each fix to pass review before you report the next problem.",
+      "correct": false,
+      "reason": "The guide recommends sequential iteration only for independent issues; these fixes interact, so a separate fix for each problem can break the other steps."
+    },
+    {
+      "letter": "B",
+      "text": "Add a few concrete examples of correct pull request comments and rerun the script without describing the three problems.",
+      "correct": false,
+      "reason": "The guide recommends input/output examples for prose descriptions that are interpreted inconsistently, not for coordinating fixes to interacting problems that are never described."
+    },
+    {
+      "letter": "C",
+      "text": "Open a separate Claude Code session for each problem so that each fix is made in a clean, isolated context.",
+      "correct": false,
+      "reason": "Isolated sessions hide how the fixes interact, but the guide says that interacting issues need one detailed message that covers all of them together."
+    },
+    {
+      "letter": "D",
+      "text": "Describe all three problems in one detailed message that explains how the line number type affects deduplication and comment placement.",
+      "correct": true,
+      "reason": "The guide says that interacting issues should be addressed together in a single detailed message, so that the fixes are designed to work together."
+    }
+  ]
+}

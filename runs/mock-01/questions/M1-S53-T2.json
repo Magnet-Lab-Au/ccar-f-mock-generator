@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S53-T2",
+  "slot_id": "M1-S53",
+  "try": 2,
+  "point": "4.4-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S53-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the --json-schema flag to produce structured review findings for each pull request. A Pydantic validation step then checks each output. Some outputs pass the schema but fail semantic checks, for example a finding whose line number lies outside the changed lines of the diff. Which retry approach most effectively guides the model toward a corrected output?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send a follow-up request containing the original diff, the failed output, and the specific Pydantic validation errors, such as which finding has an invalid line number.",
+      "correct": true,
+      "reason": "Retry-with-error-feedback appends the specific validation errors, together with the original diff and the failed output, so the model knows exactly what to correct."
+    },
+    {
+      "letter": "B",
+      "text": "Send a follow-up request containing the original diff and a generic note that the previous output failed validation and must be corrected.",
+      "correct": false,
+      "reason": "A generic note does not tell the model which error occurred. The guide calls for appending the specific validation errors and including the failed output."
+    },
+    {
+      "letter": "C",
+      "text": "Tighten the JSON schema with stricter types and required fields, then rerun the review with the same prompt and no error details.",
+      "correct": false,
+      "reason": "A stricter schema targets syntax errors, but this failure is a semantic validation error. A rerun without the specific errors gives the model no guidance toward correction."
+    },
+    {
+      "letter": "D",
+      "text": "Resend the identical original prompt and diff, relying on a fresh generation to produce findings whose line numbers fall inside the changed lines.",
+      "correct": false,
+      "reason": "This retry gives the model no information about what failed. The guide says that the specific validation errors must be appended to guide the model toward correction."
+    }
+  ]
+}

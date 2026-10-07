@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S31-T1",
+  "slot_id": "M1-S31",
+  "try": 1,
+  "point": "3.6-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to generate a new payment validation module. A developer then asks the same Claude Code session to review the generated changes before merging. The review reports no problems, but a teammate later finds several logic errors in the module. Which change would most effectively improve the quality of this review?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resume the generation session with --resume in the pipeline so the reviewer keeps full knowledge of the original design decisions.",
+      "correct": false,
+      "reason": "Resuming the generation session carries over the same context, and the guide says this shared context makes the review less effective than an independent instance."
+    },
+    {
+      "letter": "B",
+      "text": "Ask the same session to report its findings with --output-format json and --json-schema so the results are machine-parseable.",
+      "correct": false,
+      "reason": "These flags only make the output structured; the review still runs in the generating session, so it is still less effective than an independent review instance."
+    },
+    {
+      "letter": "C",
+      "text": "Run the review in a separate Claude Code instance that starts without the context of the session that generated the code.",
+      "correct": true,
+      "reason": "The guide states that an independent review instance reviews changes more effectively than the same session that generated them, because that session keeps its own generation context."
+    },
+    {
+      "letter": "D",
+      "text": "Add an instruction in the same session that tells Claude to review its own changes more critically before approving them.",
+      "correct": false,
+      "reason": "The review still runs in the session that generated the code, so the session context isolation problem that the guide describes remains."
+    }
+  ]
+}

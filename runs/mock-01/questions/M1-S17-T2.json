@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S17-T2",
+  "slot_id": "M1-S17",
+  "try": 2,
+  "point": "2.4-K4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M1-S17-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Logs show that your support agent often makes several exploratory lookup_order and get_customer calls only to learn which refund policy documents exist and which data fields the backend holds. These extra calls slow down resolution and fill the context window. Which changes most directly give the agent visibility into the available content without these exploratory tool calls?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send each support conversation through the Message Batches API, so the exploratory lookup_order and get_customer calls run at a 50% lower cost.",
+      "correct": false,
+      "reason": "The guide states that the Message Batches API has no multi-turn tool calling support and up to a 24-hour processing window, and it exposes no content catalog."
+    },
+    {
+      "letter": "B",
+      "text": "Move the support MCP server from the project-level .mcp.json into the user-level ~/.claude.json, so the server loads with personal configuration settings.",
+      "correct": false,
+      "reason": "The guide uses the choice between .mcp.json and ~/.claude.json to separate shared team tooling from personal servers, and this choice gives the agent no visibility into available content."
+    },
+    {
+      "letter": "C",
+      "text": "Expose the refund and return policy documentation hierarchy as an MCP resource, so the agent can see which policy documents exist before calling tools.",
+      "correct": true,
+      "reason": "The guide names MCP resources as the mechanism for exposing content catalogs such as documentation hierarchies to reduce exploratory tool calls."
+    },
+    {
+      "letter": "D",
+      "text": "Expose a catalog of the order and customer database schemas as an MCP resource, so the agent knows which data fields are available.",
+      "correct": true,
+      "reason": "The guide lists database schemas as a content catalog that an MCP resource can expose, so the agent gains visibility without probing through tool calls."
+    },
+    {
+      "letter": "E",
+      "text": "Set tool_choice to \"any\" in the API request, so the agent must call a tool on every turn before it answers the customer.",
+      "correct": false,
+      "reason": "The guide presents tool_choice \"any\" as a way to make the model call a tool, so this change adds tool calls instead of exposing a content catalog."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S47-T2",
+  "slot_id": "M1-S47",
+  "try": 2,
+  "point": "4.2-K1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M1-S47-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review each pull request. The system prompt gives detailed instructions for the review comment format, but the output still varies: some comments omit the file location, and others omit the severity or the suggested fix. Developers say that these inconsistent comments are hard to act on. Which changes would most effectively make the review comments consistent and actionable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a sentence to the system prompt that asks Claude to be thorough and consistent in every review comment it writes.",
+      "correct": false,
+      "reason": "The guide says that general instructions of this kind do not reliably improve output, and concrete examples are needed to show what consistent output looks like."
+    },
+    {
+      "letter": "B",
+      "text": "Add two to four few-shot examples for different kinds of findings, such as a security flaw and a style issue, all in one complete format.",
+      "correct": true,
+      "reason": "The guide recommends a small set of 2-4 targeted few-shot examples, which demonstrate the format concretely across varied findings and help the model generalize it to new cases."
+    },
+    {
+      "letter": "C",
+      "text": "Add few-shot examples of complete review comments that each show the location, issue, severity, and suggested fix in the exact desired format.",
+      "correct": true,
+      "reason": "The guide names few-shot examples that demonstrate the desired format (location, issue, severity, suggested fix) as the most effective technique for consistent output when instructions alone fail."
+    },
+    {
+      "letter": "D",
+      "text": "Rewrite the format section of the system prompt with longer and more detailed rules for each field of a review comment.",
+      "correct": false,
+      "reason": "The guide states that detailed instructions alone produce inconsistent results, and the prompt already has detailed instructions, so adding more of them is not the effective fix."
+    },
+    {
+      "letter": "E",
+      "text": "Send the review requests through the Message Batches API so that Claude has more processing time for each pull request.",
+      "correct": false,
+      "reason": "The guide presents the Message Batches API as a cost and latency tradeoff, not as a way to make output consistent, so it does not make the missing fields appear."
+    }
+  ]
+}

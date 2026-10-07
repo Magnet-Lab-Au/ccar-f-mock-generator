@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S24-T2",
+  "slot_id": "M1-S24",
+  "try": 2,
+  "point": "1.7-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S24-T1",
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday you used Claude Code to investigate why your support agent calls escalate_to_human for simple refund requests. You named that session \"escalation-audit\", and it holds a detailed analysis of lookup_order and process_refund traces. No code or logs have changed since then. How should you continue exactly that prior conversation today?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run Claude Code with --resume escalation-audit so that the named prior conversation continues with its analysis intact.",
+      "correct": true,
+      "reason": "The guide names --resume <session-name> as the way to continue a specific prior conversation, and resumption fits because the prior context is still valid."
+    },
+    {
+      "letter": "B",
+      "text": "Use fork_session on the newest session so that a fresh branch picks up the escalation analysis.",
+      "correct": false,
+      "reason": "The guide describes fork_session as a way to create independent branches that explore divergent approaches from a shared baseline. It is not the way to continue a specific named conversation."
+    },
+    {
+      "letter": "C",
+      "text": "Start a new session and ask Claude to re-read all the refund traces from the beginning.",
+      "correct": false,
+      "reason": "Nothing has changed, so the prior context is still valid. The guide prefers resumption in this case, and a full re-exploration discards the existing analysis."
+    },
+    {
+      "letter": "D",
+      "text": "Start a new session and inject a structured summary of yesterday's escalation findings into the first prompt.",
+      "correct": false,
+      "reason": "The guide prefers a fresh start with an injected summary when prior tool results are stale. Here nothing has changed, so the prior context is valid, and a new session does not continue that specific conversation."
+    }
+  ]
+}

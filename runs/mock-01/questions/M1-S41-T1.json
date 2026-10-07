@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S41-T1",
+  "slot_id": "M1-S41",
+  "try": 1,
+  "point": "5.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "In a new Claude Code session, you paste one long input that concatenates static analysis reports for 30 modules of your service and ask for a summary of all serious findings. The summary covers the first few and last few modules accurately, but it omits several serious findings from modules in the middle. The input fits well within the context window. What is the most likely explanation?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Progressive summarization from earlier turns condensed the middle findings into vague statements before Claude Code produced its summary.",
+      "correct": false,
+      "reason": "The request is a single input in a new session, so no earlier progressive summarization happened; the omission pattern by position points to the lost-in-the-middle effect."
+    },
+    {
+      "letter": "B",
+      "text": "The input exceeded the context window, so Claude Code silently truncated the modules that appear in the middle.",
+      "correct": false,
+      "reason": "The scenario states that the input fits well within the context window, so truncation does not explain the omissions; the pattern matches the lost-in-the-middle effect."
+    },
+    {
+      "letter": "C",
+      "text": "Claude Code ranked the middle findings as less severe and deliberately left them out of its summary to save tokens.",
+      "correct": false,
+      "reason": "The omitted findings are serious, and the omission follows their position in the input; the guide explains this pattern as the lost-in-the-middle effect, not as severity ranking."
+    },
+    {
+      "letter": "D",
+      "text": "Models reliably process the beginning and end of long inputs but may omit findings that sit in middle sections.",
+      "correct": true,
+      "reason": "This is the lost-in-the-middle effect that the guide describes, and it matches findings being kept at the start and end but dropped from the middle."
+    }
+  ]
+}

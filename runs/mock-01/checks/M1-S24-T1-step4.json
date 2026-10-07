@@ -1,0 +1,99 @@
+{
+  "question_id": "M1-S24-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B6",
+      "detail": "The feature \"-p\" is not in the exam guide.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "d9d0c823da2cda6f077129f59581649b3acad10c7af8473cacbf118161b2dc27",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Nothing has changed since yesterday, so the earlier context is still valid. Named session resumption with --resume escalation-audit continues exactly that conversation with its analysis intact. The -p flag only runs Claude Code in non-interactive mode and does not reload a session. Starting a new session would throw away the existing analysis. fork_session creates a separate branch instead of continuing the same conversation.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "-p",
+      "found": false
+    },
+    {
+      "name": "--print",
+      "found": true
+    },
+    {
+      "name": "--resume",
+      "found": true
+    },
+    {
+      "name": "fork_session",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S07-T1",
+  "slot_id": "M1-S07",
+  "try": 1,
+  "point": "2.1-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "The document analysis subagent in your research system has three tools with detailed, well-differentiated descriptions: extract_data_points, summarize_content, and verify_claim_against_source. Logs show that it calls summarize_content for most requests to pull specific figures from a report, even though the extract_data_points description covers exactly this case. The subagent's system prompt contains the instruction \"Whenever a request mentions a report, summarize it first.\" What change would most effectively fix this tool selection problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Merge the three tools into one generic analyze_document tool so the subagent never has to choose among similar tools.",
+      "correct": false,
+      "reason": "The guide recommends splitting generic tools into purpose-specific tools with defined input/output contracts, so merging them goes the wrong way and leaves the prompt problem unfixed."
+    },
+    {
+      "letter": "B",
+      "text": "Review the system prompt and rewrite the keyword-triggered instruction that pushes the subagent toward summarize_content whenever a report is mentioned.",
+      "correct": true,
+      "reason": "The guide says keyword-sensitive system prompt instructions can create unintended tool associations that override well-written tool descriptions, so the prompt itself must be reviewed and fixed."
+    },
+    {
+      "letter": "C",
+      "text": "Expand the extract_data_points description with more example queries and edge cases so it wins over the summarize_content tool more often.",
+      "correct": false,
+      "reason": "The descriptions are already clear and differentiated, so the gap is elsewhere: the keyword-sensitive system prompt instruction overrides them, and longer descriptions leave that association in place."
+    },
+    {
+      "letter": "D",
+      "text": "Set tool_choice to force extract_data_points on every request so the subagent always uses the extraction tool first.",
+      "correct": false,
+      "reason": "Forced tool selection makes every request use extraction, including those that need summaries or claim verification, and it does not remove the keyword-sensitive instruction that causes the misrouting."
+    }
+  ]
+}

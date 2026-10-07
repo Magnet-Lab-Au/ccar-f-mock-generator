@@ -1,0 +1,91 @@
+{
+  "question_id": "M1-S45-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The same actor has two names. The question and options call it the \"main session\", but the reasons for B and D call it the \"main agent\" (\"the main agent keeps high-level coordination\", \"a coordinating main agent\"). Use \"main session\" throughout.",
+      "letter": "B",
+      "point": "5.4-S1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "34aefbb4742721253f71a58c52b023326e21272b186187a2867053b08f382fdb",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Delegating each specific question (e.g., find refund test files, trace dependent services) to subagents isolates the verbose exploration output. Only concise findings come back, so the main session keeps its context for coordinating the overall plan (5.4-S1, 3.4-S3). A repeats the failure from the earlier attempt, C bloats every session at startup, and D loses the coordinating context between questions.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The same actor has two names. The question and options call it the \"main session\", but the reasons for B and D call it the \"main agent\" (\"the main agent keeps high-level coordination\", \"a coordinating main agent\"). Use \"main session\" throughout.",
+      "letter": "B",
+      "point": "5.4-S1"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "subagent",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

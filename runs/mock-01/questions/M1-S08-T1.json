@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S08-T1",
+  "slot_id": "M1-S08",
+  "try": 1,
+  "point": "1.6-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator currently runs a fixed sequence for every request: web search, then document analysis, then synthesis, then report generation. For an open-ended topic, the web search subagent finds that the topic splits into several unexpected subtopics, and some findings point to new sources that need analysis. The fixed sequence ignores these findings and produces shallow reports. How should the coordinator decompose open-ended research tasks like this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep the fixed sequence but add more predefined steps, so that every request always runs extra search and analysis passes in the same order.",
+      "correct": false,
+      "reason": "A fixed pipeline suits predictable workflows; adding predefined steps still cannot react to the unexpected subtopics that intermediate findings reveal."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the fixed sequence and give the synthesis subagent a larger context window, so that it can fill in the missing subtopics itself.",
+      "correct": false,
+      "reason": "The problem is the fixed decomposition; a larger context does not create the new search and analysis subtasks that open-ended investigation needs."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the fixed sequence and run it three times per request, then merge the three reports into one final report.",
+      "correct": false,
+      "reason": "Repeating the same fixed steps does not adapt the plan to intermediate findings, which the guide gives as the reason to use dynamic decomposition."
+    },
+    {
+      "letter": "D",
+      "text": "Use dynamic adaptive decomposition, where the coordinator generates new subtasks for the subagents based on what the intermediate findings reveal at each step.",
+      "correct": true,
+      "reason": "The guide recommends dynamic decomposition for open-ended investigation, with subtasks generated from what each step discovers."
+    }
+  ]
+}

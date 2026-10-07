@@ -1,0 +1,78 @@
+{
+  "question_id": "M1-S53-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "3810d3dc18e55b1b06ccba952385cd0838a95921d5c182e2fa2f064d45c862b3",
+  "date": "2026-10-07",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Retry-with-error-feedback (4.4-K1, 4.4-S1) works best when the retry includes the original input, the failed output, and the specific validation errors. Option A does exactly that, so the model can see what to fix. A generic note (B) or an identical resend (D) gives no corrective signal. A stricter schema (C) cannot catch semantic errors such as line numbers outside the diff.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "--json-schema",
+      "found": true
+    },
+    {
+      "name": "Claude Code",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

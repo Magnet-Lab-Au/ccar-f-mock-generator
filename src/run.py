@@ -77,7 +77,7 @@ def main(argv=None):
     p.add_argument("--seed", type=int)
     p.add_argument("--reason", default="")
     p.add_argument("--question")
-    a = p.parse_args(argv)
+    a = p.parse_intermixed_args(argv)   # options may come before or after the action and the target
     c = steps = None
     try:
         c, steps = make_control(a.mock, a.seed)

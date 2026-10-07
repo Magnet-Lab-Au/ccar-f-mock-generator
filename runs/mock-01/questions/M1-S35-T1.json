@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S35-T1",
+  "slot_id": "M1-S35",
+  "try": 1,
+  "point": "3.5-K3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team asks Claude Code to add a caching layer to a payment-status service. The developer assigned to the task has never built a cache before. The developer worries that important design decisions will be missed. Which actions apply the interview pattern to surface these considerations before implementation?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Ask Claude Code to build the full cache first, and then ask it to list the questions that the implementation raised.",
+      "correct": false,
+      "reason": "The guide places the interview before implementing, so questions raised after the build come too late to shape the design."
+    },
+    {
+      "letter": "B",
+      "text": "Ask Claude Code to question the developer about cache invalidation strategies, such as when entries must expire after a status update, before writing any code.",
+      "correct": true,
+      "reason": "In the interview pattern, Claude asks questions that surface considerations such as cache invalidation before implementing in an unfamiliar domain."
+    },
+    {
+      "letter": "C",
+      "text": "Have Claude Code ask the developer how the service must behave when the cache backend fails, and settle those answers before implementation starts.",
+      "correct": true,
+      "reason": "The guide names failure modes as a design consideration that the interview pattern surfaces before implementation."
+    },
+    {
+      "letter": "D",
+      "text": "Have the developer write a long prose specification alone and tell Claude Code to implement it without asking any clarifying questions.",
+      "correct": false,
+      "reason": "The interview pattern has Claude ask questions because the developer may not anticipate every consideration, so blocking questions defeats it."
+    },
+    {
+      "letter": "E",
+      "text": "Let Claude Code implement the cache immediately with direct execution, and then fix the design problems that appear during code review.",
+      "correct": false,
+      "reason": "The interview pattern surfaces considerations before implementing, so it does not wait for problems to appear in finished code."
+    }
+  ]
+}

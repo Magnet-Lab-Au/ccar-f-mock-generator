@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S55-T1",
+  "slot_id": "M1-S55",
+  "try": 1,
+  "point": "4.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the --json-schema flag on each pull request to produce a structured review summary. The schema marks the field linked_ticket_id as required, because the release dashboard reads it. Many pull requests reference no ticket, and audits show that their summaries contain ticket IDs that do not exist. What is the most effective change to stop these invented values?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Replace the structured summary with free-text review comments and extract the ticket ID from them with a regular expression.",
+      "correct": false,
+      "reason": "This drops schema-enforced structured output, which is the reliable approach, and it does not address why values are invented."
+    },
+    {
+      "letter": "B",
+      "text": "Keep linked_ticket_id required and add a prompt instruction that tells Claude never to invent ticket IDs in the summary.",
+      "correct": false,
+      "reason": "The required field still forces a value when no ticket exists, so the schema keeps creating pressure to fabricate one."
+    },
+    {
+      "letter": "C",
+      "text": "Make linked_ticket_id an optional, nullable field so that the summary can return null when the pull request references no ticket.",
+      "correct": true,
+      "reason": "Optional or nullable fields let the model report missing information instead of fabricating a value to satisfy a required field."
+    },
+    {
+      "letter": "D",
+      "text": "Add a validation-retry loop that resends the request whenever the returned ticket ID fails a format check.",
+      "correct": false,
+      "reason": "Retries cannot help when the information is absent from the source, and an invented ID can still pass a format check."
+    }
+  ]
+}

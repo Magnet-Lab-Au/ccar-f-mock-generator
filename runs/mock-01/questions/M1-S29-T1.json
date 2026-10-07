@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S29-T1",
+  "slot_id": "M1-S29",
+  "try": 1,
+  "point": "2.4-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-07",
+  "model": "claude-opus-5-5",
+  "question": "Your team commits the project's .mcp.json so every developer on the customer support agent connects to the same backend MCP server. This server provides get_customer, lookup_order, process_refund and escalate_to_human, and it needs an API key for the billing system. Each developer has a personal key, and no secret may enter version control. How should you supply the key to the server?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Write the key directly into the committed .mcp.json and restrict repository access to members of the support team.",
+      "correct": false,
+      "reason": "This commits a secret to version control, which environment variable expansion in .mcp.json exists to avoid."
+    },
+    {
+      "letter": "B",
+      "text": "Move the whole server definition into each developer's ~/.claude.json and remove the shared server from the project configuration.",
+      "correct": false,
+      "reason": "User-level ~/.claude.json is for personal or experimental servers, while shared team tooling belongs in the project-level .mcp.json with environment variable expansion."
+    },
+    {
+      "letter": "C",
+      "text": "Store the key in the agent's system prompt, which is committed with the code, so the agent passes it to the tools.",
+      "correct": false,
+      "reason": "The key still ends up in committed files, so this fails the goal of credential management without committing secrets."
+    },
+    {
+      "letter": "D",
+      "text": "Reference the key in .mcp.json as ${BILLING_API_KEY} and have each developer set that environment variable on their own machine.",
+      "correct": true,
+      "reason": "Environment variable expansion in .mcp.json keeps the shared configuration in version control while each developer supplies a credential without committing a secret."
+    }
+  ]
+}
