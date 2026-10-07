@@ -15,11 +15,17 @@ The first session in Claude Code.
 - The owner asked for shorter questions and answers: 1 to 3 sentences for each item. The owner also asked that each mention of a decision gives the text of that decision. A new rule 31 in `WORKING-RULES.md` records both.
 - New code: `src/control.py`, `tests/fakes.py` and `tests/test_control.py`. The tests use `unittest`. No test makes a model call.
 - Two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs. The second found 1 serious and 3 minor bugs in the fixes. The owner said yes before each round of fixes. 53 tests pass. For each fix, the assistant removed the fix in a copy of the code and saw a test fail. No reviewer checked the last round of fixes. The owner and the assistant agreed to stop the reviews of the control there.
-- `HANDOFF.md`, `README.md`, `src/README.md`, `WORKING-RULES.md` and a new `.gitignore` have the state of the end of this session. The owner said yes to these changes before the assistant made them.
+- `HANDOFF.md`, `README.md`, `src/README.md`, `WORKING-RULES.md` and a new `.gitignore` have the state of the end of this session. The owner said yes to these changes before the assistant made them. The assistant committed and pushed them, with the yes of the owner.
+- The owner asked if "auto mode" also means no yes before a change. The assistant recommended that it covers only the tool permissions. The owner agreed.
+- The assistant made a list of 63 changes for decisions 0024 and 0027 to 0036, so that they describe the control and correct the findings of the second review. The owner said yes, and the assistant made them. It checked two product facts in the Anthropic documentation: only `strict: true` guarantees the schema of a tool input (page "Structured outputs"), and the Messages API is stateless (page "Messages"). The draft forms do not set `strict`. That is now an open item of decision 0029.
+- The owner said that the assistant asks for a yes too often. A new rule 32 in `WORKING-RULES.md` says when the assistant acts without a yes.
+- An independent reviewer checked the 10 changed decisions. It found 2 serious and 5 minor items, and some smaller points. The assistant fixed them.
+- The owner let the assistant select the diagrams to make again. The assistant made diagrams 07 (step 5) and 08 (step 6) again, in the visual form of diagrams 09 and 10, because decision 0038 changed those steps the most. A browser test opened each popup: 22 in diagram 07 and 17 in diagram 08. An independent reviewer checked their text and found 2 serious and 7 minor items. The assistant fixed them. It also corrected the false sentence of rule B4 in diagram 06, and an unclear example in decision 0033, item 8.
 
 **Open**
 
-- Decisions 0027 to 0036 and diagrams 02 to 10 do not describe the control yet.
+- Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
+- No reviewer checked the last fixes of the decisions and of diagrams 07 and 08.
 - The real steps do not exist. Each step is a fake in the tests.
 - The owner has no command line yet. The control has the functions.
 - The owner has not confirmed the full text of decision 0039.

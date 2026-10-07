@@ -83,7 +83,7 @@ D = {
  'B4': dict(title='Rule B4: the question tests its point', who='One model call', cls='model',
    sent=['The question tests the point that its slot names.'],
    example=res('B4', 'The slot names point 1.2-K2, the isolated context of subagents. The question tests point 1.2-K4, a task decomposition that is too narrow.', '1.2-K2'), examplehead=EH,
-   why='The plan gives each point of the guide its share of questions. A question on a different point breaks the plan.'),
+   why='The plan gives each slot one point of its task statement, and no two slots of a mock get the same point. A question on a different point leaves its own point with no question.'),
  'B5': dict(title='Rule B5: the question is inside its story', who='One model call', cls='model',
    sent=['The question is inside the story of its scenario. It does not contradict the story.'],
    example=res('B5', 'The story of scenario 3 says that a coordinator agent delegates to specialized subagents. The question describes one agent that does all the work.'), examplehead=EH,

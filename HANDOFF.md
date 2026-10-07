@@ -65,7 +65,7 @@ State on 7 October 2026, second session.
 - **A second review checked the changed files.** Of the 14 items, 8 are closed and 6 are closed in part. The reviewers found 3 new errors and 10 new serious items. A programmer who has only the decision files still meets cases with no path. The report is `docs/reviews/review-decisions-0024-to-0037.md`. Read it before you continue. In the table below, "Designed" means: a decision and a diagram exist. It does not mean: ready for code.
 - **Decision 0038 stops the cycle of reviews.** The fixes of the first review made the 10 new items. All of them are in the control. The theme: too much automatic repair, designed before one real run. So the control is simple for mock 1. One automatic loop stays: a question that fails step 3 or step 4 goes to step 5, with the limits of decisions 0033 and 0037. Each other failure waits for the owner. Step 6 sends no question back. The owner accepts a mock with a command before step 8 builds the files.
 - **The control exists as code with tests** (decision 0039): `src/control.py`, `tests/fakes.py` and `tests/test_control.py`. 53 tests pass, and no test makes a model call. Two independent reviewers checked it. No reviewer checked the last round of fixes. Each step is a fake. The owner has no command line yet.
-- Where decision 0038 and an older file disagree, decision 0038 is correct. Decisions 0027 to 0036 and diagrams 02 to 10 do not agree with it yet.
+- Where decision 0038 and an older file disagree, decision 0038 is correct. Decisions 0024 and 0027 to 0036 were corrected on 7 October 2026 so that they describe the control. Diagrams 07 and 08 were made again. The other diagrams do not show decisions 0038 and 0039 yet.
 
 | Step | Decision | Diagram | State |
 |---|---|---|---|
@@ -125,11 +125,9 @@ Not decided:
 
 ## The next steps
 
-1. Correct decisions 0027 to 0036 so that they describe the control (decisions 0038, part 7, and 0039). In the same work, correct the other findings of the second review. Tell the owner what changes, and wait for a yes (rule 23). Then ask the owner which diagrams to make again.
-2. Then an independent review of the changed files (rule 15).
-3. Then the owner confirms the text of decisions 0019 to 0036 and 0039.
-4. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
-5. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
+1. The owner confirms the text of decisions 0019 to 0036 and 0039. Decisions 0024 and 0027 to 0036 were corrected and reviewed on 7 October 2026. No reviewer checked the last fixes.
+2. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
+3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
 A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program is not a pipeline step. It gets a decision file and a journal entry.
 
@@ -164,12 +162,12 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
 | The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |
 | The text of decisions 0019 to 0036 | The owner agreed to each decision. The owner has not confirmed the full text of these 18 files. The owner confirmed the text of decision 0037. |
-| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. |
-| The other findings of the second review | 3 errors of reviewer A, 11 uses of a guide point with the context not stated, 4 other findings, 7 statements about a product with no source, 4 minor contradictions, 6 old statements, and minor gaps in the cases (e), (g) and (h). They are in the report. They are not in this table one by one. |
+| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. One reviewer checked the corrected decisions 0024 and 0027 to 0036, and one checked diagrams 07 and 08. Nobody checked the last fixes. |
+| The other findings of the second review | Corrected on 7 October 2026 in decisions 0024 and 0027 to 0036. Open parts are now in the lists "Not decided yet" of those files, for example rule B6 (0030) and case (h) (0032). |
 | Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |
 | The findings of the first review on the diagrams | 10 diagram errors of the first review are not corrected. Diagrams 02 to 10 also show the design before decision 0037. |
 | Items that the decisions list as "not decided yet" | Each decision from 0027 to 0036 has a list "Not decided yet". The review said that this table does not have each of those items. Read those lists in the decision files. |
-| A false sentence in diagram 06 | The popup of rule B4 says: "The plan gives each point of the guide its share of questions." That is false. It is not corrected yet. |
+| A false sentence in diagram 06 | Corrected on 7 October 2026. |
 | The copy of the exam guide | `reference/exam-guide.md` is a copy of a file in the Claude project "CPN Learning path". The comparison with the original, character for character, is not done. The assistant can read the original only as text in the chat, not as a file. The assistant asked the owner if the original file is on the computer. The owner did not answer yet. |
 | The number of mocks | Not decided. It also decides how the program selects the scenarios across mocks, and how it prevents the same scene in two different mocks. |
 | A task statement that does not fit its scenario | The plan does not prevent it (decision 0027). The writer can answer `cannot_write`. Then the slot gets the status `open`, and the owner decides (decision 0037). An automatic path is decided after the test of decision 0024. |
@@ -179,16 +177,16 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | The 5 texts with a backslash | 5 texts of the records file have a backslash from the file format. A step that shows them must handle it (`docs/reviews/review-guide-records.md`). |
 | The models and the cost | Not decided: the model of the writer and of the two check calls. The test of decision 0024 decides. An estimate of the assistant, of 7 October 2026, from word counts: one mock costs 8 to 12 US dollars with Claude Opus 5.5 and 4 to 6 with Claude Sonnet 5.5. The complete project with 5 mocks: 50 to 100 US dollars. Check the price page of Anthropic again before the first run. |
 | The format of the portal | Not known. Step 8 writes our own two files. A converter for the portal comes later (decision 0036). |
-| The fingerprint | Decided in decisions 0036 and 0037. Not decided: the sequence and the encoding of the fields. |
+| The fingerprint | Decided in decisions 0036, 0037 and 0039: the fields as JSON with sorted keys, in UTF-8. |
 | The correct letters | Not decided: if the correct letters are spread well over a mock (decisions 0034 and 0036). |
-| The answer forms | The JSON schemas in decisions 0029, 0032 and 0034 are drafts. Nobody tested them against the API. The assistant did not check the exact names of the API parameters in the Anthropic documentation. |
+| The answer forms | The JSON schemas in decisions 0029, 0032 and 0034 are drafts. Nobody tested them against the API. The drafts do not set `strict: true`. The Anthropic documentation says that only this option guarantees the schema of a tool input (decision 0029). |
 | The Agent SDK | Decision 0002 names it. The design of all 9 steps is complete, and no step uses it (decisions 0012, 0029, 0032 and 0034). So a new decision must say so. It is not written yet. |
 | Version control | Decided on 7 October 2026: a folder in WSL with a private repository on GitHub. The owner makes it. Check it at the start (next step 1). |
 | Which product writes the code | Decided on 7 October 2026: the work moves to Claude Code now (decisions 0002 and 0038). The two scripts of step 0 and the four check scripts were written in Cowork. |
 | The audit | 52 of its 240 rows had one check, not two. These are the rows with a weak fit or no fit. |
 | The portal pages | Two prototype pages exist on claude.ai. "How the Mocks Are Built Old" shows the first build and the audit. "How the Mocks Are Built New" shows a design of 2 October that is not the design of this folder. |
 | Diagram 01 | It shows the pipeline of the first session of 6 October. It does not show the two calls of step 4, the two calls of step 6 or the limit of 3 tries. |
-| Diagrams 02 to 08 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 09 and 10 have the form that the owner wants. Diagrams 02, 04 and 07 also have statements that are old, because later decisions closed them. |
+| Diagrams 02 to 06 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 07 to 10 have the form that the owner wants. Diagrams 01 to 06, 09 and 10 do not show decisions 0038 and 0039. Diagrams 02 and 04 also have old statements. |
 
 ## Where the old material is
 
