@@ -1,0 +1,690 @@
+{
+  "checks": [
+    {
+      "question_id": "T-M1-S01",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B7"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "fail",
+            "finding": "Option C says 'the subagent's memory', but the question names two subagents: the report-generation subagent and the synthesis subagent. A reader cannot tell at first reading which one is meant, and the actor gets a name that differs from the one in the question.",
+            "letter": "C",
+            "point": null
+          }
+        ],
+        "features": [
+          "Glob",
+          "Edit",
+          "Write",
+          "Grep",
+          "Read"
+        ],
+        "not_named": []
+      },
+      "as_expected": false
+    },
+    {
+      "question_id": "T-M1-S02",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B7"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "fail",
+            "finding": "Two actors each have more than one name. The synthesis actor is called 'synthesis subagent' in the stem but 'synthesis agent' in the options and reasons. The search actor is called both 'web search subagent' and 'search subagent' in the stem and the reasons. Use one name for each actor throughout.",
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice"
+        ],
+        "not_named": []
+      },
+      "as_expected": false
+    },
+    {
+      "question_id": "T-M1-S03",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S04",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B7"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "fail",
+            "finding": "The subagent that searches the web has two names. Option A calls it the \"web search subagent\" and option B calls it the \"search\" subagent (in \"search and analysis subagents\"). A reader may wonder whether these are the same agent. Use one name, for example \"web search subagent\", in every option and reason.",
+            "letter": "A",
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": false
+    },
+    {
+      "question_id": "T-M1-S05",
+      "mark": "bad",
+      "expected": "fail on B7",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B7"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "fail",
+            "finding": "One actor has three names. The question calls the model that requests the search 'Claude' and then 'the subagent' ('the subagent keeps requesting the same search'). The reasons for A and D call it 'the model'. A reader may take these as different actors. Use one name throughout, for example 'Claude'.",
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "stop_reason",
+          "tool_use",
+          "end_turn",
+          "system prompt"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S06",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Read",
+          "Glob",
+          "Edit",
+          "Grep"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S07",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S16",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "get_customer",
+          "lookup_order",
+          "escalate_to_human"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S31",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "fork_session",
+          "--resume"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S46",
+      "mark": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B7",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Message Batches API",
+          "custom_id"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    }
+  ],
+  "as_expected": 7,
+  "of": 10,
+  "cost": {
+    "calls": 10,
+    "input_tokens": 167076,
+    "output_tokens": 7658,
+    "dollars": 0.82
+  }
+}

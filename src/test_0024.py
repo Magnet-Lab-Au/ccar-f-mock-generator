@@ -193,6 +193,30 @@ def part3(records, model_call):
     return result
 
 
+def part_b7(records, model_call):
+    """Decision 0043: call 4b with rule B7 on the 9 good questions and on the
+    question that the owner marked bad for clarity (T-M1-S05). Each good
+    question must pass. T-M1-S05 must fail on B7."""
+    p1 = load("part1.json")
+    by_id = {e["question"]["question_id"]: e for e in p1["questions"] if e.get("question")}
+    marking = Marking(load_plan(), records, MARKING)
+    marking.prefix = "test-0024"
+    marks = {m["question_id"]: m["mark"] for m in marking.read(1)}
+    check = ModelCheck(records, model_call)
+    out = []
+    for qid, mark in sorted(marks.items()):
+        entry = by_id[qid]
+        v, cause = retry(rules_verdict, check, entry["question"], entry["slot"])
+        expected = "pass" if mark == "good" else "fail on B7"
+        ok = v is not None and (v["verdict"] == "pass" if mark == "good" else "B7" in v["failed_rules"])
+        out.append({"question_id": qid, "mark": mark, "expected": expected, "error": cause, "verdict": v, "as_expected": ok})
+        print("%s (%s): %s %s %s" % (qid, mark, v and v["verdict"], v and v["failed_rules"], "ok" if ok else "NOT as expected"))
+    result = {"checks": out, "as_expected": sum(e["as_expected"] for e in out), "of": len(out), "cost": cost(model_call)}
+    save("part-b7.json", result)
+    print("As expected: %d of %d" % (result["as_expected"], result["of"]))
+    return result
+
+
 def load_plan():
     with open(os.path.join(ROOT, "runs", "mock-01", "plan.json"), encoding="utf-8") as f:
         return json.load(f)
@@ -200,7 +224,7 @@ def load_plan():
 
 def main(argv=None):
     p = argparse.ArgumentParser(description="The test of decisions 0024 and 0042.")
-    p.add_argument("part", choices=["part1", "part2", "part3"])
+    p.add_argument("part", choices=["part1", "part2", "part3", "b7"])
     a = p.parse_args(argv)
     records = load_records()
     model_call = ModelCall()
@@ -209,8 +233,10 @@ def main(argv=None):
             r = part1(records, load_plan(), model_call)
         elif a.part == "part2":
             r = part2(records, model_call)
-        else:
+        elif a.part == "part3":
             r = part3(records, model_call)
+        else:
+            r = part_b7(records, model_call)
     except RunStopped as e:
         print("Stopped: %s" % e)
         print("Cost so far: %s" % json.dumps(cost(model_call)))
