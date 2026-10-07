@@ -1,0 +1,192 @@
+{
+  "answers": [
+    {
+      "number": 1,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "When identity verification must precede financial operations, compliance has to be deterministic. A programmatic prerequisite gate that blocks lookup_order and process_refund until get_customer returns a verified ID guarantees the order. Prompt instructions (B) and few-shot examples (C) still fail some of the time, and a routing classifier (D) does not enforce the order of tool calls."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 2,
+      "correct": [
+        "B"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "B"
+        ],
+        "reason": "Tool descriptions are the primary mechanism the model uses to choose between tools. Both descriptions here are minimal and overlap, so the low-effort, high-impact first step is to expand them: say what inputs each handles, give example queries, cover edge cases, and state when to use each tool over the other. Few-shot examples (A) add token cost without fixing the root cause. A keyword router (C) is over-engineered and bypasses the model's reasoning. Consolidating the tools (D) is a bigger architectural change than a first step warrants."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 3,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "The root cause is unclear decision boundaries. Explicit escalation criteria plus few-shot examples (5.2-S1) directly fix this by showing when to resolve and when to escalate. Self-reported confidence and sentiment are unreliable proxies for case complexity (5.2-K3). A trained classifier is over-engineered as a first step."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 4,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Project-scoped commands go in .claude/commands/ inside the repository. Because that directory is under version control, every developer gets the /review command when they clone or pull. ~/.claude/commands/ is personal to each user and not shared. CLAUDE.md and config.json are not where slash commands are defined."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 5,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Microservice restructuring spans dozens of files and requires architectural decisions about service boundaries and dependencies. That is exactly what plan mode is for: exploring the codebase and designing an approach before committing to changes, which prevents costly rework."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 6,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Path-scoped rule files in .claude/rules/ use glob patterns in YAML frontmatter (e.g., **/*.test.tsx), so each convention loads automatically when Claude edits matching files, wherever they sit. Subdirectory CLAUDE.md files can't cover test files scattered across directories. Skills need manual invocation. A monolithic CLAUDE.md relies on Claude inferring which section applies."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 7,
+      "correct": [
+        "B"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "B"
+        ],
+        "reason": "The coordinator's logs show it split the topic into three visual-arts-only subtasks. The subagents then did exactly what they were assigned, so the coverage gap comes from the overly narrow decomposition (1.2-K4)."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 8,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Structured error context (failure type, attempted query, partial results, alternatives) gives the coordinator what it needs to recover intelligently. The other options are anti-patterns: B returns a generic status that hides useful context, C silently suppresses the error, and D terminates the whole workflow over a single failure."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 9,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Per 2.3-S3, the synthesis agent gets a scoped cross-role tool such as verify_fact for the high-frequency simple fact-checks (85% of cases). Complex verifications still route through the coordinator, which keeps specialization intact and preserves observability. Option C gives synthesis too many tools and invites misuse. Option B still requires round trips and creates dependencies between checks. Option D relies on speculative caching that may not match what synthesis actually needs to verify."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 10,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "The -p (--print) flag runs Claude Code in non-interactive mode: it processes the prompt, prints the result and exits, so the CI job won't hang. CLAUDE_HEADLESS and --batch are not real options, and redirecting stdin from /dev/null doesn't properly switch Claude Code to non-interactive mode."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 11,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "The Batches API has no latency guarantee and can take up to 24 hours, so it doesn't fit a blocking pre-merge check. The overnight technical debt report tolerates that delay and can take the 50% savings."
+      },
+      "error": null,
+      "right": true
+    },
+    {
+      "number": 12,
+      "correct": [
+        "A"
+      ],
+      "answer": {
+        "status": "answered",
+        "selected": [
+          "A"
+        ],
+        "reason": "Per-file local passes plus a separate cross-file integration pass avoid the attention dilution and contradictory findings of a single pass, while still catching issues that span files (1.6-S2, 4.6-S2)."
+      },
+      "error": null,
+      "right": true
+    }
+  ],
+  "right": 12,
+  "of": 12,
+  "cost": {
+    "calls": 12,
+    "input_tokens": 189708,
+    "output_tokens": 1563,
+    "dollars": 0.79
+  }
+}
