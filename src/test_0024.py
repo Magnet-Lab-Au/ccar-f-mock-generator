@@ -17,7 +17,7 @@ import sys
 
 import step3_check_code
 from control import CallFailed, RunStopped
-from model_call import ModelCall
+from model_call import ModelCall, cost as usage_cost
 from step2_write import Writer
 from step4_check_model import ModelCheck
 from step6_check_scenario import ScenarioCheck
@@ -45,10 +45,7 @@ def load(name):
 
 
 def cost(model_call):
-    i = sum(u["input"] for u in model_call.usage)
-    o = sum(u["output"] for u in model_call.usage)
-    return {"calls": len(model_call.usage), "input_tokens": i, "output_tokens": o,
-            "dollars": round(i * PRICE["input"] / 1e6 + o * PRICE["output"] / 1e6, 2)}
+    return usage_cost(model_call.usage)
 
 
 def retry(function, *args):

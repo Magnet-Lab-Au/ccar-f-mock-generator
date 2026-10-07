@@ -24,6 +24,15 @@ EFFORT = "high"
 # Thinking is always on in Claude Opus 5.5, and its tokens count toward
 # max_tokens. The calls stream, so a high limit causes no HTTP timeout.
 MAX_TOKENS = 64000
+# US dollars per million tokens, Claude Opus 5.5, page "Pricing", read on 7 October 2026 (decision 0042).
+PRICE = {"input": 4.0, "output": 20.0}
+
+
+def cost(usage):
+    i = sum(u["input"] for u in usage)
+    o = sum(u["output"] for u in usage)
+    return {"calls": len(usage), "input_tokens": i, "output_tokens": o,
+            "dollars": round(i * PRICE["input"] / 1e6 + o * PRICE["output"] / 1e6, 2)}
 
 # The errors that a new call can repair (the Claude API skill, shared/error-codes.md):
 # 429, 5xx and network errors. Each other error stops the run.

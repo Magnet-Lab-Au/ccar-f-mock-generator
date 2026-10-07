@@ -19,6 +19,7 @@ import os
 import sys
 
 from control import Control, Refused, RunStopped
+from model_call import cost
 from steps import ROOT, RealSteps, guide_points, load_records
 
 
@@ -33,6 +34,24 @@ def make_control(mock, seed=None):
     records = load_records()
     steps = RealSteps(folder, records=records)
     return Control(folder, mock, seed, steps, guide_points(records)), steps
+
+
+def save_cost(c, steps):
+    """Save the tokens and the cost of this run, one file for each run. Print the
+    cost of this run and of the mock so far."""
+    if not steps.model_call.usage or c.run_number is None:
+        return
+    folder = os.path.join(c.folder, "usage")
+    os.makedirs(folder, exist_ok=True)
+    path = os.path.join(folder, "run-%03d.json" % c.run_number)
+    data = dict(cost(steps.model_call.usage), run=c.run_number, model=steps.model_call.model, effort=steps.model_call.effort)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    total = 0.0
+    for name in sorted(os.listdir(folder)):
+        with open(os.path.join(folder, name), encoding="utf-8") as f:
+            total += json.load(f)["dollars"]
+    print("Cost of this run: $%.2f (%d calls). Cost of the mock so far: $%.2f." % (data["dollars"], data["calls"], total))
 
 
 def show(report):
@@ -59,10 +78,14 @@ def main(argv=None):
     p.add_argument("--reason", default="")
     p.add_argument("--question")
     a = p.parse_args(argv)
+    c = steps = None
     try:
         c, steps = make_control(a.mock, a.seed)
         if a.command == "run":
-            show(c.run())
+            try:
+                show(c.run())
+            finally:
+                save_cost(c, steps)
         elif a.command == "report":
             show(c.report())
         elif a.command == "mark":
