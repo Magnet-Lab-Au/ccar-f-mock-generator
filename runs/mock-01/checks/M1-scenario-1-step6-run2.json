@@ -1,0 +1,143 @@
+{
+  "mock": 1,
+  "scenario": 1,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S22-T1",
+            "M1-S20-T1"
+          ],
+          "detail": "The S22 stem separates refunds outside the return policy from backend timeouts. Its correct option A marks policy violations as non-retryable and timeouts as retryable. This gives away the S20 answer: a return-window policy failure is a non-retryable business error, not a transient error."
+        },
+        {
+          "question_ids": [
+            "M1-S30-T2",
+            "M1-S18-T1"
+          ],
+          "detail": "The S30 stem frames the fix for a prompt rule the agent sometimes skips as moving it into a programmatic check in code. Its correct option names a refund rule required by legal policy. This tells the reader that the S18 refund rule, which the prompt states but the agent violates in 3% of cases, needs code-level enforcement (the hook), not stronger prompt wording or few-shot examples."
+        },
+        {
+          "question_ids": [
+            "M1-S24-T3",
+            "M1-S18-T1"
+          ],
+          "detail": "The S24 stem presents 'adding a hook that intercepts process_refund calls above a threshold' as a candidate fix for the support agent. This almost restates S18's correct option D: a hook that intercepts process_refund calls above $500 and redirects them to escalation."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S17-T2",
+            "M1-S19-T1",
+            "M1-S23-T2"
+          ],
+          "detail": "The wrong idea 'set tool_choice to \"any\" to force the needed behaviour' is a wrong option in three questions: S17-T2 E (to expose content), S19-T1 C (to make get_customer run first) and S23-T2 C (to make the coordinator delegate). This exceeds the limit of 2."
+        },
+        {
+          "question_ids": [
+            "M1-S18-T1",
+            "M1-S19-T1",
+            "M1-S23-T2"
+          ],
+          "detail": "The wrong idea 'a system prompt instruction guarantees the required behaviour' appears in three questions: S18-T1 A/B/C, S19-T1 B (prompt instruction to call get_customer first) and S23-T2 D (prompt instruction to delegate). This also exceeds the limit of 2."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M1-SC1-R2-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S22-T1",
+        "M1-S20-T1"
+      ],
+      "detail": "The S22 stem separates refunds outside the return policy from backend timeouts. Its correct option A marks policy violations as non-retryable and timeouts as retryable. This gives away the S20 answer: a return-window policy failure is a non-retryable business error, not a transient error."
+    },
+    {
+      "id": "M1-SC1-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S30-T2",
+        "M1-S18-T1"
+      ],
+      "detail": "The S30 stem frames the fix for a prompt rule the agent sometimes skips as moving it into a programmatic check in code. Its correct option names a refund rule required by legal policy. This tells the reader that the S18 refund rule, which the prompt states but the agent violates in 3% of cases, needs code-level enforcement (the hook), not stronger prompt wording or few-shot examples."
+    },
+    {
+      "id": "M1-SC1-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S24-T3",
+        "M1-S18-T1"
+      ],
+      "detail": "The S24 stem presents 'adding a hook that intercepts process_refund calls above a threshold' as a candidate fix for the support agent. This almost restates S18's correct option D: a hook that intercepts process_refund calls above $500 and redirects them to escalation."
+    },
+    {
+      "id": "M1-SC1-R2-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S17-T2",
+        "M1-S19-T1",
+        "M1-S23-T2"
+      ],
+      "detail": "The wrong idea 'set tool_choice to \"any\" to force the needed behaviour' is a wrong option in three questions: S17-T2 E (to expose content), S19-T1 C (to make get_customer run first) and S23-T2 C (to make the coordinator delegate). This exceeds the limit of 2."
+    },
+    {
+      "id": "M1-SC1-R2-F5",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S18-T1",
+        "M1-S19-T1",
+        "M1-S23-T2"
+      ],
+      "detail": "The wrong idea 'a system prompt instruction guarantees the required behaviour' appears in three questions: S18-T1 A/B/C, S19-T1 B (prompt instruction to call get_customer first) and S23-T2 D (prompt instruction to delegate). This also exceeds the limit of 2."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M1-S16-T1": "bd637eac62f3fae33c48f45c413090935be6a2354bf4497f6e9ee2f98b32563f",
+    "M1-S17-T2": "87394503f218d516e50ba92301c478093942e25fc04c55171f78764ed047670c",
+    "M1-S18-T1": "aaaf15a08a939cef869a32ca21c993aa272aef3286ca8f2a9c586cc879ae50f3",
+    "M1-S19-T1": "82d44c77984d88266f7333ac36f318f093a4636acceac36c8b8e83e5f70e388c",
+    "M1-S20-T1": "b38bbc7d5601754ab7d2872abdcbd047d23791745e96f5615d00e5c87f03ed8a",
+    "M1-S21-T1": "dd0ce14572a9f3d764d666186350213aac523fc945741d9bde0925428cbeffe1",
+    "M1-S22-T1": "87c048998903b7b41d0a5e285387874ad6fc372c0f1b73f725459795a2582cc5",
+    "M1-S23-T2": "999c4c799e231d0d60cf36b3d9a7cebaa29403b71e3bccbde382d90472fd1ad2",
+    "M1-S24-T3": "ac431c37643f118d7c2946205bbb45f470b80c0ea1a6c610ba4332f8233bf479",
+    "M1-S25-T2": "b60395a01a52692f099b1b569eab84ac67a00561c9ab2b989fbfcd4c7f0d9227",
+    "M1-S26-T1": "012da04830b2f37651a8ae72a11f32ec19cd41d8bed44e93ac7ef59d43058877",
+    "M1-S27-T1": "a0dc37ec74d6dc402aa75f11f31958a04375eba8e51f659839cb6a748d19fbfb",
+    "M1-S28-T2": "abb73e747f0911125a37a16b27003c65cf4795887b56137359c3194e6989a0dc",
+    "M1-S29-T1": "da1677256400ed73d8f037b703b71e0bf1186719abc1a3a92ab9020c833dd3dd",
+    "M1-S30-T2": "75a6895b198ac97664653ee61a74deb3684630681c45ec44d10f92ebf02ec681"
+  },
+  "date": "2026-10-08"
+}

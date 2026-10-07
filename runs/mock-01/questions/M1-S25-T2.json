@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S25-T2",
+  "slot_id": "M1-S25",
+  "try": 2,
+  "point": "1.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S25-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A small-business customer with about 40 orders in the past year writes that the agent should go through the account and fix whatever is wrong. The customer names no specific order, charge, or return. Your team must decide how the agent decomposes this open-ended request before it calls process_refund on anything. Which decomposition should the agent follow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "First use get_customer and lookup_order to map the account and its orders, then resolve problems from the smallest amount to the largest so quick fixes finish first.",
+      "correct": false,
+      "reason": "The mapping step is right, but the guide says the next step is to identify high-impact areas and prioritize them. Ordering the work by smallest amount puts the low-impact problems first."
+    },
+    {
+      "letter": "B",
+      "text": "Call lookup_order on every order in date order, and fully resolve each problem with process_refund as soon as it appears before checking later orders.",
+      "correct": false,
+      "reason": "The guide says to map the structure and identify high-impact areas before acting. This option fixes problems as they appear, so it never builds a map or a prioritized plan."
+    },
+    {
+      "letter": "C",
+      "text": "First use get_customer and lookup_order to map the account and its orders, then identify the highest-impact problems and follow a plan prioritized by that impact.",
+      "correct": true,
+      "reason": "The guide says to decompose open-ended tasks by first mapping the structure, then identifying high-impact areas, then creating a prioritized plan. This option follows those steps in that order."
+    },
+    {
+      "letter": "D",
+      "text": "Ask the customer to pick one order, then call process_refund on that order before the agent looks at any other part of the account.",
+      "correct": false,
+      "reason": "The guide says to decompose open-ended tasks by first mapping the structure. This option acts on one order before the agent has mapped the account or found which areas have the highest impact."
+    }
+  ]
+}

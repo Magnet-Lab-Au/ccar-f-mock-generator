@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S09-T2",
+  "slot_id": "M1-S09",
+  "try": 2,
+  "point": "2.1-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "The synthesis subagent in your research system has two tools: merge_findings and reconcile_conflicts. Both tool descriptions read almost the same: \"Processes findings from several sources and returns a combined result.\" Logs show that requests to resolve contradictory statistics from two sources often go to merge_findings, which silently keeps both values. The subagent's system prompt does not mention either tool. What is the most likely cause of this misrouting?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The model chooses tools mainly by their names, and the names merge_findings and reconcile_conflicts sound too similar to tell apart.",
+      "correct": false,
+      "reason": "The guide names tool descriptions, not tool names, as the primary mechanism for tool selection. Here the descriptions are nearly identical, and that overlap causes the misrouting."
+    },
+    {
+      "letter": "B",
+      "text": "The tool_choice setting is \"auto,\" which makes the model pick randomly whenever more than one tool could apply to a request.",
+      "correct": false,
+      "reason": "With \"auto\", the model decides which tool to call based on the tool descriptions. The choice is not random, so the setting does not explain the misrouting."
+    },
+    {
+      "letter": "C",
+      "text": "The near-identical descriptions give the model no basis to tell which tool handles contradictory statistics, so its choice between the two tools is unreliable.",
+      "correct": true,
+      "reason": "Tool descriptions are the main mechanism for tool selection. Ambiguous or overlapping descriptions cause misrouting between similar tools, as in the guide's analyze_content vs analyze_document example."
+    },
+    {
+      "letter": "D",
+      "text": "The subagent has too many tools available, and a large tool set degrades the reliability of its tool selection.",
+      "correct": false,
+      "reason": "The guide warns that large tool sets degrade selection, but this subagent has only two tools. The cause here is the overlap of the two descriptions."
+    }
+  ]
+}

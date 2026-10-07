@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S24-T3",
+  "slot_id": "M1-S24",
+  "try": 3,
+  "point": "1.7-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In a Claude Code session, you analyzed how your customer support agent decides when to call escalate_to_human, including its tool descriptions and its escalation logs. You now want to compare two divergent fixes: adding few-shot escalation examples to the system prompt, and adding a hook that intercepts process_refund calls above a threshold. Each fix should start from the shared analysis, and neither exploration should influence the other. What should you do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resume the analysis session with --resume, and then explore the two fixes one after the other in the same conversation.",
+      "correct": false,
+      "reason": "The guide uses --resume to continue one specific prior conversation; exploring both fixes in it makes the second exploration build on the first, so the branches are not independent."
+    },
+    {
+      "letter": "B",
+      "text": "Switch the analysis session to plan mode, and then plan both fixes side by side in the same conversation.",
+      "correct": false,
+      "reason": "Plan mode does not create separate branches; both fixes stay in one conversation, while the guide uses fork_session to explore divergent approaches from a shared baseline."
+    },
+    {
+      "letter": "C",
+      "text": "Run /compact in the analysis session, and then explore both fixes together in the condensed conversation that remains.",
+      "correct": false,
+      "reason": "/compact only reduces the context of one conversation; both fixes still share one context, so it does not create the independent branches that fork_session gives."
+    },
+    {
+      "letter": "D",
+      "text": "Use fork_session on the analysis session to create two branches, and then explore one fix in each branch from the shared baseline.",
+      "correct": true,
+      "reason": "The guide names fork_session for creating independent branches from a shared analysis baseline, so you can explore divergent approaches in parallel."
+    }
+  ]
+}

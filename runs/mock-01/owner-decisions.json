@@ -6,5 +6,228 @@
     "reason": "Each try corrected the last finding. The findings are small.",
     "date": "2026-10-07",
     "after_try": 3
+  },
+  {
+    "id": "D002",
+    "action": "rewrite",
+    "target": "M1-S09-T1",
+    "reason": "Repeat inside this scenario. Question M1-S07 has the same scene: the document analysis subagent with the tools extract_data_points, summarize_content and verify_claim_against_source, clear tool descriptions, and one keyword instruction in the system prompt that sends requests to the wrong tool. M1-S07 asks for the fix (review the system prompt). This question asks for the cause (the wording of the system prompt). So each question gives away the answer of the other. The answer C and each reason are correct. Write a different question on the same point. Use a different subagent and different tools than M1-S07. Do not use an instruction that names the action of one tool directly, as 'verify' does here. Do not make the correct option a copy of the guide sentence.",
+    "date": "2026-10-08",
+    "question_id": "M1-S09-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M1-S07-T1"
+    ],
+    "point": "2.1-K3"
+  },
+  {
+    "id": "D003",
+    "action": "rewrite",
+    "target": "M1-S24-T2",
+    "reason": "Repeat of a question in a different scenario. Question M1-S10 (scenario 3) is the same question: yesterday an investigation in a named Claude Code session, nothing has changed since then, continue it today. The answer is the same (--resume with the session name), and the three wrong options are the same (fork_session, a fresh session that explores again, a fresh session with an injected summary). The answer A and each reason are correct. Write a different question on the same point. Do not use the scene 'yesterday, nothing changed, continue today'. Do not use the same three wrong options. For example: several earlier sessions exist, and the participant must continue one specific session and not the newest one.",
+    "date": "2026-10-08",
+    "question_id": "M1-S24-T2",
+    "after_try": 2,
+    "other_questions": [
+      "M1-S10-T1"
+    ],
+    "point": "1.7-K2"
+  },
+  {
+    "id": "D004",
+    "action": "rewrite",
+    "target": "M1-S28-T1",
+    "reason": "Repeat inside this scenario. Question M1-S21 has the same scene: code runs the fixed sequence get_customer, then lookup_order, then process_refund for each request, but the correct next step depends on what a tool returns. The correct options of the two questions are the same idea: the next step comes from the tool results, not from a fixed list. Question M1-S25 has almost the same wrong options. The answer B and each reason are correct. Write a different question on the same point. Do not use the fixed sequence get_customer, lookup_order, process_refund. Do not start two options with the same words, as 'Keep the fixed sequence' does here, because the form then points at the answer. For example: show a decision tree in code that selects the tool from keywords in the first message, and ask what the agent cannot do with it.",
+    "date": "2026-10-08",
+    "question_id": "M1-S28-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M1-S21-T1"
+    ],
+    "point": "1.1-S1"
+  },
+  {
+    "id": "D005",
+    "action": "rewrite",
+    "target": "M1-S60-T1",
+    "reason": "Repeat inside this scenario. Question M1-S48 has the same scene: one Claude Code session in the CI pipeline generates code and then reviews it, and human reviewers find subtle errors that the self-review approved. M1-S48 asks for the fix (a second, independent instance with no reasoning context of the generator). This question asks for the cause (the session keeps the reasoning from generation). So each question gives away the answer of the other. Question M1-S31 in scenario 2 is a third question on this idea. The answer C and each reason are correct. Write a different question on the same point. Do not use the scene 'generate, then review in the same session, people find errors' and do not ask only for the cause. For example: a team compares two proposals for the review step, and the participant must say which proposal still has the self-review limit and why.",
+    "date": "2026-10-08",
+    "question_id": "M1-S60-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M1-S48-T1"
+    ],
+    "point": "4.6-K3"
+  },
+  {
+    "id": "D006",
+    "action": "rewrite",
+    "target": "M1-S30-T1",
+    "reason": "Close copy of sample question 1 of the exam guide, in the same scenario. Both have: the agent calls process_refund with no verified customer from get_customer in a small part of the conversations, the answer is enforcement by code, and the wrong options are few-shot examples and a stronger system prompt. A participant who read the guide knows this question already. Three more questions of this mock have the same pattern (M1-S13, M1-S14, M1-S18): a prompt rule fails in a few percent of the runs, and code must enforce it. The answer D and each reason are correct. Write a different question on the same point. Do not use get_customer before process_refund. Do not use the pattern 'a rule in the prompt fails in N percent of the cases, which change fixes it'. For example: give several rules of the support agent, and ask which one needs enforcement by code and which ones can stay as prompt instructions.",
+    "date": "2026-10-08",
+    "question_id": "M1-S30-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M1-S18-T1"
+    ]
+  },
+  {
+    "id": "D007",
+    "action": "rewrite",
+    "target": "M1-S47-T4",
+    "reason": "The two correct options are one action in different words. Option B says: add two to four few-shot examples in one complete format. Option D says: add few-shot examples of complete review comments in the exact format. None of the three wrong options has few-shot examples. So a participant selects the two options with the word 'few-shot' and does not have to think. A question with 'Select 2.' needs two correct options that are different from each other. The reasons are correct. Keep the scene: the instructions for the format are detailed, but the review comments are still inconsistent. Change the options so that the word 'few-shot' does not give the answer away. For example: each of the five options is a way to build the set of examples, and two of them are correct (the examples show the complete format with each field, and the examples cover different kinds of findings). Question M1-S57 in this scenario already tests examples for ambiguous cases with the reasoning for the verdict. Do not repeat that.",
+    "date": "2026-10-08",
+    "question_id": "M1-S47-T4",
+    "after_try": 4
+  },
+  {
+    "id": "D008",
+    "action": "rewrite",
+    "target": "M1-S49-T1",
+    "reason": "Ruling 2 of the owner: in one scenario of one mock, at most one wrong option uses the confidence that the model reports about itself as a filter, a threshold or a trigger. This scenario already has that option in question M1-S56, option C ('only report high-confidence findings'). In this question, option B (a confidence score for each finding, with a threshold) is a second one. Option D ('only when it is highly confident') is a third one. The answer C and its reason are correct. Keep the question text, the correct option and option A. Replace option B and option D with wrong options that do not use the confidence of the model. For example: one general definition of severity for all three levels with no code examples, or a rule that sets the severity from the size of the change.",
+    "date": "2026-10-08",
+    "question_id": "M1-S49-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M1-S56-T1"
+    ]
+  },
+  {
+    "id": "D009",
+    "action": "rewrite",
+    "target": "M1-SC1-R1-F1",
+    "reason": "Same scene as S21 (an adaptive plan for an open-ended investigation). Test the point 1.6-S3 exactly: decompose an open-ended task by first mapping the structure and identifying high-impact areas, then make a prioritized plan. Do not test an adaptive plan that generates subtasks; S21 tests that.",
+    "date": "2026-10-08",
+    "question_id": "M1-S25-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D010",
+    "action": "rewrite",
+    "target": "M1-SC2-R1-F1",
+    "reason": "Same scene as S34 (plan mode for a large change). The slot gets the new point 3.4-K4: the Explore subagent.",
+    "date": "2026-10-08",
+    "question_id": "M1-S38-T1",
+    "after_try": 1,
+    "point": "3.4-K4"
+  },
+  {
+    "id": "D011",
+    "action": "ignore",
+    "target": "M1-SC3-R1-F1",
+    "reason": "Covered by the rewrite of S09 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D012",
+    "action": "ignore",
+    "target": "M1-SC3-R1-F2",
+    "reason": "The fact is in a wrong option of S02, so a participant cannot know that it is true.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D013",
+    "action": "ignore",
+    "target": "M1-SC3-R1-F3",
+    "reason": "Covered by the rewrite of S09 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D014",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F2",
+    "reason": "Covered by the rewrite of S28 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D015",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F3",
+    "reason": "Covered by the rewrite of S30 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D016",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F4",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D017",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F5",
+    "reason": "Covered by the rewrite of S30 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D018",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F6",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D019",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F7",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D020",
+    "action": "ignore",
+    "target": "M1-SC1-R1-F8",
+    "reason": "Covered by the rewrite of S28 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D021",
+    "action": "ignore",
+    "target": "M1-SC2-R1-F2",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D022",
+    "action": "ignore",
+    "target": "M1-SC2-R1-F3",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D023",
+    "action": "ignore",
+    "target": "M1-SC2-R1-F4",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D024",
+    "action": "ignore",
+    "target": "M1-SC5-R1-F1",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D025",
+    "action": "ignore",
+    "target": "M1-SC5-R1-F2",
+    "reason": "Covered by the rewrite of S60 (decision 0045).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D026",
+    "action": "ignore",
+    "target": "M1-SC5-R1-F3",
+    "reason": "Rule of the owner: a finding that is not D1 and that the rewrites do not cover is ignored.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D027",
+    "action": "ignore",
+    "target": "M1-SC5-R1-F4",
+    "reason": "Covered by the rewrite of S49 (decision 0045).",
+    "date": "2026-10-08"
   }
 ]

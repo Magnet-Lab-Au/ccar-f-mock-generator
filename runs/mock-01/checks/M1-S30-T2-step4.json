@@ -1,0 +1,82 @@
+{
+  "question_id": "M1-S30-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "75a6895b198ac97664653ee61a74deb3684630681c45ec44d10f92ebf02ec681",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Sending refunds only to the original payment method is a legal requirement on a financial operation, so it needs guaranteed compliance. Prompt instructions still fail in a small share of conversations, so this rule calls for a programmatic check, such as a hook that intercepts process_refund calls. The other rules are stylistic, and an occasional lapse in them causes little harm.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "system prompt",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "get_customer",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

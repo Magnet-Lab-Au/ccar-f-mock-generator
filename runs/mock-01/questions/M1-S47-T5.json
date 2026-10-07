@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S47-T5",
+  "slot_id": "M1-S47",
+  "try": 5,
+  "point": "4.2-K1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M1-S47-T4",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review each pull request. The system prompt has detailed rules for the review comment format, but the output still varies: some comments omit the file location, and others omit the severity or the suggested fix. You decide to add few-shot examples to the prompt. Which choices about the set of examples would most effectively make the review comments consistent and actionable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Choose two to four examples that cover different kinds of genuine findings, such as a security flaw and a null-reference bug.",
+      "correct": true,
+      "reason": "The guide recommends a small targeted set of 2-4 examples, and varied examples help Claude Code generalize the format to new findings instead of matching only pre-specified cases."
+    },
+    {
+      "letter": "B",
+      "text": "Make each example a complete review comment that shows the location, issue, severity, and suggested fix in the exact desired format.",
+      "correct": true,
+      "reason": "The guide says that few-shot examples that demonstrate the specific desired output format (location, issue, severity, suggested fix) are the most effective way to get consistent output when detailed instructions alone fail."
+    },
+    {
+      "letter": "C",
+      "text": "Vary the order and layout of the fields from example to example so that Claude Code learns that several formats are acceptable.",
+      "correct": false,
+      "reason": "The guide says that examples should demonstrate one specific desired output format to achieve consistency, so examples with varied layouts teach inconsistency."
+    },
+    {
+      "letter": "D",
+      "text": "Show only the issue description in each example, and leave the location, severity, and fix to the written format rules.",
+      "correct": false,
+      "reason": "The written format rules alone already produce inconsistent comments, and the guide says the examples must demonstrate the complete desired format to achieve consistency."
+    },
+    {
+      "letter": "E",
+      "text": "Collect about twenty examples, one for each known type of defect, so that Claude Code can match each new finding to a listed case.",
+      "correct": false,
+      "reason": "The guide recommends 2-4 targeted examples, and it says that examples should enable generalization to novel patterns rather than matching only pre-specified cases."
+    }
+  ]
+}

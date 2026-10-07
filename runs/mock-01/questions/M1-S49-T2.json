@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S49-T2",
+  "slot_id": "M1-S49",
+  "try": 2,
+  "point": "4.1-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M1-S49-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code reviews on every pull request and labels each finding as critical, major, or minor. Developers report that similar issues get different severity labels across pull requests. For example, an unchecked null dereference is labeled critical in one review and minor in another. Which change to the review prompt would most effectively make severity classification consistent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a concrete code example for the critical level only and leave the major and minor levels without criteria or examples.",
+      "correct": false,
+      "reason": "The guide calls for explicit criteria and concrete code examples for each severity level, so leaving major and minor undefined keeps their classification inconsistent."
+    },
+    {
+      "letter": "B",
+      "text": "Define explicit criteria for each severity level and include concrete code examples that illustrate a typical finding at each level.",
+      "correct": true,
+      "reason": "The guide states that explicit severity criteria with concrete code examples for each level achieve consistent classification."
+    },
+    {
+      "letter": "C",
+      "text": "List the severity labels critical, major, and minor in the prompt and tell Claude to apply each label accurately.",
+      "correct": false,
+      "reason": "This is a vague instruction without explicit criteria, and the guide states that explicit criteria work better than vague instructions."
+    },
+    {
+      "letter": "D",
+      "text": "Write one general sentence that defines severity as the impact of an issue and use it for all three levels without examples.",
+      "correct": false,
+      "reason": "One general definition gives no explicit criteria for each level and no concrete code examples, which the guide requires for consistent severity classification."
+    }
+  ]
+}

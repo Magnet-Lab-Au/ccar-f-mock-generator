@@ -1,0 +1,45 @@
+{
+  "question_id": "M1-S47-T6",
+  "slot_id": "M1-S47",
+  "try": 6,
+  "point": "4.2-K1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M1-S47-T5",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review each pull request. The system prompt already contains detailed rules for the review comment format, but the comments remain inconsistent: some omit the file location, and others omit the severity or the suggested fix. The team discusses how to make the comments consistent and actionable. Which statements about this situation agree with recommended prompting practice?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Few-shot examples help mainly in data extraction tasks, so they will add little value for the format of code review comments.",
+      "correct": false,
+      "reason": "The guide recommends few-shot examples that demonstrate the review output format (location, issue, severity, suggested fix), so they are not limited to extraction tasks."
+    },
+    {
+      "letter": "B",
+      "text": "Example comments that show location, issue, severity, and suggested fix in the desired format will make the output more consistent than more rule text.",
+      "correct": true,
+      "reason": "The guide says detailed instructions alone give inconsistent results, and it recommends few-shot examples that demonstrate the specific format (location, issue, severity, suggested fix) to achieve consistency."
+    },
+    {
+      "letter": "C",
+      "text": "Few-shot examples are the most effective technique here, because detailed instructions alone have already produced inconsistently formatted comments.",
+      "correct": true,
+      "reason": "The guide says few-shot examples are the most effective technique for consistently formatted, actionable output when detailed instructions alone produce inconsistent results."
+    },
+    {
+      "letter": "D",
+      "text": "Few-shot examples only teach Claude Code to copy the listed cases, so they will fail on comments about new kinds of issues.",
+      "correct": false,
+      "reason": "The guide says few-shot examples enable the model to generalize judgment to novel patterns rather than matching only pre-specified cases."
+    },
+    {
+      "letter": "E",
+      "text": "The most effective fix is to expand the written format rules and to add stronger words such as must and always to each rule.",
+      "correct": false,
+      "reason": "Detailed written instructions already failed, and the guide names few-shot examples, not more or stronger instructions, as the most effective technique in this situation."
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "question_id": "M1-S28-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "abb73e747f0911125a37a16b27003c65cf4795887b56137359c3194e6989a0dc",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "A correct agentic loop checks stop_reason on every response. While it is \"tool_use\", the code runs the requested tools, appends their results to the conversation and calls Claude again. The loop ends only when stop_reason is \"end_turn\". Phrase matching (A), stopping on assistant text (B) and a fixed iteration cap (C) are known anti-patterns.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "stop_reason",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

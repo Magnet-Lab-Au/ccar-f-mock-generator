@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S60-T2",
+  "slot_id": "M1-S60",
+  "try": 2,
+  "point": "4.6-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to review pull requests and post feedback. One pull request changes 28 files, and a single review pass over all files gave detailed comments on the first files but shallow comments on the later ones. The same pass also flagged a pattern as a bug in one file while approving the identical pattern in another file. Which redesign of the review step best addresses both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Review each file in a separate focused pass for local issues, then run a separate integration pass that analyzes data flow across the files.",
+      "correct": true,
+      "reason": "The guide recommends multi-pass review: per-file local passes plus a cross-file integration pass. This avoids the attention dilution that caused shallow comments and the contradictory findings across files."
+    },
+    {
+      "letter": "B",
+      "text": "Keep one review pass over all 28 files but move it to a model with a larger context window so that every file fits.",
+      "correct": false,
+      "reason": "The problem is attention dilution across many files, not a lack of context capacity. A larger context window still spreads attention thinly in one pass and can still produce contradictory findings."
+    },
+    {
+      "letter": "C",
+      "text": "Run the same full review of all 28 files three times and report only the issues that at least two of the runs flag.",
+      "correct": false,
+      "reason": "Each run still suffers the same attention dilution over all 28 files. Requiring agreement between runs also suppresses real issues that are caught only intermittently, instead of fixing the review structure."
+    },
+    {
+      "letter": "D",
+      "text": "Require developers to split any large pull request into smaller pull requests of a few files before the automated review runs.",
+      "correct": false,
+      "reason": "This shifts the burden to developers instead of improving the review design. The guide's remedy is to split the review itself into per-file passes plus a cross-file integration pass."
+    }
+  ]
+}

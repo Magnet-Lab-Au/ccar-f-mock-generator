@@ -1,0 +1,105 @@
+{
+  "mock": 1,
+  "scenario": 5,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S53-T2",
+            "M1-S54-T1"
+          ],
+          "detail": "Both questions share the same scene. The CI --json-schema review output passes the schema but holds a semantic error: a line number outside the diff in one, a critical_count mismatch in the other. In both, the correct action is to validate semantically and retry with the specific validation error appended. Only the surface detail of the semantic error differs."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M1-S53-T2",
+            "M1-S54-T1"
+          ],
+          "detail": "The M1-S53-T2 stem states that the outputs 'pass the schema but fail semantic checks'. This tells the reader that such errors are semantic and are not prevented by schema enforcement, which answers M1-S54-T1 and rules out its options A and C. In turn, the correct option B of M1-S54-T1 says to 'retry with that specific error', which gives away the correct option A of M1-S53-T2."
+        },
+        {
+          "question_ids": [
+            "M1-S47-T6",
+            "M1-S57-T1"
+          ],
+          "detail": "Two options of M1-S47-T6 give away part of M1-S57-T1. Correct option C says few-shot examples are the most effective technique when detailed instructions alone produce inconsistent results, which eliminates option A of M1-S57-T1 (expand the written rules). Wrong option D, by being marked wrong, implies that few-shot examples generalize rather than copy listed cases, which points away from the verdict-only, every-pattern option B."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M1-SC5-R2-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M1-S53-T2",
+        "M1-S54-T1"
+      ],
+      "detail": "Both questions share the same scene. The CI --json-schema review output passes the schema but holds a semantic error: a line number outside the diff in one, a critical_count mismatch in the other. In both, the correct action is to validate semantically and retry with the specific validation error appended. Only the surface detail of the semantic error differs."
+    },
+    {
+      "id": "M1-SC5-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S53-T2",
+        "M1-S54-T1"
+      ],
+      "detail": "The M1-S53-T2 stem states that the outputs 'pass the schema but fail semantic checks'. This tells the reader that such errors are semantic and are not prevented by schema enforcement, which answers M1-S54-T1 and rules out its options A and C. In turn, the correct option B of M1-S54-T1 says to 'retry with that specific error', which gives away the correct option A of M1-S53-T2."
+    },
+    {
+      "id": "M1-SC5-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S47-T6",
+        "M1-S57-T1"
+      ],
+      "detail": "Two options of M1-S47-T6 give away part of M1-S57-T1. Correct option C says few-shot examples are the most effective technique when detailed instructions alone produce inconsistent results, which eliminates option A of M1-S57-T1 (expand the written rules). Wrong option D, by being marked wrong, implies that few-shot examples generalize rather than copy listed cases, which points away from the verdict-only, every-pattern option B."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M1-S46-T1": "bf7a793d47a80ad917190cec07d660a9bb26e719ac91986f325db10b689c8f04",
+    "M1-S47-T6": "4a3d10afcba57018ffdaea84e8f8bed82601e3a2c7f4591d518a2ef2f31685e4",
+    "M1-S48-T1": "490abf3b0ad1e02a100ad69921ad0845a789405487fd3ec7e77048a744303460",
+    "M1-S49-T2": "1f9deabc6fe91013f6726e10b428cff8e60b9f71beee3d1d4f11094301ad7fb9",
+    "M1-S50-T1": "5c6445f4abbd156ddd6f6833655d3d2a604532c48a4a61d06ee780f1146abee8",
+    "M1-S51-T2": "c700f573e04b95565630015ff606689a1f0fb4a3c1a057376d9bef52737c6fb3",
+    "M1-S52-T1": "c7288453e6e71a853658c6defd27e0410aea1d0bd411650bf6b7f16a8177ab95",
+    "M1-S53-T2": "3810d3dc18e55b1b06ccba952385cd0838a95921d5c182e2fa2f064d45c862b3",
+    "M1-S54-T1": "f5d33fecbf3899efd712dee5d21688b7192de9deab64c8cd5252c5a4ac35fa8f",
+    "M1-S55-T1": "f86e950b60a57db2664d57e64b1126d4c705edde71ba1004e845fb022b950f4b",
+    "M1-S56-T1": "dae8e6c198126ddf78ec5625a0e5da9d89e330cd8d2793e4aac13b13ffcdb268",
+    "M1-S57-T1": "5cd90831b40c68810be59ce8f2ed3357744d1c5acd6e2563667a68bf6bfa473c",
+    "M1-S58-T1": "8be2da8c8e6e6196786319a93e8c761dcf6e088724e2caa6fe4edc75afba8bef",
+    "M1-S59-T1": "a4ec0975aad627092a28ca2927fca6ca256c720dc793bb13fd9971a0a761f079",
+    "M1-S60-T2": "14b4c1005da83d3ab58f3ad02efa34f887414e53769ce8043795e5f56e178d2f"
+  },
+  "date": "2026-10-08"
+}

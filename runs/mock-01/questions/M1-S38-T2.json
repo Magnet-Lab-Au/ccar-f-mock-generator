@@ -1,0 +1,39 @@
+{
+  "question_id": "M1-S38-T2",
+  "slot_id": "M1-S38",
+  "try": 2,
+  "point": "3.4-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to replace the logging library across several services. In the discovery phase, Claude Code searches hundreds of files for logging calls, and each search returns long output. In an earlier attempt, this output filled the main conversation, and Claude Code lost track of design decisions before the implementation phase began. Which approach best prevents this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start a new Claude Code session after each discovery search, so that the long output of earlier searches leaves the context.",
+      "correct": false,
+      "reason": "A new session also drops the earlier design decisions; the guide's approach keeps the main conversation and isolates only the verbose output in the Explore subagent."
+    },
+    {
+      "letter": "B",
+      "text": "Run the discovery phase in the Explore subagent, so that the verbose output stays isolated and only a summary returns to the main conversation.",
+      "correct": true,
+      "reason": "The guide names the Explore subagent as the way to isolate verbose discovery output and return summaries, which preserves the main conversation context during multi-phase tasks."
+    },
+    {
+      "letter": "C",
+      "text": "Skip the discovery phase and use direct execution, because direct execution keeps the main conversation short and well scoped.",
+      "correct": false,
+      "reason": "The guide limits direct execution to simple, well-scoped changes; a multi-file change across several services still needs exploration and design before editing."
+    },
+    {
+      "letter": "D",
+      "text": "Run all discovery searches in the main conversation, and have Claude Code read every full result before it plans the edits.",
+      "correct": false,
+      "reason": "This puts all the verbose discovery output into the main conversation, which is the context window exhaustion that the guide says the Explore subagent prevents."
+    }
+  ]
+}

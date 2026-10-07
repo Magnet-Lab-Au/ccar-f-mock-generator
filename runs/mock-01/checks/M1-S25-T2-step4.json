@@ -1,0 +1,82 @@
+{
+  "question_id": "M1-S25-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "b60395a01a52692f099b1b569eab84ac67a00561c9ab2b989fbfcd4c7f0d9227",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "For open-ended tasks, the agent should first map the account's structure, then identify the highest-impact problems and follow a prioritized plan that adapts as it learns more (1.6-S3, 1.6-K3). Option A sorts fixes by amount rather than by impact. Option B processes refunds before it understands the whole account. Option D forces the customer to narrow the scope instead of having the agent investigate.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "get_customer",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "process_refund",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}
