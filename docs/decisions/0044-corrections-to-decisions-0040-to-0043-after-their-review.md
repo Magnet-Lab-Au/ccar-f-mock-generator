@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026
 - Diagram: none
 
 ## Question
@@ -49,7 +50,7 @@ Plain reason: a record that does not agree with its source is an error in the re
 
 ## How we decided
 
-Rule 32 lets the assistant record corrections. The owner has not confirmed the text of this file. No independent reviewer checked this file.
+Rule 32 lets the assistant record corrections. No independent reviewer checked this file.
 
 ## Exam guide points
 

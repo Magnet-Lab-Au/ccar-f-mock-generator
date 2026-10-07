@@ -46,11 +46,10 @@ The first session in Claude Code.
 - Part 4 of the test ran ($0.40): the writer made 7 more questions of scenario 3, and the assistant wrote one copy with the same scene as T-M1-S06. Call 6a found the copy (D1). Step 6 also found real problems of the writer: one more pair with the same scene, and four pairs that give away an answer (D4). It also found one wrong idea in three questions (D2), but one of the three was the copy of the test, so the writer had it in only 2 questions, the limit. The assistant first reported it as a problem of the writer. A reviewer found that error. The whole test cost $3.86.
 - The owner asked if everything is documented, with the diagrams. A script showed four gaps: only step 1 had a build guide section, diagrams 01 and 04 to 10 had old statements, six rows of `HANDOFF.md` were old, and no reviewer had checked decisions 0040 to 0043. The assistant closed all four before mock 1, with the yes of the owner.
 - The diagrams 01 and 04 to 10 now describe the built steps. Diagram 04 shows the deviation of decision 0040 with its page and section. New build guide sections: steps 2, 3, 4, 6 and 7. Each popup of the ten diagrams opens and closes in a browser test.
-- Two reviewers checked the work. The first found one serious item in the code (the prompt of call 4b said "six rules") and 10 minor items in decisions 0040 to 0043. The second found one error (a wrong claim about step 6 in a section and in this journal), 3 serious items in diagram 01 and the code, and 14 minor items. The assistant fixed each one. Decision 0044 records the corrections to the confirmed decisions 0040 to 0043.
+- Two reviewers checked the work. The first found one serious item in the code (the prompt of call 4b said "six rules") and 10 minor items in decisions 0040 to 0043. The second found one error (a wrong claim about step 6 in a section and in this journal), 3 serious items in diagram 01 and the code, and 14 minor items. The assistant fixed each one. Decision 0044 records the corrections to the confirmed decisions 0040 to 0043, and the owner confirmed its text.
 
 **Open**
 
-- The owner has not confirmed the text of decision 0044.
 - Rule B7 is stricter than the marks of the owner. In mock 1, the report shows how often it fails.
 - The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).
