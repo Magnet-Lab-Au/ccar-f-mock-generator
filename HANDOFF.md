@@ -42,7 +42,7 @@ The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the 
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0039. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+4. `docs/decisions/`: decisions 0001 to 0040. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
 5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
 
 Read these only when you need them:
@@ -159,6 +159,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
+| Decision 0040: structured outputs | The model steps 2, 4, 5 and 6 send their form as structured outputs, because the current models reject a forced tool call. This deviates from the exam guide (4.3-K1, 4.3-S3). The build guide sections of these steps must show the deviation, with the page, the section and the exact text. The pages are saved in `docs/sources/`. |
 | Rule A11 and words like "cannot" | Step 3 follows the text of decision 0038, part 8: "not" or "except" in small letters, or "NOT" or "EXCEPT" in capital letters. So "cannot", "doesn't", and "Not" or "Except" at the start of the last sentence pass. Also, an abbreviation with a dot can hide the last sentence. A change needs a new decision. |
 | Decision 0009, points 1.6-K1 and 1.6-S1 | Its Reason uses these points for a plan that code makes. The guide wrote them for a sequence of model calls (prompt chaining), and step 1 has no model call. The build guide section of step 1 states the limit. The owner confirmed the text of 0009, so a correction needs a new decision file (rule 26). Ask the owner. |
 | The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |

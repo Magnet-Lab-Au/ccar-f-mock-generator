@@ -14,3 +14,5 @@ Sections:
 | 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026) |
 
 A script makes each section: `make-section-step-N.py`. The other steps are planned.
+
+A deviation from the exam guide is shown openly in its section: what the guide teaches, what the build does instead, and the source with its page, section and exact text. Decision 0040 is the first case: the model steps use structured outputs, not a forced tool call.
