@@ -162,8 +162,8 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | Decision 0040: structured outputs | The model steps 2, 4, 5 and 6 send their form as structured outputs, because the current models reject a forced tool call. This deviates from the exam guide (4.3-K1, 4.3-S3). The build guide sections of these steps must show the deviation, with the page, the section and the exact text. The pages are saved in `docs/sources/`. |
 | Rule A11 and words like "cannot" | Step 3 follows the text of decision 0038, part 8: "not" or "except" in small letters, or "NOT" or "EXCEPT" in capital letters. So "cannot", "doesn't", and "Not" or "Except" at the start of the last sentence pass. Also, an abbreviation with a dot can hide the last sentence. A change needs a new decision. |
 | Decision 0009, points 1.6-K1 and 1.6-S1 | Its Reason uses these points for a plan that code makes. The guide wrote them for a sequence of model calls (prompt chaining), and step 1 has no model call. The build guide section of step 1 states the limit. The owner confirmed the text of 0009, so a correction needs a new decision file (rule 26). Ask the owner. |
-| The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
-| The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |
+| The real steps | Each step has code and tests. Steps 0 to 4, 6 and 7 ran (step 0 on 6 October, the others in the test of 7 October 2026). Steps 5 and 8 have not run yet. |
+| The command line of the owner | `src/run.py`, with the commands `run`, `report`, `mark`, `decide` and `accept`. It has not run on a real mock yet. |
 | Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. One reviewer checked the corrected decisions 0024 and 0027 to 0036, and one checked diagrams 07 and 08. Nobody checked the last fixes. |
 | The other findings of the second review | Corrected on 7 October 2026 in decisions 0024 and 0027 to 0036. Open parts are now in the lists "Not decided yet" of those files, for example rule B6 (0030) and case (h) (0032). |
 | Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |
@@ -177,18 +177,18 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | Rule B6 | Decided in decision 0037: the model lists the feature names, and code searches them in the records file. Not decided: a part of a word against a complete word, a plural, and if a name on the list "out of scope" of Section 17 counts as named. |
 | Rule A5 | The exact list of words is not decided (decision 0031). |
 | The 5 texts with a backslash | 5 texts of the records file have a backslash from the file format. A step that shows them must handle it (`docs/reviews/review-guide-records.md`). |
-| The models and the cost | Not decided: the model of the writer and of the two check calls. The test of decision 0024 decides. An estimate of the assistant, of 7 October 2026, from word counts: one mock costs 8 to 12 US dollars with Claude Opus 5.5 and 4 to 6 with Claude Sonnet 5.5. The complete project with 5 mocks: 50 to 100 US dollars. Check the price page of Anthropic again before the first run. |
+| The models and the cost | First values, not decisions: Claude Opus 5.5 at effort "high" (decision 0041). Price checked on 7 October 2026: $4 per million input tokens and $20 per million output tokens. The test cost $3.86. Estimate for mock 1: $12 to $16. |
 | The format of the portal | Not known. Step 8 writes our own two files. A converter for the portal comes later (decision 0036). |
 | The fingerprint | Decided in decisions 0036, 0037 and 0039: the fields as JSON with sorted keys, in UTF-8. |
 | The correct letters | Not decided: if the correct letters are spread well over a mock (decisions 0034 and 0036). |
-| The answer forms | The JSON schemas in decisions 0029, 0032 and 0034 are drafts. Nobody tested them against the API. The drafts do not set `strict: true`. The Anthropic documentation says that only this option guarantees the schema of a tool input (decision 0029). |
+| The answer forms | The JSON schemas of decisions 0029, 0032 and 0034 are sent as structured outputs (decision 0040). They worked in the test of 7 October 2026. Decision 0041 changed the description of the "reason" fields, and decision 0043 added "B7". |
 | The Agent SDK | Decision 0002 names it. The design of all 9 steps is complete, and no step uses it (decisions 0012, 0029, 0032 and 0034). So a new decision must say so. It is not written yet. |
 | Version control | Decided on 7 October 2026: a folder in WSL with a private repository on GitHub. The owner makes it. Check it at the start (next step 1). |
 | Which product writes the code | Decided on 7 October 2026: the work moves to Claude Code now (decisions 0002 and 0038). The two scripts of step 0 and the four check scripts were written in Cowork. |
 | The audit | 52 of its 240 rows had one check, not two. These are the rows with a weak fit or no fit. |
 | The portal pages | Two prototype pages exist on claude.ai. "How the Mocks Are Built Old" shows the first build and the audit. "How the Mocks Are Built New" shows a design of 2 October that is not the design of this folder. |
-| Diagram 01 | It shows the pipeline of the first session of 6 October. It does not show the two calls of step 4, the two calls of step 6 or the limit of 3 tries. |
-| Diagrams 02 to 06 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 07 to 10 have the form that the owner wants. Diagrams 01 to 06, 09 and 10 do not show decisions 0038 and 0039. Diagrams 02 and 04 also have old statements. |
+| Diagram 01 | Corrected on 7 October 2026: step 6 sends no question back, and each popup shows the status of its step. Some box texts of the older form are a little too long for their boxes. |
+| Diagrams 02 to 06 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 07 to 10 have the form that the owner wants. On 7 October 2026 the text of each diagram was corrected to describe the built steps. |
 
 ## Where the old material is
 
