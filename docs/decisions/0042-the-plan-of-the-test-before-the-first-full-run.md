@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026
 - Diagram: none
 
 ## Question
@@ -15,12 +16,12 @@ Decision 0024 says that a test of the writer and of the checker comes before the
 
 ## Decision
 
-Option 1. The records of the test go to `runs/test-0024/`, not to `runs/mock-01/`, so that mock 1 starts clean. The script is `src/test_0024.py`. Each part is a separate command, and no part runs before the yes of the owner.
+Option 1. The records of the test go to `runs/test-0024/`, not to `runs/mock-01/`, so that mock 1 starts clean. The script is `src/test_0024.py`. Each part is a separate command, and no part runs before the owner agrees to the plan.
 
 1. **Part 1, the writer.** The writer (step 2) makes one question for each of 10 slots of the plan of mock 1. The slots cover the 4 scenarios, the 5 domains and 2 multiple-response questions. Code selects them from the plan with a fixed method. Each question gets one writer call, with no new try, so that the result shows the first-pass quality. Step 3 checks each question. Code builds a marking file (step 7) for the owner, `marking/test-0024-round1.xlsx`. The owner marks each question good or bad.
 2. **Part 2, call 4a on the guide.** Call 4a answers the 12 sample questions of the guide. Their correct answers are known. Enough: 12 of 12. The owner sees each miss before the full run.
 3. **Part 3, call 4b.** Call 4b checks each question that the owner marked good. Each one must pass. For each such question, one damaged copy breaks one rule from B1 to B6. Each rule gets at least one copy. Code makes the damage of B1: it moves the mark "correct" to a wrong option. The assistant writes the other damages by hand in one file, `runs/test-0024/damaged.json`, which the owner can read. Each damaged copy must fail on its rule. Enough: each good question passes, and each damaged copy fails on its rule.
-4. **Part 4, step 6.** Decision 0034, part 7, adds a test of call 6a with two questions of the same scene in a set of 15. It needs 15 questions, so it is a later, separate part.
+4. **Part 4, step 6.** Decision 0034, part 7, adds a test of call 6a with two questions of the same scene in a set of 15. The writer makes the missing questions of scenario 3. The assistant writes one copy by hand with the same scene as a question of part 1. Enough: call 6a names both questions under rule D1.
 
 The script prints the real numbers of input and output tokens of each part, and the cost at the prices of the page "Pricing" (https://platform.claude.com/docs/en/about-claude/pricing, section "Model pricing", read on 7 October 2026: Claude Opus 5.5, $4 per million input tokens and $20 per million output tokens).
 
@@ -36,9 +37,11 @@ Not decided yet:
 
 - What happens if the test is not enough: a change of the prompts, of the model or of the effort. The owner decides with the results.
 
+The results (7 October 2026): each part met its bar. Part 1: 10 of 10 questions passed step 3, and the owner marked 9 good and 1 bad. Part 2: 12 of 12. Part 3: 18 of 18. Part 4: call 6a named the copy and its original. The test cost $3.86. The records are in `runs/test-0024/`.
+
 ## How we decided
 
-The assistant showed the plan with the cost. The owner said yes. The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The assistant showed the plan with the cost. The owner said yes. No independent reviewer checked this file.
 
 ## Exam guide points
 

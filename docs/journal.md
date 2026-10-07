@@ -41,13 +41,12 @@ The first session in Claude Code.
 - Decided: the plan of the test before the first full run (decision 0042). The owner said that the assistant does not need a yes for each small thing. Rule 33 records it.
 - The test ran with real calls. Part 1: the writer made 10 questions, and all 10 passed step 3 at the first try. The owner marked 9 good and 1 bad (T-M1-S05: confusing, two names for one actor, long sentences). The owner asked the assistant not to look at the marking file before the owner said so. Part 2: call 4a answered 12 of 12 sample questions right. Part 3: call 4b passed the 9 good questions, and failed each of the 9 damaged copies on its rule. The assistant wrote the damages by hand in `runs/test-0024/damaged.json`. The test cost $2.64 in total.
 - The bad mark of T-M1-S05 had no rule. The assistant first recommended an instruction to the writer only. The owner asked if that is enough. It is not (1.4-K2). A script measured the sentences: length did not cause the bad mark, so a code rule for length would not help. Decided: a writer instruction and a new rule B7 in call 4b (decision 0043).
-- A check of B7 ran ($0.82): T-M1-S05 failed on B7, as expected. 3 of the 9 good questions also failed on B7, with true findings: two names for one actor. The owner said that cost is not a concern and asked what is best. Agreed: B7 stays strict for mock 1.
+- A check of B7 ran ($0.82): T-M1-S05 failed on B7, as expected. 3 of the 9 good questions also failed on B7, with true findings: two names for one actor. The owner said that cost is not a concern and asked what is best. Agreed: B7 stays strict for mock 1. The owner confirmed the text of decisions 0042 and 0043, after three corrections.
 
 - Part 4 of the test ran ($0.40): the writer made 7 more questions of scenario 3, and the assistant wrote one copy with the same scene as T-M1-S06. Call 6a found the copy (D1). Step 6 also found real problems of the writer: one more pair with the same scene, four pairs that give away an answer (D4), and one wrong idea in three questions (D2). The whole test cost $3.86.
 
 **Open**
 
-- The owner has not confirmed the text of decisions 0042 and 0043.
 - Rule B7 is stricter than the marks of the owner. In mock 1, the report shows how often it fails.
 - The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).

@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026
 - Diagram: none
 
 ## Question
@@ -32,13 +33,15 @@ So the list of rules has 18 rules: A1 to A11 and B1 to B7. This adds to decision
 
 Not decided yet:
 
-- How often B7 gives a false fail. The test of decision 0042 ran before B7 existed.
+- How often B7 gives a false fail in mock 1.
+
+The check of B7 (7 October 2026, `runs/test-0024/part-b7.json`): call 4b with B7 failed T-M1-S05 on B7. It also failed 3 of the 9 questions that the owner marked good, each with a true finding: two names for one actor. The owner said that cost is not a concern and asked what is best. Agreed: B7 stays strict for mock 1, and the report of mock 1 shows how often it fails.
 
 ## How we decided
 
 The assistant first recommended an instruction only. The owner asked if that is enough. The assistant said no, with point 1.4-K2, and suggested a code rule for length and a model rule. A script then measured the sentences, and the result showed that length was not the cause. The assistant changed the recommendation to an instruction and rule B7. The owner said: "Yes, add both".
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+No independent reviewer checked this file.
 
 ## Exam guide points
 
