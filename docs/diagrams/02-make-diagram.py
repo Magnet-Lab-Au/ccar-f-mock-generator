@@ -40,50 +40,55 @@ assert len(counts) == 30 and sum(counts) == 240
 lo, hi = min(counts), max(counts)
 
 NONE = 'No exam guide text. Plain reason.'
+PLAN = json.load(open(root + '/runs/mock-01/plan.json', encoding='utf-8'))
+EX = PLAN['slots'][0]
 D = {
- 'IN': dict(title='What the step receives', cls='io', who='Input', status='planned', points=[], none=NONE,
+ 'IN': dict(title='What the step receives', cls='io', who='Input', status='built', points=[], none=NONE,
    sent=['The guide records: the 6 scenarios and their primary domains, the 5 domain weights, and the 30 task statements with their 240 points.',
          'A mock number.',
          'A seed. A seed is a number that controls the random selections.'],
    why='Step 0 makes the guide records. The seed has a plain reason: the same seed gives the same plan, so we can make a plan again and compare it, for example after a change to the code.'),
- 'S': dict(title='Step 1: plan the mock', cls='code', who='Code', status='planned', none=NONE,
+ 'S': dict(title='Step 1: plan the mock', cls='code', who='Code', status='built', none=NONE,
    sent=['Code makes the plan of one mock, in 5 parts.', 'The plan is a list of 60 slots. Each slot says what one question must be.', 'No model works in this step.'],
    points=[point('1.4-K2'), point('1.6-K1'), point('1.6-S1')],
    why='The guide wrote these points for workflows with a fixed sequence and for reviews. Here they apply to a plan: the counts of a mock must be the same each time, and the work is known before it starts, so code makes a fixed plan.'),
- '1': dict(title='Part 1: select 4 scenarios', cls='code', who='Code', status='planned', none=NONE,
+ '1': dict(title='Part 1: select 4 scenarios', cls='code', who='Code', status='built', none=NONE,
    sent=['The exam uses 4 of its 6 scenarios. So 15 sets of 4 scenarios are possible.',
-         'The step selects one set at random. It uses only the 11 sets in which each question fits a primary domain of its scenario.',
+         'The seed selects one set, and the sequence of the 4 groups in the mock. The step uses only the 11 sets in which each question fits a primary domain of its scenario.',
          'It does not use these 4 sets: 1-2-3-4, 1-2-5-6, 2-3-5-6 and 2-4-5-6.'],
    table=dict(head=['Scenario', 'Primary domains'], rows=[['%s. %s' % (n, name), d] for n, name, d in scen]),
    points=[fact('Section 5', 'During the exam, 4 scenarios are presented and picked at random from the full set of the 6 scenarios below.')],
-   why='The limit to 11 sets is not from the guide. The exam can use all 15 sets. Example: scenarios 1, 2, 3 and 4 have no scenario with Domain 4 as a primary domain, but a mock needs 12 questions of Domain 4. Those questions would be forced into a story that does not fit them. A script checked all 15 sets.'),
- '2': dict(title='Part 2: share the 60 questions', cls='code', who='Code', status='planned', none=NONE,
+   why='The limit to 11 sets is not from the guide. The exam can use all 15 sets. Example: none of the scenarios 1, 2, 3 and 4 has Domain 4 as a primary domain, but a mock needs 12 questions of Domain 4. Those questions would be forced into a story that does not fit them. A script checked all 15 sets.'),
+ '2': dict(title='Part 2: share the 60 questions', cls='code', who='Code', status='built', none=NONE,
    sent=['Each scenario gets 15 questions.', 'Each domain gets its number of questions: 16, 11, 12, 12 and 9.',
-         'Each question is in a primary domain of its scenario.'],
+         'Each question is in a primary domain of its scenario.',
+         'Many tables fit. Code takes the most even table: the smallest sum of the squares of its numbers. If two tables are equal, the seed selects one.'],
    table=dict(head=['Domain', 'Weight', 'Questions'], rows=[['%s. %s' % (n, name), w, str(q)] for n, name, w, q, ts in doms] + [['Total', '100%', '60']]),
    points=[fact('Section 4', 'The percentages indicate the approximate proportion of scored items drawn from each domain.')],
    why='Each number is the weight for 60 questions, rounded. Example: 27% of 60 is 16.2, so Domain 1 has 16 questions. The guide gives no number of questions for each scenario. The reason for 15 is plain: equal parts.'),
- '3': dict(title='Part 3: select the task statements', cls='code', who='Code', status='planned', points=[], none=NONE,
+ '3': dict(title='Part 3: select the task statements', cls='code', who='Code', status='built', points=[], none=NONE,
    sent=['Each of the 30 task statements gets at least 1 question.',
-         'Each domain has more questions than task statements. The step selects at random which task statements get the other questions.',
-         'Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question. The step gives the other 3 questions to task statements that it selects at random.'],
+         'In each domain, the task statements share the questions equally. The seed selects which task statements get the questions that are left.',
+         'Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question, and the seed selects 3 of them for a second question.',
+         'The seed also decides which scenario of the table each question goes to.'],
    why='Each mock then covers the complete guide.'),
- '4': dict(title='Part 4: select one point for each question', cls='code', who='Code', status='planned', points=[], none=NONE,
+ '4': dict(title='Part 4: select one point for each question', cls='code', who='Code', status='built', points=[], none=NONE,
    sent=['Each task statement has %d to %d points. A point is one thing to know or one skill.' % (lo, hi),
-         'The step selects one point of the task statement for each question, at random.'],
+         'The seed selects one point of the task statement for each question. Two slots of one mock do not get the same point.'],
    why='The writer and the checker know exactly what the question must test. With no point, the writer selects a part of the task statement, and the same part can come again and again.'),
- '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='planned', none=NONE,
-   sent=['Multiple-choice: the participant selects 1 answer.', 'Multiple-response: the participant selects 2 or more answers.',
+ '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
+   sent=['Multiple-choice: the participant selects 1 answer.', 'Multiple-response: the question has 5 options, and the participant selects 2 answers. A multiple-choice question has 4 options.',
          'The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions.'],
    points=[fact('Section 3', 'Multiple-choice and multiple-response items; each item states how many responses to select')],
    why='The guide gives no number for each type. All 12 sample questions of the guide are multiple-choice. The number 8 is a guess. It has no source.'),
- 'OUT': dict(title='What the step returns', cls='io', who='Output', status='planned', points=[], none=NONE,
-   sent=['One plan file with 60 slots and the seed.',
-         'A slot has an ID, the scenario, the task statement, one point, the question type and the number of answers to select.',
-         'Example: Slot 17: scenario 3, task statement 1.2, point 1.2-K2, multiple-choice, select 1 answer.'],
+ 'OUT': dict(title='What the step returns', cls='io', who='Output', status='built', points=[], none=NONE,
+   sent=['One plan file: the mock number, the seed, the version of the guide, the date, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
+         'The slots get the numbers 1 to 60, group by group. The seed sets the sequence inside a group. The slot number is the question number in the finished mock.',
+         'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options and the number of answers to select.',
+         'The first slot of the plan of mock 1: %s.' % json.dumps(EX)],
    why='Step 2 writes one question for each slot. The later checks compare each question with its slot.'),
- 'F': dict(title='The step stops', cls='stop', who='The step stops', status='planned', points=[], none=NONE,
-   sent=['A guide record is missing, or the counts of the plan do not add up to 60.',
+ 'F': dict(title='The step stops', cls='stop', who='The step stops', status='built', points=[], none=NONE,
+   sent=['A guide record is missing or not valid, or the counts of the plan do not add up to 60. Example: a task statement with an unknown domain.',
          'The step stops with an error that names the cause.', 'It writes no plan.'],
    why='A plan with wrong counts makes a mock with wrong counts. So the step stops, and it does not write a wrong plan.'),
 }
@@ -99,13 +104,13 @@ def box(key, top, h, num, name, tag, tagcls, what, ts, extra='', left=40, w=540)
 boxes = ''.join([
  box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, a mock number and a seed.', 'Step 0 makes the guide records.'),
  box('S', 150, 88, '', 'Step 1: plan the mock', 'Code', 'code', 'Code makes the plan in 5 parts. No model works.', 'Exam guide: task statements 1.4 and 1.6', extra='hdr'),
- box('1', 246, 112, '1', 'Select 4 scenarios', 'Code', 'code', 'Selects 4 of the 6 scenarios at random, from the 11 sets that fit.', 'Exam guide: Section 5. The limit to 11 sets is not from the guide.'),
+ box('1', 246, 112, '1', 'Select 4 scenarios', 'Code', 'code', 'The seed selects 4 of the 6 scenarios, from the 11 sets that fit.', 'Exam guide: Section 5. The limit to 11 sets is not from the guide.'),
  box('2', 378, 112, '2', 'Share the 60 questions', 'Code', 'code', '15 questions for each scenario. 16, 11, 12, 12 and 9 questions for the 5 domains.', 'Exam guide: Section 4. The number 15 is not from the guide.'),
  box('3', 510, 112, '3', 'Select the task statements', 'Code', 'code', 'Each of the 30 task statements gets at least 1 question.', 'Not from the exam guide. Plain reason.'),
- box('4', 642, 112, '4', 'Select one point for each question', 'Code', 'code', 'Each question gets one point of its task statement, at random.', 'Not from the exam guide. Plain reason.'),
+ box('4', 642, 112, '4', 'Select one point for each question', 'Code', 'code', 'Each question gets one point of its task statement. No point comes two times.', 'Not from the exam guide. Plain reason.'),
  box('5', 774, 112, '5', 'Set the question type', 'Code', 'code', '2 questions of each scenario are multiple-response. The other 52 are multiple-choice.', 'Exam guide: Section 3. The number 8 is a guess.'),
- box('OUT', 934, 130, '', 'What the step returns', 'Output', 'io', 'One plan file with 60 slots and the seed. Example of a slot: scenario 3, task statement 1.2, point 1.2-K2, multiple-choice, select 1 answer.', 'The same seed gives the same plan.'),
- box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record is missing, or the counts do not add up to 60. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
+ box('OUT', 934, 130, '', 'What the step returns', 'Output', 'io', 'One plan file with 60 slots and the seed. Example from the plan of mock 1: scenario %s, task statement %s, point %s, %s, select %s.' % (EX['scenario'], EX['task_statement'], EX['point'], EX['type'].replace('_', '-'), EX['select']), 'The same seed gives the same plan.'),
+ box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record is missing or not valid, or the counts do not add up to 60. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
 ])
 
 extra_css = '''
@@ -166,7 +171,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 1: plan the mock</h1>
-  <p class="sub">This diagram shows the design. The step is not built yet. Code makes the plan of one mock: a list of 60 slots. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 1. The step is built. It made the plan of mock 1 on 7 October 2026. Code makes the plan of one mock: a list of 60 slots. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="legend">
     <span class="key"><span class="tag t-code">Code</span> no model works</span>
@@ -198,21 +203,19 @@ page = '''<!doctype html>
       <h2>What the exam guide gives</h2>
       <ul>
         <li>From the guide: 60 questions, 4 of the 6 scenarios, the 5 domain weights and the two question types.</li>
-        <li>Not from the guide: 15 questions for each scenario, 8 multiple-response questions, 1 question for each task statement, one point for each slot, and the limit to 11 sets of scenarios. Each of these has a plain reason. The detail on each box gives it.</li>
+        <li>Not from the guide: 15 questions for each scenario, 8 multiple-response questions, at least 1 question for each task statement, one point for each slot, and the limit to 11 sets of scenarios. Each of these has a plain reason. The detail on each box gives it.</li>
       </ul>
     </div>
     <div class="note">
       <h2>Not decided yet</h2>
       <ul>
-        <li>A task statement can be a bad fit for a scenario, also when its domain fits. The plan does not prevent this.</li>
-        <li>How many answers and how many options a multiple-response question has.</li>
-        <li>The format of the plan file.</li>
+        <li>A task statement can be a bad fit for a scenario, also when its domain fits. The plan does not prevent this. The writer can answer "cannot write", and the owner decides.</li>
         <li>How the program selects the scenarios across more than one mock.</li>
       </ul>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026. Status of the step: planned. The step is not built. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

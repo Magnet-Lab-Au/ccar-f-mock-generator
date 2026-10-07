@@ -24,8 +24,14 @@ The first session in Claude Code.
 
 - The owner confirmed the text of decisions 0019 to 0036 and 0039. The assistant first asked if the yes covered the full text, and recommended that the owner read the files. The owner asked for one line for each file, and then confirmed. Rule 26 now applies to all decisions.
 
+- The owner asked when the building starts. The assistant said that nothing blocks it, and that the workbook check need not come first. The owner agreed to start with step 1.
+- Step 1 is built: `src/step1_plan.py`, with 20 tests. An independent reviewer found 1 serious and 7 minor items, and the assistant fixed them. The step now uses only `random()` of Python: the Python documentation (page "random", "Notes on Reproducibility", read on 7 October 2026) guarantees the same sequence only for `random()`.
+- With the yes of the owner, step 1 made the real plan of mock 1: `runs/mock-01/plan.json`, seed 366341, scenarios 3, 1, 2 and 5. Scenario 5 gets all 12 questions of Domain 4, as decision 0027 expects for this set.
+- The first section of the build guide exists: `docs/build-guide/step-1-plan-the-mock.md`. A script makes it from the records file and the plan. Diagram 02 is corrected: the step is built, and the old items are gone.
+
 **Open**
 
+- The control does not call the real step 1 yet.
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
 - No reviewer checked the last fixes of the decisions and of diagrams 07 and 08.
 - The real steps do not exist. Each step is a fake in the tests.

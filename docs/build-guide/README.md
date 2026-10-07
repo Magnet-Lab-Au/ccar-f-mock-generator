@@ -7,4 +7,10 @@ The build guide shows participants how the program makes the mocks, as a worked 
 - The source of each file is the Reason section of the decisions for its step. A file does not use the section "How we decided", and it does not tell the history of the first build.
 - Each file has a status: "planned" or "built". A file becomes "built" only when a run record shows the step.
 
-No section exists yet.
+Sections:
+
+| Step | File | Status |
+|---|---|---|
+| 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026) |
+
+A script makes each section: `make-section-step-N.py`. The other steps are planned.

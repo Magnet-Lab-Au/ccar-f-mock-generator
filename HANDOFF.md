@@ -35,7 +35,7 @@ The build guide is a product of this work. It has the same weight as the program
 - **Structure.** One section for each pipeline step. Each section has a short explanation, one diagram, and a table of the exam guide points that the step uses. The sections are files in `docs/build-guide/`, one file for each pipeline step.
 - **Status.** Each section has the status "planned" or "built". A section becomes "built" only when a run record shows the step.
 
-No section exists yet. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Rule 18 still applies to the portal page "How the Mocks Are Built New".
+The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Rule 18 still applies to the portal page "How the Mocks Are Built New".
 
 ## Read these files first, in this sequence
 
@@ -70,7 +70,7 @@ State on 7 October 2026, second session.
 | Step | Decision | Diagram | State |
 |---|---|---|---|
 | 0. Prepare the guide records | 0028 | 03 | Designed, and the step ran. The file `reference/guide-records.json` exists. |
-| 1. Plan the mock | 0027 | 02 | Designed |
+| 1. Plan the mock | 0027 | 02 | Built and ran: `src/step1_plan.py`, 20 tests. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. Diagram 02 is corrected. |
 | 2. Write the question | 0029 | 04 | Designed |
 | The rules for a good question (17 rules) | 0030 | none | Decided |
 | 3. Check by code | 0031 | 05 | Designed |
@@ -125,8 +125,9 @@ Not decided:
 
 ## The next steps
 
-1. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
-2. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
+1. Build the next pipeline steps. Pure code first: step 3 (the code check) and step 8 (the files). Then steps 2, 4 and 6, which call a model: their code and tests need no API key, but a real run does. Connect each real step to the control. After each step: its build guide section and its diagram (the rule below).
+2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
+3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
 A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program is not a pipeline step. It gets a decision file and a journal entry.
 
@@ -158,6 +159,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
+| Decision 0009, points 1.6-K1 and 1.6-S1 | Its Reason uses these points for a plan that code makes. The guide wrote them for a sequence of model calls (prompt chaining), and step 1 has no model call. The build guide section of step 1 states the limit. The owner confirmed the text of 0009, so a correction needs a new decision file (rule 26). Ask the owner. |
 | The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
 | The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |
 | Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. One reviewer checked the corrected decisions 0024 and 0027 to 0036, and one checked diagrams 07 and 08. Nobody checked the last fixes. |

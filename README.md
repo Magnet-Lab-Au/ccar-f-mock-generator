@@ -22,16 +22,16 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `docs/lessons.md` | Private history of the first build. Not a source for the design. |
 | `docs/decisions/` | The decisions, in sequence. `TEMPLATE.md` shows the form. |
 | `docs/diagrams/` | The diagrams, as HTML files |
-| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. No section exists yet. |
+| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. The section of step 1 exists. |
 | `docs/reviews/` | The reports of independent reviewers |
 | `docs/journal.md` | What we did in each work session |
 | `docs/coverage/task-statement-decisions.xlsx` | The 240 points of the exam guide. It is the final check that the design missed nothing. |
 | `reference/exam-guide.md` | The exam guide, Version 1.0, July 2026 |
 | `reference/task-statements-and-points.md` | The 30 task statements and their 240 points, exact text. An independent reviewer confirmed it on 5 October 2026. |
 | `reference/practice-audit-first-build.md` and `.json` | The audit of the first build against the 240 points |
-| `src/` | The program. It has the two scripts of step 0 and the control. The real steps 1 to 8 do not exist yet. |
+| `src/` | The program. It has the two scripts of step 0, step 1 and the control. The real steps 2 to 8 do not exist yet. |
 | `runs/` | The run records. Empty until the first run. |
 
 ## Status
 
-7 October 2026: each of the 9 steps has a design decision and a diagram (decisions 0026 to 0036, diagrams 02 to 10). Decision 0038 makes the control simple for mock 1 and writes it as code with tests. The control exists: `src/control.py`, with 53 tests in `tests/` (decision 0039). The real steps do not exist yet, only fakes in the tests. Decisions 0024 and 0027 to 0036 and diagrams 07 and 08 describe the control. The other diagrams do not show decisions 0038 and 0039 yet. Step 0 ran: the file `reference/guide-records.json` exists, and it is the one source of guide text for code. The next steps are in `HANDOFF.md`.
+7 October 2026: each of the 9 steps has a design decision and a diagram (decisions 0026 to 0036, diagrams 02 to 10). Decision 0038 makes the control simple for mock 1 and writes it as code with tests. The control exists: `src/control.py`, with its tests in `tests/` (decision 0039). Step 1 is built, and it made the plan of mock 1. The other real steps do not exist yet, only fakes in the tests. Decisions 0024 and 0027 to 0036 and diagrams 07 and 08 describe the control. The other diagrams do not show decisions 0038 and 0039 yet. Step 0 ran: the file `reference/guide-records.json` exists, and it is the one source of guide text for code. The next steps are in `HANDOFF.md`.
