@@ -73,12 +73,12 @@ State on 7 October 2026, second session.
 | 1. Plan the mock | 0027 | 02 | Built and ran: `src/step1_plan.py`, 20 tests. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. Diagram 02 is corrected. |
 | 2. Write the question | 0029 | 04 | Designed |
 | The rules for a good question (17 rules) | 0030 | none | Decided |
-| 3. Check by code | 0031 | 05 | Designed |
+| 3. Check by code | 0031 | 05 | Code and tests exist: `src/step3_check_code.py`. Not run on a real question yet, so no build guide section yet. |
 | 4. Check by a model | 0032 | 06 | Designed |
 | 5. Try again | 0033 | 07 | Designed |
 | 6. Check the complete mock | 0034 | 08 | Designed |
 | 7. The owner marks the questions | 0035 | 09 | Designed |
-| 8. Build the files | 0036 | 10 | Designed |
+| 8. Build the files | 0036 | 10 | Code and tests exist: `src/step8_build_files.py`. Not run on a real mock yet. |
 
 - Code that exists: `src/step0_prepare_guide_records.py`, `src/check_guide_records.py` and `src/control.py`, with the tests in `tests/`. No real step from 1 to 8 exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
 - The checks of the records file: a second script passed 41 of 41 checks. An independent reviewer found no errors (`docs/reviews/review-guide-records.md`). The comparison of `reference/exam-guide.md` with the original guide is not done.
@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. Build the next pipeline steps. Pure code first: step 3 (the code check) and step 8 (the files). Then steps 2, 4 and 6, which call a model: their code and tests need no API key, but a real run does. Connect each real step to the control. After each step: its build guide section and its diagram (the rule below).
+1. Build the next pipeline steps. Steps 1, 3 and 8 exist. Next: steps 2, 4 and 6, which call a model: their code and tests need no API key, but a real run does. Connect each real step to the control. After each step: its build guide section and its diagram (the rule below).
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
@@ -159,6 +159,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
+| Rule A11 and words like "cannot" | Step 3 follows the text of decision 0038, part 8: "not" or "except" in small letters, or "NOT" or "EXCEPT" in capital letters. So "cannot", "doesn't", and "Not" or "Except" at the start of the last sentence pass. Also, an abbreviation with a dot can hide the last sentence. A change needs a new decision. |
 | Decision 0009, points 1.6-K1 and 1.6-S1 | Its Reason uses these points for a plan that code makes. The guide wrote them for a sequence of model calls (prompt chaining), and step 1 has no model call. The build guide section of step 1 states the limit. The owner confirmed the text of 0009, so a correction needs a new decision file (rule 26). Ask the owner. |
 | The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
 | The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |

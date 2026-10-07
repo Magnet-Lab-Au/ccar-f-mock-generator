@@ -47,12 +47,13 @@ def fingerprint(question):
 
     The fields are written as JSON with sorted keys, in UTF-8 (decision 0039).
     """
+    options = question.get("options") if isinstance(question.get("options"), list) else []
     data = {
-        "question_id": question["question_id"],
-        "question": question["question"],
-        "select": question["select"],
-        "options": [[o["letter"], o["text"], o["correct"], o["reason"]]
-                    for o in question["options"]],
+        "question_id": question.get("question_id"),
+        "question": question.get("question"),
+        "select": question.get("select"),
+        "options": [[o.get("letter"), o.get("text"), o.get("correct"), o.get("reason")]
+                    if isinstance(o, dict) else [None, o, None, None] for o in options],
     }
     text = json.dumps(data, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(text.encode("utf-8")).hexdigest()

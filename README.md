@@ -29,7 +29,7 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `reference/exam-guide.md` | The exam guide, Version 1.0, July 2026 |
 | `reference/task-statements-and-points.md` | The 30 task statements and their 240 points, exact text. An independent reviewer confirmed it on 5 October 2026. |
 | `reference/practice-audit-first-build.md` and `.json` | The audit of the first build against the 240 points |
-| `src/` | The program. It has the two scripts of step 0, step 1 and the control. The real steps 2 to 8 do not exist yet. |
+| `src/` | The program. It has the two scripts of step 0, steps 1, 3 and 8, and the control. Steps 2, 4, 5, 6 and 7 do not exist yet. |
 | `runs/` | The run records. Empty until the first run. |
 
 ## Status

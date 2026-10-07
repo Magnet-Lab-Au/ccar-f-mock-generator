@@ -29,9 +29,13 @@ The first session in Claude Code.
 - With the yes of the owner, step 1 made the real plan of mock 1: `runs/mock-01/plan.json`, seed 366341, scenarios 3, 1, 2 and 5. Scenario 5 gets all 12 questions of Domain 4, as decision 0027 expects for this set.
 - The first section of the build guide exists: `docs/build-guide/step-1-plan-the-mock.md`. A script makes it from the records file and the plan. Diagram 02 is corrected: the step is built, and the old items are gone.
 
+- Steps 3 and 8 have code and tests: `src/step3_check_code.py` and `src/step8_build_files.py`. An independent reviewer found 4 serious and 6 minor items. The assistant fixed them. Two were real faults: the control crashed when it saved the verdict of a question with an incomplete option, and step 8 built files from a record that did not agree with its slot. 116 tests pass. For each fix, a test fails without it.
+- Steps 3 and 8 did not run on a real question, so they have no build guide section yet.
+
 **Open**
 
-- The control does not call the real step 1 yet.
+- The control does not call the real steps yet.
+- Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
 - No reviewer checked the last fixes of the decisions and of diagrams 07 and 08.
 - The real steps do not exist. Each step is a fake in the tests.

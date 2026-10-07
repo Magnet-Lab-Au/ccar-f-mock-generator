@@ -635,6 +635,26 @@ class TestLaterMockSample(Base):
         self.assertEqual(len(self.steps.marking_files[1]), 20)
 
 
+class TestIncompleteQuestion(Base):
+    def test_an_option_with_no_reason_is_saved_as_a_failure_of_step_3(self):
+        real_write = self.steps.write
+
+        def write(request):
+            answer = real_write(request)
+            if request["slot"]["slot_id"] == "M1-S05" and request["step"] == 2:
+                answer["options"][1].pop("reason")
+                answer["options"][2] = "an option that is not a record"
+            return answer
+        self.steps.write = write
+        self.steps.code_script["M1-S05"] = ["fail"]
+        c = self.control()
+        c.run()
+        v = c.verdict("M1-S05-T1", 3)
+        self.assertEqual(v["verdict"], "fail")
+        self.assertEqual(len(v["fingerprint"]), 64)
+        self.assertEqual(self.status(c, "M1-S05")["status"], "passed")
+
+
 class TestNewPlan(Base):
     def test_new_plan_stops_the_mock(self):
         self.steps.write_script["M1-S07"] = ["cannot_write"]
