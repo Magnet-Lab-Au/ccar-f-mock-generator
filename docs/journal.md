@@ -32,9 +32,12 @@ The first session in Claude Code.
 - Steps 3 and 8 have code and tests: `src/step3_check_code.py` and `src/step8_build_files.py`. An independent reviewer found 4 serious and 6 minor items. The assistant fixed them. Two were real faults: the control crashed when it saved the verdict of a question with an incomplete option, and step 8 built files from a record that did not agree with its slot. 116 tests pass. For each fix, a test fails without it.
 - Steps 3 and 8 did not run on a real question, so they have no build guide section yet.
 
+- Step 7 has code and tests: `src/step7_marking.py`. An independent reviewer found 3 serious and 6 minor items. The assistant fixed them. The main one: an owner who sorts only the column "Mark" moves marks to the wrong questions, and code cannot see it later. The sheet is now protected with no password, so only the two columns of the owner can change and sorting is off. This is not checked in real Excel. 132 tests pass.
+
 **Open**
 
 - The control does not call the real steps yet.
+- The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
 - No reviewer checked the last fixes of the decisions and of diagrams 07 and 08.

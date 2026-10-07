@@ -272,6 +272,16 @@ class TestCaseE(Base):
         c.run()
         self.assertEqual(len(self.steps.requests), 60)
 
+    def test_a_mark_that_is_not_good_or_bad_is_named(self):
+        self.steps.marks["M1-S04-T1"] = {"mark": "good.", "reason": ""}
+        self.steps.marks["M1-S05-T1"] = {"mark": None, "reason": ""}
+        c = self.control()
+        self.run_to_marks(c)
+        with self.assertRaises(Refused) as e:
+            c.read_marks()
+        self.assertIn('M1-S04-T1: the mark "good." is not good or bad', str(e.exception))
+        self.assertIn("M1-S05-T1: no mark", str(e.exception))
+
     def test_an_incomplete_marking_file_is_refused(self):
         self.steps.marks["M1-S02-T1"] = {"mark": "bad", "reason": ""}
         self.steps.marks["M1-S03-T1"] = None
@@ -280,7 +290,7 @@ class TestCaseE(Base):
         with self.assertRaises(Refused) as e:
             c.read_marks()
         self.assertIn("M1-S02-T1: a bad mark has no reason", str(e.exception))
-        self.assertIn("M1-S03-T1: no mark", str(e.exception))
+        self.assertIn("M1-S03-T1: the row is missing", str(e.exception))
 
 
 class TestCaseF(Base):

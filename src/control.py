@@ -505,8 +505,12 @@ class Control:
         problems = []
         for qid in r["question_ids"]:
             m = given.get(qid)
-            if m is None or m.get("mark") not in ("good", "bad"):
+            if m is None:
+                problems.append("%s: the row is missing" % qid)
+            elif m.get("mark") is None:
                 problems.append("%s: no mark" % qid)
+            elif m.get("mark") not in ("good", "bad"):
+                problems.append('%s: the mark "%s" is not good or bad' % (qid, m.get("mark")))
             elif m["mark"] == "bad" and not (m.get("reason") or "").strip():
                 problems.append("%s: a bad mark has no reason" % qid)
         if problems:

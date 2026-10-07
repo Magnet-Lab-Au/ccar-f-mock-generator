@@ -77,7 +77,7 @@ State on 7 October 2026, second session.
 | 4. Check by a model | 0032 | 06 | Designed |
 | 5. Try again | 0033 | 07 | Designed |
 | 6. Check the complete mock | 0034 | 08 | Designed |
-| 7. The owner marks the questions | 0035 | 09 | Designed |
+| 7. The owner marks the questions | 0035 | 09 | Code and tests exist: `src/step7_marking.py`. Not run on real questions yet. Not checked in real Excel: the sheet protection and the list of the column "Mark". |
 | 8. Build the files | 0036 | 10 | Code and tests exist: `src/step8_build_files.py`. Not run on a real mock yet. |
 
 - Code that exists: `src/step0_prepare_guide_records.py`, `src/check_guide_records.py` and `src/control.py`, with the tests in `tests/`. No real step from 1 to 8 exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. Build the next pipeline steps. Steps 1, 3 and 8 exist. Next: steps 2, 4 and 6, which call a model: their code and tests need no API key, but a real run does. Connect each real step to the control. After each step: its build guide section and its diagram (the rule below).
+1. Build the next pipeline steps. Steps 1, 3, 7 and 8 exist. Next: steps 2, 4 and 6, which call a model: their code and tests need no API key, but a real run does. Connect each real step to the control. After each step: its build guide section and its diagram (the rule below).
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
