@@ -125,21 +125,23 @@ def check_answer(answer):
         raise CallFailed("The answer has no options.")
 
 
-def give_letters(answer, slot):
+def give_letters(answer, slot, seed=0):
     """Decision 0029, part 4.1: code mixes the options and gives the letters. The
-    model does not select them. The slot and the question text make the
-    sequence, so the same answer always gets the same letters."""
+    model does not select them. "The seed controls the sequence": the seed of
+    the plan, with the slot and the question text, so the same answer always
+    gets the same letters."""
     options = [dict(o) for o in answer["options"]]
-    random.Random("letters-%s-%s" % (slot["slot_id"], answer["question"])).shuffle(options)
+    random.Random("letters-%s-%s-%s" % (seed, slot["slot_id"], answer["question"])).shuffle(options)
     for letter, o in zip("ABCDEFGHIJ", options):
         o["letter"] = letter
     return [{k: o[k] for k in ("letter", "text", "correct", "reason") if k in o} for o in options]
 
 
 class Writer:
-    def __init__(self, records, model_call):
+    def __init__(self, records, model_call, seed=0):
         self.records = records
         self.model_call = model_call
+        self.seed = seed
 
     def write(self, request):
         answer, model = self.model_call.ask(SYSTEM, request_text(request, self.records), SCHEMA)
@@ -148,5 +150,5 @@ class Writer:
                "cannot_write_reason": answer.get("cannot_write_reason")}
         if answer["status"] == "written":
             out["question"] = answer["question"]
-            out["options"] = give_letters(answer, request["slot"])
+            out["options"] = give_letters(answer, request["slot"], self.seed)
         return out

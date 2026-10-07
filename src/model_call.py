@@ -12,7 +12,7 @@ import copy
 import json
 import os
 
-from control import CallFailed
+from control import CallFailed, RunStopped
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FORMS = os.path.join(ROOT, "docs", "diagrams")
@@ -21,7 +21,20 @@ FORMS = os.path.join(ROOT, "docs", "diagrams")
 # These are first values, not decisions.
 MODEL = "claude-opus-5-5"
 EFFORT = "high"
-MAX_TOKENS = 16000
+# Thinking is always on in Claude Opus 5.5, and its tokens count toward
+# max_tokens. The calls stream, so a high limit causes no HTTP timeout.
+MAX_TOKENS = 64000
+
+# The errors that a new call can repair (the Claude API skill, shared/error-codes.md):
+# 429, 5xx and network errors. Each other error stops the run.
+RETRYABLE = {"RateLimitError", "InternalServerError", "APIConnectionError", "APITimeoutError"}
+
+
+def classify(error):
+    names = {c.__name__ for c in type(error).__mro__}
+    if names & RETRYABLE or (getattr(error, "status_code", 0) or 0) >= 500:
+        return CallFailed("%s: %s" % (type(error).__name__, error))
+    return RunStopped("%s: %s" % (type(error).__name__, error))
 
 
 def strict(schema):
@@ -54,7 +67,10 @@ def load_form(file_name, key=None):
 def default_client():
     """The Anthropic client. It reads the key from the environment, never from
     a file of the repository (CLAUDE.md)."""
-    import anthropic
+    try:
+        import anthropic
+    except ImportError:
+        raise RunStopped("The package anthropic is not installed. Install it with: pip install anthropic")
     return anthropic.Anthropic()
 
 
@@ -74,12 +90,15 @@ class ModelCall:
     def ask(self, system, text, schema):
         """Send one request. Return (answer as a dict, the model that answered)."""
         try:
-            response = self.client.messages.create(
-                model=self.model, max_tokens=self.max_tokens, system=system,
-                messages=[{"role": "user", "content": text}],
-                output_config={"effort": self.effort, "format": {"type": "json_schema", "schema": schema}})
-        except Exception as e:   # each API or network error: the control runs the call again
-            raise CallFailed("%s: %s" % (type(e).__name__, e))
+            with self.client.messages.stream(
+                    model=self.model, max_tokens=self.max_tokens, system=system,
+                    messages=[{"role": "user", "content": text}],
+                    output_config={"effort": self.effort, "format": {"type": "json_schema", "schema": schema}}) as stream:
+                response = stream.get_final_message()
+        except (CallFailed, RunStopped):
+            raise
+        except Exception as e:
+            raise classify(e)
         stop = getattr(response, "stop_reason", None)
         if stop == "refusal":
             details = getattr(response, "stop_details", None)
@@ -93,4 +112,27 @@ class ModelCall:
             answer = json.loads(texts[0])
         except ValueError as e:
             raise CallFailed("The answer is not valid JSON: %s" % e)
-        return answer, getattr(response, "model", self.model)
+        return lower_enums(answer), getattr(response, "model", self.model)
+
+
+SMALL = ("status", "result")          # values like "pass" and "cannot_decide"
+CAPITAL = ("rule", "letter", "selected")   # values like "B1" and "C"
+
+
+def lower_enums(answer):
+    """The page "Structured outputs", section "Invalid outputs", says: "Structured
+    outputs don't guarantee the capitalization of string enum and const values".
+    So code writes each enum value in one fixed form before it compares."""
+    def fix(key, value):
+        if isinstance(value, str) and key in SMALL:
+            return value.lower()
+        if isinstance(value, str) and key in CAPITAL:
+            return value.upper()
+        if isinstance(value, list) and key in CAPITAL:
+            return [v.upper() if isinstance(v, str) else v for v in value]
+        return lower_enums(value)
+    if isinstance(answer, dict):
+        return {k: fix(k, v) for k, v in answer.items()}
+    if isinstance(answer, list):
+        return [lower_enums(v) for v in answer]
+    return answer

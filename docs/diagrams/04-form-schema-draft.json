@@ -22,7 +22,7 @@
             "correct": { "type": "boolean" },
             "reason": {
               "type": "string",
-              "description": "Why this option is correct or wrong."
+              "description": "A short explanation of why this option is correct or wrong."
             }
           },
           "required": ["text", "correct", "reason"]

@@ -38,6 +38,11 @@ class CallFailed(Exception):
     """A step that calls a model raises this when the call fails."""
 
 
+class RunStopped(Exception):
+    """An error that a new call cannot repair, for example a missing key or a
+    request that the API rejects. The run stops, and the message names the cause."""
+
+
 class Refused(Exception):
     """The control refuses a command of the owner. The message names the cause."""
 

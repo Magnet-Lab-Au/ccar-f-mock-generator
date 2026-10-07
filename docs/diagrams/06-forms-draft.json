@@ -13,7 +13,7 @@
         },
         "reason": {
           "type": "string",
-          "description": "Why you select these options, or why you cannot decide."
+          "description": "A short explanation of the selection, or of why you cannot decide."
         }
       },
       "required": ["status", "selected", "reason"]

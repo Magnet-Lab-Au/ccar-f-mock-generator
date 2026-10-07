@@ -49,6 +49,7 @@ class RealSteps:
 
     # steps 2 and 5
     def write(self, request):
+        self.writer.seed = self._plan()["seed"]
         return self.writer.write(request)
 
     # step 3

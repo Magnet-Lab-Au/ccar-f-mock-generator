@@ -18,7 +18,7 @@ import json
 import os
 import sys
 
-from control import Control, Refused
+from control import Control, Refused, RunStopped
 from steps import ROOT, RealSteps, guide_points, load_records
 
 
@@ -79,6 +79,10 @@ def main(argv=None):
             show(c.accept(a.reason))
     except Refused as e:
         print("Refused: %s" % e)
+        return 1
+    except RunStopped as e:
+        print("Stopped: %s" % e)
+        print("Repair the cause, then start the program again.")
         return 1
     return 0
 

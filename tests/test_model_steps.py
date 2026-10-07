@@ -17,7 +17,7 @@ from openpyxl import load_workbook
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
-from control import CallFailed, Control  # noqa: E402
+from control import CallFailed, Control, RunStopped  # noqa: E402
 from model_call import ModelCall, strict  # noqa: E402
 from step1_plan import make_plan  # noqa: E402
 from step2_write import Writer, request_text, examples, check_answer, give_letters  # noqa: E402
@@ -44,12 +44,43 @@ class FakeClient:
         self.requests = []
         self.messages = self
 
-    def create(self, **kwargs):
+    def stream(self, **kwargs):
         self.requests.append(kwargs)
         out = self.answer(kwargs) if callable(self.answer) else self.answer.pop(0)
         if isinstance(out, Exception):
             raise out
-        return out
+        return FakeStream(out)
+
+
+class FakeStream:
+    def __init__(self, message):
+        self.message = message
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def get_final_message(self):
+        return self.message
+
+
+# Classes with the names of the SDK errors (the SDK is not installed for the tests).
+class RateLimitError(Exception):
+    pass
+
+
+class BadRequestError(Exception):
+    status_code = 400
+
+
+class AuthenticationError(Exception):
+    status_code = 401
+
+
+class APIStatusError(Exception):
+    status_code = 529
 
 
 def written(slot, n_correct=None, tag=""):
@@ -85,11 +116,40 @@ class TestModelCall(unittest.TestCase):
         self.assertFalse(s["additionalProperties"])
         self.assertFalse(s["properties"]["a"]["items"]["additionalProperties"])
 
-    def test_each_failure_is_a_call_that_failed(self):
+    def test_each_failure_that_a_new_call_can_repair_is_a_call_that_failed(self):
         for out in (response({}, stop="refusal"), response({}, stop="max_tokens"), response("not json"),
-                    RuntimeError("network"), SimpleNamespace(content=[], stop_reason="end_turn", model="m")):
+                    RateLimitError("429"), APIStatusError("overloaded"),
+                    SimpleNamespace(content=[], stop_reason="end_turn", model="m")):
             with self.assertRaises(CallFailed):
                 ModelCall(FakeClient([out])).ask("s", "t", {})
+
+    def test_an_error_that_a_new_call_cannot_repair_stops_the_run(self):
+        for out in (BadRequestError("schema"), AuthenticationError("no key"), TypeError("wrong parameter")):
+            with self.assertRaises(RunStopped):
+                ModelCall(FakeClient([out])).ask("s", "t", {})
+
+    def test_the_call_streams_with_a_high_limit(self):
+        client = FakeClient([response({"x": 1})])
+        ModelCall(client).ask("s", "t", {})
+        self.assertGreaterEqual(client.requests[0]["max_tokens"], 32000)
+
+    def test_a_thinking_block_before_the_text(self):
+        msg = response({"status": "Pass"})
+        msg.content.insert(0, SimpleNamespace(type="thinking", thinking=""))
+        answer, _ = ModelCall(FakeClient([msg])).ask("s", "t", {})
+        self.assertEqual(answer, {"status": "pass"})
+
+    def test_enum_values_get_one_fixed_form(self):
+        answer, _ = ModelCall(FakeClient([response({"results": [{"rule": "b1", "result": "Cannot_Decide", "letter": "c"}],
+                                                     "selected": ["a", "b"], "status": "Answered"})])).ask("s", "t", {})
+        self.assertEqual(answer, {"results": [{"rule": "B1", "result": "cannot_decide", "letter": "C"}],
+                                  "selected": ["A", "B"], "status": "answered"})
+
+    def test_the_reason_fields_ask_for_a_short_explanation(self):
+        from step2_write import SCHEMA
+        from step4_check_model import SCHEMA_4A
+        self.assertIn("short explanation", SCHEMA["properties"]["options"]["items"]["properties"]["reason"]["description"])
+        self.assertIn("short explanation", SCHEMA_4A["properties"]["reason"]["description"])
 
 
 class TestWriter(unittest.TestCase):
@@ -185,6 +245,21 @@ class TestModelCheck(unittest.TestCase):
         self.assertIn("Marked: correct", client.requests[1]["messages"][0]["content"])
         self.assertEqual(v["verdict"], "pass")
 
+    def test_the_blind_call_gets_the_guide_text_and_the_story(self):
+        q = question_of(SLOT)
+        _, client = self.run_check(blind_for(q), check_4b(), q)
+        blind_text = client.requests[0]["messages"][0]["content"]
+        scen = next(s for s in RECORDS["scenarios"] if s["id"] == SLOT["scenario"])
+        self.assertIn(scen["story"][:80], blind_text)
+        self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", blind_text, re.M)), 240)
+
+    def test_the_rule_check_gets_the_rules_the_slot_and_the_point(self):
+        q = question_of(SLOT)
+        _, client = self.run_check(blind_for(q), check_4b(), q)
+        text = client.requests[1]["messages"][0]["content"]
+        for part in ("B1.", "B6.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
+            self.assertIn(part, text)
+
     def test_the_rule_check_gets_the_complete_guide_text(self):
         text = guide_text(RECORDS, SLOT["scenario"])
         self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", text, re.M)), 240)
@@ -224,8 +299,13 @@ class TestModelCheck(unittest.TestCase):
         missing = check_4b()
         missing["results"].pop()
         no_finding = check_4b({"B3": ("fail", "")})
+        twice = {"status": "answered", "selected": ["A"] * SLOT["select"], "reason": "x"}
+        unknown = {"status": "answered", "selected": ["E" if SLOT["options"] == 4 else "Z"] + ["A"] * (SLOT["select"] - 1), "reason": "x"}
         cases = [(too_many, check_4b()), (blind_for(q), bad_letter), (blind_for(q), bad_point),
                  (blind_for(q), missing), (blind_for(q), no_finding)]
+        if SLOT["select"] == 2:
+            cases.append((twice, check_4b()))
+        cases.append((unknown, check_4b()))
         for blind, check in cases:
             with self.assertRaises(CallFailed):
                 self.run_check(blind, check, q)
@@ -238,9 +318,20 @@ class TestModelCheck(unittest.TestCase):
     def test_feature_search_rules(self):
         fs = FeatureSearch(RECORDS)
         self.assertTrue(fs.named("TOOL_CHOICE"))
+        self.assertTrue(fs.named("`tool_choice`"))
         self.assertTrue(fs.named("**/*.test.tsx"))
         self.assertFalse(fs.named("teleport_agent"))
         self.assertFalse(fs.named("  "))
+
+    def test_a_name_inside_a_different_word_is_not_named(self):
+        fs = FeatureSearch(RECORDS)
+        self.assertFalse(fs.named("rovision"))     # only a part of the word "provisions"
+        # "Vision" is a complete word on the list "out of scope" of Section 17. If such a
+        # name counts as named is an open item (decision 0030). Now it counts.
+        self.assertTrue(fs.named("Vision"))
+        self.assertFalse(fs.named("-c"))
+        self.assertFalse(fs.named("e"))
+        self.assertTrue(fs.named("isError"))
 
 
 class TestScenarioCheck(unittest.TestCase):
@@ -264,8 +355,16 @@ class TestScenarioCheck(unittest.TestCase):
         qs = self.questions(sc)
         qs[1]["question"] = qs[0]["question"]
         self.assertEqual(code_count(sc, qs, PLAN["slots"])[0]["rule"], "C3")
-        with self.assertRaises(CallFailed):
+        with self.assertRaises(RunStopped):
             code_count(sc, qs[:-1], PLAN["slots"])
+
+    def test_each_result_of_a_call_keeps_the_model(self):
+        def answer(req):
+            rules = ["D1", "D4"] if "D1." in req["messages"][0]["content"] else ["D2", "D3"]
+            return response({"results": [{"rule": r, "result": "pass", "findings": []} for r in rules]}, model="claude-x")
+        sc = PLAN["scenarios"][0]
+        out = ScenarioCheck(PLAN, ModelCall(FakeClient(answer))).check(sc, self.questions(sc))
+        self.assertTrue(all(r["model"] == "claude-x" for r in out if r["rule"].startswith("D")))
 
 
 class TestWholePipeline(unittest.TestCase):

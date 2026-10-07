@@ -6,7 +6,7 @@ the status passed. Then two model calls read the 15 questions together: call
 6a (rules D1 and D4) and call 6b (rules D2 and D3). Step 6 sends no question
 back. Each finding goes to the owner (decision 0038, part 3).
 """
-from control import CallFailed
+from control import CallFailed, RunStopped
 from model_call import load_form
 from step4_check_model import show
 
@@ -22,16 +22,17 @@ SYSTEM = ("You check the 15 questions of one scenario of a mock exam together. G
 
 
 def code_count(scenario, questions, slots):
-    """Rules C2 and C3 for one scenario. C2 failing raises CallFailed: it is an
-    error for the owner (decision 0034). C3 failing is a finding."""
+    """Rules C2 and C3 for one scenario. C2 failing stops the run with an error
+    that names the cause (decision 0034): a new call cannot repair it. C3 failing
+    is a finding. Known limit: C3 compares the questions of one scenario only."""
     plan = [s for s in slots if s["scenario"] == scenario]
     by_slot = {q["slot_id"]: q for q in questions}
     if sorted(by_slot) != sorted(s["slot_id"] for s in plan):
-        raise CallFailed("Rule C2: the questions of scenario %s do not agree with the plan." % scenario)
+        raise RunStopped("Rule C2: the questions of scenario %s do not agree with the plan." % scenario)
     for s in plan:
         q = by_slot[s["slot_id"]]
         if q.get("select") != s["select"] or len(q.get("options", [])) != s["options"]:
-            raise CallFailed("Rule C2: %s does not agree with its slot." % q["question_id"])
+            raise RunStopped("Rule C2: %s does not agree with its slot." % q["question_id"])
     seen, results = {}, []
     for q in questions:
         key = " ".join(q["question"].lower().split())
@@ -56,7 +57,7 @@ class ScenarioCheck:
         for r in results:
             if r.get("result") not in ("pass", "fail", "cannot_decide"):
                 raise CallFailed("Rule %s has no valid result." % r.get("rule"))
-            out.append({"rule": r["rule"], "result": r["result"],
+            out.append({"rule": r["rule"], "result": r["result"], "model": model,
                         "findings": [{"question_ids": f.get("question_ids") or [], "detail": f.get("detail", "")}
                                      for f in (r.get("findings") or [])]})
         return out, model

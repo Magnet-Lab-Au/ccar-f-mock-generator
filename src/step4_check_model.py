@@ -21,7 +21,7 @@ B2. Each wrong option is wrong for a reason that the guide gives, and its reason
 B3. Each reason is true and agrees with the guide.
 B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
-B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use."""
+B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any."""
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
@@ -59,6 +59,11 @@ def _norm(text):
     return re.sub(r"[-_\s]+", " ", plain(text).lower()).strip()
 
 
+def _name(name):
+    """A feature name as the model lists it can have quotes or backticks around it."""
+    return _norm(name.strip().strip("`'\"").strip())
+
+
 class FeatureSearch:
     """Decision 0030: "named" means that the name is in the text of the records
     file. Code searches each text of the file, without the backslash of the format."""
@@ -79,8 +84,13 @@ class FeatureSearch:
         self.text = " | ".join(_norm(t) for t in texts)
 
     def named(self, name):
-        n = _norm(name)
-        return bool(n) and n in self.text
+        """The name must be in the text as a complete word or words: no letter or
+        digit directly before it or after it. So "Vision" is not found inside
+        "provisions". A name of one character is never named."""
+        n = _name(name)
+        if len(n) < 2:
+            return False
+        return re.search(r"(?<![a-z0-9])%s(?![a-z0-9])" % re.escape(n), self.text) is not None
 
 
 def finding(rule, detail, letter=None, point=None):
@@ -94,9 +104,10 @@ class ModelCheck:
         self.features = FeatureSearch(records)
         self.point_ids = {p["id"] for t in records["task_statements"] for p in t["points"]}
 
-    def blind(self, question):
+    def blind(self, question, slot):
         """Call 4a. Raise CallFailed for an answer that is not valid (decision 0032)."""
-        answer, model = self.model_call.ask(SYSTEM_4A, show(question, with_key=False), SCHEMA_4A)
+        text = "\n".join([guide_text(self.records, slot["scenario"]), "", "THE QUESTION:", show(question, with_key=False)])
+        answer, model = self.model_call.ask(SYSTEM_4A, text, SCHEMA_4A)
         letters = {o["letter"] for o in question["options"]}
         if not isinstance(answer, dict) or answer.get("status") not in ("answered", "cannot_decide"):
             raise CallFailed("Call 4a: the answer has no valid status.")
@@ -133,7 +144,7 @@ class ModelCheck:
 
     def check(self, question, slot):
         """Return the verdict of step 4 with its fields (decision 0032, part 6)."""
-        blind, model_a = self.blind(question)
+        blind, model_a = self.blind(question, slot)
         check, model_b = self.rules(question, slot)
         marked = sorted(o["letter"] for o in question["options"] if o["correct"])
         found = []
