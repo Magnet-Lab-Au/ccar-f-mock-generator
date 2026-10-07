@@ -37,9 +37,14 @@ The first session in Claude Code.
 - The model steps need a fixed form. Decisions 0029, 0032 and 0034 force a tool call, but the current models reject it. The assistant checked this on the page "Define tools". The owner asked if a model that supports it is better. The assistant recommended against it. Decided: structured outputs (decision 0040). The owner asked that this deviation from the exam guide is shown openly. The two pages are saved in `docs/sources/` and quoted word for word. The owner confirmed the text of decision 0040.
 - Steps 2, 4, 5 and 6, the adapter `src/steps.py` and the command line `src/run.py` have code and tests. A test runs the whole pipeline with a fake client, from the plan to the two files. An independent reviewer found 3 serious items: call 4a had no guide text, the B6 search found names inside other words, and each API error was retried. The assistant fixed them and the minor items. Decision 0041 records each change beyond the confirmed decisions, and the owner confirmed its text. 161 tests pass. No real call to the API has run.
 
+- The owner put the API key into `~/.bashrc`, outside the repository. The owner asked about a `.env` file and about identity federation. The assistant recommended `~/.bashrc` and an API key, because of the rule in `CLAUDE.md`. The package `anthropic` 1.11.0 is installed. The assistant checked the price page: Claude Opus 5.5 costs $4 per million input tokens and $20 per million output tokens.
+- Decided: the plan of the test before the first full run (decision 0042). The owner said that the assistant does not need a yes for each small thing. Rule 33 records it.
+- The test ran with real calls. Part 1: the writer made 10 questions, and all 10 passed step 3 at the first try. The owner marked 9 good and 1 bad (T-M1-S05: confusing, two names for one actor, long sentences). The owner asked the assistant not to look at the marking file before the owner said so. Part 2: call 4a answered 12 of 12 sample questions right. Part 3: call 4b passed the 9 good questions, and failed each of the 9 damaged copies on its rule. The assistant wrote the damages by hand in `runs/test-0024/damaged.json`. The test cost $2.64 in total.
+
 **Open**
 
-- No real call to the API has run. The package `anthropic` is not installed.
+- Part 4 of the test (step 6 with two questions of the same scene) has not run.
+- The bad mark of T-M1-S05 is a point for the writer: one name for one actor, and short sentences. No rule of decision 0030 covers it.
 - The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.

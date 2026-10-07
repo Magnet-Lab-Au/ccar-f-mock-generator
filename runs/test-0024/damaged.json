@@ -1,0 +1,199 @@
+[
+  {
+    "question_id": "T-M1-S01",
+    "rule": "B1",
+    "what": "Code moves the mark 'correct' from the correct option to a wrong option, and swaps their reasons."
+  },
+  {
+    "question_id": "T-M1-S16",
+    "rule": "B1",
+    "what": "Code moves the mark 'correct' from the correct option to a wrong option, and swaps their reasons."
+  },
+  {
+    "question_id": "T-M1-S02",
+    "rule": "B2",
+    "what": "The reason of wrong option D no longer gives a reason from the guide. It only says that the option is not the best.",
+    "question": {
+      "options": [
+        {
+          "letter": "A",
+          "text": "The synthesis agent has access to a tool outside its specialization, and agents given such tools tend to misuse them instead of staying within their role.",
+          "correct": true,
+          "reason": "The guide states that agents with tools outside their specialization tend to misuse them, using a synthesis agent attempting web searches as the example."
+        },
+        {
+          "letter": "B",
+          "text": "The synthesis agent's tool_choice is set to \"auto\", which tells the model to prefer calling web searches over reasoning about provided findings.",
+          "correct": false,
+          "reason": "Per the guide, \"auto\" lets the model choose whether to call a tool; it does not create a preference for searching. The real cause is the out-of-role tool being available."
+        },
+        {
+          "letter": "C",
+          "text": "The coordinator passes findings in a structured format, which the synthesis agent cannot interpret and therefore replaces with fresh web searches.",
+          "correct": false,
+          "reason": "The guide recommends structured data for passing findings between agents. The misuse comes from giving the synthesis agent a tool outside its role."
+        },
+        {
+          "letter": "D",
+          "text": "The web search subagent returns too few results, which forces the synthesis agent to compensate by running additional searches on its own.",
+          "correct": false,
+          "reason": "This option is not the best choice here."
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "T-M1-S31",
+    "rule": "B2",
+    "what": "The reason of wrong option B no longer gives a reason from the guide. It only says that the option is not as good.",
+    "question": {
+      "options": [
+        {
+          "letter": "A",
+          "text": "Add an instruction in the same session telling Claude to critically re-examine its changes as though another developer had written them.",
+          "correct": false,
+          "reason": "The session still retains its own generation reasoning, so a self-review prompt does not remove the bias that makes same-session review less effective."
+        },
+        {
+          "letter": "B",
+          "text": "Use fork_session to branch from the generation session and run the review in the fork, so it keeps full knowledge of design decisions.",
+          "correct": false,
+          "reason": "This option is not as good as the other options."
+        },
+        {
+          "letter": "C",
+          "text": "Run the review in a separate Claude Code instance that receives only the diff and review criteria, without the generating session's reasoning context.",
+          "correct": true,
+          "reason": "Session context isolation: an independent review instance does not carry the generator's reasoning, so it is more likely to question decisions and catch errors."
+        },
+        {
+          "letter": "D",
+          "text": "Use --resume to reopen the generation session in a later CI step, giving the reviewer its complete record of earlier reasoning.",
+          "correct": false,
+          "reason": "Resuming the generating session is still the same session reviewing its own changes, which the guide identifies as less effective than an independent instance."
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "T-M1-S03",
+    "rule": "B3",
+    "what": "The reason of correct option C now states something false: that the guide recommends one merged list of established and contested findings.",
+    "question": {
+      "options": [
+        {
+          "letter": "A",
+          "text": "Rewrite all findings in a consistent, confident tone and a single uniform format so the report reads as one coherent narrative.",
+          "correct": false,
+          "reason": "This removes source characterizations and the distinction between established and contested findings, and the guide warns against forcing all content into one uniform format."
+        },
+        {
+          "letter": "B",
+          "text": "For each contested claim, have the synthesis agent select the value reported by the most sources and present it as settled.",
+          "correct": false,
+          "reason": "The guide says conflicts between credible sources should be annotated with source attribution, not resolved by arbitrarily selecting one value."
+        },
+        {
+          "letter": "C",
+          "text": "Organize the report into explicit sections that separate well-established findings from contested findings, keeping source attribution for each claim.",
+          "correct": true,
+          "reason": "The guide recommends merging established and contested findings into one list, ordered by the number of sources."
+        },
+        {
+          "letter": "D",
+          "text": "Keep each source's original characterization of its claims, including hedging language and methodological context such as sample size and study design.",
+          "correct": true,
+          "reason": "The guide calls for preserving original source characterizations and methodological context in reports instead of restating claims as definitive."
+        },
+        {
+          "letter": "E",
+          "text": "Remove contested findings from the final report so that readers see only conclusions that all sources agree on.",
+          "correct": false,
+          "reason": "The guide wants contested findings kept in a clearly marked section, so dropping them discards information the report should show."
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "T-M1-S46",
+    "rule": "B3",
+    "what": "The reason of correct option D now states something false: that batch results always come back in the order of the requests.",
+    "question": {
+      "options": [
+        {
+          "letter": "A",
+          "text": "Move the nightly job to the synchronous API so that each response returns directly to the call that sent it.",
+          "correct": false,
+          "reason": "The guide recommends batch processing for latency-tolerant work like nightly test generation for its 50% savings, so switching loses the savings the team wants to keep."
+        },
+        {
+          "letter": "B",
+          "text": "Sort the returned results by their completion timestamps, then map them to source files following the original submission order.",
+          "correct": false,
+          "reason": "This still infers correlation from ordering instead of using the custom_id field that the guide names for correlating batch requests and responses."
+        },
+        {
+          "letter": "C",
+          "text": "Instruct Claude to begin each generated output with the file path, then parse that path from the response text afterward.",
+          "correct": false,
+          "reason": "This depends on model output text for bookkeeping, while the guide gives custom_id as the dedicated field for request/response correlation."
+        },
+        {
+          "letter": "D",
+          "text": "Assign each request a custom_id that encodes its source file path, then join every returned result to its file using that custom_id.",
+          "correct": true,
+          "reason": "The guide says that batch results always return in the order of the requests, so custom_id is only a label for people."
+        }
+      ]
+    }
+  },
+  {
+    "question_id": "T-M1-S04",
+    "rule": "B4",
+    "what": "The question now asks how to reduce the tokens of the synthesis subagent. Its point is the iterative refinement loop (1.2-S3), so it no longer tests its point.",
+    "question": {
+      "question": "Your coordinator delegates a query about global battery recycling regulations. The synthesis subagent returns a draft that thoroughly covers the European Union and United States but says almost nothing about Asian markets, which the query explicitly requested. The coordinator currently passes every synthesis output straight to the report subagent. Which changes would best reduce the number of tokens that the synthesis subagent uses?"
+    }
+  },
+  {
+    "question_id": "T-M1-S06",
+    "rule": "B5",
+    "what": "The question now starts with a customer support agent that handles refunds for an online shop. Its scenario is the multi-agent research system (scenario 3).",
+    "question": {
+      "question": "Your customer support agent, which handles refunds for an online shop, must report how widely a deprecated function, parse_legacy_config, is still used in an open-source repository that is checked out locally. The support agent has the built-in tools available. Before it traces any usage, it must find every place in the codebase that calls this function. Which tool selection should the support agent make for this first step?"
+    }
+  },
+  {
+    "question_id": "T-M1-S07",
+    "rule": "B6",
+    "what": "The correct option D now uses a command '/promptlint' that the guide does not name.",
+    "question": {
+      "options": [
+        {
+          "letter": "A",
+          "text": "Expand the verify_claim_against_source description with more edge cases and boundary explanations so the subagent recognizes when verification is unnecessary.",
+          "correct": false,
+          "reason": "The descriptions are already well written. The misrouting comes from the system prompt instruction, which can override even good descriptions, so this does not fix the cause."
+        },
+        {
+          "letter": "B",
+          "text": "Merge the three tools into one generic analyze_document tool so the subagent no longer has to choose between similar options.",
+          "correct": false,
+          "reason": "The guide recommends splitting generic tools into purpose-specific tools with defined contracts. Merging them reverses this and leaves the prompt issue in place."
+        },
+        {
+          "letter": "C",
+          "text": "Set tool_choice to force extract_data_points on every document request so verification is never selected when it is unnecessary.",
+          "correct": false,
+          "reason": "Forcing one tool stops the subagent from choosing summarize_content or verify_claim_against_source when a task needs them. It also leaves the keyword-sensitive prompt instruction in place."
+        },
+        {
+          "letter": "D",
+          "text": "Run the /promptlint command on the subagent's system prompt and reword the claims instruction so it no longer creates a keyword association.",
+          "correct": true,
+          "reason": "The tool descriptions are already clear. The keyword-sensitive wording in the system prompt creates an unintended tool association, so the prompt must be reviewed and fixed."
+        }
+      ]
+    }
+  }
+]

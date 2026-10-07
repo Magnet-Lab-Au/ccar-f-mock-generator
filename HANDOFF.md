@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. All steps have code and tests, and `src/steps.py` connects them to the control. The command line is `src/run.py`. Next: install the package `anthropic`, set up the API key (never in a file of the repository), and run the test of decision 0024. After each step runs for real: its build guide section and its diagram (the rule below).
+1. All steps have code and tests, and `src/steps.py` connects them to the control. The command line is `src/run.py`. The key is in `~/.bashrc` (run the program with `bash -ic` from a shell that started before the key was added). The test of decisions 0024 and 0042 ran: parts 1 to 3 met each bar, for $2.64. Results: `runs/test-0024/`. Next: part 4 (step 6), the bad mark of T-M1-S05 (clarity of the writer), then mock 1. After each step runs for real: its build guide section and its diagram (the rule below).
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 

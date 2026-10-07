@@ -1,0 +1,1127 @@
+{
+  "checks": [
+    {
+      "question_id": "T-M1-S01",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Glob",
+          "Edit",
+          "Write",
+          "Grep"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S01",
+      "copy": "damaged",
+      "rule": "B1",
+      "damage": "Code moves the mark 'correct' from the correct option to a wrong option, and swaps their reasons.",
+      "expected": "fail on B1",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B1",
+          "B2",
+          "B3"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "fail",
+            "finding": "The marks are swapped. Option A (Glob) is marked correct, but Glob matches file paths and cannot find or rewrite content. Option B (Edit with a unique text match) is the correct answer, yet it is marked wrong.",
+            "letter": "A",
+            "point": "2.5-K3"
+          },
+          {
+            "rule": "B2",
+            "result": "fail",
+            "finding": "Option B is marked wrong, but it is actually the correct answer. Its reason describes Glob, so it does not explain why B is wrong.",
+            "letter": "B",
+            "point": "2.5-K3"
+          },
+          {
+            "rule": "B3",
+            "result": "fail",
+            "finding": "The reasons for A and B are swapped. A's reason justifies Edit, not Glob, so it is false as a justification for A. B's reason describes Glob, so it does not fit option B.",
+            "letter": "A",
+            "point": "2.5-K2"
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Glob",
+          "Edit",
+          "Write",
+          "Grep"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S02",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S02",
+      "copy": "damaged",
+      "rule": "B2",
+      "damage": "The reason of wrong option D no longer gives a reason from the guide. It only says that the option is not the best.",
+      "expected": "fail on B2",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B2"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "fail",
+            "finding": "Option D's reason only says it is 'not the best choice here'. It does not give the reason from the guide for why D is wrong. The stem says the synthesis agent ignores findings that were already returned, not that too few results came back. The guide traces the misuse to an out-of-role tool (2.3-K2).",
+            "letter": "D",
+            "point": "2.3-K2"
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S03",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S03",
+      "copy": "damaged",
+      "rule": "B3",
+      "damage": "The reason of correct option C now states something false: that the guide recommends one merged list of established and contested findings.",
+      "expected": "fail on B3",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B3"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "fail",
+            "finding": "The reason for option C, which is marked correct, says the guide recommends merging established and contested findings into one list ordered by the number of sources. This contradicts 5.6-S2, which calls for explicit sections that distinguish well-established findings from contested ones. The reason should say that the guide recommends separate, explicit sections for established and contested findings.",
+            "letter": "C",
+            "point": "5.6-S2"
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S04",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S04",
+      "copy": "damaged",
+      "rule": "B4",
+      "damage": "The question now asks how to reduce the tokens of the synthesis subagent. Its point is the iterative refinement loop (1.2-S3), so it no longer tests its point.",
+      "expected": "fail on B4",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B1",
+          "B2",
+          "B4"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "fail",
+            "finding": "The stem asks which changes would best reduce the number of tokens the synthesis subagent uses, but the keyed answers address coverage gaps. Option B re-delegates and re-invokes synthesis until coverage is sufficient, which increases synthesis token use. As worded, the marked correct options do not answer the question.",
+            "letter": "B",
+            "point": "1.2-S3"
+          },
+          {
+            "rule": "B2",
+            "result": "fail",
+            "finding": "The wrong options are judged against coverage and gap-filling, not against the stem's token-reduction criterion. Option A (direct calls that reduce round trips) could plausibly reduce synthesis tokens, and its reason never says why it fails on that criterion.",
+            "letter": "A",
+            "point": "1.2-S4"
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "fail",
+            "finding": "The question stem tests token reduction for the synthesis subagent rather than the iterative refinement loop (evaluate synthesis for gaps, re-delegate targeted queries, re-invoke synthesis until coverage is sufficient) that the slot point describes. The stem does not match the point.",
+            "letter": null,
+            "point": "1.2-S3"
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S06",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Read",
+          "Glob",
+          "Edit",
+          "Grep"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S06",
+      "copy": "damaged",
+      "rule": "B5",
+      "damage": "The question now starts with a customer support agent that handles refunds for an online shop. Its scenario is the multi-agent research system (scenario 3).",
+      "expected": "fail on B5",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B5"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "fail",
+            "finding": "The question is framed around a customer support agent that handles refunds for an online shop. Scenario 3 is a multi-agent research system built with the Claude Agent SDK, with a coordinator and web search, document analysis, synthesis and report subagents. The question does not fit that story; for example, it does not use one of the research subagents.",
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Read",
+          "Glob",
+          "Edit",
+          "Grep"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S07",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S07",
+      "copy": "damaged",
+      "rule": "B6",
+      "damage": "The correct option D now uses a command '/promptlint' that the guide does not name.",
+      "expected": "fail on B6",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B6"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "cannot_decide",
+            "finding": "Option D, the keyed answer, tells the reader to run a /promptlint command. The guide never names this command, so it cannot confirm that this step of D is real or correct. The rewording part of D matches 2.1-S4.",
+            "letter": "D",
+            "point": "2.1-S4"
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "fail",
+            "finding": "Option D depends on a '/promptlint' command. The guide does not name it among the Claude Code commands; it names only /memory and /compact. It is presented as a product feature, not as a name invented for the story.",
+            "letter": "D",
+            "point": null
+          }
+        ],
+        "features": [
+          "tool_choice",
+          "/promptlint"
+        ],
+        "not_named": [
+          "/promptlint"
+        ]
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S16",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S16",
+      "copy": "damaged",
+      "rule": "B1",
+      "damage": "Code moves the mark 'correct' from the correct option to a wrong option, and swaps their reasons.",
+      "expected": "fail on B1",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B1",
+          "B2",
+          "B3"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "fail",
+            "finding": "The key is wrong. Option A (investigate fully, then escalate) is marked correct, but 5.2-S2 says to honor an explicit request for a human immediately without first investigating. Option D, which is marked wrong, is the correct answer.",
+            "letter": "A",
+            "point": "5.2-S2"
+          },
+          {
+            "rule": "B2",
+            "result": "fail",
+            "finding": "Option D is marked wrong but is actually correct. Its reason does not show a flaw in D; it describes the flaw of investigating before escalating, which is option A's flaw.",
+            "letter": "D",
+            "point": "5.2-S2"
+          },
+          {
+            "rule": "B3",
+            "result": "fail",
+            "finding": "The reasons for A and D are swapped. A's reason cites the rule to escalate without first investigating, which contradicts option A itself. D's reason criticizes investigating before escalating, which D does not do.",
+            "letter": "A",
+            "point": "5.2-S2"
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "get_customer",
+          "lookup_order",
+          "escalate_to_human"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S31",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "fork_session",
+          "--resume"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S31",
+      "copy": "damaged",
+      "rule": "B2",
+      "damage": "The reason of wrong option B no longer gives a reason from the guide. It only says that the option is not as good.",
+      "expected": "fail on B2",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B2"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "fail",
+            "finding": "Option B's reason says only that it is 'not as good as the other options'. It gives no guide-based reason why B is wrong. The reason should say that a fork from the generation session keeps the generator's reasoning context, so the review is still effectively a self-review.",
+            "letter": "B",
+            "point": "3.6-K4"
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "fork_session",
+          "--resume"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S46",
+      "copy": "good",
+      "expected": "pass",
+      "error": null,
+      "verdict": {
+        "verdict": "pass",
+        "failed_rules": [],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Message Batches API",
+          "custom_id"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    },
+    {
+      "question_id": "T-M1-S46",
+      "copy": "damaged",
+      "rule": "B3",
+      "damage": "The reason of correct option D now states something false: that batch results always come back in the order of the requests.",
+      "expected": "fail on B3",
+      "error": null,
+      "verdict": {
+        "verdict": "fail",
+        "failed_rules": [
+          "B3"
+        ],
+        "results": [
+          {
+            "rule": "B1",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B2",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B3",
+            "result": "fail",
+            "finding": "The reason for correct option D is false and contradicts the guide. The guide never says batch results always return in request order. It names custom_id as the field for correlating batch request/response pairs, not as a label only for people. The reason also undercuts D's own correctness.",
+            "letter": "D",
+            "point": "4.5-K4"
+          },
+          {
+            "rule": "B4",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B5",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          },
+          {
+            "rule": "B6",
+            "result": "pass",
+            "finding": null,
+            "letter": null,
+            "point": null
+          }
+        ],
+        "features": [
+          "Message Batches API",
+          "custom_id"
+        ],
+        "not_named": []
+      },
+      "as_expected": true
+    }
+  ],
+  "as_expected": 18,
+  "of": 18,
+  "cost": {
+    "calls": 18,
+    "input_tokens": 299776,
+    "output_tokens": 10351,
+    "dollars": 1.41
+  }
+}
