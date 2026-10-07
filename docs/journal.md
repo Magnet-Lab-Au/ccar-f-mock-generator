@@ -34,9 +34,13 @@ The first session in Claude Code.
 
 - Step 7 has code and tests: `src/step7_marking.py`. An independent reviewer found 3 serious and 6 minor items. The assistant fixed them. The main one: an owner who sorts only the column "Mark" moves marks to the wrong questions, and code cannot see it later. The sheet is now protected with no password, so only the two columns of the owner can change and sorting is off. This is not checked in real Excel. 132 tests pass.
 
+- The model steps need a fixed form. Decisions 0029, 0032 and 0034 force a tool call, but the current models reject it. The assistant checked this on the page "Define tools". The owner asked if a model that supports it is better. The assistant recommended against it. Decided: structured outputs (decision 0040). The owner asked that this deviation from the exam guide is shown openly. The two pages are saved in `docs/sources/` and quoted word for word. The owner confirmed the text of decision 0040.
+- Steps 2, 4, 5 and 6, the adapter `src/steps.py` and the command line `src/run.py` have code and tests. A test runs the whole pipeline with a fake client, from the plan to the two files. An independent reviewer found 3 serious items: call 4a had no guide text, the B6 search found names inside other words, and each API error was retried. The assistant fixed them and the minor items. Decision 0041 records each change beyond the confirmed decisions. 161 tests pass. No real call to the API has run.
+
 **Open**
 
-- The control does not call the real steps yet.
+- The owner has not confirmed the text of decision 0041.
+- No real call to the API has run. The package `anthropic` is not installed.
 - The protection of the marking file is not checked in real Excel.
 - Rule A11 passes "cannot" and "doesn't" (see `HANDOFF.md`).
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
