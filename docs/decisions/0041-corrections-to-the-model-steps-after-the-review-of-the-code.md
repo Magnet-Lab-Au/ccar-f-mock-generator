@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026
 - Diagram: none
 
 ## Question
@@ -58,7 +59,7 @@ Not decided yet:
 
 ## How we decided
 
-The owner said yes to the plan to build steps 2, 4 and 6. Rule 32 permits fixes that make the code agree with decisions and with the documentation, without a yes before. The owner has not confirmed the text of this file. No independent reviewer checked this file. No real call to the API has run yet.
+The owner said yes to the plan to build steps 2, 4 and 6. Rule 32 permits fixes that make the code agree with decisions and with the documentation, without a yes before. No independent reviewer checked this file. No real call to the API has run yet.
 
 ## Exam guide points
 
