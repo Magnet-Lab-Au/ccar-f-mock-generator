@@ -11,6 +11,7 @@ The program.
 - `model_call.py`: one model call with structured outputs (decisions 0040 and 0041).
 - `step2_write.py`: steps 2 and 5, the writer. `step4_check_model.py`: step 4. `step6_check_scenario.py`: step 6.
 - `steps.py`: connects the real steps to the control. `run.py`: the command line of the owner.
+- `test_0024.py`: the test before the first full run (decisions 0024 and 0042), in three parts.
 - `control.py`: the control (decisions 0038 and 0039). It decides what happens next to a slot and to a mock. It calls each step as a separate part. The real steps do not exist yet.
 
 The tests of the control are in `tests/`. Run them from the folder `ccar-f-mock-generator`:

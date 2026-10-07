@@ -80,6 +80,7 @@ class ModelCall:
         self.model = model
         self.effort = effort
         self.max_tokens = max_tokens
+        self.usage = []   # one entry for each answer: input and output tokens
 
     @property
     def client(self):
@@ -99,6 +100,9 @@ class ModelCall:
             raise
         except Exception as e:
             raise classify(e)
+        u = getattr(response, "usage", None)
+        if u is not None:
+            self.usage.append({"input": getattr(u, "input_tokens", 0) or 0, "output": getattr(u, "output_tokens", 0) or 0})
         stop = getattr(response, "stop_reason", None)
         if stop == "refusal":
             details = getattr(response, "stop_details", None)
