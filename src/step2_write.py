@@ -98,6 +98,15 @@ def request_text(request, records):
                                            "point": point, "type": slot["type"], "options": slot["options"],
                                            "select": slot["select"]}),
               "Write %d options. Mark exactly %d of them correct." % (slot["options"], slot["select"])]
+    if request["step"] == 2 and (request.get("findings") or request.get("other_questions")):
+        # Decision 0045: a rewrite with a new point. The writer must not repeat the other questions.
+        parts += ["", "A NEW QUESTION FOR THIS SLOT, ON THE POINT MARKED ABOVE. The owner asks for it:",
+                  json.dumps([f["detail"] for f in request.get("findings", [])], indent=2, ensure_ascii=False)]
+        if request.get("other_questions"):
+            parts += ["Other questions of this mock. Do not write the same scene, and do not test the same idea:",
+                      json.dumps([{"question_id": q["question_id"], "question": q.get("question"),
+                                   "options": [o.get("text") for o in q.get("options", [])]}
+                                  for q in request["other_questions"]], indent=2, ensure_ascii=False)]
     if request["step"] == 5:
         failed = request["failed_question"]
         shown = {"question": failed.get("question"), "select": failed.get("select"),

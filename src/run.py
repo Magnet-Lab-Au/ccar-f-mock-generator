@@ -77,6 +77,8 @@ def main(argv=None):
     p.add_argument("--seed", type=int)
     p.add_argument("--reason", default="")
     p.add_argument("--question")
+    p.add_argument("--new-point", dest="new_point")
+    p.add_argument("--other", action="append", default=[], help="another question that the writer must not repeat")
     a = p.parse_intermixed_args(argv)   # options may come before or after the action and the target
     c = steps = None
     try:
@@ -95,7 +97,8 @@ def main(argv=None):
         elif a.command == "decide":
             if not a.action or not a.target:
                 raise Refused("decide needs an action and a target.")
-            d = c.decide(a.action, a.target, a.reason, question_id=a.question)
+            d = c.decide(a.action, a.target, a.reason, question_id=a.question,
+                         new_point=a.new_point, other_questions=a.other)
             print("Saved: %s" % json.dumps(d))
             show(c.report())
         elif a.command == "accept":

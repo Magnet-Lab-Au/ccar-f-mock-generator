@@ -665,6 +665,66 @@ class TestIncompleteQuestion(Base):
         self.assertEqual(self.status(c, "M1-S05")["status"], "passed")
 
 
+class TestRewriteOfDecision0045(Base):
+    """A rewrite with no finding of step 6, and a rewrite with a new point."""
+
+    def marked(self):
+        c = self.control()
+        self.run_to_marks(c)
+        c.read_marks()
+        return c
+
+    def test_a_rewrite_with_no_finding_is_step_5_with_the_reason(self):
+        c = self.marked()
+        d = c.decide("rewrite", "M1-S05-T1", "The two correct options are one action.")
+        self.assertEqual((d["target"], d["question_id"], d["after_try"]), ("M1-S05-T1", "M1-S05-T1", 1))
+        report = c.run()
+        r = self.steps.requests[-1]
+        self.assertEqual((r["step"], r["shown_try"]), (5, "M1-S05-T1"))
+        self.assertEqual(r["findings"][-1]["detail"], "The two correct options are one action.")
+        self.assertEqual(self.steps.marking_files[2], ["M1-S05-T2"])
+        self.assertEqual(report["state"], "ready_to_mark")
+        self.assertEqual(c.bad_marks_first_round(), [])
+
+    def test_a_rewrite_with_a_new_point_is_step_2_on_that_point(self):
+        c = self.marked()
+        d = c.decide("rewrite", "M1-S11-T1", "Repeat of S07.", new_point="2.4-K3", other_questions=["M1-S10-T1"])
+        self.assertEqual(d["point"], "2.4-K3")
+        self.assertEqual(c.point_of(c._slot("M1-S11")), "2.4-K3")
+        c.run()
+        r = [x for x in self.steps.requests if x["slot"]["slot_id"] == "M1-S11"][-1]
+        self.assertEqual((r["step"], r["point"], r["shown_try"]), (2, "2.4-K3", None))
+        self.assertEqual([q["question_id"] for q in r["other_questions"]], ["M1-S10-T1"])
+        self.assertEqual(c._question("M1-S11-T2")["point"], "2.4-K3")
+
+    def test_the_three_checks_of_a_new_point(self):
+        c = self.marked()
+        with self.assertRaises(Refused) as e:
+            c.decide("rewrite", "M1-S11-T1", "x", new_point="1.1-K3")
+        self.assertIn("not in the task statement", str(e.exception))
+        with self.assertRaises(Refused) as e:
+            c.decide("rewrite", "M1-S11-T1", "x", new_point="2.4-K2")
+        self.assertIn("used by the slot M1-S41", str(e.exception))
+        with self.assertRaises(Refused) as e:
+            c.decide("rewrite", "M1-S11-T1", "x", new_point="2.4-K1")
+        self.assertIn("had the point", str(e.exception))
+
+    def test_a_rewrite_with_a_new_point_through_a_finding(self):
+        self.steps.scenario_script[1] = [self.finding("D1", ["M1-S03-T1", "M1-S04-T1"])]
+        c = self.marked()
+        c.decide("rewrite", "M1-SC1-R1-F1", "Same scene.", question_id="M1-S04-T1", new_point="1.4-K3")
+        c.run()
+        r = [x for x in self.steps.requests if x["slot"]["slot_id"] == "M1-S04"][-1]
+        self.assertEqual((r["step"], r["point"]), (2, "1.4-K3"))
+        self.assertEqual([q["question_id"] for q in r["other_questions"]], ["M1-S03-T1"])
+
+    def test_a_rewrite_before_the_marks_is_refused(self):
+        c = self.control()
+        self.run_to_marks(c)
+        with self.assertRaises(Refused):
+            c.decide("rewrite", "M1-S05-T1", "x")
+
+
 class TestNewPlan(Base):
     def test_new_plan_stops_the_mock(self):
         self.steps.write_script["M1-S07"] = ["cannot_write"]

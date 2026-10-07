@@ -172,10 +172,14 @@ class Control:
         return sorted(events, key=lambda e: e["after_try"])
 
     def point_of(self, slot):
-        """The point of a slot: the point of the plan, or the last point of `new_point`."""
+        """The point of a slot: the point of the plan, or the last new point of a
+        decision `new_point` or of a `rewrite` with a new point (decision 0045)."""
         point = slot["point"]
         for d in self.decisions():
             if d["action"] == "new_point" and d["target"] == slot["slot_id"]:
+                point = d["point"]
+            if d["action"] == "rewrite" and d.get("point") and \
+                    d.get("question_id", "").startswith(slot["slot_id"] + "-T"):
                 point = d["point"]
         return point
 
@@ -244,12 +248,21 @@ class Control:
             d = event["decision"]
             q = self._question(d["question_id"])
             f = self._step6_finding(d["target"])
-            others = [i for i in f["question_ids"] if i != d["question_id"]]
-            finding = {"step": 6, "rule": f["rule"], "detail": f["detail"],
-                       "letter": None, "point": None, "other_questions": others}
+            others = list(d.get("other_questions") or [])
+            found = []
+            if f is not None:
+                others += [i for i in f["question_ids"] if i != d["question_id"] and i not in others]
+                found.append({"step": 6, "rule": f["rule"], "detail": f["detail"],
+                              "letter": None, "point": None, "other_questions": others})
             owner = {"step": 7, "rule": "owner", "detail": d["reason"],
-                     "letter": None, "point": None, "other_questions": []}
-            request = self._step5(request, q, [finding, owner])
+                     "letter": None, "point": None, "other_questions": others}
+            if d.get("point"):
+                # Decision 0045: a rewrite with a new point is a request of step 2 on
+                # the new point. The writer sees the other questions, not to repeat them.
+                request.update({"findings": found + [owner],
+                                "other_questions": [self._question(i) for i in others]})
+                return request
+            request = self._step5(request, q, found + [owner])
             request["other_questions"] = [self._question(i) for i in others]
             return request
         # more_tries: the last try before the decision.
@@ -589,7 +602,7 @@ class Control:
             return []
         return self.open_findings()
 
-    def decide(self, action, target, reason, question_id=None):
+    def decide(self, action, target, reason, question_id=None, new_point=None, other_questions=None):
         """Command of the owner. Saves one decision in owner-decisions.json."""
         if self.state()["state"] in ("stopped", "built"):
             raise Refused("The mock is %s." % self.state()["state"])
@@ -604,6 +617,15 @@ class Control:
             d["after_try"] = state["tries"]
             if action == "new_point":
                 d["point"] = self._select_new_point(slot, len(decisions) + 1)
+        elif action == "rewrite" and not str(target).startswith(self.prefix + "-SC"):
+            # Decision 0045: a rewrite with no finding of step 6. The target is the question.
+            if self.marking_pending():
+                raise Refused("Mark the questions first.")
+            question_id = question_id or target
+            self._check_rewrite_question(question_id)
+            d["target"] = question_id
+            d["question_id"] = question_id
+            d["after_try"] = self._question(question_id)["try"]
         elif action in ("ignore", "rewrite"):
             wait = self.findings_wait()
             if wait is not None:
@@ -614,13 +636,7 @@ class Control:
             if action == "rewrite":
                 if question_id not in finding["question_ids"]:
                     raise Refused("A rewrite names one question of the finding.")
-                if not self._exists("questions", question_id + ".json"):
-                    raise Refused("The question %s does not exist." % question_id)
-                slot = self._slot(self._question(question_id)["slot_id"])
-                state = self.slot_state(slot)
-                if state["status"] != "passed" or state["question_id"] != question_id:
-                    raise Refused("The question %s is not the current try of its slot."
-                                  % question_id)
+                self._check_rewrite_question(question_id)
                 d["question_id"] = question_id
                 d["after_try"] = self._question(question_id)["try"]
         elif action == "new_plan":
@@ -632,9 +648,42 @@ class Control:
             raise Refused("Unknown action: %s" % action)
         if not (reason or "").strip() and action in ("rewrite",):
             raise Refused("A rewrite must have a reason.")
+        if action == "rewrite":
+            for other in other_questions or []:
+                if not self._exists("questions", other + ".json"):
+                    raise Refused("The other question %s does not exist." % other)
+            if other_questions:
+                d["other_questions"] = list(other_questions)
+            if new_point:
+                d["point"] = self._check_new_point(self._slot(self._question(d["question_id"])["slot_id"]), new_point)
+        elif new_point or other_questions:
+            raise Refused("A new point and other questions go only with a rewrite.")
         decisions.append(d)
         self._write(self._path("owner-decisions.json"), decisions)
         return d
+
+    def _check_rewrite_question(self, question_id):
+        if not self._exists("questions", str(question_id) + ".json"):
+            raise Refused("The question %s does not exist." % question_id)
+        slot = self._slot(self._question(question_id)["slot_id"])
+        state = self.slot_state(slot)
+        if state["status"] != "passed" or state["question_id"] != question_id:
+            raise Refused("The question %s is not the current try of its slot." % question_id)
+
+    def _check_new_point(self, slot, point):
+        """Decision 0045: the owner gives the new point. Code checks three things."""
+        if point not in self.guide_points.get(slot["task_statement"], []):
+            raise Refused("The point %s is not in the task statement %s of the slot %s."
+                          % (point, slot["task_statement"], slot["slot_id"]))
+        for s in self.slots():
+            if s["slot_id"] != slot["slot_id"] and self.point_of(s) == point:
+                raise Refused("The point %s is used by the slot %s." % (point, s["slot_id"]))
+        had = {slot["point"]} | {d["point"] for d in self.decisions() if d.get("point") and
+                                 (d.get("target") == slot["slot_id"] or
+                                  d.get("question_id", "").startswith(slot["slot_id"] + "-T"))}
+        if point in had or point == self.point_of(slot):
+            raise Refused("The slot %s had the point %s before." % (slot["slot_id"], point))
+        return point
 
     def _slot(self, slot_id):
         for s in self.slots():
