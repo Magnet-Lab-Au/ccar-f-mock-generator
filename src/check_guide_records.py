@@ -4,7 +4,7 @@ It checks reference/guide-records.json against reference/exam-guide.md and
 against reference/task-statements-and-points.md. It does not use the code of
 step 0. It prints one line for each check.
 
-Run from the folder mock-builder-v3:
+Run from the folder ccar-f-mock-generator:
     python3 src/check_guide_records.py
 """
 import json

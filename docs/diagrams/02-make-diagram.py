@@ -1,5 +1,5 @@
 import re, html, os, json
-root = os.path.expanduser('~/mnt/mock-builder-v3')
+root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 pts = open(root + '/reference/task-statements-and-points.md', encoding='utf-8').read()
 guide = open(root + '/reference/exam-guide.md', encoding='utf-8').read()
 src = open(root + '/docs/diagrams/01-pipeline-overview.html', encoding='utf-8').read()

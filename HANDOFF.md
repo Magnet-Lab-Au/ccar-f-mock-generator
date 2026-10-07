@@ -1,6 +1,6 @@
 # Handoff: start here
 
-Date: 5 October 2026. Updated on 7 October 2026. This file gives a new session what it needs to continue.
+Date: 5 October 2026. Updated on 7 October 2026, second session. This file gives a new session what it needs to continue.
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
@@ -42,7 +42,7 @@ No section exists yet. The diagrams 02 to 10 in `docs/diagrams/` are the diagram
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0038. Read decision 0038 before the step files: it changes the control. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+4. `docs/decisions/`: decisions 0001 to 0039. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
 5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
 
 Read these only when you need them:
@@ -55,16 +55,16 @@ Read these only when you need them:
 
 ## Where we are
 
-State on 7 October 2026.
+State on 7 October 2026, second session.
 
-- Decisions 0001 to 0038 exist. The owner confirmed the text of 0001 to 0018, of 0037 and of 0038. Rule 26 applies to those files. The owner agreed to each decision from 0019 to 0036, but did not confirm the full text of those files.
+- Decisions 0001 to 0039 exist. The owner confirmed the text of 0001 to 0018, of 0037 and of 0038. Rule 26 applies to those files. The owner agreed to each decision from 0019 to 0036 and to decision 0039, but did not confirm the full text of those files.
 - Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
 - Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
 - Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.
 - **Each of the 9 steps has a design decision and a diagram. The design is not complete.** A first review found 14 serious items in decisions 0026 to 0036. Decision 0037 (third session of 6 October 2026) has an answer to each one, and the owner confirmed its text. Decisions 0024, 0027 and 0029 to 0036 were changed and have those answers. Where decision 0037 and a step file disagree, tell the owner.
 - **A second review checked the changed files.** Of the 14 items, 8 are closed and 6 are closed in part. The reviewers found 3 new errors and 10 new serious items. A programmer who has only the decision files still meets cases with no path. The report is `docs/reviews/review-decisions-0024-to-0037.md`. Read it before you continue. In the table below, "Designed" means: a decision and a diagram exist. It does not mean: ready for code.
 - **Decision 0038 stops the cycle of reviews.** The fixes of the first review made the 10 new items. All of them are in the control. The theme: too much automatic repair, designed before one real run. So the control is simple for mock 1. One automatic loop stays: a question that fails step 3 or step 4 goes to step 5, with the limits of decisions 0033 and 0037. Each other failure waits for the owner. Step 6 sends no question back. The owner accepts a mock with a command before step 8 builds the files.
-- **The control is written as code with tests, not designed further in words.** A fake writer and fake checkers give the answers that a test tells them to give. No test makes a model call. When the tests pass, decisions 0027 to 0036 are corrected so that they describe the code.
+- **The control exists as code with tests** (decision 0039): `src/control.py`, `tests/fakes.py` and `tests/test_control.py`. 53 tests pass, and no test makes a model call. Two independent reviewers checked it. No reviewer checked the last round of fixes. Each step is a fake. The owner has no command line yet.
 - Where decision 0038 and an older file disagree, decision 0038 is correct. Decisions 0027 to 0036 and diagrams 02 to 10 do not agree with it yet.
 
 | Step | Decision | Diagram | State |
@@ -80,7 +80,7 @@ State on 7 October 2026.
 | 7. The owner marks the questions | 0035 | 09 | Designed |
 | 8. Build the files | 0036 | 10 | Designed |
 
-- Code that exists: `src/step0_prepare_guide_records.py` and `src/check_guide_records.py`. No other code of the pipeline exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
+- Code that exists: `src/step0_prepare_guide_records.py`, `src/check_guide_records.py` and `src/control.py`, with the tests in `tests/`. No real step from 1 to 8 exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
 - The checks of the records file: a second script passed 41 of 41 checks. An independent reviewer found no errors (`docs/reviews/review-guide-records.md`). The comparison of `reference/exam-guide.md` with the original guide is not done.
 - No agreed step uses a subagent, MCP or the Agent SDK. Each model step is a call of the plain API with a fixed answer form (decisions 0029 and 0032). The owner asked why, and said: "keep the simple api".
 - One mock needs these model calls when no question fails: 60 writer calls, 60 blind answers, 60 rule checks, and 8 calls of step 6 (2 for each scenario).
@@ -125,16 +125,13 @@ Not decided:
 
 ## The next steps
 
-1. Check that this folder is a git repository with a first commit, and that it is not in OneDrive. If not, ask the owner. The owner gave the folder a new name. The documents and three diagram scripts (`02-make-diagram.py`, `03-make-diagram.py`, `04-make-diagram.py`) still have the old name `mock-builder-v3`. The three scripts have a fixed path and do not run until it is corrected. Show the owner the changes first (rule 23). Do not change the name in decision 0001 (rule 26). Record the new name in the journal.
-2. Show the owner a short plan for the control program, in plain words. Wait for a yes (rule 8). Then write the control with a fake writer, fake checkers and one test for each case. The first tests: the path with no failure, and the 10 cases (a) to (j) of the second review, as far as decision 0038 keeps them. No test makes a model call.
-3. Items 6 to 10 of the table below have no answer. The code and its tests give the answers. Show the owner each answer, one at a time, short, as a story, before it is final. Record the answers in a new decision file.
-4. When the tests pass: correct decisions 0027 to 0036 so that they describe the code (decision 0038, part 7). In the same work, correct the other findings of the second review. Tell the owner what changes, and wait for a yes (rule 23). Then ask the owner which diagrams to make again.
-5. Then an independent review of the changed files (rule 15).
-6. Then the owner confirms the text of decisions 0019 to 0036.
-7. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
-8. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1.
+1. Correct decisions 0027 to 0036 so that they describe the control (decisions 0038, part 7, and 0039). In the same work, correct the other findings of the second review. Tell the owner what changes, and wait for a yes (rule 23). Then ask the owner which diagrams to make again.
+2. Then an independent review of the changed files (rule 15).
+3. Then the owner confirms the text of decisions 0019 to 0036 and 0039.
+4. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
+5. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
-A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program of next step 2 is not a pipeline step. It gets a decision file and a journal entry.
+A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program is not a pipeline step. It gets a decision file and a journal entry.
 
 ### The 10 serious items of the second review, after decision 0038
 
@@ -145,11 +142,11 @@ A rule for each of these steps, so that nobody has to reconstruct the build guid
 | 3 | Step 6 asks the owner before the marking. | Removed. Step 6 sends no question back, and the owner sees its findings after the marking. |
 | 4 | After `ignore`, the scenario cannot pass step 6. | Closed. The owner accepts the mock with a command. |
 | 5 | The count of the runs of step 6 | Removed. The owner starts each round. |
-| 6 | The values of `state` have no meaning. `id` in `owner-decisions.json` has no definition, and a finding of step 6 has no ID. | Open. The code and its tests give the answer. |
-| 7 | `new_point` has no place to store the new point. No file says if `plan.json` changes, or how the new point stays different from the points of the other slots. | Open. The code and its tests give the answer. |
-| 8 | After `more_tries` or `new_point`, no file says if the next call is a request of step 2 or of step 5, or which failed try it shows. | Open. The code and its tests give the answer. |
-| 9 | A call that fails 3 times leaves no record. So the report has no source for `errors` after a new start. | Open. The code and its tests give the answer. |
-| 10 | The exact conditions before step 8 builds the files | Open. The code and its tests give the answer. |
+| 6 | The values of `state` have no meaning. `id` in `owner-decisions.json` has no definition, and a finding of step 6 has no ID. | Closed by decision 0039. |
+| 7 | `new_point` has no place to store the new point. No file says if `plan.json` changes, or how the new point stays different from the points of the other slots. | Closed by decision 0039. |
+| 8 | After `more_tries` or `new_point`, no file says if the next call is a request of step 2 or of step 5, or which failed try it shows. | Closed by decision 0039. |
+| 9 | A call that fails 3 times leaves no record. So the report has no source for `errors` after a new start. | Closed by decision 0039. |
+| 10 | The exact conditions before step 8 builds the files | Closed by decision 0039. |
 
 For each new reason:
 
@@ -164,8 +161,10 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
+| The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
+| The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |
 | The text of decisions 0019 to 0036 | The owner agreed to each decision. The owner has not confirmed the full text of these 18 files. The owner confirmed the text of decision 0037. |
-| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. |
+| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. |
 | The other findings of the second review | 3 errors of reviewer A, 11 uses of a guide point with the context not stated, 4 other findings, 7 statements about a product with no source, 4 minor contradictions, 6 old statements, and minor gaps in the cases (e), (g) and (h). They are in the report. They are not in this table one by one. |
 | Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |
 | The findings of the first review on the diagrams | 10 diagram errors of the first review are not corrected. Diagrams 02 to 10 also show the design before decision 0037. |
@@ -204,4 +203,4 @@ You do not need it for the design. It is here if the owner asks. Each folder is 
 
 ## What the owner says to start
 
-"Read `HANDOFF.md` in `mock-builder-v3` and follow it."
+"Read `HANDOFF.md` in `ccar-f-mock-generator` and follow it."

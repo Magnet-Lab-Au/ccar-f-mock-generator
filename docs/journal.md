@@ -2,6 +2,30 @@
 
 One entry for each work session. Newest entry first.
 
+## 7 October 2026, second session
+
+The first session in Claude Code.
+
+- The assistant listed the 30 working rules, and gave the state of the work in 5 lines.
+- The folder is in WSL at `/home/triggger/ccar-f-mock-generator`. It is a git repository with a private remote on GitHub. The assistant checked this with `git` and `gh`.
+- The new name of the folder is `ccar-f-mock-generator`. With the yes of the owner, the assistant changed the old name `mock-builder-v3` in `CLAUDE.md`, `README.md`, `HANDOFF.md`, the two scripts of step 0, and diagram scripts 02, 03 and 04. The three diagram scripts now find the folder from their own location. The assistant ran them, and diagrams 02, 03 and 04 did not change. Decision 0001 keeps the old name (rule 26).
+- The assistant showed a plan for the control before it read all files that `HANDOFF.md` names. The owner asked if it had read them. It had not. It read them, and changed six points of the plan. The owner said yes to the plan.
+- The plan said that the assistant stops at each of items 6 to 10. It wrote the code for all five in one pass, and told the owner.
+- Decided: the answers to items 6 to 10 of the second review, and four more choices of the code (decision 0039). The owner said yes to each answer. The owner asked if the values of `state` were already decided. The names were decided in decision 0037. The meanings were open.
+- The owner asked for shorter questions and answers: 1 to 3 sentences for each item. The owner also asked that each mention of a decision gives the text of that decision. A new rule 31 in `WORKING-RULES.md` records both.
+- New code: `src/control.py`, `tests/fakes.py` and `tests/test_control.py`. The tests use `unittest`. No test makes a model call.
+- Two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs. The second found 1 serious and 3 minor bugs in the fixes. The owner said yes before each round of fixes. 53 tests pass. For each fix, the assistant removed the fix in a copy of the code and saw a test fail. No reviewer checked the last round of fixes. The owner and the assistant agreed to stop the reviews of the control there.
+- `HANDOFF.md`, `README.md`, `src/README.md`, `WORKING-RULES.md` and a new `.gitignore` have the state of the end of this session. The owner said yes to these changes before the assistant made them.
+
+**Open**
+
+- Decisions 0027 to 0036 and diagrams 02 to 10 do not describe the control yet.
+- The real steps do not exist. Each step is a fake in the tests.
+- The owner has no command line yet. The control has the functions.
+- The owner has not confirmed the full text of decision 0039.
+
+Next: see "The next steps" in `HANDOFF.md`.
+
 ## 7 October 2026
 
 This entry continues the third session of 6 October. The work went on after midnight.

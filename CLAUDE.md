@@ -1,4 +1,4 @@
-# mock-builder-v3
+# ccar-f-mock-generator
 
 A program that writes and checks mock exam questions for the CCAR-F exam.
 

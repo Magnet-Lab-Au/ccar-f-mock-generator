@@ -58,3 +58,4 @@ If a rule and a later instruction of the owner disagree, the later instruction i
 ## Part C. Changes after 6 October 2026
 
 30. Change of rule 1, from the second session of 6 October 2026: for the design of a pipeline step, the assistant shows one proposal with all details of the step. The proposal names the exact file format and the exact fields. The owner accepts it or names what to change. The owner can still look at each detail separately. Rule 1 stays for all other topics.
+31. From the second session of 7 October 2026: when the assistant shows the owner an answer to an item, the question and the answer have 1 to 3 sentences each. When the assistant mentions a decision, it gives the text of that decision, so that the owner knows what it is about.

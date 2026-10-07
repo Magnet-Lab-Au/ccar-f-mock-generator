@@ -1,5 +1,5 @@
 import re, html, os, json
-root = os.path.expanduser('~/mnt/mock-builder-v3')
+root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 guide = open(root + '/reference/exam-guide.md', encoding='utf-8').read()
 REC = json.load(open(root + '/reference/guide-records.json', encoding='utf-8'))
 SCHEMA = open(root + '/docs/diagrams/04-form-schema-draft.json', encoding='utf-8').read().rstrip()

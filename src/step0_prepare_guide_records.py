@@ -4,7 +4,7 @@ It reads reference/exam-guide.md and writes reference/guide-records.json.
 It copies each text with no change. It writes no file if a count is wrong
 or if a text is not exactly in the guide.
 
-Run from the folder mock-builder-v3:
+Run from the folder ccar-f-mock-generator:
     python3 src/step0_prepare_guide_records.py
 """
 import json

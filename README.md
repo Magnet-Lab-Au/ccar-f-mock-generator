@@ -1,4 +1,4 @@
-# mock-builder-v3
+# ccar-f-mock-generator
 
 A program that writes and checks mock exam questions for the CCAR-F exam (Claude Certified Architect – Foundations).
 
@@ -29,9 +29,9 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `reference/exam-guide.md` | The exam guide, Version 1.0, July 2026 |
 | `reference/task-statements-and-points.md` | The 30 task statements and their 240 points, exact text. An independent reviewer confirmed it on 5 October 2026. |
 | `reference/practice-audit-first-build.md` and `.json` | The audit of the first build against the 240 points |
-| `src/` | The program. It has the two scripts of step 0. The other steps have no code until the design is complete. |
+| `src/` | The program. It has the two scripts of step 0 and the control. The real steps 1 to 8 do not exist yet. |
 | `runs/` | The run records. Empty until the first run. |
 
 ## Status
 
-7 October 2026: each of the 9 steps has a design decision and a diagram (decisions 0026 to 0036, diagrams 02 to 10). Two reviews found serious items in the control of the pipeline. Decision 0038 stops that cycle: the control is simple for mock 1, and it is written as code with tests. The work continues in Claude Code, in a git repository. Decisions 0027 to 0036 and the diagrams do not agree with decision 0038 yet. Step 0 ran: the file `reference/guide-records.json` exists, and it is the one source of guide text for code. No code of the pipeline exists, only the two scripts of step 0. The next steps are in `HANDOFF.md`.
+7 October 2026: each of the 9 steps has a design decision and a diagram (decisions 0026 to 0036, diagrams 02 to 10). Decision 0038 makes the control simple for mock 1 and writes it as code with tests. The control exists: `src/control.py`, with 53 tests in `tests/` (decision 0039). The real steps do not exist yet, only fakes in the tests. Decisions 0027 to 0036 and the diagrams do not agree with decisions 0038 and 0039 yet. Step 0 ran: the file `reference/guide-records.json` exists, and it is the one source of guide text for code. The next steps are in `HANDOFF.md`.
