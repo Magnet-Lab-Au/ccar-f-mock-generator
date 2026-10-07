@@ -2,6 +2,7 @@
 
 - Date: 7 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026, after a summary of one line for each file
 - Changed: 7 October 2026, after two independent reviews of the code. The owner said yes to each change.
 - Diagram: none
 

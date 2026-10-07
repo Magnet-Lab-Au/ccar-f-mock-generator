@@ -57,7 +57,7 @@ Read these only when you need them:
 
 State on 7 October 2026, second session.
 
-- Decisions 0001 to 0039 exist. The owner confirmed the text of 0001 to 0018, of 0037 and of 0038. Rule 26 applies to those files. The owner agreed to each decision from 0019 to 0036 and to decision 0039, but did not confirm the full text of those files.
+- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
 - Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
 - Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
 - Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.
@@ -125,9 +125,8 @@ Not decided:
 
 ## The next steps
 
-1. The owner confirms the text of decisions 0019 to 0036 and 0039. Decisions 0024 and 0027 to 0036 were corrected and reviewed on 7 October 2026. No reviewer checked the last fixes.
-2. Then a script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
-3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
+1. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
+2. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
 A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program is not a pipeline step. It gets a decision file and a journal entry.
 
@@ -161,7 +160,6 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 |---|---|
 | The real steps | Each step is a fake in the tests of the control. No real step from 1 to 8 exists. |
 | The command line of the owner | The control has the functions `run`, `read_marks`, `decide` and `accept`. No command line exists yet. |
-| The text of decisions 0019 to 0036 | The owner agreed to each decision. The owner has not confirmed the full text of these 18 files. The owner confirmed the text of decision 0037. |
 | Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. Nobody checked the last round of fixes. One reviewer checked the corrected decisions 0024 and 0027 to 0036, and one checked diagrams 07 and 08. Nobody checked the last fixes. |
 | The other findings of the second review | Corrected on 7 October 2026 in decisions 0024 and 0027 to 0036. Open parts are now in the lists "Not decided yet" of those files, for example rule B6 (0030) and case (h) (0032). |
 | Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |

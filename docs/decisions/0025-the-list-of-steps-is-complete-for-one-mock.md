@@ -2,6 +2,7 @@
 
 - Date: 6 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026, after a summary of one line for each file
 - Diagram: `docs/diagrams/01-pipeline-overview.html`
 
 ## Question

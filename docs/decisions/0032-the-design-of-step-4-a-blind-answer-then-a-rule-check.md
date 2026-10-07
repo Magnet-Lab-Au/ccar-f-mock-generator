@@ -2,6 +2,7 @@
 
 - Date: 6 October 2026
 - Status: accepted
+- Text confirmed by the owner: 7 October 2026, after a summary of one line for each file
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
 - Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: `docs/diagrams/06-step-4-check-by-a-model.html`

@@ -22,13 +22,14 @@ The first session in Claude Code.
 - An independent reviewer checked the 10 changed decisions. It found 2 serious and 5 minor items, and some smaller points. The assistant fixed them.
 - The owner let the assistant select the diagrams to make again. The assistant made diagrams 07 (step 5) and 08 (step 6) again, in the visual form of diagrams 09 and 10, because decision 0038 changed those steps the most. A browser test opened each popup: 22 in diagram 07 and 17 in diagram 08. An independent reviewer checked their text and found 2 serious and 7 minor items. The assistant fixed them. It also corrected the false sentence of rule B4 in diagram 06, and an unclear example in decision 0033, item 8.
 
+- The owner confirmed the text of decisions 0019 to 0036 and 0039. The assistant first asked if the yes covered the full text, and recommended that the owner read the files. The owner asked for one line for each file, and then confirmed. Rule 26 now applies to all decisions.
+
 **Open**
 
 - Diagrams 01 to 06 and 09 to 10 do not show decisions 0038 and 0039 yet.
 - No reviewer checked the last fixes of the decisions and of diagrams 07 and 08.
 - The real steps do not exist. Each step is a fake in the tests.
 - The owner has no command line yet. The control has the functions.
-- The owner has not confirmed the full text of decision 0039.
 
 Next: see "The next steps" in `HANDOFF.md`.
 
