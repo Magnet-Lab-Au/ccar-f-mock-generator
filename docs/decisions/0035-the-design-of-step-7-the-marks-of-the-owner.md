@@ -3,6 +3,7 @@
 - Date: 6 October 2026
 - Status: accepted
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
+- Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: `docs/diagrams/09-step-7-the-owner-marks-the-questions.html`
 
 ## Question
@@ -23,22 +24,22 @@ Two parts are different from decision 0015. Only a bad mark has a reason. And co
 1. **The marking file.** Code builds one Excel file for each round of marking. Example: `marking/M1-round1.xlsx`. It has one row for each question: the question ID, the scenario, the point that the question must test, the question, the line "Select N.", the options with their letters, the correct answer and the reason of each option. It shows no verdict of a checker.
 2. **What the owner fills.** Two columns: "Mark" (`good` or `bad`) and "Reason". A bad mark must have a reason.
 3. **Which questions.** Mock 1: all 60. A later mock: 20 questions, 5 from each scenario, with questions from each domain. Code selects them at random, with a seed (decisions 0015 and 0022).
-4. **What code does with the file.** Code reads it. If a mark is missing, or a bad mark has no reason, code does not accept the file and names the rows. Code saves the marks as a record, for example `runs/mock-01/marks.json`. Each mark has the question ID, the mark, the reason, the round, the date and the fingerprint of the question record (decision 0036). Code shows the bad marks for each scenario and each domain.
-5. **After a bad mark.** The question goes to step 5 with the reason of the owner as the finding. The finding has the rule `owner`, and the slot gets 3 new tries (decisions 0033 and 0037). The new question goes through steps 3, 4 and 6. The owner then gets a new marking file with only the new questions.
-6. **What stops a mock.** Mock 1: more than 6 bad marks of 60. A later mock: 2 or more bad marks of 20. Then decision 0021 applies: the mock is not released, we correct the rules of the checker, and all 60 questions go through the checks again.
-7. **The open findings of step 6.** The results "cannot decide" of step 6 are in the report of the run (decision 0034). The owner marks first, with no verdict in view. After code accepted the marking file, code shows these results with the questions that each one names. For each result the owner selects `ignore` or `rewrite`. A `rewrite` names one question and has a reason. That question goes to step 5. A `rewrite` does not count as a bad mark, because the owner saw a verdict of a checker before the decision. In a later mock, a result can name a question that the owner did not mark. Then the owner reads that question at this point. Code saves each action in `runs/mock-01/owner-decisions.json` (decision 0037, items 3 and 10).
+4. **What code does with the file.** Code reads it. If a mark is missing, or a bad mark has no reason, code does not accept the file and names the rows. Code saves the marks of each round as one record, for example `runs/mock-01/marks/round-1.json`. Each mark also has the try number of the question. Code also saves the list of the questions of each round, with their fingerprints, in `runs/mock-01/marking-rounds/round-1.json`. A record is never written over (decision 0039). Each mark has the question ID, the mark, the reason, the round, the date and the fingerprint of the question record (decision 0036). Code shows the bad marks for each scenario and each domain.
+5. **After a bad mark.** The slot gets a new start: 3 new tries (decisions 0033 and 0037). The writer gets a request of step 5 with the marked question and the reason of the owner as the finding. The finding has the rule `owner`. The new question goes through steps 3 and 4, and then step 6 runs again for its scenario. The owner then gets a new marking file with only the new questions. In a later mock, a question that a `rewrite` or a bad mark sent back also gets a mark when it is not in the sample. A decision `more_tries` or `new_point` does not add a question to the marks (decision 0039).
+6. **What stops a mock.** Mock 1: more than 6 bad marks of 60. A later mock: 2 or more bad marks of 20. Only the bad marks of round 1 count (decision 0039). Then decision 0021 applies: the mock is not released, we correct the rules of the checker, and all 60 questions go through the checks again.
+7. **The open findings of step 6.** Each finding of step 6, `fail` and `cannot_decide`, is in the report of the run with its ID (decisions 0034 and 0038). The owner marks first, with no verdict in view. Code shows the findings only when the automatic work is done, step 6 checked the current questions, and no question waits for a mark (decision 0039). Code shows them with the questions that each one names. For each result the owner selects `ignore` or `rewrite`. A `rewrite` names the current try of one question of the finding, and has a reason. Otherwise code refuses it. That question goes to step 5. A `rewrite` does not count as a bad mark, because the owner saw a verdict of a checker before the decision. In a later mock, a result can name a question that the owner did not mark. Then the owner reads that question at this point. Code saves each action in `runs/mock-01/owner-decisions.json` (decision 0037, items 3 and 10).
 
 The marking file is in the folder `marking/`, not in `runs/`. `README.md` says that no person writes in `runs/`.
 
 ### The contract of the step (decision 0018)
 
-- It receives the question records of a mock that passed step 6.
-- It returns the marks record.
+- It receives the question records of a mock after step 6 checked the current questions, also when step 6 has findings.
+- It returns the marks record of the round.
 - It can fail when the marking file is not complete. Then code does not accept the file and names the rows.
 
 ## Reason
 
-- **A person marks a sample.** Decision 0015 has the reason (5.5-K2, 5.5-S1). The guide wrote those points for the extraction of data.
+- **A person marks a sample.** Decision 0015 has the reason (5.5-K2, 5.5-S1). The guide wrote those points for the extraction of data. Point 5.5-K2 samples "high-confidence extractions". This design has no confidence number (decision 0032). For mock 1 the owner reads all 60 questions, so that is not a sample. The points apply to the 20 questions of a later mock.
 - **An Excel file.** Plain reason: the owner can read and fill it with no tool. The owner already fills a workbook in this folder.
 - **The point of the slot is in the file.** Plain reason: the owner cannot judge if a question tests its point when the file does not show the point.
 - **A bad mark must have a reason.** Decision 0015 says "with one reason". The reason is the finding for the writer of step 5 (decision 0021). A bad mark with no reason gives the writer nothing to change.
@@ -52,7 +53,7 @@ Not decided yet:
 - The exact columns of the Excel file, and the sequence of the questions in it.
 - What "we correct the rules of the checker" means as a procedure.
 - If the two numbers that stop a mock change after mock 1.
-- If a bad mark of a later round counts for the number that stops a mock.
+- How "all 60 questions go through the checks again" works after a stop (decision 0021). A verdict record is never written over, so the checks again need a new record or a new mock folder.
 
 ## How we decided
 

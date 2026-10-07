@@ -3,6 +3,7 @@
 - Date: 6 October 2026
 - Status: accepted
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
+- Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: `docs/diagrams/06-step-4-check-by-a-model.html`
 
 ## Question
@@ -23,8 +24,10 @@ Option 1.
 ### 1. Call 4a: the blind answer
 
 - Code gives the call the question, the line "Select N." and the options with their letters. Code leaves out the marks and the reasons (decision 0037, item 1).
+- One function of code shows a question to a model or to the owner: the question, the line "Select N." and the options with their letters. Call 4a uses it alone. Call 4b, the calls of step 6 and the marking file of step 7 use it, and add the marks and the reasons. This makes decision 0037, item 1, more exact.
 - The call selects the options that it thinks are correct, and gives its reason. It can also answer "cannot decide".
-- Code counts the selected letters before it compares them. A count that is not the number of the line is an error of the call. It is not a finding about the question. Code runs the call again (decision 0037, items 9 and 10).
+- Code counts the selected letters before it compares them. The count applies only to an answer with the status `answered`. An answer `cannot_decide` has no letters, and it is not an error. A count that is not the number of the line is an error of the call. It is not a finding about the question. Code runs the call again (decision 0037, items 9 and 10).
+- A letter that the question does not have makes the answer not valid. Example: the letter E for a question with 4 options. Code runs the call again.
 - Code compares the selected letters with the marks of the writer. If they are different, rule B1 fails. The finding has the answer and the reason of the call.
 
 ### 2. Call 4b: the rule check
@@ -139,19 +142,19 @@ Each call answers in a fixed form, as in step 2 (decision 0029). These are draft
 
 ### 8. The test before the first full run
 
-This adds one part to decision 0024: call 4a must answer the 12 sample questions of the guide. Their correct answers are known. Call 4b is not tested with the sample questions, because they have no reason for each option. It is tested with the questions of the writer that the owner marks, and with damaged copies of them (decision 0037, item 12).
+Decision 0024 has this part: call 4a must answer the 12 sample questions of the guide. Their correct answers are known. Call 4b is not tested with the sample questions, because they have no reason for each option. It is tested with the questions of the writer that the owner marks, and with damaged copies of them (decision 0037, item 12).
 
 ### The contract of the step (decision 0018)
 
 - It receives one question record that passed step 3, its slot, and the records file.
 - It returns one verdict record.
-- It can fail when a call fails or when an answer is not a complete form. Then code runs the same call again, at most 3 times. After that, the call goes into the list `errors` of the report, and the question stays unchecked (decision 0037, item 10). It never returns `pass` for a question that it did not check.
+- It can fail when a call fails or when an answer is not a complete form. Then code runs the same call again, at most 3 times. After that, code saves an error record, and the question stays unchecked. The owner starts the program again, and the new start runs the call again (decision 0039, item 9). It never returns `pass` for a question that it did not check.
 
 ## Reason
 
 - **An independent call.** Decision 0012 has the reason. The guide wrote these points for the review of code: "Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session" (4.6-K1). "Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking" (4.6-K2). A limit: only call 4a is blind. Call 4b is not completely "without prior reasoning context", because it gets the reason of each option from the writer.
 - **The blind answer.** No exam guide point gives this reason. The reason is plain. A wrong answer key is the worst defect of a mock. A checker that sees the marks can tend to agree with them. This is an assumption of the assistant. It is not checked. A checker that does not see them must find the answer alone.
-- **Code controls the sequence and compares.** The guide says that prompt instructions alone have a non-zero failure rate (1.4-K2, in decision 0009). An instruction "answer first, then look at the key" in one call is such an instruction. Two calls with code between them enforce it.
+- **Code controls the sequence and compares.** The guide says that prompt instructions alone have a non-zero failure rate (1.4-K2, in decision 0009). The guide wrote that point for the order of the steps in the workflow of an agent. Here the order is: answer first, then see the key. An instruction "answer first, then look at the key" in one call is such an instruction. Two calls with code between them enforce it.
 - **The cost of an error of call 4a.** If the question is good and call 4a is wrong, the question is written again. That is a false alarm, and it is cheap. If the question is bad and call 4a makes the same error as the writer, the question passes this part. So call 4b and the marks of the owner in step 7 come after it.
 - **One result for each rule.** The guide wrote this point for the review of code, and it is about exact criteria in a prompt (4.1-K1, in decision 0030). It does not say "one result for each criterion". That part has a plain reason: one total verdict from the model hides which rule failed.
 - **The count of the letters.** Plain reason: a finding must say something about the question. A wrong count says something only about the checker (decision 0037, item 9).
@@ -167,6 +170,8 @@ Not decided yet:
 
 - The exact text of the two requests.
 - The model of each call, and if it is the same model as the writer.
+- A finding of call 4b has one `letter`. A question with 2 correct answers can need two.
+- The test of call 4a covers questions with one answer only, because all 12 sample questions have one answer.
 - If a confidence number is added after the owner marked mock 1.
 
 ## How we decided

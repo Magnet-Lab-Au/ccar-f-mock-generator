@@ -3,6 +3,7 @@
 - Date: 6 October 2026
 - Status: accepted
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
+- Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: `docs/diagrams/10-step-8-build-the-files.html`
 
 ## Question
@@ -18,7 +19,7 @@ Decision 0016 says that code builds the mock file and the answer key from the st
 
 Option 1.
 
-1. **When the step starts.** The current try of each of the 60 slots passed steps 3, 4 and 6, and each question that the owner marked has the mark good.
+1. **When the step starts.** The owner gives the command `accept`. Then code checks the conditions of part 7. Step 8 starts only when each one is true (decisions 0038, part 5, and 0039, item 10).
 2. **Two files for each mock**, in a new folder `mocks/`:
 
 | File | Content |
@@ -30,15 +31,23 @@ Option 1.
 4. **The answers file.** It has the mock number, and one entry for each question: the number, the question ID, the correct letters, and for each option its letter, its mark and its reason.
 5. **The sequence.** The questions are in groups by scenario. Each group starts with the story of its scenario. The plan of step 1 sets the sequence: the slot number is the question number (decisions 0027 and 0037, item 14).
 6. **The line "Select N."** Each of the 60 questions has the field `select`, with the value 1 or 2. The portal shows it as the line "Select 1." or "Select 2." (decisions 0030 and 0037, item 1).
-7. **The checks before the build.** Code checks that each slot has a question, that each question has its verdict records and the mark of the owner if the owner read it, and that no record changed after its check.
-8. **The fingerprint.** Each check saves a fingerprint of the question record that it checked. A fingerprint is a code of 64 characters that code calculates from the text of the record. The method is SHA-256. Code calculates it from the question ID, the question, `select`, and each option with its letter, its mark and its reason. The date and the model are not in it, because they do not change what a participant sees. A record of step 6 has one fingerprint for each of its 15 questions. The marks record has one for each mark (decision 0037, item 13). Step 8 calculates the fingerprint of each record again and compares. A different fingerprint stops the build. Then the record must pass the checks again. This closes the open item of decision 0016. It adds one field, `fingerprint`, to the verdict records of steps 3, 4 and 6 and to the marks record (decisions 0031, 0032, 0034 and 0035).
+7. **The checks before the build.** Code checks six conditions (decision 0039, item 10):
+    1. Each of the 60 questions passed steps 3 and 4, and no question changed after its checks (the fingerprint).
+    2. Step 6 checked the current questions of each scenario.
+    3. Each finding of step 6 has a decision of the owner.
+    4. Each question that needs a mark has a mark. A bad mark sends the slot back, so the mark of each current question is `good`.
+    5. The bad marks are below the stop limit.
+    6. No call failed in the last run.
+
+    If a condition is false, code builds no file and lists the causes. Code saves the decision `accept` and the record `build.json` only after the build. `build.json` has the files and the fingerprints of the 60 questions.
+8. **The fingerprint.** Each check saves a fingerprint of the question record that it checked. A fingerprint is a code of 64 characters that code calculates from the text of the record. The method is SHA-256. Code calculates it from the question ID, the question, `select`, and each option with its letter, its mark and its reason. The date and the model are not in it, because they do not change what a participant sees. Code writes these fields as JSON with sorted keys, in UTF-8, and calculates SHA-256 of that text (decision 0039). A record of step 6 has one fingerprint for each of its 15 questions. The marks record has one for each mark (decision 0037, item 13). Step 8 calculates the fingerprint of each record again and compares. A different fingerprint stops the build. Then the record must pass the checks again. This closes the open item of decision 0016. It adds the field `fingerprint` to the verdict records of steps 3 and 4 and to each mark, and the field `fingerprints`, one for each question, to the record of step 6 (decisions 0031, 0032, 0034 and 0035).
 9. **The portal.** The two files have our own format. A converter for the portal comes later, when the format of the portal is known.
 
 ### The contract of the step (decision 0018)
 
 - It receives the question records, the verdict records and the marks record of one mock.
 - It returns the two files.
-- It can fail when a slot is open, a verdict is missing, or a record changed after its check. Then code builds no file and names the cause.
+- It can fail when one of the six conditions of part 7 is false. Then code builds no file and lists the causes.
 
 ## Reason
 

@@ -3,6 +3,7 @@
 - Date: 6 October 2026
 - Status: accepted
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
+- Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: none. The diagrams of steps 3 and 4 will show the rules.
 
 ## Question
@@ -32,7 +33,7 @@ Option 1. The list had 13 rules. Decision 0037 added rules A8 to A11, so the lis
 | A8 | The text of the question ends with a question mark. |
 | A9 | The text of the question has 2 to 5 sentences. |
 | A10 | Each option is one sentence. |
-| A11 | The question is not a negative question: no "NOT" and no "EXCEPT". |
+| A11 | The question is not a negative question. The question text does not have "NOT" or "EXCEPT" in capital letters. The last sentence of the question text does not have "not" or "except" in small letters. The options do not count (decision 0038, part 8). |
 
 Each of the 60 questions has the line that says how many answers to select: "Select 1." or "Select 2." The line is the field `select` of the question record. It is not a part of the question text. Code copies it from the slot. So no rule is necessary for that line, and rule A6 does not count it (decision 0037, item 1).
 
@@ -79,12 +80,13 @@ The writer gets one more instruction: the options of a question have the same fo
 - **B1 and B2.** Decision 0012 names them as examples of rules that need judgment.
 - **B3.** Decision 0007: a participant learns most from the explanation. In this build the explanation is the reasons of the options (decision 0029).
 - **B4 and B5.** Each slot names one point and one scenario (decision 0027). A question that does not test its point, or that is outside its story, does not fill its slot.
-- **B6.** Ruling 1 of the owner (decisions 0005 and 0007). The plain reason that code decides "named": a false fail costs one new try, and a false pass puts a bad question into a mock. The guide says, for the workflow of an agent, that prompt instructions alone have a non-zero failure rate (1.4-K2, in decision 0009). Code does not know if two names are related. It only reports that a name is not in the guide. The writer of step 5 finds the word of the guide.
+- **B6.** Ruling 1 of the owner (decisions 0005 and 0007). The plain reason that code decides "named": a false fail costs one new try, and a false pass puts a bad question into a mock. The guide says, for the workflow of an agent, that prompt instructions alone have a non-zero failure rate (1.4-K2, in decision 0009). The guide wrote that point for the order of the steps of a workflow, for example identity verification before financial operations. Here it supports a text search by code. A limit: call 4b lists the names by prompt, so a name that call 4b does not list passes. Code does not know if two names are related. It only reports that a name is not in the guide. The writer of step 5 finds the word of the guide.
 
 Not decided yet:
 
 - If rules A8 to A11 change after the test of decision 0024.
 - How often the exact search of rule B6 gives a false fail.
+- Rule B6: a part of a word against a complete word, a plural, the characters `--`, and the 5 texts of the records file with a backslash. Also if a name on the list "out of scope" of Section 17 counts as named. The search covers the complete records file, so now it counts as named.
 
 ## How we decided
 

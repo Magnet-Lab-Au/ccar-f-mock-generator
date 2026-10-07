@@ -45,8 +45,7 @@ class Refused(Exception):
 def fingerprint(question):
     """SHA-256 of what a participant sees (decision 0036).
 
-    The sequence and the encoding of the fields are not decided. This form is
-    a first suggestion: sorted JSON keys, UTF-8.
+    The fields are written as JSON with sorted keys, in UTF-8 (decision 0039).
     """
     data = {
         "question_id": question["question_id"],

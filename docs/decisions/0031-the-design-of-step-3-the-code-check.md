@@ -3,11 +3,12 @@
 - Date: 6 October 2026
 - Status: accepted
 - Changed: 6 October 2026, with the answers of decision 0037 and the corrections of the review. No independent reviewer checked the changed text.
+- Changed: 7 October 2026, to describe the control of decisions 0038 and 0039, and with the corrections of the second review.
 - Diagram: `docs/diagrams/05-step-3-check-by-code.html`
 
 ## Question
 
-Decision 0011 says that code checks each question against the rules that have an exact answer. Decision 0030 gives those rules: A1 to A7. What does step 3 receive and return, and what are the numbers of rules A6 and A7?
+Decision 0011 says that code checks each question against the rules that have an exact answer. Decision 0030 gives those rules: A1 to A11. Decision 0037 added A8 to A11. What does step 3 receive and return, and what are the numbers of rules A6 and A7?
 
 ## Options
 
@@ -45,10 +46,10 @@ Option 1.
 | A7, the average number of words of the correct options against the average number of words of the wrong options | At most 1.21 times | At most 1.3 times |
 | A8, the end of the question text | Each of the 12 ends with a question mark | The text ends with a question mark |
 | A9, the sentences of the question text | 2 to 5 sentences | 2 to 5 sentences |
-| A10, the sentences of an option | Each of the 48 options is one sentence | Each option is one sentence |
-| A11, a negative question | No sample question has the word "not" or "except" | The text does not have "NOT" or "EXCEPT" in capital letters. The last sentence does not have the word "not" or "except" |
+| A10, the sentences of an option | No option of the 48 has a sentence end inside it. 12 options (sample questions 4, 6 and 10) have no end mark. The 4 options of sample question 4 are phrases, not sentences. | Each option is one sentence: no sentence end inside it |
+| A11, a negative question | No question text of the 12 has the word "not" or "except", in capital or small letters. Option C of sample question 7 has "not". | The question text does not have "NOT" or "EXCEPT" in capital letters. The last sentence of the question text does not have "not" or "except" in small letters. The options do not count (decision 0038, part 8). |
 
-The method for sentences is simple: a sentence ends with ".", "?" or "!" and a space comes after it. It can count wrong when a text has an abbreviation with a dot.
+The method for sentences is simple: a sentence ends with ".", "?" or "!" and a space comes after it. It can count wrong when a text has an abbreviation with a dot. It also does not divide a sentence that ends with a dot and then a quote mark. Example: sample question 7 has 4 sentences, and the method counts 3. This is important for "the last sentence" of rule A11.
 
 Rule A6 counts the question text only. It does not count the line "Select N." (decision 0037, item 1).
 
@@ -64,7 +65,7 @@ The reason for a code check is in decision 0011. This decision uses no new exam 
 - **A new file for the verdict.** Plain reason: no file is written over, so the record of each check stays (the same reason as for one file for each try, decision 0029).
 - **The findings name the rule and the detail.** Decision 0013: the writer of step 5 gets the exact findings. A finding with no detail does not tell the writer what to change.
 - **An error is not a pass.** Decision 0011 uses the guide for this (5.3-K4): an empty result must not pass as a success. The guide wrote that point for errors between the agents of a multi-agent system.
-- **The numbers.** Each limit is the range of the 12 sample questions of the guide, with a small margin. The sample questions show the form of the exam (Section 9). A script measured them, and all 12 pass the limits: `docs/decisions/0031-check-sample-lengths.py`. The size of the margin is a choice of the assistant. It has no source. Rules A8 to A11 have no margin: a second script measured the four properties, and each one is true for all 12 sample questions (`docs/decisions/0037-check-sample-properties.py`).
+- **The numbers.** Each limit is the range of the 12 sample questions of the guide, with a small margin. The sample questions show the form of the exam (Section 9). A script measured them, and all 12 pass the limits: `docs/decisions/0031-check-sample-lengths.py`. The size of the margin is a choice of the assistant. It has no source. Rules A8 to A10 have no margin: a second script measured the properties, and each one is true for all 12 sample questions (`docs/decisions/0037-check-sample-properties.py`). The limit of rule A11 is weaker than the property that the script measured. The script found no "not" or "except" in the complete question text. The rule permits "not" in small letters outside the last sentence (decision 0038, part 8).
 
 Not decided yet:
 
