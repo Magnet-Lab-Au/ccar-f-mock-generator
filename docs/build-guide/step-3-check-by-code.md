@@ -14,7 +14,7 @@ Before a model looks at a question, code checks the 11 rules that have one exact
 - The question ends with a question mark and has 2 to 5 sentences. Each option is one sentence.
 - The question is not a negative question.
 
-Each limit comes from the 12 sample questions of the guide, with a small margin. A script measured them. The check is cheap and fast, so a question with a simple defect does not use a model call.
+A script measured the 12 sample questions of the guide. The length limits (A6 and A7) are their range with a small margin. Rules A8 to A10 are true for all 12 with no margin. The limit of A11 is weaker than what the script measured: it permits "not" outside the last sentence. The check is cheap and fast, so a question with a simple defect does not use a model call.
 
 Each finding names the rule and the detail, so the writer of step 5 knows what to change. If code cannot read a question, it reports an error. It never says "pass" for a question that it did not read.
 

@@ -41,7 +41,7 @@ D = {
  'rules': dict(title='The rules for a good question', who='Fixed text', cls='io',
    sent=['One list of exact rules for a good question. It is the same for each call.',
          'The writer and the checkers use the same list: 18 rules, A1 to A11 for code and B1 to B7 for a model.',
-         'Two instructions have no rule of their own: the options of a question have the same form, and each actor has one name. Rule B7 checks the second one.'],
+         'One instruction has no rule of its own: the options of a question have the same form. The instruction "one name for one actor" has a rule: B7.'],
    points=[point('4.1-K1')],
    why='The guide wrote this point for the review of code. Here it applies to a question: an exact rule gives the same result each time. A vague rule does not.'),
  'examples': dict(title='3 sample questions', who='From the records file', cls='io',
@@ -68,7 +68,7 @@ D = {
    example=js_(slot), examplehead='Example: slot 17 of mock 1'),
  'form': dict(title='The form that the model must fill', who='Fixed text', cls='io',
    sent=['The blanks of the answer, as a JSON schema. The request carries it as structured outputs, in the field output_config.format. The API makes the answer agree with the schema.',
-         'A deviation from the exam guide. The guide teaches a forced tool call for this (4.3-S3, below). The current Claude models reject a forced tool call. The page "Define tools" of the Anthropic documentation, section "Controlling Claude\'s output", subsection "Forcing tool use", says for Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1: "any and tool return a 400 error", and to use "structured outputs when you need a response in a fixed JSON shape". So this build uses structured outputs. A copy of the page, read on 7 October 2026, is in docs/sources/.',
+         'A deviation from the exam guide. The guide teaches a forced tool call for this (4.3-S3, below). The newest Claude models reject a forced tool call. The page "Define tools" of the Anthropic documentation, section "Controlling Claude\'s output", subsection "Forcing tool use", says for Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1: "any and tool return a 400 error". As the replacement it names "auto with strict tool use", or "structured outputs when you need a response in a fixed JSON shape". An older model, Claude Opus 5, still accepts a forced tool call, but this build keeps the choice of the model free. So this build uses structured outputs. A copy of the page, read on 7 October 2026, is in docs/sources/.',
          'A form stops format errors. It does not stop content errors, for example 3 options in place of 4. Step 3 checks those.'],
    example=SCHEMA, examplehead='The form (the draft schema, used in the test of 7 October 2026)',
    points=[point('4.3-K1'), point('4.3-S3'), point('4.3-K3')],
@@ -92,7 +92,7 @@ D = {
  'letters': dict(title='Code gives the letters', who='Code', cls='code',
    sent=['Code mixes the options and gives them the letters. The seed of the plan controls the sequence, so the same answer always gets the same letters.',
          'The model does not select the letters.'],
-   why='In the 12 sample questions of the exam guide, the correct answer is A 10 times. A model that sees those examples copies that. Then a participant can guess the answer.'),
+   why='In the 12 sample questions of the exam guide, the correct answer is A 10 times. A model that sees those examples can copy that, and then a participant can guess the answer. This is an assumption. It is not checked.'),
  'ids': dict(title='Code adds the IDs', who='Code', cls='code',
    sent=['Code adds the ID of the question, the slot, the number of the try, the model and the date.',
          'M1-S17-T1 is mock 1, slot 17, try 1.'],
@@ -131,7 +131,7 @@ boxes.append(box('written', 662, 209, 306, 100, 'A question', 'The question, and
 boxes.append(box('cannot', 662, 329, 306, 100, '"Cannot write"', 'With a reason. The slot is open, and the owner decides.', 'Possible', 'open'))
 for yc in (259, 379):
     paths.append('<path class="flow" d="M612,%d C636,%d 636,%d 658,%d" marker-end="url(#a)"/>' % (MID, MID, yc, yc))
-boxes.append(box('letters', 20, 624, 280, 118, 'Gives the letters', 'Mixes the options and gives them A to D. The model does not select the letters.', 'Code', 'code'))
+boxes.append(box('letters', 20, 624, 280, 118, 'Gives the letters', 'Mixes the options and gives them A to D, or A to E. The model does not select the letters.', 'Code', 'code'))
 boxes.append(box('ids', 360, 624, 280, 118, 'Adds the IDs', 'Example: M1-S17-T1 is mock 1, slot 17, try 1.', 'Code', 'code'))
 boxes.append(box('save', 700, 624, 280, 118, 'Saves one file', 'One file for each try. Then step 3 checks the question.', 'Code', 'code'))
 paths.append('<path class="flow" d="M300,683 H356" marker-end="url(#a)"/>')

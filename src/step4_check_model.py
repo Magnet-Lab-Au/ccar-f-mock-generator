@@ -26,7 +26,7 @@ B7. Each actor has one name in the question, the options and the reasons. A read
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
-SYSTEM_4B = ("You check one exam question against six rules. Use only the text of the exam guide below as the source of facts. "
+SYSTEM_4B = ("You check one exam question against seven rules. Use only the text of the exam guide below as the source of facts. "
              "Give one result for each rule: pass, fail or cannot_decide. A result that is not pass has a finding. " + DESC_4B)
 
 

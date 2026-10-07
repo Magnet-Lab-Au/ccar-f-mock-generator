@@ -21,7 +21,7 @@ def plain(text):
     return re.sub(r"\\(.)", r"\1", text)
 
 
-# Decision 0030: the 17 rules. The writer gets all of them. The text of each
+# Decisions 0030 and 0043: the 18 rules. The writer gets all of them. The text of each
 # rule is the text of decision 0030, with rule A11 of decision 0038, part 8.
 RULES = """Rules for a good question. Code checks group A. A second model checks group B.
 

@@ -45,7 +45,7 @@ D = {
    example=cf('C2', 'Domain 4 has 11 questions. The plan says 12.'), examplehead=EF,
    why='The plan gives the mock the form of the exam. After many new tries, code makes sure that the mock still agrees with its plan.'),
  'C3': dict(title='Rule C3: no two questions have the same text', who='Code', cls='code',
-   sent=['No two questions of the mock have the same text.'],
+   sent=['No two questions of the scenario have the same text.', 'Known limit: code compares the questions of one scenario, not of the complete mock.'],
    example=cf('C3', 'Questions M1-S07-T1 and M1-S52-T2 have the same text.'), examplehead=EF,
    why='Code finds an exact copy for no cost. A copy with different words is the work of the model call. A failure of C3 is a finding for the owner, as for the rules of the calls.'),
  'q15': dict(title='The 15 questions of one scenario', who='From steps 2 to 5', cls='io',

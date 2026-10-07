@@ -262,6 +262,11 @@ class TestModelCheck(unittest.TestCase):
         for part in ("B1.", "B6.", "B7.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
             self.assertIn(part, text)
 
+    def test_the_prompt_names_the_right_number_of_rules(self):
+        import step4_check_model as s4
+        words = {6: "six", 7: "seven", 8: "eight"}
+        self.assertIn("against %s rules" % words[len(s4.RULES_B)], s4.SYSTEM_4B)
+
     def test_the_rule_check_gets_the_complete_guide_text(self):
         text = guide_text(RECORDS, SLOT["scenario"])
         self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", text, re.M)), 240)

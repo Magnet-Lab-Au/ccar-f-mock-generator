@@ -17,13 +17,13 @@ Step 6 sends no question back. Each finding gets an ID and waits for the owner. 
 
 ## The test run
 
-The test put two questions with the same scene into a set of 15 questions of one scenario. Call 6a found them: yes. Step 6 also found real problems of the writer: one more pair of questions with the same scene, pairs of questions that give away an answer, and one wrong idea in three questions.
+The test put two questions with the same scene into a set of 15 questions of one scenario. Call 6a found them. Step 6 also found real problems of the writer: one more pair of questions with the same scene, and pairs of questions that give away an answer.
 
 ## A deviation from the exam guide
 
 The exam guide teaches a forced tool call to get an answer in a fixed form (points 4.3-K1 and 4.3-S3 in the table below). This build does not use a forced tool call.
 
-The reason: the current Claude models reject it. The page "Define tools" of the Anthropic documentation (https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools), section "Controlling Claude's output", subsection "Forcing tool use", has a table. Its row for "Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and Claude Mythos 5.1" says that `any` and `tool` "return a 400 error". It says to use "structured outputs when you need a response in a fixed JSON shape".
+The reason: the newest Claude models reject it. The page "Define tools" of the Anthropic documentation (https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools), section "Controlling Claude's output", subsection "Forcing tool use", has a table. Its row for "Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and Claude Mythos 5.1" says that `any` and `tool` "return a 400 error". As the replacement it names "`auto` with strict tool use", or "structured outputs when you need a response in a fixed JSON shape". An older model, Claude Opus 5, still accepts a forced tool call, but this build keeps the choice of the model free for the test that selects it.
 
 So each model call of this build sends its form as structured outputs: the request carries the JSON schema in `output_config.format`. The page "Structured outputs" (https://platform.claude.com/docs/en/build-with-claude/structured-outputs), section "Why use structured outputs", says: "Structured outputs guarantee schema-compliant responses through constrained decoding".
 

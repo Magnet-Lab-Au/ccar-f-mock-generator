@@ -28,7 +28,7 @@ a_example = {'number': 17, 'question_id': 'M1-S17-T2', 'correct': ['B'],
 D = {
  'rec': dict(title='The question records', who='From steps 2 to 7', cls='io',
    sent=['The stored question records are the one true copy of the questions. Each record has the question, the options, the marks and the reasons.',
-         'Each record also has the results of its checks: step 3, step 4 and step 6, and the mark of the owner if the owner read the question.'],
+         'The results of its checks are separate records: the verdicts of step 3, step 4 and step 6, and the mark of the owner if the owner read the question.'],
    why='If a question is in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw. So the files are built from the records, and nobody edits a file by hand.'),
  'gate': dict(title='Six conditions before the build', who='Code', cls='code',
    sent=['The build starts only after the command "accept" of the owner. Then code checks six conditions:',
