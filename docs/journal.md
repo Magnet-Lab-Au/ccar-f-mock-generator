@@ -10,9 +10,12 @@ One entry for each work session. Newest entry first.
 - The assistant found a fault: rule B6 never found the flag "-p", which the guide names. The owner agreed to decision 0061: a flag is searched with its hyphens. The owner gave M3-S01 the new point 4.4-S4 and 3 more tries to M3-S07, M3-S48 and M3-S53. The command for an open slot could only select a new point at random. The assistant extended it to take the point of the owner, with the checks of decision 0045, and added a test.
 - All 60 slots of mock 3 passed. Mock 3 cost $23.15. 219 tests pass.
 
+- An independent agent compared mock 3 with mocks 1 and 2. 49 of 60 questions look like an earlier question: 2 copies (M3-S34 with M2-S13, M3-S49 with M1-S34) and 47 close repeats. About 26 have the same problem and the same answer in another setting, which rule B9 should fail. The owner decided (decision 0062): rewrite the 2 copies, the close repeats are known limits of mock 3, and B9 becomes stricter before mock 4.
+
 **Open**
 
-- An independent agent compares mock 3 with mocks 1 and 2, before the owner marks `marking/M3-round1.xlsx` (20 questions).
+- The owner marks `marking/M3-round1.xlsx` (20 questions). Then the rewrites of M3-S34 and M3-S49, and round 2.
+- The design of the stricter rule B9, before mock 4.
 - The owner confirms the texts of decisions 0056 to 0061.
 - Mocks 4 and 5 wait for the owner.
 
