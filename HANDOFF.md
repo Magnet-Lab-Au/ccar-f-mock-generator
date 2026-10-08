@@ -57,7 +57,7 @@ Read these only when you need them:
 
 State on 7 October 2026, second session. The table of steps and the next steps below have the state of 8 October 2026.
 
-- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. The owner also confirmed 0040 to 0051 (each file has the line "Text confirmed by the owner"). Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
+- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. The owner also confirmed 0040 to 0050 (each file has the line "Text confirmed by the owner"). Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
 - Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
 - Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
 - Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.

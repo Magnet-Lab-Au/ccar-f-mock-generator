@@ -2,7 +2,6 @@
 
 - Date: 8 October 2026
 - Status: accepted
-- Text confirmed by the owner: 8 October 2026
 - Diagram: none
 
 ## Question
@@ -35,7 +34,7 @@ The harm in mock 1 was a repeat: M1-S53 and M1-S54 had the same scene (decision 
 
 The assistant checked the tables of all 11 sets and each limit. It suggested no new rule. The owner said yes.
 
-No independent reviewer checked this file.
+The owner has not confirmed the text of this file. No independent reviewer checked this file.
 
 ## Exam guide points
 
