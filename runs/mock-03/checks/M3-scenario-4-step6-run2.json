@@ -1,0 +1,70 @@
+{
+  "mock": 3,
+  "scenario": 4,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S33-T1",
+            "M3-S31-T2"
+          ],
+          "detail": "The stem of M3-S33-T1 shows an engineer continuing a named session with --resume billing-legacy-map, and the earlier conversation's analysis is still there. This tells the reader that running --resume <session-name> continues a prior named conversation. That is exactly the correct answer D of M3-S31-T2: she started a new session instead of running --resume ledger-legacy-map."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M3-SC4-R2-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S33-T1",
+        "M3-S31-T2"
+      ],
+      "detail": "The stem of M3-S33-T1 shows an engineer continuing a named session with --resume billing-legacy-map, and the earlier conversation's analysis is still there. This tells the reader that running --resume <session-name> continues a prior named conversation. That is exactly the correct answer D of M3-S31-T2: she started a new session instead of running --resume ledger-legacy-map."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M3-S31-T2": "3749b631488b42d10f724cc3b680fe4a1dd08d6deee7964cc88707f232cedda2",
+    "M3-S32-T1": "8f80eb8aae1a20a2e7370490caf3dd5895115b221a739e4e33ce5a78774a76a7",
+    "M3-S33-T1": "f611a20299a3f9be2fc5572ff767e01ab764596ab96865e5652badb30c45b160",
+    "M3-S34-T2": "dd82d1a58734f009b67ecff6684eca584922a6ed53d196ef735a1e6ddce43011",
+    "M3-S35-T1": "b08438f935a1e9061931c37bfb9cafb854340a6ebe1c4d1e44ac20fc044e5bad",
+    "M3-S36-T1": "a2339263fb868536fa4b348f6628be6375c7061686c209f95952c63f337e639e",
+    "M3-S37-T1": "95e6cf880861b718b0bea7a755d3ed686109f1aa363c4f87f825f6b222a92208",
+    "M3-S38-T2": "a8bef6052012bdff0a697f361f8143f36d2392ea15fa087ff87c7859c7e38ac0",
+    "M3-S39-T2": "d0f2076fb94b7c345759c2e7d8c64ab101eb0d29d790b0be968e2328873ae652",
+    "M3-S40-T2": "40f642e5d7a42fff4464a3e5302b6c5b6980e91b3768d83e1428521a5ed8f1c3",
+    "M3-S41-T3": "9bff50ee67821f8620643cd5d4ae99c57b999524962225019c27adad085af39d",
+    "M3-S42-T1": "105f232448271cd6aded9c90df8d1ca11e1cdf7a886c4303fcb4ac7a875ffca7",
+    "M3-S43-T2": "e845904f8d34658b3fcd1c945cc9a09ccbd7f75d8037577f8148c6520100ba32",
+    "M3-S44-T2": "ab69cb86132d95b4bf2f2f7b6a95dbbcd535ed6d29efcdfcb2be40b4ea88716c",
+    "M3-S45-T2": "881f11cd9a682474acb54b787c7dbbbf365c6c9fe61c6708f35f5a33eae3ea29"
+  },
+  "date": "2026-10-09"
+}

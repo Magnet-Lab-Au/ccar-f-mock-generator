@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S49-T2",
+  "slot_id": "M3-S49",
+  "try": 2,
+  "point": "3.4-S4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S49-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team is writing a short workflow guide for using Claude Code. The next large task is restructuring the order-processing module into separate microservices, and later tasks include many small bug fixes. The guide must prevent costly rework on large tasks without slowing down implementation. Which two rules should the guide include?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "When the plan for such a task is approved, switch to direct execution and implement the planned approach across the affected services.",
+      "correct": true,
+      "reason": "The guide recommends combining plan mode for investigation with direct execution for implementation, executing the planned approach once it is settled."
+    },
+    {
+      "letter": "B",
+      "text": "Decide the mode by file count alone, using plan mode only above 45 files and direct execution for every smaller task.",
+      "correct": false,
+      "reason": "Plan mode is for architectural decisions, multiple valid approaches and large multi-file changes, so file count alone is not the guide's criterion."
+    },
+    {
+      "letter": "C",
+      "text": "Use plan mode for every task, including single-file bug fixes with a clear stack trace, so that each change is designed first.",
+      "correct": false,
+      "reason": "The guide says direct execution is appropriate for well-understood changes with clear scope, such as a single-file bug fix with a clear stack trace."
+    },
+    {
+      "letter": "D",
+      "text": "Choose one mode at the start of each task and keep it until the task ends, so that a session never mixes the two modes.",
+      "correct": false,
+      "reason": "The guide recommends combining the modes on one task: plan mode for the investigation, then direct execution for the implementation."
+    },
+    {
+      "letter": "E",
+      "text": "For tasks with architectural implications, such as the microservice restructuring, begin in plan mode to explore the codebase and design the approach before any changes.",
+      "correct": true,
+      "reason": "Plan mode suits tasks with architectural implications such as microservice restructuring, and it enables safe exploration and design before changes, which prevents costly rework."
+    }
+  ]
+}
