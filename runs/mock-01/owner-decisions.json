@@ -229,5 +229,124 @@
     "target": "M1-SC5-R1-F4",
     "reason": "Covered by the rewrite of S49 (decision 0045).",
     "date": "2026-10-08"
+  },
+  {
+    "id": "D028",
+    "action": "ignore",
+    "target": "M1-SC1-R2-F1",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D029",
+    "action": "ignore",
+    "target": "M1-SC1-R2-F2",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D030",
+    "action": "ignore",
+    "target": "M1-SC1-R2-F3",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D031",
+    "action": "ignore",
+    "target": "M1-SC1-R2-F4",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D032",
+    "action": "ignore",
+    "target": "M1-SC1-R2-F5",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D033",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F1",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D034",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F2",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D035",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F3",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D036",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F4",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D037",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F5",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D038",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F6",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D039",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F7",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D040",
+    "action": "ignore",
+    "target": "M1-SC2-R2-F8",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D041",
+    "action": "ignore",
+    "target": "M1-SC5-R2-F1",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D042",
+    "action": "ignore",
+    "target": "M1-SC5-R2-F2",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D043",
+    "action": "ignore",
+    "target": "M1-SC5-R2-F3",
+    "reason": "Decision of the owner: all 16 findings of the second run of step 6 are ignore. No more rewrites for mock 1 (decision 0046).",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D044",
+    "action": "accept",
+    "target": "M1",
+    "reason": "The owner accepts mock 1 with the known limits of decision 0046.",
+    "date": "2026-10-08"
   }
 ]

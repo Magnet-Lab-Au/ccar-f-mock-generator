@@ -1,0 +1,1793 @@
+{
+  "mock": 1,
+  "answers": [
+    {
+      "number": 1,
+      "question_id": "M1-S01-T1",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide describes Glob as a tool for matching file paths by name or extension patterns. Glob does not change file contents."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide describes Grep as a tool for searching file contents for patterns. Grep does not modify files."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide names Edit as the tool for targeted modifications that use unique text matching, and the URL string is unique in the file."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide gives Read plus Write as the fallback for when Edit fails on non-unique text matches. Here the text is unique, so Edit is the right tool for this targeted change."
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "question_id": "M1-S02-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide says that the coordinator must pass context explicitly in the subagent's prompt. Here the coordinator already passes the findings, so the synthesis agent does not need to search again."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says the opposite: giving an agent too many tools, such as 18 instead of 4-5, degrades tool selection reliability."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "With \"auto\", the model decides whether to call a tool. The guide says that \"any\" is the setting that guarantees a tool call, so \"auto\" does not explain the extra searches."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide says that agents with tools outside their specialization tend to misuse them, and it uses a synthesis agent that attempts web searches as its example."
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "question_id": "M1-S03-T1",
+      "correct": [
+        "A",
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide says reports should preserve original source characterizations and methodological context, which shows how strong each claim is."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says conflicting statistics from credible sources should be annotated with source attribution rather than settled by selecting one value."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide recommends report sections that explicitly distinguish well-established findings from contested ones, so readers can see where sources disagree."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide says the report should preserve methodological context, so removing it hides why some findings are weaker than others."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "A uniform confident tone hides the difference between established and contested findings and drops the original source characterizations that the guide says to preserve."
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "question_id": "M1-S04-T1",
+      "correct": [
+        "A",
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "In an iterative refinement loop, the coordinator evaluates the synthesis output for gaps before it accepts the output as final."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide describes re-delegating targeted queries to the search and analysis subagents and re-invoking synthesis until coverage is sufficient."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This bypasses the hub-and-spoke design, and the guide routes all subagent communication through the coordinator for observability and controlled information flow."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This adds content without new research findings or sources, while the guide closes gaps by re-delegating targeted queries to the search and analysis subagents."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "The guide calls for targeted queries on the identified gaps, and repeating the same query with the same decomposition is likely to reproduce the same gaps."
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "question_id": "M1-S05-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide names arbitrary iteration caps as the primary stopping mechanism as an anti-pattern, and the cap still gives Claude no access to the findings."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide says that tool results are added to the conversation context between iterations so that the model can incorporate new information and reason about its next action."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide names parsing natural language signals to decide loop termination as an anti-pattern, and this change still gives Claude no access to the search output."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide contrasts model-driven decisions with pre-configured tool sequences, and this change leaves the root cause in place because the search output still never reaches Claude's context."
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "question_id": "M1-S06-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide says Glob matches file paths by name or extension patterns, so it cannot find which files contain the error message text."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says to build understanding incrementally, starting with Grep to find entry points, rather than reading all files upfront."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide says Edit is for targeted modifications using unique text matching, while Grep is the tool for searching file contents."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide says to select Grep for searching code content across a codebase, for example locating error messages and finding all callers of a function."
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "question_id": "M1-S07-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide recommends splitting generic tools into purpose-specific tools with defined input/output contracts, so merging them goes the wrong way and leaves the prompt problem unfixed."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide says keyword-sensitive system prompt instructions can create unintended tool associations that override well-written tool descriptions, so the prompt itself must be reviewed and fixed."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The descriptions are already clear and differentiated, so the gap is elsewhere: the keyword-sensitive system prompt instruction overrides them, and longer descriptions leave that association in place."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Forced tool selection makes every request use extraction, including those that need summaries or claim verification, and it does not remove the keyword-sensitive instruction that causes the misrouting."
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "question_id": "M1-S08-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "A fixed pipeline suits predictable workflows; adding predefined steps still cannot react to the unexpected subtopics that intermediate findings reveal."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The problem is the fixed decomposition; a larger context does not create the new search and analysis subtasks that open-ended investigation needs."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Repeating the same fixed steps does not adapt the plan to intermediate findings, which the guide gives as the reason to use dynamic decomposition."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide recommends dynamic decomposition for open-ended investigation, with subtasks generated from what each step discovers."
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "question_id": "M1-S09-T2",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide names tool descriptions, not tool names, as the primary mechanism for tool selection. Here the descriptions are nearly identical, and that overlap causes the misrouting."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "With \"auto\", the model decides which tool to call based on the tool descriptions. The choice is not random, so the setting does not explain the misrouting."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "Tool descriptions are the main mechanism for tool selection. Ambiguous or overlapping descriptions cause misrouting between similar tools, as in the guide's analyze_content vs analyze_document example."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide warns that large tool sets degrade selection, but this subagent has only two tools. The cause here is the overlap of the two descriptions."
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "question_id": "M1-S10-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Full re-exploration discards valid prior context, while --resume continues the named session that already holds this analysis."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "fork_session creates independent branches to explore divergent approaches from a shared baseline, not to simply continue one investigation."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Starting fresh with an injected summary is the better choice when prior tool results are stale, but here no code changed and the prior context is valid."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "Named session resumption with --resume <session-name> continues a specific prior conversation, and resumption fits when the prior context is mostly valid."
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "question_id": "M1-S11-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Direct subagent-to-subagent communication bypasses the coordinator, so the system loses observability, consistent error handling, and controlled information flow."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "Subagents operate with isolated context and do not automatically inherit the coordinator's history, and inter-subagent communication should go through the coordinator."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Letting every subagent read everything and handle its own errors removes controlled information flow and consistent error handling, which the coordinator is meant to provide."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "In hub-and-spoke architecture the coordinator manages all inter-subagent communication, error handling, and information routing, which gives observability and consistent error handling."
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "question_id": "M1-S12-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide calls silently suppressing errors by returning empty results as success an anti-pattern, because it hides the failure from the coordinator."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide calls terminating entire workflows on single failures an anti-pattern, because the coordinator can often recover or continue with partial results."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide says subagents recover locally from transient failures but propagate errors they cannot resolve, together with what was attempted and partial results."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide says generic statuses like \"search unavailable\" hide valuable context, while structured error context lets the coordinator make intelligent recovery decisions."
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "question_id": "M1-S13-T1",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "This is still prompt-based guidance, and prompt instructions alone have a non-zero failure rate when deterministic compliance is required."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "Few-shot examples are also prompt-based guidance, so they can lower the skip rate but cannot guarantee the required ordering."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "A programmatic prerequisite blocks the downstream tool call until the prerequisite step completes, so the required ordering is enforced deterministically."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Both tools are needed for every report, so restricting the tool subset does not block generate_report until verify_citations has completed."
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "question_id": "M1-S14-T2",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "A hook that intercepts outgoing tool calls enforces the compliance rule deterministically, because the blocked fetch never runs."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "PostToolUse hooks transform tool results after the call has run, so the forbidden retrieval has already happened."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Prompt instructions give only probabilistic compliance, and the logs already show that the prompt rule fails in some runs."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This step relies on prompt instructions and acts after the fetch, so it cannot guarantee that the forbidden call is prevented."
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "question_id": "M1-S15-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide recommends goal-based coordinator prompts, and the subagent inherits no findings; the findings were missing from its prompt."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "Per the guide, subagents do not automatically inherit parent context, so the coordinator must pass the complete prior findings explicitly in the subagent's prompt."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Per the guide, \"Task\" in allowedTools lets a coordinator spawn subagents; context reaches a subagent only through its prompt."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide states that subagents do not share memory between invocations, so no shared memory holds the earlier outputs."
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "question_id": "M1-S16-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide says sentiment-based escalation is an unreliable proxy, and an explicit request for a human is itself a trigger to escalate."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide says to honor explicit customer requests for human agents immediately, without first attempting investigation."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide says self-reported confidence scores are unreliable proxies, and an explicit request for a human must be honored immediately."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide says an explicit request for a human must be honored immediately, so investigating first is wrong even when the issue is simple."
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "question_id": "M1-S17-T2",
+      "correct": [
+        "C",
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide states that the Message Batches API has no multi-turn tool calling support and up to a 24-hour processing window, and it exposes no content catalog."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide uses the choice between .mcp.json and ~/.claude.json to separate shared team tooling from personal servers, and this choice gives the agent no visibility into available content."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide names MCP resources as the mechanism for exposing content catalogs such as documentation hierarchies to reduce exploratory tool calls."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide lists database schemas as a content catalog that an MCP resource can expose, so the agent gains visibility without probing through tool calls."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "The guide presents tool_choice \"any\" as a way to make the model call a tool, so this change adds tool calls instead of exposing a content catalog."
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "question_id": "M1-S18-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Few-shot examples improve the behavior of the model but remain prompt-based, so they cannot guarantee compliance the way a hook can."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "A self-check instruction depends on the model following the prompt, so it gives probabilistic compliance and is not a deterministic guarantee."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Stronger prompt wording is still prompt-based enforcement, which gives only probabilistic compliance, so some violations can still occur."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "A tool call interception hook enforces the business rule deterministically, so it gives the guaranteed compliance that the rule requires."
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "question_id": "M1-S19-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Forcing the same tool on every turn stops the agent from calling lookup_order or process_refund, while the guide forces only the first call and handles later steps in follow-up turns."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "\"auto\" lets the model return text or pick any tool, so a prompt instruction gives no guarantee that get_customer is called first."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "\"any\" guarantees that the model calls some tool rather than returning text, but the model still chooses which tool, so it could call lookup_order first."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "Forced tool selection ensures that this specific tool is called first, and the guide pairs it with processing subsequent steps in follow-up turns."
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "question_id": "M1-S20-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide classifies policy violations as business errors. These are non-retryable and should come with a customer-friendly explanation that the agent can pass on to the customer."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide lists permission errors as a separate category for access problems. Nothing in this failure involves missing access rights, because the cause is a refund policy rule."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide defines transient errors as timeouts and service unavailability. A policy window violation is neither, and retrying the same request will not change the outcome."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide defines validation errors as invalid input. Here the input is well formed, and the refund fails because of a policy rule."
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "question_id": "M1-S21-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The needed subtasks only become clear from intermediate findings, so a plan that never adapts to discoveries misses the linked account."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide values adaptive investigation plans that generate subtasks based on what is discovered at each step, which fits open-ended disputes like this one."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "A fixed sequential pipeline suits predictable tasks; these disputes are open-ended investigations, so the next step must depend on what earlier results reveal."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The agent could resolve these cases by adapting its investigation; escalating them all avoids the investigation and works against the 80%+ first-contact resolution target."
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "question_id": "M1-S22-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "Structured metadata lets the agent tell retryable transient errors from non-retryable business errors, so it stops retrying policy violations but can still retry timeouts."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says failures must be kept distinct from valid empty results, and hiding the failure leaves the agent unable to explain it to the customer."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Policy violations are non-retryable, so retrying them wastes attempts, and the generic error still blocks a good recovery decision."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The error stays generic, so the agent still wastes retries on policy violations and cannot tell which failures are worth retrying."
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "question_id": "M1-S23-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Access to the subagent's MCP tools does not spawn a subagent; the guide names the Task tool as the mechanism for spawning subagents, and \"Task\" must be in allowedTools."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names the Task tool as the mechanism for spawning subagents, and allowedTools must include \"Task\" for a coordinator to invoke subagents."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Forcing a tool call only makes the coordinator choose among its allowed tools; subagents are spawned through the Task tool, so \"Task\" must still be in allowedTools."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "A prompt instruction cannot give the coordinator a tool it lacks; without \"Task\" in allowedTools, the coordinator has no mechanism to spawn the subagent."
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "question_id": "M1-S24-T3",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide uses --resume to continue one specific prior conversation; exploring both fixes in it makes the second exploration build on the first, so the branches are not independent."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "Plan mode does not create separate branches; both fixes stay in one conversation, while the guide uses fork_session to explore divergent approaches from a shared baseline."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "/compact only reduces the context of one conversation; both fixes still share one context, so it does not create the independent branches that fork_session gives."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide names fork_session for creating independent branches from a shared analysis baseline, so you can explore divergent approaches in parallel."
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "question_id": "M1-S25-T2",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The mapping step is right, but the guide says the next step is to identify high-impact areas and prioritize them. Ordering the work by smallest amount puts the low-impact problems first."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says to map the structure and identify high-impact areas before acting. This option fixes problems as they appear, so it never builds a map or a prioritized plan."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide says to decompose open-ended tasks by first mapping the structure, then identifying high-impact areas, then creating a prioritized plan. This option follows those steps in that order."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide says to decompose open-ended tasks by first mapping the structure. This option acts on one order before the agent has mapped the account or found which areas have the highest impact."
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "question_id": "M1-S26-T1",
+      "correct": [
+        "B",
+        "E"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "A short free-form note leaves out the structured fields the guide names, such as customer ID, root cause, refund amount and recommended action."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "Required schema fields make every handoff carry the customer ID, root cause, refund amount and recommended action, so the human agent can act without the transcript."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide says a handoff should include root cause, refund amount and recommended action, so the human agent should not have to repeat the investigation."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This shifts the work back to the customer and gives no structured handoff summary, which the guide requires when the human agent lacks the transcript."
+        },
+        {
+          "letter": "E",
+          "correct": true,
+          "reason": "The guide calls for structured handoff summaries with root cause analysis and recommended actions when the human agent lacks the transcript."
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "question_id": "M1-S27-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide says Grep searches file contents for patterns. The task is to match file names, which the guide assigns to Glob."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide says Read is for full file contents and warns against reading all files upfront. Glob finds files by name pattern directly."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide uses Read to follow imports when tracing code flows. Locating files by a naming pattern is a Glob task."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide names Glob as the tool for finding files that match naming or extension patterns, such as **/*.test.tsx."
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "question_id": "M1-S28-T2",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide names parsing natural language signals to determine loop termination as an anti-pattern. The loop should use the stop_reason value instead."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide names checking for assistant text content as a completion indicator as an anti-pattern. A response can contain text and still request a tool."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide names an arbitrary iteration cap as the primary stopping mechanism as an anti-pattern. The loop should stop on the stop_reason value \"end_turn\"."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide says the agentic loop continues when stop_reason is \"tool_use\" and terminates when stop_reason is \"end_turn\". Tool results go back to Claude so it can reason about the next action."
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "question_id": "M1-S29-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "This commits a secret to version control, which environment variable expansion in .mcp.json exists to avoid."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "User-level ~/.claude.json is for personal or experimental servers, while shared team tooling belongs in the project-level .mcp.json with environment variable expansion."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The key still ends up in committed files, so this fails the goal of credential management without committing secrets."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "Environment variable expansion in .mcp.json keeps the shared configuration in version control while each developer supplies a credential without committing a secret."
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "question_id": "M1-S30-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "An occasional long reply is harmless, so this rule does not need deterministic compliance and prompt guidance is enough."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "This financial rule requires deterministic compliance, and prompt instructions alone have a non-zero failure rate, so only a programmatic check in code can guarantee it every time."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "A rare missed apology does not break a policy that must hold every time, so a prompt instruction with a small failure rate is acceptable here."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "A rare missed greeting causes no compliance or financial harm, so this style rule does not need deterministic compliance and can stay as prompt guidance."
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "question_id": "M1-S31-T2",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "These flags only make the output structured; the review still runs in the generation session, so it stays less effective than an independent review instance."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "Resuming the generation session carries over its context, and the guide says that a review in the generation session is less effective than an independent review instance."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The review still runs in the generation session, so the session context isolation problem that the guide describes remains."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide states that an independent review instance reviews changes more effectively than the generation session, which keeps the context in which it produced the code."
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "question_id": "M1-S32-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "User-level instructions apply only to that user and are not shared through version control, and importing every file is not selective by package."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "Manual pasting is not shared project configuration and gives inconsistent results; the guide uses project-level CLAUDE.md files with @import to deliver standards to the team."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This loads every standard into every package, so the frontend still gets payment security rules; the guide calls for selective imports per package."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide describes using @import in each package's CLAUDE.md to selectively include relevant standards files, based on the maintainer's domain knowledge."
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "question_id": "M1-S33-T1",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The root CLAUDE.md still loads in every session, so the conventions keep consuming context and tokens when developers edit unrelated files."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "A slash command loads only when a developer invokes it on demand, so the conventions do not load automatically when Terraform files are edited."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "Path-scoped rules in .claude/rules/ with a glob in the YAML frontmatter paths field load only when matching files are edited, which reduces irrelevant context and tokens."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "User-level configuration is not shared with the team through version control, and it still loads in every session regardless of which files are edited."
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "question_id": "M1-S34-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The task as a whole has architectural implications and two valid integration approaches, so it needs plan mode; direct execution fits only changes whose overall scope is simple and clear."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "Plan mode is designed for large-scale, multi-file changes with multiple valid approaches and architectural decisions, and it allows safe exploration and design before changes are committed, which prevents costly rework."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The Explore subagent isolates verbose discovery output and returns summaries to preserve context; it does not replace plan mode for deciding the architecture of a large migration."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Direct execution is for simple, well-scoped changes; using it for a migration across many files with an open choice of approach risks costly rework."
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "question_id": "M1-S35-T1",
+      "correct": [
+        "B",
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide places the interview before implementing, so questions raised after the build come too late to shape the design."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "In the interview pattern, Claude asks questions that surface considerations such as cache invalidation before implementing in an unfamiliar domain."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide names failure modes as a design consideration that the interview pattern surfaces before implementation."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The interview pattern has Claude ask questions because the developer may not anticipate every consideration, so blocking questions defeats it."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "The interview pattern surfaces considerations before implementing, so it does not wait for problems to appear in finished code."
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "question_id": "M1-S36-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "CLAUDE.md is always loaded for universal standards, while on-demand task-specific workflows belong in skills, and prose in CLAUDE.md does not configure fork isolation, tool restriction, or argument hints."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "Skills in the project .claude/skills/ directory use SKILL.md frontmatter to configure context: fork for isolation, allowed-tools for tool restriction, and argument-hint for parameter prompts, and the repository shares them with the team."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Skills in ~/.claude/skills/ are personal and do not reach teammates, so this location does not meet the requirement that every developer can invoke the workflow from the shared repository."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The YAML frontmatter in .claude/rules/ scopes conventions to file paths; it does not define an on-demand workflow with fork isolation, allowed tools, or an argument hint."
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "question_id": "M1-S37-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Missing conventions do not explain why Claude forgets classes it found in this session; the guide links this symptom pattern to context degradation."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names inconsistent answers and references to \"typical patterns\" instead of earlier-discovered classes as the signs of context degradation in extended sessions."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Claude did find and name the classes earlier, so the search worked; losing them later in a long session is the guide's sign of context degradation."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Claude did explore and found the specific classes early on; the later drift toward generic patterns is the guide's sign of context degradation."
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "question_id": "M1-S38-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "A new session also drops the earlier design decisions; the guide's approach keeps the main conversation and isolates only the verbose output in the Explore subagent."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names the Explore subagent as the way to isolate verbose discovery output and return summaries, which preserves the main conversation context during multi-phase tasks."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide limits direct execution to simple, well-scoped changes; a multi-file change across several services still needs exploration and design before editing."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This puts all the verbose discovery output into the main conversation, which is the context window exhaustion that the guide says the Explore subagent prevents."
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "question_id": "M1-S39-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide says to complete document analysis with conflicting values included and explicitly annotated, and to let the coordinator decide how to reconcile them before synthesis."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "This arbitrarily selects one value and drops the other source; the guide says to annotate conflicts with source attribution instead of picking one value."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Averaging invents a value that no source states and hides the conflict; the guide says to keep both values with source attribution and annotate the conflict."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide says the subagent should complete the analysis with the conflict annotated, rather than halt, and the coordinator then reconciles it."
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "question_id": "M1-S40-T2",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "A slash command runs only when a teammate invokes it, so it gives no automatic, directory-scoped configuration like the CLAUDE.md hierarchy does."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "User-level instructions apply only to that one user and are not shared with any teammate through version control."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "A directory-level CLAUDE.md in a subdirectory scopes the instructions to that directory, and it lives in the repository, so version control shares it with every teammate."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The project-level file is shared through version control, but it applies the billing conventions to the whole project instead of scoping them to the billing directory."
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "question_id": "M1-S41-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The request is a single input in a new session, so no earlier progressive summarization happened; the omission pattern by position points to the lost-in-the-middle effect."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The scenario states that the input fits well within the context window, so truncation does not explain the omissions; the pattern matches the lost-in-the-middle effect."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The omitted findings are serious, and the omission follows their position in the input; the guide explains this pattern as the lost-in-the-middle effect, not as severity ranking."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "This is the lost-in-the-middle effect that the guide describes, and it matches findings being kept at the start and end but dropped from the middle."
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "question_id": "M1-S42-T1",
+      "correct": [
+        "C",
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Verbose outputs accumulate in context and consume tokens out of proportion to their relevance; the guide recommends keeping only the relevant fields."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "A prose recap is a vague summary that mixes the issues together; the guide recommends structured, separately persisted issue data instead."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "Persisting structured issue data in a separate layer, such as a scratchpad file, keeps each bug's exact facts apart from summarized history in a multi-issue session."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "A persistent facts block kept outside summarized history prevents progressive summarization from blurring the numbers and statuses of each issue."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "More summarization increases the progressive summarization risk: exact numbers and statuses are condensed into vague summaries, which caused the problem."
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "question_id": "M1-S43-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "A glob pattern in the paths field matches files by type regardless of directory location, and the rule loads only when Claude Code edits matching files."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "This glob is tied to one directory, so test files in other feature directories are missed; the conventions must apply by file type regardless of directory."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Directory-level CLAUDE.md files are bound to directories, so they suit conventions spanning many directories poorly; glob-pattern rules are preferred for files spread across the codebase."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The conventions would load for every file, which adds irrelevant context and token usage that path-scoped rules avoid."
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "question_id": "M1-S44-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "This sample is neither random nor stratified, so it gives a biased error rate and cannot systematically detect novel error patterns as the guide describes."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names stratified random sampling of high-confidence outputs as the method for ongoing error rate measurement and novel error pattern detection."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This leaves the error rate of high-confidence docstrings unmeasured, and the guide requires sampling them to catch errors and novel patterns."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide warns that an aggregate accuracy metric can mask poor performance on specific segments, so it cannot reliably reveal segment errors or new patterns."
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "question_id": "M1-S45-T2",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide recommends delegating specific investigations to subagents, which isolates verbose exploration output while the main session keeps high-level coordination."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "This repeats the failure: verbose discovery output fills the context of the main session, and the guide says extended sessions then degrade into inconsistent answers."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This loads large amounts of verbose content into the context of every session, the opposite of isolating exploration output in subagents as the guide recommends."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Fresh sessions discard earlier findings, so no session keeps the high-level understanding that the guide assigns to the coordinating main session."
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "question_id": "M1-S46-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide designates custom_id, not result position, as the way to correlate batch requests with their responses."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names custom_id fields as the mechanism for correlating batch request/response pairs."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide states the batch API does not support multi-turn tool calling within a single request, so tools cannot run mid-request."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Parsing model-generated text is fragile; the guide provides custom_id fields specifically for request/response correlation."
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "question_id": "M1-S47-T6",
+      "correct": [
+        "B",
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide recommends few-shot examples that demonstrate the review output format (location, issue, severity, suggested fix), so they are not limited to extraction tasks."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide says detailed instructions alone give inconsistent results, and it recommends few-shot examples that demonstrate the specific format (location, issue, severity, suggested fix) to achieve consistency."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "The guide says few-shot examples are the most effective technique for consistently formatted, actionable output when detailed instructions alone produce inconsistent results."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide says few-shot examples enable the model to generalize judgment to novel patterns rather than matching only pre-specified cases."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "Detailed written instructions already failed, and the guide names few-shot examples, not more or stronger instructions, as the most effective technique in this situation."
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "question_id": "M1-S48-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide says the reviewer should work without the generator's reasoning context, and passing the transcript brings back the self-review limitation."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide states that self-review instructions are less effective, because the model keeps its reasoning context and is less likely to question its own decisions."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide states that independent review instances are more effective at catching subtle issues than extended thinking in the same session."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide states that an independent review instance without prior reasoning context catches subtle issues more effectively than self-review."
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "question_id": "M1-S49-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide calls for explicit criteria and concrete code examples for each severity level, so leaving major and minor undefined keeps their classification inconsistent."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide states that explicit severity criteria with concrete code examples for each level achieve consistent classification."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This is a vague instruction without explicit criteria, and the guide states that explicit criteria work better than vague instructions."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "One general definition gives no explicit criteria for each level and no concrete code examples, which the guide requires for consistent severity classification."
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "question_id": "M1-S50-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Developers wait for this feedback, so the workflow is blocking, and the guide says batch processing is inappropriate for blocking workflows."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "This workload is non-blocking and latency-tolerant, and the guide names nightly test generation as appropriate for batch processing."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "A pre-merge check is a blocking workflow, and the guide says it belongs on the synchronous API because batch processing has no guaranteed latency SLA."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The release waits on this review, so the workflow is blocking and needs the synchronous API rather than a batch with up to 24 hours of processing."
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "question_id": "M1-S51-T2",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The step hangs because Claude Code waits for interactive input; a longer time limit only delays the failure, while the guide says non-interactive mode with the --print flag prevents the hang."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "The guide names the --print flag as the way to run Claude Code in non-interactive mode in automated pipelines, which prevents interactive input hangs."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide describes --output-format json as a way to enforce structured output in CI; it does not switch Claude Code to non-interactive mode, so the hang remains."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide describes CLAUDE.md as the way to give project context such as review criteria; it does not change the execution mode, so the session still waits for input."
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "question_id": "M1-S52-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide names enum fields with an \"other\" value plus a detail string as the schema pattern for extensible categories, so known categories stay consistent and new kinds of findings are captured accurately."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide uses optional fields for information that may be missing from the source, but here every finding still needs a category; the guide's pattern for unlisted categories is \"other\" plus a detail string."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "This still forces accessibility and licensing findings into wrong categories, which is the mislabeling problem; the guide adds an \"other\" value plus a detail string for extensible categories."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Free text removes the fixed category values that triage depends on; the guide keeps the enum and extends it with an \"other\" value plus a detail string instead."
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "question_id": "M1-S53-T2",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "Retry-with-error-feedback appends the specific validation errors, together with the original diff and the failed output, so the model knows exactly what to correct."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "A generic note does not tell the model which error occurred. The guide calls for appending the specific validation errors and including the failed output."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "A stricter schema targets syntax errors, but this failure is a semantic validation error. A rerun without the specific errors gives the model no guidance toward correction."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This retry gives the model no information about what failed. The guide says that the specific validation errors must be appended to guide the model toward correction."
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "question_id": "M1-S54-T1",
+      "correct": [
+        "B"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "Tool use with a JSON schema eliminates syntax errors, but it does not eliminate semantic errors such as values that do not sum correctly."
+        },
+        {
+          "letter": "B",
+          "correct": true,
+          "reason": "Schema enforcement removes syntax errors only. Values that do not add up are semantic errors, so they need separate validation, and a retry that includes the specific error can fix them."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The output already parses and matches the schema. A count that does not match the list is a semantic error, and marking a field as required does not enforce consistency between values."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The findings list is in the output, so the information is present. Retries fail when information is absent from the source, but they can correct inconsistent values when they include specific validation errors."
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "question_id": "M1-S55-T1",
+      "correct": [
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "This drops schema-enforced structured output, which is the reliable approach, and it does not address why values are invented."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The required field still forces a value when no ticket exists, so the schema keeps creating pressure to fabricate one."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "Optional or nullable fields let the model report missing information instead of fabricating a value to satisfy a required field."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "Retries cannot help when the information is absent from the source, and an invented ID can still pass a format check."
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "question_id": "M1-S56-T1",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide recommends temporarily disabling high false-positive categories to restore trust while the prompts for those categories are improved. This keeps the accurate categories active."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide states that high false-positive categories undermine confidence in accurate categories. Keeping the noisy category active continues to erode trust in the security and bug findings."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "The guide states that general instructions like 'only report high-confidence findings' fail to improve precision compared to specific categorical criteria."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The guide recommends disabling only the high false-positive categories. Turning off everything throws away the accurate security and bug findings that the review still provides."
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "question_id": "M1-S57-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide states that detailed instructions alone produce inconsistent results, and that few-shot examples are the most effective fix for this."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide calls for a few targeted examples that show reasoning. Many verdict-only examples teach matching of pre-specified cases instead of judgment that generalizes to novel patterns."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Clear-cut examples do not demonstrate how to handle the ambiguous cases. The guide says the examples should target ambiguous scenarios."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide recommends 2-4 targeted few-shot examples for ambiguous scenarios that show the reasoning for why one action was chosen over plausible alternatives."
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "question_id": "M1-S58-T1",
+      "correct": [
+        "A",
+        "C"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "Project-scoped commands in .claude/commands/ are shared through version control, so every developer gets them on clone or pull."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide places slash commands in .claude/commands/; CLAUDE.md holds always-loaded standards and does not define slash commands."
+        },
+        {
+          "letter": "C",
+          "correct": true,
+          "reason": "User-scoped commands in ~/.claude/commands/ are personal, so teammates do not see the experimental variant."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "The ~/.claude/commands/ directory is user-scoped and personal, so it is not shared through version control and developers do not get it on clone or pull."
+        },
+        {
+          "letter": "E",
+          "correct": false,
+          "reason": "The .claude/commands/ directory is project-scoped and shared through version control, so every teammate would see the experimental variant."
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "question_id": "M1-S59-T1",
+      "correct": [
+        "D"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": false,
+          "reason": "The guide recommends sequential iteration only for independent issues; these fixes interact, so a separate fix for each problem can break the other steps."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The guide recommends input/output examples for prose descriptions that are interpreted inconsistently, not for coordinating fixes to interacting problems that are never described."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Isolated sessions hide how the fixes interact, but the guide says that interacting issues need one detailed message that covers all of them together."
+        },
+        {
+          "letter": "D",
+          "correct": true,
+          "reason": "The guide says that interacting issues should be addressed together in a single detailed message, so that the fixes are designed to work together."
+        }
+      ]
+    },
+    {
+      "number": 60,
+      "question_id": "M1-S60-T2",
+      "correct": [
+        "A"
+      ],
+      "options": [
+        {
+          "letter": "A",
+          "correct": true,
+          "reason": "The guide recommends multi-pass review: per-file local passes plus a cross-file integration pass. This avoids the attention dilution that caused shallow comments and the contradictory findings across files."
+        },
+        {
+          "letter": "B",
+          "correct": false,
+          "reason": "The problem is attention dilution across many files, not a lack of context capacity. A larger context window still spreads attention thinly in one pass and can still produce contradictory findings."
+        },
+        {
+          "letter": "C",
+          "correct": false,
+          "reason": "Each run still suffers the same attention dilution over all 28 files. Requiring agreement between runs also suppresses real issues that are caught only intermittently, instead of fixing the review structure."
+        },
+        {
+          "letter": "D",
+          "correct": false,
+          "reason": "This shifts the burden to developers instead of improving the review design. The guide's remedy is to split the review itself into per-file passes plus a cross-file integration pass."
+        }
+      ]
+    }
+  ]
+}
