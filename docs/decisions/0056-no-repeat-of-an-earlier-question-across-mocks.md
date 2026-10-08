@@ -2,7 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
-- Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1), `docs/diagrams/04-step-2-write-the-question.html` (step 2), `docs/diagrams/06-step-4-check-by-a-model.html` (step 4)
+- Diagram: `docs/diagrams/11-repeats-across-mocks.html`. Diagrams 02 (step 1), 04 (step 2) and 06 (step 4) show the changes in their steps.
 
 ## Question
 
@@ -17,7 +17,7 @@ The owner marked mock 2: 20 of 20 good. A second review and an independent agent
 
 Option 1. A shared idea is allowed. The same question is not.
 
-1. **Step 1.** Inside a group, code takes first a point that the earlier mocks used less. The seed keeps the order inside the same counts. This is code only.
+1. **Step 1.** Code sorts the points of a task statement: first by the use of their group in the earlier mocks (decision 0050), then by the use of the point itself. So inside a group, a point that the earlier mocks used less comes first. The seed keeps the order inside the same counts. This is code only.
 2. **Step 2.** When the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option, and this instruction: "Use a different scene and a different angle: the cause, the fix, or a choice between rules. The correct action may be the same, if the idea has only one. Do not use a wrong option of an earlier question."
 3. **Step 4.** New rule B9 in call 4b: "The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question." Call 4b gets the earlier questions on the same idea. With none, B9 passes. A failure goes to step 5, as for each other rule.
 4. **The earlier questions** are the questions of the built mocks with a lower number (`mocks/mock-NN.questions.json` and `mocks/mock-NN.answers.json`). The idea of a question is the group of its point (decision 0047). Code: `src/earlier.py`.
@@ -30,6 +30,8 @@ In mock 2, the writer did not know mock 1. On a shared idea it wrote the most ob
 
 The owner changed the first suggestion of the assistant: the writer must use a different scene and a different angle, not a different correct action, because some ideas have only one correct action. The wrong options must never be the same.
 
+The new sort changes the plan that a seed gives. The stored plan of mock 2 (`runs/mock-02/plan.json`) came from the code before this decision, so seed 167622 no longer makes it again. The stored plan stays the record of mock 2.
+
 Not decided yet:
 
 - A repeat with different words that call 4b does not see. The owner marks a sample of each later mock.
@@ -38,7 +40,7 @@ Not decided yet:
 
 The assistant counted the repeats of mock 2 with an independent agent, and explained why the plan did not stop them. It suggested the rule. The owner agreed with one change (a different angle, not a different correct action, and never the same wrong options). The assistant suggested the check in step 4, not in step 6, and the owner agreed.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner has not confirmed the text of this file. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 

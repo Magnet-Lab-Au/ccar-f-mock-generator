@@ -34,7 +34,7 @@ The second review named M2-S26 and M1-S36 as close too. The independent agent di
 
 The owner decided: "Keep the 4 close repeats as known limits of mock 2."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner has not confirmed the text of this file. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 

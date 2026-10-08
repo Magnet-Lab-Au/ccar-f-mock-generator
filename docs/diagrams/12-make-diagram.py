@@ -32,7 +32,7 @@ for s in NAMES:
         sent=['Mocks: %s.' % ', '.join(str(m) for m, v in MOCKS.items() if s in v), 'Primary domains: %s.' % ', '.join(map(str, PRIM[s]))])
 D['rule'] = dict(title='The 11 permitted sets (decision 0027)', who='Code', cls='code',
     sent=['Each question is in a primary domain of its scenario, and the domain counts are 16, 11, 12, 12 and 9. 11 of the 15 sets of 4 scenarios have such a table.',
-          'Step 1 stops with an error if a fixed set is not one of them.'] + ['Permitted: ' + '; '.join('-'.join(map(str, x)) for x in SETS)],
+          'Step 1 stops with an error if a fixed set is not one of them.'] + ['Permitted: ' + ', '.join('-'.join(map(str, x)) for x in SETS) + '.'],
     why='The owner fixed mocks 3 to 5 so that each scenario appears about equally: scenarios 1 and 4 come 4 times, the others 3 times.')
 for d in D.values():
     for k in ('example', 'examplehead', 'examplenote', 'why'):

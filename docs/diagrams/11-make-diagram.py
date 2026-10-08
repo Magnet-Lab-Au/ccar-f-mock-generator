@@ -47,7 +47,7 @@ D = {
          OLD['question']] + opts(OLD, old_opts),
    why='The writer did not know mock 1. It wrote the most obvious scene again. A second review and an independent agent found 13 such strong repeats in mock 2.'),
  'step1': dict(title='Step 1: the point that earlier mocks used less comes first', who='Code', cls='code',
-   sent=['Inside a group, code sorts the points of a task statement: first the group that earlier mocks used less (decision 0050), then the point that earlier mocks used less (decision 0056). The seed keeps the order inside the same counts.',
+   sent=['Code sorts the points of a task statement: first by the use of their group in the earlier mocks (decision 0050), then by the use of the point itself (decision 0056). So inside a group, a point that earlier mocks used less comes first. The seed keeps the order inside the same counts.',
          'Example: in mock 2, slot M2-S32 got point 3.3-S2, the point of M1-S43, although 3.3-K1, 3.3-K2, 3.3-K3 and 3.3-S3 were unused. With decision 0056, an unused point comes first.'],
    why='A new point of the same idea gives the writer a new part of the idea to test.'),
  'step2': dict(title='Step 2: the writer sees the earlier questions', who='One model call', cls='model',

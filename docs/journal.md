@@ -17,7 +17,7 @@ One entry for each work session. Newest entry first.
 - The owner marks round 2 of mock 2 (`marking/M2-round2.xlsx`, 14 questions).
 - The other step 6 findings of mock 2 wait for the owner after the marks.
 - The owner confirms the texts of decisions 0056, 0057 and 0058.
-- No independent reviewer has checked decisions 0056 to 0058, diagrams 11 and 12, or the code of rule B9.
+- One reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code of rule B9. The assistant fixed its findings. It judged that M2-S31-T2 and M2-S59-T2 are still close to M1-S34 and M1-S39, and that M2-S35-T3 shares an example with M2-S31-T2. The owner decides.
 
 ## 8 October 2026, later session
 

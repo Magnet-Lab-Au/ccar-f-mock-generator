@@ -116,5 +116,24 @@ class TestWriterAndCheck(unittest.TestCase):
         self.assertIn("(for rule B9):\nNone.", call2.texts[0])
 
 
+class TestRealSteps(unittest.TestCase):
+    """The review of 8 October 2026: the real steps must give the earlier
+    questions to the writer and to call 4b."""
+
+    def test_the_real_steps_pass_the_earlier_questions(self):
+        from steps import RealSteps
+        steps = RealSteps(os.path.join(ROOT, "runs", "mock-02"), records=RECORDS, model_call=FakeCall({}))
+        plan = json.load(open(os.path.join(ROOT, "runs", "mock-02", "plan.json"), encoding="utf-8"))
+        slot = next(s for s in plan["slots"] if s["point"] == "1.1-S3")
+        seen = {}
+        steps.writer.write = lambda request: seen.setdefault("writer", steps.writer.earlier)
+        steps.checker.check = lambda q, s: seen.setdefault("checker", steps.checker.earlier)
+        steps.write({"slot": slot, "point": slot["point"], "step": 2})
+        steps.check_model({"point": "1.1-S3"}, slot)
+        for who in ("writer", "checker"):
+            self.assertIsNotNone(seen[who], who)
+            self.assertIn("M1-S28-T2", [q["question_id"] for q in seen[who]("1.1-S3")])
+
+
 if __name__ == "__main__":
     unittest.main()
