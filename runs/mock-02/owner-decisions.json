@@ -1,0 +1,128 @@
+[
+  {
+    "id": "D001",
+    "action": "rewrite",
+    "target": "M2-S08-T1",
+    "reason": "Repeat of M1-S28 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S08-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D002",
+    "action": "rewrite",
+    "target": "M2-S10-T1",
+    "reason": "Repeat of M1-S14 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S10-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D003",
+    "action": "rewrite",
+    "target": "M2-S12-T1",
+    "reason": "Repeat of M1-S60 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S12-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D004",
+    "action": "rewrite",
+    "target": "M2-S19-T2",
+    "reason": "Repeat of M1-S26 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S19-T2",
+    "after_try": 2
+  },
+  {
+    "id": "D005",
+    "action": "rewrite",
+    "target": "M2-S24-T1",
+    "reason": "Repeat of M1-S19 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S24-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D006",
+    "action": "rewrite",
+    "target": "M2-S31-T1",
+    "reason": "Repeat of M1-S34 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S31-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D007",
+    "action": "rewrite",
+    "target": "M2-S32-T1",
+    "reason": "Repeat of M1-S43 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S32-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D008",
+    "action": "rewrite",
+    "target": "M2-S33-T1",
+    "reason": "Repeat of M1-S35 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S33-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D009",
+    "action": "rewrite",
+    "target": "M2-S38-T1",
+    "reason": "Repeat of M1-S48 and M1-S31 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S38-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D010",
+    "action": "rewrite",
+    "target": "M2-S48-T1",
+    "reason": "Repeat of M1-S12 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S48-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D011",
+    "action": "rewrite",
+    "target": "M2-S58-T1",
+    "reason": "Repeat of M1-S56 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S58-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D012",
+    "action": "rewrite",
+    "target": "M2-S59-T1",
+    "reason": "Repeat of M1-S39 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-08",
+    "question_id": "M2-S59-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D013",
+    "action": "rewrite",
+    "target": "M2-SC5-R1-F1",
+    "reason": "Repeat of M2-S31 in this mock and of M1-S34 of mock 1 (decision 0056): a migration of about 50 files with two approaches, and the answer plan mode. Write a new question on the same point with a different scene and a different angle. Do not use a wrong option of the earlier questions.",
+    "date": "2026-10-08",
+    "question_id": "M2-S35-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D014",
+    "action": "rewrite",
+    "target": "M2-SC5-R1-F6",
+    "reason": "Ruling 2 of the owner: at most one wrong option of the scenario uses the model's own confidence as a filter. Options B and C both do. Write a new question on the same point. Use at most one wrong option on model confidence, and only if this scenario has no other one.",
+    "date": "2026-10-08",
+    "question_id": "M2-S41-T1",
+    "after_try": 1
+  }
+]
