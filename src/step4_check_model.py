@@ -1,8 +1,9 @@
 """Step 4: a blind answer, then a rule check (decisions 0012, 0023, 0030, 0032, 0037 and 0040).
 
 Call 4a answers the question with no marks and no reasons. Call 4b checks the
-rules B1 to B8 with the complete record, the guide text and the 12 sample
-questions of the guide (rule B8, decision 0055). Code checks each
+rules B1 to B9 with the complete record, the guide text, the 12 sample
+questions of the guide (rule B8, decision 0055) and the earlier questions on
+the same idea (rule B9, decision 0056). Code checks each
 answer, searches the feature names in the records file, and makes the verdict.
 A model does not make the verdict.
 """

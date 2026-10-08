@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>No repeat across mocks</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #16202b; --muted: #556270; --line: #c5ccd4;
+    --code: #1f5fae; --code-bg: #e4eefb;
+    --model: #7a3fb0; --model-bg: #f1e7fa;
+    --owner: #0f7a55; --owner-bg: #dff3ea;
+    --open: #8a6100; --open-bg: #fbf0d2;
+    --fail: #b3261e; --fail-bg: #fdecea;
+    --shadow: 0 10px 30px rgba(16, 24, 40, .22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12171d; --panel: #1b222b; --ink: #e8edf2; --muted: #9eabb8; --line: #3b4654;
+      --code: #8bbcf5; --code-bg: #1c3350;
+      --model: #cfa6f0; --model-bg: #38254a;
+      --owner: #7fd6b1; --owner-bg: #173a2d;
+      --open: #f0cc6e; --open-bg: #40330f;
+      --fail: #ff8f86; --fail-bg: #4a1f1c;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 14px; font-size: 13.5px; align-items: center; }
+  .legend span.key { display: inline-flex; align-items: center; gap: 7px; }
+  .scroll { overflow-x: auto; }
+  .stage { position: relative; width: 1000px; height: 1180px; }
+  .stage svg { position: absolute; inset: 0; }
+  .box { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px;
+         padding: 10px 14px 10px 62px; }
+  .box.step { cursor: pointer; }
+  .box.step:hover { border-color: var(--muted); }
+  .box.step:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .box.step[aria-expanded="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+  .num { position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+         width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+         font-weight: 700; font-size: 17px; background: var(--ink); color: var(--bg); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .name { font-weight: 700; font-size: 16px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .t-code { color: var(--code); background: var(--code-bg); }
+  .t-model { color: var(--model); background: var(--model-bg); }
+  .t-owner { color: var(--owner); background: var(--owner-bg); }
+  .t-open { color: var(--open); background: var(--open-bg); }
+  .t-stop { color: var(--fail); background: var(--fail-bg); }
+  .what { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .ts { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  .box.fail { border-color: var(--fail); background: var(--fail-bg); }
+  .box.fail .num { background: var(--fail); color: var(--panel); }
+  .box.fail .what, .box.stop .what { color: var(--ink); }
+  .box.stop { border: 1.5px dashed var(--fail); padding-left: 14px; }
+  .band { position: absolute; left: 40px; width: 540px; color: var(--muted); font-size: 13px;
+          text-align: center; font-weight: 600; letter-spacing: .02em; }
+  .band span { background: var(--bg); padding: 3px 10px; }
+  .lbl { position: absolute; font-size: 12.5px; font-weight: 700; color: var(--fail); background: var(--bg); padding: 0 4px; }
+  .lbl.open { color: var(--open); font-weight: 600; }
+  .flow { stroke: var(--muted); stroke-width: 2; fill: none; }
+  .failp { stroke: var(--fail); stroke-width: 2; fill: none; }
+  .openp { stroke: var(--open); stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .notes { margin-top: 10px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .note { background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .note h2 { font-size: 15px; margin: 0 0 6px; }
+  .note ul { margin: 0; padding-left: 18px; }
+  .note li { margin: 3px 0; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); }
+  .swatch.f { border-top-color: var(--fail); }
+  .swatch.o { border-top: 2px dashed var(--open); }
+  footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  #pop { position: fixed; z-index: 10; width: 390px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+         overflow: auto; background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+         border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px 14px; font-size: 14px; }
+  #pop[hidden] { display: none; }
+  #pop .ptop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #pop h2 { font-size: 17px; margin: 8px 0 8px; }
+  #pop h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+  #pop p { margin: 0 0 6px; }
+  #pop ul { list-style: none; margin: 0; padding: 0; }
+  #pop li { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--line); }
+  #pop .pid { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #pop .none { font-style: italic; }
+  #pop .pctx { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+  #pop .status { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; padding: 2px 10px;
+                 border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); }
+  #pop .pinned { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  #popclose { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--line);
+              background: transparent; color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  #popclose:hover { border-color: var(--ink); }
+  #popclose:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+
+  .stage { height: 990px; }
+  .t-io { color: var(--muted); background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+  .box.nonum { padding-left: 14px; }
+  .box.row { padding-top: 9px; padding-bottom: 9px; }
+  .box.row .what { margin-top: 1px; }
+  .box.hdr { border-color: var(--code); background: var(--code-bg); }
+  .box.hdr .what { color: var(--ink); }
+  .box.stop .name { font-size: 14px; color: var(--fail); }
+  .panel { position: absolute; border: 1.5px solid var(--line); border-radius: 14px; }
+  .ptitle { position: absolute; font-weight: 700; font-size: 15px; }
+  .ptitle small { margin-left: 8px; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .shead { position: absolute; left: 20px; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+  .shead i { font-style: normal; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+             background: var(--ink); color: var(--bg); font-size: 14px; }
+  #pop pre { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line);
+             font: 12px/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  #pop .exnote { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .hot { position: absolute; cursor: pointer; }
+  .hot:focus-visible { outline: 3px solid var(--code); outline-offset: 2px; }
+  .hot[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--ink); }
+  .cap { position: absolute; font-size: 12.5px; color: var(--muted); text-align: center; }
+  .alab { position: absolute; font-size: 12px; font-weight: 600; color: var(--muted); line-height: 1.25; text-align: center; }
+  .sk { display: block; height: 7px; border-radius: 4px; background: var(--line); margin: 7px 0; }
+  .card { position: absolute; width: 246px; height: 204px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .card.back { background: var(--bg); }
+  .card.hot:hover { border-color: var(--muted); }
+  .chead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--muted); }
+  .idchip { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .optrow { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+  .optrow .sk { margin: 0; flex: none; }
+  .chip { flex: none; width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 11px; display: grid; place-items: center; }
+  .optrow.ok .chip { background: var(--owner); border-color: var(--owner); color: var(--panel); }
+  .optrow.ok .sk { background: var(--owner); opacity: .5; }
+  .tick { font-style: normal; font-size: 11px; font-weight: 700; color: var(--owner); margin-left: auto; }
+  .sheet { width: 450px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12.5px; }
+  .sheet:hover { border-color: var(--muted); }
+  .sheet .bar { height: 28px; display: flex; align-items: center; gap: 8px; padding: 0 10px; font-weight: 700; background: var(--bg); }
+  .xl { width: 14px; height: 14px; border-radius: 3px; background: var(--owner); }
+  .r { display: grid; grid-template-columns: 74px 104px 68px 62px 1fr; height: 32px; border-top: 1px solid var(--line); }
+  .r > span { display: flex; align-items: center; padding: 0 8px; overflow: hidden; white-space: nowrap; border-left: 1px solid var(--line); }
+  .r > span:first-child { border-left: none; font-variant-numeric: tabular-nums; }
+  .r .sk { margin: 0; }
+  .r.h > span { font-weight: 700; font-size: 12px; color: var(--muted); }
+  .r .fill { background: var(--owner-bg); }
+  .r.h .fill { color: var(--owner); }
+  .good { color: var(--owner); } .bad { color: var(--fail); }
+  .caret { width: 2px; height: 16px; background: var(--ink); }
+  .noview { text-align: left; display: flex; align-items: center; gap: 8px; }
+  .eye { flex: none; width: 22px; height: 12px; border: 1.5px solid var(--muted); border-radius: 50%; position: relative; }
+  .eye::after { content: ''; position: absolute; left: -3px; right: -3px; top: 4px; border-top: 1.5px solid var(--fail); transform: rotate(-28deg); }
+  .person { width: 142px; text-align: center; padding: 6px 4px 8px; border-radius: 12px; }
+  .person:hover { background: var(--owner-bg); }
+  .person svg { position: static; display: block; margin: 0 auto 4px; }
+  .person b { display: block; font-size: 15px; }
+  .person small, .filebox small { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .filebox { width: 132px; height: 62px; padding: 12px 12px 0; background: var(--panel); border: 1.5px solid var(--line); border-radius: 4px 0 4px 4px; font-size: 13px; }
+  .filebox:hover { border-color: var(--muted); }
+  .filebox::before { content: ''; position: absolute; right: -1.5px; top: -1.5px; border-style: solid; border-width: 0 16px 16px 0; border-color: transparent var(--bg) transparent transparent; }
+  .filebox::after { content: ''; position: absolute; right: -1.5px; top: -1.5px; width: 16px; height: 16px; border-left: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); background: var(--panel); border-radius: 0 0 0 3px; }
+  .gpanel { width: 470px; height: 204px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 16px; }
+  .gpanel:hover { border-color: var(--muted); }
+  .gpanel h4 { margin: 0; font-size: 15px; }
+  .big { position: absolute; left: 16px; top: 44px; font-size: 44px; font-weight: 700; line-height: 1; color: var(--owner); }
+  .big small { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+  .gwrap { position: absolute; left: 150px; top: 44px; }
+  .gwrap span { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; }
+  .g60 { display: grid; grid-template-columns: repeat(15, 15px); gap: 4px; }
+  .g60 i { height: 15px; border-radius: 4px; }
+  .g60 .on { background: var(--owner); }
+  .g60 .off { background: var(--line); opacity: .55; }
+  .g60 .risk { border: 1.5px dashed var(--fail); background: var(--fail-bg); }
+  .gpanel p { position: absolute; left: 16px; right: 16px; bottom: 10px; margin: 0; font-size: 13px; color: var(--muted); }
+  .blabel { position: absolute; left: 20px; width: 170px; }
+  .blabel b { display: block; font-size: 15px; } .blabel small { color: var(--muted); font-size: 12.5px; }
+  .seg { height: 60px; padding: 9px 14px; border: 1.5px solid; }
+  .seg b { display: block; font-size: 14px; } .seg small { font-size: 12.5px; }
+  .seg.first { border-radius: 10px 0 0 10px; } .seg.last { border-radius: 0 10px 10px 0; }
+  .seg.g { background: var(--owner-bg); border-color: var(--owner); }
+  .seg.g b { color: var(--owner); }
+  .seg.a { background: var(--open-bg); border-color: var(--open); }
+  .seg.a b { color: var(--open); }
+  .seg.x { background: var(--fail-bg); border-color: var(--fail); }
+  .seg.x b { color: var(--fail); }
+  .card.qc { width: 326px; height: 306px; font-size: 12px; }
+  .card.qc.rep { border-color: var(--fail); }
+  .card.qc.new { width: 326px; height: 300px; border-color: var(--owner); }
+  .qt { margin: 0 0 6px; color: var(--ink); line-height: 1.35; }
+  .orow { display: flex; gap: 7px; align-items: flex-start; margin-top: 5px; line-height: 1.3; }
+  .orow span { color: var(--muted); }
+  .orow.ok .chip { background: var(--owner); border-color: var(--owner); color: var(--panel); }
+  .orow.ok span { color: var(--ink); }
+  .flag { margin-top: 8px; font-size: 11.5px; font-weight: 700; color: var(--fail); }
+  .flag.ok { color: var(--owner); }
+  .gpanel, .spanel, .mini { background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; }
+  .gpanel:hover, .spanel:hover, .mini:hover { border-color: var(--muted); }
+  .gpanel { width: 224px; height: 128px; padding: 10px 14px; border-color: var(--code); }
+  .gpanel h4, .spanel h4 { margin: 0 0 6px; font-size: 14px; }
+  .gpanel p { margin: 0 0 8px; font-size: 12.5px; }
+  .pts { display: flex; gap: 6px; flex-wrap: wrap; } .pts b { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--code-bg); color: var(--code); }
+  .spanel { width: 270px; height: 170px; padding: 10px 14px; font-size: 12.5px; }
+  .prow { display: flex; align-items: center; gap: 8px; height: 26px; border-top: 1px solid var(--line); }
+  .prow small { color: var(--muted); } .prow em { margin-left: auto; font-style: normal; font-weight: 700; color: var(--owner); }
+  .prow.dim em { color: var(--muted); }
+  .req { background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+  .req small { font-size: 11px; color: var(--muted); }
+  .eq { margin: 4px 0; padding: 4px 8px; border-radius: 6px; background: var(--model-bg); font-weight: 600; }
+  .req p, .b9 { margin: 4px 0 0; }
+  .pf { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
+  .pf span { font-weight: 700; font-size: 12px; } .pass { color: var(--owner); } .fail { color: var(--fail); }
+  .mini { width: 196px; height: 66px; padding: 10px 12px; }
+  .mini b { display: block; font-size: 14px; } .mini small { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Across mocks: the same idea may come back, the same question may not</h1>
+  <p class="sub">This diagram shows decision 0056. It changes step 1 (the plan), step 2 (the writer) and step 4 (the check). The example is real: a question of mock 1, the repeat in the first try of mock 2, and the rewrite under the new rule. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+
+  <div class="scroll">
+  <div class="stage">
+    <svg viewBox="0 0 1000 990" width="1000" height="990" aria-hidden="true">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+        <marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--fail)"/></marker>
+        <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--open)"/></marker>
+      </defs>
+      <path class="flow" d="M292,170 H376" marker-end="url(#a)"/>
+      <path class="flow" d="M604,170 H650" marker-end="url(#a)"/>
+      <path class="flow" d="M290,498 H341" marker-end="url(#a)"/>
+      <path class="flow" d="M615,498 H666" marker-end="url(#a)"/>
+      <path class="flow" d="M218,698 H296" marker-end="url(#a)"/>
+    </svg>
+    <div class="shead" style="top:2px"><i>1</i>The same idea comes back in a later mock</div>
+    <div class="hot card qc" data-step="m1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Mock 1, question M1-S28" style="left:20px;top:46px"><div class="chead"><span class="idchip">M1-S28-T2</span><span class="sc">mock 1, built</span></div><p class="qt">Your support agent&#x27;s loop code sends one request to Claude, runs the tool that Claude requests, and then replies to the customer. In the logs, a custo…</p><div class="orow"><b class="chip">A</b><span>Search each response for phrases such as &quot;your request is …</span></div><div class="orow"><b class="chip">B</b><span>End the loop as soon as a response contains assistant text…</span></div><div class="orow"><b class="chip">C</b><span>Run the loop for exactly five iterations on every request,…</span></div><div class="orow ok"><b class="chip">D</b><span>Check stop_reason after each response, execute the request…</span></div></div>
+    <div class="hot gpanel" data-step="group" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="One idea" style="left:380px;top:110px"><h4>Group G001</h4><p>Agentic loop stops on stop_reason, not on text or caps</p><div class="pts"><b>1.1-K1</b><b>1.1-S1</b><b>1.1-S3</b></div></div>
+    <div class="hot card qc rep" data-step="old" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Mock 2, first try" style="left:654px;top:46px"><div class="chead"><span class="idchip">M2-S08-T1</span><span class="sc">mock 2, first try</span></div><p class="qt">Your coordinator agent&#x27;s loop ends whenever a response from Claude contains any assistant text. In testing, the coordinator often stops after writing …</p><div class="orow"><b class="chip">A</b><span>End the loop when a response contains assistant text that …</span></div><div class="orow"><b class="chip">B</b><span>Ignore assistant text and run the loop for a fixed cap of …</span></div><div class="orow ok"><b class="chip">C</b><span>Continue the loop while stop_reason is &quot;tool_use&quot; and end …</span></div><div class="orow"><b class="chip">D</b><span>End the loop only when the assistant text contains a compl…</span></div><div class="flag">same scene, same answer, same wrong options</div></div>
+    <div class="shead" style="top:372px"><i>2</i>Three steps stop the same question</div>
+    <div class="hot spanel" data-step="step1" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Step 1" style="left:20px;top:414px"><h4>Step 1: plan (example: slot M2-S32)</h4><div class="prow"><b>3.3-K1</b><small>unused</small><em>first</em></div><div class="prow"><b>3.3-S3</b><small>unused</small><em>first</em></div><div class="prow dim"><b>3.3-S2</b><small>in mock 1</small><em>later</em></div></div>
+    <div class="hot spanel" data-step="step2" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Step 2" style="left:345px;top:414px"><h4>Step 2: the writer</h4><div class="req"><small>the request</small><div class="eq">earlier questions on this idea: M1-S28</div><p>a different scene and a different angle: the cause, the fix, or a choice between rules</p></div></div>
+    <div class="hot spanel" data-step="step4" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Step 4" style="left:670px;top:414px"><h4>Step 4: rule B9</h4><p class="b9">not the same scene with the same answer, and no wrong option of an earlier question</p><div class="pf"><span class="pass">pass: on to step 6</span><span class="fail">fail: back to the writer</span></div></div>
+    <div class="shead" style="top:620px"><i>3</i>The result: the same idea, a new question</div>
+    <div class="hot mini" data-step="rewrite" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="The rewrite of the owner" style="left:20px;top:664px"><b>D001</b><small>rewrite of M2-S08-T1</small></div>
+    <div class="hot card qc new" data-step="new" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="pop" aria-label="Mock 2, new try" style="left:300px;top:654px"><div class="chead"><span class="idchip">M2-S08-T2</span><span class="sc">mock 2, new try</span></div><p class="qt">Your coordinator agent sometimes delivers a report that contains no synthesized findings. In every failed run, the logs show that the loop exited righ…</p><div class="orow"><b class="chip">A</b><span>Claude judged the research to be complete and returned &quot;en…</span></div><div class="orow ok"><b class="chip">B</b><span>The loop uses a fixed cap of 12 iterations as its main sto…</span></div><div class="orow"><b class="chip">C</b><span>The results from the web search subagent were not appended…</span></div><div class="orow"><b class="chip">D</b><span>The coordinator&#x27;s system prompt does not tell Claude to ca…</span></div><div class="flag ok">B9: pass</div></div>
+    <div class="cap" style="left:654px;top:690px;width:320px">The angle is now the cause. No wrong option repeats M1-S28.</div>
+    <div id="pop" role="dialog" aria-labelledby="poptitle" hidden>
+      <div class="ptop"><span><span id="popwho" class="tag"></span><span id="poppin" class="pinned"></span></span>
+        <button id="popclose" type="button" aria-label="Close">&times;</button></div>
+      <h2 id="poptitle"></h2>
+      <div id="popbody"></div>
+    </div>
+  </div>
+  </div>
+
+  <footer>Diagram 11. Decision 0056 of 8 October 2026. Status: built, ran for the rewrites of mock 2. The question texts in the cards and popups are the real texts from mocks/mock-01.questions.json and runs/mock-02/questions/.</footer>
+</main>
+
+<script id="stepdata" type="application/json">{"m1": {"title": "Mock 1, question M1-S28 (built)", "who": "Earlier mock", "cls": "io", "sent": ["Point 1.1-S1, group G001: \"Agentic loop stops on stop_reason, not on text or caps\".", "Your support agent's loop code sends one request to Claude, runs the tool that Claude requests, and then replies to the customer. In the logs, a customer who asks about a late refund gets no useful answer: Claude requested get_customer, the code ran it, and the loop ended before Claude could call lookup_order. Which loop control flow should you implement?", "(wrong) A. Search each response for phrases such as \"your request is resolved\" and stop the loop when one of these phrases appears.", "(wrong) B. End the loop as soon as a response contains assistant text, because text means Claude has finished its work for the customer.", "(wrong) C. Run the loop for exactly five iterations on every request, and use this iteration cap as the main signal that the work is complete.", "(correct) D. Check stop_reason after each response, execute the requested tools and send their results back while it is \"tool_use\", and end the loop when it is \"end_turn\"."], "why": "Mock 1 is built, so its questions are fixed. A later mock can test the same idea again, but not with the same question.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "group": {"title": "One idea: group G001", "who": "data/point-groups.json", "cls": "code", "sent": ["The group \"Agentic loop stops on stop_reason, not on text or caps\" holds the points 1.1-K1, 1.1-S1, 1.1-S3.", "Inside one mock, no two slots get points of one group (decision 0047). Across mocks, a shared idea is allowed: the guide has 95 ideas, and 5 mocks have 300 slots (decision 0049)."], "why": "So the idea of the loop that stops on stop_reason comes back. The rule of decision 0056 is about the question, not the idea.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "old": {"title": "Mock 2, first try M2-S08-T1: a repeat", "who": "Before decision 0056", "cls": "stop", "sent": ["Point 1.1-S3. The same scene as M1-S28: the loop stops too early. The same answer: continue while stop_reason is \"tool_use\". The wrong options are the same three ideas: a phrase match, \"text means done\", and a fixed iteration cap.", "Your coordinator agent's loop ends whenever a response from Claude contains any assistant text. In testing, the coordinator often stops after writing a short note such as \"Next I'll ask the web search subagent for more sources,\" and the cited report is never produced. Which change to the loop's control flow fixes this most reliably?", "(wrong) A. End the loop when a response contains assistant text that is longer than 200 words, treating long text as the final answer.", "(wrong) B. Ignore assistant text and run the loop for a fixed cap of 15 iterations, which the team chooses as the main stopping rule.", "(correct) C. Continue the loop while stop_reason is \"tool_use\" and end the loop only when stop_reason is \"end_turn\".", "(wrong) D. End the loop only when the assistant text contains a completion phrase such as \"final report ready,\" which the system prompt tells the coordinator to write."], "why": "The writer did not know mock 1. It wrote the most obvious scene again. A second review and an independent agent found 13 such strong repeats in mock 2.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "step1": {"title": "Step 1: the point that earlier mocks used less comes first", "who": "Code", "cls": "code", "sent": ["Inside a group, code sorts the points of a task statement: first the group that earlier mocks used less (decision 0050), then the point that earlier mocks used less (decision 0056). The seed keeps the order inside the same counts.", "Example: in mock 2, slot M2-S32 got point 3.3-S2, the point of M1-S43, although 3.3-K1, 3.3-K2, 3.3-K3 and 3.3-S3 were unused. With decision 0056, an unused point comes first."], "why": "A new point of the same idea gives the writer a new part of the idea to test.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "step2": {"title": "Step 2: the writer sees the earlier questions", "who": "One model call", "cls": "model", "sent": ["When the idea of the slot is in an earlier built mock, the request has the earlier questions on that idea, with the mark of each option.", "The request also has this instruction: \"EARLIER QUESTIONS ON THE SAME IDEA (decision 0056). Earlier mocks have the questions below on the idea of this slot. Use a different scene and a different angle: the cause, the fix, or a choice between rules. The correct action may be the same, if the idea has only one. Do not use a wrong option of an earlier question.\""], "why": "The owner changed the first suggestion: a different angle, not a different correct action, because some ideas have only one correct action. The wrong options must never be the same.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "step4": {"title": "Step 4: rule B9 in call 4b", "who": "One model call", "cls": "model", "sent": ["B9. The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question. (Decision 0056.) The earlier questions on the same idea are in the text above. If there are none, B9 passes.", "Call 4b gets the earlier questions on the same idea. With none, B9 passes. A failure goes back to the writer automatically, as for each other rule."], "why": "The check is in step 4, not in step 6. Step 4 sends a failure back at once. A finding of step 6 waits for the owner after the marking.", "example": "", "examplehead": "", "examplenote": "", "points": []}, "rewrite": {"title": "The owner decides a rewrite", "who": "The owner", "cls": "owner", "sent": ["D001: rewrite M2-S08-T1. The reason of the owner: \"Repeat of M1-S28 of mock 1 (decision 0056): the same scene, the same answer and the same wrong options. Write a new question on the same point. Use a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.\""], "why": "The 13 strong repeats of mock 2 got a rewrite with the new rule. The 4 close repeats stay as known limits (decision 0058).", "example": "", "examplehead": "", "examplenote": "", "points": []}, "new": {"title": "Mock 2, new try M2-S08-T2", "who": "After decision 0056", "cls": "owner", "sent": ["The same idea, a new angle: the question asks for the cause. The wrong options are new.", "Your coordinator agent sometimes delivers a report that contains no synthesized findings. In every failed run, the logs show that the loop exited right after the 12th response from Claude. That response had stop_reason \"tool_use\" and requested the synthesis subagent, but the loop never executed the request. What is the most likely cause of this failure?", "(wrong) A. Claude judged the research to be complete and returned \"end_turn\" before the coordinator could call the synthesis subagent.", "(correct) B. The loop uses a fixed cap of 12 iterations as its main stopping rule, so it exits even while Claude is still requesting tools.", "(wrong) C. The results from the web search subagent were not appended to the conversation history, so Claude lost track of the findings that it needed for the synthesis step.", "(wrong) D. The coordinator's system prompt does not tell Claude to call the synthesis subagent, so Claude skipped that step of the research.", "Rule B9 in call 4b: pass."], "why": "The idea of mock 1 comes back, but a participant who took mock 1 meets a new question.", "example": "", "examplehead": "", "examplenote": "", "points": []}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('stepdata').textContent);
+  var pop = document.getElementById('pop');
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-step]'));
+  var OPEN_DELAY = 350, CLOSE_DELAY = 350, GAP = 10, EDGE = 8;
+  var current = null, pinned = false, openTimer = null, closeTimer = null;
+
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function clearTimers() { clearTimeout(openTimer); clearTimeout(closeTimer); openTimer = closeTimer = null; }
+
+  function fill(d) {
+    var who = document.getElementById('popwho');
+    who.className = 'tag t-' + d.cls; who.textContent = d.who;
+    document.getElementById('poptitle').textContent = d.title;
+    var s = document.getElementById('popbody'); s.textContent = '';
+    d.sent.forEach(function (t) { s.appendChild(el('p', null, t)); });
+    if (d.example) {
+      s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example));
+      if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote));
+    }
+    if (d.points.length) {
+      s.appendChild(el('h3', null, 'The exam guide says'));
+      var ul = el('ul');
+      d.points.forEach(function (p) {
+        var li = el('li'); li.appendChild(el('span', 'pid', p.id)); li.appendChild(document.createTextNode(' '));
+        li.appendChild(el('span', 'ptext', p.text)); li.appendChild(el('span', 'pctx', p.ctx)); ul.appendChild(li);
+      });
+      s.appendChild(ul);
+    }
+    if (d.why) { s.appendChild(el('h3', null, d.points.length ? 'Why here' : 'Why')); s.appendChild(el('p', null, d.why)); }
+  }
+
+  function place() {
+    if (!current) return;
+    var b = current.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+    var pw = pop.offsetWidth, ph = pop.offsetHeight, left, top;
+    if (b.right + GAP + pw <= vw - EDGE) { left = b.right + GAP; top = b.top; }
+    else if (b.left - GAP - pw >= EDGE) { left = b.left - GAP - pw; top = b.top; }
+    else if (b.bottom + GAP + ph <= vh - EDGE) { left = b.left; top = b.bottom + GAP; }
+    else { left = b.left; top = b.top - GAP - ph; }
+    left = Math.max(EDGE, Math.min(left, vw - pw - EDGE));
+    top = Math.max(EDGE, Math.min(top, vh - ph - EDGE));
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+
+  function setPinned(v) {
+    pinned = v;
+    document.getElementById('poppin').textContent = v ? 'kept open' : '';
+  }
+
+  function open(box, pin) {
+    clearTimers();
+    if (current && current !== box) current.setAttribute('aria-expanded', 'false');
+    current = box;
+    fill(DATA[box.getAttribute('data-step')]);
+    box.insertAdjacentElement('afterend', pop);
+    pop.hidden = false; pop.scrollTop = 0;
+    box.setAttribute('aria-expanded', 'true');
+    setPinned(pin);
+    place();
+  }
+
+  function close(returnFocus) {
+    clearTimers();
+    if (!current) return;
+    var b = current;
+    var focusInside = pop.contains(document.activeElement);
+    current.setAttribute('aria-expanded', 'false');
+    pop.hidden = true; current = null; setPinned(false);
+    if (returnFocus || focusInside) { suppressFocusOpen = true; b.focus({ preventScroll: true }); suppressFocusOpen = false; }
+  }
+
+  function scheduleClose() {
+    clearTimeout(closeTimer);
+    if (pinned) return;
+    closeTimer = setTimeout(function () {
+      if (pinned) return;
+      if (current && (current.matches(':hover') || pop.matches(':hover'))) return;
+      if (current && (document.activeElement === current || pop.contains(document.activeElement)) && focusByKeyboard) return;
+      close(false);
+    }, CLOSE_DELAY);
+  }
+
+  var focusByKeyboard = false, suppressFocusOpen = false;
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') focusByKeyboard = true;
+    if (e.key === 'Escape' && current) { e.preventDefault(); close(false); }
+  });
+  document.addEventListener('mousedown', function () { focusByKeyboard = false; }, true);
+
+  boxes.forEach(function (box) {
+    box.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      if (pinned) return;
+      if (current === box) return;
+      clearTimeout(openTimer);
+      openTimer = setTimeout(function () { if (!pinned) open(box, false); }, OPEN_DELAY);
+    });
+    box.addEventListener('mouseleave', function () { clearTimeout(openTimer); scheduleClose(); });
+    box.addEventListener('click', function () {
+      if (current === box && pinned) close(false); else open(box, true);
+    });
+    box.addEventListener('focus', function () {
+      if (current === box || pinned || suppressFocusOpen) return;
+      if (focusByKeyboard) open(box, false);
+    });
+    box.addEventListener('blur', function (e) {
+      if (pinned) return;
+      if (e.relatedTarget && pop.contains(e.relatedTarget)) return;
+      if (current === box && !box.matches(':hover') && !pop.matches(':hover')) close(false);
+    });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (current === box && pinned) close(true); else open(box, true);
+      }
+    });
+  });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+  pop.addEventListener('mouseleave', scheduleClose);
+  pop.addEventListener('focusout', function (e) {
+    if (pinned) return;
+    if (e.relatedTarget && (pop.contains(e.relatedTarget) || e.relatedTarget === current)) return;
+    scheduleClose();
+  });
+  document.getElementById('popclose').addEventListener('click', function () { close(true); });
+  window.addEventListener('scroll', place, true);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

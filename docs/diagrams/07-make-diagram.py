@@ -35,7 +35,7 @@ D = {
    sent=['Step 3 found that one of the exact rules A1 to A12 fails.', 'The question comes here automatically.'],
    example=js_(f3), examplehead=EF),
  's4': dict(title='From step 4: a rule fails, or "cannot decide"', who='One model call', cls='model',
-   sent=['Step 4 found that the blind answer is different from the marks, or that one of the rules B1 to B8 fails.',
+   sent=['Step 4 found that the blind answer is different from the marks, or that one of the rules B1 to B9 fails.',
          'The verdict "cannot decide" also sends the question here, with its reason. The question comes here automatically.'],
    example=js_(f4), examplehead=EF),
  'bad': dict(title='The owner marks the question bad', who='The owner', cls='owner',

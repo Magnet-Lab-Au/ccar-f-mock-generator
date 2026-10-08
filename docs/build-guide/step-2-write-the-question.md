@@ -14,6 +14,8 @@ The model fills a form: the question, and each option with a mark ("correct" or 
 
 The slot also tells the writer two things (decisions 0053 and 0054). If the field `longest_may_be_correct` is false, a wrong option must be longer than each correct option (rule A12). For a slot with 2 answers, the two correct options must test two different parts of the point.
 
+When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different scene and a different angle (the cause, the fix, or a choice between rules), and no wrong option of an earlier question (decision 0056).
+
 Code then mixes the options and gives them their letters. The model does not select the letters. In the 12 sample questions of the guide the correct answer is A 10 times, and a model that sees them can copy that (an assumption, not checked). Code saves one file for each try. No file is written over.
 
 Step 5 uses the same request when a question must be written again. It adds the failed question and the exact findings.

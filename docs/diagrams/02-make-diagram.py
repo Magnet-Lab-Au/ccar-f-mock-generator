@@ -57,6 +57,7 @@ D = {
  '1': dict(title='Part 1: select 4 scenarios', cls='code', who='Code', status='built', none=NONE,
    sent=['The exam uses 4 of its 6 scenarios. So 15 sets of 4 scenarios are possible.',
          'The seed selects one set, and the sequence of the 4 groups in the mock. The step uses only the 11 sets in which each question fits a primary domain of its scenario.',
+         'For mocks 3 to 5, the owner fixed the sets in data/mock-scenarios.json: 1-2-4-6, 1-3-4-6 and 1-2-4-5 (decision 0057, diagram 12). The seed still sets the sequence of the 4 groups.',
          'It does not use these 4 sets: 1-2-3-4, 1-2-5-6, 2-3-5-6 and 2-4-5-6.'],
    table=dict(head=['Scenario', 'Primary domains'], rows=[['%s. %s' % (n, name), d] for n, name, d in scen]),
    points=[fact('Section 5', 'During the exam, 4 scenarios are presented and picked at random from the full set of the 6 scenarios below.')],
@@ -80,7 +81,7 @@ D = {
    sent=['Each task statement has %d to %d points. A point is one thing to know or one skill.' % (lo, hi),
          'The file data/point-groups.json puts each of the 240 points into one group. Two points in one group describe one idea. A group can hold points of different task statements (decision 0047).',
          'No two slots of one mock get points of the same group.',
-         'The seed sets an order of the points. The groups that earlier mocks used least come first (decision 0050). Code takes the first point whose group is free and that keeps a full plan possible (decision 0048).',
+         'The seed sets an order of the points. The groups that earlier mocks used least come first (decision 0050). Inside a group, the point that earlier mocks used less comes first (decision 0056, diagram 11). Code takes the first point whose group is free and that keeps a full plan possible (decision 0048).',
          'Code checks "possible" with a matching of task statements to free groups. No model makes this check.'],
    why='The writer and the checker know exactly what the question must test. Mock 1 got repeats from two points on one idea (decision 0046). The groups prevent this before a question is written.'),
  '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
@@ -225,7 +226,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053 and 0054). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053, 0054, 0056 and 0057). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
