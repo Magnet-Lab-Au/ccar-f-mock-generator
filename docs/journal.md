@@ -2,6 +2,10 @@
 
 One entry for each work session. Newest entry first.
 
+## 9 October 2026, mock 4
+
+- The owner decided: start mock 4 with scenarios 1, 3, 4 and 6 and the stricter rule B9 (decision 0066). No change to the difficulty of the questions.
+
 ## 9 October 2026, the stricter rule B9
 
 - The owner confirmed decisions 0056 to 0065, one at a time, and the assistant pushed the commits.
