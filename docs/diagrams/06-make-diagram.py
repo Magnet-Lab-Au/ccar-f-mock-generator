@@ -92,7 +92,7 @@ D = {
    why='In the exam, each scenario frames a set of questions. A question that contradicts its story confuses the participant.'),
  'B6': dict(title='Rule B6: only features that the guide names', who='One model call', cls='model',
    sent=['No text depends on a feature that the exam guide does not name. This applies to the question, the options and the reasons.',
-         'The model lists each feature name. Code searches each name in the records file of the guide. It ignores capital letters, and it finds a name only as a complete word or words. So "Vision" is not found inside "provisions".'],
+         'The model lists each feature name. Code searches each name in the records file of the guide. It ignores capital letters, and it finds a name only as a complete word or words. So "Vision" is not found inside "provisions".', 'A flag such as -p or --print is searched with its hyphens, as a complete flag (decision 0061).'],
    example=res('B6', 'Option B depends on a setting "maxTurns". The guide does not name it. The guide says "iteration caps".', '1.1-S3'), examplehead=EH,
    why='A question on a feature that the guide does not name trains a participant for a thing that the exam does not test.'),
  'B7': dict(title='Rule B7: one name for each actor, and clear sentences', who='One model call', cls='model',
@@ -216,7 +216,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0055 and 0056). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0055, 0056 and 0061). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

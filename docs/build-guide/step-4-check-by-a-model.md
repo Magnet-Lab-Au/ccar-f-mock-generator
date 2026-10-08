@@ -12,7 +12,7 @@ Some rules need judgment, so a model checks them. The step has two calls, and co
 
 **Call 4b, the rule check.** A second call gets the complete question, with the marks and the reasons, and the text of the guide. It gives one result for each of the 9 rules B1 to B9: the marked options are correct, each wrong option is wrong for a reason that the guide gives, each reason is true, the question tests its point, the question is inside its story, no text depends on a feature that the guide does not name, each actor has one name and each sentence is clear, the question is not a close copy of a sample question of the guide, and the question is not a repeat of a question of an earlier mock on the same idea. For rule B8, the call also gets the 12 sample questions (decision 0055). For rule B9, it gets the questions of the built earlier mocks whose point is in the same group (decision 0056, diagram 11). In mock 2, before this rule, 13 questions repeated mock 1. In mock 1, before this rule, two questions were close copies of sample questions 1 and 12. The result is "pass", "fail" or "cannot decide".
 
-For rule B6, the model lists each feature name. Code searches each name in the records of the guide, as a complete word. A name that the guide does not have fails the rule.
+For rule B6, the model lists each feature name. Code searches each name in the records of the guide, as a complete word. A flag such as -p is searched with its hyphens (decision 0061). A name that the guide does not have fails the rule.
 
 Code, not a model, makes the verdict. A question that fails, or that the checker cannot decide, goes to step 5 with its findings.
 

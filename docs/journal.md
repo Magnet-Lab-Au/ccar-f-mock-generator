@@ -2,6 +2,20 @@
 
 One entry for each work session. Newest entry first.
 
+## 8 October 2026, mock 2 accepted and mock 3
+
+- The owner marked round 2 of mock 2: 14 of 14 good (`marking/M2-round2.xlsx`, committed before anybody read it). The owner decided: 4 close questions and 3 findings of step 6 are known limits (decision 0059), the 5 findings of rule D4 are ignored, and rule B9 does not change. Decision 0060: across mocks a copy is not allowed, a close repeat is a known limit. The owner accepted mock 2. Step 8 built `mocks/mock-02.questions.json` and `mocks/mock-02.answers.json`. Mock 2 cost $20.73.
+- The assistant showed the 7 changes of decision 0046: 4 done, 2 partly done or done in the plan only, 1 not done by decision 0051. The owner said they are good enough.
+- Mock 3 ran with seed 788092 and the fixed scenarios 1, 2, 4 and 6. Rule B9 failed many tries that repeated mock 2, mostly in scenario 6. 4 slots reached the limit of 3 tries.
+- The assistant found a fault: rule B6 never found the flag "-p", which the guide names. The owner agreed to decision 0061: a flag is searched with its hyphens. The owner gave M3-S01 the new point 4.4-S4 and 3 more tries to M3-S07, M3-S48 and M3-S53. The command for an open slot could only select a new point at random. The assistant extended it to take the point of the owner, with the checks of decision 0045, and added a test.
+- All 60 slots of mock 3 passed. Mock 3 cost $23.15. 219 tests pass.
+
+**Open**
+
+- An independent agent compares mock 3 with mocks 1 and 2, before the owner marks `marking/M3-round1.xlsx` (20 questions).
+- The owner confirms the texts of decisions 0056 to 0061.
+- Mocks 4 and 5 wait for the owner.
+
 ## 8 October 2026, mock 2
 
 - Mock 2 ran with seed 167622, scenarios 3, 4, 5 and 6: 60 slots passed, $16.27. The owner marked 20 of 20 good (`marking/M2-round1.xlsx`, committed before anybody read it, SHA-256 e39069af...).
