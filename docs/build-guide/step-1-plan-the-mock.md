@@ -51,7 +51,7 @@ The guide does not cover two parts of this step: a list of slots before the writ
 
 The record is `runs/mock-01/plan.json`. Code writes it one time, and never writes over it.
 
-Code made the plan of mock 1 before the point groups existed. The command `python3 src/point_groups.py plan runs/mock-01/plan.json` shows 12 groups with two or more slots of that plan. The command `python3 src/point_groups.py seeds 2000` runs step 1 over 2000 seeds with the groups and the two-answer points: 1999 seeds give a plan. Seed 734 stops with an error, because one scenario gets fewer than 2 two-answer points. Then the owner uses another seed.
+Code made the plan of mock 1 before the point groups existed. The command `python3 src/point_groups.py plan runs/mock-01/plan.json` shows 12 groups with two or more slots of that plan. The command `python3 src/point_groups.py seeds 2000` runs step 1 over 2000 seeds with the groups and the two-answer points: each seed gives a plan. If a seed gives a scenario fewer than 2 two-answer points, step 1 stops with an error, and the owner uses another seed.
 
 ## The exam guide points that the step uses
 

@@ -27,7 +27,7 @@ Option 1.
 
 Plain reason: a question with 2 answers tests two things. A point with one idea gives only one thing to test, so the writer makes two examples of it, as in mock 1.
 
-A script ran step 1 over 2000 seeds (`python3 src/point_groups.py seeds 2000`). 1999 seeds give a plan. Seed 734 stops, because the points of its scenario 6 in Domains 4 and 5 hold only 1 listed point.
+The list has 78 points. A script ran step 1 over 2000 seeds (`python3 src/point_groups.py seeds 2000`): each seed gives a plan. With the first draft of the list, seed 734 stopped, because its scenario 6 got only 1 listed point.
 
 Not decided yet:
 
@@ -36,6 +36,8 @@ Not decided yet:
 ## How we decided
 
 The assistant suggested the list, the rule of step 1 and the instruction to the writer. The owner said yes.
+
+The assistant drafted 85 points. An independent reviewer checked them against the exam guide. It found 2 points that are sure errors (3.6-K3 and 3.6-S5) and several judgment calls. The assistant removed 8 points and added 8. For 7 points that list the fields of one structure (1.4-K3, 1.4-S3, 2.1-K2, 2.1-S1, 2.2-S1, 5.3-K1, 5.3-S1), the assistant suggested to remove them, because two fields come close to two examples of one idea. The owner agreed.
 
 The owner has not confirmed the text of this file. No independent reviewer checked this file.
 
