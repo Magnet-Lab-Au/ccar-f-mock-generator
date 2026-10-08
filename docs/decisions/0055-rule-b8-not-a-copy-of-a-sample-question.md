@@ -18,7 +18,7 @@ Change 7 of decision 0046: "No rule compares a question with the 12 sample quest
 Option 1.
 
 1. **Rule B8:** "The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action."
-2. **Call 4b** gets the 12 sample questions of the guide, each with its correct answer, before the rules. The text of B8 says that a question on the same point as a sample question passes if its scene and its correct action are different.
+2. **Call 4b** gets the 12 sample questions of the guide, each with its correct answer, before the rules. The text of B8 says that a question on the same point as a sample question passes if its scene is different or its correct action is different.
 3. **The writer** gets B8 in its list of rules, as each other rule. The list now has 20 rules: A1 to A12 and B1 to B8.
 4. A question that fails B8 goes to step 5, as for each other rule of call 4b.
 5. Mock 1 does not change.

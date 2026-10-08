@@ -241,7 +241,8 @@ def load_two_answer_points(records, path=TWO_ANSWER_POINTS):
     if not isinstance(data, dict) or data.get("guide_version") != records["guide"]["version"]:
         raise PlanError("The file of the two-answer points has another guide version.")
     points = data.get("points")
-    if not isinstance(points, list) or not points or len(set(points)) != len(points) or not set(points) <= known:
+    if not isinstance(points, list) or not points or not all(isinstance(p, str) for p in points) \
+            or len(set(points)) != len(points) or not set(points) <= known:
         raise PlanError("The file of the two-answer points has no list of known points, each one time.")
     return set(points)
 

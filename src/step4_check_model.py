@@ -24,7 +24,7 @@ B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
 B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any.
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)
-%s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene and its correct action are different.""" % "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action."
+%s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene is different or its correct action is different.""" % "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action."
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)

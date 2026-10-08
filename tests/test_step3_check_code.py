@@ -107,6 +107,22 @@ class TestCheck(unittest.TestCase):
             q["options"][1]["text"] = q["options"][0]["text"][:-1] + "!"
         self.assertIn("A12", rules_of(self.changed(tie, no)))
 
+    def test_a12_with_two_correct_options(self):
+        # Decision 0053: each correct option must be shorter than the longest wrong option.
+        slot = {"slot_id": "M1-S20", "scenario": 3, "task_statement": "1.2", "point": "1.2-K2",
+                "type": "multiple_response", "options": 5, "select": 2, "longest_may_be_correct": False}
+        q = copy.deepcopy(GOOD)
+        q["select"] = 2
+        q["options"].append({"letter": "E", "text": "Pass the partial results to the coordinator with a clear status.",
+                             "correct": True, "reason": "The coordinator can then decide."})
+        # Option A (correct) is still the longest: fail.
+        self.assertIn("A12", rules_of(check(q, slot)))
+        # A wrong option longer than each correct option: pass. Then a correct option longer than it: fail.
+        q["options"][1]["text"] = q["options"][0]["text"] + " Also log it."
+        self.assertNotIn("A12", rules_of(check(q, slot)))
+        q["options"][4]["text"] = q["options"][1]["text"] + " Now."
+        self.assertIn("A12", rules_of(check(q, slot)))
+
     def test_a8_a_question_mark_at_the_end(self):
         self.assertIn("A8", rules_of(self.changed(lambda q: q.update(question=GOOD["question"].replace("design?", "design. Select the best change.")))))
 

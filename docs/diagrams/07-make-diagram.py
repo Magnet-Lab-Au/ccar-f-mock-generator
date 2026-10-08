@@ -32,10 +32,10 @@ open_slot = {'slot_id': 'M1-S17', 'status': 'open', 'question_id': 'M1-S17-T3', 
 EF = 'Example of a finding'
 D = {
  's3': dict(title='From step 3: a code rule fails', who='Code', cls='code',
-   sent=['Step 3 found that one of the exact rules A1 to A11 fails.', 'The question comes here automatically.'],
+   sent=['Step 3 found that one of the exact rules A1 to A12 fails.', 'The question comes here automatically.'],
    example=js_(f3), examplehead=EF),
  's4': dict(title='From step 4: a rule fails, or "cannot decide"', who='One model call', cls='model',
-   sent=['Step 4 found that the blind answer is different from the marks, or that one of the rules B1 to B7 fails.',
+   sent=['Step 4 found that the blind answer is different from the marks, or that one of the rules B1 to B8 fails.',
          'The verdict "cannot decide" also sends the question here, with its reason. The question comes here automatically.'],
    example=js_(f4), examplehead=EF),
  'bad': dict(title='The owner marks the question bad', who='The owner', cls='owner',
@@ -254,7 +254,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039). Status of the step: built, ran in mock 1. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039), and the rule numbers of 8 October 2026 (decisions 0053 and 0055). Status of the step: built, ran in mock 1. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

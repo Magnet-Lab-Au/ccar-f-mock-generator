@@ -102,7 +102,7 @@ D = {
    why='The owner marked a question bad because it used two names for one actor and was hard to read. A word limit for each sentence does not catch this: the sample questions of the guide have sentences of up to 42 words. So a model checks it.'),
  'B8': dict(title='Rule B8: not a copy of a sample question', who='One model call', cls='model',
    sent=['The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.',
-         'Call 4b gets the 12 sample questions of the guide, each with its correct answer. A question on the same point as a sample question passes if its scene and its correct action are different.'],
+         'Call 4b gets the 12 sample questions of the guide, each with its correct answer. A question on the same point as a sample question passes if its scene is different or its correct action is different.'],
    example=res('B8', 'The question has the scene of sample question 12: a self-review in the same session misses errors, and the answer is an independent review instance.'), examplehead=EH,
    why='In mock 1, two questions were close copies of sample questions 1 and 12. A participant who read the guide knows the answer already. A word count of code does not find a copy, because a copy keeps the scene and changes the words (decision 0055).'),
  'pass': dict(title='Verdict: pass', who='Usual', cls='owner',

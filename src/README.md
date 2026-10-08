@@ -5,7 +5,7 @@ The program.
 - `step0_prepare_guide_records.py`: step 0. It reads `reference/exam-guide.md` and writes `reference/guide-records.json` (decision 0028).
 - `check_guide_records.py`: the check of step 0. It does not use the code of step 0.
 - `step1_plan.py`: step 1. It makes the plan of one mock, `runs/mock-NN/plan.json`, from the records file and a seed (decision 0027). It uses only `random()` of Python, so the same seed gives the same plan also in a later Python version.
-- `step3_check_code.py`: step 3. It checks a question against rules A1 to A11 (decisions 0030, 0031 and 0038, part 8).
+- `step3_check_code.py`: step 3. It checks a question against rules A1 to A12 (decisions 0030, 0031, 0038, part 8, and 0053).
 - `step7_marking.py`: step 7. It writes the Excel marking file of one round in `marking/`, and reads the marks of the owner (decision 0035). The sheet is protected with no password: only the columns "Mark" and "Reason" can change, and sorting is off.
 - `step8_build_files.py`: step 8. It builds the two files of a mock in `mocks/` (decision 0036). It checks each record against its slot first.
 - `model_call.py`: one model call with structured outputs (decisions 0040 and 0041).

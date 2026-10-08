@@ -24,6 +24,7 @@ One entry for each work session. Newest entry first.
 - Change 6 of decision 0046 ("Select 2." on a point with one idea): the owner agreed to a list of two-answer points, a rule of step 1 and an instruction to the writer (decision 0054). The assistant drafted `data/two-answer-points.json` with 85 points. A reviewer checked it against the guide. The owner agreed to remove the points that list the fields of one structure. The list now has 78 points, and 2000 of 2000 seeds give a plan. 203 tests pass.
 - Change 7 of decision 0046 (copies of the sample questions): a word count of code does not separate a copy, so the owner agreed to rule B8 in call 4b, with the 12 sample questions (decision 0055). The list of rules now has 20 rules. 203 tests pass. Diagrams 04, 05 and 06 and the build guide section of step 4 show the change.
 - All 7 changes before mock 2 of decision 0046 are done.
+- One reviewer checked changes 4 to 7 (decisions 0052 to 0055) against the code and the records. It found no bug in the code. The assistant fixed its findings: old rule numbers in diagram 07 and `src/README.md`, two missing tests (the enum of B8 in the form, rule A12 with 2 correct options), the wording of B8 ("scene is different or correct action is different"), the status lines of decisions 0027, 0030, 0032, 0034 and 0053, the README files, and the build guide section of step 2. 205 tests pass. Not changed: a C3 copy across two scenarios can show as two findings, one in each scenario.
 
 **Open**
 

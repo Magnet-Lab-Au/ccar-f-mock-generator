@@ -279,6 +279,14 @@ class TestModelCheck(unittest.TestCase):
         words = {6: "six", 7: "seven", 8: "eight"}
         self.assertIn("against %s rules" % words[len(s4.RULES_B)], s4.SYSTEM_4B)
 
+    def test_the_form_of_call_4b_has_each_rule(self):
+        # The review of 8 October 2026: the enum of the form must have each rule,
+        # or each real call 4b fails.
+        import step4_check_model as s4
+        rule = s4.SCHEMA_4B["properties"]["results"]["items"]["properties"]["rule"]
+        self.assertEqual(rule["enum"], s4.RULES_B)
+        self.assertIn("B8.", s4.RULES_TEXT)
+
     def test_the_rule_check_gets_the_complete_guide_text(self):
         text = guide_text(RECORDS, SLOT["scenario"])
         self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", text, re.M)), 240)

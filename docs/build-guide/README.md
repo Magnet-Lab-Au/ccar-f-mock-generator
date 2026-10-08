@@ -12,11 +12,11 @@ Sections:
 | Step | File | Status |
 |---|---|---|
 | 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026), changed on 8 October 2026 (point groups) |
-| 2. Write the question | `step-2-write-the-question.md` | built (7 October 2026) |
-| 3. Check by code | `step-3-check-by-code.md` | built (7 October 2026) |
-| 4. Check by a model | `step-4-check-by-a-model.md` | built (7 October 2026) |
+| 2. Write the question | `step-2-write-the-question.md` | built (7 October 2026), changed on 8 October 2026 (rules A12 and B8, two-answer slots) |
+| 3. Check by code | `step-3-check-by-code.md` | built (7 October 2026), changed on 8 October 2026 (rule A12) |
+| 4. Check by a model | `step-4-check-by-a-model.md` | built (7 October 2026), changed on 8 October 2026 (rule B8) |
 | 5. Try again | `step-5-try-again.md` | built (8 October 2026) |
-| 6. Check the complete mock | `step-6-check-the-complete-mock.md` | built (7 October 2026) |
+| 6. Check the complete mock | `step-6-check-the-complete-mock.md` | built (7 October 2026), changed on 8 October 2026 (rule C3 over the whole mock) |
 | 7. The owner marks the questions | `step-7-the-owner-marks-the-questions.md` | built (7 October 2026) |
 | 8. Build the files | `step-8-build-the-files.md` | built (8 October 2026) |
 

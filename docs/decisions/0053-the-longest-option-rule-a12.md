@@ -1,7 +1,7 @@
 # 0053: The longest option (rule A12)
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Decision 0055 adds rule B8, so the list has 20 rules.
 - Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/05-step-3-check-by-code.html` (step 3). Diagrams 02 and 04 show the field of the slot and the instruction to the writer.
 

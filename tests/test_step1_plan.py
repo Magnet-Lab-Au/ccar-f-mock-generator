@@ -130,6 +130,7 @@ class TestPlan(unittest.TestCase):
         try:
             path = os.path.join(folder, "two.json")
             for content in ('{"guide_version": "x", "points": ["1.1-K1"]}', "not json",
+                            json.dumps({"guide_version": RECORDS["guide"]["version"], "points": [{"id": "1.1-K1"}]}),
                             json.dumps({"guide_version": RECORDS["guide"]["version"], "points": ["9.9-K9"]})):
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(content)
