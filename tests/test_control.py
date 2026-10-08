@@ -441,6 +441,22 @@ class TestRuleC3OverTheMock(Base):
         self.assertIn("unknown question: M1-S20-T1", errors[0]["cause"])
 
 
+class TestNewPointOfTheOwner(Base):
+    """An open slot can get a point that the owner gives (decisions 0039 and 0045)."""
+
+    def test_the_owner_gives_the_point_of_an_open_slot(self):
+        self.steps.model_script["M1-S05"] = ["fail", "fail", "fail"]
+        c = self.control()
+        c.run()
+        slot = c._slot("M1-S05")
+        free = [p for p in GUIDE_POINTS[slot["task_statement"]]
+                if p != slot["point"] and all(c.point_of(s) != p for s in c.slots())]
+        d = c.decide("new_point", "M1-S05", "A new point.", new_point=free[0])
+        self.assertEqual(d["point"], free[0])
+        with self.assertRaises(Refused):
+            c.decide("more_tries", "M1-S05", "x", new_point=free[0])
+
+
 class TestReviewFindings(Base):
     """The cases of the independent review of 7 October 2026."""
 

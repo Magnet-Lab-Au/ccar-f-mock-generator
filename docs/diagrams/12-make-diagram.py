@@ -20,11 +20,17 @@ MOCKS = {1: sorted(json.load(open(root + '/runs/mock-01/plan.json'))['scenarios'
          2: sorted(json.load(open(root + '/runs/mock-02/plan.json'))['scenarios'])}
 for m in (3, 4, 5):
     MOCKS[m] = list(step1_plan.fixed_scenarios(m))
+def state(m):
+    if os.path.exists(root + '/mocks/mock-%02d.questions.json' % m):
+        return 'built' + (', fixed, decision 0057' if m >= 3 else '')
+    if os.path.exists(root + '/runs/mock-%02d/plan.json' % m):
+        return 'in work' + (', fixed, decision 0057' if m >= 3 else '')
+    return 'planned, fixed, decision 0057'
 COUNT = {s: sum(s in v for v in MOCKS.values()) for s in NAMES}
 D = {}
 for m, sc in MOCKS.items():
     src_ = 'runs/mock-%02d/plan.json: the seed selected the set (decision 0027).' % m if m < 3 else 'data/mock-scenarios.json: the owner fixed the set (decision 0057).'
-    D['m%d' % m] = dict(title='Mock %d: scenarios %s' % (m, ', '.join(map(str, sc))), who='Built' if m == 1 else ('In work' if m == 2 else 'Planned'), cls='io',
+    D['m%d' % m] = dict(title='Mock %d: scenarios %s' % (m, ', '.join(map(str, sc))), who=state(m).split(',')[0].capitalize(), cls='io',
         sent=['%d. %s (primary domains %s)' % (s, NAMES[s], ', '.join(map(str, PRIM[s]))) for s in sc] + [
               'Source: ' + src_, 'Permitted by decision 0027: %s.' % ('yes' if tuple(sc) in SETS else 'NO')])
 for s in NAMES:
@@ -56,7 +62,7 @@ for s in NAMES:
 for m, sc in MOCKS.items():
     y = Y0 + m * H
     parts.append(hot('m%d' % m, 'rowh', 'left:20px;top:%dpx' % y, '<b>Mock %d</b><small>%s</small>' % (
-        m, 'built' if m == 1 else ('in work' if m == 2 else 'fixed, decision 0057')), 'Mock %d' % m))
+        m, state(m)), 'Mock %d' % m))
     for s in NAMES:
         parts.append('<div class="cell%s%s" style="left:%dpx;top:%dpx;width:%dpx"></div>' % (
             ' on' if s in sc else '', ' fx' if m >= 3 and s in sc else '', X0 + (s - 1) * W, y, W - 8))

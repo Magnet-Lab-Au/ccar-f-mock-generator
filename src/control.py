@@ -630,7 +630,11 @@ class Control:
                 raise Refused("The slot %s is not open." % target)
             d["after_try"] = state["tries"]
             if action == "new_point":
-                d["point"] = self._select_new_point(slot, len(decisions) + 1)
+                # The owner can give the point, with the checks of decision 0045.
+                # With no point given, code selects one (decision 0039).
+                d["point"] = (self._check_new_point(slot, new_point) if new_point
+                              else self._select_new_point(slot, len(decisions) + 1))
+                new_point = None
         elif action == "rewrite" and not str(target).startswith(self.prefix + "-SC"):
             # Decision 0045: a rewrite with no finding of step 6. The target is the question.
             if self.marking_pending():
