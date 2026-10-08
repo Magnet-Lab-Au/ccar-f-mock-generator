@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/05-step-3-check-by-code.html` (step 3). Diagrams 02 and 04 show the field of the slot and the instruction to the writer.
 
 ## Question
@@ -37,7 +38,7 @@ Not decided yet:
 
 The assistant counted the longest options in the built mock 1 and suggested the field, the instruction and the rule. The owner said yes.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 
