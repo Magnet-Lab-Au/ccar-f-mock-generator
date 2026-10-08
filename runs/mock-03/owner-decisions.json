@@ -1,0 +1,35 @@
+[
+  {
+    "id": "D001",
+    "action": "new_point",
+    "target": "M3-S01",
+    "reason": "Three tries repeated the scene of M2-S52 (rule B9). The owner gives a new point of the same task statement that no mock used.",
+    "date": "2026-10-08",
+    "after_try": 3,
+    "point": "4.4-S4"
+  },
+  {
+    "id": "D002",
+    "action": "more_tries",
+    "target": "M3-S07",
+    "reason": "Three tries repeated the scene of M2-S54 (rule B9). Try again with a different scene and angle.",
+    "date": "2026-10-08",
+    "after_try": 3
+  },
+  {
+    "id": "D003",
+    "action": "more_tries",
+    "target": "M3-S48",
+    "reason": "Two tries failed rule B6 on \"-p\", which was a fault of B6 (decision 0061). Try again.",
+    "date": "2026-10-08",
+    "after_try": 3
+  },
+  {
+    "id": "D004",
+    "action": "more_tries",
+    "target": "M3-S53",
+    "reason": "The tries failed on rules B7 and B1. Try again.",
+    "date": "2026-10-08",
+    "after_try": 3
+  }
+]
