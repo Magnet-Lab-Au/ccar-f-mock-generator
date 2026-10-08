@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. The 7 changes before mock 2 of decision 0046 come one at a time, each with its own decision file. Changes 1 and 2 (twin points) are built: `data/point-groups.json`, `src/point_groups.py` and the rule in step 1 (decisions 0047 and 0048). Open for them: the owner confirms the groups file and the texts of 0047 and 0048, and decides finding 1a of the reviewer (all of 4.2 and three points of 3.5 as one group). Next: changes 3 to 7. Then mock 2.
+1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. The 7 changes before mock 2 of decision 0046 come one at a time, each with its own decision file. Changes 1 and 2 (twin points) are built: `data/point-groups.json`, `src/point_groups.py` and the rule in step 1 (decisions 0047 and 0048). Open for them: the owner confirms the groups file and the texts of 0047 and 0048. Next: changes 3 to 7. Then mock 2.
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 

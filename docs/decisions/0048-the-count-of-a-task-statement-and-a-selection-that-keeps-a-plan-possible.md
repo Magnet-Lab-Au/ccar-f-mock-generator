@@ -36,11 +36,9 @@ Plain reason: a group means one idea. Two questions on task statement 3.3 are tw
 
 A prototype ran over 2000 seeds. Each seed gave a plan with 60 slots, the domain counts of decision 0027, and no two slots in one group. The 2000 plans took 4 seconds.
 
-The cost: 11 points never get a question, because a task statement with fewer groups always takes their group. Example: 1.6 must take the group "Per-file passes plus a cross-file integration pass", so 4.6-K3 and 4.6-S2 never get a slot. Another point of the same group still tests the idea of each of these points.
+The cost: with the draft of the groups, 11 points never got a question, because a task statement with fewer groups always takes their group. Example: 1.6 must take the group "Per-file passes plus a cross-file integration pass", so 4.6-K3 and 4.6-S2 never get a slot. Another point of the same group still tests the idea of each of these points. After the second review of the groups, the number is 15.
 
-Not decided yet:
-
-- If the 9 points of 4.2 and three points of 3.5 become one group (the reviewer of the groups, finding 1a). Then 4.2 also gets one question for each mock.
+After the second review of the groups, the owner agreed that the 9 points of 4.2 and three points of 3.5 are one group. So 4.2 also gets one question for each mock.
 
 ## How we decided
 
