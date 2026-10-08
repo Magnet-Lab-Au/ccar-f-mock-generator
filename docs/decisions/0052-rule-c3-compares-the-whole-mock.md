@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/08-step-6-check-the-complete-mock.html` (step 6)
 
 ## Question
@@ -37,7 +38,7 @@ Not decided yet:
 
 The assistant said that the groups now catch the case of mock 1, and suggested the change in code only. The owner said yes.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 
