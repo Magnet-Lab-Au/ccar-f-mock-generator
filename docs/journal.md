@@ -10,18 +10,17 @@ One entry for each work session. Newest entry first.
 - An independent reviewer checked the groups. The assistant applied its low-cost findings: two merges, two splits and two idea texts. Its finding 1a waits for the owner: all of 4.2 and three points of 3.5 have the answer "give concrete examples".
 - The rule of decision 0047 could not make a plan: task statement 3.3 is one group, and Domain 1 failed for each of 2000 seeds. The assistant suggested two changes, and the owner said yes (decision 0048): a task statement gets no more questions than its groups, and code selects so that a full plan stays possible.
 - A second independent reviewer checked the final groups with the full exam guide. The owner agreed to its changes: one group for "give concrete examples" (all of 4.2, and 3.5-K1, 3.5-S1, 3.5-S4), the retry group joins the semantic errors (catches S53/S54), 3.1-K1 joins the path rules of 3.3 (catches S33/S40), two small merges and two idea texts. The file now has 95 groups, 65 with two or more points. Each known pair of mock 1 is caught. 15 points never get a slot.
-- Step 1 has the rule. Over 2000 seeds each seed gives a plan with no two slots in one group. 11 points never get a slot, because a tighter task statement always takes their group. Diagram 02 and the build guide section of step 1 show the rule.
+- Step 1 has the rule. Over 2000 seeds each seed gives a plan with no two slots in one group. With the first draft of the groups, 11 points never got a slot, because a tighter task statement always takes their group. Diagram 02 and the build guide section of step 1 show the rule.
 
 - The owner decided: the program makes 5 mocks (decision 0049). With 95 ideas and 300 slots, each idea comes in about 3 mocks.
 
-- The owner asked for a simple way to spread similar questions over the mocks. The assistant suggested one rule in step 1, in code only, and the owner said yes (decision 0050): the groups that earlier mocks used least come first. In a simulation of mocks 2 to 5, no idea is left out, and most ideas come in 2 to 4 mocks. The assistant had first said "3 or 4 mocks", which was too exact.
-- Diagrams 01 and 02 and the build guide section of step 1 show decisions 0047, 0048 and 0050.
+- The owner asked for a simple way to spread similar questions over the mocks. The assistant suggested one rule in step 1, in code only, and the owner said yes (decision 0050): the groups that earlier mocks used least come first. In a simulation of 20 series of mocks 2 to 5 (`python3 src/point_groups.py series 20`), no idea is left out, 82 of 95 ideas come in 2 to 4 mocks, and about 11 ideas are in all 5. The assistant had first said "3 or 4 mocks", which was too exact.
+- Diagrams 01 and 02 and the build guide section of step 1 show decisions 0047, 0048 and 0050. A reviewer checked the records, and the assistant fixed its findings. 192 tests pass.
 
 **Open**
 
 - The owner confirms the groups file and the texts of decisions 0047 to 0050.
 - How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
-- Changes 3 to 7 of decision 0046.
 - Changes 3 to 7 of decision 0046.
 
 ## 8 October 2026

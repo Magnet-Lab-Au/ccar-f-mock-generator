@@ -184,6 +184,17 @@ class TestEarlierMocks(unittest.TestCase):
         finally:
             shutil.rmtree(folder)
 
+    def test_a_bad_built_mock_file_makes_no_plan(self):
+        folder = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(folder, "mock-01.questions.json"), "w", encoding="utf-8") as f:
+                f.write('{"groups": [{"no questions": 1}]}')
+            with self.assertRaises(PlanError) as e:
+                step1_plan.earlier_points(folder, 2)
+            self.assertIn("cannot be read", str(e.exception))
+        finally:
+            shutil.rmtree(folder)
+
     def test_the_real_mock_1_is_read(self):
         found = step1_plan.earlier_points(os.path.join(ROOT, "mocks"), 2)
         self.assertEqual(list(found), [1])

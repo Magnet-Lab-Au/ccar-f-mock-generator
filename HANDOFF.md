@@ -55,7 +55,7 @@ Read these only when you need them:
 
 ## Where we are
 
-State on 7 October 2026, second session.
+State on 7 October 2026, second session. The table of steps and the next steps below have the state of 8 October 2026.
 
 - Decisions 0001 to 0039 exist. The owner confirmed the text of each one. Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
 - Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
@@ -70,7 +70,7 @@ State on 7 October 2026, second session.
 | Step | Decision | Diagram | State |
 |---|---|---|---|
 | 0. Prepare the guide records | 0028 | 03 | Designed, and the step ran. The file `reference/guide-records.json` exists. |
-| 1. Plan the mock | 0027, 0047, 0048 | 02 | Built and ran: `src/step1_plan.py`. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. On 8 October 2026 step 1 got the rule of the point groups (decisions 0047 and 0048) and the spread over the mocks (decision 0050). Code made the plan of mock 1 before that rule existed. |
+| 1. Plan the mock | 0027, 0047, 0048, 0050 | 02 | Built and ran: `src/step1_plan.py`. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. On 8 October 2026 step 1 got the rule of the point groups (decisions 0047 and 0048) and the spread over the mocks (decision 0050). Code made the plan of mock 1 before that rule existed. |
 | 2. Write the question | 0029 | 04 | Built, ran in the test and in mock 1. Build guide section exists. |
 | The rules for a good question (17 rules) | 0030 | none | Decided |
 | 3. Check by code | 0031 | 05 | Built, ran in the test and in mock 1. Build guide section exists. |
@@ -120,7 +120,7 @@ Also decided:
 
 Not decided:
 
-- How the program spreads the ideas and the scenarios over the 5 mocks (decision 0049).
+- How the program selects the scenarios across the 5 mocks, and prevents the same scene in two mocks. Step 1 spreads the ideas (decision 0050).
 - If a later version can use other sources than the exam guide (decision 0008 covers the first version only).
 
 ## The next steps
@@ -171,7 +171,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | Items that the decisions list as "not decided yet" | Each decision from 0027 to 0036 has a list "Not decided yet". The review said that this table does not have each of those items. Read those lists in the decision files. |
 | A false sentence in diagram 06 | Corrected on 7 October 2026. |
 | The copy of the exam guide | `reference/exam-guide.md` is a copy of a file in the Claude project "CPN Learning path". The comparison with the original, character for character, is not done. The assistant can read the original only as text in the chat, not as a file. The assistant asked the owner if the original file is on the computer. The owner did not answer yet. |
-| The number of mocks | 5 mocks (decision 0049). Not decided: how the program selects the ideas and the scenarios across mocks, and how it prevents the same scene in two different mocks. |
+| The number of mocks | 5 mocks (decision 0049). Step 1 spreads the ideas over the mocks (decision 0050). Not decided: how the program selects the scenarios across mocks, and how it prevents the same scene in two different mocks. |
 | A task statement that does not fit its scenario | The plan does not prevent it (decision 0027). The writer can answer `cannot_write`. Then the slot gets the status `open`, and the owner decides (decision 0037). An automatic path is decided after the test of decision 0024. |
 | Numbers | Decided, but each one is a guess or has a margin with no source, and can change after the test: 3 tries for one slot (decision 0033), 3 runs of step 6 for one scenario and 3 runs of a call that fails (decision 0037), the limits of rules A6 and A7 (decision 0031), at most 2 questions with the same wrong idea (decision 0034), and the bad marks that stop a mock: more than 6 of 60 for mock 1, 2 or more of 20 for a later mock (decision 0035). Not decided: when the sample of the owner goes below 20. |
 | Rule B6 | Decided in decision 0037: the model lists the feature names, and code searches them in the records file. Not decided: a part of a word against a complete word, a plural, and if a name on the list "out of scope" of Section 17 counts as named. |

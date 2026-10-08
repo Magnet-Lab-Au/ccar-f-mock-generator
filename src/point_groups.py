@@ -11,7 +11,12 @@ Run from the folder ccar-f-mock-generator:
         Prints each group that has two or more slots of the plan.
     python3 src/point_groups.py seeds 2000
         Makes the plans of seeds 0 to 1999 with step 1 and shows that each one
-        exists and has no two slots in one group (decision 0047, item 4).
+        exists and has no two slots in one group (decision 0047, item 4). The
+        plans are plans of mock 2, after the built mock 1 (decision 0050).
+    python3 src/point_groups.py series 20
+        Makes 20 series of mocks 2 to 5 after the built mock 1, with and without
+        the order of decision 0050, and counts in how many of the 5 mocks each
+        group (idea) comes (decisions 0049 and 0050).
 """
 import argparse
 import json
@@ -102,12 +107,13 @@ def table(groups):
 def seeds(records, groups, number):
     """Run step 1 for the seeds 0 to number - 1 and print the result."""
     import step1_plan
+    earlier = step1_plan.earlier_points(os.path.join(ROOT, "mocks"), 2)
     failed = []
     used = set()
     counts = {}
     for seed in range(number):
         try:
-            plan = step1_plan.make_plan(records, 1, seed, "2026-10-08", groups)
+            plan = step1_plan.make_plan(records, 2, seed, "2026-10-08", groups, earlier)
         except step1_plan.PlanError as e:
             failed.append((seed, str(e)))
             continue
@@ -128,9 +134,41 @@ def seeds(records, groups, number):
     return 1 if failed else 0
 
 
+def series(records, groups, number):
+    """Simulate mocks 2 to 5 after the built mock 1, number times, with and
+    without the order of decision 0050. Print the number of ideas that come in
+    0, 1, ... 5 of the 5 mocks, as an average over the series."""
+    import step1_plan
+    of = group_of(groups)
+    first = step1_plan.earlier_points(os.path.join(ROOT, "mocks"), 2)
+    print("Ideas (groups) by the number of mocks that have them, average of %d series of 5 mocks:" % number)
+    print("| Mocks | Without the rule | With the rule |")
+    print("|---|---|---|")
+    result = {}
+    for rule in (False, True):
+        totals = [0] * 6
+        in_all = 0
+        for n in range(number):
+            earlier = dict(first)
+            for mock in range(2, 6):
+                plan = step1_plan.make_plan(records, mock, 1000 * n + mock, "2026-10-08", groups,
+                                            earlier if rule else None)
+                earlier[mock] = [s["point"] for s in plan["slots"]]
+            mocks = {}
+            for points in earlier.values():
+                for g in {of[p]["id"] for p in points}:
+                    mocks[g] = mocks.get(g, 0) + 1
+            for g in groups["groups"]:
+                totals[mocks.get(g["id"], 0)] += 1
+        result[rule] = [t / number for t in totals]
+    for k in range(6):
+        print("| %d | %.1f | %.1f |" % (k, result[False][k], result[True][k]))
+    return 0
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Check the point groups (decision 0047).")
-    parser.add_argument("command", choices=["check", "plan", "seeds"])
+    parser.add_argument("command", choices=["check", "plan", "seeds", "series"])
     parser.add_argument("plan", nargs="?", help="the path of a plan file, or the number of seeds")
     parser.add_argument("--groups", default=GROUPS)
     parser.add_argument("--records", default=RECORDS)
@@ -148,6 +186,8 @@ def main(argv=None):
               % (len(groups["groups"]), sum(len(g["points"]) for g in groups["groups"])))
         print(table(groups))
         return 0
+    if args.command == "series":
+        return series(records, groups, int(args.plan or 20))
     if args.command == "seeds":
         return seeds(records, groups, int(args.plan or 2000))
     if not args.plan:

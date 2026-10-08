@@ -217,9 +217,12 @@ def earlier_points(mocks_folder, mock):
     for n in range(1, mock):
         path = os.path.join(mocks_folder, "mock-%02d.questions.json" % n)
         if os.path.exists(path):
-            with open(path, encoding="utf-8") as f:
-                built = json.load(f)
-            found[n] = [q["point"] for g in built["groups"] for q in g["questions"]]
+            try:
+                with open(path, encoding="utf-8") as f:
+                    built = json.load(f)
+                found[n] = [q["point"] for g in built["groups"] for q in g["questions"]]
+            except (OSError, ValueError, KeyError, TypeError) as e:
+                raise PlanError("The built mock file %s cannot be read: %s" % (path, e))
     return found
 
 

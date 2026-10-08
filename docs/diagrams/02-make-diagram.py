@@ -45,6 +45,8 @@ EX = PLAN['slots'][0]
 D = {
  'IN': dict(title='What the step receives', cls='io', who='Input', status='built', points=[], none=NONE,
    sent=['The guide records: the 6 scenarios and their primary domains, the 5 domain weights, and the 30 task statements with their 240 points.',
+         'The point groups: data/point-groups.json puts each of the 240 points into one group of points on one idea (decision 0047).',
+         'The points of each built mock with a lower number, from mocks/mock-NN.questions.json (decision 0050).',
          'A mock number.',
          'A seed. A seed is a number that controls the random selections.'],
    why='Step 0 makes the guide records. The seed has a plain reason: the same seed gives the same plan, so we can make a plan again and compare it, for example after a change to the code.'),
@@ -87,7 +89,7 @@ D = {
    points=[fact('Section 3', 'Multiple-choice and multiple-response items; each item states how many responses to select')],
    why='The guide gives no number for each type. All 12 sample questions of the guide are multiple-choice. The number 8 is a guess. It has no source.'),
  'OUT': dict(title='What the step returns', cls='io', who='Output', status='built', points=[], none=NONE,
-   sent=['One plan file: the mock number, the seed, the version of the guide, the date, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
+   sent=['One plan file: the mock number, the seed, the version of the guide, the date, the numbers of the earlier mocks that step 1 counted, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
          'The slots get the numbers 1 to 60, group by group. The seed sets the sequence inside a group. The slot number is the question number in the finished mock.',
          'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options and the number of answers to select.',
          'The first slot of the plan of mock 1: %s.' % json.dumps(EX)],
@@ -221,7 +223,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048 and 0050). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

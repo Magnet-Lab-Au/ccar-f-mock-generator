@@ -28,17 +28,18 @@ Option 1.
 
 Plain reason: a participant who takes all 5 mocks should meet each idea about the same number of times, not one idea in each mock and another idea in none.
 
-A simulation ran 20 series of mocks 2 to 5 after the real mock 1. On average, over the 5 mocks:
+A simulation ran 20 series of mocks 2 to 5 after the real mock 1 (`python3 src/point_groups.py series 20`). It counts in how many of the 5 mocks each idea comes. The average over the 20 series:
 
-| Mocks that test one idea | Without the rule | With the rule |
+| Mocks that have the idea | Ideas without the rule | Ideas with the rule |
 |---|---|---|
-| 0 | 4.8 ideas | 0 ideas |
-| 1 | 13.6 ideas | 1.6 ideas |
-| 2 or 3 | 35.8 ideas | 63.8 ideas |
-| 4 or 5 | 33.1 ideas | 24.7 ideas |
-| 6 or more | 7.8 ideas | 5.0 ideas |
+| 0 | 4.8 | 0 |
+| 1 | 13.7 | 1.9 |
+| 2 | 18.6 | 34.5 |
+| 3 | 17.6 | 31.4 |
+| 4 | 20.5 | 16.1 |
+| 5 | 19.9 | 11.1 |
 
-A count of 6 or more comes from mock 1, which has more than one slot in some groups. About 7 ideas are in each mock with or without the rule, because a task statement with few groups must always take them (decision 0048).
+With the rule, 82 of the 95 ideas come in 2 to 4 mocks, and no idea is left out. About 11 ideas are still in all 5 mocks, because a task statement with few groups must always take them (decision 0048).
 
 Option 2 does not fit, because mock 1 exists already, and the owner checks each mock before the next one starts.
 
@@ -51,9 +52,9 @@ Not decided yet:
 
 The assistant suggested this rule and a second rule for the writer (the earlier questions on the same idea, to avoid an old scene). The owner said: "It is getting so so complicated." The assistant suggested to drop both rules. The owner asked: "Is there no simple way to ensure that similar questions are spread out between mocks?" The assistant suggested this one rule in step 1, in code only. The owner said yes.
 
-The assistant first said that each idea then comes in 3 or 4 of the 5 mocks. The simulation shows that this was too exact: most ideas come in 2 to 4 mocks.
+The assistant first said that each idea then comes in 3 or 4 of the 5 mocks. The simulation shows that this was too exact: most ideas come in 2 to 4 mocks. A reviewer then found a wrong number in the first text of this file ("about 7 ideas in each mock"). The table now comes from the committed script.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+One independent reviewer checked this file and the records of the session on 8 October 2026. The assistant fixed its findings. The owner has not confirmed the text of this file.
 
 ## Exam guide points
 
