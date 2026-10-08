@@ -1,7 +1,8 @@
 """Step 4: a blind answer, then a rule check (decisions 0012, 0023, 0030, 0032, 0037 and 0040).
 
 Call 4a answers the question with no marks and no reasons. Call 4b checks the
-rules B1 to B7 with the complete record and the guide text. Code checks each
+rules B1 to B8 with the complete record, the guide text and the 12 sample
+questions of the guide (rule B8, decision 0055). Code checks each
 answer, searches the feature names in the records file, and makes the verdict.
 A model does not make the verdict.
 """
@@ -14,7 +15,7 @@ from step2_write import plain
 
 DESC_4A, SCHEMA_4A = load_form("06-forms-draft.json", "call_4a")
 DESC_4B, SCHEMA_4B = load_form("06-forms-draft.json", "call_4b")
-RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6", "B7"]
+RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]
 
 RULES_TEXT = """B1. Each option that is marked correct is correct, and no other option is correct.
 B2. Each wrong option is wrong for a reason that the guide gives, and its reason says so.
@@ -22,11 +23,12 @@ B3. Each reason is true and agrees with the guide.
 B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
 B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any.
-B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)"""
+B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)
+%s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene and its correct action are different.""" % "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action."
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
-SYSTEM_4B = ("You check one exam question against seven rules. Use only the text of the exam guide below as the source of facts. "
+SYSTEM_4B = ("You check one exam question against eight rules. Use only the text of the exam guide below as the source of facts. "
              "Give one result for each rule: pass, fail or cannot_decide. A result that is not pass has a finding. " + DESC_4B)
 
 
@@ -51,6 +53,17 @@ def guide_text(records, scenario):
         parts += ["  %s: %s" % (p["id"], plain(p["text"])) for p in t["points"]]
     for key, title in (("technologies", "Technologies"), ("in_scope", "Topics in scope"), ("out_of_scope", "Topics out of scope")):
         parts += ["", "Section 17, %s:" % title] + ["- " + plain(x) for x in records["section_17"][key]]
+    return "\n".join(parts)
+
+
+def sample_text(records):
+    """Decision 0055: the 12 sample questions of the guide, for rule B8, with the
+    correct answer of each."""
+    parts = ["THE 12 SAMPLE QUESTIONS OF THE EXAM GUIDE (for rule B8)"]
+    for s in records["sample_questions"]:
+        parts += ["", "Sample question %d (scenario %d): %s" % (s["number"], s["scenario"], plain(s["question"]))]
+        parts += ["%s. %s" % (letter, plain(text)) for letter, text in sorted(s["options"].items())]
+        parts.append("Correct: %s" % ", ".join(s["correct_answer"]))
     return "\n".join(parts)
 
 
@@ -122,14 +135,15 @@ class ModelCheck:
 
     def rules(self, question, slot):
         """Call 4b. Raise CallFailed for an answer that is not valid (decision 0032)."""
-        text = "\n".join([guide_text(self.records, slot["scenario"]), "", "THE RULES", RULES_TEXT, "",
+        text = "\n".join([guide_text(self.records, slot["scenario"]), "", sample_text(self.records), "",
+                          "THE RULES", RULES_TEXT, "",
                           "THE SLOT: task statement %s, point %s, scenario %d." % (slot["task_statement"], question.get("point", slot["point"]), slot["scenario"]),
                           "", "THE QUESTION, with the marks and the reasons of the writer:", show(question, with_key=True)])
         answer, model = self.model_call.ask(SYSTEM_4B, text, SCHEMA_4B)
         letters = {o["letter"] for o in question["options"]}
         results = answer.get("results") if isinstance(answer, dict) else None
         if not isinstance(results, list) or sorted(r.get("rule") for r in results) != RULES_B:
-            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B7.")
+            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B8.")
         for r in results:
             if r.get("result") not in ("pass", "fail", "cannot_decide"):
                 raise CallFailed("Call 4b: rule %s has no valid result." % r.get("rule"))

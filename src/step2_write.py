@@ -21,7 +21,7 @@ def plain(text):
     return re.sub(r"\\(.)", r"\1", text)
 
 
-# Decisions 0030, 0043 and 0053: the 19 rules. The writer gets all of them. The text of each
+# Decisions 0030, 0043, 0053 and 0055: the 20 rules. The writer gets all of them. The text of each
 # rule is the text of decision 0030, with rule A11 of decision 0038, part 8.
 RULES = """Rules for a good question. Code checks group A. A second model checks group B.
 
@@ -48,6 +48,7 @@ B5. The question is inside the story of its scenario and does not contradict it.
 B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature.
 
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading.
+B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.
 
 Two more instructions:
 - The options of a question have the same form. Example: all are actions, or all are places, or all are causes.

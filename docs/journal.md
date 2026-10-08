@@ -22,12 +22,14 @@ One entry for each work session. Newest entry first.
 - Change 4 of decision 0046 (step 6 compares one scenario only): the owner agreed to a change in code only (decision 0052). Rule C3 now compares the text of each question with all 60 questions of the mock. A finding of C3 can name a question of another scenario. 196 tests pass. Diagram 08 and the build guide section of step 6 show the change.
 - Change 5 of decision 0046 (the longest option): the owner agreed to a field of the slot, an instruction to the writer and rule A12 of step 3 (decision 0053). In the built mock 1, the correct option is the longest in 37 of 52 questions with 1 answer (chance 13). The plan now lets the longest option be correct on 13 of 52 and 3 of 8 slots. 199 tests pass. Diagrams 02, 04, 05 and 06 and the build guide sections of steps 1 and 3 show the change.
 - Change 6 of decision 0046 ("Select 2." on a point with one idea): the owner agreed to a list of two-answer points, a rule of step 1 and an instruction to the writer (decision 0054). The assistant drafted `data/two-answer-points.json` with 85 points. A reviewer checked it against the guide. The owner agreed to remove the points that list the fields of one structure. The list now has 78 points, and 2000 of 2000 seeds give a plan. 203 tests pass.
+- Change 7 of decision 0046 (copies of the sample questions): a word count of code does not separate a copy, so the owner agreed to rule B8 in call 4b, with the 12 sample questions (decision 0055). The list of rules now has 20 rules. 203 tests pass. Diagrams 04, 05 and 06 and the build guide section of step 4 show the change.
+- All 7 changes before mock 2 of decision 0046 are done.
 
 **Open**
 
+- The owner confirms the text of decision 0055.
+- Mock 2.
 - How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
-- Change 7 of decision 0046.
-- (Done: the owner confirmed decision 0054 and the list.)
 
 ## 8 October 2026
 

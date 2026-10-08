@@ -40,7 +40,7 @@ record_ids = {'question_id': 'M1-S17-T1', 'slot_id': 'M1-S17', 'try': 1, 'model'
 D = {
  'rules': dict(title='The rules for a good question', who='Fixed text', cls='io',
    sent=['One list of exact rules for a good question. It is the same for each call.',
-         'The writer and the checkers use the same list: 19 rules, A1 to A12 for code and B1 to B7 for a model.',
+         'The writer and the checkers use the same list: 20 rules, A1 to A12 for code and B1 to B8 for a model.',
          'The slot shown to the writer says if the longest option may be correct (decision 0053). If not, rule A12 asks for a wrong option that is longer than each correct option.',
          'For a slot with 2 answers, the writer gets: "The two correct options test two different parts of the point. They are not two examples of one idea." (decision 0054)',
          'One instruction has no rule of its own: the options of a question have the same form. The instruction "one name for one actor" has a rule: B7.'],
@@ -203,7 +203,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 04. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0053 and 0054). Status of the step: built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
+  <footer>Diagram 04. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0053, 0054 and 0055). Status of the step: built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

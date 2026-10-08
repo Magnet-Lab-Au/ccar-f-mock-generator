@@ -236,7 +236,7 @@ def blind_for(question, status="answered"):
 def check_4b(results=None, features=()):
     rs = results or {}
     return {"results": [{"rule": r, "result": rs.get(r, ("pass",))[0], "finding": rs.get(r, (None, None))[1],
-                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6", "B7"]],
+                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]],
             "features": list(features)}
 
 
@@ -268,8 +268,11 @@ class TestModelCheck(unittest.TestCase):
         q = question_of(SLOT)
         _, client = self.run_check(blind_for(q), check_4b(), q)
         text = client.requests[1]["messages"][0]["content"]
-        for part in ("B1.", "B6.", "B7.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
+        for part in ("B1.", "B6.", "B7.", "B8.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
             self.assertIn(part, text)
+        # Decision 0055: the 12 sample questions, each with its correct answer.
+        self.assertEqual(len(re.findall(r"^Sample question \d+ \(scenario \d\):", text, re.M)), 12)
+        self.assertEqual(text.count("\nCorrect: "), 12)
 
     def test_the_prompt_names_the_right_number_of_rules(self):
         import step4_check_model as s4

@@ -198,7 +198,7 @@ page = '''<!doctype html>
     </svg>
     <div class="shead" style="top:2px"><i>1</i>One question goes through 12 rules</div>
     <div class="panel" style="left:300px;top:38px;width:400px;height:820px"></div>
-    <div class="ptitle" style="left:314px;top:46px">The 12 rules<small>group A of the 19 rules for a good question</small></div>
+    <div class="ptitle" style="left:314px;top:46px">The 12 rules<small>group A of the 20 rules for a good question</small></div>
     <div class="shead" style="top:876px"><i>2</i>Code saves the verdict</div>
     ''' + ''.join(boxes) + '''
     ''' + popdiv + '''
