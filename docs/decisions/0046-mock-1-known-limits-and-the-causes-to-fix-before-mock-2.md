@@ -45,7 +45,7 @@ Plain reason: the owner and the second review found each question good by the fo
 
 The owner decided: "I do not want another rewrite round. Record them as known limits of mock 1." The owner named the three new causes.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner has not confirmed the text of this file. One independent reviewer checked this file on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 
