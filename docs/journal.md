@@ -7,12 +7,12 @@ One entry for each work session. Newest entry first.
 - The owner confirmed decisions 0056 to 0065, one at a time, and the assistant pushed the commits.
 - Decision 0066: a stricter rule B9 for mocks 4 and 5 (the same problem fails, also in another setting, and at most one wrong option may repeat). The owner asked to test it first.
 - The test (`src/test_b9.py`, report `docs/reviews/test-b9-mock-3.md`) checked the 60 questions of mock 3: B9 fails 24. It agrees with the independent agent on 12, fails 12 more, and passes 14 that the agent named. It cost $6.33, not the $3 to $4 that the assistant estimated.
-- The owner decided: the stricter B9 for mock 4, with an exception. Narrow ideas with almost only one problem keep the copy rule. The assistant drafted `data/narrow-ideas.json` (21 groups). The writer and call 4b get the copy rule for these ideas. 222 tests pass. Diagrams 06 and 11 and the build guide section of step 4 show it.
+- The owner decided: the stricter B9 for mock 4, with an exception. Narrow ideas with almost only one problem keep the copy rule. The assistant drafted `data/narrow-ideas.json` (21 groups). The owner removed G078 and confirmed 20. The writer and call 4b get the copy rule for these ideas. 222 tests pass. Diagrams 06 and 11 and the build guide section of step 4 show it.
 - New cost estimate of mock 4: about $32 to $40 (not measured).
 
 **Open**
 
-- The owner confirms the list of narrow ideas. Mock 4 does not start before that.
+- (Done: the owner confirmed the list of narrow ideas without G078, 20 groups, and accepted the cost estimate of $32 to $40.)
 - The owner confirms the text of decision 0066.
 
 ## 9 October 2026, mock 3 accepted
