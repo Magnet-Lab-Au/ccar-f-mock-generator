@@ -99,11 +99,19 @@ class FeatureSearch:
                     walk(v)
         walk(records)
         self.text = " | ".join(_norm(t) for t in texts)
+        # Decision 0061: a flag keeps its hyphens, so the raw text is kept too.
+        self.raw = " | ".join(plain(t).lower() for t in texts)
 
     def named(self, name):
         """The name must be in the text as a complete word or words: no letter or
         digit directly before it or after it. So "Vision" is not found inside
-        "provisions". A name of one character is never named."""
+        "provisions". A name of one character is never named, except a flag with
+        its hyphens (decision 0061)."""
+        flag = name.strip().strip("`'\"").strip().lower()
+        if re.fullmatch(r"--?[a-z0-9][a-z0-9-]*", flag):
+            # Decision 0061: a flag such as -p or --print is searched with its
+            # hyphens, as a complete flag.
+            return re.search(r"(?<![a-z0-9-])%s(?![a-z0-9-])" % re.escape(flag), self.raw) is not None
         n = _name(name)
         if len(n) < 2:
             return False

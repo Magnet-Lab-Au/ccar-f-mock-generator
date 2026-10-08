@@ -287,6 +287,16 @@ class TestModelCheck(unittest.TestCase):
         self.assertEqual(rule["enum"], s4.RULES_B)
         self.assertIn("B8.", s4.RULES_TEXT)
 
+    def test_b6_finds_a_flag_with_its_hyphens(self):
+        # Decision 0061: the guide names -p and --print. A one-letter flag that
+        # the guide does not name stays not named.
+        from step4_check_model import FeatureSearch
+        f = FeatureSearch(RECORDS)
+        for name in ("-p", "--print", "`-p`", "--json-schema", "--output-format", "--resume"):
+            self.assertTrue(f.named(name), name)
+        for name in ("-x", "-r", "p", "--printx"):
+            self.assertFalse(f.named(name), name)
+
     def test_the_rule_check_gets_the_complete_guide_text(self):
         text = guide_text(RECORDS, SLOT["scenario"])
         self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", text, re.M)), 240)
