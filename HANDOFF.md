@@ -42,7 +42,7 @@ The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the 
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0048. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+4. `docs/decisions/`: decisions 0001 to 0049. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
 5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
 
 Read these only when you need them:
@@ -120,7 +120,7 @@ Also decided:
 
 Not decided:
 
-- How many mocks the program makes.
+- How the program spreads the ideas and the scenarios over the 5 mocks (decision 0049).
 - If a later version can use other sources than the exam guide (decision 0008 covers the first version only).
 
 ## The next steps
@@ -171,7 +171,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | Items that the decisions list as "not decided yet" | Each decision from 0027 to 0036 has a list "Not decided yet". The review said that this table does not have each of those items. Read those lists in the decision files. |
 | A false sentence in diagram 06 | Corrected on 7 October 2026. |
 | The copy of the exam guide | `reference/exam-guide.md` is a copy of a file in the Claude project "CPN Learning path". The comparison with the original, character for character, is not done. The assistant can read the original only as text in the chat, not as a file. The assistant asked the owner if the original file is on the computer. The owner did not answer yet. |
-| The number of mocks | Not decided. It also decides how the program selects the scenarios across mocks, and how it prevents the same scene in two different mocks. |
+| The number of mocks | 5 mocks (decision 0049). Not decided: how the program selects the ideas and the scenarios across mocks, and how it prevents the same scene in two different mocks. |
 | A task statement that does not fit its scenario | The plan does not prevent it (decision 0027). The writer can answer `cannot_write`. Then the slot gets the status `open`, and the owner decides (decision 0037). An automatic path is decided after the test of decision 0024. |
 | Numbers | Decided, but each one is a guess or has a margin with no source, and can change after the test: 3 tries for one slot (decision 0033), 3 runs of step 6 for one scenario and 3 runs of a call that fails (decision 0037), the limits of rules A6 and A7 (decision 0031), at most 2 questions with the same wrong idea (decision 0034), and the bad marks that stop a mock: more than 6 of 60 for mock 1, 2 or more of 20 for a later mock (decision 0035). Not decided: when the sample of the owner goes below 20. |
 | Rule B6 | Decided in decision 0037: the model lists the feature names, and code searches them in the records file. Not decided: a part of a word against a complete word, a plural, and if a name on the list "out of scope" of Section 17 counts as named. |
