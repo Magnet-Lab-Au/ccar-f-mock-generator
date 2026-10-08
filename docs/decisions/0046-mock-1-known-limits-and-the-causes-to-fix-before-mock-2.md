@@ -1,4 +1,4 @@
-# 0046: Mock 1: three known limits, and the causes to fix before mock 2
+# 0046: Mock 1: its known limits, and the causes to fix before mock 2
 
 - Date: 8 October 2026
 - Status: accepted
@@ -6,7 +6,7 @@
 
 ## Question
 
-After the round of 9 rewrites (decision 0045), the owner marked round 2 blind: 9 of 9 good. A second review by a Claude model also found 9 of 9 good by the four checks, but found three weak questions. Does mock 1 get another round of rewrites?
+After the round of 9 rewrites (decision 0045), the owner marked round 2 blind: 9 of 9 good. A second review by a Claude model also found 9 of 9 good by the four checks, but found three weak questions (record: `docs/reviews/M1-round2-second-review.md`). Does mock 1 get another round of rewrites?
 
 ## Options
 
@@ -21,12 +21,11 @@ The known limits of mock 1:
 
 | Question | Weakness |
 |---|---|
-| M1-S38-T2 | It repeats M1-S45. Its new point 3.4-K4 and the point 5.4-S1 of S45 are twins in two different task statements. |
 | M1-S60-T2 | It is a close copy of sample question 12 of the guide: the same scene and the same four options. |
 | M1-S47-T6 | After 6 tries, its two correct options are still one idea. The slot is "Select 2." on a point with one idea. |
 | M1-S33-T1 and M1-S43-T1 | The same scene (finding M1-SC2-R2-F1, rule D1): conventions that load only for some files. Twin points 3.3-S1 and 3.3-S2. |
-| M1-S38-T2 and M1-S45-T2 | The same scene (finding M1-SC2-R2-F2, rule D1): verbose discovery output fills the context. Twin points 3.4-K4 and 5.4-S1, in two task statements. |
-| M1-S53-T2 and M1-S54-T1 | The same scene (finding M1-SC5-R2-F1, rule D1): output that passes the schema but has a semantic error. Twin points 4.4-K1 and 4.4-K4. |
+| M1-S38-T2 and M1-S45-T2 | The same scene, found by the second review and by step 6 (finding M1-SC2-R2-F2, rule D1): verbose discovery output fills the context. Twin points 3.4-K4 and 5.4-S1, in two different task statements. |
+| M1-S53-T2 and M1-S54-T1 | The same scene (finding M1-SC5-R2-F1, rule D1): output that passes the schema but has a semantic error. The points 4.4-K1 and 4.4-K4 are not twins by their texts (a retry with the exact errors, and a semantic error against a schema error). The probable cause is that scenario 5 has 12 questions of Domain 4. |
 
 The list of changes before mock 2 (from decision 0045 and from this file). Each one gets its own decision file:
 

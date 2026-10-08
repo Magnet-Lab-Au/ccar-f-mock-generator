@@ -253,9 +253,11 @@ Each try is a new file. No file is written over, so the history of each question
        FAIL4, ', '.join('%s %d' % (k, v) for k, v in sorted(RULES4.items()))), [
     ('4.4-K1', 'Written for the extraction of data. Here: the findings of the checks go back to the writer with the failed question.'),
     ('4.4-S1', 'The same context. Here: the "document" is the request of step 2, the "failed extraction" is the failed question, and the "validation errors" are the findings.'),
-    ('4.4-K2', 'The same context. Here: a slot that does not fit its scenario does not improve with a new try, so the writer can answer "cannot write".'),
+    ('4.4-K2', 'The same context. Here: the writer can answer "cannot write" for a slot that does not fit its scenario. The design expects that such a slot does not improve with a new try. That is an assumption, not checked.'),
     ('1.1-S3', 'Written for agent loops. Here: the limit of 3 tries is a guard, not the main way to stop. The main way to stop is a question that passes.'),
-])
+    ('4.3-K1', 'Written for the extraction of data. The new try answers in the same fixed form as step 2, sent as structured outputs (see the deviation above).'),
+    ('4.3-S3', 'Written for the extraction of data. The guide teaches a forced tool call. This build does not use it (see the deviation above).'),
+], deviation=True)
 
 steps8 = '''# Step 8: build the files
 
@@ -285,7 +287,7 @@ The step uses no point of a task statement. It uses three facts of the exam form
 ''' % (sum(len(g['questions']) for g in QF['groups']), len(QF['groups']), ', '.join(str(g['scenario']) for g in QF['groups']),
        QF['minutes'], len(AF['answers']), len(BUILD['fingerprints']), COST,
        sum(json.load(open(f))['calls'] for f in glob.glob(M + '/usage/*.json')),
-       fact_table([('3', 'each item states how many responses to select', 'Each question has the field "select". The portal shows the line "Select 1." or "Select 2."'),
+       fact_table([('3', 'each item states how many responses to select', 'Each question has the field "select", so the portal can show the line "Select 1." or "Select 2." The format of the portal is not decided yet.'),
                    ('5', 'Each scenario presents a realistic production context that frames a set of questions.', 'The questions are in groups by scenario, each with its story.'),
                    ('3', 'percent-correct by domain on the score report', 'Each question has its domain, so the portal can show a result for each domain.')]))
 open(os.path.join(root, 'docs', 'build-guide', 'step-8-build-the-files.md'), 'w', encoding='utf-8', newline='\n').write(steps8)

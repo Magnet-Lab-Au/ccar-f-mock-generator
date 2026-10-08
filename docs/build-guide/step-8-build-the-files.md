@@ -24,6 +24,6 @@ The step uses no point of a task statement. It uses three facts of the exam form
 
 | Section | Text of the guide | How the step uses it |
 |---|---|---|
-| 3 | "each item states how many responses to select" | Each question has the field "select". The portal shows the line "Select 1." or "Select 2." |
+| 3 | "each item states how many responses to select" | Each question has the field "select", so the portal can show the line "Select 1." or "Select 2." The format of the portal is not decided yet. |
 | 5 | "Each scenario presents a realistic production context that frames a set of questions." | The questions are in groups by scenario, each with its story. |
 | 3 | "percent-correct by domain on the score report" | Each question has its domain, so the portal can show a result for each domain. |
