@@ -23,6 +23,20 @@ import point_groups
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORDS = os.path.join(ROOT, "reference", "guide-records.json")
 TWO_ANSWER_POINTS = os.path.join(ROOT, "data", "two-answer-points.json")   # decision 0054
+MOCK_SCENARIOS = os.path.join(ROOT, "data", "mock-scenarios.json")         # decision 0057
+
+
+def fixed_scenarios(mock, path=MOCK_SCENARIOS):
+    """The set of 4 scenarios that the owner fixed for this mock (decision 0057),
+    or None when the seed selects the set."""
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            found = json.load(f)["mocks"].get(str(mock))
+    except (OSError, ValueError, KeyError, AttributeError) as e:
+        raise PlanError("The file of the scenarios of the mocks cannot be read: %s" % e)
+    return tuple(sorted(found)) if found else None
 
 QUESTIONS = 60
 PER_SCENARIO = 15
@@ -247,7 +261,7 @@ def load_two_answer_points(records, path=TWO_ANSWER_POINTS):
     return set(points)
 
 
-def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=None):
+def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=None, fixed=None):
     """Return the plan of one mock. Raise PlanError, and make no plan, if a record
     is missing, a count does not add up, or the groups allow no plan. groups is the
     content of data/point-groups.json. None reads that file. earlier is the result
@@ -272,7 +286,17 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=N
     sets = scenario_sets(records, counts)
     if not sets:
         raise PlanError("No set of 4 scenarios has a table.")
-    scenarios = list(_choice(rng, sets))
+    # Decision 0057: the owner fixed the set of mocks 3 to 5. The seed still
+    # sets the sequence of the 4 groups.
+    if fixed is None:
+        fixed = fixed_scenarios(mock)
+    if fixed:
+        if tuple(sorted(fixed)) not in sets:
+            raise PlanError("The fixed scenarios %s of mock %d are not one of the permitted sets (decision 0027)."
+                            % (list(fixed), mock))
+        scenarios = sorted(fixed)
+    else:
+        scenarios = list(_choice(rng, sets))
     _shuffle(rng, scenarios)
 
     # 2. The most even table. The seed selects one when two are equal.
@@ -298,8 +322,10 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=N
     of = point_groups.group_of(groups)
     earlier = earlier or {}
     use = {}
+    point_use = {}
     for points in earlier.values():
         for p in points:
+            point_use[p] = point_use.get(p, 0) + 1
             if p not in of:
                 raise PlanError("An earlier mock has the point %s, which is in no group." % p)
             use[of[p]["id"]] = use.get(of[p]["id"], 0) + 1
@@ -345,8 +371,9 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=N
             pool = list(ts["points"])
             _shuffle(rng, pool)
             # Decision 0050: the groups that earlier mocks used least come first.
-            # The seed keeps the order inside the same count.
-            pool.sort(key=lambda p: use.get(of[p["id"]]["id"], 0))
+            # Decision 0056: inside a group, a point that earlier mocks used less
+            # comes first. The seed keeps the order inside the same counts.
+            pool.sort(key=lambda p: (use.get(of[p["id"]]["id"], 0), point_use.get(p["id"], 0)))
             picked[ts["id"]] = []
             for _ in range(need[ts["id"]]):
                 rest[ts["id"]] -= 1

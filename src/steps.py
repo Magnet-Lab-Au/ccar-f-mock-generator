@@ -15,6 +15,7 @@ from step2_write import Writer
 from step4_check_model import ModelCheck
 from step6_check_scenario import ScenarioCheck
 from step7_marking import Marking, MarkingError
+from earlier import Earlier
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -49,8 +50,17 @@ class RealSteps:
                                     earlier=step1_plan.earlier_points(self.mocks_folder, mock))
 
     # steps 2 and 5
+    def _earlier(self):
+        """Decision 0056: the questions of the built mocks before this one."""
+        mock = self._plan()["mock"]
+        if getattr(self, "_earlier_for", None) != mock:
+            self._earlier_of = Earlier(self.mocks_folder, mock).on_idea
+            self._earlier_for = mock
+        return self._earlier_of
+
     def write(self, request):
         self.writer.seed = self._plan()["seed"]
+        self.writer.earlier = self._earlier()
         return self.writer.write(request)
 
     # step 3
@@ -59,6 +69,7 @@ class RealSteps:
 
     # step 4
     def check_model(self, question, slot):
+        self.checker.earlier = self._earlier()
         return self.checker.check(question, slot)
 
     # step 6

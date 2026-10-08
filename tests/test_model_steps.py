@@ -236,7 +236,7 @@ def blind_for(question, status="answered"):
 def check_4b(results=None, features=()):
     rs = results or {}
     return {"results": [{"rule": r, "result": rs.get(r, ("pass",))[0], "finding": rs.get(r, (None, None))[1],
-                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]],
+                         "letter": None, "point": None} for r in ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"]],
             "features": list(features)}
 
 
@@ -276,7 +276,7 @@ class TestModelCheck(unittest.TestCase):
 
     def test_the_prompt_names_the_right_number_of_rules(self):
         import step4_check_model as s4
-        words = {6: "six", 7: "seven", 8: "eight"}
+        words = {6: "six", 7: "seven", 8: "eight", 9: "nine"}
         self.assertIn("against %s rules" % words[len(s4.RULES_B)], s4.SYSTEM_4B)
 
     def test_the_form_of_call_4b_has_each_rule(self):

@@ -237,6 +237,26 @@ class TestEarlierMocks(unittest.TestCase):
         self.assertEqual(len(found[1]), 60)
 
 
+class TestFixedScenarios(unittest.TestCase):
+    """Decision 0057: the owner fixed the scenarios of mocks 3 to 5."""
+
+    def test_mocks_3_to_5_get_their_sets(self):
+        for mock, want in ((3, [1, 2, 4, 6]), (4, [1, 3, 4, 6]), (5, [1, 2, 4, 5])):
+            for seed in range(3):
+                plan = make_plan(RECORDS, mock, seed, "2026-10-08")
+                self.assertEqual(sorted(plan["scenarios"]), want)
+                self.assertEqual(Counter(s["scenario"] for s in plan["slots"]), Counter({x: 15 for x in want}))
+
+    def test_mocks_1_and_2_are_not_fixed(self):
+        self.assertIsNone(step1_plan.fixed_scenarios(1))
+        self.assertIsNone(step1_plan.fixed_scenarios(2))
+
+    def test_a_set_that_decision_0027_does_not_permit_makes_no_plan(self):
+        with self.assertRaises(PlanError) as e:
+            make_plan(RECORDS, 3, 1, "2026-10-08", fixed=(1, 2, 3, 4))
+        self.assertIn("not one of the permitted sets", str(e.exception))
+
+
 class TestPlanFails(unittest.TestCase):
     def test_a_missing_record_makes_no_plan(self):
         broken = copy.deepcopy(RECORDS)

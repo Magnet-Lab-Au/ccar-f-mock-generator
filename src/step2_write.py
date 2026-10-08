@@ -21,7 +21,7 @@ def plain(text):
     return re.sub(r"\\(.)", r"\1", text)
 
 
-# Decisions 0030, 0043, 0053 and 0055: the 20 rules. The writer gets all of them. The text of each
+# Decisions 0030, 0043, 0053, 0055 and 0056: the 21 rules. The writer gets all of them. The text of each
 # rule is the text of decision 0030, with rule A11 of decision 0038, part 8.
 RULES = """Rules for a good question. Code checks group A. A second model checks group B.
 
@@ -49,6 +49,7 @@ B6. No text depends on a feature that the guide does not name. A feature is a th
 
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading.
 B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.
+B9. The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question.
 
 Two more instructions:
 - The options of a question have the same form. Example: all are actions, or all are places, or all are causes.
@@ -80,6 +81,18 @@ def examples(records, slot, count=3):
     return out
 
 
+EARLIER_RULE = ("EARLIER QUESTIONS ON THE SAME IDEA (decision 0056). Earlier mocks have the questions below on the idea "
+                "of this slot. Use a different scene and a different angle: the cause, the fix, or a choice between rules. "
+                "The correct action may be the same, if the idea has only one. Do not use a wrong option of an earlier question.")
+
+
+def earlier_text(questions):
+    """The earlier questions on the same idea, with the mark of each option."""
+    return json.dumps([{"question_id": q["question_id"], "question": q["question"],
+                        "options": [("CORRECT: " if o["correct"] else "WRONG: ") + o["text"] for o in q["options"]]}
+                       for q in questions], indent=2, ensure_ascii=False)
+
+
 def request_text(request, records):
     """The text of the request of step 2 or step 5 (decisions 0029 and 0033)."""
     slot = request["slot"]
@@ -101,6 +114,8 @@ def request_text(request, records):
                                            "select": slot["select"],
                                            "longest_may_be_correct": slot.get("longest_may_be_correct", True)}),
               "Write %d options. Mark exactly %d of them correct." % (slot["options"], slot["select"])]
+    if request.get("earlier_questions"):
+        parts += ["", EARLIER_RULE, earlier_text(request["earlier_questions"])]
     if slot["select"] == 2:
         # Decision 0054: a question with 2 answers needs two different correct options.
         parts.append("The two correct options test two different parts of the point. They are not two examples of one idea.")
@@ -157,12 +172,15 @@ def give_letters(answer, slot, seed=0):
 
 
 class Writer:
-    def __init__(self, records, model_call, seed=0):
+    def __init__(self, records, model_call, seed=0, earlier=None):
         self.records = records
         self.model_call = model_call
         self.seed = seed
+        self.earlier = earlier   # decision 0056: a function from a point to the earlier questions
 
     def write(self, request):
+        if self.earlier is not None:
+            request = dict(request, earlier_questions=self.earlier(request["point"]))
         answer, model = self.model_call.ask(SYSTEM, request_text(request, self.records), SCHEMA)
         check_answer(answer)
         out = {"status": answer["status"], "model": model,

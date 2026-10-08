@@ -11,11 +11,11 @@ import re
 
 from control import CallFailed
 from model_call import load_form
-from step2_write import plain
+from step2_write import earlier_text, plain
 
 DESC_4A, SCHEMA_4A = load_form("06-forms-draft.json", "call_4a")
 DESC_4B, SCHEMA_4B = load_form("06-forms-draft.json", "call_4b")
-RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]
+RULES_B = ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"]
 
 RULES_TEXT = """B1. Each option that is marked correct is correct, and no other option is correct.
 B2. Each wrong option is wrong for a reason that the guide gives, and its reason says so.
@@ -24,11 +24,13 @@ B4. The question tests the point of its slot.
 B5. The question is inside the story of its scenario and does not contradict it.
 B6. No text depends on a feature that the guide does not name. A feature is a thing of a Claude product or of MCP that has a name: a tool, a command, a flag, a parameter, a field, a file or a setting. A name that the question invents for its story is not a feature. General technology, for example Python, is not a feature. List in "features" each feature name that the question, the options and the reasons use. Give the bare name only, with no value and no quotes: tool_choice, not tool_choice: any.
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)
-%s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene is different or its correct action is different.""" % "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action."
+%s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene is different or its correct action is different.
+%s (Decision 0056.) The earlier questions on the same idea are in the text above. If there are none, B9 passes.""" % ("B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.",
+   "B9. The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question.")
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
-SYSTEM_4B = ("You check one exam question against eight rules. Use only the text of the exam guide below as the source of facts. "
+SYSTEM_4B = ("You check one exam question against nine rules. Use only the text of the exam guide below as the source of facts. "
              "Give one result for each rule: pass, fail or cannot_decide. A result that is not pass has a finding. " + DESC_4B)
 
 
@@ -112,9 +114,10 @@ def finding(rule, detail, letter=None, point=None):
 
 
 class ModelCheck:
-    def __init__(self, records, model_call):
+    def __init__(self, records, model_call, earlier=None):
         self.records = records
         self.model_call = model_call
+        self.earlier = earlier   # decision 0056: a function from a point to the earlier questions
         self.features = FeatureSearch(records)
         self.point_ids = {p["id"] for t in records["task_statements"] for p in t["points"]}
 
@@ -135,7 +138,11 @@ class ModelCheck:
 
     def rules(self, question, slot):
         """Call 4b. Raise CallFailed for an answer that is not valid (decision 0032)."""
+        point = question.get("point", slot["point"])
+        earlier = self.earlier(point) if self.earlier is not None else []
         text = "\n".join([guide_text(self.records, slot["scenario"]), "", sample_text(self.records), "",
+                          "THE EARLIER QUESTIONS ON THE SAME IDEA (for rule B9):",
+                          earlier_text(earlier) if earlier else "None.", "",
                           "THE RULES", RULES_TEXT, "",
                           "THE SLOT: task statement %s, point %s, scenario %d." % (slot["task_statement"], question.get("point", slot["point"]), slot["scenario"]),
                           "", "THE QUESTION, with the marks and the reasons of the writer:", show(question, with_key=True)])
@@ -143,7 +150,7 @@ class ModelCheck:
         letters = {o["letter"] for o in question["options"]}
         results = answer.get("results") if isinstance(answer, dict) else None
         if not isinstance(results, list) or sorted(r.get("rule") for r in results) != RULES_B:
-            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B8.")
+            raise CallFailed("Call 4b: the answer does not have one result for each rule B1 to B9.")
         for r in results:
             if r.get("result") not in ("pass", "fail", "cannot_decide"):
                 raise CallFailed("Call 4b: rule %s has no valid result." % r.get("rule"))
