@@ -201,3 +201,92 @@ Code built a marking file for the %d questions of the test. The owner marked %d 
     ('5.5-K1', 'Written for the extraction of data. Here: the bad marks are shown for each scenario and each domain, because one total can hide a bad part.'),
     ('5.5-S2', 'The same context. Here: a sample below 20 questions comes only after the results are good in each scenario and each domain.'),
 ])
+
+
+# ---------- steps 5 and 8: they ran in mock 1 (8 October 2026) ----------
+import collections
+import glob
+M = root + '/runs/mock-01'
+TRIES = [json.load(open(f, encoding='utf-8')) for f in glob.glob(M + '/questions/*.json')]
+BY_REQ = collections.Counter(q['request'] for q in TRIES)
+PER_SLOT = collections.Counter(q['slot_id'] for q in TRIES)
+V4 = [json.load(open(f, encoding='utf-8')) for f in glob.glob(M + '/checks/*-step4.json')]
+FAIL4 = sum(1 for v in V4 if v['verdict'] != 'pass')
+RULES4 = collections.Counter(x['rule'] for v in V4 for x in v['findings'])
+DEC = json.load(open(M + '/owner-decisions.json', encoding='utf-8'))
+ACTIONS = collections.Counter(d['action'] for d in DEC)
+QF = json.load(open(root + '/mocks/mock-01.questions.json', encoding='utf-8'))
+AF = json.load(open(root + '/mocks/mock-01.answers.json', encoding='utf-8'))
+BUILD = json.load(open(M + '/build.json', encoding='utf-8'))
+COST = round(sum(json.load(open(f))['dollars'] for f in glob.glob(M + '/usage/*.json')), 2)
+GUIDE = open(root + '/reference/exam-guide.md', encoding='utf-8').read()
+
+
+def fact_table(rows):
+    lines = ['| Section | Text of the guide | How the step uses it |', '|---|---|---|']
+    for sec, text, use in rows:
+        assert text in GUIDE, text[:50]
+        lines.append('| %s | "%s" | %s |' % (sec, text, use))
+    return '\n'.join(lines)
+
+
+section('step-5-try-again.md', 'Step 5: try again',
+        'built. It ran in mock 1 on 7 and 8 October 2026.', '07-step-5-try-again.html', '''
+## What the step does
+
+A question that fails step 3 or step 4 goes back to the writer. The writer gets the request of step 2, plus the failed question with the letters that the checker saw, and the exact findings. The writer does not see older tries, so the request stays short. The new try goes through steps 3 and 4 again, as a new question.
+
+A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner. The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
+
+Each start of a slot has at most 3 tries. Two results "cannot decide" also stop a slot. A slot that stops is open, and the owner decides: more tries, a new point, or a new plan. The limit is not the main way to stop. The main way to stop is a question that passes.
+
+Each try is a new file. No file is written over, so the history of each question stays.
+
+## The run of mock 1
+
+- %d tries for 60 slots: %d were a request of step 2 (a first question, or a rewrite on a new point), and %d a request of step 5.
+- %d slots needed more than one try. The most tries for one slot: %d.
+- Step 4 failed %d tries. The findings by rule: %s.
+- One slot stopped after 3 tries. Each try had corrected the last finding, and a new small finding came. The owner gave it more tries.
+- The owner sent 9 questions back as rewrites after the marks, 5 of them with a new point.
+''' % (len(TRIES), BY_REQ.get(2, 0), BY_REQ.get(5, 0), sum(1 for v in PER_SLOT.values() if v > 1), max(PER_SLOT.values()),
+       FAIL4, ', '.join('%s %d' % (k, v) for k, v in sorted(RULES4.items()))), [
+    ('4.4-K1', 'Written for the extraction of data. Here: the findings of the checks go back to the writer with the failed question.'),
+    ('4.4-S1', 'The same context. Here: the "document" is the request of step 2, the "failed extraction" is the failed question, and the "validation errors" are the findings.'),
+    ('4.4-K2', 'The same context. Here: a slot that does not fit its scenario does not improve with a new try, so the writer can answer "cannot write".'),
+    ('1.1-S3', 'Written for agent loops. Here: the limit of 3 tries is a guard, not the main way to stop. The main way to stop is a question that passes.'),
+])
+
+steps8 = '''# Step 8: build the files
+
+Status: built. It ran for mock 1 on 8 October 2026.
+
+Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-files.html)
+
+## What the step does
+
+Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. To change a question, the record changes, and code builds the files again.
+
+The build starts only after the owner accepts the mock. Then code checks six conditions: each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
+
+To know that a question did not change after its checks, each check saves a fingerprint of the question: a code of 64 characters that code calculates from the text. Before the build, code calculates the fingerprint again and compares.
+
+The questions file has the 60 questions in 4 groups, one for each scenario. Each group starts with the story of its scenario. The file has no answers. The answers file has the correct letters and the reason of each option, for after the mock.
+
+## The run of mock 1
+
+The owner accepted mock 1 on 8 October 2026, with known limits. Code checked the six conditions and built the two files: `mocks/mock-01.questions.json`, with %d questions in %d groups (scenarios %s) and %d minutes, and `mocks/mock-01.answers.json`, with %d answers. The build saved %d fingerprints. Mock 1 cost $%.2f for %d model calls.
+
+## The exam guide texts that the step uses
+
+The step uses no point of a task statement. It uses three facts of the exam form.
+
+%s
+''' % (sum(len(g['questions']) for g in QF['groups']), len(QF['groups']), ', '.join(str(g['scenario']) for g in QF['groups']),
+       QF['minutes'], len(AF['answers']), len(BUILD['fingerprints']), COST,
+       sum(json.load(open(f))['calls'] for f in glob.glob(M + '/usage/*.json')),
+       fact_table([('3', 'each item states how many responses to select', 'Each question has the field "select". The portal shows the line "Select 1." or "Select 2."'),
+                   ('5', 'Each scenario presents a realistic production context that frames a set of questions.', 'The questions are in groups by scenario, each with its story.'),
+                   ('3', 'percent-correct by domain on the score report', 'Each question has its domain, so the portal can show a result for each domain.')]))
+open(os.path.join(root, 'docs', 'build-guide', 'step-8-build-the-files.md'), 'w', encoding='utf-8', newline='\n').write(steps8)
+print('written step-8-build-the-files.md')

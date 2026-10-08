@@ -19,9 +19,11 @@ This entry continues the second session of 7 October. The work went on after mid
 - The round of 9 rewrites ran ($2.57). Step 6 ran again. Mock 1 cost $17.17 in total.
 - The owner marked round 2 blind: 9 of 9 good. The file was committed before anybody read it (SHA-256 07c3d5fde864c733f012e87e09fd68ec7f6bd67e1efe5bec950a4a8d9e8eeacb). The second review also found 9 of 9 good, and three weak questions. The owner decided: no more rewrites. The three are known limits of mock 1 (decision 0046), and three more causes go to the list of changes before mock 2.
 
+- The owner decided: each of the 16 findings of the second run of step 6 is ignore. The 3 of rule D1 became known limits in decision 0046. The owner accepted mock 1. Step 8 checked the 6 conditions and built `mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`: 60 questions in 4 groups, 120 minutes. Mock 1 cost $17.17 for 265 model calls.
+- The build guide sections of steps 5 and 8 exist. Diagrams 01, 07 and 10 show that steps 5 and 8 ran.
+
 **Open**
 
-- The second run of step 6 has 16 findings that wait for a decision of the owner.
 - The list of 7 changes before mock 2 (decision 0046).
 
 ## 7 October 2026, second session

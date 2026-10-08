@@ -71,14 +71,14 @@ State on 7 October 2026, second session.
 |---|---|---|---|
 | 0. Prepare the guide records | 0028 | 03 | Designed, and the step ran. The file `reference/guide-records.json` exists. |
 | 1. Plan the mock | 0027 | 02 | Built and ran: `src/step1_plan.py`, 20 tests. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. Diagram 02 is corrected. |
-| 2. Write the question | 0029 | 04 | Code and tests exist: `src/step2_write.py` (also step 5). No real call yet. |
+| 2. Write the question | 0029 | 04 | Built, ran in the test and in mock 1. Build guide section exists. |
 | The rules for a good question (17 rules) | 0030 | none | Decided |
-| 3. Check by code | 0031 | 05 | Code and tests exist: `src/step3_check_code.py`. Not run on a real question yet, so no build guide section yet. |
-| 4. Check by a model | 0032 | 06 | Code and tests exist: `src/step4_check_model.py`. No real call yet. |
-| 5. Try again | 0033 | 07 | Code and tests exist: the control and `src/step2_write.py`. No real call yet. |
-| 6. Check the complete mock | 0034 | 08 | Code and tests exist: `src/step6_check_scenario.py`. No real call yet. |
-| 7. The owner marks the questions | 0035 | 09 | Code and tests exist: `src/step7_marking.py`. Not run on real questions yet. Not checked in real Excel: the sheet protection and the list of the column "Mark". |
-| 8. Build the files | 0036 | 10 | Code and tests exist: `src/step8_build_files.py`. Not run on a real mock yet. |
+| 3. Check by code | 0031 | 05 | Built, ran in the test and in mock 1. Build guide section exists. |
+| 4. Check by a model | 0032 | 06 | Built, ran in the test and in mock 1. Build guide section exists. |
+| 5. Try again | 0033 | 07 | Built, ran in mock 1. Build guide section exists. |
+| 6. Check the complete mock | 0034 | 08 | Built, ran in the test and in mock 1. Build guide section exists. |
+| 7. The owner marks the questions | 0035 | 09 | Built, ran in the test and in mock 1. Build guide section exists. |
+| 8. Build the files | 0036 | 10 | Built, built mock 1 on 8 October 2026. Build guide section exists. |
 
 - Code that exists: `src/step0_prepare_guide_records.py`, `src/check_guide_records.py` and `src/control.py`, with the tests in `tests/`. No real step from 1 to 8 exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
 - The checks of the records file: a second script passed 41 of 41 checks. An independent reviewer found no errors (`docs/reviews/review-guide-records.md`). The comparison of `reference/exam-guide.md` with the original guide is not done.
@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. All steps have code and tests, and `src/steps.py` connects them to the control. The command line is `src/run.py`. The key is in `~/.bashrc` (run the program with `bash -ic` from a shell that started before the key was added). The test of decisions 0024 and 0042 ran: parts 1 to 3 met each bar, for $2.64. Results: `runs/test-0024/`. Rule B7 and a writer instruction answer the bad mark of T-M1-S05 (decision 0043). The check of B7 ran: T-M1-S05 fails on B7, and 3 of 9 good questions also fail on B7 with true findings. B7 stays strict for mock 1. Part 4 ran: call 6a found the planted copy with the same scene, and step 6 found real problems too. The whole test cost $3.86. Next: mock 1 (`python3 src/run.py run --mock 1`), then the build guide sections of the steps that ran. After each step runs for real: its build guide section and its diagram (the rule below).
+1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. Next: the owner confirms the text of decision 0046. Then the 7 changes before mock 2 of decision 0046, one at a time, each with its own decision file. Then mock 2.
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 

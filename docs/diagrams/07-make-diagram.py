@@ -241,7 +241,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 5: a failed question goes back to the writer with the findings</h1>
-  <p class="sub">This diagram shows step 5. The step is built, but it has not run yet: no question of the test needed a new try. The step runs only for a question that did not pass, or that the owner sent back. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 5. The step is built, and it ran in mock 1 on 7 and 8 October 2026. The step runs only for a question that did not pass, or that the owner sent back. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -254,7 +254,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039). Status of the step: built, not run yet. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039). Status of the step: built, ran in mock 1. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
