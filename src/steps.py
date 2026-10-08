@@ -54,13 +54,16 @@ class RealSteps:
         """Decision 0056: the questions of the built mocks before this one."""
         mock = self._plan()["mock"]
         if getattr(self, "_earlier_for", None) != mock:
-            self._earlier_of = Earlier(self.mocks_folder, mock).on_idea
+            found = Earlier(self.mocks_folder, mock)
+            self._earlier_of = found.on_idea
+            self._narrow_of = found.narrow
             self._earlier_for = mock
         return self._earlier_of
 
     def write(self, request):
         self.writer.seed = self._plan()["seed"]
         self.writer.earlier = self._earlier()
+        self.writer.narrow = self._narrow_of
         return self.writer.write(request)
 
     # step 3
@@ -70,6 +73,7 @@ class RealSteps:
     # step 4
     def check_model(self, question, slot):
         self.checker.earlier = self._earlier()
+        self.checker.narrow = self._narrow_of
         return self.checker.check(question, slot)
 
     # step 6

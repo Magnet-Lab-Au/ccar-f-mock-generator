@@ -2,6 +2,19 @@
 
 One entry for each work session. Newest entry first.
 
+## 9 October 2026, the stricter rule B9
+
+- The owner confirmed decisions 0056 to 0065, one at a time, and the assistant pushed the commits.
+- Decision 0066: a stricter rule B9 for mocks 4 and 5 (the same problem fails, also in another setting, and at most one wrong option may repeat). The owner asked to test it first.
+- The test (`src/test_b9.py`, report `docs/reviews/test-b9-mock-3.md`) checked the 60 questions of mock 3: B9 fails 24. It agrees with the independent agent on 12, fails 12 more, and passes 14 that the agent named. It cost $6.33, not the $3 to $4 that the assistant estimated.
+- The owner decided: the stricter B9 for mock 4, with an exception. Narrow ideas with almost only one problem keep the copy rule. The assistant drafted `data/narrow-ideas.json` (21 groups). The writer and call 4b get the copy rule for these ideas. 222 tests pass. Diagrams 06 and 11 and the build guide section of step 4 show it.
+- New cost estimate of mock 4: about $32 to $40 (not measured).
+
+**Open**
+
+- The owner confirms the list of narrow ideas. Mock 4 does not start before that.
+- The owner confirms the text of decision 0066.
+
 ## 9 October 2026, mock 3 accepted
 
 - The owner marked round 1 of mock 3: 20 of 20 good (`marking/M3-round1.xlsx`, committed before anybody read it). The 2 copies, M3-S34 and M3-S49, got a rewrite with rule B9 ($0.70). Both passed steps 3 and 4 at the first new try.
@@ -11,8 +24,7 @@ One entry for each work session. Newest entry first.
 
 **Open**
 
-- The design of the stricter rule B9, before mock 4 (decision 0062).
-- Mock 4 does not start until the owner says so.
+- (See the entry above for the stricter rule B9.)
 - (Done on 9 October 2026: the owner confirmed decisions 0056 to 0065, one at a time. Decision 0041 got a status line that names decision 0061. One error that stays in a confirmed text: decision 0061 says that diagram 06 does not change, but its B6 popup got one sentence on flags.)
 
 ## 8 October 2026, mock 2 accepted and mock 3

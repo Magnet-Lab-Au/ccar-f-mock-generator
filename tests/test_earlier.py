@@ -117,6 +117,44 @@ class TestWriterAndCheck(unittest.TestCase):
         self.assertIn("(for rule B9):\nNone.", call2.texts[0])
 
 
+class TestNarrowIdeas(unittest.TestCase):
+    """Decision 0066: a narrow idea keeps the copy rule, each other idea gets the strict rule."""
+
+    def setUp(self):
+        self.e = Earlier(MOCKS, 2)
+        self.plan = json.load(open(os.path.join(ROOT, "runs", "mock-02", "plan.json"), encoding="utf-8"))
+
+    def test_the_list_names_groups_that_exist(self):
+        groups = {g["id"] for g in point_groups.load()["groups"]}
+        self.assertTrue(self.e.narrow_groups)
+        self.assertTrue(self.e.narrow_groups <= groups)
+
+    def test_grep_is_narrow_and_hooks_are_not(self):
+        self.assertTrue(self.e.narrow("2.5-K1"))     # G037 Grep
+        self.assertFalse(self.e.narrow("1.4-S1"))    # G016 code enforcement
+
+    def test_the_writer_and_call_4b_get_the_right_b9(self):
+        from step2_write import B9_COPY, B9_STRICT, EARLIER_RULE, EARLIER_RULE_NARROW
+        for point, narrow in (("1.1-S3", True), ("1.4-S1", False)):
+            slot = dict(next(s for s in self.plan["slots"]), point=point)
+            req = {"slot": slot, "point": point, "step": 2, "shown_try": None, "failed_question": None,
+                   "findings": [], "other_questions": [], "earlier_questions": self.e.on_idea(point) or [{"question_id": "X", "question": "q", "options": []}],
+                   "narrow": self.e.narrow(point)}
+            text = request_text(req, RECORDS)
+            self.assertEqual(B9_COPY in text, narrow)
+            self.assertEqual(B9_STRICT in text, not narrow)
+            self.assertEqual(EARLIER_RULE_NARROW in text, narrow)
+            q = {"question_id": "M2-S01-T9", "point": point, "question": "Q?", "select": 1,
+                 "options": [{"letter": "A", "text": "a", "correct": True, "reason": "r"}]}
+            call = FakeCall({"results": [], "features": []})
+            check = ModelCheck(RECORDS, call, earlier=self.e.on_idea)
+            check.narrow = self.e.narrow
+            with self.assertRaises(Exception):
+                check.rules(q, slot)
+            self.assertEqual(B9_COPY in call.texts[0], narrow)
+            self.assertEqual(B9_STRICT in call.texts[0], not narrow)
+
+
 class TestRealSteps(unittest.TestCase):
     """The review of 8 October 2026: the real steps must give the earlier
     questions to the writer and to call 4b."""
@@ -127,13 +165,14 @@ class TestRealSteps(unittest.TestCase):
         plan = json.load(open(os.path.join(ROOT, "runs", "mock-02", "plan.json"), encoding="utf-8"))
         slot = next(s for s in plan["slots"] if s["point"] == "1.1-S3")
         seen = {}
-        steps.writer.write = lambda request: seen.setdefault("writer", steps.writer.earlier)
+        steps.writer.write = lambda request: seen.setdefault("writer", steps.writer.earlier) and seen.setdefault("narrow", steps.writer.narrow)
         steps.checker.check = lambda q, s: seen.setdefault("checker", steps.checker.earlier)
         steps.write({"slot": slot, "point": slot["point"], "step": 2})
         steps.check_model({"point": "1.1-S3"}, slot)
         for who in ("writer", "checker"):
             self.assertIsNotNone(seen[who], who)
             self.assertIn("M1-S28-T2", [q["question_id"] for q in seen[who]("1.1-S3")])
+        self.assertTrue(seen["narrow"]("2.5-K1"))
 
 
 if __name__ == "__main__":

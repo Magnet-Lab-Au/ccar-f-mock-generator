@@ -23,6 +23,11 @@ def plain(text):
 
 # Decisions 0030, 0043, 0053, 0055 and 0056: the 21 rules. The writer gets all of them. The text of each
 # rule is the text of decision 0030, with rule A11 of decision 0038, part 8.
+B9_STRICT = ("B9. The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). The same problem means that the same thing goes wrong, or the team must make the same choice, so the same reasoning leads to the answer. A question on the same idea passes only with a different problem: for example the cause against the fix, a different failure, or a choice between two rules. Not the same set of wrong options as an earlier question on the same idea. At most one wrong option may repeat.")
+# Decision 0066: an idea with almost only one problem keeps the copy rule.
+B9_COPY = ("B9. The question is not a copy of an earlier question on the same idea: not the same scene with the same answer "
+           "and the same set of wrong options. At most one wrong option may repeat. This idea has almost only one problem, "
+           "so the same problem and answer may come back.")
 RULES = """Rules for a good question. Code checks group A. A second model checks group B.
 
 Group A, rules with an exact answer:
@@ -49,13 +54,13 @@ B6. No text depends on a feature that the guide does not name. A feature is a th
 
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading.
 B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.
-B9. The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). The same problem means that the same thing goes wrong, or the team must make the same choice, so the same reasoning leads to the answer. A question on the same idea passes only with a different problem: for example the cause against the fix, a different failure, or a choice between two rules. Not the same set of wrong options as an earlier question on the same idea. At most one wrong option may repeat.
+%s
 
 Two more instructions:
 - The options of a question have the same form. Example: all are actions, or all are places, or all are causes.
 - Use one name for one actor. Write each sentence so that a reader understands it at the first reading. (Decision 0043.)
 
-The question does not say how many answers to select. Code adds the line "Select 1." or "Select 2." to each question. Do not give letters to the options. Code gives the letters."""
+The question does not say how many answers to select. Code adds the line "Select 1." or "Select 2." to each question. Do not give letters to the options. Code gives the letters.""" % B9_STRICT
 
 SYSTEM = ("You write one exam question for a mock exam of the exam \"Claude Certified Architect - Foundations\". "
           "The question must follow the rules exactly, and it must use only facts that the exam guide states. "
@@ -88,6 +93,12 @@ EARLIER_RULE = ("EARLIER QUESTIONS ON THE SAME IDEA (decisions 0056 and 0066). E
                 "Do not use the same set of wrong options as an earlier question. At most one wrong option may repeat.")
 
 
+EARLIER_RULE_NARROW = ("EARLIER QUESTIONS ON THE SAME IDEA (decisions 0056 and 0066). Earlier mocks have the questions below on the "
+                       "idea of this slot. This idea has almost only one problem, so the same problem and answer may come back. "
+                       "Use a different setting and scene. Do not use the same set of wrong options as an earlier question. "
+                       "At most one wrong option may repeat.")
+
+
 def earlier_text(questions):
     """The earlier questions on the same idea, with the mark of each option."""
     return json.dumps([{"question_id": q["question_id"], "question": q["question"],
@@ -101,7 +112,7 @@ def request_text(request, records):
     scenarios = {s["id"]: s for s in records["scenarios"]}
     ts = next(t for t in records["task_statements"] if t["id"] == slot["task_statement"])
     point = request["point"]
-    parts = [RULES, "",
+    parts = [RULES.replace(B9_STRICT, B9_COPY) if request.get("narrow") else RULES, "",
              "Examples of the form of a question (from the exam guide, with the letters removed):",
              json.dumps(examples(records, slot), indent=2, ensure_ascii=False), "",
              "The story of the scenario %d (%s):" % (slot["scenario"], scenarios[slot["scenario"]]["name"]),
@@ -117,7 +128,8 @@ def request_text(request, records):
                                            "longest_may_be_correct": slot.get("longest_may_be_correct", True)}),
               "Write %d options. Mark exactly %d of them correct." % (slot["options"], slot["select"])]
     if request.get("earlier_questions"):
-        parts += ["", EARLIER_RULE, earlier_text(request["earlier_questions"])]
+        rule = EARLIER_RULE_NARROW if request.get("narrow") else EARLIER_RULE
+        parts += ["", rule, earlier_text(request["earlier_questions"])]
     if slot["select"] == 2:
         # Decision 0054: a question with 2 answers needs two different correct options.
         parts.append("The two correct options test two different parts of the point. They are not two examples of one idea.")
@@ -179,10 +191,13 @@ class Writer:
         self.model_call = model_call
         self.seed = seed
         self.earlier = earlier   # decision 0056: a function from a point to the earlier questions
+        self.narrow = None       # decision 0066: a function from a point to True for a narrow idea
 
     def write(self, request):
         if self.earlier is not None:
             request = dict(request, earlier_questions=self.earlier(request["point"]))
+        if self.narrow is not None:
+            request = dict(request, narrow=self.narrow(request["point"]))
         answer, model = self.model_call.ask(SYSTEM, request_text(request, self.records), SCHEMA)
         check_answer(answer)
         out = {"status": answer["status"], "model": model,

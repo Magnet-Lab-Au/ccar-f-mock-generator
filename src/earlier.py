@@ -12,14 +12,22 @@ import os
 import point_groups
 
 
+NARROW = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "narrow-ideas.json")
+
+
 class EarlierError(Exception):
     """A built mock file cannot be read."""
 
 
 class Earlier:
-    def __init__(self, mocks_folder, mock, groups=None):
+    def __init__(self, mocks_folder, mock, groups=None, narrow_path=NARROW):
         groups = groups or point_groups.load()
         self.of = point_groups.group_of(groups)
+        # Decision 0066: the ideas with almost only one problem keep the copy rule.
+        self.narrow_groups = set()
+        if narrow_path and os.path.exists(narrow_path):
+            with open(narrow_path, encoding="utf-8") as f:
+                self.narrow_groups = {g["id"] for g in json.load(f)["groups"]}
         self.questions = []
         for n in range(1, mock):
             qpath = os.path.join(mocks_folder, "mock-%02d.questions.json" % n)
@@ -39,6 +47,10 @@ class Earlier:
                             "options": [{"text": o["text"], "correct": o["letter"] in right} for o in q["options"]]})
             except (OSError, ValueError, KeyError, TypeError) as e:
                 raise EarlierError("The built mock %d cannot be read: %s" % (n, e))
+
+    def narrow(self, point):
+        """True if the idea of this point has almost only one problem (decision 0066)."""
+        return self.of[point]["id"] in self.narrow_groups
 
     def on_idea(self, point):
         """The earlier questions whose point is in the group of this point."""

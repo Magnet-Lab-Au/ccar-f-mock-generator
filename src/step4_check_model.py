@@ -12,7 +12,7 @@ import re
 
 from control import CallFailed
 from model_call import load_form
-from step2_write import earlier_text, plain
+from step2_write import B9_COPY, B9_STRICT, earlier_text, plain
 
 DESC_4A, SCHEMA_4A = load_form("06-forms-draft.json", "call_4a")
 DESC_4B, SCHEMA_4B = load_form("06-forms-draft.json", "call_4b")
@@ -27,7 +27,7 @@ B6. No text depends on a feature that the guide does not name. A feature is a th
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading. (Decision 0043.)
 %s (Decision 0055.) The sample questions are in the text above. A question on the same point as a sample question passes if its scene is different or its correct action is different.
 %s (Decisions 0056 and 0066.) The earlier questions on the same idea are in the text above. If there are none, B9 passes.""" % ("B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.",
-   "B9. The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). The same problem means that the same thing goes wrong, or the team must make the same choice, so the same reasoning leads to the answer. A question on the same idea passes only with a different problem: for example the cause against the fix, a different failure, or a choice between two rules. Not the same set of wrong options as an earlier question on the same idea. At most one wrong option may repeat.")
+   B9_STRICT)
 
 SYSTEM_4A = ("You answer one exam question of the exam \"Claude Certified Architect - Foundations\", as a candidate does. "
              "Select the options that you think are correct. If you cannot decide, say so. " + DESC_4A)
@@ -127,6 +127,7 @@ class ModelCheck:
         self.records = records
         self.model_call = model_call
         self.earlier = earlier   # decision 0056: a function from a point to the earlier questions
+        self.narrow = None       # decision 0066: a function from a point to True for a narrow idea
         self.features = FeatureSearch(records)
         self.point_ids = {p["id"] for t in records["task_statements"] for p in t["points"]}
 
@@ -149,10 +150,12 @@ class ModelCheck:
         """Call 4b. Raise CallFailed for an answer that is not valid (decision 0032)."""
         point = question.get("point", slot["point"])
         earlier = self.earlier(point) if self.earlier is not None else []
+        narrow = self.narrow(point) if self.narrow is not None else False
+        rules_text = RULES_TEXT.replace(B9_STRICT, B9_COPY) if narrow else RULES_TEXT
         text = "\n".join([guide_text(self.records, slot["scenario"]), "", sample_text(self.records), "",
                           "THE EARLIER QUESTIONS ON THE SAME IDEA (for rule B9):",
                           earlier_text(earlier) if earlier else "None.", "",
-                          "THE RULES", RULES_TEXT, "",
+                          "THE RULES", rules_text, "",
                           "THE SLOT: task statement %s, point %s, scenario %d." % (slot["task_statement"], question.get("point", slot["point"]), slot["scenario"]),
                           "", "THE QUESTION, with the marks and the reasons of the writer:", show(question, with_key=True)])
         answer, model = self.model_call.ask(SYSTEM_4B, text, SCHEMA_4B)

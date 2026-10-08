@@ -1,0 +1,27 @@
+{
+  "decision": "0066",
+  "status": "draft, waits for the owner",
+  "groups": [
+    {"id": "G001", "problem": "The loop stops too early or never stops: control it by stop_reason"},
+    {"id": "G002", "problem": "The model repeats a step: the tool result is not sent back in the next request"},
+    {"id": "G010", "problem": "The coordinator cannot start subagents: Task is not in allowedTools"},
+    {"id": "G012", "problem": "Two approaches must start from one shared analysis: fork the session"},
+    {"id": "G014", "problem": "Subagents run one after another: emit several Task calls in one response"},
+    {"id": "G021", "problem": "Continue a named earlier session: --resume with its name"},
+    {"id": "G027", "problem": "The agent does not see that a tool failed: set isError in the MCP result"},
+    {"id": "G034", "problem": "Which MCP tools the agent has: all servers' tools, found at connection"},
+    {"id": "G037", "problem": "Find text inside many files: Grep"},
+    {"id": "G038", "problem": "Find files by name or extension: Glob"},
+    {"id": "G039", "problem": "Edit fails on text that is not unique: Read, then Write"},
+    {"id": "G044", "problem": "Each package needs its own standards file: @import in its CLAUDE.md"},
+    {"id": "G046", "problem": "Which memory files are loaded: the /memory command"},
+    {"id": "G047", "problem": "Share a command with the team: .claude/commands/ in the repository"},
+    {"id": "G051", "problem": "A skill must not use some tools: allowed-tools in its frontmatter"},
+    {"id": "G052", "problem": "A skill runs with a missing argument: argument-hint"},
+    {"id": "G061", "problem": "Claude Code hangs in CI waiting for input: the -p flag"},
+    {"id": "G062", "problem": "CI needs machine-readable output: --output-format json with --json-schema"},
+    {"id": "G077", "problem": "A batch request needs tool calls in the middle: the Batch API cannot do that"},
+    {"id": "G078", "problem": "Match batch results and resubmit only the failed ones: custom_id"},
+    {"id": "G083", "problem": "Findings in the middle of a long input are missed: key findings first, with headers"}
+  ]
+}

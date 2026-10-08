@@ -106,7 +106,7 @@ D = {
    example=res('B8', 'The question has the scene of sample question 12: a self-review in the same session misses errors, and the answer is an independent review instance.'), examplehead=EH,
    why='In mock 1, two questions were close copies of sample questions 1 and 12. A participant who read the guide knows the answer already. A word count of code does not find a copy, because a copy keeps the scene and changes the words (decision 0055).'),
  'B9': dict(title='Rule B9: not a repeat of an earlier mock', who='One model call', cls='model',
-   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066).',
+   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066). A narrow idea with almost only one problem (data/narrow-ideas.json) keeps the copy rule: only a copy fails.',
          'Call 4b gets the questions of the built earlier mocks whose point is in the same group. With none, B9 passes (decision 0056, diagram 11).'],
    example=res('B9', 'The question has the scene of M1-S28: the loop stops too early, and the answer is to continue while stop_reason is "tool_use". Options A, B and D are the wrong options of M1-S28.'), examplehead=EH,
    why='In mock 2, 13 questions repeated mock 1 with the same scene, the same answer and the same wrong options. A participant who took mock 1 knew the answers.'),
