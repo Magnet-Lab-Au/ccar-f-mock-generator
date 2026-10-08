@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S07-T3",
+  "slot_id": "M3-S07",
+  "try": 3,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S07-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts study metadata from research papers into a JSON schema with a required funding_amount field. When validation fails, a follow-up request sends the original paper, the failed extraction, and the specific validation errors. For one paper, all five retries fail with the same missing-value error on funding_amount, and the paper says only that funding details appear in a separate supplementary file. What best explains why the retries keep failing?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The schema is not in strict mode, so each retry reintroduces JSON syntax errors that hide the correct funding amount.",
+      "correct": false,
+      "reason": "The failure is a missing value, not a syntax error; strict mode eliminates syntax errors but cannot supply information that the source document lacks."
+    },
+    {
+      "letter": "B",
+      "text": "The funding section sits in the middle of a long paper, so lost-in-the-middle effects hide it and each retry overlooks the stated amount.",
+      "correct": false,
+      "reason": "The paper states no funding amount at all, so position effects are not the cause; the value is absent from the provided source, which makes retries ineffective."
+    },
+    {
+      "letter": "C",
+      "text": "The appended validation errors are too general, so the model cannot tell which field it must correct on the next attempt.",
+      "correct": false,
+      "reason": "The follow-up already includes specific validation errors naming the field; more specific feedback cannot help when the value is absent from the source document."
+    },
+    {
+      "letter": "D",
+      "text": "The funding amount exists only in the supplementary file, which the system never receives, so no retry can extract it from the paper.",
+      "correct": true,
+      "reason": "The guide states that retries are ineffective when the required information exists only in an external document that is not provided, unlike format or structural errors."
+    }
+  ]
+}

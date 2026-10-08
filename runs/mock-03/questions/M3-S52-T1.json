@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S52-T1",
+  "slot_id": "M3-S52",
+  "try": 1,
+  "point": "3.2-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team's project CLAUDE.md has grown to include a long step-by-step procedure for generating database migration scripts, which developers use only a few times per month. The same file also holds the team's naming conventions and error-handling standards, which apply to every code change. Developers report that the migration procedure adds clutter to every Claude Code session. How should you restructure this configuration?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move both the migration procedure and the coding standards into skills, so that the project CLAUDE.md loads nothing until a developer invokes a skill.",
+      "correct": false,
+      "reason": "Universal standards belong in the always-loaded CLAUDE.md; as on-demand skills they would apply only when a developer remembers to invoke them."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the migration procedure in the project CLAUDE.md, and move the naming and error-handling standards into a skill that developers invoke before each change.",
+      "correct": false,
+      "reason": "This reverses the guidance: the occasional workflow stays always loaded, and the universal standards become on-demand and easy to skip."
+    },
+    {
+      "letter": "C",
+      "text": "Move the migration procedure into each developer's user-level ~/.claude/CLAUDE.md, so that it loads only for the developers who generate migrations.",
+      "correct": false,
+      "reason": "User-level CLAUDE.md is not shared via version control and is still always loaded in every session, so it neither shares the workflow nor makes it on-demand."
+    },
+    {
+      "letter": "D",
+      "text": "Move the migration procedure into a skill in .claude/skills/ for on-demand invocation, and keep the naming and error-handling standards in the project CLAUDE.md.",
+      "correct": true,
+      "reason": "Skills suit task-specific workflows invoked on demand, while CLAUDE.md is always loaded and suits universal standards that apply to every change."
+    }
+  ]
+}

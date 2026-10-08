@@ -1,0 +1,113 @@
+{
+  "question_id": "M3-S07-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "One extraction system has two names. The stem calls it 'Your system' and later 'the pipeline' ('a separate file that the pipeline never receives'). Option C also says 'the pipeline'. The actor needs a single name throughout.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This repeats the scene and answer of earlier question M2-S54-T1. In both, a Pydantic retry-with-error-feedback loop has two failure groups. One is a format or structural error that retry fixes (dates there, nested address here). The other is a required field whose value exists only in an external document that is never provided (master agreement there, Schedule B here). Both conclude that retry cannot help the second group. Only the document type changes; the scene and the correct conclusion are the same.",
+      "letter": "D",
+      "point": "4.4-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "0b3b0f3372de8763291636043264ffa62db242fb853dfb87b5b9f08c4a574874",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Retry-with-error-feedback only fixes format or structural errors. It cannot help when the information is missing from the source. The rent figure appears only in Schedule B, which the pipeline never provides, so no number of retries can supply it.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "One extraction system has two names. The stem calls it 'Your system' and later 'the pipeline' ('a separate file that the pipeline never receives'). Option C also says 'the pipeline'. The actor needs a single name throughout.",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This repeats the scene and answer of earlier question M2-S54-T1. In both, a Pydantic retry-with-error-feedback loop has two failure groups. One is a format or structural error that retry fixes (dates there, nested address here). The other is a required field whose value exists only in an external document that is never provided (master agreement there, Schedule B here). Both conclude that retry cannot help the second group. Only the document type changes; the scene and the correct conclusion are the same.",
+      "letter": "D",
+      "point": "4.4-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "JSON Schema",
+      "found": true
+    },
+    {
+      "name": "strict mode",
+      "found": true
+    },
+    {
+      "name": "Pydantic",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

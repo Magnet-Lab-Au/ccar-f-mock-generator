@@ -1,0 +1,105 @@
+{
+  "question_id": "M3-S39-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Option D (build custom MCP servers for every integration, including the standard one, so that the team keeps one internal design) repeats the wrong option of earlier question M2-S03-T1. That option was 'Build custom MCP servers for both ... so that the team controls every tool description and output format.' Both options propose the same action for the same reason, which is uniformity and control.",
+      "letter": "D",
+      "point": "2.4-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "b83f8ec3e7075867c53d15838ecfb25d067ca5e17fbc093f641ba9e7ddd707bb",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 2.4-S4, the team should choose existing community MCP servers for standard integrations such as Jira and reserve custom servers for team-specific workflows such as deployment approval.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Option D (build custom MCP servers for every integration, including the standard one, so that the team keeps one internal design) repeats the wrong option of earlier question M2-S03-T1. That option was 'Build custom MCP servers for both ... so that the team controls every tool description and output format.' Both options propose the same action for the same reason, which is uniformity and control.",
+      "letter": "D",
+      "point": "2.4-S4"
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    },
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

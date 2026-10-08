@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S42-T1",
+  "slot_id": "M3-S42",
+  "try": 1,
+  "point": "1.1-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK tool helps engineers explore a legacy billing codebase. An engineer asks where the invoice rounding logic lives. Claude's first response has stop_reason \"tool_use\" and requests a Grep search for \"round\" across the src directory. What should your agentic loop do next?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Execute the requested Grep search, send its result back to Claude in the next request, and inspect stop_reason again on the new response.",
+      "correct": true,
+      "reason": "This follows the agentic loop lifecycle in the guide. The loop executes the requested tool and returns the result for the next iteration. It then continues while stop_reason is \"tool_use\" and ends on \"end_turn\"."
+    },
+    {
+      "letter": "B",
+      "text": "Ignore the Grep request and run a fixed sequence of Glob, Read, and Grep calls that your code defines for every codebase question.",
+      "correct": false,
+      "reason": "The guide favors model-driven decision-making, in which Claude chooses the next tool from the context. A pre-configured tool sequence that ignores Claude's request breaks the loop lifecycle."
+    },
+    {
+      "letter": "C",
+      "text": "Send the original question to Claude again without the Grep result, so Claude can reconsider which tool fits the question best.",
+      "correct": false,
+      "reason": "The guide says the requested tool is executed and its result is returned for the next iteration. Without the result, Claude cannot reason about the next action."
+    },
+    {
+      "letter": "D",
+      "text": "Execute the requested Grep search and return its raw output to the engineer as the final answer, because the matching lines already show the location.",
+      "correct": false,
+      "reason": "The loop must return tool results to Claude for the next iteration. Only stop_reason \"end_turn\" signals that Claude has finished, and here the value is \"tool_use\"."
+    }
+  ]
+}

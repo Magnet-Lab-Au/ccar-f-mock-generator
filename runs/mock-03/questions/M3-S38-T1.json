@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S38-T1",
+  "slot_id": "M3-S38",
+  "try": 1,
+  "point": "1.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "An engineer sends your coordinator agent one request: find why the nightly export job fails, list where the deprecated config loader is still called, and generate boilerplate for a new export endpoint. The coordinator agent spawns three subagents in parallel through the Task tool, and each subagent gets only its own item. Its final response pastes the three outputs together, and the new boilerplate calls the deprecated loader that another subagent flagged. How should you change the coordinator agent's workflow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give each subagent a shared context with the full request and the engineer's goal, then have the coordinator agent synthesize the three findings into one reconciled response.",
+      "correct": true,
+      "reason": "The guide's pattern keeps the parallel subagents on distinct items. It gives them shared context and then synthesizes their findings into one unified resolution, so conflicts like the deprecated loader get reconciled."
+    },
+    {
+      "letter": "B",
+      "text": "Drop the parallel subagents and run the three items one after another in a single agent session, so that each item can see the earlier output.",
+      "correct": false,
+      "reason": "This gives up parallel investigation of the distinct items, which the guide's pattern calls for. It also does not add a synthesis step that reconciles the findings into one resolution."
+    },
+    {
+      "letter": "C",
+      "text": "Add a system prompt instruction that tells the boilerplate subagent to avoid deprecated APIs, and keep returning the three outputs as separate sections.",
+      "correct": false,
+      "reason": "This patches one symptom with a prompt. The subagents still work without shared context, and the outputs are still not synthesized into a unified resolution as the guide describes."
+    },
+    {
+      "letter": "D",
+      "text": "Send the full three-part request to every subagent, so that each one investigates all concerns, and have the coordinator agent pick the most complete answer.",
+      "correct": false,
+      "reason": "This undoes the decomposition into distinct items, which the guide requires. It also duplicates work and replaces synthesis with choosing one answer."
+    }
+  ]
+}

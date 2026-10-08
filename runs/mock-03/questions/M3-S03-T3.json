@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S03-T3",
+  "slot_id": "M3-S03",
+  "try": 3,
+  "point": "5.2-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S03-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system has a chat assistant that helps vendors fix invoices rejected by JSON schema validation. A vendor writes angrily that the same invoice has now been rejected three times, but does not ask for a human reviewer. The only problem is a missing invoice date, which the assistant can fix if the vendor supplies it. How should the assistant respond?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Acknowledge the vendor's frustration, offer to fix the missing date now, and escalate to a human reviewer only if the vendor then asks for one.",
+      "correct": true,
+      "reason": "The guide says to acknowledge frustration and offer resolution when the issue is within the assistant's capability, and to escalate only if the vendor states a preference for a human reviewer."
+    },
+    {
+      "letter": "B",
+      "text": "Escalate the invoice to a human reviewer right away, because the vendor's angry tone shows that the case is too complex for the assistant to resolve on its own.",
+      "correct": false,
+      "reason": "The guide says sentiment is an unreliable proxy for case complexity, and this issue is within the assistant's capability, so the vendor's frustration alone is not an escalation trigger."
+    },
+    {
+      "letter": "C",
+      "text": "Skip any reply about the vendor's frustration and send back the full schema validation error log, so the vendor can find and correct the missing date alone.",
+      "correct": false,
+      "reason": "The guide's pattern has the assistant acknowledge the frustration and offer to resolve the issue itself, not ignore the frustration and leave the fix to the vendor."
+    },
+    {
+      "letter": "D",
+      "text": "Offer to fix the missing date, and keep handling the case with the assistant even if the vendor later asks twice to speak with a human reviewer.",
+      "correct": false,
+      "reason": "The guide's pattern escalates when the vendor reiterates a preference for a human reviewer, so continuing with the assistant after repeated requests is wrong."
+    }
+  ]
+}

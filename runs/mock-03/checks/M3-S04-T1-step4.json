@@ -1,0 +1,92 @@
+{
+  "question_id": "M3-S04-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question and the options call the actor 'Claude', and the reason for A also says 'Claude'. The reasons for B, C and D call the same actor 'the model'. One actor has two names.",
+      "letter": "B",
+      "point": "4.2-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "637b43992197504ceece9d9a42b410c6686dc57dfe7a7a7f616bb891112e58f1",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "A small set of few-shot examples covering varied phrasings, each showing the reasoning from clause text to value, lets Claude generalize to phrasings nobody has listed. A lookup table only matches the cases it names. Making the field nullable hides the problem. Adding phrasings after they fail is reactive and never complete. Many examples of the same standard phrasing show format but not judgment.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question and the options call the actor 'Claude', and the reason for A also says 'Claude'. The reasons for B, C and D call the same actor 'the model'. One actor has two names.",
+      "letter": "B",
+      "point": "4.2-K3"
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

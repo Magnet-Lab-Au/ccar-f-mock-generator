@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S01-T2",
+  "slot_id": "M3-S01",
+  "try": 2,
+  "point": "4.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S01-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads shipping manifests and emits a finding when a declared weight seems inconsistent with the line items. Before launch, the team is designing the finding schema, because an earlier system produced many findings that developers later dismissed as false positives. The team wants to analyze future dismissals systematically and adjust the prompt for the source formats that cause them. Which design of a new field in each finding best supports this analysis?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a detected_pattern field that records which construct in the manifest triggered the finding, such as a handwritten correction or a split table row.",
+      "correct": true,
+      "reason": "The guide says that a detected_pattern field, which records the construct that triggered a finding, enables systematic analysis of false positive patterns when developers dismiss findings."
+    },
+    {
+      "letter": "B",
+      "text": "Add a dismissal_reason field that each developer fills in with a free-text explanation after rejecting a finding, describing in their own words why it was wrong.",
+      "correct": false,
+      "reason": "Free-text opinions recorded after dismissal do not capture which source construct triggered the finding, and the guide ties false positive analysis to that triggering construct."
+    },
+    {
+      "letter": "C",
+      "text": "Add a conflict_detected boolean that marks whether the source manifest contained inconsistent data, so that each finding shows a clear true or false value.",
+      "correct": false,
+      "reason": "The guide uses conflict_detected to flag inconsistent source data within one extraction, and a single true or false value cannot show which constructs cause dismissed findings."
+    },
+    {
+      "letter": "D",
+      "text": "Add a calculated_weight field extracted next to the stated weight, so that each finding shows both values and the size of the discrepancy.",
+      "correct": false,
+      "reason": "The guide uses calculated values next to stated values for self-correction within one extraction, which does not identify the constructs behind dismissed findings."
+    }
+  ]
+}

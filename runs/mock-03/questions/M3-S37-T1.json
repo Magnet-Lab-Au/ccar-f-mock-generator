@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S37-T1",
+  "slot_id": "M3-S37",
+  "try": 1,
+  "point": "3.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team adds a Claude Code review step to CI that posts inline comments on pull requests. When engineers push follow-up commits, the review re-runs and reposts many comments for issues it already flagged, including some that were already fixed. Engineers have started to ignore the review comments. What change most effectively stops the duplicate comments?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Switch the review to --output-format json with --json-schema so that the findings become machine-parseable before they are posted as inline comments.",
+      "correct": false,
+      "reason": "The guide uses these flags to make findings machine-parseable for posting. Structured output alone does not tell Claude which issues were already reported, so duplicates remain."
+    },
+    {
+      "letter": "B",
+      "text": "Add a CLAUDE.md instruction telling Claude to avoid repeating comments that it has posted on earlier runs of the pull request review.",
+      "correct": false,
+      "reason": "CLAUDE.md supplies project context such as standards and review criteria, but it gives Claude no record of what was found earlier. Without the prior findings in context, Claude cannot tell which issues are new."
+    },
+    {
+      "letter": "C",
+      "text": "Limit each re-run to the files changed in the latest commit so that previously reviewed files are never examined again by Claude.",
+      "correct": false,
+      "reason": "Claude still has no prior findings in context, so it can repost issues in files the commit touched. It also cannot confirm which earlier issues are still unaddressed, which the guide says re-runs should report."
+    },
+    {
+      "letter": "D",
+      "text": "Include the prior review findings in context on each re-run and instruct Claude to report only new or still-unaddressed issues.",
+      "correct": true,
+      "reason": "The guide recommends this exact practice to avoid duplicate comments when reviews re-run after new commits."
+    }
+  ]
+}

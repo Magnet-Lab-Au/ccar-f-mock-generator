@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S53-T1",
+  "slot_id": "M3-S53",
+  "try": 1,
+  "point": "3.5-S2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A developer uses Claude Code to build a shipping-cost calculator for your checkout service. The requirements were given in prose, and after each round the developer only replies that the results are still wrong. Edge cases such as zero-weight parcels keep failing, and the function must also return within 50 ms for carts of 500 items. Which practices should the developer adopt so that each iteration makes measurable progress?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Let Claude Code finish the calculator first, then add performance tests once the cost results look correct in a manual review.",
+      "correct": false,
+      "reason": "The guide places the tests, including the performance requirements, before implementation; deferring them leaves the iterations without the performance criteria."
+    },
+    {
+      "letter": "B",
+      "text": "Before any implementation, write a test suite that covers the expected costs, edge cases such as zero-weight parcels, and the 50 ms limit for 500-item carts.",
+      "correct": true,
+      "reason": "The guide recommends writing tests for expected behavior, edge cases and performance requirements before implementation, so that each iteration has concrete criteria."
+    },
+    {
+      "letter": "C",
+      "text": "Limit the test suite to typical carts and common destinations so that the early iterations pass quickly and show steady progress.",
+      "correct": false,
+      "reason": "The guide says the test suite should cover edge cases, and the zero-weight parcels that keep failing are exactly the cases this suite would omit."
+    },
+    {
+      "letter": "D",
+      "text": "Add a rule to the project CLAUDE.md that tells Claude Code to handle edge cases carefully and to keep the calculator fast.",
+      "correct": false,
+      "reason": "A general instruction gives no concrete expected outputs or failures to iterate on; the guide's technique is a test suite written first and test failures shared with Claude."
+    },
+    {
+      "letter": "E",
+      "text": "After each attempt, run the suite and give Claude Code the specific failing tests and their error output as the basis for the next fix.",
+      "correct": true,
+      "reason": "The guide describes test-driven iteration as sharing test failures with Claude to guide progressive improvement, instead of vague feedback that the results are wrong."
+    }
+  ]
+}

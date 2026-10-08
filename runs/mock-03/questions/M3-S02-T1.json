@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S02-T1",
+  "slot_id": "M3-S02",
+  "try": 1,
+  "point": "4.3-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls clause data from scanned lease agreements and asks Claude to return it as JSON in its text reply. Some replies contain unescaped quotation marks copied from the clause text, so the downstream system fails to parse them. The team wants one change that guarantees schema-compliant output. Which change should the team make?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add few-shot examples to the prompt that show correctly escaped quotation marks inside valid JSON clause objects.",
+      "correct": false,
+      "reason": "Few-shot examples can make valid JSON more likely, but free-text JSON still has no guarantee; the guide names tool use with JSON schemas as the reliable way to eliminate syntax errors."
+    },
+    {
+      "letter": "B",
+      "text": "Add a final prompt-chaining pass in which Claude rereads its own JSON reply and rewrites any part that looks malformed before returning it.",
+      "correct": false,
+      "reason": "The rewritten reply is still free-text JSON, so syntax errors can remain; only tool use with a JSON schema eliminates them, as the guide states."
+    },
+    {
+      "letter": "C",
+      "text": "Run a post-processing script that escapes stray quotation marks and removes trailing commas in the text reply before the downstream system parses it.",
+      "correct": false,
+      "reason": "A repair script only patches the error patterns it knows about and gives no guarantee; the guide states that tool use with JSON schemas is the approach that eliminates JSON syntax errors."
+    },
+    {
+      "letter": "D",
+      "text": "Define an extraction tool whose input parameters are the lease JSON schema, and read the clause data from the tool_use block in the response.",
+      "correct": true,
+      "reason": "The guide names tool use with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, because it eliminates JSON syntax errors."
+    }
+  ]
+}

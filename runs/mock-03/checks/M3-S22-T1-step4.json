@@ -1,0 +1,105 @@
+{
+  "question_id": "M3-S22-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M1-S26-T1 uses the same scene and the same answer. In both, the support agent escalates a refund that exceeds its limit to human agents who cannot see the transcript. In both, the correct answer is a handoff with customer ID, root cause, refund amount and recommended action, which is option C here. Wrong option A, a short note that the customer wants a refund, also closely repeats that question's wrong option of a short free-form sentence.",
+      "letter": "C",
+      "point": "1.4-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "f8c758ad56f5d1715332e87968dd346cd1bfebfd84cd4a33ac056b11ed4e0da5",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Human agents lack the transcript, so the handoff needs a structured summary: customer ID, confirmed root cause, refund amount, and recommended action (1.4-S3). A forces a wasteful re-investigation, B leaves out the key verified facts, and D is raw noise that the human would have to reconstruct.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M1-S26-T1 uses the same scene and the same answer. In both, the support agent escalates a refund that exceeds its limit to human agents who cannot see the transcript. In both, the correct answer is a handoff with customer ID, root cause, refund amount and recommended action, which is option C here. Wrong option A, a short note that the customer wants a refund, also closely repeats that question's wrong option of a short free-form sentence.",
+      "letter": "C",
+      "point": "1.4-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "get_customer",
+      "found": true
+    },
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "escalate_to_human",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S40-T2",
+  "slot_id": "M3-S40",
+  "try": 2,
+  "point": "2.5-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S40-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent often gets requests such as \"find every Dockerfile in the repository\" or \"list all *Controller.java files in the legacy billing module.\" Logs show that it sometimes runs content searches and sometimes lists directories, and its results are often incomplete. You want to add one tool-selection rule to its system prompt. Which rule fits these requests best?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Glob when a request identifies files by path, name, or extension pattern, and use Grep when it identifies text that the files contain.",
+      "correct": true,
+      "reason": "Glob matches file paths by name or extension patterns, which is what both requests need. Grep is for searching file contents, so the rule assigns each tool its purpose."
+    },
+    {
+      "letter": "B",
+      "text": "Use Grep for every file search, because a search for the pattern text across the codebase also matches file names and extensions.",
+      "correct": false,
+      "reason": "Grep searches file contents for patterns such as function names or error messages. It does not match file paths, so it misses files whose names fit but whose contents do not mention the pattern."
+    },
+    {
+      "letter": "C",
+      "text": "Use Bash to print a full recursive listing of the whole repository, then have the agent scan that long listing for any names that match the request.",
+      "correct": false,
+      "reason": "Finding files by name or extension patterns is the job of the built-in Glob tool. A manual listing and scan replaces the tool that is meant for file path pattern matching."
+    },
+    {
+      "letter": "D",
+      "text": "Use Glob only after Grep has found a file that contains the requested name, so each path match is confirmed by its content.",
+      "correct": false,
+      "reason": "These requests are defined by file names, not by contents. Gating Glob on a Grep content match would drop files whose contents do not mention their name, while Glob alone matches the paths."
+    }
+  ]
+}

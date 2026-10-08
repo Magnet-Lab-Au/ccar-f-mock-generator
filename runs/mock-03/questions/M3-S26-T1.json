@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S26-T1",
+  "slot_id": "M3-S26",
+  "try": 1,
+  "point": "2.5-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team will replace the payments_client module that the backend uses behind the process_refund MCP tool of the customer support agent. Before the change, you use Claude Code to find every file in the backend that imports payments_client. The backend has several hundred Python files in many directories, and the file names do not show which files use the module. Which built-in tool choice is the most effective for this search?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Write to add a logging line to the payments_client module, then run the agent and record which modules load it.",
+      "correct": false,
+      "reason": "Write is for full file operations, not for searching. Grep finds the import statements in the file contents directly, without changing any code."
+    },
+    {
+      "letter": "B",
+      "text": "Use Grep to search the file contents across the backend for the import statement of the payments_client module.",
+      "correct": true,
+      "reason": "Grep is the built-in tool for content search, and the guide names import statements as a typical pattern that Grep finds in file contents."
+    },
+    {
+      "letter": "C",
+      "text": "Use Glob with the pattern **/*.py to list the Python files, because the returned file paths show which files import the module.",
+      "correct": false,
+      "reason": "Glob matches file paths by name or extension patterns. It does not search file contents, so the paths say nothing about import statements."
+    },
+    {
+      "letter": "D",
+      "text": "Use Read on the payments_client module itself, because the contents of that one file list every module that imports it.",
+      "correct": false,
+      "reason": "Read loads the full contents of a file. The import statements are in the files that use the module, so a content search across the codebase with Grep is needed."
+    }
+  ]
+}

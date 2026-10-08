@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S13-T2",
+  "slot_id": "M3-S13",
+  "try": 2,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S13-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts study results from research papers into a database that analysts query directly. An independent Claude instance runs a verification pass that flags possible extraction errors. The team wants flags that are almost certainly real to trigger automatic re-extraction, and doubtful flags to go to a domain specialist. Which design best supports this split?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Split the verification into per-section passes plus a cross-section integration pass, and re-extract only the flags that both kinds of pass report.",
+      "correct": false,
+      "reason": "The guide uses multi-pass review to avoid attention dilution, with local and integration passes looking for different issues; agreement between them is not a calibrated confidence and would drop real errors."
+    },
+    {
+      "letter": "B",
+      "text": "Have the extraction pass report its own confidence for each field as it extracts, and route each flag by that extraction confidence.",
+      "correct": false,
+      "reason": "The guide says a model keeps its reasoning context from generation and is less likely to question its own decisions, so the extractor's self-rating is a weak basis for routing the verifier's flags."
+    },
+    {
+      "letter": "C",
+      "text": "Have the verification pass report a confidence level with each flag, and set the routing thresholds by checking those levels against a labeled validation set.",
+      "correct": true,
+      "reason": "The guide describes verification passes that self-report confidence alongside each finding to enable calibrated review routing, and it names calibration with labeled validation sets for confidence scores."
+    },
+    {
+      "letter": "D",
+      "text": "Count the flags for each paper, and send papers with many flags to re-extraction and papers with few flags to the domain specialist.",
+      "correct": false,
+      "reason": "A per-paper count says nothing about how likely each flag is to be real; the guide's routing relies on confidence reported alongside each finding, so this cannot separate certain flags from doubtful ones."
+    }
+  ]
+}

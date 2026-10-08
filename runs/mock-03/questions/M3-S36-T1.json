@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S36-T1",
+  "slot_id": "M3-S36",
+  "try": 1,
+  "point": "3.5-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK tool generated a boilerplate data export module for a legacy billing system. Tests show three problems: the date parser returns local time instead of UTC, the file naming step builds file names from those parsed dates, and the command-line help text misspells an option name. A change to the date parser changes what the file naming step must do, but the typo affects nothing else. How should you communicate these problems to the agent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Describe the date parsing and file naming problems together in one detailed message, then fix the help text typo in a separate iteration.",
+      "correct": true,
+      "reason": "The guide says to address interacting issues in a single detailed message and to iterate sequentially on independent issues. The date and file name problems interact, but the typo is independent."
+    },
+    {
+      "letter": "B",
+      "text": "Send all three problems in one detailed message, because every problem from a single test run should always be reported together.",
+      "correct": false,
+      "reason": "The guide ties the single-message approach to interacting issues, not to the test run that found them. The independent typo suits sequential iteration."
+    },
+    {
+      "letter": "C",
+      "text": "Combine the help text typo with the date parsing problem in one message, and report the file naming problem in a later message on its own.",
+      "correct": false,
+      "reason": "This plan groups the wrong problems. It splits the two interacting problems, which the guide says belong in one message, and bundles in the independent typo."
+    },
+    {
+      "letter": "D",
+      "text": "Report the file naming problem first, and report the date parsing problem in a later message once the file names pass the tests.",
+      "correct": false,
+      "reason": "The guide reserves sequential fixing for independent issues. Here the file naming fix depends on the date parser, so a separate fix would likely be redone after the parser changes."
+    }
+  ]
+}

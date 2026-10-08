@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S21-T1",
+  "slot_id": "M3-S21",
+  "try": 1,
+  "point": "1.3-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support coordinator first spawns an account review subagent, which calls get_customer and lookup_order and reports the customer's order history and prior refunds. The coordinator then spawns a refund decision subagent through the Task tool with only the prompt \"Decide whether this customer qualifies for a refund.\" The refund decision subagent often approves refunds for customers who already received one for the same order. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Emit both Task calls in a single coordinator response so that the two subagents run in parallel and can see each other's results.",
+      "correct": false,
+      "reason": "Parallel spawning does not share context between subagents, and the refund decision depends on findings that the account review must produce first."
+    },
+    {
+      "letter": "B",
+      "text": "Add a line telling the refund decision subagent to consult the earlier account review results, since subagents in one session share memory between invocations.",
+      "correct": false,
+      "reason": "The guide states that subagents do not share memory between invocations, so a reference to earlier results gives the subagent no data."
+    },
+    {
+      "letter": "C",
+      "text": "Replace the coordinator's goal-based instructions with step-by-step procedures that tell the refund decision subagent exactly how to evaluate each refund request.",
+      "correct": false,
+      "reason": "The guide favors goals and quality criteria over procedures, and procedures do not supply the missing findings that the subagent never received."
+    },
+    {
+      "letter": "D",
+      "text": "Include the account review subagent's complete findings, such as the order history and prior refunds, directly in the prompt that spawns the refund decision subagent.",
+      "correct": true,
+      "reason": "Subagents do not inherit the coordinator's context, so complete findings from prior agents must be passed explicitly in the subagent's prompt."
+    }
+  ]
+}

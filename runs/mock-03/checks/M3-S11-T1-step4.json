@@ -1,0 +1,100 @@
+{
+  "question_id": "M3-S11-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "ae27a142e47de57c4ec57362bc0ecdc9112ecd69b7d6edcf981085376db62e10",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Every response passes schema validation, so syntax and tool-calling problems are ruled out. The values keep each supplier's own format, which points to missing format normalization rules in the prompt (4.3-S6). Without those rules, Claude copies source formats into the schema fields.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_use",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": "JSON schema",
+      "found": true
+    },
+    {
+      "name": "strict mode",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S08-T1",
+  "slot_id": "M3-S08",
+  "try": 1,
+  "point": "4.6-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls party names, payment terms, and renewal dates from supplier contracts into JSON that matches your schema. After each extraction, the same conversation receives a follow-up message asking Claude to verify every field against the contract. This verification rarely flags anything, yet downstream auditors find subtle errors, such as the buyer and supplier names placed in each other's fields. Which verification design would most effectively catch these errors?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send the contract and the extracted JSON to a separate Claude instance that never saw the extraction conversation, and have it check each field.",
+      "correct": true,
+      "reason": "An independent review instance without the generator's reasoning context is more effective at catching subtle issues than self-review instructions."
+    },
+    {
+      "letter": "B",
+      "text": "Add a Pydantic validation-retry loop that returns any record failing validation to the extraction conversation together with the specific error message.",
+      "correct": false,
+      "reason": "Swapped names are valid strings and do not fail validation. Any retry also returns to the same conversation, which keeps the original reasoning context."
+    },
+    {
+      "letter": "C",
+      "text": "Enable strict mode on the extraction tool's JSON schema so that every extracted record is guaranteed to conform to the schema before it is sent downstream.",
+      "correct": false,
+      "reason": "Strict mode eliminates syntax errors only. Swapped party names are schema-valid values, so this semantic error still passes."
+    },
+    {
+      "letter": "D",
+      "text": "Expand the follow-up message in the extraction conversation with a checklist of the fields that auditors most often find wrong.",
+      "correct": false,
+      "reason": "This is still a self-review instruction. The model keeps the reasoning context of its extraction, so it is less likely to question its own decisions."
+    }
+  ]
+}

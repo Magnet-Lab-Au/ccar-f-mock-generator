@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S59-T1",
+  "slot_id": "M3-S59",
+  "try": 1,
+  "point": "3.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team keeps a shared skill named db-migrate in .claude/skills/, and the skill is committed to version control. Priya, one developer on the team, wants a version of this skill that adds extra logging steps for her own debugging habits. Her change must not alter how the skill behaves for her teammates. What should Priya do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Copy the skill into ~/.claude/skills/ under the same name, db-migrate, so that her personal copy stands in for the shared one.",
+      "correct": false,
+      "reason": "The guide says personal variants should use different names to avoid affecting teammates; reusing the shared name does not follow that practice."
+    },
+    {
+      "letter": "B",
+      "text": "Create a personal skill in ~/.claude/skills/ under a different name, such as db-migrate-verbose, that contains her logging steps.",
+      "correct": true,
+      "reason": "The guide describes personal variants created in ~/.claude/skills/ with different names, so Priya gets her variant and teammates are not affected."
+    },
+    {
+      "letter": "C",
+      "text": "Add her logging steps to the project-level CLAUDE.md file, so that Claude Code loads them in every session together with the shared skill.",
+      "correct": false,
+      "reason": "The project CLAUDE.md is shared with the team and always loaded, so the logging steps would reach every teammate's sessions."
+    },
+    {
+      "letter": "D",
+      "text": "Edit the shared SKILL.md in .claude/skills/ to add her logging steps, and then commit the change to version control.",
+      "correct": false,
+      "reason": "The project .claude/skills/ directory is shared via version control, so this edit changes the skill for every teammate."
+    }
+  ]
+}

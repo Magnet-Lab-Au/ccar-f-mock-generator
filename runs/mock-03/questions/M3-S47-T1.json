@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S47-T1",
+  "slot_id": "M3-S47",
+  "try": 1,
+  "point": "3.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code on a shared repository, and its project-level CLAUDE.md is committed to version control. One developer, Priya, wants Claude Code to explain each refactoring step in detail before it edits any files. Her teammates do not want this behavior in their own sessions. Where should Priya write this instruction?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Put it in a .claude/rules/ file with YAML frontmatter path-scoping, since path patterns restrict each rule file to the sessions of a single user.",
+      "correct": false,
+      "reason": "Path-scoping in .claude/rules/ limits rules by file paths, not by user, and the rules directory is part of the shared project configuration."
+    },
+    {
+      "letter": "B",
+      "text": "Put it in a CLAUDE.md file in the subdirectory of the package she maintains, since directory-level files load only for the developer who created them.",
+      "correct": false,
+      "reason": "Directory-level CLAUDE.md files are part of the repository hierarchy and apply to anyone working in that directory, not only to their author."
+    },
+    {
+      "letter": "C",
+      "text": "Put it in ~/.claude/CLAUDE.md on her machine, since user-level instructions apply only to her and are not shared through version control.",
+      "correct": true,
+      "reason": "The guide states that user-level settings in ~/.claude/CLAUDE.md apply only to that user and are not shared with teammates through version control, so it fits a personal preference."
+    },
+    {
+      "letter": "D",
+      "text": "Put it in the root CLAUDE.md of the repository, since project-level instructions load only in the sessions of the developer who committed them.",
+      "correct": false,
+      "reason": "The root CLAUDE.md is project-level configuration that is shared through version control, so it would apply to every teammate."
+    }
+  ]
+}

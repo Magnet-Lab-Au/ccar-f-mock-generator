@@ -1,0 +1,105 @@
+{
+  "question_id": "M3-S01-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The scene repeats earlier question M2-S52-T1. In both, extraction findings are dismissed as false positives and the team wants to group the dismissals by source content. In both, each finding stores only a field name and a message, and the answer is to record the triggering construct as a detected_pattern. Only the document type (contracts instead of invoices) and the framing (cause instead of change) differ. Option D also reuses the earlier wrong option of retrying with feedback appended to the prompt.",
+      "letter": "C",
+      "point": "4.4-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "79497357eb2307cdf33955d7e3c1b96831abd82b199e4a7896a2241294f5ddea",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Task 4.4-K3/S3: without a detected_pattern field recording which clause construct triggered each finding, dismissed findings cannot be systematically grouped to analyze false-positive patterns. The other options do not address the inability to group findings.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The scene repeats earlier question M2-S52-T1. In both, extraction findings are dismissed as false positives and the team wants to group the dismissals by source content. In both, each finding stores only a field name and a message, and the answer is to record the triggering construct as a detected_pattern. Only the document type (contracts instead of invoices) and the framing (cause instead of change) differ. Option D also reuses the earlier wrong option of retrying with feedback appended to the prompt.",
+      "letter": "C",
+      "point": "4.4-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "detected_pattern",
+      "found": true
+    },
+    {
+      "name": "calculated_total",
+      "found": true
+    },
+    {
+      "name": "stated_total",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

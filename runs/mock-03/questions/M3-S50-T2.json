@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S50-T2",
+  "slot_id": "M3-S50",
+  "try": 2,
+  "point": "3.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S50-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team is triaging this week's backlog before working through it in Claude Code. The team lead wants to start one item right away with direct execution and leave the other items for plan mode. Which backlog item is the best fit for direct execution?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Splitting the billing module out of the monolith into its own microservice, with new boundaries between the services and the shared database.",
+      "correct": false,
+      "reason": "The guide names microservice restructuring as an architectural decision with multi-file changes, so plan mode fits it better than direct execution."
+    },
+    {
+      "letter": "B",
+      "text": "Migrating the whole codebase from one HTTP client library to another, a change that touches more than 45 files.",
+      "correct": false,
+      "reason": "The guide names library migrations affecting 45+ files as tasks with architectural implications, which call for plan mode."
+    },
+    {
+      "letter": "C",
+      "text": "Fixing a null reference error in report_export.py, where the stack trace points to the exact failing line in one function.",
+      "correct": true,
+      "reason": "The guide names a single-file bug fix with a clear stack trace as a well-understood change with clear scope, which suits direct execution."
+    },
+    {
+      "letter": "D",
+      "text": "Choosing between a message queue and direct webhooks for order sync, where the two choices need different infrastructure.",
+      "correct": false,
+      "reason": "The guide names choosing between integration approaches with different infrastructure requirements as a plan mode task, because multiple valid approaches exist."
+    }
+  ]
+}

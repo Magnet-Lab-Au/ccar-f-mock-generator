@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S49-T1",
+  "slot_id": "M3-S49",
+  "try": 1,
+  "point": "3.4-S4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team will use Claude Code to migrate from a legacy HTTP client library to a new one. The migration touches about 50 files. The team must choose between wrapping the new library in an adapter module and replacing the calls directly at every call site. You want to avoid costly rework and still finish the edits efficiently. Which two steps should the workflow include?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start in plan mode so Claude Code explores the affected files and compares the adapter and call-site approaches before any file is changed.",
+      "correct": true,
+      "reason": "Plan mode suits multi-file migrations with multiple valid approaches, and it allows safe exploration and design before changes are committed."
+    },
+    {
+      "letter": "B",
+      "text": "After the team approves the plan, switch to direct execution so Claude Code applies the chosen approach across the affected files.",
+      "correct": true,
+      "reason": "The guide recommends combining plan mode for investigation with direct execution for implementation, such as executing a planned library migration."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the session in plan mode while Claude Code edits all 50 files, so every edit stays within the investigation phase.",
+      "correct": false,
+      "reason": "Plan mode is for exploration and design before changes are made; once the approach is planned, the implementation belongs in direct execution."
+    },
+    {
+      "letter": "D",
+      "text": "Have the Explore subagent make the file edits so that the verbose edit output stays out of the main conversation.",
+      "correct": false,
+      "reason": "The Explore subagent isolates verbose discovery output and returns summaries; it is not the tool for implementing the planned changes."
+    },
+    {
+      "letter": "E",
+      "text": "Start in direct execution on all 50 files and review the diffs afterward to judge which approach the edits should have used.",
+      "correct": false,
+      "reason": "A migration across many files with an open choice of approach needs plan mode first; deciding the approach after the edits causes costly rework."
+    }
+  ]
+}

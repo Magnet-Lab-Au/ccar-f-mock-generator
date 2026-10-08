@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S41-T2",
+  "slot_id": "M3-S41",
+  "try": 2,
+  "point": "2.3-K3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S41-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK coordinator delegates work to three subagents: issue triage, test writing, and legacy documentation. The issue tracker MCP server has 12 tools, and the triage subagent uses all of them. The documentation subagent looks up the title of a linked ticket for almost every commit that it documents. Your team is writing rules for which tools each subagent receives. Which two rules best follow scoped tool access?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "A subagent that needs any one tool from an MCP server receives every tool on that server, so tool sets follow server boundaries.",
+      "correct": false,
+      "reason": "This gives agents tools beyond their role, while scoped access gives only the tools that the role needs."
+    },
+    {
+      "letter": "B",
+      "text": "Every subagent receives all tools from every connected MCP server, so that no subagent ever lacks a capability during a task.",
+      "correct": false,
+      "reason": "Too many tools degrade tool selection reliability, and agents with tools outside their specialization tend to misuse them."
+    },
+    {
+      "letter": "C",
+      "text": "The documentation subagent receives the triage subagent's ticket tools, including the tools that edit and close tickets, because it reads ticket titles often.",
+      "correct": false,
+      "reason": "A cross-role tool for a high-frequency need must be limited, and full ticket tools are outside the documentation role and invite misuse."
+    },
+    {
+      "letter": "D",
+      "text": "A subagent gets a cross-role tool only for a specific high-frequency need, and that tool is limited to what the need requires.",
+      "correct": true,
+      "reason": "The guide allows limited cross-role tools for specific high-frequency needs, such as the frequent ticket-title lookups."
+    },
+    {
+      "letter": "E",
+      "text": "Each subagent receives only the tools that its own role needs, so the test-writing subagent receives none of the issue tracker tools.",
+      "correct": true,
+      "reason": "Scoped tool access gives each agent only the tools that its role needs, which prevents cross-specialization misuse."
+    }
+  ]
+}

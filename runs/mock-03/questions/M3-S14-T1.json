@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S14-T1",
+  "slot_id": "M3-S14",
+  "try": 1,
+  "point": "4.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes supplier contracts and outputs a JSON object for each contract. Each object includes a penalty_risk field with the enum values high, medium, and low. Reviewers find that contracts with nearly identical late-delivery penalty clauses are labeled high in some outputs and low in others. What is the most likely cause of this inconsistent classification?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The penalty_risk field uses an enum type in the JSON schema, which forces Claude to choose a level even for unclear clauses.",
+      "correct": false,
+      "reason": "An enum only limits the output to valid values; it does not define what each level means, so it does not cause similar clauses to receive different levels."
+    },
+    {
+      "letter": "B",
+      "text": "The penalty_risk field is marked as optional rather than required in the JSON schema, so Claude assigns it with less care.",
+      "correct": false,
+      "reason": "Whether a field is required or optional controls whether it must be present, not how consistently its value is chosen; the missing piece is explicit level criteria with examples."
+    },
+    {
+      "letter": "C",
+      "text": "The prompt names the three risk levels but gives no explicit criteria and no concrete clause example for each level.",
+      "correct": true,
+      "reason": "Consistent severity classification requires explicit criteria with concrete examples for each level; with only the level names, Claude has no stable definition to apply across contracts."
+    },
+    {
+      "letter": "D",
+      "text": "The prompt lacks a general instruction telling Claude to be conservative and to assign the high level only when it is highly confident.",
+      "correct": false,
+      "reason": "The guide states that general instructions like being conservative or reporting only high-confidence findings fail to improve precision compared to specific categorical criteria, so their absence is not the cause."
+    }
+  ]
+}

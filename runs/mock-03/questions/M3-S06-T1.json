@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S06-T1",
+  "slot_id": "M3-S06",
+  "try": 1,
+  "point": "5.4-K4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system uses a coordinator that delegates document batches to subagents, and each subagent extracts fields and validates them against JSON schemas. During a 3,000-document run, the coordinator process crashed after many batches had finished. On restart, the system had no record of which batches were complete or which partial results existed, so it reprocessed everything. Which design changes would let the system resume from where it stopped?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resubmit all 3,000 documents through the Message Batches API on restart, because its 50% cost savings make reprocessing every batch affordable.",
+      "correct": false,
+      "reason": "A cheaper run still repeats completed work. The guide's crash recovery method resumes from exported state and a manifest instead of reprocessing everything."
+    },
+    {
+      "letter": "B",
+      "text": "Have each subagent export its progress and validated results as structured state to a known file location after it finishes each batch.",
+      "correct": true,
+      "reason": "The guide says that, for crash recovery, each agent exports structured state to a known location."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator load a manifest of the exported subagent states on restart and inject each subagent's saved state into its prompt.",
+      "correct": true,
+      "reason": "The guide says that on resume the coordinator loads a manifest of agent state exports and injects that state into agent prompts."
+    },
+    {
+      "letter": "D",
+      "text": "Keep all subagent results inside the coordinator's conversation history so that the coordinator can recall completed batches after it restarts.",
+      "correct": false,
+      "reason": "The crash ends the coordinator's conversation, so its history is lost. The guide's recovery method is state exported to a known location, not in-context memory."
+    },
+    {
+      "letter": "E",
+      "text": "Run /compact on the coordinator session at regular intervals so that its context window keeps enough room to hold the progress of every batch.",
+      "correct": false,
+      "reason": "The guide presents /compact as a way to reduce context usage during long sessions. It does not persist state that survives a crash."
+    }
+  ]
+}

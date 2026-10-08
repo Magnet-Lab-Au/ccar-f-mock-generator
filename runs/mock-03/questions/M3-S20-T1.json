@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S20-T1",
+  "slot_id": "M3-S20",
+  "try": 1,
+  "point": "1.7-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday your support agent ran a named session on a customer's billing dispute and called get_customer and lookup_order. Overnight, the billing team reversed one charge, and the customer changed the account's payment method. Several of those tool results no longer match the backend. You plan to start a new session with a structured summary of yesterday's findings instead of resuming the old one. Which reason best explains why this plan is more reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resuming a session discards the earlier tool results automatically, so the agent would lose yesterday's findings and repeat the whole investigation.",
+      "correct": false,
+      "reason": "Wrong. Resumption continues the prior conversation with its context intact. The problem is that the stale tool results persist, not that they are lost."
+    },
+    {
+      "letter": "B",
+      "text": "Session resumption is unreliable for any customer conversation, so prior context from a support session should never be carried into later work.",
+      "correct": false,
+      "reason": "Wrong. The guide says to choose resumption when the prior context is mostly valid. A fresh start with a summary is preferred only when prior tool results are stale."
+    },
+    {
+      "letter": "C",
+      "text": "A resumed session cannot call get_customer or lookup_order again, so the agent would be unable to fetch the corrected account and order data.",
+      "correct": false,
+      "reason": "Wrong. The guide describes telling a resumed session about specific changes so that it can do targeted re-analysis. Tools stay usable after resumption; the risk is that stale results remain in context."
+    },
+    {
+      "letter": "D",
+      "text": "A resumed session keeps the old tool results in its context, so the agent may reason from outdated charges and payment details as if they were current.",
+      "correct": true,
+      "reason": "Correct. The resumed context still holds the stale tool results. A fresh session with a structured summary carries forward only the still-valid findings and flags what must be fetched again."
+    }
+  ]
+}

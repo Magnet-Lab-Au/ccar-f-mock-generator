@@ -1,0 +1,97 @@
+{
+  "question_id": "M3-S05-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Option A reuses a wrong option of earlier question M2-S39-T1. Both distractors run the full volume on the unrefined prompt and fix the failures afterwards. Only the repair mechanism differs: a Pydantic retry loop here, custom_id resubmission there. The correct action, refining on a sample first, is also the same as in that question.",
+      "letter": "A",
+      "point": "4.5-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "f4e56d1f0b3ff20b1f3bee227be8bbcb045015672f7604c96c003d0e93382dc7",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Task 4.5-S4: refine the prompt on a representative sample before batch-processing large volumes. This maximizes first-pass success and reduces the cost of resubmissions. The other options either fix errors after paying for the failures (A, B) or address a problem that hasn't been shown to exist (D).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Option A reuses a wrong option of earlier question M2-S39-T1. Both distractors run the full volume on the unrefined prompt and fix the failures afterwards. Only the repair mechanism differs: a Pydantic retry loop here, custom_id resubmission there. The correct action, refining on a sample first, is also the same as in that question.",
+      "letter": "A",
+      "point": "4.5-S4"
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

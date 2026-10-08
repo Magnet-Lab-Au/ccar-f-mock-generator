@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S48-T1",
+  "slot_id": "M3-S48",
+  "try": 1,
+  "point": "5.5-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code with the -p flag in CI to extract API endpoint metadata, such as route and auth requirement, from source files into a JSON catalog. Entries with high field-level confidence are published without human review. Each month, reviewers check 200 high-confidence entries taken from the latest runs, which come mostly from the large Java services. After a small Go service joined, its auth-requirement fields were wrong for weeks until a customer reported the problem. What best explains why the review process missed this error pattern?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The confidence threshold was set too high, so too few entries were published without passing through human review first.",
+      "correct": false,
+      "reason": "A higher threshold sends more entries to human review, so it would catch more errors. It does not explain why published high-confidence Go entries went unchecked."
+    },
+    {
+      "letter": "B",
+      "text": "The monthly sample of 200 entries was too small to produce any usable error rate for the catalog as a whole, in every service.",
+      "correct": false,
+      "reason": "The problem is how the sample is distributed across segments, not its total size. The guide calls for stratified sampling so that each segment is represented, and 200 entries still measured the Java services."
+    },
+    {
+      "letter": "C",
+      "text": "The review sample was not stratified by service, so entries from the small Go service rarely appeared among the checked entries.",
+      "correct": true,
+      "reason": "The guide recommends stratified random sampling of high-confidence extractions so that every segment is checked and novel error patterns are detected. A sample drawn mostly from the large Java services leaves small segments like the Go service almost unseen."
+    },
+    {
+      "letter": "D",
+      "text": "The reviewers checked high-confidence entries, although new error patterns appear only among low-confidence entries that the model already flags.",
+      "correct": false,
+      "reason": "The guide says to sample high-confidence extractions precisely to measure their error rate and to find novel error patterns. The wrong Go fields were published as high-confidence entries, so they were not limited to low-confidence entries."
+    }
+  ]
+}

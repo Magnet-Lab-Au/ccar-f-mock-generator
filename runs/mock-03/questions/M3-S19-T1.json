@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S19-T1",
+  "slot_id": "M3-S19",
+  "try": 1,
+  "point": "1.2-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent uses a coordinator with three subagents: one for returns, one for billing disputes, and one for account issues. A customer sends one message that asks to return a damaged order, disputes a duplicate charge, and asks to update the account email. Logs show that the coordinator sends the whole message to the returns subagent, which processes the return and ignores the other two requests. What change best fixes this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give the returns subagent the billing and account tools as well, so that it can handle every concern that appears in the customer message.",
+      "correct": false,
+      "reason": "This leaves the coordinator's decomposition gap in place and overloads one subagent with tools outside its role, which the guide says degrades tool selection reliability."
+    },
+    {
+      "letter": "B",
+      "text": "Have the coordinator split the message into its three concerns, delegate each concern to the matching subagent, and combine the results into one reply.",
+      "correct": true,
+      "reason": "The coordinator is responsible for task decomposition, delegation, and result aggregation, so it should break the request into its concerns, route each to the right subagent, and merge the results."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator send the full message to all three subagents and let each subagent reply to the customer directly with its own answer.",
+      "correct": false,
+      "reason": "The coordinator should aggregate subagent results and control information flow; separate direct replies skip aggregation and give the customer fragmented answers."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator escalate every message that contains more than one concern to a human agent through escalate_to_human, so that no request is handled incompletely.",
+      "correct": false,
+      "reason": "Having several concerns is not an escalation trigger in the guide; the agent can resolve these concerns itself, and blanket escalation hurts the first-contact resolution target."
+    }
+  ]
+}

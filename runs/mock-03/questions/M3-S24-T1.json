@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S24-T1",
+  "slot_id": "M3-S24",
+  "try": 1,
+  "point": "2.2-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent uses a coordinator that delegates billing disputes to an order-history subagent. The order-history subagent calls the lookup_order MCP tool for each order in a dispute, and the tool sometimes times out when the order service is briefly unavailable. In one dispute covering six orders, four lookups succeed, but two keep timing out. Which design choices should guide how the order-history subagent handles these failures?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "If retries still fail, return the four retrieved orders to the coordinator together with the two failed order lookups and the retry attempts already made.",
+      "correct": true,
+      "reason": "The subagent propagates only the errors it cannot resolve, and it includes the partial results and what was attempted so that the coordinator can decide the next step."
+    },
+    {
+      "letter": "B",
+      "text": "Retry the timed-out lookup_order calls within the order-history subagent first, because timeouts from a briefly unavailable service often succeed on a later attempt.",
+      "correct": true,
+      "reason": "Transient failures such as timeouts should be recovered locally within the subagent rather than sent to the coordinator each time."
+    },
+    {
+      "letter": "C",
+      "text": "Call escalate_to_human at the first lookup_order timeout, because any backend failure shows that the dispute is beyond what the agent can resolve.",
+      "correct": false,
+      "reason": "A timeout is a transient error that the subagent should first try to recover from locally; escalating at once skips that local recovery."
+    },
+    {
+      "letter": "D",
+      "text": "Report the two timed-out lookups as orders with no matching records, so that the coordinator can continue the dispute with the four found orders.",
+      "correct": false,
+      "reason": "The guide distinguishes access failures from valid empty results; presenting a timeout as no match hides the failure from the coordinator."
+    },
+    {
+      "letter": "E",
+      "text": "Discard the four retrieved orders and rerun all six lookups from the start, so that the coordinator only ever receives one consistent result set.",
+      "correct": false,
+      "reason": "When an error cannot be resolved, the guide says to propagate it with the partial results; discarding successful lookups throws away useful work."
+    }
+  ]
+}

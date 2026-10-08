@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S02-T2",
+  "slot_id": "M3-S02",
+  "try": 2,
+  "point": "4.3-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S02-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A new architect joins your extraction team before the system is connected to a downstream contract database. She asks why the design returns contract data through an extraction tool with a JSON schema instead of asking Claude to write JSON in its text reply. You must give her the reason that this design choice rests on. Which reason is accurate?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Tool use halves the cost of each extraction request compared with text replies, so the design saves money when the document volume is high.",
+      "correct": false,
+      "reason": "The guide gives the 50% cost savings to the Message Batches API, not to tool use; tool use is chosen for reliable schema-compliant output."
+    },
+    {
+      "letter": "B",
+      "text": "Tool use lets the team drop format normalization rules from the prompt, because the schema itself converts inconsistent dates and currency formats in the source documents into one standard form.",
+      "correct": false,
+      "reason": "The guide says to include format normalization rules in prompts alongside strict output schemas, because the schema alone does not handle inconsistent source formatting."
+    },
+    {
+      "letter": "C",
+      "text": "Tool use enforces the schema when tool_choice is set to \"auto\", because Claude then decides for each document whether structured output is needed.",
+      "correct": false,
+      "reason": "The guide states that with tool_choice \"auto\" the model may return text instead of calling a tool, so this setting does not enforce structured output."
+    },
+    {
+      "letter": "D",
+      "text": "Tool use with a JSON schema is the most reliable way to get schema-compliant output, because it eliminates JSON syntax errors in the extracted data.",
+      "correct": true,
+      "reason": "The guide names tool use with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, because it eliminates JSON syntax errors."
+    }
+  ]
+}

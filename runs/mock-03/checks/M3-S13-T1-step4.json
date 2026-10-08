@@ -1,0 +1,101 @@
+{
+  "question_id": "M3-S13-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M2-S49-T2 has the same scene. In both, an extraction system validates its output against a JSON schema, a verification pass checks the output, and limited human reviewer time is wasted. Both have the same answer: the verification pass self-reports confidence for each field or finding so that routing can prioritize likely errors. Only surface details change: invoices become contracts, and the design question becomes a root-cause question.",
+      "letter": "D",
+      "point": "4.6-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "f741efd91e4c887bf31d09afee1798b2c2a611516d5013478544eb5e43b96a0d",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Per 4.6-S3 and 5.5-S4, the verification pass should report a confidence level with each finding. That lets routing send likely errors to reviewers first. Without it, every finding lands in one undifferentiated queue, so harmless findings delay the real errors. Option B is wrong because an independent instance is the recommended design. Option A would dilute attention across the batch. Option C does not fit, because syntax errors would not produce semantic findings like these.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M2-S49-T2 has the same scene. In both, an extraction system validates its output against a JSON schema, a verification pass checks the output, and limited human reviewer time is wasted. Both have the same answer: the verification pass self-reports confidence for each field or finding so that routing can prioritize likely errors. Only surface details change: invoices become contracts, and the design question becomes a root-cause question.",
+      "letter": "D",
+      "point": "4.6-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "JSON Schema",
+      "found": true
+    },
+    {
+      "name": "strict mode",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

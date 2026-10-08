@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S30-T1",
+  "slot_id": "M3-S30",
+  "try": 1,
+  "point": "1.6-S1",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs two workflows with the support agent. In the first, the agent audits each closed refund ticket for the same four aspects every time: policy compliance, order data accuracy, tone, and correct use of escalation. In the second, the agent investigates vague account complaints such as \"my account is acting strange,\" and each tool result can reveal a different underlying problem. Which decomposition choices fit these two workflows?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run the ticket audit as one combined prompt that evaluates all four aspects in a single pass, so the agent reviews the whole ticket at once.",
+      "correct": false,
+      "reason": "The guide recommends breaking predictable multi-aspect reviews into sequential focused passes through prompt chaining; one combined pass risks attention dilution across the aspects."
+    },
+    {
+      "letter": "B",
+      "text": "Run the ticket audit with dynamic decomposition, letting the agent decide on each ticket which of the four aspects to check, based on whatever it happens to notice first.",
+      "correct": false,
+      "reason": "The audit's steps are known in advance, so the guide points to prompt chaining; adaptive decomposition is meant for open-ended investigation, and here it risks skipping required aspects."
+    },
+    {
+      "letter": "C",
+      "text": "Run the account investigation as a fixed prompt chain whose steps are all defined in advance, so every complaint follows the same predictable order of checks.",
+      "correct": false,
+      "reason": "The guide reserves fixed sequential pipelines for predictable workflows; an open-ended investigation needs subtasks that adapt to what each step discovers."
+    },
+    {
+      "letter": "D",
+      "text": "Run the ticket audit as a prompt chain with one focused pass per aspect, executed in the same fixed order for every closed ticket.",
+      "correct": true,
+      "reason": "The audit is a predictable multi-aspect review, and the guide recommends prompt chaining (fixed sequential focused passes) for exactly this kind of workflow."
+    },
+    {
+      "letter": "E",
+      "text": "Run the account investigation with dynamic decomposition, where the agent generates its next subtasks from what each get_customer or lookup_order result reveals.",
+      "correct": true,
+      "reason": "A vague complaint is an open-ended investigation, and the guide recommends dynamic adaptive decomposition that generates subtasks based on intermediate findings for such tasks."
+    }
+  ]
+}

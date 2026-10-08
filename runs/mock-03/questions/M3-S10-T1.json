@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S10-T1",
+  "slot_id": "M3-S10",
+  "try": 1,
+  "point": "4.1-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls fields from supplier invoices and sets a boolean needs_review flag for the finance team. The prompt currently tells Claude to set the flag whenever an invoice looks inconsistent. Reviewers find that most flagged invoices only use an unusual date format or show a one-cent rounding difference in the tax amount. Which prompt change will most effectively reduce these false positives?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Mark the needs_review field as required in the JSON schema so that Claude must decide true or false for every invoice.",
+      "correct": false,
+      "reason": "A required schema field controls the structure of the output, not the meaning; Claude still applies the same vague criterion to decide the value."
+    },
+    {
+      "letter": "B",
+      "text": "Add a sentence telling Claude that accuracy is critical because the finance team reviews every invoice that receives the flag.",
+      "correct": false,
+      "reason": "Stressing importance is still a vague instruction; it does not define what counts as an inconsistency, so the false flags remain."
+    },
+    {
+      "letter": "C",
+      "text": "State an explicit rule that Claude sets the flag only when the line items differ from the stated total by more than one cent, and ignores date formats.",
+      "correct": true,
+      "reason": "The guide says that explicit criteria, which define exactly what to flag and what to skip, improve precision more than vague instructions such as 'looks inconsistent'."
+    },
+    {
+      "letter": "D",
+      "text": "Ask Claude to add a confidence score for the flag and to set the flag only when its confidence in an inconsistency is high.",
+      "correct": false,
+      "reason": "The guide says that confidence-based filtering such as 'only report high-confidence findings' fails to improve precision compared to specific categorical criteria."
+    }
+  ]
+}

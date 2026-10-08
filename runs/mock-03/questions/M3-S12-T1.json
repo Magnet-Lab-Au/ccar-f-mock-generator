@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S12-T1",
+  "slot_id": "M3-S12",
+  "try": 1,
+  "point": "4.5-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system submits a nightly Message Batches API job that extracts fields from 10,000 contracts, and each request carries a custom_id derived from its contract ID. The batch completes with 9,820 successful results. The other 180 requests failed because those contracts exceeded the model's context limit. What is the most effective way to handle these failures?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resubmit only the 180 failed contracts, identified by their custom_id values, after splitting each one into chunks that fit within the context limit.",
+      "correct": true,
+      "reason": "The guide says to resubmit only the failed documents, identified by custom_id, with appropriate modifications such as chunking documents that exceeded context limits."
+    },
+    {
+      "letter": "B",
+      "text": "Send the 180 failed contracts unchanged through the synchronous API one at a time, because synchronous requests avoid the context limits that apply to batches.",
+      "correct": false,
+      "reason": "The context limit belongs to the model, not to the batch API, so unchanged oversized contracts still fail; the guide says to modify them, for example by chunking."
+    },
+    {
+      "letter": "C",
+      "text": "Resubmit only the 180 failed contracts, identified by their custom_id values, without any changes, because most batch failures are transient processing errors.",
+      "correct": false,
+      "reason": "These failures came from the contracts' size, not a transient error, so the unchanged contracts would exceed the context limit again; the guide calls for modifications such as chunking."
+    },
+    {
+      "letter": "D",
+      "text": "Resubmit the full set of 10,000 contracts as a new batch so that every extracted record comes from one consistent processing run with identical settings.",
+      "correct": false,
+      "reason": "The guide says to resubmit only the failed documents; reprocessing all 10,000 wastes cost, and the 180 oversized contracts would fail again without modification."
+    }
+  ]
+}

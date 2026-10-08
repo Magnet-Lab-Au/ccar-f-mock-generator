@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S22-T2",
+  "slot_id": "M3-S22",
+  "try": 2,
+  "point": "1.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S22-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles a customer who reports a locked account and a duplicate $89 charge. The agent unlocks the account, confirms the duplicate with lookup_order, and calls escalate_to_human because disputed charges need human approval. The handoff contains the customer ID and the note \"Billing dispute, see the conversation above; please resolve.\" Human agents work from a queue without transcript access, and they re-ask customers for details and sometimes refund the wrong charge. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The agent unlocked the account before it escalated, instead of handing the whole request to a human agent, so the case was split between two owners.",
+      "correct": false,
+      "reason": "The guide supports decomposing multi-concern requests into distinct items and resolving them, so the unlock is not why human agents re-ask for the billing details."
+    },
+    {
+      "letter": "B",
+      "text": "The agent escalated the duplicate charge instead of calling process_refund itself, so human agents now receive cases that the agent should have closed on first contact.",
+      "correct": false,
+      "reason": "Disputed charges need human approval here, so escalation is correct; the problem is what the handoff contains, not the decision to escalate."
+    },
+    {
+      "letter": "C",
+      "text": "The note relies on a transcript that the human agent cannot see, instead of stating the root cause, refund amount and recommended action.",
+      "correct": true,
+      "reason": "The guide says that escalations to humans who lack the transcript need a compiled structured summary with customer ID, root cause, refund amount and recommended action."
+    },
+    {
+      "letter": "D",
+      "text": "The note uses neutral wording instead of quoting the customer's own messages, so the human agent cannot judge the urgency of the dispute.",
+      "correct": false,
+      "reason": "Quoted customer messages are not a structured summary and still lack the root cause, refund amount and recommended action that the human agent needs."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S33-T1",
+  "slot_id": "M3-S33",
+  "try": 1,
+  "point": "1.7-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Last week an engineer used a named session, billing-legacy-map, in which the agent read and mapped a legacy billing module. She then renamed the function calculateLateFee to computePenalty in two files and committed the change outside the agent. Today she resumes with --resume billing-legacy-map and asks for unit test boilerplate, but the generated tests call calculateLateFee. What is the most likely cause of this result?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The context window overflowed after resuming, so the agent dropped its earlier analysis and produced function names from general training patterns instead.",
+      "correct": false,
+      "reason": "The tests use the exact old name from the earlier analysis. This shows that the agent still relied on that stale analysis and did not lose it."
+    },
+    {
+      "letter": "B",
+      "text": "The original analysis should have run in a fork_session branch, because only forked sessions pick up changes that engineers make to files outside the agent.",
+      "correct": false,
+      "reason": "In the guide, fork_session creates independent branches from a shared baseline to explore divergent approaches. It does not detect file changes; the agent must be told about them."
+    },
+    {
+      "letter": "C",
+      "text": "The resumed session still reasons from file contents it read before the rename, and the engineer did not tell the agent which files had changed.",
+      "correct": true,
+      "reason": "Resumption keeps the earlier tool results, which are now stale. The guide stresses informing a resumed session about changes to previously analyzed files so that it re-analyzes them."
+    },
+    {
+      "letter": "D",
+      "text": "Resuming a named session with --resume discards the earlier tool results, so the agent guessed the function names without reading any of the module's files.",
+      "correct": false,
+      "reason": "In the guide, --resume continues a specific prior conversation with its context. The old name in the tests comes from that retained analysis."
+    }
+  ]
+}

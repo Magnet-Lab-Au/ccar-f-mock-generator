@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S25-T1",
+  "slot_id": "M3-S25",
+  "try": 1,
+  "point": "2.4-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A developer on the customer support agent team configured the backend MCP server, which provides get_customer, lookup_order, process_refund and escalate_to_human, in her user-level ~/.claude.json with her API token written inline. Teammates who clone the repository see none of these tools when they run the agent. The team wants everyone to use the same server definition while keeping tokens out of version control. Which change should you make?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep the server in her ~/.claude.json and expand the descriptions of the four tools so that teammates' agents can discover them.",
+      "correct": false,
+      "reason": "Tools are discovered from the configured MCP servers at connection time; better descriptions help tool selection but cannot expose a server that exists only in one user's configuration."
+    },
+    {
+      "letter": "B",
+      "text": "Move the server definition into the project's committed .mcp.json and replace the inline token with ${SUPPORT_API_TOKEN}, which each teammate sets in their own environment.",
+      "correct": true,
+      "reason": "Project-scoped .mcp.json is the place for shared team servers, and environment variable expansion supplies each developer's credential without committing secrets."
+    },
+    {
+      "letter": "C",
+      "text": "Add the server address and the API token to the project CLAUDE.md so the agent learns how to connect when a teammate starts a session.",
+      "correct": false,
+      "reason": "CLAUDE.md holds instructions, not MCP server configuration, so it does not connect the server; it also puts the secret into a committed file."
+    },
+    {
+      "letter": "D",
+      "text": "Ask the developer to send her ~/.claude.json to each teammate so they paste the server entry, token included, into their own user configuration.",
+      "correct": false,
+      "reason": "User-level ~/.claude.json is for personal or experimental servers, not shared team tooling, and this approach spreads one person's secret instead of using environment variable expansion."
+    }
+  ]
+}

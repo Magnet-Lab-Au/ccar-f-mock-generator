@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S29-T1",
+  "slot_id": "M3-S29",
+  "try": 1,
+  "point": "1.6-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles a billing dispute in which a customer questions the charges on 24 orders. The agent passes all 24 lookup_order results to Claude in one prompt and asks for a single review of every charge. The review comments on each order, and it catches a pricing error in the third order but misses the same error in the twentieth order. It also misses that two different orders charged the customer for one shipment. What is the most likely root cause of both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The system prompt lacks few-shot examples of pricing errors, so Claude does not know what a pricing error in an order looks like.",
+      "correct": false,
+      "reason": "Claude recognized the error in the third order, so recognition is not the gap; missing it later in the same pass points to attention dilution, not missing examples."
+    },
+    {
+      "letter": "B",
+      "text": "The lookup_order results lack the pricing fields that Claude needs, so the review cannot detect pricing errors reliably in any order.",
+      "correct": false,
+      "reason": "The review caught the pricing error in the third order, so the data is present; the same error was missed later because one large pass dilutes attention."
+    },
+    {
+      "letter": "C",
+      "text": "One pass over all 24 orders dilutes attention, and no separate cross-order pass compares the orders to find problems such as duplicate charges.",
+      "correct": true,
+      "reason": "Uneven depth across many items in one pass is attention dilution, and a cross-item problem needs a separate integration pass, so per-order passes plus a cross-order pass fix both."
+    },
+    {
+      "letter": "D",
+      "text": "The max_tokens limit cut the response short, so the review never reached the later orders where the missed errors occur.",
+      "correct": false,
+      "reason": "The review commented on every order, so it was not cut short; the shallow later analysis and missed duplicate come from one undivided pass with no cross-order pass."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S53-T2",
+  "slot_id": "M3-S53",
+  "try": 2,
+  "point": "3.5-S2",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S53-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A developer on your team uses Claude Code in direct execution to write a log-timestamp parser for an ingestion service. Before implementation, the developer wrote tests that check only well-formed ISO timestamps and runs them after every round. When tests fail, the developer tells Claude Code only \"some tests fail, please fix.\" In staging, the finished parser crashes on empty fields and is too slow for 2-million-line files. Which shortcomings best explain why the iterations missed these problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The test suite omitted edge cases such as empty fields and the performance requirement for large files.",
+      "correct": true,
+      "reason": "The guide says the test suite written before implementation should cover expected behavior, edge cases and performance requirements; this suite never tested empty fields or speed."
+    },
+    {
+      "letter": "B",
+      "text": "The developer told Claude Code only that tests failed instead of sharing the specific failing tests and their error output.",
+      "correct": true,
+      "reason": "The guide's test-driven iteration works by sharing test failures with Claude Code; vague feedback gives Claude Code nothing concrete to guide each fix."
+    },
+    {
+      "letter": "C",
+      "text": "The project CLAUDE.md lacked a general rule telling Claude Code to write robust and fast parsing code.",
+      "correct": false,
+      "reason": "A general instruction gives no concrete expected outputs or failures; the guide's technique is a test suite covering edge cases and performance plus shared test failures."
+    },
+    {
+      "letter": "D",
+      "text": "The developer used direct execution for this well-scoped single-function task instead of starting each round in plan mode.",
+      "correct": false,
+      "reason": "The guide reserves plan mode for complex, multi-file or architectural changes; a well-scoped single function suits direct execution, and the mode does not explain the missing tests."
+    },
+    {
+      "letter": "E",
+      "text": "The developer ran the test suite after every round instead of running it once when the parser was finished.",
+      "correct": false,
+      "reason": "Running the tests each round is the guide's recommended practice, because test failures from each round guide the progressive improvement."
+    }
+  ]
+}

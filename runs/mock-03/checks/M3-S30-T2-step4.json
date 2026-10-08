@@ -1,0 +1,89 @@
+{
+  "question_id": "M3-S30-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "7652d174e31d92f0f383ab1a09d0ebec3f03b33cd26ce99967f0caf0ce63c8e5",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "D"
+    ],
+    "reason": "Per 1.6-S1, prompt chaining suits predictable multi-aspect reviews with a known, repeated set of aspects (D). Dynamic decomposition suits open-ended investigations where each finding shapes the next subtask (B). A misassigns multi-aspect reviews to dynamic decomposition. C picks the pattern by tool count rather than by the nature of the workflow. E freezes one case's adaptive path for all later cases, which defeats adaptivity.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP tools",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

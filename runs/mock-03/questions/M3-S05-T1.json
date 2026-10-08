@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S05-T1",
+  "slot_id": "M3-S05",
+  "try": 1,
+  "point": "4.5-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system will use the Message Batches API to pull party names, dates, and payment terms from 60,000 scanned supplier contracts this weekend. The extraction prompt and JSON schema are new and have never run on real contracts. Each failed extraction must be resubmitted, which adds cost and time. What should you do before submitting the weekend batch?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Submit all 60,000 contracts now and send each extraction that fails schema validation through a Pydantic validation-retry loop afterwards.",
+      "correct": false,
+      "reason": "This fixes errors only after the full volume has run on an unrefined prompt. That is the iterative resubmission cost that refining the prompt on a sample first is meant to avoid."
+    },
+    {
+      "letter": "B",
+      "text": "Split the contracts into twelve smaller batches submitted every four hours, so that errors in each batch can guide fixes to the next batch.",
+      "correct": false,
+      "reason": "Submission frequency is set by SLA constraints. Here each batch still runs thousands of contracts on an untested prompt, so failures and resubmission costs stay high."
+    },
+    {
+      "letter": "C",
+      "text": "Run the prompt on a representative sample of the contracts, refine it based on the errors you find, and then submit the full batch.",
+      "correct": true,
+      "reason": "The guide recommends refining the prompt on a sample set before batch-processing large volumes. This maximizes first-pass success and reduces resubmission costs."
+    },
+    {
+      "letter": "D",
+      "text": "Chunk every contract into short sections before submission, so that no request in the batch can exceed the context limit.",
+      "correct": false,
+      "reason": "The guide gives chunking as a fix for specific failed documents that exceeded context limits. It does not address errors from a new, untested prompt and schema."
+    }
+  ]
+}

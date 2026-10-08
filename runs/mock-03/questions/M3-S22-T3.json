@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S22-T3",
+  "slot_id": "M3-S22",
+  "try": 3,
+  "point": "1.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S22-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles a customer who returned a laptop 41 days after purchase, past the 30-day return window. Using lookup_order, the agent finds that a carrier delay made the laptop arrive 14 days late. Policy exceptions need human approval, so the agent calls escalate_to_human, and the case goes to a review team that works through a queue the next day without access to the conversation. Which handoff content best lets the review team decide without contacting the customer again?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The customer's original messages quoted word for word with a sentiment rating, so the review team can judge how upset the customer is before it decides on the exception.",
+      "correct": false,
+      "reason": "Quoted messages and sentiment are not the structured summary that the guide describes and still lack the root cause, refund amount and recommended action."
+    },
+    {
+      "letter": "B",
+      "text": "The customer ID, the root cause that a carrier delay pushed delivery past the window, the $1,200 refund amount, and a recommended action to approve the exception.",
+      "correct": true,
+      "reason": "The guide says that escalations to humans who lack the transcript need a compiled structured summary with customer ID, root cause, refund amount and recommended action."
+    },
+    {
+      "letter": "C",
+      "text": "The full raw outputs of get_customer and lookup_order, so the review team can check every order field and reach its own conclusion about the late delivery, the return window and the refund amount.",
+      "correct": false,
+      "reason": "Raw tool outputs make the review team redo the agent's analysis; the guide calls for a compiled summary that states the root cause and recommended action."
+    },
+    {
+      "letter": "D",
+      "text": "A reference to the agent's session, so a member of the review team can resume that session the next day and read the agent's reasoning and tool results directly.",
+      "correct": false,
+      "reason": "The review team has no access to the conversation, so the handoff must be a self-contained structured summary, as the guide describes for humans without the transcript."
+    }
+  ]
+}

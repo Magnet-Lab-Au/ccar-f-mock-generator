@@ -1,0 +1,110 @@
+{
+  "question_id": "M3-S53-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question and the options call the tool 'Claude Code'. The reasons of D and E call the same actor 'Claude'. One actor has two names.",
+      "letter": "E",
+      "point": null,
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Wrong option A reuses a wrong option of the earlier question M2-S20-T2. Both say: implement the code first and add the tests only afterwards. The two questions also have the same correct actions: write the test suite before implementation, then share the failing tests.",
+      "letter": "A",
+      "point": "3.5-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "5577d815246f24520cdb85f8471b7c2a6b7fe2762fc0c4f77c71d4a4e19bdd84",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "E"
+    ],
+    "reason": "Test-driven iteration (3.5-K2/S2): write tests first that cover expected behavior, edge cases such as zero-weight parcels, and the 50 ms limit. Then share the specific test failures after each attempt so every iteration has concrete, measurable feedback instead of 'still wrong'.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question and the options call the tool 'Claude Code'. The reasons of D and E call the same actor 'Claude'. One actor has two names.",
+      "letter": "E",
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Wrong option A reuses a wrong option of the earlier question M2-S20-T2. Both say: implement the code first and add the tests only afterwards. The two questions also have the same correct actions: write the test suite before implementation, then share the failing tests.",
+      "letter": "A",
+      "point": "3.5-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

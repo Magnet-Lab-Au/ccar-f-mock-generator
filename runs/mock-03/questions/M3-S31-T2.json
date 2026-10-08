@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S31-T2",
+  "slot_id": "M3-S31",
+  "try": 2,
+  "point": "1.7-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S31-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "On Monday, an engineer named Priya used a Claude Code session named ledger-legacy-map to map the call paths of a legacy ledger module. On Wednesday she opens Claude Code in the same repository and asks it to continue the ledger mapping from where she stopped. Claude Code has no memory of Monday's findings and starts exploring the module from scratch, although no files have changed. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The tool results from Monday's session went stale after two days, so Claude Code automatically discarded the whole earlier conversation.",
+      "correct": false,
+      "reason": "In the guide, tool results become stale when files change, and no files changed here. The guide does not describe automatic discarding of sessions, and the named session can still be continued with --resume."
+    },
+    {
+      "letter": "B",
+      "text": "The Read and Grep tools were missing from the allowedTools configuration, so Claude Code could not load its earlier findings.",
+      "correct": false,
+      "reason": "In the guide, Read and Grep read and search file contents. A prior conversation belongs to the named session, and the guide continues it with --resume <session-name>."
+    },
+    {
+      "letter": "C",
+      "text": "The findings were never saved to a scratchpad file, and Claude Code keeps earlier conversation context only in such files.",
+      "correct": false,
+      "reason": "The guide presents scratchpad files as a context management technique, not as the only store of a conversation. The guide continues a prior conversation through named session resumption with --resume."
+    },
+    {
+      "letter": "D",
+      "text": "She started a new session instead of running Claude Code with --resume ledger-legacy-map to continue that conversation.",
+      "correct": true,
+      "reason": "The guide states that --resume <session-name> continues a specific prior conversation. A new session does not carry Monday's context, so Claude Code starts over."
+    }
+  ]
+}

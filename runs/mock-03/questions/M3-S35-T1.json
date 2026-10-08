@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S35-T1",
+  "slot_id": "M3-S35",
+  "try": 1,
+  "point": "1.3-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "An engineer uses your Agent SDK tool to analyze a legacy billing module with Read, Grep, and Glob, building a shared understanding of its dependencies. The engineer then explored an extract-service refactoring and, later in the same session, an in-place cleanup refactoring. The cleanup proposals kept reusing assumptions from the extract-service exploration. Which change would best give each refactoring an independent start from the same analysis?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start a fresh session for each refactoring and have the agent re-run the full dependency analysis of the billing module before exploring that refactoring.",
+      "correct": false,
+      "reason": "A fresh session discards the shared analysis baseline and repeats work that forking preserves for both branches."
+    },
+    {
+      "letter": "B",
+      "text": "Spawn a subagent through the Task tool for the cleanup refactoring, passing only the refactoring name in its prompt.",
+      "correct": false,
+      "reason": "Subagents do not inherit parent context, so this subagent would lack the dependency analysis that should be the shared baseline."
+    },
+    {
+      "letter": "C",
+      "text": "Use fork_session after the dependency analysis to create one branch per refactoring, each starting from the shared baseline.",
+      "correct": true,
+      "reason": "The guide names fork-based session management as the way to explore divergent approaches from a shared analysis baseline, keeping each branch isolated."
+    },
+    {
+      "letter": "D",
+      "text": "Add a system prompt instruction telling the agent to disregard earlier refactoring explorations when it evaluates each new approach.",
+      "correct": false,
+      "reason": "The earlier exploration stays in the session context, so an instruction does not isolate the branches the way forking from a baseline does."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S04-T1",
+  "slot_id": "M3-S04",
+  "try": 1,
+  "point": "4.2-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls the notice period from termination clauses in contracts and validates it against a JSON schema. The prompt holds a table that maps known phrasings, such as \"30 days' written notice\", to numeric values. Contracts from new counterparties use phrasings that the table does not list, and these extractions return null or wrong values. Which change best lets Claude handle phrasings that nobody has listed yet?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Make the notice period field nullable in the JSON schema, so that unfamiliar phrasings return null instead of a wrong value.",
+      "correct": false,
+      "reason": "A nullable field suits information that is absent, but here the notice period is present in the clause; this hides the failure instead of teaching Claude to extract novel phrasings."
+    },
+    {
+      "letter": "B",
+      "text": "Replace the table with a few examples of varied phrasings that show the reasoning from the clause text to the extracted value.",
+      "correct": true,
+      "reason": "Few-shot examples that show reasoning let the model generalize its judgment to novel patterns instead of matching only pre-specified cases."
+    },
+    {
+      "letter": "C",
+      "text": "Add each new phrasing to the table after it fails in production, so that the table eventually covers every phrasing that counterparties use.",
+      "correct": false,
+      "reason": "This still matches only pre-specified cases, so every new phrasing fails until someone lists it; examples are what let the model generalize to unseen patterns."
+    },
+    {
+      "letter": "D",
+      "text": "Add many examples that all use the standard phrasing and show only the final value, to reinforce the expected output format.",
+      "correct": false,
+      "reason": "Uniform examples without reasoning only demonstrate format; they do not show the judgment that lets the model generalize to varied, unseen phrasings."
+    }
+  ]
+}

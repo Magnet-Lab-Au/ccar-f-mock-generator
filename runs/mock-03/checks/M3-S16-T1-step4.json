@@ -1,0 +1,113 @@
+{
+  "question_id": "M3-S16-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "Option A and its reason call the same actor both \"the agent\" and \"the model\". Each actor must have one name across the question, the options and the reasons, so use \"the agent\" throughout.",
+      "letter": "A",
+      "point": "1.5-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "618d83c5a78c524eef6364a149e00cca9100d81007fac22ade322e9a9341dd4f",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Prompt-based rules give only probabilistic compliance, with a non-zero failure rate, so a clean test run cannot guarantee every production case. A hook that intercepts process_refund calls blocks them deterministically. A is wrong because hooks enforce rules rather than teach the model. B overstates the risk by claiming violations in most long conversations. D is false because the agent does see the tool results.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "Option A and its reason call the same actor both \"the agent\" and \"the model\". Each actor must have one name across the question, the options and the reasons, so use \"the agent\" throughout.",
+      "letter": "A",
+      "point": "1.5-K3"
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "hooks",
+      "found": true
+    },
+    {
+      "name": "MCP tools",
+      "found": true
+    },
+    {
+      "name": "system prompt",
+      "found": true
+    },
+    {
+      "name": "process_refund",
+      "found": true
+    },
+    {
+      "name": "get_customer",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

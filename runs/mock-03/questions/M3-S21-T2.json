@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S21-T2",
+  "slot_id": "M3-S21",
+  "try": 2,
+  "point": "1.3-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S21-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support coordinator is handling a billing dispute. It first spawns an order lookup subagent, which calls lookup_order and reports the charge dates, the amounts, and a duplicate charge that it found. Next, the coordinator must spawn a dispute resolution subagent through the Task tool to decide whether to call process_refund. How should the coordinator give the dispute resolution subagent the information that it needs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Write the order lookup subagent's complete findings, including the charge dates, amounts, and duplicate charge, directly into the dispute resolution subagent's prompt.",
+      "correct": true,
+      "reason": "Subagents do not inherit the coordinator's context. For this reason, the guide says that the complete findings from prior agents must be included directly in the subagent's prompt."
+    },
+    {
+      "letter": "B",
+      "text": "Give the dispute resolution subagent the lookup_order tool and the order number, so that it can repeat the lookup and gather the charge details itself.",
+      "correct": false,
+      "reason": "This repeats work that the order lookup subagent already did and widens the subagent's tool access. The guide says that the coordinator should pass the prior agent's complete findings directly in the prompt."
+    },
+    {
+      "letter": "C",
+      "text": "Put the charge details into the dispute resolution subagent's AgentDefinition description, so that the subagent reads them each time it is spawned.",
+      "correct": false,
+      "reason": "The guide describes the AgentDefinition description as configuration for a subagent type, together with its system prompt and tool restrictions. It is not a channel for the findings of one specific request."
+    },
+    {
+      "letter": "D",
+      "text": "Pass only a one-line conclusion that a duplicate charge exists, so that the dispute resolution subagent's prompt stays short and focused.",
+      "correct": false,
+      "reason": "A one-line conclusion drops the charge dates and amounts that the subagent needs to verify the duplicate charge. The guide recommends that the coordinator pass complete findings from prior agents."
+    }
+  ]
+}

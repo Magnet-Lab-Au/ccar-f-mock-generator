@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S40-T1",
+  "slot_id": "M3-S40",
+  "try": 1,
+  "point": "2.5-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks your developer productivity agent to list every YAML configuration file under the services directories of a legacy monolith. The agent runs Grep for the string \"yaml\" and returns Java source files that mention YAML, but it misses many .yml files. Which change to the agent's tool selection fixes this step best?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the agent use Edit to add a unique marker comment to each configuration file, then use Grep to search for that marker across the services directories.",
+      "correct": false,
+      "reason": "Edit is for targeted modifications of files that are already known, not for locating files. The guide assigns finding files by name or extension patterns to Glob."
+    },
+    {
+      "letter": "B",
+      "text": "Have the agent use Grep to find the import statements that load configuration, then list each configuration file that those statements name.",
+      "correct": false,
+      "reason": "This is still a content search. Grep finds patterns such as import statements inside files, but finding files by extension is the job of Glob."
+    },
+    {
+      "letter": "C",
+      "text": "Have the agent use Glob with patterns such as services/**/*.yml and services/**/*.yaml, which match files by their path and extension.",
+      "correct": true,
+      "reason": "Glob does file path pattern matching. It finds files by name or extension, which is exactly what this request needs."
+    },
+    {
+      "letter": "D",
+      "text": "Have the agent refine its Grep pattern to match common YAML keys such as apiVersion, so the content search returns only configuration files.",
+      "correct": false,
+      "reason": "Grep searches file contents. The target here is defined by file extension, and Glob is the tool for finding files by name or extension patterns."
+    }
+  ]
+}

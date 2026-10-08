@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S27-T1",
+  "slot_id": "M3-S27",
+  "try": 1,
+  "point": "5.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles return requests that often take many turns. Each lookup_order call returns over 40 fields, such as warehouse codes and carrier metadata, although only about five fields matter for a return decision. In long sessions, the context fills quickly, and the agent starts to miss details that the customer stated earlier. What is the most effective change?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a system prompt instruction that tells the agent to disregard every order field that does not relate to returns whenever it reasons about a customer's return request.",
+      "correct": false,
+      "reason": "The instruction does not remove any fields, so all 40+ fields still accumulate in context and consume tokens far out of proportion to their relevance."
+    },
+    {
+      "letter": "B",
+      "text": "Send only the most recent conversation turns in each new API request, and drop the older turns once the context reaches a set size.",
+      "correct": false,
+      "reason": "The guide says that subsequent requests need the complete conversation history for coherence, so dropping older turns loses the customer's earlier statements."
+    },
+    {
+      "letter": "C",
+      "text": "Trim each lookup_order result to the return-relevant fields, such as order date, items, amount, and status, before the result is added to the context.",
+      "correct": true,
+      "reason": "The guide recommends trimming verbose tool outputs to only the relevant fields before they accumulate in context, because tool results otherwise consume tokens far out of proportion to their relevance."
+    },
+    {
+      "letter": "D",
+      "text": "Periodically condense the earlier conversation turns into a short narrative summary and keep the full lookup_order results unchanged in the context.",
+      "correct": false,
+      "reason": "Progressive summarization risks turning amounts, dates, and customer-stated expectations into vague summaries, and the verbose lookup results still consume most of the tokens."
+    }
+  ]
+}

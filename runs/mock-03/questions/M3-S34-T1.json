@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S34-T1",
+  "slot_id": "M3-S34",
+  "try": 1,
+  "point": "1.5-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent summarizes build history for engineers who explore a legacy system. It calls two MCP tools: the CI tool returns build status as numeric codes, and the deployment tool returns status as strings such as \"succeeded\" and \"failed\". The agent sometimes reports a failed build as successful because it misreads a numeric code. Which change gives the agent one consistent status format in every case?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Implement a tool call interception hook that maps the numeric CI status codes to status strings on each outgoing call to the CI tool.",
+      "correct": false,
+      "reason": "Interception hooks act on outgoing tool calls to enforce rules, before any result exists; normalizing returned data is the job of a PostToolUse hook."
+    },
+    {
+      "letter": "B",
+      "text": "Add few-shot examples to the system prompt that show the agent how each numeric CI status code maps to a status string.",
+      "correct": false,
+      "reason": "Prompt guidance gives only probabilistic compliance, so the agent can still misread a code; the guide prefers hooks when the result must be guaranteed."
+    },
+    {
+      "letter": "C",
+      "text": "Instruct the agent to run a Bash script that converts each numeric CI status code to a status string before it writes the build summary for the engineer.",
+      "correct": false,
+      "reason": "This still depends on the agent following an instruction, so it is probabilistic, and the agent has already processed the raw result; a PostToolUse hook gives a deterministic guarantee."
+    },
+    {
+      "letter": "D",
+      "text": "Implement a PostToolUse hook that maps the numeric CI status codes to the same status strings before the agent processes the tool results.",
+      "correct": true,
+      "reason": "A PostToolUse hook transforms tool results deterministically before the model processes them, which is how the guide says to normalize heterogeneous formats such as numeric status codes."
+    }
+  ]
+}

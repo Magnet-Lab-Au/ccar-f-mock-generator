@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S31-T1",
+  "slot_id": "M3-S31",
+  "try": 1,
+  "point": "1.7-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "On Monday, an engineer named Priya used a Claude Code session named ledger-legacy-map to map the call paths of a legacy ledger module. On Wednesday she opens Claude Code in the same repository and asks it to continue the ledger mapping where they left off. Claude Code has no memory of Monday's findings and starts exploring the module from scratch, although no files have changed. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "She opened a new session, which starts without the earlier conversation, instead of running Claude Code with --resume ledger-legacy-map.",
+      "correct": true,
+      "reason": "The guide states that --resume <session-name> continues a specific prior conversation. A new session does not carry Monday's context, so Claude Code starts over."
+    },
+    {
+      "letter": "B",
+      "text": "The tool results from Monday's session went stale after two days, so Claude Code discarded the whole earlier conversation automatically.",
+      "correct": false,
+      "reason": "In the guide, tool results become stale when files change, and no files changed here. The guide does not describe sessions being discarded automatically. The named session can still be continued with --resume."
+    },
+    {
+      "letter": "C",
+      "text": "The Read and Grep tools were missing from the allowedTools configuration, so Claude Code could not load its earlier findings.",
+      "correct": false,
+      "reason": "In the guide, Read and Grep are tools for reading file contents and searching them. The earlier conversation belongs to the named session, and the guide restores it with --resume <session-name>."
+    },
+    {
+      "letter": "D",
+      "text": "The findings were never saved to a scratchpad file, and Claude Code keeps earlier conversation context only in such files.",
+      "correct": false,
+      "reason": "The guide presents scratchpad files as a context management technique, not as the only place where a conversation is kept. It continues a prior conversation through named session resumption with --resume."
+    }
+  ]
+}

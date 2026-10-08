@@ -1,0 +1,106 @@
+{
+  "question_id": "M3-S41-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats earlier question M2-S25-T2. Both are set in scenario 4 with an Agent SDK coordinator, and in both one subagent has a frequent cross-role lookup need. The correct answer is the same: a limited, scoped cross-role tool for that need. Wrong option C (give the documentation subagent the triage subagent's full ticket tools) reuses the earlier wrong option that gave the generation subagent the exploration subagent's full toolset.",
+      "letter": "C",
+      "point": "2.3-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "9e105068c5dbb8bb92b1e84eec41ea2bf502588dfc85a1a9db729519eaaec91a",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D",
+      "E"
+    ],
+    "reason": "Scoped tool access means each subagent gets only the tools its role needs (E). It also allows a limited cross-role tool for a specific high-frequency need, such as a read-only ticket-title lookup for the documentation subagent (D). Options A, B and C each grant too many tools, which degrades tool selection and invites misuse.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats earlier question M2-S25-T2. Both are set in scenario 4 with an Agent SDK coordinator, and in both one subagent has a frequent cross-role lookup need. The correct answer is the same: a limited, scoped cross-role tool for that need. Wrong option C (give the documentation subagent the triage subagent's full ticket tools) reuses the earlier wrong option that gave the generation subagent the exploration subagent's full toolset.",
+      "letter": "C",
+      "point": "2.3-K3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "MCP tools",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

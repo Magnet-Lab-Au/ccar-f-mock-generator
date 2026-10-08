@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S18-T1",
+  "slot_id": "M3-S18",
+  "try": 1,
+  "point": "1.3-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent uses a coordinator that delegates complex billing disputes to three subagents through the Task tool: one reviews order history, one analyzes payment records, and one checks account status. The three checks are independent of each other. Logs show that the coordinator emits one Task call, waits for its result, and emits the next Task call in a later turn, so each dispute takes far longer than needed. Which change best reduces this latency?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the coordinator emit all three Task tool calls in a single response so that the three subagents run in parallel.",
+      "correct": true,
+      "reason": "The guide states that parallel subagents are spawned by emitting multiple Task tool calls in a single coordinator response rather than across separate turns."
+    },
+    {
+      "letter": "B",
+      "text": "Keep one Task call per turn, but shorten each subagent's prompt so that each subagent finishes its check faster.",
+      "correct": false,
+      "reason": "The subagents still run one after another across separate turns, which is the sequential pattern that the guide says to replace with multiple Task calls in one response."
+    },
+    {
+      "letter": "C",
+      "text": "Merge the three checks into one subagent that has all the tools, so that the coordinator needs only one Task call per dispute.",
+      "correct": false,
+      "reason": "The single subagent still performs the checks one by one, and it gives up the parallel spawning that the guide achieves with multiple Task calls in one coordinator response."
+    },
+    {
+      "letter": "D",
+      "text": "Give the first subagent the Task tool so that it spawns the second subagent, which then spawns the third subagent after finishing its own check.",
+      "correct": false,
+      "reason": "This chain is still sequential, and it does not use the guide's approach of the coordinator emitting multiple Task calls in a single response."
+    }
+  ]
+}

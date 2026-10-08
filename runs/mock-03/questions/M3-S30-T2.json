@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S30-T2",
+  "slot_id": "M3-S30",
+  "try": 2,
+  "point": "1.6-S1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S30-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Over the next quarter, your team will add new workflows to the support agent. Examples include a weekly quality review of resolved refund tickets and investigations of unusual account activity. You will not choose a decomposition pattern case by case; instead, you are writing a rule set for the design document, and each new workflow gets its pattern from these rules. Which rules should the design document contain?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give a workflow dynamic decomposition whenever it must check several aspects of a case, because multi-aspect reviews are too complex for a fixed sequence of passes.",
+      "correct": false,
+      "reason": "The guide says the opposite: predictable multi-aspect reviews are the use case for prompt chaining, not for dynamic decomposition."
+    },
+    {
+      "letter": "B",
+      "text": "Give a workflow dynamic decomposition when it is an open-ended investigation in which each finding can change which subtask should come next.",
+      "correct": true,
+      "reason": "The guide recommends dynamic adaptive decomposition, which generates subtasks from intermediate findings, for open-ended investigation tasks such as unusual account activity."
+    },
+    {
+      "letter": "C",
+      "text": "Give a workflow a fixed prompt chain whenever it calls more than two MCP tools, so that the order of tool calls stays the same and is easy to audit.",
+      "correct": false,
+      "reason": "The guide bases the choice on whether the workflow is predictable or open-ended, not on tool count; an open-ended investigation with many tools still needs dynamic decomposition."
+    },
+    {
+      "letter": "D",
+      "text": "Give a workflow a fixed prompt chain when it reviews the same known set of aspects for every case, with one focused pass per aspect.",
+      "correct": true,
+      "reason": "The guide recommends prompt chaining (fixed sequential focused passes) for predictable multi-aspect reviews, such as the weekly ticket quality review."
+    },
+    {
+      "letter": "E",
+      "text": "Give an investigation workflow a fixed prompt chain copied from its first adaptive run, so that all later cases repeat the steps that the first case needed.",
+      "correct": false,
+      "reason": "An open-ended investigation must generate subtasks from what each case reveals; freezing the steps of one case into a fixed chain ignores later cases' intermediate findings."
+    }
+  ]
+}

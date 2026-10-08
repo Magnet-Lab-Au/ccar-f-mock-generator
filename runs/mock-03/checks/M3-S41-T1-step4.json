@@ -1,0 +1,126 @@
+{
+  "question_id": "M3-S41-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats M2-S25-T2. Both use the same scene: an Agent SDK coordinator with a codebase exploration subagent and a boilerplate generation subagent, where one subagent has a frequent narrow need. Both give the same correct answer: a single-purpose scoped tool (append_finding here, get_pinned_version there) instead of a full built-in tool. Only the subagent and the need are swapped.",
+      "letter": "A",
+      "point": "2.3-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "ef15f833d1c38721adbe8f5984c4b1a2f530620930a194720521bf58f3288081",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "D"
+    ],
+    "reason": "Scoped access means giving each subagent only the tools its role needs. The exploration subagent gets read-only tools (Read, Grep, Glob) plus a narrow append_finding tool for its frequent findings need, so it can record notes but cannot modify source code. Write goes only to the generation subagent, which creates the new modules. Merging the agents, handing out every MCP tool, or giving the explorer full Write access all break this principle.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats M2-S25-T2. Both use the same scene: an Agent SDK coordinator with a codebase exploration subagent and a boilerplate generation subagent, where one subagent has a frequent narrow need. Both give the same correct answer: a single-purpose scoped tool (append_finding here, get_pinned_version there) instead of a full built-in tool. Only the subagent and the need are swapped.",
+      "letter": "A",
+      "point": "2.3-K3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Agent SDK",
+      "found": true
+    },
+    {
+      "name": "allowedTools",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    },
+    {
+      "name": "Write",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": "MCP servers",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,92 @@
+{
+  "question_id": "M3-S03-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The human actor has two names. The stem, option A and its reason say 'a person', while options A, B and D and their reasons say 'human reviewer'. A reader cannot tell at first reading whether these are the same actor. One name should be used throughout.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "ebd42b2118717c0037de298027477fd89184903625b770fe6b45d3fae2f69b2b",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Per 5.2-S3 and 5.2-K3, frustration alone isn't an escalation trigger. The assistant should acknowledge it, offer the fix it can make, and escalate only if the vendor reiterates a wish for a human. B relies on sentiment, C ignores the frustration, and D ignores explicit requests for a human.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The human actor has two names. The stem, option A and its reason say 'a person', while options A, B and D and their reasons say 'human reviewer'. A reader cannot tell at first reading whether these are the same actor. One name should be used throughout.",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

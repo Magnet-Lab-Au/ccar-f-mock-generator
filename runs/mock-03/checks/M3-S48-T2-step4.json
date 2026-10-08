@@ -1,0 +1,97 @@
+{
+  "question_id": "M3-S48-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The scene nearly repeats earlier question M1-S44-T1. Both have a Claude Code pipeline that publishes high-confidence output across several services without human review. Both have the same answer: a random sample of high-confidence output stratified by service. Option B also reuses the earlier wrong option's misconception that only low-confidence output needs review.",
+      "letter": "B",
+      "point": "5.5-S1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "41ba252e015234a439c7bd6357620486ef18b06fe6aee400d9edd9f0f4832da7",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Sampling came mostly from the large Java services rather than being stratified by service, so the small Go service's entries were rarely reviewed and its novel error pattern stayed hidden among the high-confidence extractions.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The scene nearly repeats earlier question M1-S44-T1. Both have a Claude Code pipeline that publishes high-confidence output across several services without human review. Both have the same answer: a random sample of high-confidence output stratified by service. Option B also reuses the earlier wrong option's misconception that only low-confidence output needs review.",
+      "letter": "B",
+      "point": "5.5-S1"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

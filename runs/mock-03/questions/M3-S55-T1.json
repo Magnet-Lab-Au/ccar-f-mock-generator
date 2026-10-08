@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S55-T1",
+  "slot_id": "M3-S55",
+  "try": 1,
+  "point": "3.2-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A developer, Priya, wrote a /gen-migration slash command for your database migration checklist, and it works in her Claude Code sessions. Teammates who pulled the latest main branch cannot invoke it. On Priya's machine, the repository has no .claude/ directory at all. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The command file has no context: fork frontmatter, so Claude Code makes it available only inside the session of the developer who created it.",
+      "correct": false,
+      "reason": "The guide describes context: fork as a skill frontmatter option that runs a skill in an isolated sub-agent context. It does not control whether teammates can use a command."
+    },
+    {
+      "letter": "B",
+      "text": "Priya saved the command file in ~/.claude/commands/ in her home directory, which is user-scoped and is never shared through the repository.",
+      "correct": true,
+      "reason": "Commands in ~/.claude/commands/ are personal and user-scoped. Only commands in the project's .claude/commands/ reach the team through version control, and the repository has no .claude/ directory."
+    },
+    {
+      "letter": "C",
+      "text": "The teammates have not run the /memory command, which Claude Code requires before it loads any project-scoped commands that arrive through version control.",
+      "correct": false,
+      "reason": "The guide names /memory for checking which memory files are loaded. Project-scoped commands in .claude/commands/ are available to the team through version control without this step."
+    },
+    {
+      "letter": "D",
+      "text": "The command is not registered in the project's .mcp.json file, which Claude Code reads to distribute custom slash commands to every team member.",
+      "correct": false,
+      "reason": "The guide names .mcp.json as the configuration for MCP servers. Project slash commands are shared by placing them in .claude/commands/ under version control."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S15-T1",
+  "slot_id": "M3-S15",
+  "try": 1,
+  "point": "5.5-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system automated high-confidence extractions after a labeled validation set showed 96% overall accuracy. Handwritten receipts make up 4% of the documents. Weeks later, the downstream accounting system finds that many date fields from handwritten receipts contain wrong values. What most likely explains why the pre-automation validation missed this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The receipts were processed through the Message Batches API, whose asynchronous processing lowers extraction accuracy compared to synchronous calls.",
+      "correct": false,
+      "reason": "The Message Batches API trades latency for 50% cost savings; it does not lower extraction accuracy, so it cannot explain the missed segment errors."
+    },
+    {
+      "letter": "B",
+      "text": "The validation reported only aggregate accuracy, so strong results on common document types hid poor date accuracy in the small handwritten receipt segment.",
+      "correct": true,
+      "reason": "Aggregate metrics can mask poor performance on specific document types or fields, which is why accuracy must be validated by document type and field before automating."
+    },
+    {
+      "letter": "C",
+      "text": "The extraction prompt lacked few-shot examples for handwritten receipts, so the model could not interpret their date formats reliably.",
+      "correct": false,
+      "reason": "This might explain why the errors occur, but it does not explain why validation missed them; only a per-segment accuracy analysis would have revealed the weak segment."
+    },
+    {
+      "letter": "D",
+      "text": "The JSON schema was used without strict mode, so syntax errors in the date fields passed through validation unnoticed.",
+      "correct": false,
+      "reason": "The dates are wrong values, which are semantic errors; strict schemas eliminate syntax errors but cannot catch semantic errors, and this does not explain the validation gap."
+    }
+  ]
+}

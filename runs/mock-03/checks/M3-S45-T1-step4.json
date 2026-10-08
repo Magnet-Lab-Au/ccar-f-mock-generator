@@ -1,0 +1,110 @@
+{
+  "question_id": "M3-S45-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "Option A calls the backend 'the code search service'. The stem calls the tool 'the MCP code-search tool' and the backend 'the index service'. A reader cannot tell at once whether 'code search service' means the tool or the index service. Use one name, for example 'the index service'.",
+      "letter": "A",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "a59eef95d49603a53a1ed3b7fc3ed69de62320340e2ccb21a29c325cbf382895",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "C"
+    ],
+    "reason": "An empty match list is a valid empty result from a search that ran successfully, so the agent should accept it and not retry (C). A transient, retryable error is an access failure, not evidence of no callers. The agent should retry, or report that the callers could not be checked, rather than conclude the function is unused (B). A treats a valid empty result as an outage. D treats a failed search as proof of no callers. E ignores isRetryable: true.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "Option A calls the backend 'the code search service'. The stem calls the tool 'the MCP code-search tool' and the backend 'the index service'. A reader cannot tell at once whether 'code search service' means the tool or the index service. Use one name, for example 'the index service'.",
+      "letter": "A",
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP",
+      "found": true
+    },
+    {
+      "name": "isError",
+      "found": true
+    },
+    {
+      "name": "errorCategory",
+      "found": true
+    },
+    {
+      "name": "isRetryable",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

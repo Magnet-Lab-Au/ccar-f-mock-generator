@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S13-T1",
+  "slot_id": "M3-S13",
+  "try": 1,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts clauses from supplier contracts and validates each output against a JSON schema. An independent Claude instance then runs a verification pass and returns a list of possible errors for each contract. Every finding goes to one human review queue, and reviewers report that most findings are harmless while real errors wait for days. What is the most likely cause of this poor use of reviewer time?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The verification pass checks each contract on its own, when it should review the whole batch together in one combined pass.",
+      "correct": false,
+      "reason": "The guide says that large combined reviews cause attention dilution and contradictory findings, so focused passes are better, and one combined pass would not fix the routing problem."
+    },
+    {
+      "letter": "B",
+      "text": "The verification pass runs in a separate instance without the extraction reasoning, so it lacks the context needed to judge its findings.",
+      "correct": false,
+      "reason": "The guide says that an independent instance without the generator's reasoning context is more effective at catching subtle issues than self-review, so this design is a strength, not the cause."
+    },
+    {
+      "letter": "C",
+      "text": "The JSON schema for the extraction output does not use strict mode, so syntax errors produce many harmless findings in the verification pass.",
+      "correct": false,
+      "reason": "Strict mode removes syntax errors, and the outputs already pass schema validation here; the findings concern extracted values, so missing strict mode does not explain the routing problem."
+    },
+    {
+      "letter": "D",
+      "text": "The verification pass gives no confidence level with each finding, so the routing step cannot send likely errors ahead of weak suspicions.",
+      "correct": true,
+      "reason": "Calibrated review routing works only when the verification pass self-reports confidence with each finding, so that low-confidence and high-confidence findings can go to different review paths."
+    }
+  ]
+}

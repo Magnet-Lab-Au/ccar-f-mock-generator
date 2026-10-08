@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S58-T1",
+  "slot_id": "M3-S58",
+  "try": 1,
+  "point": "3.3-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code in a TypeScript monorepo. Database migration conventions apply to SQL files under db/migrations/ and to files named *.migration.ts that sit in many packages under packages/. You want these conventions to load automatically, and only when Claude Code edits one of these migration files. Which configuration best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Package the conventions as a skill in .claude/skills/ that developers invoke before they begin each piece of migration work.",
+      "correct": false,
+      "reason": "A skill is invoked on demand, so it relies on developers remembering to run it. It does not activate conditionally from file paths the way a path-scoped rule does."
+    },
+    {
+      "letter": "B",
+      "text": "Place the conventions in a CLAUDE.md file inside the db/migrations directory so that a directory-level configuration covers all migration work.",
+      "correct": false,
+      "reason": "A directory-level CLAUDE.md covers only its own directory. It misses the *.migration.ts files that are spread across packages, and the guide prefers glob-pattern rules for conventions that span directories."
+    },
+    {
+      "letter": "C",
+      "text": "Create one .claude/rules/ file whose YAML frontmatter sets paths: [\"db/migrations/**/*.sql\", \"**/*.migration.ts\"] so the rule loads for both kinds of migration file.",
+      "correct": true,
+      "reason": "The paths field of a .claude/rules/ file takes glob patterns, so it can match the SQL files and the scattered *.migration.ts files. The rule then loads only when Claude Code edits a matching file."
+    },
+    {
+      "letter": "D",
+      "text": "Create one .claude/rules/ file whose YAML frontmatter sets paths: [\"db/migrations/**/*\", \"packages/**/*\"] so the rule covers both locations of migration files.",
+      "correct": false,
+      "reason": "The packages/**/* glob matches every file in every package. The rule would then load for non-migration code too, which adds the irrelevant context and token usage that path scoping is meant to avoid."
+    }
+  ]
+}

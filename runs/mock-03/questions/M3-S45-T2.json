@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S45-T2",
+  "slot_id": "M3-S45",
+  "try": 2,
+  "point": "2.2-S4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S45-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks the agent whether a legacy function is still called anywhere before the engineer deletes it. The agent queries an MCP code-search tool that covers all company repositories. The tool returns a normal result with an empty match list when the search ran and found nothing. It returns an isError response with errorCategory \"transient\" and isRetryable true when the index service times out. Which agent behaviors handle these two responses correctly?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "When the tool returns the transient error, tell the engineer the function has no callers, because a failed search found no matching code in the index.",
+      "correct": false,
+      "reason": "This confuses an access failure with a valid empty result; the search did not complete, so it gives no information about callers."
+    },
+    {
+      "letter": "B",
+      "text": "When the tool returns a normal result with an empty match list, report to the engineer that the index service is unavailable and ask the engineer to check the callers by hand.",
+      "correct": false,
+      "reason": "This treats a successful query with no matches as an access failure, although the empty result is a valid answer from the tool."
+    },
+    {
+      "letter": "C",
+      "text": "When the tool returns the transient error, retry the search or report that the callers could not be checked, without concluding that the function is unused.",
+      "correct": true,
+      "reason": "A timeout is an access failure that needs a retry decision, so the agent must not treat it as a finding of zero callers."
+    },
+    {
+      "letter": "D",
+      "text": "When the tool returns a normal result with an empty match list, accept that the function has no callers in the index and do not retry the search.",
+      "correct": true,
+      "reason": "A normal empty result is a valid empty result: the query succeeded and found no matches, so a retry wastes effort."
+    },
+    {
+      "letter": "E",
+      "text": "When the tool returns the transient error, stop at once without any retry, because the isError flag marks every failure as final and never worth another attempt by the agent.",
+      "correct": false,
+      "reason": "The isError flag only signals a failure; the transient category and isRetryable true tell the agent that a retry is appropriate."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S28-T1",
+  "slot_id": "M3-S28",
+  "try": 1,
+  "point": "2.3-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent runs a triage step on each new customer message, and this step must end with a call to one of get_customer, lookup_order, process_refund or escalate_to_human. A later step writes the reply that the customer sees. Logs show that 12% of triage responses have stop_reason \"end_turn\" and contain only a text summary of the request. Which change best guarantees a tool call while letting the model choose the tool that fits?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep tool_choice at \"auto\" and rewrite the four tool descriptions so that the model strongly prefers a tool call over a text reply.",
+      "correct": false,
+      "reason": "With \"auto\" the model may still return text instead of calling a tool; better descriptions guide which tool is selected but do not guarantee that a tool is called, which is what \"any\" does."
+    },
+    {
+      "letter": "B",
+      "text": "Set tool_choice to \"any\" on the triage request, so the model must call one of the four tools but still picks the one that fits.",
+      "correct": true,
+      "reason": "The guide states that tool_choice \"any\" guarantees the model calls a tool instead of returning conversational text, and the model still chooses which tool to call."
+    },
+    {
+      "letter": "C",
+      "text": "Keep tool_choice at \"auto\" and resend the same request whenever stop_reason is \"end_turn\" until the response contains a tool call.",
+      "correct": false,
+      "reason": "Under \"auto\" a text-only response stays possible on every attempt, so resending adds cost and latency without a guarantee; the guide names tool_choice \"any\" as the setting that guarantees a tool call."
+    },
+    {
+      "letter": "D",
+      "text": "Set tool_choice to {\"type\": \"tool\", \"name\": \"lookup_order\"} on the triage request, so the model always calls a tool before it can write any text.",
+      "correct": false,
+      "reason": "Forced selection makes the model call one specific tool, which the guide uses to fix a required first step; here the right tool differs per request, so forcing lookup_order removes the model's choice."
+    }
+  ]
+}

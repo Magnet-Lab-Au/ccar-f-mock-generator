@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S07-T1",
+  "slot_id": "M3-S07",
+  "try": 1,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts lease terms into a JSON schema and validates each output with Pydantic. On failure, it retries with the original document, the failed extraction, and the specific validation errors. Failures caused by a malformed nested address object usually pass on the first retry. Failures on the required monthly_rent field persist through every retry, and each of those leases says only that rent is set out in Schedule B, a separate file that the pipeline never receives. What most likely explains why the monthly_rent failures persist?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The appended validation errors are too vague for the model to tell which part of its previous extraction it needs to correct.",
+      "correct": false,
+      "reason": "The pipeline appends specific validation errors, and the same feedback fixes the address failures; feedback cannot help when the value is absent from the document."
+    },
+    {
+      "letter": "B",
+      "text": "The prompt lacks few-shot examples of rent clauses, so the model cannot recognize how these leases phrase the rent amount.",
+      "correct": false,
+      "reason": "The leases contain no rent amount to recognize; the value exists only in Schedule B, so the cause is absent information rather than unclear phrasing."
+    },
+    {
+      "letter": "C",
+      "text": "The schema is applied without strict mode, so JSON syntax errors keep corrupting the monthly_rent field on every retry attempt the pipeline makes.",
+      "correct": false,
+      "reason": "Strict mode eliminates schema syntax errors, but these failures come from a value that is missing from the source, which syntax fixes cannot address."
+    },
+    {
+      "letter": "D",
+      "text": "The rent amount appears only in Schedule B, which the model never sees, so retrying with error feedback cannot supply the missing value.",
+      "correct": true,
+      "reason": "The guide states that retries are ineffective when the required information is absent from the source document, for example when it exists only in an external document that is not provided."
+    }
+  ]
+}

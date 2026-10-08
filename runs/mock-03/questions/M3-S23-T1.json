@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S23-T1",
+  "slot_id": "M3-S23",
+  "try": 1,
+  "point": "2.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent uses a custom MCP tool named manage_account that accepts one free-text instruction and returns a prose confirmation. The tool handles shipping address changes, payment method updates, and account closures. In testing, the agent often sends instructions with missing details, and it cannot reliably tell from the prose whether a change succeeded. Which redesign of the tool interface best fixes both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep manage_account as one tool and route every routine account change through escalate_to_human, so that a staff member confirms each update before the agent replies to the waiting customer.",
+      "correct": false,
+      "reason": "Escalating routine changes defeats the first-contact resolution target and leaves the vague tool interface unchanged, instead of fixing the tool's input/output contract."
+    },
+    {
+      "letter": "B",
+      "text": "Keep manage_account as one tool and set tool_choice to \"any\", so that the model must call a tool on every turn of each support conversation.",
+      "correct": false,
+      "reason": "The \"any\" setting only forces a tool call; it gives the tool no defined inputs or structured outputs, so neither problem is addressed."
+    },
+    {
+      "letter": "C",
+      "text": "Keep manage_account as one tool and make the agent call get_customer after every account change, so it can infer from the new account state whether the change succeeded.",
+      "correct": false,
+      "reason": "This adds an extra workaround call for the output problem, but the generic free-text input still has no defined contract, so incomplete instructions continue."
+    },
+    {
+      "letter": "D",
+      "text": "Split manage_account into update_shipping_address, update_payment_method, and close_account, each with defined required inputs and a structured result that reports success or failure.",
+      "correct": true,
+      "reason": "Splitting a generic tool into purpose-specific tools with defined input/output contracts makes the needed inputs explicit and the outcomes parseable, which fixes both problems."
+    }
+  ]
+}

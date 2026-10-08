@@ -1,0 +1,104 @@
+{
+  "question_id": "M3-S17-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "57df77dd55ef87744a78a51983702c67b8e03883f12e5b042e728d2c4897b892",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Exposing the procedure catalog as an MCP resource lets the agent see which procedures exist without spending any exploratory tool calls on discovery (2.4-K4/S5). A still costs a tool call every dispute. B only adds more tools, which still need calls. D bloats the context with 200 full procedures.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP resources",
+      "found": true
+    },
+    {
+      "name": "MCP tools",
+      "found": true
+    },
+    {
+      "name": "MCP servers",
+      "found": true
+    },
+    {
+      "name": "tool descriptions",
+      "found": true
+    },
+    {
+      "name": "system prompts",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S41-T3",
+  "slot_id": "M3-S41",
+  "try": 3,
+  "point": "2.3-K3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S41-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK developer tool has a coordinator and four subagents: an explorer subagent, a generator subagent, a documentation writer subagent, and an automation subagent. Before a release, you audit the allowedTools configuration of each subagent. Which two findings show scoped tool access applied correctly?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The documentation writer subagent has Bash so that it can run full test suites to confirm the behavior that it documents.",
+      "correct": false,
+      "reason": "Running test suites is outside the documentation role, and agents with tools outside their specialization tend to misuse them."
+    },
+    {
+      "letter": "B",
+      "text": "The documentation writer subagent still has the schema migration tools of the database MCP server, which it needed once for a rare task last quarter.",
+      "correct": false,
+      "reason": "Cross-role tools are for specific high-frequency needs, so tools for a rare past task are outside the role and add selection complexity."
+    },
+    {
+      "letter": "C",
+      "text": "The automation subagent receives every tool from all four connected MCP servers, so that engineers can give it any repetitive task without first changing its configuration.",
+      "correct": false,
+      "reason": "Giving an agent many tools beyond its role degrades tool selection reliability, and scoped access gives only the tools that the role needs."
+    },
+    {
+      "letter": "D",
+      "text": "The explorer subagent has only Read, Grep, and Glob in its allowedTools, because its role is to search and read code.",
+      "correct": true,
+      "reason": "Scoped tool access gives an agent only the tools that its role needs, and searching and reading code needs only these tools."
+    },
+    {
+      "letter": "E",
+      "text": "The generator subagent has one read-only get_naming_rule tool from the documentation domain, because it checks a naming rule for almost every file it generates.",
+      "correct": true,
+      "reason": "Scoped tool access allows limited cross-role tools for specific high-frequency needs, and this tool is narrow and serves a need that occurs on almost every file."
+    }
+  ]
+}

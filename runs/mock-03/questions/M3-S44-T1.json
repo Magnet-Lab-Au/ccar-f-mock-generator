@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S44-T1",
+  "slot_id": "M3-S44",
+  "try": 1,
+  "point": "1.2-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses a search subagent to find legacy callers of a deprecated API and a code-generation subagent to write migration boilerplate. Currently the search subagent sends its results directly to the code-generation subagent. Last week the search subagent timed out halfway through the codebase, and the code-generation subagent produced migration code for only half of the callers. The coordinator's logs showed no trace of the timeout. Which design change best addresses this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add instructions to the code-generation subagent's prompt asking it to flag any suspected incomplete input in a comment at the top of the generated migration code.",
+      "correct": false,
+      "reason": "The information still bypasses the coordinator, so there is no central observability or consistent error handling, and detection depends on one subagent noticing a gap."
+    },
+    {
+      "letter": "B",
+      "text": "Configure the search subagent to catch the timeout and return its partial caller list as a successful result, so the pipeline continues without interruption and the generation step always receives input.",
+      "correct": false,
+      "reason": "This hides the failure by reporting partial results as a success, which removes the error context the coordinator needs and keeps the coordinator blind to the problem."
+    },
+    {
+      "letter": "C",
+      "text": "Route the search subagent's results and errors back to the coordinator, which logs them, applies its error handling, and decides what to pass to the code-generation subagent.",
+      "correct": true,
+      "reason": "Routing all subagent communication through the coordinator gives observability, consistent error handling, and controlled information flow, so the timeout becomes visible and is handled before code generation starts."
+    },
+    {
+      "letter": "D",
+      "text": "Have the code-generation subagent call the search subagent again directly whenever the list of callers it receives looks shorter than expected.",
+      "correct": false,
+      "reason": "This keeps direct subagent-to-subagent communication, so the coordinator still cannot see the failure and error handling stays spread across subagents instead of being consistent."
+    }
+  ]
+}

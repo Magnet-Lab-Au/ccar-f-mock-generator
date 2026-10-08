@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S41-T1",
+  "slot_id": "M3-S41",
+  "try": 1,
+  "point": "2.3-K3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK coordinator uses a codebase exploration subagent to study a legacy system and a boilerplate generation subagent to create new modules. The exploration subagent must record a short finding in a findings file many times per task, but it should never change source code. You are now deciding the allowedTools for each subagent. Which two configurations best follow scoped tool access?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a scoped append_finding tool to the exploration subagent that can only append a short entry to its findings file.",
+      "correct": true,
+      "reason": "A limited cross-role tool covers a specific high-frequency need, frequent note-taking, without giving the subagent the full Write tool."
+    },
+    {
+      "letter": "B",
+      "text": "Merge both subagents into one agent that holds every built-in tool, so the agent never needs a cross-role tool for its findings.",
+      "correct": false,
+      "reason": "This removes role scoping, and the guide says that agents with tools outside their specialization tend to misuse them."
+    },
+    {
+      "letter": "C",
+      "text": "Give each subagent every tool from the connected MCP servers, and rely on the tool descriptions to guide each subagent toward the right tools for its role.",
+      "correct": false,
+      "reason": "The guide says that too many tools degrade tool selection reliability, and scoped access means giving only the tools that the role needs."
+    },
+    {
+      "letter": "D",
+      "text": "Give the exploration subagent only Read, Grep, and Glob, and give the Write tool only to the generation subagent, which creates the new modules.",
+      "correct": true,
+      "reason": "Scoped tool access gives each agent only the tools that its role needs, so the read-only exploration role gets no general write access."
+    },
+    {
+      "letter": "E",
+      "text": "Give the exploration subagent the full Write tool, and set tool_choice to \"any\" so that it must call a tool on every turn.",
+      "correct": false,
+      "reason": "The \"any\" setting only guarantees that some tool is called, and the full Write tool still gives the exploration subagent access beyond its role."
+    }
+  ]
+}

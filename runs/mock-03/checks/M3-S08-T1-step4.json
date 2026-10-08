@@ -1,0 +1,96 @@
+{
+  "question_id": "M3-S08-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "fdf9295ed6bafaf7f5b3bc7863a496252fdeb66498a9dc2ddde530b95a300dcc",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Self-review in the same session is weak because the model keeps its own reasoning from the extraction and tends not to question it. A separate instance that never saw that conversation can check each field against the contract and catch semantic errors such as swapped buyer and supplier names. Pydantic validation and strict mode only catch schema or syntax problems, and swapped names still fit the schema. A longer checklist in the same conversation does not fix the self-review bias.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Pydantic",
+      "found": true
+    },
+    {
+      "name": "strict mode",
+      "found": true
+    },
+    {
+      "name": "JSON Schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

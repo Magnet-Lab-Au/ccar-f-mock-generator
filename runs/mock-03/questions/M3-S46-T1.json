@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S46-T1",
+  "slot_id": "M3-S46",
+  "try": 1,
+  "point": "5.6-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team created a custom slash command in .claude/commands/ that has Claude Code read the vendor changelog, old design documents, and saved wiki pages about a payments API, then write a migration summary. The summary often flags contradictions, such as two different rate limits for the same endpoint. Investigation shows that each value was correct when its source was written. Which change to the command best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Instruct Claude Code to resolve each conflict by keeping only the value from the official changelog and dropping the values from the other sources.",
+      "correct": false,
+      "reason": "The guide says conflicts should be annotated with source attribution rather than settled by picking one value arbitrarily. This rule also never shows that the values came from different times."
+    },
+    {
+      "letter": "B",
+      "text": "Add an earlier step that compresses each source's findings into short bullet points without source names, so that the final summary has less text to compare.",
+      "correct": false,
+      "reason": "The guide says that compressing findings without keeping claim-source mappings loses attribution. This step adds no dates, so the false contradictions remain."
+    },
+    {
+      "letter": "C",
+      "text": "Require each extracted finding in the command's structured output to include the publication or data collection date of its source.",
+      "correct": true,
+      "reason": "The guide says that requiring publication or collection dates in structured outputs lets temporal differences be interpreted correctly instead of being misread as contradictions."
+    },
+    {
+      "letter": "D",
+      "text": "Instruct Claude Code to list each conflicting value beside its source name and to flag every such pair as an unresolved contradiction for reviewers.",
+      "correct": false,
+      "reason": "Attribution helps, but without dates the values that changed over time are still reported as contradictions. The guide says dates are needed to prevent exactly this misreading."
+    }
+  ]
+}

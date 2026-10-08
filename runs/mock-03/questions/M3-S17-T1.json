@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S17-T1",
+  "slot_id": "M3-S17",
+  "try": 1,
+  "point": "2.4-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support team adds a library of about 200 billing dispute procedures to the backend. A colleague proposes a new MCP tool, list_procedures, that the agent would call at the start of each dispute to find out which procedures exist. You want the agent to see the available procedures without spending tool calls on discovery. Which approach best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Build the proposed list_procedures tool and state in its description that the agent must call it first in every dispute.",
+      "correct": false,
+      "reason": "This still makes the agent spend an exploratory tool call in every dispute just to learn what exists, which is the overhead the guide says MCP resources remove."
+    },
+    {
+      "letter": "B",
+      "text": "Add a second MCP server for the procedure library, so its search tools are discovered at connection time with the support tools.",
+      "correct": false,
+      "reason": "Tools from all servers are discovered at connection time, but the agent still has to call those tools to explore the content; only a resource exposes the catalog itself."
+    },
+    {
+      "letter": "C",
+      "text": "Expose the procedure library as an MCP resource, so the agent can see which procedures exist before it calls any tool.",
+      "correct": true,
+      "reason": "The guide names MCP resources as the way to expose content catalogs, which gives agents visibility into available data without exploratory tool calls."
+    },
+    {
+      "letter": "D",
+      "text": "Put the full text of all 200 procedures into the system prompt, so the agent never has to look up a procedure during a dispute.",
+      "correct": false,
+      "reason": "This loads all procedure content instead of a catalog of what exists, which wastes the token budget and risks lost-in-the-middle effects that the guide warns about."
+    }
+  ]
+}

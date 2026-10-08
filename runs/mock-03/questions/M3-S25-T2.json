@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S25-T2",
+  "slot_id": "M3-S25",
+  "try": 2,
+  "point": "2.4-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S25-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team commits a project-scoped .mcp.json that defines the backend MCP server for the customer support agent, with its authentication token written as ${SUPPORT_API_TOKEN}. On most developer machines, the agent resolves billing disputes normally. On one new teammate's machine, get_customer, lookup_order, process_refund and escalate_to_human all appear, but every call to them fails with an authentication error. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Environment variable expansion works only in user-level ~/.claude.json, so the ${SUPPORT_API_TOKEN} reference in .mcp.json is passed to the server literally.",
+      "correct": false,
+      "reason": "The guide describes environment variable expansion in .mcp.json as the way to manage credentials, and the agent works on the other machines with the same file."
+    },
+    {
+      "letter": "B",
+      "text": "Servers in a project-scoped .mcp.json apply only to the developer who committed the file, so the new teammate's agent lacks the server's credentials.",
+      "correct": false,
+      "reason": "Project-scoped .mcp.json is meant for shared team tooling, and the tools appear on the new teammate's machine, so the server configuration does reach that machine."
+    },
+    {
+      "letter": "C",
+      "text": "The four tools are discovered only when the agent first calls them, so those calls run before the server has finished authenticating.",
+      "correct": false,
+      "reason": "Tools from all configured MCP servers are discovered at connection time, and this timing idea would also fail to explain why the error appears on one machine only."
+    },
+    {
+      "letter": "D",
+      "text": "The SUPPORT_API_TOKEN environment variable is not set on the new teammate's machine, so the expansion in .mcp.json supplies no valid token.",
+      "correct": true,
+      "reason": "Environment variable expansion in .mcp.json takes each developer's credential from their own environment, so a missing variable on one machine leaves only that machine without a valid token."
+    }
+  ]
+}

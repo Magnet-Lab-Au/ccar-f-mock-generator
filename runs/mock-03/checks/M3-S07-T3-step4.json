@@ -1,0 +1,97 @@
+{
+  "question_id": "M3-S07-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question re-skins the earlier question M2-S54-T1. Both have the same scene: an extraction retry loop appends specific validation errors, and one required field stays empty because its value exists only in an external document the system never receives (master agreement there, supplementary file here). The correct answer is also the same: retries cannot help because the information is absent. Only the document type and field name change. Option D restates the earlier correct option about the payment terms.",
+      "letter": "D",
+      "point": "4.4-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "2c18cb18c2d96ba8a7d62e11038de1bf91d5e5de5dc5ea64368a8aadcedd34b1",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Retries can't help when the information is absent from the source. The amount is only in an external supplementary file the system never receives (4.4-K2, 4.4-S2). The same field-specific missing-value error on every attempt rules out vague feedback (C) and syntax errors (A). The paper itself says the details are elsewhere, which rules out lost-in-the-middle (B).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question re-skins the earlier question M2-S54-T1. Both have the same scene: an extraction retry loop appends specific validation errors, and one required field stays empty because its value exists only in an external document the system never receives (master agreement there, supplementary file here). The correct answer is also the same: retries cannot help because the information is absent. Only the document type and field name change. Option D restates the earlier correct option about the payment terms.",
+      "letter": "D",
+      "point": "4.4-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "strict mode",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

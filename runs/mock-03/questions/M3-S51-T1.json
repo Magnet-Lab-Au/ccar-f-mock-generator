@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S51-T1",
+  "slot_id": "M3-S51",
+  "try": 1,
+  "point": "5.1-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "You are using Claude Code in a long session to migrate a payment service to a new API version. Early on, you stated exact constraints: a p95 latency limit of 250 ms, a rate limit of 120 requests per minute, and a cutover date of March 14. After several /compact runs, Claude now writes code comments that say only \"keep latency low\" and \"respect the rate limit before the cutover\". Which change best keeps these exact constraints available for the rest of the session?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Restate all three constraints once in a new message now, and trust that Claude will keep them through the next compactions of the history.",
+      "correct": false,
+      "reason": "The new message becomes part of the history and is summarized at the next compaction. Its exact values face the same progressive summarization risk that the guide describes."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the exact latency limit, rate limit, and cutover date in a persistent constraints block that is included in each prompt, outside the summarized history.",
+      "correct": true,
+      "reason": "The guide recommends extracting exact facts into a persistent block that is included in each prompt, outside summarized history, so summarization cannot condense them."
+    },
+    {
+      "letter": "C",
+      "text": "Ask Claude to write each compaction summary in more detail, so that its narrative recap mentions the latency limit, rate limit, and cutover date again.",
+      "correct": false,
+      "reason": "The values still live only in summarized history. The guide warns that progressive summarization condenses numbers and dates into vague text, so later compactions can blur them again."
+    },
+    {
+      "letter": "D",
+      "text": "Paste the three constraints into the middle of one long message that also contains the full migration plan and the earlier design discussion, so all context stays together.",
+      "correct": false,
+      "reason": "The guide describes the lost-in-the-middle effect: models may omit information in the middle of long inputs. The values also remain in history that later gets summarized."
+    }
+  ]
+}

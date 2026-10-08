@@ -1,0 +1,105 @@
+{
+  "question_id": "M3-S22-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The scene repeats earlier question M1-S26-T1. Both show a support agent that confirms a duplicate charge in a billing dispute and calls escalate_to_human. In both, the human agents have no transcript access and re-ask customers for details. The answer is the same: a structured handoff with root cause, refund amount and recommended action, as in M1 options 2 and 5. Asking for the cause instead of the fix does not change the scene or the answer. The 'cause' framing with the answer 'the handoff omits root cause and recommended action' also matches M2-S19-T3.",
+      "letter": "C",
+      "point": "1.4-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "5a08cf5729ea948a18a0b3f31fc4bfca715996974a74e5d381b3d9e03b685736",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "The human agents have no transcript access, so a handoff that says 'see the conversation above' gives them nothing to act on. A structured handoff should state the customer ID, the root cause (a duplicate $89 charge confirmed via lookup_order), the refund amount and the recommended action (task statement 1.4-S3). Without these, humans re-ask customers for details and sometimes refund the wrong charge.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The scene repeats earlier question M1-S26-T1. Both show a support agent that confirms a duplicate charge in a billing dispute and calls escalate_to_human. In both, the human agents have no transcript access and re-ask customers for details. The answer is the same: a structured handoff with root cause, refund amount and recommended action, as in M1 options 2 and 5. Asking for the cause instead of the fix does not change the scene or the answer. The 'cause' framing with the answer 'the handoff omits root cause and recommended action' also matches M2-S19-T3.",
+      "letter": "C",
+      "point": "1.4-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "lookup_order",
+      "found": true
+    },
+    {
+      "name": "escalate_to_human",
+      "found": true
+    },
+    {
+      "name": "process_refund",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

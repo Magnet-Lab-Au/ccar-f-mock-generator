@@ -1,0 +1,104 @@
+{
+  "question_id": "M3-S25-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "a3c547be7f1838f251c454ec47cc5b0ee8b8637fa921314b4a6f1d8397425176",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "The .mcp.json file supports ${VAR} expansion, and the server works for most developers, so the config itself is sound. The tools appear because they are discovered at connection time, so the server is reachable. Every call failing with an authentication error points to the variable SUPPORT_API_TOKEN not being set in the new teammate's environment, so no valid token is supplied.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".mcp.json",
+      "found": true
+    },
+    {
+      "name": "~/.claude.json",
+      "found": true
+    },
+    {
+      "name": "environment variable expansion",
+      "found": true
+    },
+    {
+      "name": "MCP servers",
+      "found": true
+    },
+    {
+      "name": "MCP tools",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

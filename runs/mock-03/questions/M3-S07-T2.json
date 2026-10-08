@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S07-T2",
+  "slot_id": "M3-S07",
+  "try": 2,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S07-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system validates each output with Pydantic and retries every failed extraction up to five times, appending the specific validation errors to the prompt. Retry costs are rising, so you want a rule that decides before each retry whether that retry can succeed. Which rule best matches when retries help?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Retry only when the output contains invalid JSON syntax, and accept semantic errors such as line items that do not sum to the total without a retry.",
+      "correct": false,
+      "reason": "Tool use with JSON schemas eliminates syntax errors, while semantic and structural errors are the kind that retry with specific error feedback can correct."
+    },
+    {
+      "letter": "B",
+      "text": "Retry only failures on optional fields, and send every failure on a required field directly to a human reviewer.",
+      "correct": false,
+      "reason": "Whether a retry helps depends on the cause of the failure, not on whether the field is required; a format error on a required field is fixable by retry."
+    },
+    {
+      "letter": "C",
+      "text": "Retry any failure whose first output reported low field-level confidence, because low confidence shows that another attempt will find the value.",
+      "correct": false,
+      "reason": "Low confidence does not show that the value exists in the source; when the information is absent from the document, retries are ineffective regardless of confidence."
+    },
+    {
+      "letter": "D",
+      "text": "Retry when the error is a format or structural mismatch, and skip the retry when the source document does not contain the required value.",
+      "correct": true,
+      "reason": "The guide states that retries succeed on format mismatches and structural output errors but are ineffective when the required information is absent from the source document."
+    }
+  ]
+}

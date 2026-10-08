@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S57-T1",
+  "slot_id": "M3-S57",
+  "try": 1,
+  "point": "5.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to audit a monorepo for calls to a deprecated logging API. Claude Code assigns one subagent to each of four services and then writes a combined report. The billing subagent could not read the billing service because its submodule was not checked out, yet the report stated that the billing service has no deprecated calls. What change to how the report is produced would best prevent this misleading result?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Configure Claude Code to stop the entire audit and produce no report whenever any single subagent fails to read its assigned service directory.",
+      "correct": false,
+      "reason": "Terminating the whole workflow because of one failure is an anti-pattern, because it throws away the valid findings for the other three services."
+    },
+    {
+      "letter": "B",
+      "text": "Have the final report mark each service's findings as well-supported or as a coverage gap, naming the billing service as unanalyzed because its source was unavailable.",
+      "correct": true,
+      "reason": "Coverage annotations that separate well-supported findings from gaps caused by unavailable sources show readers that the billing result is missing, not clean."
+    },
+    {
+      "letter": "C",
+      "text": "Append one general disclaimer to the end of the report stating that some findings might be incomplete, without identifying which services were affected by failures.",
+      "correct": false,
+      "reason": "A generic warning hides the context that matters, because readers still cannot tell which topic areas have gaps and which findings are well-supported."
+    },
+    {
+      "letter": "D",
+      "text": "Run the whole audit in plan mode so that Claude Code describes its exploration approach and waits for approval before reading any service code.",
+      "correct": false,
+      "reason": "Plan mode helps with deciding an approach for complex work, but it does not change how the final report marks findings that rest on unavailable sources."
+    }
+  ]
+}

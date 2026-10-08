@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S54-T1",
+  "slot_id": "M3-S54",
+  "try": 1,
+  "point": "5.6-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to prepare a migration report for a major framework upgrade. A custom slash command has Claude Code delegate research to three subagents: one reads the framework changelog, one reads the official migration guide, and one searches your codebase. The final report often lists breaking changes without showing whether each one came from the changelog, the guide, or a file in your code, so reviewers cannot verify them. What change would most effectively fix this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run /compact in the main session before the synthesis step, so that the summarized history of all subagent findings fits in one context and nothing is dropped.",
+      "correct": false,
+      "reason": "Summarizing the findings with /compact compresses them without claim-source mappings, which is a summarization step that loses attribution."
+    },
+    {
+      "letter": "B",
+      "text": "Have each subagent append a list of every URL and file path it consulted to the end of its prose summary, so that the final report can show a complete list of references for reviewers.",
+      "correct": false,
+      "reason": "A list of consulted sources does not map each claim to its source, so reviewers still cannot tell which source supports which breaking change."
+    },
+    {
+      "letter": "C",
+      "text": "Require each subagent to return every finding as a record pairing the claim with its source URL or file path and a relevant excerpt, and keep these records through synthesis.",
+      "correct": true,
+      "reason": "The guide calls for subagents to output structured claim-source mappings (source URLs, document names, excerpts) that downstream steps preserve through synthesis."
+    },
+    {
+      "letter": "D",
+      "text": "Have each subagent return a short prose summary of its findings, so that the synthesis step receives compact input and stays well within its context budget.",
+      "correct": false,
+      "reason": "Compressing findings into prose summaries is exactly how source attribution is lost, because the claim-source mappings are not preserved."
+    }
+  ]
+}

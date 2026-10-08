@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S32-T1",
+  "slot_id": "M3-S32",
+  "try": 1,
+  "point": "2.1-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses the built-in Grep tool and an MCP tool named search_wiki that queries the internal engineering wiki. Both tool descriptions clearly state each tool's inputs, outputs, and when to use it instead of the other tool. The system prompt says that any request to search for something should use search_wiki. Logs show that requests such as \"search the repo for callers of parseConfig\" go to search_wiki instead of Grep. What is the most likely cause of this misrouting?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The agent's context is filling with long wiki results, so lost-in-the-middle effects hide the Grep description from the model during tool selection.",
+      "correct": false,
+      "reason": "Lost-in-the-middle effects concern information buried in long inputs. The misrouting here follows the word search, which points to the keyword-triggered prompt instruction."
+    },
+    {
+      "letter": "B",
+      "text": "The system prompt's keyword-sensitive instruction ties the word search to search_wiki and overrides the well-written tool descriptions.",
+      "correct": true,
+      "reason": "The guide states that keyword-sensitive system prompt wording can create unintended tool associations and override well-written tool descriptions. That matches this pattern."
+    },
+    {
+      "letter": "C",
+      "text": "The Grep and search_wiki descriptions overlap so heavily that the model cannot tell which tool fits a request about searching the repository.",
+      "correct": false,
+      "reason": "Overlapping descriptions cause misrouting, but the scene states that both descriptions clearly differentiate the tools. Overlap is therefore not the cause here."
+    },
+    {
+      "letter": "D",
+      "text": "MCP tools always take precedence over built-in tools when both are available, so the agent prefers search_wiki for any matching request.",
+      "correct": false,
+      "reason": "The guide gives no such precedence rule. It states that tool descriptions are the primary mechanism for tool selection, and system prompt wording can also shape it."
+    }
+  ]
+}

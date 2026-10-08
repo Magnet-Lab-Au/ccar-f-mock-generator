@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S60-T1",
+  "slot_id": "M3-S60",
+  "try": 1,
+  "point": "3.1-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A developer on your team reports that Claude Code applies the project's API naming conventions in some sessions but ignores them in others. The conventions are written in a CLAUDE.md file. Teammates disagree about which configuration files Claude Code actually reads in each session. You want to find out what is loaded before you change any files. What should you do first?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start each new session with --resume so that Claude Code reuses the setup from a session that worked correctly.",
+      "correct": false,
+      "reason": "--resume continues an earlier session. It does not show which memory files are loaded, so the cause of the inconsistency stays unknown."
+    },
+    {
+      "letter": "B",
+      "text": "Copy the API naming conventions into each developer's ~/.claude/CLAUDE.md file so that every session receives them.",
+      "correct": false,
+      "reason": "This changes files without diagnosing the cause. Also, user-level ~/.claude/CLAUDE.md applies only to one user and is not shared with teammates via version control."
+    },
+    {
+      "letter": "C",
+      "text": "Run the /memory command in an affected session to see which memory files Claude Code has loaded.",
+      "correct": true,
+      "reason": "The guide names the /memory command as the way to verify which memory files are loaded and to diagnose inconsistent behavior across sessions."
+    },
+    {
+      "letter": "D",
+      "text": "Run the /compact command at the start of each session so that the conventions stay prominent in the context.",
+      "correct": false,
+      "reason": "/compact reduces the conversation context. It does not show which memory files are loaded, so it cannot diagnose the inconsistency."
+    }
+  ]
+}

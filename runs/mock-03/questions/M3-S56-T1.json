@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S56-T1",
+  "slot_id": "M3-S56",
+  "try": 1,
+  "point": "3.6-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code with the -p flag in CI to generate unit tests for each pull request. Reviewers report that many generated tests repeat scenarios that the module's existing test suite already covers. The prompt currently includes only the changed source files. What change most directly reduces these duplicate test suggestions?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add --output-format json with a --json-schema that requires a unique scenario name for each generated test in the output.",
+      "correct": false,
+      "reason": "The guide uses these flags to produce machine-parseable structured output, not to give Claude knowledge of which scenarios the existing tests already cover."
+    },
+    {
+      "letter": "B",
+      "text": "Include the existing test files for the changed modules in the prompt context so Claude can see which scenarios are already covered.",
+      "correct": true,
+      "reason": "The guide says to provide existing test files in context so that test generation avoids suggesting duplicate scenarios already covered by the test suite."
+    },
+    {
+      "letter": "C",
+      "text": "Add a rule to the project CLAUDE.md telling Claude to never suggest tests that duplicate scenarios already present anywhere in the existing test suite.",
+      "correct": false,
+      "reason": "An instruction alone does not show Claude which scenarios exist; the guide's fix for duplicates is to put the existing test files in context."
+    },
+    {
+      "letter": "D",
+      "text": "Add a post-processing script that deletes any generated test whose function name matches the name of an existing test function.",
+      "correct": false,
+      "reason": "Name matching misses duplicate scenarios that have different names; the guide prevents duplicates at generation time by providing existing test files in context."
+    }
+  ]
+}

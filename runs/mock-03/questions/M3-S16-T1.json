@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S16-T1",
+  "slot_id": "M3-S16",
+  "try": 1,
+  "point": "1.5-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent must never call process_refund for an account that get_customer marks as on fraud hold. The system prompt states this rule, and the agent follows it in most test conversations. A teammate proposes to refine the prompt wording until the test suite shows no violations, and then to ship without any other check. What is the strongest reason to enforce this rule with a hook instead?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "A hook helps the agent understand why the fraud rule matters, so the model chooses on its own to follow the rule more often.",
+      "correct": false,
+      "reason": "A hook does not change the model's reasoning; it intercepts the tool call in code and enforces the rule whatever the model decides, which is why it gives a deterministic guarantee."
+    },
+    {
+      "letter": "B",
+      "text": "Prompt instructions stop working once a conversation grows long, so the agent will break the fraud rule in most long support conversations, whatever the wording.",
+      "correct": false,
+      "reason": "The guide does not say prompt rules stop working; they work in most cases but give only probabilistic compliance, and that small failure rate is why guaranteed rules need a hook."
+    },
+    {
+      "letter": "C",
+      "text": "Prompt instructions give only probabilistic compliance, so a clean test run cannot guarantee every production case, but a hook blocks the call deterministically.",
+      "correct": true,
+      "reason": "The guide contrasts hooks, which give deterministic guarantees, with prompt instructions, which give only probabilistic compliance; a rule that must always hold needs a hook."
+    },
+    {
+      "letter": "D",
+      "text": "Only a hook can read the fraud-hold flag in the get_customer result, because the agent itself cannot see the fields that MCP tools return to it during a conversation.",
+      "correct": false,
+      "reason": "The agent does process MCP tool results; the reason for a hook is not data access but that code gives a deterministic guarantee while a prompt rule is only probabilistic."
+    }
+  ]
+}

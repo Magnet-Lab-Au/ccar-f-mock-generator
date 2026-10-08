@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S01-T3",
+  "slot_id": "M3-S01",
+  "try": 3,
+  "point": "4.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S01-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts results from laboratory reports and emits a finding when a reported unit seems to conflict with the value range. Reviewers have dismissed 1,400 findings as false positives. When the team studies these dismissals, it cannot tell which report layouts or source constructs keep producing them. Each finding stores the document ID, the field name, a severity level, and a short message. What is the most likely cause of this analysis problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The findings do not record which construct in the source report triggered each one, so dismissals cannot be grouped by triggering pattern.",
+      "correct": true,
+      "reason": "The guide says that a detected_pattern field recording the triggering construct is what enables systematic analysis of false positive patterns, and these findings have no such field."
+    },
+    {
+      "letter": "B",
+      "text": "The reports were processed with the Message Batches API, so the findings returned out of order and cannot be matched reliably to the dismissals that reviewers recorded.",
+      "correct": false,
+      "reason": "The guide says that custom_id correlates batch requests with responses, and each finding already stores its document ID, so matching is not the problem."
+    },
+    {
+      "letter": "C",
+      "text": "The findings do not include a field-level confidence score, so the team cannot see how certain the model was about each dismissed finding.",
+      "correct": false,
+      "reason": "A confidence score measures how certain the model was, but the guide ties false positive pattern analysis to recording the construct that triggered the finding."
+    },
+    {
+      "letter": "D",
+      "text": "The finding schema does not use strict mode, so malformed findings in the output hide the patterns that lead reviewers to dismiss them.",
+      "correct": false,
+      "reason": "The guide says that strict mode eliminates schema syntax errors, but valid syntax does not record which source construct triggered each finding."
+    }
+  ]
+}

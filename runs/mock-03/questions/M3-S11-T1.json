@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S11-T1",
+  "slot_id": "M3-S11",
+  "try": 1,
+  "point": "4.3-S6",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system calls a tool with a JSON schema to pull invoice fields from supplier documents, and every tool_use response passes schema validation. Suppliers write dates as \"03/04/2024\", \"4 March 2024\" or \"2024-03-04\", and they write amounts as \"$1,200\" or \"1 200,00 EUR\". The extracted values keep these source formats, so the downstream accounting system rejects many records. What is the most likely root cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The prompt has no format normalization rules, so Claude fills the schema fields with each supplier's own date and amount formats.",
+      "correct": true,
+      "reason": "A schema controls the structure of the output, not the format of the values. The guide says to put format normalization rules in the prompt alongside the strict schema to handle inconsistent source formatting."
+    },
+    {
+      "letter": "B",
+      "text": "The schema is not enforced in strict mode, so JSON syntax errors corrupt the date and amount values before they reach accounting.",
+      "correct": false,
+      "reason": "Strict schemas through tool use remove syntax errors. Every response already passes schema validation, so syntax errors are not the cause of the format mismatch."
+    },
+    {
+      "letter": "C",
+      "text": "The date and amount fields are marked required, so Claude fabricates values for invoices that do not state a date or an amount.",
+      "correct": false,
+      "reason": "The guide links required fields to fabricated values when the source lacks the information. The values here are real but inconsistently formatted, which is a different problem."
+    },
+    {
+      "letter": "D",
+      "text": "The tool_choice setting is \"auto\", so Claude sometimes returns plain text instead of calling the extraction tool with its schema.",
+      "correct": false,
+      "reason": "With \"auto\" the model may return text instead of calling a tool. Here every response is a valid tool_use call, so tool_choice does not explain the inconsistent value formats."
+    }
+  ]
+}
