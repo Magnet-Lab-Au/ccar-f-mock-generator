@@ -15,13 +15,17 @@ from collections import Counter
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
 
 import step1_plan  # noqa: E402
-from step1_plan import PlanError, make_plan, scenario_sets, tables, domain_counts  # noqa: E402
+from step1_plan import PlanError, make_plan, scenario_sets, tables, domain_counts, DOMAIN_COUNTS  # noqa: E402
+import point_groups  # noqa: E402
 
 with open(step1_plan.RECORDS, encoding="utf-8") as f:
     RECORDS = json.load(f)
 TS = {t["id"]: t for t in RECORDS["task_statements"]}
 PRIMARY = {s["id"]: s["primary_domains"] for s in RECORDS["scenarios"]}
 SEEDS = range(40)
+GROUPS = point_groups.load()
+OF = point_groups.group_of(GROUPS)
+TS_GROUPS = {t: {OF[p["id"]]["id"] for p in TS[t]["points"]} for t in TS}
 
 
 def domain(slot):
@@ -48,13 +52,24 @@ class TestPlan(unittest.TestCase):
             self.assertEqual(len(plan["scenarios"]), 4)
             self.assertIn(tuple(sorted(plan["scenarios"])), scenario_sets(RECORDS, domain_counts(RECORDS)))
 
-    def test_each_task_statement_gets_its_equal_share(self):
+    def test_each_task_statement_gets_its_share_up_to_its_groups(self):
+        # Decision 0048: an equal share, but no more questions than groups, and at
+        # most one extra question.
         for plan in self.plans:
             per_ts = Counter(s["task_statement"] for s in plan["slots"])
             self.assertEqual(set(per_ts), set(TS))
             for d in range(1, 6):
-                n = [per_ts[t] for t in TS if TS[t]["domain"] == d]
-                self.assertLessEqual(max(n) - min(n), 1)
+                names = [t for t in TS if TS[t]["domain"] == d]
+                share = DOMAIN_COUNTS[d] // len(names)
+                for t in names:
+                    self.assertLessEqual(per_ts[t], min(share + 1, len(TS_GROUPS[t])))
+                    self.assertGreaterEqual(per_ts[t], min(share, len(TS_GROUPS[t])))
+            self.assertEqual(per_ts["3.3"], 1)
+
+    def test_no_two_slots_in_one_group(self):
+        for plan in self.plans:
+            groups = [OF[s["point"]]["id"] for s in plan["slots"]]
+            self.assertEqual(len(groups), len(set(groups)))
 
     def test_each_question_fits_a_primary_domain(self):
         for plan in self.plans:
@@ -167,6 +182,26 @@ class TestPlanFails(unittest.TestCase):
             for t in r["task_statements"][:4]:
                 t["domain"] = 5
         self.broken(crowd, "more task statements than questions")
+
+    def test_groups_that_allow_no_plan_make_no_plan(self):
+        groups = copy.deepcopy(GROUPS)
+        one = [p["id"] for t in ("1.4", "1.5", "1.6") for p in TS[t]["points"]]
+        for g in groups["groups"]:
+            g["points"] = [p for p in g["points"] if p not in one]
+        groups["groups"] = [g for g in groups["groups"] if g["points"]]
+        groups["groups"].append({"id": "", "idea": "test", "points": one})
+        for i, g in enumerate(groups["groups"], 1):
+            g["id"] = "G%03d" % i
+        with self.assertRaises(PlanError) as e:
+            make_plan(RECORDS, 1, 1, "2026-10-07", groups)
+        self.assertIn("No plan is possible", str(e.exception))
+
+    def test_a_bad_groups_file_makes_no_plan(self):
+        groups = copy.deepcopy(GROUPS)
+        groups["groups"][0]["points"].append("9.9-K9")
+        with self.assertRaises(PlanError) as e:
+            make_plan(RECORDS, 1, 1, "2026-10-07", groups)
+        self.assertIn("groups file is not correct", str(e.exception))
 
     def test_the_command_reports_a_bad_records_file(self):
         folder = tempfile.mkdtemp()

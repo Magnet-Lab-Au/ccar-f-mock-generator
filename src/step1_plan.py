@@ -1,4 +1,5 @@
-"""Step 1 of the pipeline: the plan of a mock (decisions 0009, 0027 and 0037, item 14).
+"""Step 1 of the pipeline: the plan of a mock (decisions 0009, 0027 and 0037, item 14,
+and the point groups of decisions 0047 and 0048).
 
 Code makes a list of 60 slots. No model works in this step. The seed controls
 each selection, so the same seed gives the same plan.
@@ -16,6 +17,8 @@ import json
 import os
 import random
 import sys
+
+import point_groups
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORDS = os.path.join(ROOT, "reference", "guide-records.json")
@@ -161,10 +164,40 @@ def scenario_sets(records, counts):
             if tables(c, primary, counts)]
 
 
-def make_plan(records, mock, seed, date):
+def _possible(need, ts_groups, used):
+    """True if each task statement can still get need[ts] points, each from a
+    different group that is not in used (decision 0048). A matching of task
+    statements to groups: each group serves at most one question."""
+    owner = {}
+
+    def place(ts, seen):
+        for g in sorted(ts_groups[ts] - used):
+            if g in seen:
+                continue
+            seen.add(g)
+            if g not in owner or place(owner[g], seen):
+                owner[g] = ts
+                return True
+        return False
+
+    for ts in sorted(need):
+        for _ in range(need[ts]):
+            if not place(ts, set()):
+                return False
+    return True
+
+
+def make_plan(records, mock, seed, date, groups=None):
     """Return the plan of one mock. Raise PlanError, and make no plan, if a record
-    is missing or a count does not add up."""
+    is missing, a count does not add up, or the groups allow no plan. groups is the
+    content of data/point-groups.json. None reads that file."""
     check_records(records)
+    if groups is None:
+        groups = point_groups.load()
+    try:
+        point_groups.check_groups(groups, records)
+    except point_groups.GroupError as e:
+        raise PlanError("The groups file is not correct: %s" % e)
     counts = domain_counts(records)
     primary = {s["id"]: s["primary_domains"] for s in records["scenarios"]}
     by_domain = {}
@@ -188,27 +221,71 @@ def make_plan(records, mock, seed, date):
                   key=lambda t: json.dumps(t, sort_keys=True))
     table = _choice(rng, best)
 
-    # 3. In each domain, the task statements share the questions equally.
-    #    The seed selects which task statements get the questions that are left.
-    # 4. The seed decides which scenario each of these questions goes to.
-    # 5. The seed selects one point for each slot. No two slots get the same point.
-    questions = []   # (scenario, task statement, point)
+    # 3. In each domain, the task statements share the questions equally. A task
+    #    statement gets no more questions than it has groups (decision 0048).
+    #    The seed sets the order in which task statements get the questions
+    #    that are left. Each one gets at most one extra question, and only if a
+    #    full plan stays possible.
+    # 4. The seed sets the order of the points of each task statement. Code takes
+    #    the first point whose group is free and that keeps a full plan possible.
+    #    No two slots get points of the same group (decisions 0047 and 0048).
+    of = point_groups.group_of(groups)
+    ts_groups = {ts["id"]: frozenset(of[p["id"]]["id"] for p in ts["points"]) for ts in records["task_statements"]}
+    statements = {}
+    need = {}
     for d in sorted(counts):
-        statements = sorted(by_domain.get(d, []), key=lambda t: [int(x) for x in t["id"].split(".")])
-        if not statements:
+        statements[d] = sorted(by_domain.get(d, []), key=lambda t: [int(x) for x in t["id"].split(".")])
+        if not statements[d]:
             raise PlanError("Domain %d has no task statements." % d)
-        share, left = divmod(counts[d], len(statements))
+        share = counts[d] // len(statements[d])
         if share < 1:
             raise PlanError("Domain %d has more task statements than questions. Each task statement "
                             "must get at least 1 question." % d)
-        extra = set(t["id"] for t in _sample(rng, statements, left))
-        items = []
-        for ts in statements:
-            n = share + (1 if ts["id"] in extra else 0)
-            if n > len(ts["points"]):
-                raise PlanError("Task statement %s has fewer points than questions." % ts["id"])
-            for p in _sample(rng, ts["points"], n):
-                items.append((ts["id"], p["id"]))
+        for ts in statements[d]:
+            need[ts["id"]] = min(share, len(ts_groups[ts["id"]]))
+    if not _possible(need, ts_groups, frozenset()):
+        raise PlanError("No plan is possible with these groups, even with no extra questions.")
+    for d in sorted(counts):
+        share = counts[d] // len(statements[d])
+        left = counts[d] - sum(need[ts["id"]] for ts in statements[d])
+        order = list(statements[d])
+        _shuffle(rng, order)
+        for ts in order:
+            if left == 0:
+                break
+            if need[ts["id"]] > share:
+                continue
+            more = dict(need)
+            more[ts["id"]] += 1
+            if more[ts["id"]] <= len(ts_groups[ts["id"]]) and _possible(more, ts_groups, frozenset()):
+                need = more
+                left -= 1
+        if left:
+            raise PlanError("Domain %d: %d questions find no task statement with a free group." % (d, left))
+    used = set()
+    picked = {}
+    rest = dict(need)
+    for d in sorted(counts):
+        for ts in statements[d]:
+            pool = list(ts["points"])
+            _shuffle(rng, pool)
+            picked[ts["id"]] = []
+            for _ in range(need[ts["id"]]):
+                rest[ts["id"]] -= 1
+                for p in pool:
+                    g = of[p["id"]]["id"]
+                    if g not in used and _possible(rest, ts_groups, frozenset(used | {g})):
+                        used.add(g)
+                        picked[ts["id"]].append(p)
+                        pool.remove(p)
+                        break
+                else:
+                    raise PlanError("Task statement %s has no allowed point left." % ts["id"])
+
+    # 5. The seed decides which scenario each question goes to.
+    questions = []   # (scenario, task statement, point)
+    for d in sorted(counts):
+        items = [(ts["id"], p["id"]) for ts in statements[d] for p in picked[ts["id"]]]
         places = [s for s in sorted(table) for _ in range(table[s].get(d, 0))]
         if len(places) != len(items):
             raise PlanError("Domain %d: the table has %d places for %d questions." % (d, len(places), len(items)))
@@ -233,6 +310,10 @@ def make_plan(records, mock, seed, date):
                           "options": 5 if many else 4, "select": 2 if many else 1})
     if len(slots) != QUESTIONS:
         raise PlanError("The plan has %d slots, not %d." % (len(slots), QUESTIONS))
+    same = point_groups.conflicts([(x["slot_id"], x["point"]) for x in slots], groups)
+    if same:
+        raise PlanError("Two slots are in one group: %s" % "; ".join(
+            "%s: %s" % (g["id"], ", ".join(x for x, _ in items)) for g, items in same))
     return {"mock": mock, "seed": seed, "guide_version": records["guide"]["version"], "date": date,
             "scenarios": scenarios,
             "table": {str(s): {str(d): n for d, n in sorted(table[s].items())} for s in scenarios},
@@ -245,6 +326,7 @@ def main(argv=None):
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--runs", default=os.path.join(ROOT, "runs"))
     parser.add_argument("--records", default=RECORDS)
+    parser.add_argument("--groups", default=point_groups.GROUPS)
     args = parser.parse_args(argv)
     path = os.path.join(args.runs, "mock-%02d" % args.mock, "plan.json")
     if os.path.exists(path):
@@ -257,7 +339,12 @@ def main(argv=None):
         print("No plan: the records file cannot be read: %s" % e)
         return 1
     try:
-        plan = make_plan(records, args.mock, args.seed, datetime.date.today().isoformat())
+        groups = point_groups.load(args.groups)
+    except (OSError, ValueError) as e:
+        print("No plan: the groups file cannot be read: %s" % e)
+        return 1
+    try:
+        plan = make_plan(records, args.mock, args.seed, datetime.date.today().isoformat(), groups)
     except PlanError as e:
         print("No plan: " + str(e))
         return 1

@@ -9,6 +9,9 @@ Run from the folder ccar-f-mock-generator:
         Checks the file and prints the groups with two or more points.
     python3 src/point_groups.py plan runs/mock-01/plan.json
         Prints each group that has two or more slots of the plan.
+    python3 src/point_groups.py seeds 2000
+        Makes the plans of seeds 0 to 1999 with step 1 and shows that each one
+        exists and has no two slots in one group (decision 0047, item 4).
 """
 import argparse
 import json
@@ -96,10 +99,39 @@ def table(groups):
     return "\n".join(lines)
 
 
+def seeds(records, groups, number):
+    """Run step 1 for the seeds 0 to number - 1 and print the result."""
+    import step1_plan
+    failed = []
+    used = set()
+    counts = {}
+    for seed in range(number):
+        try:
+            plan = step1_plan.make_plan(records, 1, seed, "2026-10-08", groups)
+        except step1_plan.PlanError as e:
+            failed.append((seed, str(e)))
+            continue
+        if conflicts([(s["slot_id"], s["point"]) for s in plan["slots"]], groups):
+            failed.append((seed, "two slots in one group"))
+        for s in plan["slots"]:
+            used.add(s["point"])
+            counts.setdefault(s["task_statement"], set()).add(
+                sum(1 for x in plan["slots"] if x["task_statement"] == s["task_statement"]))
+    print("Seeds: %d. Plans: %d. Failed: %d." % (number, number - len(failed), len(failed)))
+    for seed, why in failed[:10]:
+        print("Seed %d: %s" % (seed, why))
+    print("Questions of each task statement over all plans:")
+    print(", ".join("%s: %s" % (t, "/".join(str(n) for n in sorted(c)))
+                    for t, c in sorted(counts.items(), key=lambda x: _sort_key(x[0]))))
+    never = sorted((p for g in groups["groups"] for p in g["points"] if p not in used), key=_sort_key)
+    print("Points that no plan uses (%d): %s" % (len(never), ", ".join(never)))
+    return 1 if failed else 0
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Check the point groups (decision 0047).")
-    parser.add_argument("command", choices=["check", "plan"])
-    parser.add_argument("plan", nargs="?")
+    parser.add_argument("command", choices=["check", "plan", "seeds"])
+    parser.add_argument("plan", nargs="?", help="the path of a plan file, or the number of seeds")
     parser.add_argument("--groups", default=GROUPS)
     parser.add_argument("--records", default=RECORDS)
     args = parser.parse_args(argv)
@@ -116,6 +148,8 @@ def main(argv=None):
               % (len(groups["groups"]), sum(len(g["points"]) for g in groups["groups"])))
         print(table(groups))
         return 0
+    if args.command == "seeds":
+        return seeds(records, groups, int(args.plan or 2000))
     if not args.plan:
         parser.error("plan needs the path of a plan file")
     with open(args.plan, encoding="utf-8") as f:

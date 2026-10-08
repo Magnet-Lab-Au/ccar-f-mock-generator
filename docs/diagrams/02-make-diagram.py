@@ -68,14 +68,19 @@ D = {
    why='Each number is the weight for 60 questions, rounded. Example: 27% of 60 is 16.2, so Domain 1 has 16 questions. The guide gives no number of questions for each scenario. The reason for 15 is plain: equal parts.'),
  '3': dict(title='Part 3: select the task statements', cls='code', who='Code', status='built', points=[], none=NONE,
    sent=['Each of the 30 task statements gets at least 1 question.',
-         'In each domain, the task statements share the questions equally. The seed selects which task statements get the questions that are left.',
-         'Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question, and the seed selects 3 of them for a second question.',
+         'In each domain, the task statements share the questions equally. But a task statement gets no more questions than its number of point groups (decision 0048).',
+         'The seed sets an order of the task statements. In that order, a task statement gets one extra question if a full plan stays possible.',
+         'Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question, and 3 of them get a second question.',
+         'Example: task statement 3.3 has one group, so it gets 1 question. Another task statement of Domain 3 gets 3.',
          'The seed also decides which scenario of the table each question goes to.'],
-   why='Each mock then covers the complete guide.'),
+   why='Each mock then covers the complete guide. A group is one idea, so two questions on a task statement with one group are two questions on one idea.'),
  '4': dict(title='Part 4: select one point for each question', cls='code', who='Code', status='built', points=[], none=NONE,
    sent=['Each task statement has %d to %d points. A point is one thing to know or one skill.' % (lo, hi),
-         'The seed selects one point of the task statement for each question. Two slots of one mock do not get the same point.'],
-   why='The writer and the checker know exactly what the question must test. With no point, the writer selects a part of the task statement, and the same part can come again and again.'),
+         'The file data/point-groups.json puts each of the 240 points into one group. Two points in one group describe one idea. A group can hold points of different task statements (decision 0047).',
+         'No two slots of one mock get points of the same group.',
+         'The seed sets an order of the points. Code takes the first point whose group is free and that keeps a full plan possible (decision 0048).',
+         'Code checks "possible" with a matching of task statements to free groups. No model makes this check.'],
+   why='The writer and the checker know exactly what the question must test. Mock 1 got repeats from two points on one idea (decision 0046). The groups prevent this before a question is written.'),
  '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
    sent=['Multiple-choice: the participant selects 1 answer.', 'Multiple-response: the question has 5 options, and the participant selects 2 answers. A multiple-choice question has 4 options.',
          'The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions.'],
@@ -89,6 +94,7 @@ D = {
    why='Step 2 writes one question for each slot. The later checks compare each question with its slot.'),
  'F': dict(title='The step stops', cls='stop', who='The step stops', status='built', points=[], none=NONE,
    sent=['A guide record is missing or not valid, or the counts of the plan do not add up to 60. Example: a task statement with an unknown domain.',
+         'The groups file is not correct, or the groups allow no plan at all.',
          'The step stops with an error that names the cause.', 'It writes no plan.'],
    why='A plan with wrong counts makes a mock with wrong counts. So the step stops, and it does not write a wrong plan.'),
 }
@@ -102,15 +108,15 @@ def box(key, top, h, num, name, tag, tagcls, what, ts, extra='', left=40, w=540)
             '<p class="what">%s</p>%s</div>') % (cls, key, left, top, w, h, numhtml, e(name), tagcls, e(tag), e(what), tshtml)
 
 boxes = ''.join([
- box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, a mock number and a seed.', 'Step 0 makes the guide records.'),
+ box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, the point groups, a mock number and a seed.', 'Step 0 makes the guide records. The owner confirms the point groups.'),
  box('S', 150, 88, '', 'Step 1: plan the mock', 'Code', 'code', 'Code makes the plan in 5 parts. No model works.', 'Exam guide: task statements 1.4 and 1.6', extra='hdr'),
  box('1', 246, 112, '1', 'Select 4 scenarios', 'Code', 'code', 'The seed selects 4 of the 6 scenarios, from the 11 sets that fit.', 'Exam guide: Section 5. The limit to 11 sets is not from the guide.'),
  box('2', 378, 112, '2', 'Share the 60 questions', 'Code', 'code', '15 questions for each scenario. 16, 11, 12, 12 and 9 questions for the 5 domains.', 'Exam guide: Section 4. The number 15 is not from the guide.'),
  box('3', 510, 112, '3', 'Select the task statements', 'Code', 'code', 'Each of the 30 task statements gets at least 1 question.', 'Not from the exam guide. Plain reason.'),
- box('4', 642, 112, '4', 'Select one point for each question', 'Code', 'code', 'Each question gets one point of its task statement. No point comes two times.', 'Not from the exam guide. Plain reason.'),
+ box('4', 642, 112, '4', 'Select one point for each question', 'Code', 'code', 'Each question gets one point of its task statement. No two points of one mock are in one group.', 'Not from the exam guide. Plain reason.'),
  box('5', 774, 112, '5', 'Set the question type', 'Code', 'code', '2 questions of each scenario are multiple-response. The other 52 are multiple-choice.', 'Exam guide: Section 3. The number 8 is a guess.'),
  box('OUT', 934, 130, '', 'What the step returns', 'Output', 'io', 'One plan file with 60 slots and the seed. Example from the plan of mock 1: scenario %s, task statement %s, point %s, %s, select %s.' % (EX['scenario'], EX['task_statement'], EX['point'], EX['type'].replace('_', '-'), EX['select']), 'The same seed gives the same plan.'),
- box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record is missing or not valid, or the counts do not add up to 60. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
+ box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record or the groups file is not valid, or the counts do not add up to 60. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
 ])
 
 extra_css = '''
