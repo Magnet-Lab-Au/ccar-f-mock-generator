@@ -570,7 +570,7 @@
     },
     {
       "id": "G068",
-      "idea": "False positives lose trust; disable the noisy category",
+      "idea": "False positives lose trust: disable the noisy category",
       "points": [
         "4.1-K3",
         "4.1-S2"
