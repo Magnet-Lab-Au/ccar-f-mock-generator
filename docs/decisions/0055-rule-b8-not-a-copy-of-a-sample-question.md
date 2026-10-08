@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/06-step-4-check-by-a-model.html` (step 4). Diagram 04 shows the list of rules of the writer.
 
 ## Question
@@ -37,7 +38,7 @@ Not decided yet:
 
 The assistant measured the word overlap and showed that a code check does not separate a copy. It suggested rule B8 in call 4b. The owner said yes.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. One independent reviewer checked it with decisions 0052 to 0054, and the assistant fixed its findings.
 
 ## Exam guide points
 
