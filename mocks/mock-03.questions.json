@@ -1,0 +1,1749 @@
+{
+  "mock": 3,
+  "guide_version": "Version 1.0 · Effective July 2026 · Exam code: CCAR-F · This guide is subject to change without notice.",
+  "seed": 788092,
+  "date": "2026-10-09",
+  "minutes": 120,
+  "groups": [
+    {
+      "scenario": 6,
+      "name": "Structured Data Extraction",
+      "story": "You are building a structured data extraction system using Claude. The system extracts information from unstructured documents, validates the output using JavaScript Object Notation (JSON) schemas, and maintains high accuracy. It must handle edge cases gracefully and integrate with downstream systems.",
+      "questions": [
+        {
+          "number": 1,
+          "question_id": "M3-S01-T4",
+          "domain": 4,
+          "task_statement": "4.4",
+          "point": "4.4-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your system extracts invoice data into a JSON schema that has a single total field, and a downstream accounting system consumes the output. Reviewers find that some source invoices print a total that differs from the sum of their own line items. In these cases the extraction sometimes reports the printed total and sometimes silently reports the recomputed sum. Which design change best lets the system catch and surface these discrepancies?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Run a validation check that compares the total with the line item sum, and retry with the specific error until the model returns values that agree with each other."
+            },
+            {
+              "letter": "B",
+              "text": "Make the total field nullable and instruct the model to return null whenever the printed total and the line items disagree in the invoice."
+            },
+            {
+              "letter": "C",
+              "text": "Extract a stated_total as printed and a calculated_total summed from the extracted line items, and set a conflict_detected boolean when the two values differ."
+            },
+            {
+              "letter": "D",
+              "text": "Instruct the model to always replace the printed total with the sum of the extracted line items, so that the single total field stays internally consistent."
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "question_id": "M3-S02-T2",
+          "domain": 4,
+          "task_statement": "4.3",
+          "point": "4.3-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "A new architect joins your extraction team before the system is connected to a downstream contract database. She asks why the design returns contract data through an extraction tool with a JSON schema instead of asking Claude to write JSON in its text reply. You must give her the reason that this design choice rests on. Which reason is accurate?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Tool use halves the cost of each extraction request compared with text replies, so the design saves money when the document volume is high."
+            },
+            {
+              "letter": "B",
+              "text": "Tool use lets the team drop format normalization rules from the prompt, because the schema itself converts inconsistent dates and currency formats in the source documents into one standard form."
+            },
+            {
+              "letter": "C",
+              "text": "Tool use enforces the schema when tool_choice is set to \"auto\", because Claude then decides for each document whether structured output is needed."
+            },
+            {
+              "letter": "D",
+              "text": "Tool use with a JSON schema is the most reliable way to get schema-compliant output, because it eliminates JSON syntax errors in the extracted data."
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "question_id": "M3-S03-T3",
+          "domain": 5,
+          "task_statement": "5.2",
+          "point": "5.2-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system has a chat assistant that helps vendors fix invoices rejected by JSON schema validation. A vendor writes angrily that the same invoice has now been rejected three times, but does not ask for a human reviewer. The only problem is a missing invoice date, which the assistant can fix if the vendor supplies it. How should the assistant respond?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Acknowledge the vendor's frustration, offer to fix the missing date now, and escalate to a human reviewer only if the vendor then asks for one."
+            },
+            {
+              "letter": "B",
+              "text": "Escalate the invoice to a human reviewer right away, because the vendor's angry tone shows that the case is too complex for the assistant to resolve on its own."
+            },
+            {
+              "letter": "C",
+              "text": "Skip any reply about the vendor's frustration and send back the full schema validation error log, so the vendor can find and correct the missing date alone."
+            },
+            {
+              "letter": "D",
+              "text": "Offer to fix the missing date, and keep handling the case with the assistant even if the vendor later asks twice to speak with a human reviewer."
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "question_id": "M3-S04-T2",
+          "domain": 4,
+          "task_statement": "4.2",
+          "point": "4.2-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system pulls the notice period from termination clauses in contracts and validates it against a JSON schema. The prompt holds a table that maps known phrasings, such as \"30 days' written notice\", to numeric values. Contracts from new counterparties use phrasings that the table does not list, and these extractions return null or wrong values. Which change best lets Claude handle phrasings that nobody has listed yet?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add each new phrasing to the table after it fails in production, so that the table eventually covers every phrasing that counterparties use."
+            },
+            {
+              "letter": "B",
+              "text": "Make the notice period field nullable in the JSON schema, so that unfamiliar phrasings return null instead of a wrong value."
+            },
+            {
+              "letter": "C",
+              "text": "Replace the table with a few examples of varied phrasings that show the reasoning from the clause text to the extracted value."
+            },
+            {
+              "letter": "D",
+              "text": "Add many examples that all use the standard phrasing and show only the final value, to reinforce the expected output format."
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "question_id": "M3-S05-T2",
+          "domain": 4,
+          "task_statement": "4.5",
+          "point": "4.5-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system sent 60,000 supplier contracts through the Message Batches API with a newly written extraction prompt and JSON schema. About 30% of the extractions failed schema validation, and the resubmission rounds nearly doubled the cost of the job. The prompt had never been run on real contracts before the full batch was submitted. Which gap in the process most directly caused the high resubmission costs?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The extraction prompt was never refined on a sample set of contracts before the full volume was batch-processed."
+            },
+            {
+              "letter": "B",
+              "text": "The contracts went out in one large batch instead of in smaller batches submitted in four-hour windows across the weekend."
+            },
+            {
+              "letter": "C",
+              "text": "The batch requests carried no custom_id fields, so the system could not match each response to its source contract."
+            },
+            {
+              "letter": "D",
+              "text": "The batch had an up-to-24-hour processing window with no guaranteed latency, and this lowered the accuracy of the extractions."
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "question_id": "M3-S06-T1",
+          "domain": 5,
+          "task_statement": "5.4",
+          "point": "5.4-K4",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your extraction system uses a coordinator that delegates document batches to subagents, and each subagent extracts fields and validates them against JSON schemas. During a 3,000-document run, the coordinator process crashed after many batches had finished. On restart, the system had no record of which batches were complete or which partial results existed, so it reprocessed everything. Which design changes would let the system resume from where it stopped?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Resubmit all 3,000 documents through the Message Batches API on restart, because its 50% cost savings make reprocessing every batch affordable."
+            },
+            {
+              "letter": "B",
+              "text": "Have each subagent export its progress and validated results as structured state to a known file location after it finishes each batch."
+            },
+            {
+              "letter": "C",
+              "text": "Have the coordinator load a manifest of the exported subagent states on restart and inject each subagent's saved state into its prompt."
+            },
+            {
+              "letter": "D",
+              "text": "Keep all subagent results inside the coordinator's conversation history so that the coordinator can recall completed batches after it restarts."
+            },
+            {
+              "letter": "E",
+              "text": "Run /compact on the coordinator session at regular intervals so that its context window keeps enough room to hold the progress of every batch."
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "question_id": "M3-S07-T4",
+          "domain": 4,
+          "task_statement": "4.4",
+          "point": "4.4-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your system extracts fields from insurance claim forms and validates each output against a JSON schema. On failure, a follow-up request sends the original form, the failed extraction, and the specific validation errors. Retry costs are rising, so the team must add a rule that decides which failures enter the retry loop. Which rule should the team adopt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Retry only the failures whose field-level confidence score falls below a set threshold, because low confidence shows that another attempt will find the missing value."
+            },
+            {
+              "letter": "B",
+              "text": "Retry format mismatches and structural output errors, but send a failure to human review when the missing value exists only in a document the system never receives."
+            },
+            {
+              "letter": "C",
+              "text": "Skip retries for format mismatches and structural errors, because tool use with JSON schemas already eliminates them, and retry only the failures with empty required fields."
+            },
+            {
+              "letter": "D",
+              "text": "Retry only the failures on required fields, because optional fields can stay null, and send each of these failures back with a more detailed error message."
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "question_id": "M3-S08-T1",
+          "domain": 4,
+          "task_statement": "4.6",
+          "point": "4.6-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system pulls party names, payment terms, and renewal dates from supplier contracts into JSON that matches your schema. After each extraction, the same conversation receives a follow-up message asking Claude to verify every field against the contract. This verification rarely flags anything, yet downstream auditors find subtle errors, such as the buyer and supplier names placed in each other's fields. Which verification design would most effectively catch these errors?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Send the contract and the extracted JSON to a separate Claude instance that never saw the extraction conversation, and have it check each field."
+            },
+            {
+              "letter": "B",
+              "text": "Add a Pydantic validation-retry loop that returns any record failing validation to the extraction conversation together with the specific error message."
+            },
+            {
+              "letter": "C",
+              "text": "Enable strict mode on the extraction tool's JSON schema so that every extracted record is guaranteed to conform to the schema before it is sent downstream."
+            },
+            {
+              "letter": "D",
+              "text": "Expand the follow-up message in the extraction conversation with a checklist of the fields that auditors most often find wrong."
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "question_id": "M3-S09-T1",
+          "domain": 4,
+          "task_statement": "4.5",
+          "point": "4.5-S1",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your structured data extraction system serves two workloads. An accounts-payable clerk uploads one invoice and waits on screen for the extracted fields before approving the payment. Separately, every Friday evening the system re-extracts 40,000 archived contracts for a compliance report that is due on Monday morning. Which API choices should you make for these workloads?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Route the clerk's invoice requests through the Message Batches API for the 50% cost savings, since most batches finish well within an hour."
+            },
+            {
+              "letter": "B",
+              "text": "Route the clerk's invoice requests through the Message Batches API and have the clerk's screen poll for completion, using custom_id to match each result."
+            },
+            {
+              "letter": "C",
+              "text": "Route both workloads through the synchronous API, so that the weekly report and the clerk's invoices share one consistent processing path."
+            },
+            {
+              "letter": "D",
+              "text": "Route the weekly archive re-extraction through the Message Batches API, because the report can wait up to 24 hours for results."
+            },
+            {
+              "letter": "E",
+              "text": "Route the clerk's invoice requests through the synchronous API, because the clerk cannot continue until the extracted fields return."
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "question_id": "M3-S10-T2",
+          "domain": 4,
+          "task_statement": "4.1",
+          "point": "4.1-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system pulls fields from supplier invoices and sets a boolean needs_review flag for the finance team. The prompt currently tells Claude to set the flag whenever an invoice looks inconsistent. The finance team finds that most flagged invoices only use an unusual date format or show a one-cent rounding difference in the tax amount. Which prompt change will most effectively reduce these false positives?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a sentence telling Claude that accuracy is critical because the finance team reviews every invoice that receives the flag."
+            },
+            {
+              "letter": "B",
+              "text": "Ask Claude to add a confidence score for the flag and to set the flag only when its confidence in an inconsistency is high."
+            },
+            {
+              "letter": "C",
+              "text": "Mark the needs_review field as required in the JSON schema so that Claude must decide true or false for every invoice."
+            },
+            {
+              "letter": "D",
+              "text": "State an explicit rule to set the flag only when the line items differ from the stated total by more than one cent, ignoring date formats."
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "question_id": "M3-S11-T1",
+          "domain": 4,
+          "task_statement": "4.3",
+          "point": "4.3-S6",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system calls a tool with a JSON schema to pull invoice fields from supplier documents, and every tool_use response passes schema validation. Suppliers write dates as \"03/04/2024\", \"4 March 2024\" or \"2024-03-04\", and they write amounts as \"$1,200\" or \"1 200,00 EUR\". The extracted values keep these source formats, so the downstream accounting system rejects many records. What is the most likely root cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The prompt has no format normalization rules, so Claude fills the schema fields with each supplier's own date and amount formats."
+            },
+            {
+              "letter": "B",
+              "text": "The schema is not enforced in strict mode, so JSON syntax errors corrupt the date and amount values before they reach accounting."
+            },
+            {
+              "letter": "C",
+              "text": "The date and amount fields are marked required, so Claude fabricates values for invoices that do not state a date or an amount."
+            },
+            {
+              "letter": "D",
+              "text": "The tool_choice setting is \"auto\", so Claude sometimes returns plain text instead of calling the extraction tool with its schema."
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "question_id": "M3-S12-T1",
+          "domain": 4,
+          "task_statement": "4.5",
+          "point": "4.5-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system submits a nightly Message Batches API job that extracts fields from 10,000 contracts, and each request carries a custom_id derived from its contract ID. The batch completes with 9,820 successful results. The other 180 requests failed because those contracts exceeded the model's context limit. What is the most effective way to handle these failures?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Resubmit only the 180 failed contracts, identified by their custom_id values, after splitting each one into chunks that fit within the context limit."
+            },
+            {
+              "letter": "B",
+              "text": "Send the 180 failed contracts unchanged through the synchronous API one at a time, because synchronous requests avoid the context limits that apply to batches."
+            },
+            {
+              "letter": "C",
+              "text": "Resubmit only the 180 failed contracts, identified by their custom_id values, without any changes, because most batch failures are transient processing errors."
+            },
+            {
+              "letter": "D",
+              "text": "Resubmit the full set of 10,000 contracts as a new batch so that every extracted record comes from one consistent processing run with identical settings."
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "question_id": "M3-S13-T2",
+          "domain": 4,
+          "task_statement": "4.6",
+          "point": "4.6-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your system extracts study results from research papers into a database that analysts query directly. An independent Claude instance runs a verification pass that flags possible extraction errors. The team wants flags that are almost certainly real to trigger automatic re-extraction, and doubtful flags to go to a domain specialist. Which design best supports this split?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Split the verification into per-section passes plus a cross-section integration pass, and re-extract only the flags that both kinds of pass report."
+            },
+            {
+              "letter": "B",
+              "text": "Have the extraction pass report its own confidence for each field as it extracts, and route each flag by that extraction confidence."
+            },
+            {
+              "letter": "C",
+              "text": "Have the verification pass report a confidence level with each flag, and set the routing thresholds by checking those levels against a labeled validation set."
+            },
+            {
+              "letter": "D",
+              "text": "Count the flags for each paper, and send papers with many flags to re-extraction and papers with few flags to the domain specialist."
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "question_id": "M3-S14-T1",
+          "domain": 4,
+          "task_statement": "4.1",
+          "point": "4.1-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system processes supplier contracts and outputs a JSON object for each contract. Each object includes a penalty_risk field with the enum values high, medium, and low. Reviewers find that contracts with nearly identical late-delivery penalty clauses are labeled high in some outputs and low in others. What is the most likely cause of this inconsistent classification?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The penalty_risk field uses an enum type in the JSON schema, which forces Claude to choose a level even for unclear clauses."
+            },
+            {
+              "letter": "B",
+              "text": "The penalty_risk field is marked as optional rather than required in the JSON schema, so Claude assigns it with less care."
+            },
+            {
+              "letter": "C",
+              "text": "The prompt names the three risk levels but gives no explicit criteria and no concrete clause example for each level."
+            },
+            {
+              "letter": "D",
+              "text": "The prompt lacks a general instruction telling Claude to be conservative and to assign the high level only when it is highly confident."
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "question_id": "M3-S15-T1",
+          "domain": 5,
+          "task_statement": "5.5",
+          "point": "5.5-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your extraction system automated high-confidence extractions after a labeled validation set showed 96% overall accuracy. Handwritten receipts make up 4% of the documents. Weeks later, the downstream accounting system finds that many date fields from handwritten receipts contain wrong values. What most likely explains why the pre-automation validation missed this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The receipts were processed through the Message Batches API, whose asynchronous processing lowers extraction accuracy compared to synchronous calls."
+            },
+            {
+              "letter": "B",
+              "text": "The validation reported only aggregate accuracy, so strong results on common document types hid poor date accuracy in the small handwritten receipt segment."
+            },
+            {
+              "letter": "C",
+              "text": "The extraction prompt lacked few-shot examples for handwritten receipts, so the model could not interpret their date formats reliably."
+            },
+            {
+              "letter": "D",
+              "text": "The JSON schema was used without strict mode, so syntax errors in the date fields passed through validation unnoticed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 1,
+      "name": "Customer Support Resolution Agent",
+      "story": "You are building a customer support resolution agent using the Claude Agent SDK. The agent handles high-ambiguity requests like returns, billing disputes, and account issues. It has access to your backend systems through custom Model Context Protocol (MCP) tools (get_customer, lookup_order, process_refund, escalate_to_human). Your target is 80%+ first-contact resolution while knowing when to escalate.",
+      "questions": [
+        {
+          "number": 16,
+          "question_id": "M3-S16-T2",
+          "domain": 1,
+          "task_statement": "1.5",
+          "point": "1.5-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent must never call process_refund for an account that get_customer marks as on fraud hold. The system prompt states this rule, and the agent follows it in most test conversations. A teammate proposes to refine the prompt wording until the test suite shows no violations, and then to ship without any other check. What is the strongest reason to enforce this rule with a hook instead?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Prompt instructions stop working once a conversation grows long, so the agent will break the fraud rule in most long support conversations, whatever the wording."
+            },
+            {
+              "letter": "B",
+              "text": "Prompt instructions give only probabilistic compliance, so a clean test run cannot guarantee every production case, but a hook blocks the call deterministically."
+            },
+            {
+              "letter": "C",
+              "text": "A hook helps the agent understand why the fraud rule matters, so the agent chooses on its own to follow the rule more often."
+            },
+            {
+              "letter": "D",
+              "text": "Only a hook can read the fraud-hold flag in the get_customer result, because the agent itself cannot see the fields that MCP tools return to it during a conversation."
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "question_id": "M3-S17-T1",
+          "domain": 2,
+          "task_statement": "2.4",
+          "point": "2.4-S5",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support team adds a library of about 200 billing dispute procedures to the backend. A colleague proposes a new MCP tool, list_procedures, that the agent would call at the start of each dispute to find out which procedures exist. You want the agent to see the available procedures without spending tool calls on discovery. Which approach best meets this goal?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Build the proposed list_procedures tool and state in its description that the agent must call it first in every dispute."
+            },
+            {
+              "letter": "B",
+              "text": "Add a second MCP server for the procedure library, so its search tools are discovered at connection time with the support tools."
+            },
+            {
+              "letter": "C",
+              "text": "Expose the procedure library as an MCP resource, so the agent can see which procedures exist before it calls any tool."
+            },
+            {
+              "letter": "D",
+              "text": "Put the full text of all 200 procedures into the system prompt, so the agent never has to look up a procedure during a dispute."
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "question_id": "M3-S18-T1",
+          "domain": 1,
+          "task_statement": "1.3",
+          "point": "1.3-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support agent uses a coordinator that delegates complex billing disputes to three subagents through the Task tool: one reviews order history, one analyzes payment records, and one checks account status. The three checks are independent of each other. Logs show that the coordinator emits one Task call, waits for its result, and emits the next Task call in a later turn, so each dispute takes far longer than needed. Which change best reduces this latency?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Have the coordinator emit all three Task tool calls in a single response so that the three subagents run in parallel."
+            },
+            {
+              "letter": "B",
+              "text": "Keep one Task call per turn, but shorten each subagent's prompt so that each subagent finishes its check faster."
+            },
+            {
+              "letter": "C",
+              "text": "Merge the three checks into one subagent that has all the tools, so that the coordinator needs only one Task call per dispute."
+            },
+            {
+              "letter": "D",
+              "text": "Give the first subagent the Task tool so that it spawns the second subagent, which then spawns the third subagent after finishing its own check."
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "question_id": "M3-S19-T1",
+          "domain": 1,
+          "task_statement": "1.2",
+          "point": "1.2-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support agent uses a coordinator with three subagents: one for returns, one for billing disputes, and one for account issues. A customer sends one message that asks to return a damaged order, disputes a duplicate charge, and asks to update the account email. Logs show that the coordinator sends the whole message to the returns subagent, which processes the return and ignores the other two requests. What change best fixes this?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Give the returns subagent the billing and account tools as well, so that it can handle every concern that appears in the customer message."
+            },
+            {
+              "letter": "B",
+              "text": "Have the coordinator split the message into its three concerns, delegate each concern to the matching subagent, and combine the results into one reply."
+            },
+            {
+              "letter": "C",
+              "text": "Have the coordinator send the full message to all three subagents and let each subagent reply to the customer directly with its own answer."
+            },
+            {
+              "letter": "D",
+              "text": "Have the coordinator escalate every message that contains more than one concern to a human agent through escalate_to_human, so that no request is handled incompletely."
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "question_id": "M3-S20-T1",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Yesterday your support agent ran a named session on a customer's billing dispute and called get_customer and lookup_order. Overnight, the billing team reversed one charge, and the customer changed the account's payment method. Several of those tool results no longer match the backend. You plan to start a new session with a structured summary of yesterday's findings instead of resuming the old one. Which reason best explains why this plan is more reliable?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Resuming a session discards the earlier tool results automatically, so the agent would lose yesterday's findings and repeat the whole investigation."
+            },
+            {
+              "letter": "B",
+              "text": "Session resumption is unreliable for any customer conversation, so prior context from a support session should never be carried into later work."
+            },
+            {
+              "letter": "C",
+              "text": "A resumed session cannot call get_customer or lookup_order again, so the agent would be unable to fetch the corrected account and order data."
+            },
+            {
+              "letter": "D",
+              "text": "A resumed session keeps the old tool results in its context, so the agent may reason from outdated charges and payment details as if they were current."
+            }
+          ]
+        },
+        {
+          "number": 21,
+          "question_id": "M3-S21-T2",
+          "domain": 1,
+          "task_statement": "1.3",
+          "point": "1.3-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support coordinator is handling a billing dispute. It first spawns an order lookup subagent, which calls lookup_order and reports the charge dates, the amounts, and a duplicate charge that it found. Next, the coordinator must spawn a dispute resolution subagent through the Task tool to decide whether to call process_refund. How should the coordinator give the dispute resolution subagent the information that it needs?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Write the order lookup subagent's complete findings, including the charge dates, amounts, and duplicate charge, directly into the dispute resolution subagent's prompt."
+            },
+            {
+              "letter": "B",
+              "text": "Give the dispute resolution subagent the lookup_order tool and the order number, so that it can repeat the lookup and gather the charge details itself."
+            },
+            {
+              "letter": "C",
+              "text": "Put the charge details into the dispute resolution subagent's AgentDefinition description, so that the subagent reads them each time it is spawned."
+            },
+            {
+              "letter": "D",
+              "text": "Pass only a one-line conclusion that a duplicate charge exists, so that the dispute resolution subagent's prompt stays short and focused."
+            }
+          ]
+        },
+        {
+          "number": 22,
+          "question_id": "M3-S22-T3",
+          "domain": 1,
+          "task_statement": "1.4",
+          "point": "1.4-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent handles a customer who returned a laptop 41 days after purchase, past the 30-day return window. Using lookup_order, the agent finds that a carrier delay made the laptop arrive 14 days late. Policy exceptions need human approval, so the agent calls escalate_to_human, and the case goes to a review team that works through a queue the next day without access to the conversation. Which handoff content best lets the review team decide without contacting the customer again?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The customer's original messages quoted word for word with a sentiment rating, so the review team can judge how upset the customer is before it decides on the exception."
+            },
+            {
+              "letter": "B",
+              "text": "The customer ID, the root cause that a carrier delay pushed delivery past the window, the $1,200 refund amount, and a recommended action to approve the exception."
+            },
+            {
+              "letter": "C",
+              "text": "The full raw outputs of get_customer and lookup_order, so the review team can check every order field and reach its own conclusion about the late delivery, the return window and the refund amount."
+            },
+            {
+              "letter": "D",
+              "text": "A reference to the agent's session, so a member of the review team can resume that session the next day and read the agent's reasoning and tool results directly."
+            }
+          ]
+        },
+        {
+          "number": 23,
+          "question_id": "M3-S23-T1",
+          "domain": 2,
+          "task_statement": "2.1",
+          "point": "2.1-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent uses a custom MCP tool named manage_account that accepts one free-text instruction and returns a prose confirmation. The tool handles shipping address changes, payment method updates, and account closures. In testing, the agent often sends instructions with missing details, and it cannot reliably tell from the prose whether a change succeeded. Which redesign of the tool interface best fixes both problems?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep manage_account as one tool and route every routine account change through escalate_to_human, so that a staff member confirms each update before the agent replies to the waiting customer."
+            },
+            {
+              "letter": "B",
+              "text": "Keep manage_account as one tool and set tool_choice to \"any\", so that the model must call a tool on every turn of each support conversation."
+            },
+            {
+              "letter": "C",
+              "text": "Keep manage_account as one tool and make the agent call get_customer after every account change, so it can infer from the new account state whether the change succeeded."
+            },
+            {
+              "letter": "D",
+              "text": "Split manage_account into update_shipping_address, update_payment_method, and close_account, each with defined required inputs and a structured result that reports success or failure."
+            }
+          ]
+        },
+        {
+          "number": 24,
+          "question_id": "M3-S24-T1",
+          "domain": 2,
+          "task_statement": "2.2",
+          "point": "2.2-S3",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your support agent uses a coordinator that delegates billing disputes to an order-history subagent. The order-history subagent calls the lookup_order MCP tool for each order in a dispute, and the tool sometimes times out when the order service is briefly unavailable. In one dispute covering six orders, four lookups succeed, but two keep timing out. Which design choices should guide how the order-history subagent handles these failures?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "If retries still fail, return the four retrieved orders to the coordinator together with the two failed order lookups and the retry attempts already made."
+            },
+            {
+              "letter": "B",
+              "text": "Retry the timed-out lookup_order calls within the order-history subagent first, because timeouts from a briefly unavailable service often succeed on a later attempt."
+            },
+            {
+              "letter": "C",
+              "text": "Call escalate_to_human at the first lookup_order timeout, because any backend failure shows that the dispute is beyond what the agent can resolve."
+            },
+            {
+              "letter": "D",
+              "text": "Report the two timed-out lookups as orders with no matching records, so that the coordinator can continue the dispute with the four found orders."
+            },
+            {
+              "letter": "E",
+              "text": "Discard the four retrieved orders and rerun all six lookups from the start, so that the coordinator only ever receives one consistent result set."
+            }
+          ]
+        },
+        {
+          "number": 25,
+          "question_id": "M3-S25-T2",
+          "domain": 2,
+          "task_statement": "2.4",
+          "point": "2.4-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team commits a project-scoped .mcp.json that defines the backend MCP server for the customer support agent, with its authentication token written as ${SUPPORT_API_TOKEN}. On most developer machines, the agent resolves billing disputes normally. On one new teammate's machine, get_customer, lookup_order, process_refund and escalate_to_human all appear, but every call to them fails with an authentication error. What is the most likely cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Environment variable expansion works only in user-level ~/.claude.json, so the ${SUPPORT_API_TOKEN} reference in .mcp.json is passed to the server literally."
+            },
+            {
+              "letter": "B",
+              "text": "Servers in a project-scoped .mcp.json apply only to the developer who committed the file, so the new teammate's agent lacks the server's credentials."
+            },
+            {
+              "letter": "C",
+              "text": "The four tools are discovered only when the agent first calls them, so those calls run before the server has finished authenticating."
+            },
+            {
+              "letter": "D",
+              "text": "The SUPPORT_API_TOKEN environment variable is not set on the new teammate's machine, so the expansion in .mcp.json supplies no valid token."
+            }
+          ]
+        },
+        {
+          "number": 26,
+          "question_id": "M3-S26-T1",
+          "domain": 2,
+          "task_statement": "2.5",
+          "point": "2.5-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team will replace the payments_client module that the backend uses behind the process_refund MCP tool of the customer support agent. Before the change, you use Claude Code to find every file in the backend that imports payments_client. The backend has several hundred Python files in many directories, and the file names do not show which files use the module. Which built-in tool choice is the most effective for this search?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use Write to add a logging line to the payments_client module, then run the agent and record which modules load it."
+            },
+            {
+              "letter": "B",
+              "text": "Use Grep to search the file contents across the backend for the import statement of the payments_client module."
+            },
+            {
+              "letter": "C",
+              "text": "Use Glob with the pattern **/*.py to list the Python files, because the returned file paths show which files import the module."
+            },
+            {
+              "letter": "D",
+              "text": "Use Read on the payments_client module itself, because the contents of that one file list every module that imports it."
+            }
+          ]
+        },
+        {
+          "number": 27,
+          "question_id": "M3-S27-T1",
+          "domain": 5,
+          "task_statement": "5.1",
+          "point": "5.1-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent handles return requests that often take many turns. Each lookup_order call returns over 40 fields, such as warehouse codes and carrier metadata, although only about five fields matter for a return decision. In long sessions, the context fills quickly, and the agent starts to miss details that the customer stated earlier. What is the most effective change?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a system prompt instruction that tells the agent to disregard every order field that does not relate to returns whenever it reasons about a customer's return request."
+            },
+            {
+              "letter": "B",
+              "text": "Send only the most recent conversation turns in each new API request, and drop the older turns once the context reaches a set size."
+            },
+            {
+              "letter": "C",
+              "text": "Trim each lookup_order result to the return-relevant fields, such as order date, items, amount, and status, before the result is added to the context."
+            },
+            {
+              "letter": "D",
+              "text": "Periodically condense the earlier conversation turns into a short narrative summary and keep the full lookup_order results unchanged in the context."
+            }
+          ]
+        },
+        {
+          "number": 28,
+          "question_id": "M3-S28-T1",
+          "domain": 2,
+          "task_statement": "2.3",
+          "point": "2.3-S5",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent runs a triage step on each new customer message, and this step must end with a call to one of get_customer, lookup_order, process_refund or escalate_to_human. A later step writes the reply that the customer sees. Logs show that 12% of triage responses have stop_reason \"end_turn\" and contain only a text summary of the request. Which change best guarantees a tool call while letting the model choose the tool that fits?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep tool_choice at \"auto\" and rewrite the four tool descriptions so that the model strongly prefers a tool call over a text reply."
+            },
+            {
+              "letter": "B",
+              "text": "Set tool_choice to \"any\" on the triage request, so the model must call one of the four tools but still picks the one that fits."
+            },
+            {
+              "letter": "C",
+              "text": "Keep tool_choice at \"auto\" and resend the same request whenever stop_reason is \"end_turn\" until the response contains a tool call."
+            },
+            {
+              "letter": "D",
+              "text": "Set tool_choice to {\"type\": \"tool\", \"name\": \"lookup_order\"} on the triage request, so the model always calls a tool before it can write any text."
+            }
+          ]
+        },
+        {
+          "number": 29,
+          "question_id": "M3-S29-T1",
+          "domain": 1,
+          "task_statement": "1.6",
+          "point": "1.6-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent handles a billing dispute in which a customer questions the charges on 24 orders. The agent passes all 24 lookup_order results to Claude in one prompt and asks for a single review of every charge. The review comments on each order, and it catches a pricing error in the third order but misses the same error in the twentieth order. It also misses that two different orders charged the customer for one shipment. What is the most likely root cause of both problems?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The system prompt lacks few-shot examples of pricing errors, so Claude does not know what a pricing error in an order looks like."
+            },
+            {
+              "letter": "B",
+              "text": "The lookup_order results lack the pricing fields that Claude needs, so the review cannot detect pricing errors reliably in any order."
+            },
+            {
+              "letter": "C",
+              "text": "One pass over all 24 orders dilutes attention, and no separate cross-order pass compares the orders to find problems such as duplicate charges."
+            },
+            {
+              "letter": "D",
+              "text": "The max_tokens limit cut the response short, so the review never reached the later orders where the missed errors occur."
+            }
+          ]
+        },
+        {
+          "number": 30,
+          "question_id": "M3-S30-T2",
+          "domain": 1,
+          "task_statement": "1.6",
+          "point": "1.6-S1",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Over the next quarter, your team will add new workflows to the support agent. Examples include a weekly quality review of resolved refund tickets and investigations of unusual account activity. You will not choose a decomposition pattern case by case; instead, you are writing a rule set for the design document, and each new workflow gets its pattern from these rules. Which rules should the design document contain?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Give a workflow dynamic decomposition whenever it must check several aspects of a case, because multi-aspect reviews are too complex for a fixed sequence of passes."
+            },
+            {
+              "letter": "B",
+              "text": "Give a workflow dynamic decomposition when it is an open-ended investigation in which each finding can change which subtask should come next."
+            },
+            {
+              "letter": "C",
+              "text": "Give a workflow a fixed prompt chain whenever it calls more than two MCP tools, so that the order of tool calls stays the same and is easy to audit."
+            },
+            {
+              "letter": "D",
+              "text": "Give a workflow a fixed prompt chain when it reviews the same known set of aspects for every case, with one focused pass per aspect."
+            },
+            {
+              "letter": "E",
+              "text": "Give an investigation workflow a fixed prompt chain copied from its first adaptive run, so that all later cases repeat the steps that the first case needed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 4,
+      "name": "Developer Productivity with Claude",
+      "story": "You are building developer productivity tools using the Claude Agent SDK. The agent helps engineers explore unfamiliar codebases, understand legacy systems, generate boilerplate code, and automate repetitive tasks. It uses the built-in tools (Read, Write, Bash, Grep, Glob) and integrates with Model Context Protocol (MCP) servers.",
+      "questions": [
+        {
+          "number": 31,
+          "question_id": "M3-S31-T2",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "On Monday, an engineer named Priya used a Claude Code session named ledger-legacy-map to map the call paths of a legacy ledger module. On Wednesday she opens Claude Code in the same repository and asks it to continue the ledger mapping from where she stopped. Claude Code has no memory of Monday's findings and starts exploring the module from scratch, although no files have changed. What is the most likely cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The tool results from Monday's session went stale after two days, so Claude Code automatically discarded the whole earlier conversation."
+            },
+            {
+              "letter": "B",
+              "text": "The Read and Grep tools were missing from the allowedTools configuration, so Claude Code could not load its earlier findings."
+            },
+            {
+              "letter": "C",
+              "text": "The findings were never saved to a scratchpad file, and Claude Code keeps earlier conversation context only in such files."
+            },
+            {
+              "letter": "D",
+              "text": "She started a new session instead of running Claude Code with --resume ledger-legacy-map to continue that conversation."
+            }
+          ]
+        },
+        {
+          "number": 32,
+          "question_id": "M3-S32-T1",
+          "domain": 2,
+          "task_statement": "2.1",
+          "point": "2.1-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent uses the built-in Grep tool and an MCP tool named search_wiki that queries the internal engineering wiki. Both tool descriptions clearly state each tool's inputs, outputs, and when to use it instead of the other tool. The system prompt says that any request to search for something should use search_wiki. Logs show that requests such as \"search the repo for callers of parseConfig\" go to search_wiki instead of Grep. What is the most likely cause of this misrouting?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The agent's context is filling with long wiki results, so lost-in-the-middle effects hide the Grep description from the model during tool selection."
+            },
+            {
+              "letter": "B",
+              "text": "The system prompt's keyword-sensitive instruction ties the word search to search_wiki and overrides the well-written tool descriptions."
+            },
+            {
+              "letter": "C",
+              "text": "The Grep and search_wiki descriptions overlap so heavily that the model cannot tell which tool fits a request about searching the repository."
+            },
+            {
+              "letter": "D",
+              "text": "MCP tools always take precedence over built-in tools when both are available, so the agent prefers search_wiki for any matching request."
+            }
+          ]
+        },
+        {
+          "number": 33,
+          "question_id": "M3-S33-T1",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Last week an engineer used a named session, billing-legacy-map, in which the agent read and mapped a legacy billing module. She then renamed the function calculateLateFee to computePenalty in two files and committed the change outside the agent. Today she resumes with --resume billing-legacy-map and asks for unit test boilerplate, but the generated tests call calculateLateFee. What is the most likely cause of this result?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The context window overflowed after resuming, so the agent dropped its earlier analysis and produced function names from general training patterns instead."
+            },
+            {
+              "letter": "B",
+              "text": "The original analysis should have run in a fork_session branch, because only forked sessions pick up changes that engineers make to files outside the agent."
+            },
+            {
+              "letter": "C",
+              "text": "The resumed session still reasons from file contents it read before the rename, and the engineer did not tell the agent which files had changed."
+            },
+            {
+              "letter": "D",
+              "text": "Resuming a named session with --resume discards the earlier tool results, so the agent guessed the function names without reading any of the module's files."
+            }
+          ]
+        },
+        {
+          "number": 34,
+          "question_id": "M3-S34-T2",
+          "domain": 1,
+          "task_statement": "1.5",
+          "point": "1.5-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent builds change timelines for engineers who explore a legacy system. It calls an MCP issue tracker tool that returns Unix timestamps and an MCP git history tool that returns ISO 8601 strings. A colleague wrote a hook that converts Unix timestamps to ISO 8601 and registered it to intercept outgoing tool calls. The agent still receives raw Unix timestamps and orders events wrongly. What is the most likely cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The hook intercepts outgoing tool calls, so it runs before the issue tracker tool returns any result that it could convert."
+            },
+            {
+              "letter": "B",
+              "text": "The issue tracker server is missing from the .mcp.json configuration, so the hook never receives any tool results from that MCP server to act on."
+            },
+            {
+              "letter": "C",
+              "text": "Agent SDK hooks can only observe tool results for logging, so they cannot change the data that the model receives from MCP tools."
+            },
+            {
+              "letter": "D",
+              "text": "The system prompt of the agent does not tell the agent that a hook has already converted the timestamps to ISO 8601 for it."
+            }
+          ]
+        },
+        {
+          "number": 35,
+          "question_id": "M3-S35-T1",
+          "domain": 1,
+          "task_statement": "1.3",
+          "point": "1.3-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer uses your Agent SDK tool to analyze a legacy billing module with Read, Grep, and Glob, building a shared understanding of its dependencies. The engineer then explored an extract-service refactoring and, later in the same session, an in-place cleanup refactoring. The cleanup proposals kept reusing assumptions from the extract-service exploration. Which change would best give each refactoring an independent start from the same analysis?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Start a fresh session for each refactoring and have the agent re-run the full dependency analysis of the billing module before exploring that refactoring."
+            },
+            {
+              "letter": "B",
+              "text": "Spawn a subagent through the Task tool for the cleanup refactoring, passing only the refactoring name in its prompt."
+            },
+            {
+              "letter": "C",
+              "text": "Use fork_session after the dependency analysis to create one branch per refactoring, each starting from the shared baseline."
+            },
+            {
+              "letter": "D",
+              "text": "Add a system prompt instruction telling the agent to disregard earlier refactoring explorations when it evaluates each new approach."
+            }
+          ]
+        },
+        {
+          "number": 36,
+          "question_id": "M3-S36-T1",
+          "domain": 3,
+          "task_statement": "3.5",
+          "point": "3.5-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your Agent SDK tool generated a boilerplate data export module for a legacy billing system. Tests show three problems: the date parser returns local time instead of UTC, the file naming step builds file names from those parsed dates, and the command-line help text misspells an option name. A change to the date parser changes what the file naming step must do, but the typo affects nothing else. How should you communicate these problems to the agent?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Describe the date parsing and file naming problems together in one detailed message, then fix the help text typo in a separate iteration."
+            },
+            {
+              "letter": "B",
+              "text": "Send all three problems in one detailed message, because every problem from a single test run should always be reported together."
+            },
+            {
+              "letter": "C",
+              "text": "Combine the help text typo with the date parsing problem in one message, and report the file naming problem in a later message on its own."
+            },
+            {
+              "letter": "D",
+              "text": "Report the file naming problem first, and report the date parsing problem in a later message once the file names pass the tests."
+            }
+          ]
+        },
+        {
+          "number": 37,
+          "question_id": "M3-S37-T1",
+          "domain": 3,
+          "task_statement": "3.6",
+          "point": "3.6-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team adds a Claude Code review step to CI that posts inline comments on pull requests. When engineers push follow-up commits, the review re-runs and reposts many comments for issues it already flagged, including some that were already fixed. Engineers have started to ignore the review comments. What change most effectively stops the duplicate comments?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Switch the review to --output-format json with --json-schema so that the findings become machine-parseable before they are posted as inline comments."
+            },
+            {
+              "letter": "B",
+              "text": "Add a CLAUDE.md instruction telling Claude to avoid repeating comments that it has posted on earlier runs of the pull request review."
+            },
+            {
+              "letter": "C",
+              "text": "Limit each re-run to the files changed in the latest commit so that previously reviewed files are never examined again by Claude."
+            },
+            {
+              "letter": "D",
+              "text": "Include the prior review findings in context on each re-run and instruct Claude to report only new or still-unaddressed issues."
+            }
+          ]
+        },
+        {
+          "number": 38,
+          "question_id": "M3-S38-T2",
+          "domain": 1,
+          "task_statement": "1.4",
+          "point": "1.4-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer sends your coordinator agent one request: find why the nightly export job fails, list where the deprecated config loader is still called, and generate boilerplate for a new export endpoint. The coordinator agent spawns three subagents in parallel through the Task tool, and each subagent receives only its own item. The coordinator agent's final response pastes the three outputs together, and the new boilerplate calls the deprecated loader that another subagent flagged. How should you change the coordinator agent's workflow?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a system prompt instruction that tells the boilerplate subagent to avoid deprecated APIs, and keep returning the three outputs as separate sections."
+            },
+            {
+              "letter": "B",
+              "text": "Keep the three items in parallel, give each subagent a shared context with the full request and the engineer's goal, and have the coordinator agent synthesize one reconciled response."
+            },
+            {
+              "letter": "C",
+              "text": "Drop the parallel subagents and run the three items one after another in a single agent session, so that each later item builds on the earlier output."
+            },
+            {
+              "letter": "D",
+              "text": "Send the full three-part request to every subagent, so that each subagent investigates all concerns, and have the coordinator agent pick the most complete answer."
+            }
+          ]
+        },
+        {
+          "number": 39,
+          "question_id": "M3-S39-T2",
+          "domain": 2,
+          "task_statement": "2.4",
+          "point": "2.4-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team's productivity agent, built on the Claude Agent SDK, needs a Jira integration and an integration with your team's internal deployment-approval process. One engineer has started writing a custom MCP server for Jira, although a widely used community MCP server for Jira already exists. The team wants one guideline for all future MCP integrations. Which guideline should the team adopt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use community MCP servers where they exist, and let the agent call the deployment-approval API through Bash commands instead of a custom server."
+            },
+            {
+              "letter": "B",
+              "text": "Build custom MCP servers for the integrations that engineers use most often, such as Jira, and use community servers for the rest."
+            },
+            {
+              "letter": "C",
+              "text": "Let each engineer decide per integration whether to use a community or a custom MCP server, based on that engineer's own preference."
+            },
+            {
+              "letter": "D",
+              "text": "Use existing community MCP servers for standard integrations such as Jira, and build custom MCP servers only for team-specific workflows such as deployment approval."
+            }
+          ]
+        },
+        {
+          "number": 40,
+          "question_id": "M3-S40-T2",
+          "domain": 2,
+          "task_statement": "2.5",
+          "point": "2.5-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent often gets requests such as \"find every Dockerfile in the repository\" or \"list all *Controller.java files in the legacy billing module.\" Logs show that it sometimes runs content searches and sometimes lists directories, and its results are often incomplete. You want to add one tool-selection rule to its system prompt. Which rule fits these requests best?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use Glob when a request identifies files by path, name, or extension pattern, and use Grep when it identifies text that the files contain."
+            },
+            {
+              "letter": "B",
+              "text": "Use Grep for every file search, because a search for the pattern text across the codebase also matches file names and extensions."
+            },
+            {
+              "letter": "C",
+              "text": "Use Bash to print a full recursive listing of the whole repository, then have the agent scan that long listing for any names that match the request."
+            },
+            {
+              "letter": "D",
+              "text": "Use Glob only after Grep has found a file that contains the requested name, so each path match is confirmed by its content."
+            }
+          ]
+        },
+        {
+          "number": 41,
+          "question_id": "M3-S41-T3",
+          "domain": 2,
+          "task_statement": "2.3",
+          "point": "2.3-K3",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your Agent SDK developer tool has a coordinator and four subagents: an explorer subagent, a generator subagent, a documentation writer subagent, and an automation subagent. Before a release, you audit the allowedTools configuration of each subagent. Which two findings show scoped tool access applied correctly?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The documentation writer subagent has Bash so that it can run full test suites to confirm the behavior that it documents."
+            },
+            {
+              "letter": "B",
+              "text": "The documentation writer subagent still has the schema migration tools of the database MCP server, which it needed once for a rare task last quarter."
+            },
+            {
+              "letter": "C",
+              "text": "The automation subagent receives every tool from all four connected MCP servers, so that engineers can give it any repetitive task without first changing its configuration."
+            },
+            {
+              "letter": "D",
+              "text": "The explorer subagent has only Read, Grep, and Glob in its allowedTools, because its role is to search and read code."
+            },
+            {
+              "letter": "E",
+              "text": "The generator subagent has one read-only get_naming_rule tool from the documentation domain, because it checks a naming rule for almost every file it generates."
+            }
+          ]
+        },
+        {
+          "number": 42,
+          "question_id": "M3-S42-T1",
+          "domain": 1,
+          "task_statement": "1.1",
+          "point": "1.1-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your Agent SDK tool helps engineers explore a legacy billing codebase. An engineer asks where the invoice rounding logic lives. Claude's first response has stop_reason \"tool_use\" and requests a Grep search for \"round\" across the src directory. What should your agentic loop do next?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Execute the requested Grep search, send its result back to Claude in the next request, and inspect stop_reason again on the new response."
+            },
+            {
+              "letter": "B",
+              "text": "Ignore the Grep request and run a fixed sequence of Glob, Read, and Grep calls that your code defines for every codebase question."
+            },
+            {
+              "letter": "C",
+              "text": "Send the original question to Claude again without the Grep result, so Claude can reconsider which tool fits the question best."
+            },
+            {
+              "letter": "D",
+              "text": "Execute the requested Grep search and return its raw output to the engineer as the final answer, because the matching lines already show the location."
+            }
+          ]
+        },
+        {
+          "number": 43,
+          "question_id": "M3-S43-T2",
+          "domain": 1,
+          "task_statement": "1.1",
+          "point": "1.1-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your Claude Agent SDK agent automates a repetitive task: it runs a project's test suite and investigates any failures. In one run, Claude requested Bash to run the tests. On the next iteration, it requested Grep with the exact name of the function that had failed. A new engineer asks how Claude knew which name to search for. Which explanation is correct?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The loop appended the Bash output to the conversation history as a tool result, so the next request included the failing function name."
+            },
+            {
+              "letter": "B",
+              "text": "A rule in the agent definition always runs Grep after Bash and copies the failing function name from the test output into the search."
+            },
+            {
+              "letter": "C",
+              "text": "Claude returned stop_reason \"end_turn\" after the test run, and the loop then sent a fresh request asking Claude to search the codebase."
+            },
+            {
+              "letter": "D",
+              "text": "Claude watched the terminal output directly while Bash ran, because built-in tools pass their results to the model without any step in the loop."
+            }
+          ]
+        },
+        {
+          "number": 44,
+          "question_id": "M3-S44-T2",
+          "domain": 1,
+          "task_statement": "1.2",
+          "point": "1.2-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your coordinator agent uses a search subagent to find legacy callers of a deprecated API and a code-generation subagent to write migration boilerplate. Currently the search subagent sends its results directly to the code-generation subagent. Last week the search subagent timed out halfway through the codebase, and the code-generation subagent produced migration code for only half of the callers. The coordinator agent's logs showed no trace of the timeout. Which design change best addresses this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Configure the search subagent to catch the timeout and return its partial caller list as a successful result, so the pipeline continues without interruption and the generation step always receives input."
+            },
+            {
+              "letter": "B",
+              "text": "Have the code-generation subagent call the search subagent again directly whenever the list of callers it receives looks shorter than expected."
+            },
+            {
+              "letter": "C",
+              "text": "Route the search subagent's results and errors back to the coordinator agent, which logs them, applies its error handling, and decides what to pass to the code-generation subagent."
+            },
+            {
+              "letter": "D",
+              "text": "Add instructions to the code-generation subagent's prompt asking it to flag any suspected incomplete input in a comment at the top of the generated migration code."
+            }
+          ]
+        },
+        {
+          "number": 45,
+          "question_id": "M3-S45-T2",
+          "domain": 2,
+          "task_statement": "2.2",
+          "point": "2.2-S4",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "An engineer asks the agent whether a legacy function is still called anywhere before the engineer deletes it. The agent queries an MCP code-search tool that covers all company repositories. The tool returns a normal result with an empty match list when the search ran and found nothing. It returns an isError response with errorCategory \"transient\" and isRetryable true when the index service times out. Which agent behaviors handle these two responses correctly?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "When the tool returns the transient error, tell the engineer the function has no callers, because a failed search found no matching code in the index."
+            },
+            {
+              "letter": "B",
+              "text": "When the tool returns a normal result with an empty match list, report to the engineer that the index service is unavailable and ask the engineer to check the callers by hand."
+            },
+            {
+              "letter": "C",
+              "text": "When the tool returns the transient error, retry the search or report that the callers could not be checked, without concluding that the function is unused."
+            },
+            {
+              "letter": "D",
+              "text": "When the tool returns a normal result with an empty match list, accept that the function has no callers in the index and do not retry the search."
+            },
+            {
+              "letter": "E",
+              "text": "When the tool returns the transient error, stop at once without any retry, because the isError flag marks every failure as final and never worth another attempt by the agent."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 2,
+      "name": "Code Generation with Claude Code",
+      "story": "You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.",
+      "questions": [
+        {
+          "number": 46,
+          "question_id": "M3-S46-T1",
+          "domain": 5,
+          "task_statement": "5.6",
+          "point": "5.6-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team created a custom slash command in .claude/commands/ that has Claude Code read the vendor changelog, old design documents, and saved wiki pages about a payments API, then write a migration summary. The summary often flags contradictions, such as two different rate limits for the same endpoint. Investigation shows that each value was correct when its source was written. Which change to the command best fixes this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Instruct Claude Code to resolve each conflict by keeping only the value from the official changelog and dropping the values from the other sources."
+            },
+            {
+              "letter": "B",
+              "text": "Add an earlier step that compresses each source's findings into short bullet points without source names, so that the final summary has less text to compare."
+            },
+            {
+              "letter": "C",
+              "text": "Require each extracted finding in the command's structured output to include the publication or data collection date of its source."
+            },
+            {
+              "letter": "D",
+              "text": "Instruct Claude Code to list each conflicting value beside its source name and to flag every such pair as an unresolved contradiction for reviewers."
+            }
+          ]
+        },
+        {
+          "number": 47,
+          "question_id": "M3-S47-T1",
+          "domain": 3,
+          "task_statement": "3.1",
+          "point": "3.1-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code on a shared repository, and its project-level CLAUDE.md is committed to version control. One developer, Priya, wants Claude Code to explain each refactoring step in detail before it edits any files. Her teammates do not want this behavior in their own sessions. Where should Priya write this instruction?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Put it in a .claude/rules/ file with YAML frontmatter path-scoping, since path patterns restrict each rule file to the sessions of a single user."
+            },
+            {
+              "letter": "B",
+              "text": "Put it in a CLAUDE.md file in the subdirectory of the package she maintains, since directory-level files load only for the developer who created them."
+            },
+            {
+              "letter": "C",
+              "text": "Put it in ~/.claude/CLAUDE.md on her machine, since user-level instructions apply only to her and are not shared through version control."
+            },
+            {
+              "letter": "D",
+              "text": "Put it in the root CLAUDE.md of the repository, since project-level instructions load only in the sessions of the developer who committed them."
+            }
+          ]
+        },
+        {
+          "number": 48,
+          "question_id": "M3-S48-T6",
+          "domain": 5,
+          "task_statement": "5.5",
+          "point": "5.5-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team runs Claude Code in CI with the -p flag to label new bug reports with a component and a severity. Labels with high field-level confidence are applied without human review. Each week, reviewers check a uniform random 2% sample of these high-confidence labels, and the measured error rate stays low. Developers later find that labels for the small mobile component have shown a new error pattern for weeks. Which change to the weekly audit best supports ongoing error rate measurement and detection of new error patterns?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Have reviewers check only the labels whose confidence scores sit just above the automation threshold, because these borderline labels are the most likely to contain errors."
+            },
+            {
+              "letter": "B",
+              "text": "Review every mobile label each week, and keep the uniform 2% sample for all other components and fields as before."
+            },
+            {
+              "letter": "C",
+              "text": "Pause the weekly audit for components with a low measured error rate, and move all reviewer time to the mobile component's labels."
+            },
+            {
+              "letter": "D",
+              "text": "Stratify the weekly random sample by component and field, so each segment, including small ones like mobile, gets enough reviewed labels to show its own error rate."
+            }
+          ]
+        },
+        {
+          "number": 49,
+          "question_id": "M3-S49-T2",
+          "domain": 3,
+          "task_statement": "3.4",
+          "point": "3.4-S4",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your team is writing a short workflow guide for using Claude Code. The next large task is restructuring the order-processing module into separate microservices, and later tasks include many small bug fixes. The guide must prevent costly rework on large tasks without slowing down implementation. Which two rules should the guide include?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "When the plan for such a task is approved, switch to direct execution and implement the planned approach across the affected services."
+            },
+            {
+              "letter": "B",
+              "text": "Decide the mode by file count alone, using plan mode only above 45 files and direct execution for every smaller task."
+            },
+            {
+              "letter": "C",
+              "text": "Use plan mode for every task, including single-file bug fixes with a clear stack trace, so that each change is designed first."
+            },
+            {
+              "letter": "D",
+              "text": "Choose one mode at the start of each task and keep it until the task ends, so that a session never mixes the two modes."
+            },
+            {
+              "letter": "E",
+              "text": "For tasks with architectural implications, such as the microservice restructuring, begin in plan mode to explore the codebase and design the approach before any changes."
+            }
+          ]
+        },
+        {
+          "number": 50,
+          "question_id": "M3-S50-T2",
+          "domain": 3,
+          "task_statement": "3.4",
+          "point": "3.4-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team is triaging this week's backlog before working through it in Claude Code. The team lead wants to start one item right away with direct execution and leave the other items for plan mode. Which backlog item is the best fit for direct execution?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Splitting the billing module out of the monolith into its own microservice, with new boundaries between the services and the shared database."
+            },
+            {
+              "letter": "B",
+              "text": "Migrating the whole codebase from one HTTP client library to another, a change that touches more than 45 files."
+            },
+            {
+              "letter": "C",
+              "text": "Fixing a null reference error in report_export.py, where the stack trace points to the exact failing line in one function."
+            },
+            {
+              "letter": "D",
+              "text": "Choosing between a message queue and direct webhooks for order sync, where the two choices need different infrastructure."
+            }
+          ]
+        },
+        {
+          "number": 51,
+          "question_id": "M3-S51-T1",
+          "domain": 5,
+          "task_statement": "5.1",
+          "point": "5.1-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "You are using Claude Code in a long session to migrate a payment service to a new API version. Early on, you stated exact constraints: a p95 latency limit of 250 ms, a rate limit of 120 requests per minute, and a cutover date of March 14. After several /compact runs, Claude now writes code comments that say only \"keep latency low\" and \"respect the rate limit before the cutover\". Which change best keeps these exact constraints available for the rest of the session?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Restate all three constraints once in a new message now, and trust that Claude will keep them through the next compactions of the history."
+            },
+            {
+              "letter": "B",
+              "text": "Keep the exact latency limit, rate limit, and cutover date in a persistent constraints block that is included in each prompt, outside the summarized history."
+            },
+            {
+              "letter": "C",
+              "text": "Ask Claude to write each compaction summary in more detail, so that its narrative recap mentions the latency limit, rate limit, and cutover date again."
+            },
+            {
+              "letter": "D",
+              "text": "Paste the three constraints into the middle of one long message that also contains the full migration plan and the earlier design discussion, so all context stays together."
+            }
+          ]
+        },
+        {
+          "number": 52,
+          "question_id": "M3-S52-T1",
+          "domain": 3,
+          "task_statement": "3.2",
+          "point": "3.2-S5",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team's project CLAUDE.md has grown to include a long step-by-step procedure for generating database migration scripts, which developers use only a few times per month. The same file also holds the team's naming conventions and error-handling standards, which apply to every code change. Developers report that the migration procedure adds clutter to every Claude Code session. How should you restructure this configuration?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Move both the migration procedure and the coding standards into skills, so that the project CLAUDE.md loads nothing until a developer invokes a skill."
+            },
+            {
+              "letter": "B",
+              "text": "Keep the migration procedure in the project CLAUDE.md, and move the naming and error-handling standards into a skill that developers invoke before each change."
+            },
+            {
+              "letter": "C",
+              "text": "Move the migration procedure into each developer's user-level ~/.claude/CLAUDE.md, so that it loads only for the developers who generate migrations."
+            },
+            {
+              "letter": "D",
+              "text": "Move the migration procedure into a skill in .claude/skills/ for on-demand invocation, and keep the naming and error-handling standards in the project CLAUDE.md."
+            }
+          ]
+        },
+        {
+          "number": 53,
+          "question_id": "M3-S53-T4",
+          "domain": 3,
+          "task_statement": "3.5",
+          "point": "3.5-S2",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "You will use Claude Code to build a currency-rounding module for an invoicing service. On your previous module, you described the requirements in prose and accepted whatever Claude Code produced. That module later failed on zero amounts and ran too slowly on large invoice batches in production. For this module, you want each iteration to improve on the last in a measurable way. Which practices should you adopt?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "After each round, give Claude Code the specific failing test names and their error output, and ask it to fix those failures."
+            },
+            {
+              "letter": "B",
+              "text": "When a test fails, ask Claude Code to update the test's expected value so that it matches the module's current output."
+            },
+            {
+              "letter": "C",
+              "text": "Write tests only for typical invoice amounts first, and add edge-case and performance tests after the module passes those tests."
+            },
+            {
+              "letter": "D",
+              "text": "Before implementation, write tests covering expected rounding results, edge cases such as zero and negative amounts, and batch performance limits."
+            },
+            {
+              "letter": "E",
+              "text": "Ask Claude Code to explain in prose how the module handles edge cases, and accept the module when the explanation sounds complete."
+            }
+          ]
+        },
+        {
+          "number": 54,
+          "question_id": "M3-S54-T1",
+          "domain": 5,
+          "task_statement": "5.6",
+          "point": "5.6-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code to prepare a migration report for a major framework upgrade. A custom slash command has Claude Code delegate research to three subagents: one reads the framework changelog, one reads the official migration guide, and one searches your codebase. The final report often lists breaking changes without showing whether each one came from the changelog, the guide, or a file in your code, so reviewers cannot verify them. What change would most effectively fix this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Run /compact in the main session before the synthesis step, so that the summarized history of all subagent findings fits in one context and nothing is dropped."
+            },
+            {
+              "letter": "B",
+              "text": "Have each subagent append a list of every URL and file path it consulted to the end of its prose summary, so that the final report can show a complete list of references for reviewers."
+            },
+            {
+              "letter": "C",
+              "text": "Require each subagent to return every finding as a record pairing the claim with its source URL or file path and a relevant excerpt, and keep these records through synthesis."
+            },
+            {
+              "letter": "D",
+              "text": "Have each subagent return a short prose summary of its findings, so that the synthesis step receives compact input and stays well within its context budget."
+            }
+          ]
+        },
+        {
+          "number": 55,
+          "question_id": "M3-S55-T1",
+          "domain": 3,
+          "task_statement": "3.2",
+          "point": "3.2-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "A developer, Priya, wrote a /gen-migration slash command for your database migration checklist, and it works in her Claude Code sessions. Teammates who pulled the latest main branch cannot invoke it. On Priya's machine, the repository has no .claude/ directory at all. What is the most likely cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The command file has no context: fork frontmatter, so Claude Code makes it available only inside the session of the developer who created it."
+            },
+            {
+              "letter": "B",
+              "text": "Priya saved the command file in ~/.claude/commands/ in her home directory, which is user-scoped and is never shared through the repository."
+            },
+            {
+              "letter": "C",
+              "text": "The teammates have not run the /memory command, which Claude Code requires before it loads any project-scoped commands that arrive through version control."
+            },
+            {
+              "letter": "D",
+              "text": "The command is not registered in the project's .mcp.json file, which Claude Code reads to distribute custom slash commands to every team member."
+            }
+          ]
+        },
+        {
+          "number": 56,
+          "question_id": "M3-S56-T2",
+          "domain": 3,
+          "task_statement": "3.6",
+          "point": "3.6-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team runs Claude Code in a CI pipeline to generate unit tests for each pull request. Reviewers report that many generated tests repeat scenarios that the module's existing test suite already covers. The prompt currently includes only the changed source files. What change most directly reduces these duplicate test suggestions?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a post-processing script that deletes any generated test whose function name matches the name of an existing test function."
+            },
+            {
+              "letter": "B",
+              "text": "Require structured JSON output whose schema gives every generated test a required and unique scenario name field."
+            },
+            {
+              "letter": "C",
+              "text": "Include the existing test files for the changed modules in the prompt context so Claude can see which scenarios are already covered."
+            },
+            {
+              "letter": "D",
+              "text": "Add a rule to the project CLAUDE.md telling Claude to never suggest tests that duplicate scenarios already present anywhere in the existing test suite."
+            }
+          ]
+        },
+        {
+          "number": 57,
+          "question_id": "M3-S57-T2",
+          "domain": 5,
+          "task_statement": "5.3",
+          "point": "5.3-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code to audit a monorepo for calls to a deprecated logging API. Claude Code assigns one subagent to each of four services and then writes a combined report. The billing subagent could not read the billing service because its submodule was not checked out, yet the report stated that the billing service has no deprecated calls. What change to how the report is produced would best prevent this misleading result?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Append one general disclaimer to the end of the combined report stating that some findings might be incomplete, without identifying which of the four services were affected by failures."
+            },
+            {
+              "letter": "B",
+              "text": "Configure Claude Code to stop the entire audit and produce no report whenever any single subagent fails to read its assigned service directory."
+            },
+            {
+              "letter": "C",
+              "text": "Have the final report label each service's findings as well-supported or as a coverage gap, naming the billing service as unanalyzed because its source was unavailable."
+            },
+            {
+              "letter": "D",
+              "text": "Run the whole audit in plan mode so that Claude Code describes its exploration approach and waits for approval before reading any service code."
+            }
+          ]
+        },
+        {
+          "number": 58,
+          "question_id": "M3-S58-T1",
+          "domain": 3,
+          "task_statement": "3.3",
+          "point": "3.3-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code in a TypeScript monorepo. Database migration conventions apply to SQL files under db/migrations/ and to files named *.migration.ts that sit in many packages under packages/. You want these conventions to load automatically, and only when Claude Code edits one of these migration files. Which configuration best meets this goal?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Package the conventions as a skill in .claude/skills/ that developers invoke before they begin each piece of migration work."
+            },
+            {
+              "letter": "B",
+              "text": "Place the conventions in a CLAUDE.md file inside the db/migrations directory so that a directory-level configuration covers all migration work."
+            },
+            {
+              "letter": "C",
+              "text": "Create one .claude/rules/ file whose YAML frontmatter sets paths: [\"db/migrations/**/*.sql\", \"**/*.migration.ts\"] so the rule loads for both kinds of migration file."
+            },
+            {
+              "letter": "D",
+              "text": "Create one .claude/rules/ file whose YAML frontmatter sets paths: [\"db/migrations/**/*\", \"packages/**/*\"] so the rule covers both locations of migration files."
+            }
+          ]
+        },
+        {
+          "number": 59,
+          "question_id": "M3-S59-T1",
+          "domain": 3,
+          "task_statement": "3.2",
+          "point": "3.2-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team keeps a shared skill named db-migrate in .claude/skills/, and the skill is committed to version control. Priya, one developer on the team, wants a version of this skill that adds extra logging steps for her own debugging habits. Her change must not alter how the skill behaves for her teammates. What should Priya do?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Copy the skill into ~/.claude/skills/ under the same name, db-migrate, so that her personal copy stands in for the shared one."
+            },
+            {
+              "letter": "B",
+              "text": "Create a personal skill in ~/.claude/skills/ under a different name, such as db-migrate-verbose, that contains her logging steps."
+            },
+            {
+              "letter": "C",
+              "text": "Add her logging steps to the project-level CLAUDE.md file, so that Claude Code loads them in every session together with the shared skill."
+            },
+            {
+              "letter": "D",
+              "text": "Edit the shared SKILL.md in .claude/skills/ to add her logging steps, and then commit the change to version control."
+            }
+          ]
+        },
+        {
+          "number": 60,
+          "question_id": "M3-S60-T1",
+          "domain": 3,
+          "task_statement": "3.1",
+          "point": "3.1-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "A developer on your team reports that Claude Code applies the project's API naming conventions in some sessions but ignores them in others. The conventions are written in a CLAUDE.md file. Teammates disagree about which configuration files Claude Code actually reads in each session. You want to find out what is loaded before you change any files. What should you do first?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Start each new session with --resume so that Claude Code reuses the setup from a session that worked correctly."
+            },
+            {
+              "letter": "B",
+              "text": "Copy the API naming conventions into each developer's ~/.claude/CLAUDE.md file so that every session receives them."
+            },
+            {
+              "letter": "C",
+              "text": "Run the /memory command in an affected session to see which memory files Claude Code has loaded."
+            },
+            {
+              "letter": "D",
+              "text": "Run the /compact command at the start of each session so that the conventions stay prominent in the context."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

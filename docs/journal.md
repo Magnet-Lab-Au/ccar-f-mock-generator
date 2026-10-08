@@ -2,6 +2,19 @@
 
 One entry for each work session. Newest entry first.
 
+## 9 October 2026, mock 3 accepted
+
+- The owner marked round 1 of mock 3: 20 of 20 good (`marking/M3-round1.xlsx`, committed before anybody read it). The 2 copies, M3-S34 and M3-S49, got a rewrite with rule B9 ($0.70). Both passed steps 3 and 4 at the first new try.
+- The owner marked round 2: 2 of 2 good (`marking/M3-round2.xlsx`, committed before anybody read it). The second review in Cowork also found 2 of 2 good, and no copy.
+- Decision 0063: the known limits of mock 3 (47 close repeats across mocks, 7 pairs inside mock 3, and 4 findings of step 6 on repeated wrong ideas). Decision 0064: the 7 findings of rule D4 are ignored, and the 4 of rules D2 and D3 are known limits. Decision 0065: the owner accepted mock 3. Step 8 built `mocks/mock-03.questions.json` and `mocks/mock-03.answers.json`. Mock 3 cost $23.85.
+- No step changed, so no new diagram and no build guide section changed. Diagram 12 shows mock 3 as built.
+
+**Open**
+
+- The design of the stricter rule B9, before mock 4 (decision 0062).
+- Mock 4 does not start until the owner says so.
+- The owner confirms the texts of decisions 0056 to 0065.
+
 ## 8 October 2026, mock 2 accepted and mock 3
 
 - The owner marked round 2 of mock 2: 14 of 14 good (`marking/M2-round2.xlsx`, committed before anybody read it). The owner decided: 4 close questions and 3 findings of step 6 are known limits (decision 0059), the 5 findings of rule D4 are ignored, and rule B9 does not change. Decision 0060: across mocks a copy is not allowed, a close repeat is a known limit. The owner accepted mock 2. Step 8 built `mocks/mock-02.questions.json` and `mocks/mock-02.answers.json`. Mock 2 cost $20.73.
@@ -14,7 +27,7 @@ One entry for each work session. Newest entry first.
 
 **Open**
 
-- The owner marks `marking/M3-round1.xlsx` (20 questions). Then the rewrites of M3-S34 and M3-S49, and round 2.
+- (Done on 9 October 2026: see the entry above.)
 - The design of the stricter rule B9, before mock 4.
 - The owner confirms the texts of decisions 0056 to 0061.
 - Mocks 4 and 5 wait for the owner.
