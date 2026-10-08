@@ -40,7 +40,7 @@
     },
     {
       "id": "G005",
-      "idea": "Subagents get no parent context; pass it in the prompt",
+      "idea": "Subagents get no parent context: pass it in the prompt",
       "points": [
         "1.2-K2",
         "1.3-K2",
@@ -244,7 +244,7 @@
     },
     {
       "id": "G029",
-      "idea": "Local recovery in the subagent; propagate only what it cannot fix",
+      "idea": "Local recovery in the subagent, which passes on only what it cannot fix",
       "points": [
         "2.2-S3",
         "5.3-S3"
