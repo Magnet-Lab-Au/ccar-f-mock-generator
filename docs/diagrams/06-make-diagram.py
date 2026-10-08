@@ -106,7 +106,7 @@ D = {
    example=res('B8', 'The question has the scene of sample question 12: a self-review in the same session misses errors, and the answer is an independent review instance.'), examplehead=EH,
    why='In mock 1, two questions were close copies of sample questions 1 and 12. A participant who read the guide knows the answer already. A word count of code does not find a copy, because a copy keeps the scene and changes the words (decision 0055).'),
  'B9': dict(title='Rule B9: not a repeat of an earlier mock', who='One model call', cls='model',
-   sent=['The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question.',
+   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066).',
          'Call 4b gets the questions of the built earlier mocks whose point is in the same group. With none, B9 passes (decision 0056, diagram 11).'],
    example=res('B9', 'The question has the scene of M1-S28: the loop stops too early, and the answer is to continue while stop_reason is "tool_use". Options A, B and D are the wrong options of M1-S28.'), examplehead=EH,
    why='In mock 2, 13 questions repeated mock 1 with the same scene, the same answer and the same wrong options. A participant who took mock 1 knew the answers.'),
@@ -153,7 +153,7 @@ rows = [('B1', 'The marked options are correct', 'No other option is correct.'),
         ('B6', 'Only what the guide names', 'No feature that the guide does not name.'),
         ('B7', 'One name for each actor', 'Each sentence is clear at once.'),
         ('B8', 'Not a copy of a sample question', 'Not the scene and answer of a sample.'),
-        ('B9', 'Not a repeat of an earlier mock', 'Not the scene and answer of an earlier one.')]
+        ('B9', 'Not a repeat of an earlier mock', 'Not the same problem as an earlier one.')]
 for i, (key, name, what) in enumerate(rows):
     boxes.append(rowbox(key, 582, 262 + i * 65, 386, 60, key, name, what))
 MID = 487
@@ -216,7 +216,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0055, 0056 and 0061). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061 and 0066). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

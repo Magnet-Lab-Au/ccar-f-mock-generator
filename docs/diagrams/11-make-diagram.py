@@ -56,7 +56,7 @@ D = {
    why='The owner changed the first suggestion: a different angle, not a different correct action, because some ideas have only one correct action. The wrong options must never be the same.'),
  'step4': dict(title='Step 4: rule B9 in call 4b', who='One model call', cls='model',
    sent=[B9, 'Call 4b gets the earlier questions on the same idea. With none, B9 passes. A failure goes back to the writer automatically, as for each other rule.'],
-   why='The check is in step 4, not in step 6. Step 4 sends a failure back at once. A finding of step 6 waits for the owner after the marking.'),
+   why='The check is in step 4, not in step 6. Step 4 sends a failure back at once. A finding of step 6 waits for the owner after the marking. Decision 0066 made the text stricter for mocks 4 and 5: mock 3 had about 26 questions with the same problem in another setting, and the first text let them pass.'),
  'rewrite': dict(title='The owner decides a rewrite', who='The owner', cls='owner',
    sent=['%s: rewrite %s. The reason of the owner: "%s"' % (DEC['id'], DEC['question_id'], DEC['reason'])],
    why='The 13 strong repeats of mock 2 got a rewrite with the new rule. The 4 close repeats stay as known limits (decision 0058).'),
@@ -90,8 +90,8 @@ parts = [
      '<div class="prow"><b>3.3-S3</b><small>unused</small><em>first</em></div><div class="prow dim"><b>3.3-S2</b><small>in mock 1</small><em>later</em></div>',
      'Step 1'),
  hot('step2', 'spanel', 'left:345px;top:414px', '<h4>Step 2: the writer</h4><div class="req"><small>the request</small><div class="eq">earlier questions on this idea: M1-S28</div>'
-     '<p>a different scene and a different angle: the cause, the fix, or a choice between rules</p></div>', 'Step 2'),
- hot('step4', 'spanel', 'left:670px;top:414px', '<h4>Step 4: rule B9</h4><p class="b9">not the same scene with the same answer, and no wrong option of an earlier question</p>'
+     '<p>a different problem, also in another setting: the cause, the fix, or a choice between two rules</p></div>', 'Step 2'),
+ hot('step4', 'spanel', 'left:670px;top:414px', '<h4>Step 4: rule B9</h4><p class="b9">not the same problem, also in another setting. At most one wrong option may repeat.</p>'
      '<div class="pf"><span class="pass">pass: on to step 6</span><span class="fail">fail: back to the writer</span></div>', 'Step 4'),
  '<div class="shead" style="top:620px"><i>3</i>The result: the same idea, a new question</div>',
  hot('rewrite', 'mini', 'left:20px;top:664px', '<b>%s</b><small>rewrite of M2-S08-T1</small>' % DEC['id'], 'The rewrite of the owner'),
@@ -158,7 +158,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Across mocks: the same idea may come back, the same question may not</h1>
-  <p class="sub">This diagram shows decision 0056. It changes step 1 (the plan), step 2 (the writer) and step 4 (the check). The example is real: a question of mock 1, the repeat in the first try of mock 2, and the rewrite under the new rule. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows decisions 0056 and 0066. It changes step 1 (the plan), step 2 (the writer) and step 4 (the check). The example is real: a question of mock 1, the repeat in the first try of mock 2, and the rewrite under the new rule. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -171,7 +171,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 11. Decision 0056 of 8 October 2026. Status: built, ran for the rewrites of mock 2. The question texts in the cards and popups are the real texts from mocks/mock-01.questions.json and runs/mock-02/questions/.</footer>
+  <footer>Diagram 11. Decision 0056 of 8 October 2026, with the stricter text of decision 0066 of 9 October 2026. Status: built. The first text ran for the rewrites of mock 2 and for mock 3. The example of the new try M2-S08-T2 was checked with the first text. The question texts in the cards and popups are the real texts from mocks/mock-01.questions.json and runs/mock-02/questions/.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
