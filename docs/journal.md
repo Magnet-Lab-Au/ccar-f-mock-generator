@@ -14,9 +14,15 @@ This entry continues the second session of 7 October. The work went on after mid
 - A new line in the check at the end of a session in `CLAUDE.md`: a marking file that the owner filled is committed before anybody else reads it.
 - The assistant checked the six probable causes of the second review against the plan and the code. True: twin points (two points of one task statement), scenario 5 with 12 of 15 questions from Domain 4, step 6 inside one scenario, no rule on the longest option in the set (29 of 52 by words, 34 of 52 by characters, chance about 13), and multiple-response slots on a point with one idea. False as written: the writer of S30 did not get sample question 1 as an example. The probable cause is the point 1.4-K2 itself.
 
+- The owner agreed that the 7 do not count as bad marks, and that they become rewrites (decision 0045). A rewrite can now have no finding of step 6, and it can get a new point that the owner gives. Code checks three conditions for that point. The assistant checked the four points of the owner: none is a twin of a point in use. For S25, no point of task statement 1.6 was free of twins, so S25 kept its point 1.6-S3, with a reason that tells the writer to test exactly that point. S38 got 3.4-K4.
+- The owner set a rule for the 19 findings of step 6: ignore a finding that the 7 cover, rewrite the newer question of a D1 finding that the 7 do not cover, ignore the rest. The result: 9 rewrites and 17 ignore (decisions D002 to D027 in `runs/mock-01/owner-decisions.json`).
+- The round of 9 rewrites ran ($2.57). Step 6 ran again. Mock 1 cost $17.17 in total.
+- The owner marked round 2 blind: 9 of 9 good. The file was committed before anybody read it (SHA-256 07c3d5fde864c733f012e87e09fd68ec7f6bd67e1efe5bec950a4a8d9e8eeacb). The second review also found 9 of 9 good, and three weak questions. The owner decided: no more rewrites. The three are known limits of mock 1 (decision 0046), and three more causes go to the list of changes before mock 2.
+
 **Open**
 
-- The 7 problems of the second review and the 19 findings of step 6 wait for decisions of the owner.
+- The second run of step 6 has 16 findings that wait for a decision of the owner.
+- The list of 7 changes before mock 2 (decision 0046).
 
 ## 7 October 2026, second session
 

@@ -1,9 +1,24 @@
 {
   "mock": 1,
   "date": "2026-10-08",
-  "state": "ready_to_mark",
+  "state": "waits_for_owner",
   "waiting_for": [
-    "marks of round 2"
+    "finding M1-SC1-R2-F1 of step 6: ignore or rewrite",
+    "finding M1-SC1-R2-F2 of step 6: ignore or rewrite",
+    "finding M1-SC1-R2-F3 of step 6: ignore or rewrite",
+    "finding M1-SC1-R2-F4 of step 6: ignore or rewrite",
+    "finding M1-SC1-R2-F5 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F1 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F2 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F3 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F4 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F5 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F6 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F7 of step 6: ignore or rewrite",
+    "finding M1-SC2-R2-F8 of step 6: ignore or rewrite",
+    "finding M1-SC5-R2-F1 of step 6: ignore or rewrite",
+    "finding M1-SC5-R2-F2 of step 6: ignore or rewrite",
+    "finding M1-SC5-R2-F3 of step 6: ignore or rewrite"
   ],
   "slots": [
     {
@@ -427,6 +442,175 @@
       "open_reasons": []
     }
   ],
-  "step6_findings": [],
+  "step6_findings": [
+    {
+      "id": "M1-SC1-R2-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S22-T1",
+        "M1-S20-T1"
+      ],
+      "detail": "The S22 stem separates refunds outside the return policy from backend timeouts. Its correct option A marks policy violations as non-retryable and timeouts as retryable. This gives away the S20 answer: a return-window policy failure is a non-retryable business error, not a transient error."
+    },
+    {
+      "id": "M1-SC1-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S30-T2",
+        "M1-S18-T1"
+      ],
+      "detail": "The S30 stem frames the fix for a prompt rule the agent sometimes skips as moving it into a programmatic check in code. Its correct option names a refund rule required by legal policy. This tells the reader that the S18 refund rule, which the prompt states but the agent violates in 3% of cases, needs code-level enforcement (the hook), not stronger prompt wording or few-shot examples."
+    },
+    {
+      "id": "M1-SC1-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S24-T3",
+        "M1-S18-T1"
+      ],
+      "detail": "The S24 stem presents 'adding a hook that intercepts process_refund calls above a threshold' as a candidate fix for the support agent. This almost restates S18's correct option D: a hook that intercepts process_refund calls above $500 and redirects them to escalation."
+    },
+    {
+      "id": "M1-SC1-R2-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S17-T2",
+        "M1-S19-T1",
+        "M1-S23-T2"
+      ],
+      "detail": "The wrong idea 'set tool_choice to \"any\" to force the needed behaviour' is a wrong option in three questions: S17-T2 E (to expose content), S19-T1 C (to make get_customer run first) and S23-T2 C (to make the coordinator delegate). This exceeds the limit of 2."
+    },
+    {
+      "id": "M1-SC1-R2-F5",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S18-T1",
+        "M1-S19-T1",
+        "M1-S23-T2"
+      ],
+      "detail": "The wrong idea 'a system prompt instruction guarantees the required behaviour' appears in three questions: S18-T1 A/B/C, S19-T1 B (prompt instruction to call get_customer first) and S23-T2 D (prompt instruction to delegate). This also exceeds the limit of 2."
+    },
+    {
+      "id": "M1-SC2-R2-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M1-S33-T1",
+        "M1-S43-T1"
+      ],
+      "detail": "Both questions share the same problem: conventions in the root CLAUDE.md should load only when Claude Code edits certain files, to avoid irrelevant context. Both also share the same correct action: a .claude/rules/ file with a glob in the YAML frontmatter paths field. The Terraform-directory versus test-file-type framing does not change the scene."
+    },
+    {
+      "id": "M1-SC2-R2-F2",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M1-S38-T2",
+        "M1-S45-T2"
+      ],
+      "detail": "Both questions share the same problem: verbose discovery output from reading many files fills the main session's context before planning or implementation. Both also share the same correct action: delegate discovery or investigation to a subagent (Explore or spawned subagents) that returns concise summaries to the main session."
+    },
+    {
+      "id": "M1-SC2-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S34-T1",
+        "M1-S38-T2"
+      ],
+      "detail": "Option C of M1-S34-T1 states that the Explore subagent keeps verbose output out of the main conversation context. This is exactly the correct answer of M1-S38-T2."
+    },
+    {
+      "id": "M1-SC2-R2-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S33-T1",
+        "M1-S43-T1"
+      ],
+      "detail": "The correct option of each question describes a .claude/rules/ file whose YAML frontmatter paths glob makes the conventions load only for matching files. This gives away the answer of the other question."
+    },
+    {
+      "id": "M1-SC2-R2-F5",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S36-T1",
+        "M1-S33-T1",
+        "M1-S43-T1"
+      ],
+      "detail": "Option D of M1-S36-T1 describes .claude/rules/ files whose YAML frontmatter lists path patterns. This reveals the path-scoped rules mechanism that answers M1-S33-T1 and M1-S43-T1."
+    },
+    {
+      "id": "M1-SC2-R2-F6",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S32-T1",
+        "M1-S33-T1",
+        "M1-S40-T2",
+        "M1-S36-T1"
+      ],
+      "detail": "The wrong idea 'put shared team configuration in a personal user-level location (~/.claude/CLAUDE.md), which is not shared through version control' is a wrong option in M1-S32-T1 A, M1-S33-T1 D and M1-S40-T2 B. That is 3 questions. M1-S36-T1 C (~/.claude/skills/) repeats the same personal-not-shared idea, which makes 4."
+    },
+    {
+      "id": "M1-SC2-R2-F7",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S32-T1",
+        "M1-S33-T1",
+        "M1-S40-T2",
+        "M1-S43-T1"
+      ],
+      "detail": "The wrong idea 'put scoped conventions in the root CLAUDE.md, so they load for every file or package' is a wrong option in M1-S32-T1 C, M1-S33-T1 A, M1-S40-T2 D and M1-S43-T1 D. That is 4 questions."
+    },
+    {
+      "id": "M1-SC2-R2-F8",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M1-S34-T1",
+        "M1-S35-T1",
+        "M1-S38-T2"
+      ],
+      "detail": "The wrong idea 'use direct execution right away for a complex multi-file or design-open task and fix problems as they appear' is a wrong option in M1-S34-T1 A/D, M1-S35-T1 E and M1-S38-T2 C. That is 3 questions."
+    },
+    {
+      "id": "M1-SC5-R2-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M1-S53-T2",
+        "M1-S54-T1"
+      ],
+      "detail": "Both questions share the same scene. The CI --json-schema review output passes the schema but holds a semantic error: a line number outside the diff in one, a critical_count mismatch in the other. In both, the correct action is to validate semantically and retry with the specific validation error appended. Only the surface detail of the semantic error differs."
+    },
+    {
+      "id": "M1-SC5-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S53-T2",
+        "M1-S54-T1"
+      ],
+      "detail": "The M1-S53-T2 stem states that the outputs 'pass the schema but fail semantic checks'. This tells the reader that such errors are semantic and are not prevented by schema enforcement, which answers M1-S54-T1 and rules out its options A and C. In turn, the correct option B of M1-S54-T1 says to 'retry with that specific error', which gives away the correct option A of M1-S53-T2."
+    },
+    {
+      "id": "M1-SC5-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M1-S47-T6",
+        "M1-S57-T1"
+      ],
+      "detail": "Two options of M1-S47-T6 give away part of M1-S57-T1. Correct option C says few-shot examples are the most effective technique when detailed instructions alone produce inconsistent results, which eliminates option A of M1-S57-T1 (expand the written rules). Wrong option D, by being marked wrong, implies that few-shot examples generalize rather than copy listed cases, which points away from the verdict-only, every-pattern option B."
+    }
+  ],
   "errors": []
 }
