@@ -1,0 +1,845 @@
+{
+  "guide_version": "Version 1.0 · Effective July 2026 · Exam code: CCAR-F · This guide is subject to change without notice.",
+  "groups": [
+    {
+      "id": "G001",
+      "idea": "Agentic loop stops on stop_reason, not on text or caps",
+      "points": [
+        "1.1-K1",
+        "1.1-S1",
+        "1.1-S3"
+      ]
+    },
+    {
+      "id": "G002",
+      "idea": "Results and history go into each next request",
+      "points": [
+        "1.1-K2",
+        "1.1-S2",
+        "5.1-K4"
+      ]
+    },
+    {
+      "id": "G003",
+      "idea": "Fixed sequence against a plan that adapts",
+      "points": [
+        "1.1-K3",
+        "1.6-K1",
+        "1.6-K3",
+        "1.6-S1",
+        "1.6-S3"
+      ]
+    },
+    {
+      "id": "G004",
+      "idea": "Hub and spoke: all routing through the coordinator",
+      "points": [
+        "1.2-K1",
+        "1.2-S4"
+      ]
+    },
+    {
+      "id": "G005",
+      "idea": "Subagents get no parent context; pass it in the prompt",
+      "points": [
+        "1.2-K2",
+        "1.3-K2",
+        "1.3-S1"
+      ]
+    },
+    {
+      "id": "G006",
+      "idea": "Coordinator selects subagents by the query",
+      "points": [
+        "1.2-K3",
+        "1.2-S1"
+      ]
+    },
+    {
+      "id": "G007",
+      "idea": "Too narrow decomposition leaves gaps in coverage",
+      "points": [
+        "1.2-K4"
+      ]
+    },
+    {
+      "id": "G008",
+      "idea": "Partition the scope so subagents do not duplicate work",
+      "points": [
+        "1.2-S2"
+      ]
+    },
+    {
+      "id": "G009",
+      "idea": "Coordinator finds gaps and delegates again",
+      "points": [
+        "1.2-S3"
+      ]
+    },
+    {
+      "id": "G010",
+      "idea": "Task tool, and Task in allowedTools",
+      "points": [
+        "1.3-K1"
+      ]
+    },
+    {
+      "id": "G011",
+      "idea": "AgentDefinition: description, prompt, tools",
+      "points": [
+        "1.3-K3"
+      ]
+    },
+    {
+      "id": "G012",
+      "idea": "Fork a session from a shared baseline",
+      "points": [
+        "1.3-K4",
+        "1.7-K2",
+        "1.7-S2"
+      ]
+    },
+    {
+      "id": "G013",
+      "idea": "Keep source attribution: structured claim-source data",
+      "points": [
+        "1.3-S2",
+        "5.6-K1",
+        "5.6-K2",
+        "5.6-S1"
+      ]
+    },
+    {
+      "id": "G014",
+      "idea": "Parallel subagents: several Task calls in one response",
+      "points": [
+        "1.3-S3"
+      ]
+    },
+    {
+      "id": "G015",
+      "idea": "Coordinator prompt gives goals, not procedures",
+      "points": [
+        "1.3-S4"
+      ]
+    },
+    {
+      "id": "G016",
+      "idea": "Code enforcement (hooks, gates) against prompt guidance",
+      "points": [
+        "1.4-K1",
+        "1.4-K2",
+        "1.4-S1",
+        "1.5-K2",
+        "1.5-K3",
+        "1.5-S2",
+        "1.5-S3"
+      ]
+    },
+    {
+      "id": "G017",
+      "idea": "Structured handoff summary to a human",
+      "points": [
+        "1.4-K3",
+        "1.4-S3"
+      ]
+    },
+    {
+      "id": "G018",
+      "idea": "Split a multi-concern request into items",
+      "points": [
+        "1.4-S2"
+      ]
+    },
+    {
+      "id": "G019",
+      "idea": "PostToolUse hook normalizes data formats",
+      "points": [
+        "1.5-K1",
+        "1.5-S1"
+      ]
+    },
+    {
+      "id": "G020",
+      "idea": "Per-file passes plus a cross-file integration pass",
+      "points": [
+        "1.6-K2",
+        "1.6-S2",
+        "4.6-K3",
+        "4.6-S2"
+      ]
+    },
+    {
+      "id": "G021",
+      "idea": "Resume a named session with --resume",
+      "points": [
+        "1.7-K1",
+        "1.7-S1"
+      ]
+    },
+    {
+      "id": "G022",
+      "idea": "Tell a resumed session which files changed",
+      "points": [
+        "1.7-K3",
+        "1.7-S4"
+      ]
+    },
+    {
+      "id": "G023",
+      "idea": "Resume against a fresh start with a summary",
+      "points": [
+        "1.7-K4",
+        "1.7-S3"
+      ]
+    },
+    {
+      "id": "G024",
+      "idea": "Tool descriptions decide the selection among similar tools",
+      "points": [
+        "2.1-K1",
+        "2.1-K2",
+        "2.1-K3",
+        "2.1-S1",
+        "2.1-S2",
+        "2.4-S3"
+      ]
+    },
+    {
+      "id": "G025",
+      "idea": "Keywords in the system prompt override tool descriptions",
+      "points": [
+        "2.1-K4",
+        "2.1-S4"
+      ]
+    },
+    {
+      "id": "G026",
+      "idea": "Replace a generic tool with specific or constrained tools",
+      "points": [
+        "2.1-S3",
+        "2.3-S2"
+      ]
+    },
+    {
+      "id": "G027",
+      "idea": "MCP isError flag",
+      "points": [
+        "2.2-K1"
+      ]
+    },
+    {
+      "id": "G028",
+      "idea": "Structured error information, not generic errors",
+      "points": [
+        "2.2-K2",
+        "2.2-K3",
+        "2.2-K4",
+        "2.2-S1",
+        "2.2-S2",
+        "5.3-K1",
+        "5.3-K3",
+        "5.3-S1"
+      ]
+    },
+    {
+      "id": "G029",
+      "idea": "Local recovery in the subagent; propagate only what it cannot fix",
+      "points": [
+        "2.2-S3",
+        "5.3-S3"
+      ]
+    },
+    {
+      "id": "G030",
+      "idea": "Access failure against a valid empty result",
+      "points": [
+        "2.2-S4",
+        "5.3-K2",
+        "5.3-K4",
+        "5.3-S2"
+      ]
+    },
+    {
+      "id": "G031",
+      "idea": "Few tools per agent, scoped to its role",
+      "points": [
+        "2.3-K1",
+        "2.3-K2",
+        "2.3-K3",
+        "2.3-S1",
+        "2.3-S3"
+      ]
+    },
+    {
+      "id": "G032",
+      "idea": "tool_choice: auto, any, forced",
+      "points": [
+        "2.3-K4",
+        "2.3-S4",
+        "2.3-S5",
+        "4.3-K2",
+        "4.3-S2",
+        "4.3-S3"
+      ]
+    },
+    {
+      "id": "G033",
+      "idea": "MCP server scope (.mcp.json, ~/.claude.json) and env variables",
+      "points": [
+        "2.4-K1",
+        "2.4-K2",
+        "2.4-S1",
+        "2.4-S2"
+      ]
+    },
+    {
+      "id": "G034",
+      "idea": "All MCP tools are discovered at connection",
+      "points": [
+        "2.4-K3"
+      ]
+    },
+    {
+      "id": "G035",
+      "idea": "MCP resources expose content catalogs",
+      "points": [
+        "2.4-K4",
+        "2.4-S5"
+      ]
+    },
+    {
+      "id": "G036",
+      "idea": "Community MCP server against a custom one",
+      "points": [
+        "2.4-S4"
+      ]
+    },
+    {
+      "id": "G037",
+      "idea": "Grep for file content",
+      "points": [
+        "2.5-K1",
+        "2.5-S1"
+      ]
+    },
+    {
+      "id": "G038",
+      "idea": "Glob for file names",
+      "points": [
+        "2.5-K2",
+        "2.5-S2"
+      ]
+    },
+    {
+      "id": "G039",
+      "idea": "Edit, and Read plus Write when Edit fails",
+      "points": [
+        "2.5-K3",
+        "2.5-K4",
+        "2.5-S3"
+      ]
+    },
+    {
+      "id": "G040",
+      "idea": "Grep for entry points, then Read to follow the flow",
+      "points": [
+        "2.5-S4"
+      ]
+    },
+    {
+      "id": "G041",
+      "idea": "Find exported names, then search for each",
+      "points": [
+        "2.5-S5"
+      ]
+    },
+    {
+      "id": "G042",
+      "idea": "CLAUDE.md hierarchy: user, project, directory",
+      "points": [
+        "3.1-K1",
+        "3.1-K2",
+        "3.1-S1"
+      ]
+    },
+    {
+      "id": "G043",
+      "idea": "@import of standards files",
+      "points": [
+        "3.1-K3",
+        "3.1-S2"
+      ]
+    },
+    {
+      "id": "G044",
+      "idea": "Split a large CLAUDE.md into .claude/rules/ files",
+      "points": [
+        "3.1-K4",
+        "3.1-S3"
+      ]
+    },
+    {
+      "id": "G045",
+      "idea": "/memory shows the loaded memory files",
+      "points": [
+        "3.1-S4"
+      ]
+    },
+    {
+      "id": "G046",
+      "idea": "Project commands in .claude/commands/",
+      "points": [
+        "3.2-K1",
+        "3.2-S1"
+      ]
+    },
+    {
+      "id": "G047",
+      "idea": "Skills with SKILL.md frontmatter",
+      "points": [
+        "3.2-K2"
+      ]
+    },
+    {
+      "id": "G048",
+      "idea": "Verbose exploration output fills the main context",
+      "points": [
+        "3.2-K3",
+        "3.2-S2",
+        "3.4-K4",
+        "3.4-S3",
+        "5.4-K3",
+        "5.4-S1",
+        "5.4-S5"
+      ]
+    },
+    {
+      "id": "G049",
+      "idea": "Personal skill variants with other names",
+      "points": [
+        "3.2-K4"
+      ]
+    },
+    {
+      "id": "G050",
+      "idea": "allowed-tools limits the tools of a skill",
+      "points": [
+        "3.2-S3"
+      ]
+    },
+    {
+      "id": "G051",
+      "idea": "argument-hint asks for missing arguments",
+      "points": [
+        "3.2-S4"
+      ]
+    },
+    {
+      "id": "G052",
+      "idea": "Skill on demand against CLAUDE.md always loaded",
+      "points": [
+        "3.2-S5"
+      ]
+    },
+    {
+      "id": "G053",
+      "idea": "Path-scoped rules load only for matching files",
+      "points": [
+        "3.3-K1",
+        "3.3-K2",
+        "3.3-K3",
+        "3.3-S1",
+        "3.3-S2",
+        "3.3-S3"
+      ]
+    },
+    {
+      "id": "G054",
+      "idea": "Plan mode for large changes with many approaches",
+      "points": [
+        "3.4-K1",
+        "3.4-K3",
+        "3.4-S1"
+      ]
+    },
+    {
+      "id": "G055",
+      "idea": "Direct execution for a small clear change",
+      "points": [
+        "3.4-K2",
+        "3.4-S2"
+      ]
+    },
+    {
+      "id": "G056",
+      "idea": "Plan mode first, then direct execution",
+      "points": [
+        "3.4-S4"
+      ]
+    },
+    {
+      "id": "G057",
+      "idea": "Concrete input and output examples",
+      "points": [
+        "3.5-K1",
+        "3.5-S1",
+        "3.5-S4"
+      ]
+    },
+    {
+      "id": "G058",
+      "idea": "Tests first, then share the failures",
+      "points": [
+        "3.5-K2",
+        "3.5-S2"
+      ]
+    },
+    {
+      "id": "G059",
+      "idea": "Interview pattern before the implementation",
+      "points": [
+        "3.5-K3",
+        "3.5-S3"
+      ]
+    },
+    {
+      "id": "G060",
+      "idea": "One message for interacting issues, sequence for independent",
+      "points": [
+        "3.5-K4",
+        "3.5-S5"
+      ]
+    },
+    {
+      "id": "G061",
+      "idea": "-p flag for non-interactive CI",
+      "points": [
+        "3.6-K1",
+        "3.6-S1"
+      ]
+    },
+    {
+      "id": "G062",
+      "idea": "--output-format json with --json-schema",
+      "points": [
+        "3.6-K2",
+        "3.6-S2"
+      ]
+    },
+    {
+      "id": "G063",
+      "idea": "CLAUDE.md gives CI the testing standards",
+      "points": [
+        "3.6-K3",
+        "3.6-S5"
+      ]
+    },
+    {
+      "id": "G064",
+      "idea": "Independent review instance, not self-review",
+      "points": [
+        "3.6-K4",
+        "4.6-K1",
+        "4.6-K2",
+        "4.6-S1"
+      ]
+    },
+    {
+      "id": "G065",
+      "idea": "Give prior findings, report only new issues",
+      "points": [
+        "3.6-S3"
+      ]
+    },
+    {
+      "id": "G066",
+      "idea": "Give existing tests to avoid duplicate tests",
+      "points": [
+        "3.6-S4"
+      ]
+    },
+    {
+      "id": "G067",
+      "idea": "Explicit criteria, not vague or confidence instructions",
+      "points": [
+        "4.1-K1",
+        "4.1-K2",
+        "4.1-S1"
+      ]
+    },
+    {
+      "id": "G068",
+      "idea": "False positives lose trust; disable the noisy category",
+      "points": [
+        "4.1-K3",
+        "4.1-S2"
+      ]
+    },
+    {
+      "id": "G069",
+      "idea": "Severity criteria with code examples",
+      "points": [
+        "4.1-S3"
+      ]
+    },
+    {
+      "id": "G070",
+      "idea": "Few-shot examples for judgment and format",
+      "points": [
+        "4.2-K1",
+        "4.2-K2",
+        "4.2-K3",
+        "4.2-S1",
+        "4.2-S2",
+        "4.2-S3"
+      ]
+    },
+    {
+      "id": "G071",
+      "idea": "Few-shot examples for extraction from varied documents",
+      "points": [
+        "4.2-K4",
+        "4.2-S4",
+        "4.2-S5"
+      ]
+    },
+    {
+      "id": "G072",
+      "idea": "Tool use with a JSON schema for structured output",
+      "points": [
+        "4.3-K1",
+        "4.3-S1"
+      ]
+    },
+    {
+      "id": "G073",
+      "idea": "Schema passes, values wrong: semantic errors",
+      "points": [
+        "4.3-K3",
+        "4.4-K4",
+        "4.4-S4"
+      ]
+    },
+    {
+      "id": "G074",
+      "idea": "Enum values other and unclear in the schema",
+      "points": [
+        "4.3-K4",
+        "4.3-S5"
+      ]
+    },
+    {
+      "id": "G075",
+      "idea": "Optional fields prevent invented values",
+      "points": [
+        "4.3-S4"
+      ]
+    },
+    {
+      "id": "G076",
+      "idea": "Format normalization rules in the prompt",
+      "points": [
+        "4.3-S6"
+      ]
+    },
+    {
+      "id": "G077",
+      "idea": "Retry with the exact validation errors",
+      "points": [
+        "4.4-K1",
+        "4.4-S1"
+      ]
+    },
+    {
+      "id": "G078",
+      "idea": "Retry fails when the information is absent",
+      "points": [
+        "4.4-K2",
+        "4.4-S2"
+      ]
+    },
+    {
+      "id": "G079",
+      "idea": "detected_pattern field to analyze dismissals",
+      "points": [
+        "4.4-K3",
+        "4.4-S3"
+      ]
+    },
+    {
+      "id": "G080",
+      "idea": "Batch API for latency-tolerant work, sync for blocking",
+      "points": [
+        "4.5-K1",
+        "4.5-K2",
+        "4.5-S1"
+      ]
+    },
+    {
+      "id": "G081",
+      "idea": "Batch API has no multi-turn tool calls",
+      "points": [
+        "4.5-K3"
+      ]
+    },
+    {
+      "id": "G082",
+      "idea": "custom_id to match and resubmit failed requests",
+      "points": [
+        "4.5-K4",
+        "4.5-S3"
+      ]
+    },
+    {
+      "id": "G083",
+      "idea": "Batch frequency from the SLA",
+      "points": [
+        "4.5-S2"
+      ]
+    },
+    {
+      "id": "G084",
+      "idea": "Refine the prompt on a sample before the batch",
+      "points": [
+        "4.5-S4"
+      ]
+    },
+    {
+      "id": "G085",
+      "idea": "Confidence scores, calibrated, route the review",
+      "points": [
+        "4.6-S3",
+        "5.5-K3",
+        "5.5-S3",
+        "5.5-S4"
+      ]
+    },
+    {
+      "id": "G086",
+      "idea": "Case facts block outside the summarized history",
+      "points": [
+        "5.1-K1",
+        "5.1-S1",
+        "5.1-S2"
+      ]
+    },
+    {
+      "id": "G087",
+      "idea": "Lost in the middle: key findings first, headers",
+      "points": [
+        "5.1-K2",
+        "5.1-S4"
+      ]
+    },
+    {
+      "id": "G088",
+      "idea": "Keep only the relevant data from verbose tool or agent output",
+      "points": [
+        "5.1-K3",
+        "5.1-S3",
+        "5.1-S6"
+      ]
+    },
+    {
+      "id": "G089",
+      "idea": "Dates and metadata in subagent output",
+      "points": [
+        "5.1-S5",
+        "5.6-K4",
+        "5.6-S4"
+      ]
+    },
+    {
+      "id": "G090",
+      "idea": "When to escalate: explicit criteria, a request for a human, not sentiment",
+      "points": [
+        "5.2-K1",
+        "5.2-K2",
+        "5.2-K3",
+        "5.2-S1",
+        "5.2-S2",
+        "5.2-S3",
+        "5.2-S4"
+      ]
+    },
+    {
+      "id": "G091",
+      "idea": "Several matches: ask for more identifiers",
+      "points": [
+        "5.2-K4",
+        "5.2-S5"
+      ]
+    },
+    {
+      "id": "G092",
+      "idea": "Coverage annotations for gaps in the synthesis",
+      "points": [
+        "5.3-S4"
+      ]
+    },
+    {
+      "id": "G093",
+      "idea": "Scratchpad files against context degradation",
+      "points": [
+        "5.4-K1",
+        "5.4-K2",
+        "5.4-S2"
+      ]
+    },
+    {
+      "id": "G094",
+      "idea": "Crash recovery with state manifests",
+      "points": [
+        "5.4-K4",
+        "5.4-S4"
+      ]
+    },
+    {
+      "id": "G095",
+      "idea": "Summarize one phase before the next subagents",
+      "points": [
+        "5.4-S3"
+      ]
+    },
+    {
+      "id": "G096",
+      "idea": "Aggregate accuracy hides weak segments",
+      "points": [
+        "5.5-K1",
+        "5.5-K4",
+        "5.5-S2"
+      ]
+    },
+    {
+      "id": "G097",
+      "idea": "Stratified random sampling of high-confidence output",
+      "points": [
+        "5.5-K2",
+        "5.5-S1"
+      ]
+    },
+    {
+      "id": "G098",
+      "idea": "Conflicting values: keep both, with sources",
+      "points": [
+        "5.6-K3",
+        "5.6-S3"
+      ]
+    },
+    {
+      "id": "G099",
+      "idea": "Sections for established and contested findings",
+      "points": [
+        "5.6-S2"
+      ]
+    },
+    {
+      "id": "G100",
+      "idea": "Each content type in its own format",
+      "points": [
+        "5.6-S5"
+      ]
+    }
+  ]
+}
