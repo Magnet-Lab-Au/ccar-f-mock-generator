@@ -180,5 +180,19 @@
     "target": "M2-SC6-R2-F2",
     "reason": "Known limit of mock 2 (decision 0059): the findings of step 6 on model confidence. The owner decided no rewrite.",
     "date": "2026-10-08"
+  },
+  {
+    "id": "D023",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F7",
+    "reason": "Known limit of mock 2 (decision 0059): the same wrong idea (an output schema controls the content) in M2-S37, M2-S41 and M2-S45. The owner decided no rewrite.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D024",
+    "action": "accept",
+    "target": "M2",
+    "reason": "",
+    "date": "2026-10-08"
   }
 ]

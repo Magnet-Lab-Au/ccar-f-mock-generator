@@ -1,18 +1,8 @@
 {
   "mock": 2,
   "date": "2026-10-08",
-  "state": "waits_for_owner",
-  "waiting_for": [
-    "finding M2-SC5-R2-F1 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F2 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F3 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F4 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F5 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F6 of step 6: ignore or rewrite",
-    "finding M2-SC5-R2-F7 of step 6: ignore or rewrite",
-    "finding M2-SC6-R2-F1 of step 6: ignore or rewrite",
-    "finding M2-SC6-R2-F2 of step 6: ignore or rewrite"
-  ],
+  "state": "built",
+  "waiting_for": [],
   "slots": [
     {
       "slot_id": "M2-S01",
@@ -435,107 +425,6 @@
       "open_reasons": []
     }
   ],
-  "step6_findings": [
-    {
-      "id": "M2-SC5-R2-F1",
-      "rule": "D1",
-      "result": "fail",
-      "question_ids": [
-        "M2-S31-T2",
-        "M2-S35-T3"
-      ],
-      "detail": "Both questions share one scene. In each, the CI review tooling must choose between two ways of posting review results (a webhook service versus a job runner or message queue) that have different infrastructure requirements. In each, the correct action is to use plan mode to settle the architectural choice before making changes, which avoids costly rework."
-    },
-    {
-      "id": "M2-SC5-R2-F2",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S31-T2",
-        "M2-S35-T3"
-      ],
-      "detail": "The reason for S35 option D says that choosing between approaches with different infrastructure requirements calls for plan mode before files change, which prevents costly rework. That is the S31 answer. The reason for S31 option D says the guide calls for plan mode when approaches have different infrastructure requirements, which gives away the S35 answer."
-    },
-    {
-      "id": "M2-SC5-R2-F3",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S35-T3",
-        "M2-S40-T1"
-      ],
-      "detail": "The reason for S35 option B says that adding a validation conditional to one function is a simple, well-scoped change suited to direct execution. That gives away the S40 answer."
-    },
-    {
-      "id": "M2-SC5-R2-F4",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S37-T2",
-        "M2-S42-T2",
-        "M2-S44-T2"
-      ],
-      "detail": "The reasons for S37 option A and S42 option A say that user-level ~/.claude/CLAUDE.md is not shared through version control, so the CI runner does not receive it. That is the S44 root cause. In return, the reason for S44 option A says the guide names CLAUDE.md as the mechanism for giving CI-invoked Claude Code project context, which points to the S37 answer (project-level CLAUDE.md)."
-    },
-    {
-      "id": "M2-SC5-R2-F5",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S43-T2",
-        "M2-S37-T2"
-      ],
-      "detail": "The reason for S43 option E says CLAUDE.md is the place for project context such as review criteria, which gives away the S37 answer."
-    },
-    {
-      "id": "M2-SC5-R2-F6",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S37-T2",
-        "M2-S41-T2",
-        "M2-S45-T2",
-        "M2-S43-T2"
-      ],
-      "detail": "Three other questions reveal the S43 answers. S37 option C reason says --output-format json with --json-schema enforce output structure for machine parsing. S41 option C reason says a schema controls the structure of the output. S45 option D reason says the schema enforces the structure. Together these give away both correct S43 answers."
-    },
-    {
-      "id": "M2-SC5-R2-F7",
-      "rule": "D2",
-      "result": "fail",
-      "question_ids": [
-        "M2-S37-T2",
-        "M2-S41-T2",
-        "M2-S45-T2"
-      ],
-      "detail": "The same wrong idea appears as a wrong option in 3 questions. The idea is that an output schema (--output-format json / --json-schema / strict schema) controls the content of the output, not only its structure. In M2-S37-T2 C the schema is said to make findings follow the review criteria. In M2-S41-T2 C it is used to cut false-positive categories. In M2-S45-T2 C it is said to guarantee consistent value formats. The reasons rebut this idea the same way each time: the schema controls structure or syntax, not semantics or content."
-    },
-    {
-      "id": "M2-SC6-R2-F1",
-      "rule": "D2",
-      "result": "fail",
-      "question_ids": [
-        "M2-S49-T2",
-        "M2-S50-T1",
-        "M2-S51-T3",
-        "M2-S52-T1",
-        "M2-S56-T1"
-      ],
-      "detail": "The same wrong idea appears as a wrong option in 5 questions, more than the allowed 2. The idea is to let the model self-report a confidence score and use a fixed threshold on it to filter, route or automate. The options are S49 B, S50 A, S51 D, S52 D and S56 B, with S56 D as a variant."
-    },
-    {
-      "id": "M2-SC6-R2-F2",
-      "rule": "D3",
-      "result": "fail",
-      "question_ids": [
-        "M2-S49-T2",
-        "M2-S50-T1",
-        "M2-S51-T3",
-        "M2-S52-T1",
-        "M2-S56-T1"
-      ],
-      "detail": "At least 5 wrong options use a model's own confidence rating as a filter, threshold or trigger. Only one is allowed. S49 B routes fields below an uncalibrated 0.9 threshold. S50 A suppresses findings below a self-reported threshold. S51 D links automatically when the self-assessed score is above 0.9. S52 D suppresses findings below a fixed threshold. S56 B automates documents when the self-reported confidence is high. None of these is the calibrated field-level routing use that the guide teaches."
-    }
-  ],
+  "step6_findings": [],
   "errors": []
 }
