@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: none
 
 ## Question
@@ -43,9 +44,9 @@ Plain reason: the owner and the second review found each question good by the fo
 
 ## How we decided
 
-The owner decided: "I do not want another rewrite round. Record them as known limits of mock 1." The owner named the three new causes.
+The second review, by a Claude model in a Cowork session, found the three weak questions and named the three new causes. It recommended to stop the rewrites and to record the weak questions as known limits. The owner agreed and decided: 'I do not want another rewrite round. Record them as known limits of mock 1.'
 
-The owner has not confirmed the text of this file. One independent reviewer checked this file on 8 October 2026, and the assistant fixed its findings.
+One independent reviewer checked this file on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 
