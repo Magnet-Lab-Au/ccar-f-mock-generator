@@ -252,7 +252,7 @@
     },
     {
       "id": "G030",
-      "idea": "Access failure against a valid empty result",
+      "idea": "Access failure against a valid empty result, not silent or total failure",
       "points": [
         "2.2-S4",
         "5.3-K2",
@@ -262,7 +262,7 @@
     },
     {
       "id": "G031",
-      "idea": "Few tools per agent, scoped to its role",
+      "idea": "Few tools per agent, scoped to its role, with limited cross-role tools",
       "points": [
         "2.3-K1",
         "2.3-K2",
@@ -356,15 +356,27 @@
     },
     {
       "id": "G042",
-      "idea": "CLAUDE.md hierarchy: user, project, directory",
+      "idea": "Conventions for some files: path-scoped rules, not a directory CLAUDE.md",
       "points": [
         "3.1-K1",
+        "3.3-K1",
+        "3.3-K2",
+        "3.3-K3",
+        "3.3-S1",
+        "3.3-S2",
+        "3.3-S3"
+      ]
+    },
+    {
+      "id": "G043",
+      "idea": "User-level CLAUDE.md is not shared with the team",
+      "points": [
         "3.1-K2",
         "3.1-S1"
       ]
     },
     {
-      "id": "G043",
+      "id": "G044",
       "idea": "@import of standards files",
       "points": [
         "3.1-K3",
@@ -372,7 +384,7 @@
       ]
     },
     {
-      "id": "G044",
+      "id": "G045",
       "idea": "Split a large CLAUDE.md into .claude/rules/ files",
       "points": [
         "3.1-K4",
@@ -380,14 +392,14 @@
       ]
     },
     {
-      "id": "G045",
+      "id": "G046",
       "idea": "/memory shows the loaded memory files",
       "points": [
         "3.1-S4"
       ]
     },
     {
-      "id": "G046",
+      "id": "G047",
       "idea": "Project commands in .claude/commands/",
       "points": [
         "3.2-K1",
@@ -395,14 +407,14 @@
       ]
     },
     {
-      "id": "G047",
+      "id": "G048",
       "idea": "Skills with SKILL.md frontmatter",
       "points": [
         "3.2-K2"
       ]
     },
     {
-      "id": "G048",
+      "id": "G049",
       "idea": "Verbose exploration output fills the main context",
       "points": [
         "3.2-K3",
@@ -415,43 +427,31 @@
       ]
     },
     {
-      "id": "G049",
+      "id": "G050",
       "idea": "Personal skill variants with other names",
       "points": [
         "3.2-K4"
       ]
     },
     {
-      "id": "G050",
+      "id": "G051",
       "idea": "allowed-tools limits the tools of a skill",
       "points": [
         "3.2-S3"
       ]
     },
     {
-      "id": "G051",
+      "id": "G052",
       "idea": "argument-hint asks for missing arguments",
       "points": [
         "3.2-S4"
       ]
     },
     {
-      "id": "G052",
+      "id": "G053",
       "idea": "Skill on demand against CLAUDE.md always loaded",
       "points": [
         "3.2-S5"
-      ]
-    },
-    {
-      "id": "G053",
-      "idea": "Path-scoped rules load only for matching files",
-      "points": [
-        "3.3-K1",
-        "3.3-K2",
-        "3.3-K3",
-        "3.3-S1",
-        "3.3-S2",
-        "3.3-S3"
       ]
     },
     {
@@ -480,11 +480,20 @@
     },
     {
       "id": "G057",
-      "idea": "Concrete input and output examples",
+      "idea": "Concrete examples (few-shot, input and output) when instructions give inconsistent results",
       "points": [
         "3.5-K1",
         "3.5-S1",
-        "3.5-S4"
+        "3.5-S4",
+        "4.2-K1",
+        "4.2-K2",
+        "4.2-K3",
+        "4.2-K4",
+        "4.2-S1",
+        "4.2-S2",
+        "4.2-S3",
+        "4.2-S4",
+        "4.2-S5"
       ]
     },
     {
@@ -585,27 +594,6 @@
     },
     {
       "id": "G070",
-      "idea": "Few-shot examples for judgment and format",
-      "points": [
-        "4.2-K1",
-        "4.2-K2",
-        "4.2-K3",
-        "4.2-S1",
-        "4.2-S2",
-        "4.2-S3"
-      ]
-    },
-    {
-      "id": "G071",
-      "idea": "Few-shot examples for extraction from varied documents",
-      "points": [
-        "4.2-K4",
-        "4.2-S4",
-        "4.2-S5"
-      ]
-    },
-    {
-      "id": "G072",
       "idea": "Tool use with a JSON schema for structured output",
       "points": [
         "4.3-K1",
@@ -613,46 +601,34 @@
       ]
     },
     {
-      "id": "G073",
-      "idea": "Schema passes, values wrong: semantic errors",
+      "id": "G071",
+      "idea": "Schema passes, values wrong: semantic errors, and a retry with the exact errors",
       "points": [
         "4.3-K3",
+        "4.4-K1",
         "4.4-K4",
+        "4.4-S1",
         "4.4-S4"
       ]
     },
     {
-      "id": "G074",
-      "idea": "Enum values other and unclear in the schema",
+      "id": "G072",
+      "idea": "Schema design: optional fields, enum other and unclear",
       "points": [
         "4.3-K4",
+        "4.3-S4",
         "4.3-S5"
       ]
     },
     {
-      "id": "G075",
-      "idea": "Optional fields prevent invented values",
-      "points": [
-        "4.3-S4"
-      ]
-    },
-    {
-      "id": "G076",
+      "id": "G073",
       "idea": "Format normalization rules in the prompt",
       "points": [
         "4.3-S6"
       ]
     },
     {
-      "id": "G077",
-      "idea": "Retry with the exact validation errors",
-      "points": [
-        "4.4-K1",
-        "4.4-S1"
-      ]
-    },
-    {
-      "id": "G078",
+      "id": "G074",
       "idea": "Retry fails when the information is absent",
       "points": [
         "4.4-K2",
@@ -660,7 +636,7 @@
       ]
     },
     {
-      "id": "G079",
+      "id": "G075",
       "idea": "detected_pattern field to analyze dismissals",
       "points": [
         "4.4-K3",
@@ -668,7 +644,7 @@
       ]
     },
     {
-      "id": "G080",
+      "id": "G076",
       "idea": "Batch API for latency-tolerant work, sync for blocking",
       "points": [
         "4.5-K1",
@@ -677,14 +653,14 @@
       ]
     },
     {
-      "id": "G081",
+      "id": "G077",
       "idea": "Batch API has no multi-turn tool calls",
       "points": [
         "4.5-K3"
       ]
     },
     {
-      "id": "G082",
+      "id": "G078",
       "idea": "custom_id to match and resubmit failed requests",
       "points": [
         "4.5-K4",
@@ -692,21 +668,21 @@
       ]
     },
     {
-      "id": "G083",
+      "id": "G079",
       "idea": "Batch frequency from the SLA",
       "points": [
         "4.5-S2"
       ]
     },
     {
-      "id": "G084",
+      "id": "G080",
       "idea": "Refine the prompt on a sample before the batch",
       "points": [
         "4.5-S4"
       ]
     },
     {
-      "id": "G085",
+      "id": "G081",
       "idea": "Confidence scores, calibrated, route the review",
       "points": [
         "4.6-S3",
@@ -716,7 +692,7 @@
       ]
     },
     {
-      "id": "G086",
+      "id": "G082",
       "idea": "Case facts block outside the summarized history",
       "points": [
         "5.1-K1",
@@ -725,7 +701,7 @@
       ]
     },
     {
-      "id": "G087",
+      "id": "G083",
       "idea": "Lost in the middle: key findings first, headers",
       "points": [
         "5.1-K2",
@@ -733,7 +709,7 @@
       ]
     },
     {
-      "id": "G088",
+      "id": "G084",
       "idea": "Keep only the relevant data from verbose tool or agent output",
       "points": [
         "5.1-K3",
@@ -742,7 +718,7 @@
       ]
     },
     {
-      "id": "G089",
+      "id": "G085",
       "idea": "Dates and metadata in subagent output",
       "points": [
         "5.1-S5",
@@ -751,7 +727,7 @@
       ]
     },
     {
-      "id": "G090",
+      "id": "G086",
       "idea": "When to escalate: explicit criteria, a request for a human, not sentiment",
       "points": [
         "5.2-K1",
@@ -764,7 +740,7 @@
       ]
     },
     {
-      "id": "G091",
+      "id": "G087",
       "idea": "Several matches: ask for more identifiers",
       "points": [
         "5.2-K4",
@@ -772,14 +748,14 @@
       ]
     },
     {
-      "id": "G092",
+      "id": "G088",
       "idea": "Coverage annotations for gaps in the synthesis",
       "points": [
         "5.3-S4"
       ]
     },
     {
-      "id": "G093",
+      "id": "G089",
       "idea": "Scratchpad files against context degradation",
       "points": [
         "5.4-K1",
@@ -788,7 +764,7 @@
       ]
     },
     {
-      "id": "G094",
+      "id": "G090",
       "idea": "Crash recovery with state manifests",
       "points": [
         "5.4-K4",
@@ -796,14 +772,14 @@
       ]
     },
     {
-      "id": "G095",
+      "id": "G091",
       "idea": "Summarize one phase before the next subagents",
       "points": [
         "5.4-S3"
       ]
     },
     {
-      "id": "G096",
+      "id": "G092",
       "idea": "Aggregate accuracy hides weak segments",
       "points": [
         "5.5-K1",
@@ -812,7 +788,7 @@
       ]
     },
     {
-      "id": "G097",
+      "id": "G093",
       "idea": "Stratified random sampling of high-confidence output",
       "points": [
         "5.5-K2",
@@ -820,22 +796,16 @@
       ]
     },
     {
-      "id": "G098",
-      "idea": "Conflicting values: keep both, with sources",
+      "id": "G094",
+      "idea": "Conflicting or contested findings: keep both, with sources",
       "points": [
         "5.6-K3",
+        "5.6-S2",
         "5.6-S3"
       ]
     },
     {
-      "id": "G099",
-      "idea": "Sections for established and contested findings",
-      "points": [
-        "5.6-S2"
-      ]
-    },
-    {
-      "id": "G100",
+      "id": "G095",
       "idea": "Each content type in its own format",
       "points": [
         "5.6-S5"

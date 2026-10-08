@@ -43,14 +43,11 @@ KNOWN = [
 # 0046: M1-S38-T2 and M1-S45-T2. S38-T2 has the point 3.4-K4 of decision D010.
 KNOWN_ON_REWRITE_POINTS = [("3.4-K4", "5.4-S1")]
 
-# The pairs that the groups do not catch, with the reason.
-NOT_CAUGHT = {
-    # 0046: "The points 4.4-K1 and 4.4-K4 are not twins by their texts."
-    ("S53", "S54"),
-    # The notes: "two different correct answers: a rules file with a path, and a
-    # CLAUDE.md in the directory". 3.1-K1 is the CLAUDE.md hierarchy.
-    ("S33", "S40"),
-}
+# The pairs that the groups do not catch, with the reason. The second review of
+# the groups (8 October 2026) moved 3.1-K1 into the group of 3.3, and joined the
+# retry group of 4.4-K1 with the semantic errors of 4.4-K4. So each known pair is
+# caught now.
+NOT_CAUGHT = set()
 
 
 def known_pairs():
