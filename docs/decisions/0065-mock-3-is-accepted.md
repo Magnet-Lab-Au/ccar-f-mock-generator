@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html` shows mock 3 as built.
 
 ## Question
@@ -29,7 +30,7 @@ Plain reason: each condition of the build holds, and the owner found each marked
 
 The owner said: "Accept mock 3 and build its files, after the known limits and the step 6 findings from my earlier message are recorded." The assistant recorded decisions 0063 and 0064 first.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

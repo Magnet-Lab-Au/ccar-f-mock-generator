@@ -13,7 +13,7 @@ One entry for each work session. Newest entry first.
 
 - The design of the stricter rule B9, before mock 4 (decision 0062).
 - Mock 4 does not start until the owner says so.
-- The owner confirms the texts of decisions 0056 to 0065.
+- (Done on 9 October 2026: the owner confirmed decisions 0056 to 0065, one at a time. Decision 0041 got a status line that names decision 0061. One error that stays in a confirmed text: decision 0061 says that diagram 06 does not change, but its B6 popup got one sentence on flags.)
 
 ## 8 October 2026, mock 2 accepted and mock 3
 

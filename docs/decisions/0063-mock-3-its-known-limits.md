@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 
 ## Question
@@ -35,7 +36,7 @@ Plain reason: decision 0060 allows a close repeat as a known limit. For mock 2, 
 
 The assistant suggested the same treatment as for mock 2. The owner said "agree", and then: "Accept mock 3 and build its files, after the known limits and the step 6 findings from my earlier message are recorded."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

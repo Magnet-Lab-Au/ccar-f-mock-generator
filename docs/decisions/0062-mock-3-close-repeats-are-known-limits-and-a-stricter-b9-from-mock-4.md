@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. The design of the stricter B9 comes with its own decision.
 
 ## Question
@@ -31,7 +32,7 @@ Plain reason: a copy breaks decision 0060. The close repeats are allowed, but th
 
 The assistant showed the count and said that B9 is too weak, and asked the owner to look again at "Do not change rule B9". The owner decided: "for mock 4 we make it stricter but for now we accept mock 3 as it is with the 2 copies rewritten."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

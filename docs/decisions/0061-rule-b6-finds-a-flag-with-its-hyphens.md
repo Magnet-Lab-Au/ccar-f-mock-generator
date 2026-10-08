@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. Diagram 06 shows rule B6, and its text does not change.
 
 ## Question
@@ -27,7 +28,7 @@ A test checks "-p", "--print", "--json-schema", "--output-format" and "--resume"
 
 The assistant found the fault in the open slot M3-S48 and suggested option 1. The owner said yes.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

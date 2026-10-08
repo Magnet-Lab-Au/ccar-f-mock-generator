@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 
 ## Question
@@ -32,7 +33,7 @@ Plain reason: the owner and the second review marked each question good. For moc
 
 The assistant suggested the same treatment as for mock 2. The owner said "agree".
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

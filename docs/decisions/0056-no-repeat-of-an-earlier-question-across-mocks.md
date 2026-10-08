@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/11-repeats-across-mocks.html`. Diagrams 02 (step 1), 04 (step 2) and 06 (step 4) show the changes in their steps.
 
 ## Question
@@ -40,7 +41,7 @@ Not decided yet:
 
 The assistant counted the repeats of mock 2 with an independent agent, and explained why the plan did not stop them. It suggested the rule. The owner agreed with one change (a different angle, not a different correct action, and never the same wrong options). The assistant suggested the check in step 4, not in step 6, and the owner agreed.
 
-The owner has not confirmed the text of this file. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
+The owner confirmed the text of this file on 9 October 2026. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 

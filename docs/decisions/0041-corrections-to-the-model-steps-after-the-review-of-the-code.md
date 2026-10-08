@@ -1,7 +1,7 @@
 # 0041: Corrections to the model steps after the review of the code
 
 - Date: 7 October 2026
-- Status: accepted
+- Status: accepted. Decision 0061 changes item 2 for flags such as -p.
 - Text confirmed by the owner: 7 October 2026
 - Diagram: none
 

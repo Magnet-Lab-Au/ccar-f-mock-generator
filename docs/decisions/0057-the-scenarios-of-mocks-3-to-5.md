@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html`. Diagram 02 (step 1) shows the change in its step.
 
 ## Question
@@ -37,7 +38,7 @@ A script checked that each set is one of the 11 sets of decision 0027. Step 1 ma
 
 The owner gave the sets and asked for the check. The assistant checked them.
 
-The owner has not confirmed the text of this file. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
+The owner confirmed the text of this file on 9 October 2026. One independent reviewer checked decisions 0056 to 0058, diagrams 11 and 12 and the code on 8 October 2026, and the assistant fixed its findings.
 
 ## Exam guide points
 

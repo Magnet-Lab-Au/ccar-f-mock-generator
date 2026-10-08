@@ -1,7 +1,8 @@
 # 0060: Across mocks: no copy, and a close repeat is a known limit
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Item 4 is changed by decision 0062 from mock 4.
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes. Diagram 11 shows rule B9.
 
 ## Question
@@ -31,7 +32,7 @@ Plain reason: a participant who takes several mocks must not meet the same quest
 
 The owner decided: "across mocks, a copy of an earlier question (same scene, same answer, same wrong options) is not allowed. A close repeat is allowed and is recorded as a known limit. Complete independence is not a goal." The owner also decided: "Do not change rule B9." The owner asked for the comparison before the marking of mock 3. Item 5 records that request as a step of the work.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

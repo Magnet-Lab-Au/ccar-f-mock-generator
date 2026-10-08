@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none
 
 ## Question
@@ -38,7 +39,7 @@ Plain reason: decision 0060 says that a close repeat is allowed and is recorded 
 
 The owner decided: "Record these as known limits of mock 2, with no rewrites", "Ignore the 5 findings of rule D4", and "Accept mock 2 and build its files". The finding M2-SC5-R2-F7 was not in those instructions. The assistant suggested that it is a known limit too, and the owner agreed.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 
