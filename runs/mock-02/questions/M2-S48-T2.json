@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S48-T2",
+  "slot_id": "M2-S48",
+  "try": 2,
+  "point": "5.3-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S48-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system has a coordinator that sends each section of an insurance claim file to a subagent. When the medical-codes subagent times out on its code lookup, it reports only the failure type \"timeout\" to the coordinator. The coordinator then re-dispatches the whole section, so the medical-codes subagent re-extracts fields it had already finished and repeats the same failed lookup. Which change to the error report best fixes this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add few-shot examples to the coordinator's system prompt that show it re-dispatching only the failed part of a section after a subagent timeout.",
+      "correct": false,
+      "reason": "The coordinator cannot know which part failed or which fields are done unless the error report includes the attempted query and the partial results."
+    },
+    {
+      "letter": "B",
+      "text": "Add a numeric error code and a timestamp to the timeout report, so the coordinator can log each failure and track how often the lookup times out.",
+      "correct": false,
+      "reason": "An error code and a timestamp support logging, but they do not tell the coordinator what was attempted, which fields are done or which alternatives exist."
+    },
+    {
+      "letter": "C",
+      "text": "Replace the failure type with a longer free-text message that describes the timeout in detail and asks the coordinator to handle the section more carefully.",
+      "correct": false,
+      "reason": "A detailed description of the timeout still omits the attempted query, the partial results and the alternatives, which the coordinator needs for an informed recovery decision."
+    },
+    {
+      "letter": "D",
+      "text": "Add the attempted lookup query, the fields already extracted, and possible alternatives such as a different lookup source, alongside the failure type.",
+      "correct": true,
+      "reason": "Structured error context with what was attempted, partial results and alternatives lets the coordinator skip finished work and choose a different recovery instead of repeating the same lookup."
+    }
+  ]
+}

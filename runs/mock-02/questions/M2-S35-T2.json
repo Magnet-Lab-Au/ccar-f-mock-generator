@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S35-T2",
+  "slot_id": "M2-S35",
+  "try": 2,
+  "point": "3.4-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S35-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team wants to split the monolithic service that runs your CI pipeline's automated code reviews into separate microservices for review, test generation, and pull request feedback. A developer asked Claude Code to do this restructuring with direct execution. After many files were edited, the team found that the chosen service boundaries conflicted with the deployment infrastructure, and most edits had to be redone. Which change to the way of working would most likely have prevented this rework?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start tasks like this in plan mode so that Claude Code explores the codebase and a service design is reviewed before any file is changed.",
+      "correct": true,
+      "reason": "Microservice restructuring has architectural implications, and plan mode is meant for such tasks. It allows safe exploration and design before changes are committed, which prevents costly rework."
+    },
+    {
+      "letter": "B",
+      "text": "Keep direct execution but run the restructuring non-interactively with the -p flag so that it finishes in the pipeline without interruptions.",
+      "correct": false,
+      "reason": "The -p flag only runs Claude Code in non-interactive mode for CI. It still commits to changes without exploring the codebase or designing the service boundaries first. That design step is what plan mode provides."
+    },
+    {
+      "letter": "C",
+      "text": "Keep direct execution but run /compact more often so that Claude Code keeps the earlier service boundary decisions in its context window.",
+      "correct": false,
+      "reason": "/compact is a context management command. It adds no exploration or design step, so the boundaries are still chosen without a design review. An architectural task like this calls for plan mode."
+    },
+    {
+      "letter": "D",
+      "text": "Keep direct execution but first add a list of all the planned new service names to the project CLAUDE.md file for Claude Code.",
+      "correct": false,
+      "reason": "A list of names gives no exploration of the codebase and no design that is checked against the infrastructure. Direct execution suits only simple, well-scoped changes, and this task has architectural implications."
+    }
+  ]
+}

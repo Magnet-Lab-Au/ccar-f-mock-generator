@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S58-T2",
+  "slot_id": "M2-S58",
+  "try": 2,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S58-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads insurance claim forms and flags three categories for the claims adjusters: missing signatures, date inconsistencies, and possible fraud indicators. Most fraud-indicator flags were false positives, and the adjusters began to ignore all flags. Last week you temporarily disabled the fraud-indicator category, and the adjusters now act on the other flags again. Which plan for the fraud-indicator category best fits the reason for disabling it?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rewrite the fraud-indicator prompt with explicit criteria for which patterns to flag, test its false-positive rate, and re-enable it once precision is acceptable.",
+      "correct": true,
+      "reason": "The guide says to disable a high false-positive category temporarily to restore trust while you improve the prompt for that category, using explicit criteria instead of vague instructions."
+    },
+    {
+      "letter": "B",
+      "text": "Leave the fraud-indicator category disabled permanently, because the adjusters now trust the missing-signature and date-inconsistency flags again.",
+      "correct": false,
+      "reason": "The guide describes the disabling as temporary, done while the prompt for that category is improved; a permanent removal skips the prompt improvement and gives up the category."
+    },
+    {
+      "letter": "C",
+      "text": "Re-enable the fraud-indicator category with its current prompt as soon as the adjusters' trust in the other two categories has fully recovered.",
+      "correct": false,
+      "reason": "The prompt is unchanged, so the high false-positive rate returns, and the guide states that a high false-positive category undermines confidence in the accurate categories."
+    },
+    {
+      "letter": "D",
+      "text": "Merge the fraud-indicator checks into the missing-signature category so that those flags appear under a label the adjusters already trust.",
+      "correct": false,
+      "reason": "The false positives still reach the adjusters and now sit inside an accurate category; the guide states that high false-positive results undermine confidence in accurate categories."
+    }
+  ]
+}

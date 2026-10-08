@@ -1,0 +1,121 @@
+{
+  "question_id": "M2-S35-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B8",
+      "detail": "This is a close copy of sample question 5. Both scenes restructure a monolith into microservices, with decisions about service boundaries. In both, the correct action (option A) is to start in plan mode so that Claude Code explores the codebase and designs the approach before changing files. The only differences are the CI framing and the after-the-fact rework. The scene and the correct action are the same.",
+      "letter": "A",
+      "point": "3.4-S1",
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B6",
+      "detail": "The feature \"-p\" is not in the exam guide.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "6c80f11aa02af00ff4564488506c05f8e7bf2dfde031e6a7764a3cd61456c7c9",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Microservice restructuring is a large, multi-file change with architectural implications. Plan mode lets Claude Code explore the codebase and propose a service design for review before any file is edited, so conflicts with the deployment infrastructure surface early. The other options keep direct execution, so none of them prevents the costly rework.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "fail",
+      "finding": "This is a close copy of sample question 5. Both scenes restructure a monolith into microservices, with decisions about service boundaries. In both, the correct action (option A) is to start in plan mode so that Claude Code explores the codebase and designs the approach before changing files. The only differences are the CI framing and the after-the-fact rework. The scene and the correct action are the same.",
+      "letter": "A",
+      "point": "3.4-S1"
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "direct execution",
+      "found": true
+    },
+    {
+      "name": "-p",
+      "found": false
+    },
+    {
+      "name": "/compact",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

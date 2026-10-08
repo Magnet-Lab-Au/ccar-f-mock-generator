@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S59-T2",
+  "slot_id": "M2-S59",
+  "try": 2,
+  "point": "5.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S59-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls product specifications from supplier datasheets and independent test lab reports into a procurement database. A coordinator agent sends documents to an extraction subagent and passes the results to a synthesis step. An audit finds a part whose two credible sources state different maximum operating temperatures, yet the database shows one value and the coordinator never saw the discrepancy. Logs show that the extraction subagent saw both values but output only one. Which design change best fixes this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Let the synthesis step reread both original source documents and resolve each discrepancy on its own, without the coordinator reviewing the conflicting values first.",
+      "correct": false,
+      "reason": "The guide says that the coordinator decides how to reconcile annotated conflicts before the results pass to synthesis. Moving this decision into the synthesis step skips the coordinator."
+    },
+    {
+      "letter": "B",
+      "text": "Instruct the extraction subagent to always prefer the independent test lab report over the supplier datasheet whenever the two sources disagree on any numeric product specification value.",
+      "correct": false,
+      "reason": "A fixed source preference still selects one credible value and drops the other. The guide says to annotate conflicts with source attribution rather than arbitrarily selecting one value."
+    },
+    {
+      "letter": "C",
+      "text": "Require the extraction subagent to complete its analysis with both temperature values included and annotated with their sources, so the coordinator reconciles them before synthesis.",
+      "correct": true,
+      "reason": "The guide says to complete document analysis with conflicting values included and explicitly annotated. The coordinator then decides how to reconcile them before passing the results to synthesis."
+    },
+    {
+      "letter": "D",
+      "text": "Keep a single extracted temperature value but have the extraction subagent lower its field-level confidence score whenever the source documents disagree on that value.",
+      "correct": false,
+      "reason": "A lower confidence score still discards the conflicting value and its source. The guide says to include both conflicting values with source attribution so that the coordinator can reconcile them."
+    }
+  ]
+}

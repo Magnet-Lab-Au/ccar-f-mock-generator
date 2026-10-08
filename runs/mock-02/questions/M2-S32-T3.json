@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S32-T3",
+  "slot_id": "M2-S32",
+  "try": 3,
+  "point": "3.3-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S32-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to update GraphQL schema files in pull requests. The schema conventions live in .claude/rules/graphql.md with the frontmatter paths: [\"schema/*.graphql\"]. The schema files are spread across many directories, for example services/orders/api/order.graphql and libs/shared/types.graphql. CI logs show that Claude Code never applies the conventions when it edits these files. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The glob pattern matches only GraphQL files directly inside a root-level schema directory, so schema files in other directories never activate the rule.",
+      "correct": true,
+      "reason": "Glob patterns decide which files activate a path-specific rule; a type-based pattern such as **/*.graphql would match these files regardless of directory location."
+    },
+    {
+      "letter": "B",
+      "text": "A rule in .claude/rules/ applies only to files in the directory that contains the rule file, so it cannot reach files under services/ or libs/.",
+      "correct": false,
+      "reason": "Rule activation depends on the glob patterns in the YAML frontmatter paths field, not on where the rule file sits, so this is not the cause."
+    },
+    {
+      "letter": "C",
+      "text": "Path-scoped rules load only when Claude Code works in plan mode, and the CI job runs Claude Code in direct execution mode instead.",
+      "correct": false,
+      "reason": "Path-scoped rules load when Claude Code edits files that match their glob patterns; plan mode or direct execution does not control their loading."
+    },
+    {
+      "letter": "D",
+      "text": "A YAML frontmatter paths field can name only one directory per rule, so the team needs a separate rule file for each directory with schema files.",
+      "correct": false,
+      "reason": "Glob patterns such as **/*.graphql match files by type across all directories, so a single rule file can cover schema files anywhere in the codebase."
+    }
+  ]
+}

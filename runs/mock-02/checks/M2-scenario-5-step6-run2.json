@@ -1,0 +1,182 @@
+{
+  "mock": 2,
+  "scenario": 5,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S31-T2",
+            "M2-S35-T3"
+          ],
+          "detail": "Both questions share one scene. In each, the CI review tooling must choose between two ways of posting review results (a webhook service versus a job runner or message queue) that have different infrastructure requirements. In each, the correct action is to use plan mode to settle the architectural choice before making changes, which avoids costly rework."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S31-T2",
+            "M2-S35-T3"
+          ],
+          "detail": "The reason for S35 option D says that choosing between approaches with different infrastructure requirements calls for plan mode before files change, which prevents costly rework. That is the S31 answer. The reason for S31 option D says the guide calls for plan mode when approaches have different infrastructure requirements, which gives away the S35 answer."
+        },
+        {
+          "question_ids": [
+            "M2-S35-T3",
+            "M2-S40-T1"
+          ],
+          "detail": "The reason for S35 option B says that adding a validation conditional to one function is a simple, well-scoped change suited to direct execution. That gives away the S40 answer."
+        },
+        {
+          "question_ids": [
+            "M2-S37-T2",
+            "M2-S42-T2",
+            "M2-S44-T2"
+          ],
+          "detail": "The reasons for S37 option A and S42 option A say that user-level ~/.claude/CLAUDE.md is not shared through version control, so the CI runner does not receive it. That is the S44 root cause. In return, the reason for S44 option A says the guide names CLAUDE.md as the mechanism for giving CI-invoked Claude Code project context, which points to the S37 answer (project-level CLAUDE.md)."
+        },
+        {
+          "question_ids": [
+            "M2-S43-T2",
+            "M2-S37-T2"
+          ],
+          "detail": "The reason for S43 option E says CLAUDE.md is the place for project context such as review criteria, which gives away the S37 answer."
+        },
+        {
+          "question_ids": [
+            "M2-S37-T2",
+            "M2-S41-T2",
+            "M2-S45-T2",
+            "M2-S43-T2"
+          ],
+          "detail": "Three other questions reveal the S43 answers. S37 option C reason says --output-format json with --json-schema enforce output structure for machine parsing. S41 option C reason says a schema controls the structure of the output. S45 option D reason says the schema enforces the structure. Together these give away both correct S43 answers."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S37-T2",
+            "M2-S41-T2",
+            "M2-S45-T2"
+          ],
+          "detail": "The same wrong idea appears as a wrong option in 3 questions. The idea is that an output schema (--output-format json / --json-schema / strict schema) controls the content of the output, not only its structure. In M2-S37-T2 C the schema is said to make findings follow the review criteria. In M2-S41-T2 C it is used to cut false-positive categories. In M2-S45-T2 C it is said to guarantee consistent value formats. The reasons rebut this idea the same way each time: the schema controls structure or syntax, not semantics or content."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M2-SC5-R2-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M2-S31-T2",
+        "M2-S35-T3"
+      ],
+      "detail": "Both questions share one scene. In each, the CI review tooling must choose between two ways of posting review results (a webhook service versus a job runner or message queue) that have different infrastructure requirements. In each, the correct action is to use plan mode to settle the architectural choice before making changes, which avoids costly rework."
+    },
+    {
+      "id": "M2-SC5-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S31-T2",
+        "M2-S35-T3"
+      ],
+      "detail": "The reason for S35 option D says that choosing between approaches with different infrastructure requirements calls for plan mode before files change, which prevents costly rework. That is the S31 answer. The reason for S31 option D says the guide calls for plan mode when approaches have different infrastructure requirements, which gives away the S35 answer."
+    },
+    {
+      "id": "M2-SC5-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S35-T3",
+        "M2-S40-T1"
+      ],
+      "detail": "The reason for S35 option B says that adding a validation conditional to one function is a simple, well-scoped change suited to direct execution. That gives away the S40 answer."
+    },
+    {
+      "id": "M2-SC5-R2-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S37-T2",
+        "M2-S42-T2",
+        "M2-S44-T2"
+      ],
+      "detail": "The reasons for S37 option A and S42 option A say that user-level ~/.claude/CLAUDE.md is not shared through version control, so the CI runner does not receive it. That is the S44 root cause. In return, the reason for S44 option A says the guide names CLAUDE.md as the mechanism for giving CI-invoked Claude Code project context, which points to the S37 answer (project-level CLAUDE.md)."
+    },
+    {
+      "id": "M2-SC5-R2-F5",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S43-T2",
+        "M2-S37-T2"
+      ],
+      "detail": "The reason for S43 option E says CLAUDE.md is the place for project context such as review criteria, which gives away the S37 answer."
+    },
+    {
+      "id": "M2-SC5-R2-F6",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S37-T2",
+        "M2-S41-T2",
+        "M2-S45-T2",
+        "M2-S43-T2"
+      ],
+      "detail": "Three other questions reveal the S43 answers. S37 option C reason says --output-format json with --json-schema enforce output structure for machine parsing. S41 option C reason says a schema controls the structure of the output. S45 option D reason says the schema enforces the structure. Together these give away both correct S43 answers."
+    },
+    {
+      "id": "M2-SC5-R2-F7",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M2-S37-T2",
+        "M2-S41-T2",
+        "M2-S45-T2"
+      ],
+      "detail": "The same wrong idea appears as a wrong option in 3 questions. The idea is that an output schema (--output-format json / --json-schema / strict schema) controls the content of the output, not only its structure. In M2-S37-T2 C the schema is said to make findings follow the review criteria. In M2-S41-T2 C it is used to cut false-positive categories. In M2-S45-T2 C it is said to guarantee consistent value formats. The reasons rebut this idea the same way each time: the schema controls structure or syntax, not semantics or content."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M2-S31-T2": "cb4a93b7f01aea7f42640e82370836d1c92d60f3774990ed04c5a5b85706164e",
+    "M2-S32-T3": "8322bca29130aebc119253fbec831f553a9c5d85b4cc6c6c9e57e610a02e3b34",
+    "M2-S33-T2": "9c0044b8a2024d2f92b25c2d3fd892cfb8ca926340028921c014f67cf3a95084",
+    "M2-S34-T1": "3d8b0b16ada670f6a15f96203cc03d3870c449cc05b0e1af77df80c8baf1d562",
+    "M2-S35-T3": "aa04ed8f232a0e244d6355bf4256873535a5c6563e244c5450ee4738f237d919",
+    "M2-S36-T1": "eb8fe93fc395e912d902419ef340b26584fa4116dc1731c0ab571743dbf6a54a",
+    "M2-S37-T2": "fa97bf58bb371cee556ba54d78c0d56e687db6551aed96b26c18738f082d20e5",
+    "M2-S38-T3": "22b17e0d1091ca082e4b7b432a70f597d5810f0996b87f544ab3782726a65566",
+    "M2-S39-T1": "c409585674a78dc6b7091120e4b7fff91c1f17ccee12dabb64f5e78a606a87dc",
+    "M2-S40-T1": "a050f747dcb6f37a2875499702ebdc70e33c7dc869506016ed953c0539ff0c80",
+    "M2-S41-T2": "e9a489a6d59ad4b6f79eac76daf8d05fa29d78636314f8bfbd8c09d773b86353",
+    "M2-S42-T2": "e5e1498698a940edf323734ad126b087fe5454aeb370a432b11fde0ec55bc223",
+    "M2-S43-T2": "66a9c041655df3d0c18097aa903a40587d11d79f78a0f44bf494c642e556253a",
+    "M2-S44-T2": "c1f753d6a4a2d425cabc17560ccaf90a4badcff7a6803ac0465efd5020489284",
+    "M2-S45-T2": "e6699dd3ee0187561a3c2313e01fc45887f59703f9a6268fe2fded7d124f23a4"
+  },
+  "date": "2026-10-08"
+}

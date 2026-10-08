@@ -1,0 +1,51 @@
+{
+  "mock": 2,
+  "scenario": 3,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [],
+  "verdict": "pass",
+  "fingerprints": {
+    "M2-S01-T1": "2ce6758e06ea9b8508c7d4e8659a71b970d6cedb5e0a117a59a55bdb804a6ebd",
+    "M2-S02-T2": "06324c5946678bc7dfc0c4fa7bd6962acfbf85e883dceeff5b944ac505439eec",
+    "M2-S03-T1": "4f40bc017bf3cdefaf72cb8f56e12e865b0bae5b3a1c467c2211a3e01a7b72c8",
+    "M2-S04-T1": "0d7507b12e9017841819ef72d45da02c7a26e0a6385018e04e114828c2d36d9e",
+    "M2-S05-T1": "6cec60710ae622106e053bdf37e46f55392606e978a6f51177c3a23045688ed6",
+    "M2-S06-T2": "a1332273bf996f3186aa802b7489fe45ad79f0a4d7fa0aee0f6acdd0067483fd",
+    "M2-S07-T1": "bc6c993f4d66b1d14690bec7520fb5a4a4137a2b94614e6505dc945c9b21b5c2",
+    "M2-S08-T2": "f1e90d2fe98245f70277044f55b81d1d2b677cc0cdf9d4bd6f9777324894e8e6",
+    "M2-S09-T1": "204cef10149bc6b94b5a6a5fb605b2da4ea4e6a23ba030445ab0152800b2c542",
+    "M2-S10-T2": "0175bdbe5ac6baa4da723848fcf6753140bd1cb5f4d1dad6fdf21f12ad38f48c",
+    "M2-S11-T1": "b1a4eaa0c41ddc3dd4d11cc5645f1918c1aa7d83b15b9ccdb89f75e9c578cb2f",
+    "M2-S12-T2": "2f9b7ed1a1eec190621e28e7331762b9e979a42506928e28a0ebbc9462ef38d6",
+    "M2-S13-T1": "bb08af3ca5690bfec14faabc64f3ea9020d48916d47481b110cbeb4532cab126",
+    "M2-S14-T1": "3f248566c1ea21c1844263fe357c3ccfd8a400c11b6cc583c68f198faf2e9ecf",
+    "M2-S15-T1": "e042a8fd497e1df8e166157b5b2c527ded9d890d27a3a2e43879c341b7449f1e"
+  },
+  "date": "2026-10-08"
+}

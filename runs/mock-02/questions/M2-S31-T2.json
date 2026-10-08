@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S31-T2",
+  "slot_id": "M2-S31",
+  "try": 2,
+  "point": "3.4-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S31-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team needed to restructure the CI review step by choosing between posting pull request feedback through a new webhook service or through the existing job runner. The two approaches have different infrastructure requirements, and the change spans about 40 files. A developer gave Claude Code the whole task in direct execution. After 25 files were edited for the webhook approach, the team found that the job runner fit better and reverted the work. Which diagnosis best explains the costly rework?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The choice between the two approaches was made during implementation instead of in a plan mode investigation before switching to direct execution.",
+      "correct": true,
+      "reason": "The guide combines plan mode for investigation and design with direct execution for implementation; plan mode settles architectural choices before changes are committed and prevents costly rework."
+    },
+    {
+      "letter": "B",
+      "text": "The Explore subagent was not used, so verbose discovery output filled the main context and Claude Code lost track of which files were already edited.",
+      "correct": false,
+      "reason": "The guide uses the Explore subagent to isolate verbose discovery output and preserve context; the rework here came from picking the wrong approach, not from context exhaustion."
+    },
+    {
+      "letter": "C",
+      "text": "Direct execution was used to apply the file edits, but direct execution suits only single-file changes, even after a plan for the whole task is approved.",
+      "correct": false,
+      "reason": "The guide recommends direct execution for implementing an already planned approach, such as executing a planned migration, so using it for the edits was correct."
+    },
+    {
+      "letter": "D",
+      "text": "The developer did not trial the webhook approach on a single file in direct execution before applying it to the remaining files.",
+      "correct": false,
+      "reason": "A one-file trial does not explore architectural implications; the guide calls for plan mode when there are multiple valid approaches with different infrastructure requirements across many files."
+    }
+  ]
+}

@@ -1,16 +1,9 @@
 {
   "mock": 2,
   "date": "2026-10-08",
-  "state": "in_work",
+  "state": "ready_to_mark",
   "waiting_for": [
-    "finding M2-SC4-R1-F1 of step 6: ignore or rewrite",
-    "finding M2-SC5-R1-F2 of step 6: ignore or rewrite",
-    "finding M2-SC5-R1-F3 of step 6: ignore or rewrite",
-    "finding M2-SC5-R1-F4 of step 6: ignore or rewrite",
-    "finding M2-SC5-R1-F5 of step 6: ignore or rewrite",
-    "finding M2-SC6-R1-F1 of step 6: ignore or rewrite",
-    "finding M2-SC6-R1-F2 of step 6: ignore or rewrite",
-    "start the program"
+    "marks of round 2"
   ],
   "slots": [
     {
@@ -64,9 +57,9 @@
     },
     {
       "slot_id": "M2-S08",
-      "status": "to_write",
-      "question_id": "M2-S08-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S08-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -78,9 +71,9 @@
     },
     {
       "slot_id": "M2-S10",
-      "status": "to_write",
-      "question_id": "M2-S10-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S10-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -92,9 +85,9 @@
     },
     {
       "slot_id": "M2-S12",
-      "status": "to_write",
-      "question_id": "M2-S12-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S12-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -141,9 +134,9 @@
     },
     {
       "slot_id": "M2-S19",
-      "status": "to_write",
-      "question_id": "M2-S19-T2",
-      "tries": 2,
+      "status": "passed",
+      "question_id": "M2-S19-T3",
+      "tries": 3,
       "open_reasons": []
     },
     {
@@ -176,9 +169,9 @@
     },
     {
       "slot_id": "M2-S24",
-      "status": "to_write",
-      "question_id": "M2-S24-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S24-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -225,23 +218,23 @@
     },
     {
       "slot_id": "M2-S31",
-      "status": "to_write",
-      "question_id": "M2-S31-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S31-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
       "slot_id": "M2-S32",
-      "status": "to_write",
-      "question_id": "M2-S32-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S32-T3",
+      "tries": 3,
       "open_reasons": []
     },
     {
       "slot_id": "M2-S33",
-      "status": "to_write",
-      "question_id": "M2-S33-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S33-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -253,9 +246,9 @@
     },
     {
       "slot_id": "M2-S35",
-      "status": "to_write",
-      "question_id": "M2-S35-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S35-T3",
+      "tries": 3,
       "open_reasons": []
     },
     {
@@ -274,9 +267,9 @@
     },
     {
       "slot_id": "M2-S38",
-      "status": "to_write",
-      "question_id": "M2-S38-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S38-T3",
+      "tries": 3,
       "open_reasons": []
     },
     {
@@ -295,9 +288,9 @@
     },
     {
       "slot_id": "M2-S41",
-      "status": "to_write",
-      "question_id": "M2-S41-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S41-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -344,9 +337,9 @@
     },
     {
       "slot_id": "M2-S48",
-      "status": "to_write",
-      "question_id": "M2-S48-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S48-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -414,16 +407,16 @@
     },
     {
       "slot_id": "M2-S58",
-      "status": "to_write",
-      "question_id": "M2-S58-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S58-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
       "slot_id": "M2-S59",
-      "status": "to_write",
-      "question_id": "M2-S59-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M2-S59-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -434,85 +427,6 @@
       "open_reasons": []
     }
   ],
-  "step6_findings": [
-    {
-      "id": "M2-SC4-R1-F1",
-      "rule": "D2",
-      "result": "fail",
-      "question_ids": [
-        "M2-S24-T1",
-        "M2-S25-T2",
-        "M2-S27-T1"
-      ],
-      "detail": "The same wrong idea appears as a wrong option in 3 questions. The idea is to rely on a system-prompt or prompt instruction where a programmatic guarantee or tool restriction is needed. M2-S24-T1 E uses a firm system prompt instruction to call map_module_dependencies first. M2-S25-T2 B keeps Bash and adds a system prompt instruction limiting its use. M2-S27-T1 A and C use a system prompt sentence or a Task-prompt reminder to stay read-only. Each reason rejects the option for the same cause: a prompt instruction is only probabilistic guidance and leaves the unwanted behavior possible. That exceeds the limit of 2 questions."
-    },
-    {
-      "id": "M2-SC5-R1-F2",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S37-T2",
-        "M2-S43-T2"
-      ],
-      "detail": "S37 option C names \"--output-format json with --json-schema\" as the flags that make the pipeline produce structured findings. That is exactly the pair of correct answers in S43."
-    },
-    {
-      "id": "M2-SC5-R1-F3",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S40-T1",
-        "M2-S31-T1",
-        "M2-S35-T1"
-      ],
-      "detail": "S40 option A says to start in plan mode and then switch to direct execution, \"as is done for large library migrations\". This gives away the correct workflow for the library-migration questions S31 and S35."
-    },
-    {
-      "id": "M2-SC5-R1-F4",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S45-T2",
-        "M2-S43-T2"
-      ],
-      "detail": "S45's stem and option D present --json-schema as the CI flag that guarantees valid JSON output. This points to a correct answer of S43."
-    },
-    {
-      "id": "M2-SC5-R1-F5",
-      "rule": "D4",
-      "result": "fail",
-      "question_ids": [
-        "M2-S44-T2",
-        "M2-S42-T2"
-      ],
-      "detail": "S44 option B describes splitting one long CLAUDE.md into topic-specific files in .claude/rules/. This hints at S42's correct answer C."
-    },
-    {
-      "id": "M2-SC6-R1-F1",
-      "rule": "D2",
-      "result": "fail",
-      "question_ids": [
-        "M2-S49-T2",
-        "M2-S50-T1",
-        "M2-S51-T3",
-        "M2-S52-T1",
-        "M2-S56-T1"
-      ],
-      "detail": "One wrong idea is a wrong option in five questions: the model reports its own confidence and an uncalibrated threshold or cutoff on that self-rating filters, routes or automates the output. These options are S49 B, S50 A, S51 D, S52 D and S56 B, and S56 D is a related case. The rule allows at most 2 questions per wrong idea. Other repeated ideas stay within 2 questions: generic error status or terminating the workflow (S48, S57), silent suppression as success (S48, S57), 'be conservative' instructions (S50, S58), prose summaries (S47, S55), and schema or strict mode treated as proof of correctness (S52, S60)."
-    },
-    {
-      "id": "M2-SC6-R1-F2",
-      "rule": "D3",
-      "result": "fail",
-      "question_ids": [
-        "M2-S49-T2",
-        "M2-S50-T1",
-        "M2-S51-T3",
-        "M2-S52-T1",
-        "M2-S56-T1"
-      ],
-      "detail": "Several wrong options use the model's self-rated confidence as a filter, threshold or trigger. S49 B routes fields below an uncalibrated fixed 0.9 threshold. S50 A suppresses findings below a self-reported score threshold. S51 D links automatically when self-assessed confidence exceeds 0.9. S52 D suppresses findings below a fixed self-reported threshold. S56 B automates documents where the model reports high document-level confidence. None of these is the calibrated, field-level use for review routing that the guide teaches, so the count is far above the allowed maximum of one."
-    }
-  ],
+  "step6_findings": [],
   "errors": []
 }

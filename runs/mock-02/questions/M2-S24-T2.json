@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S24-T2",
+  "slot_id": "M2-S24",
+  "try": 2,
+  "point": "2.3-S4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M2-S24-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your agent helps engineers understand a legacy codebase. It must call the MCP tool index_legacy_modules before it uses Grep or Read. An engineer set tool_choice to {\"type\": \"tool\", \"name\": \"index_legacy_modules\"} on every request in the agentic loop. The index is now always built first, but the agent calls index_legacy_modules again on every turn and never reaches Grep or Read. Which two statements about this design are accurate?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The loop stalls because the forced setting stays on later requests, while the following steps should be processed in follow-up turns without that forcing.",
+      "correct": true,
+      "reason": "The pattern forces only the first call and then processes the later steps in follow-up turns. Keeping the forced setting makes the model call the same tool on every turn."
+    },
+    {
+      "letter": "B",
+      "text": "The loop stalls because the MCP server returns its index results without the isError flag, so the agent treats each call as unfinished and retries it.",
+      "correct": false,
+      "reason": "The isError flag marks a failed tool call. A successful result without it does not cause repeats. The forced tool_choice on each request makes the model call the tool again."
+    },
+    {
+      "letter": "C",
+      "text": "Forced tool selection works only for built-in tools such as Grep and Read, so the MCP tool must be made first through its tool description instead.",
+      "correct": false,
+      "reason": "Forced selection names any tool, such as the custom extract_metadata tool in the guide's example. It already works here, because the index is always built first."
+    },
+    {
+      "letter": "D",
+      "text": "Forcing index_legacy_modules on the first request is the right mechanism, because it guarantees that this tool is called before any other tool.",
+      "correct": true,
+      "reason": "Forced tool selection makes the model call the named tool, so it ensures that a specific tool is called first. This is the first part of the pattern."
+    },
+    {
+      "letter": "E",
+      "text": "The loop stalls because the agent has too many tools, so removing Grep and Glob from allowedTools would let it move past the indexing step.",
+      "correct": false,
+      "reason": "Too many tools degrades tool selection, but here the forced tool_choice decides the tool. Fewer tools would not stop the forced call on each request."
+    }
+  ]
+}

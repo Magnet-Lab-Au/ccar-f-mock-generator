@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S12-T2",
+  "slot_id": "M2-S12",
+  "try": 2,
+  "point": "1.6-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S12-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the document analysis subagent once reviewed 15 sources in one prompt and gave shallow notes. You changed it to analyze each source in its own focused pass, and the notes are now thorough. However, the final reports still present claims from different sources that contradict each other without any note. Which change best fixes this remaining problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Return to a single review of all 15 sources in one prompt so that the subagent can see every source together.",
+      "correct": false,
+      "reason": "One pass over many items brings back the attention dilution that caused the shallow notes. The guide recommends per-item passes plus a separate integration pass instead."
+    },
+    {
+      "letter": "B",
+      "text": "Tell each per-source pass to also check whether its source contradicts any of the other sources in the batch.",
+      "correct": false,
+      "reason": "Each local pass analyzes only its own source, so it cannot compare that source with the others. Cross-item issues belong in a separate integration pass."
+    },
+    {
+      "letter": "C",
+      "text": "Ask each per-source pass for longer and more detailed notes so that the final report has more evidence for each claim.",
+      "correct": false,
+      "reason": "More detail in the local passes still leaves out the cross-source comparison. Only a separate integration pass looks across the per-source findings."
+    },
+    {
+      "letter": "D",
+      "text": "Add a separate integration pass after the per-source passes that compares their findings and flags contradictions between sources.",
+      "correct": true,
+      "reason": "Prompt chaining pairs focused per-item passes with a separate cross-item integration pass. The integration pass sees the findings from all sources, so it can detect contradictions between them."
+    }
+  ]
+}

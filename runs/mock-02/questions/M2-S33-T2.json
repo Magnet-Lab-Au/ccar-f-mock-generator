@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S33-T2",
+  "slot_id": "M2-S33",
+  "try": 2,
+  "point": "3.5-K3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S33-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team plans several upcoming tasks for Claude Code in the CI/CD pipeline. You want to use the interview pattern, where Claude asks you questions before it implements anything, only where it adds the most value. For which task is the interview pattern the best fit?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Extending a pull-request labeler whose expected behavior and edge cases are already written down as a complete test suite before implementation.",
+      "correct": false,
+      "reason": "With a test suite already covering expected behavior and edge cases, test-driven iteration fits best: implement, then share test failures with Claude to guide progressive improvement."
+    },
+    {
+      "letter": "B",
+      "text": "Building a retry mechanism for flaky integration tests, a domain that is new to the team, where failure modes and retry limits are still unclear.",
+      "correct": true,
+      "reason": "The interview pattern has Claude ask questions that surface considerations the developer may not have anticipated, such as failure modes, before it implements a solution in an unfamiliar domain."
+    },
+    {
+      "letter": "C",
+      "text": "Fixing two independent bugs in the test-generation script, where each bug has a known cause and a clear expected result.",
+      "correct": false,
+      "reason": "Independent problems with known causes are best fixed sequentially, one at a time, so there are no unanticipated design considerations for an interview to surface."
+    },
+    {
+      "letter": "D",
+      "text": "Reformatting review comments into a fixed layout that Claude keeps interpreting differently, although the team already knows exactly what output it expects.",
+      "correct": false,
+      "reason": "When prose descriptions are interpreted inconsistently and the expected output is known, 2-3 concrete input/output examples are the most effective way to communicate the transformation."
+    }
+  ]
+}

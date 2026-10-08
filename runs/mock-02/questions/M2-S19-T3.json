@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S19-T3",
+  "slot_id": "M2-S19",
+  "try": 3,
+  "point": "1.4-K3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S19-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your agent helps engineers modernize a legacy billing module. When it finds an undocumented stored procedure that it cannot change safely, it pauses mid-process and hands off to an engineer who cannot see the agent's transcript. The handoff lists the module name, the file path and the full error log. Engineers report that they spend an hour re-tracing the stored procedure dependency before they can act. What is the most likely cause of this rework?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The handoff omits the agent's root cause analysis and recommended action, so the engineer must rediscover findings that the agent already made.",
+      "correct": true,
+      "reason": "A structured handoff protocol includes identifying details, root cause analysis and recommended actions; without the last two, the engineer repeats the agent's investigation."
+    },
+    {
+      "letter": "B",
+      "text": "The agent escalated in the middle of the task instead of finishing the remaining changes first, so the engineer received the module in a half-changed state.",
+      "correct": false,
+      "reason": "The guide describes structured handoffs for mid-process escalation, so the timing is not the fault; the handoff lacks the root cause analysis and recommended action."
+    },
+    {
+      "letter": "C",
+      "text": "The handoff included the full error log instead of a trimmed excerpt, so the module name and file path were hard to find.",
+      "correct": false,
+      "reason": "The identifying details were present; what the handoff lacks is the root cause analysis and recommended action that a structured handoff protocol requires."
+    },
+    {
+      "letter": "D",
+      "text": "The agent inspected the files with Bash commands instead of the Read tool, so the evidence that it gathered for the handoff was unreliable.",
+      "correct": false,
+      "reason": "The tool choice does not explain the rework; the engineer re-traces the dependency because the handoff gives no root cause analysis and no recommended action."
+    }
+  ]
+}

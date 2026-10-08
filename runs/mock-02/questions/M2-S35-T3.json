@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S35-T3",
+  "slot_id": "M2-S35",
+  "try": 3,
+  "point": "3.4-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S35-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to maintain the tooling behind your CI pipeline's automated code reviews. A team rule says that a developer selects plan mode for tasks with architectural implications and uses direct execution for well-understood changes with clear scope. This week's backlog has four tasks. For which task should the developer select plan mode?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Fix a null-pointer bug in the review-comment formatter, where the stack trace points to one line in one file.",
+      "correct": false,
+      "reason": "A single-file bug fix with a clear stack trace is a well-understood change with clear scope. The guide says that direct execution fits such a change."
+    },
+    {
+      "letter": "B",
+      "text": "Add a conditional to one function that rejects a review request whose date field is earlier than the commit date.",
+      "correct": false,
+      "reason": "Adding a date validation conditional to one function is a simple, well-scoped change. The guide names this kind of change as a fit for direct execution."
+    },
+    {
+      "letter": "C",
+      "text": "Change the wording of the single feedback message that the review step posts when a pull request has no test file.",
+      "correct": false,
+      "reason": "Rewording one message is a simple, well-scoped change with no architectural decision and no multi-file design. Direct execution fits it, so plan mode is not needed."
+    },
+    {
+      "letter": "D",
+      "text": "Choose between posting review results through a webhook service or through a message queue, which each need different infrastructure.",
+      "correct": true,
+      "reason": "Choosing between integration approaches with different infrastructure requirements has architectural implications. Plan mode lets Claude Code explore and design before it changes files, which prevents costly rework."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S41-T2",
+  "slot_id": "M2-S41",
+  "try": 2,
+  "point": "4.1-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S41-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code in non-interactive mode to review each pull request. Developers report that real defects are buried among remarks about variable naming, formatting, and patterns that individual modules use on purpose. The current prompt tells Claude to review the changes and report any problems. Which change to the review setup will most effectively reduce these false positives?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a general instruction telling Claude to be conservative in its review and to avoid posting comments that the team would consider unhelpful.",
+      "correct": false,
+      "reason": "The guide states that general instructions like \"be conservative\" fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "B",
+      "text": "Define the issue categories to report, such as logic bugs and security flaws, and the categories to skip, such as minor style and local team patterns.",
+      "correct": true,
+      "reason": "The guide recommends specific review criteria that define which issues to report (bugs, security) and which to skip (minor style, local patterns) as the way to improve precision."
+    },
+    {
+      "letter": "C",
+      "text": "Run the review with --output-format json and a --json-schema that requires a file, a line number, and a description for every finding that Claude posts to the pull request.",
+      "correct": false,
+      "reason": "A schema controls the structure of the output, not which issues are reported, so style and local-pattern remarks still appear; the guide says explicit report-versus-skip criteria are needed."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the current prompt but ask Claude to sort its findings so that the most serious problems appear at the top of the review comment.",
+      "correct": false,
+      "reason": "Sorting keeps every false positive in the review; without criteria that define what to skip, the noisy categories remain and, per the guide, undermine developer trust in the accurate findings."
+    }
+  ]
+}

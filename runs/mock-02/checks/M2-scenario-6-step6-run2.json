@@ -1,0 +1,100 @@
+{
+  "mock": 2,
+  "scenario": 6,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S49-T2",
+            "M2-S50-T1",
+            "M2-S51-T3",
+            "M2-S52-T1",
+            "M2-S56-T1"
+          ],
+          "detail": "The same wrong idea appears as a wrong option in 5 questions, more than the allowed 2. The idea is to let the model self-report a confidence score and use a fixed threshold on it to filter, route or automate. The options are S49 B, S50 A, S51 D, S52 D and S56 B, with S56 D as a variant."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S49-T2",
+            "M2-S50-T1",
+            "M2-S51-T3",
+            "M2-S52-T1",
+            "M2-S56-T1"
+          ],
+          "detail": "At least 5 wrong options use a model's own confidence rating as a filter, threshold or trigger. Only one is allowed. S49 B routes fields below an uncalibrated 0.9 threshold. S50 A suppresses findings below a self-reported threshold. S51 D links automatically when the self-assessed score is above 0.9. S52 D suppresses findings below a fixed threshold. S56 B automates documents when the self-reported confidence is high. None of these is the calibrated field-level routing use that the guide teaches."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M2-SC6-R2-F1",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M2-S49-T2",
+        "M2-S50-T1",
+        "M2-S51-T3",
+        "M2-S52-T1",
+        "M2-S56-T1"
+      ],
+      "detail": "The same wrong idea appears as a wrong option in 5 questions, more than the allowed 2. The idea is to let the model self-report a confidence score and use a fixed threshold on it to filter, route or automate. The options are S49 B, S50 A, S51 D, S52 D and S56 B, with S56 D as a variant."
+    },
+    {
+      "id": "M2-SC6-R2-F2",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M2-S49-T2",
+        "M2-S50-T1",
+        "M2-S51-T3",
+        "M2-S52-T1",
+        "M2-S56-T1"
+      ],
+      "detail": "At least 5 wrong options use a model's own confidence rating as a filter, threshold or trigger. Only one is allowed. S49 B routes fields below an uncalibrated 0.9 threshold. S50 A suppresses findings below a self-reported threshold. S51 D links automatically when the self-assessed score is above 0.9. S52 D suppresses findings below a fixed threshold. S56 B automates documents when the self-reported confidence is high. None of these is the calibrated field-level routing use that the guide teaches."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M2-S46-T1": "3433464d9fa5a01adbd4bcf4623ead73d258884831efd279644deb74edf525b2",
+    "M2-S47-T1": "9644db2609fdc0e820fa7c7715de0a28451b285e7fcfadd27d7080d50c523b76",
+    "M2-S48-T2": "fb9090e167a6adede6585141f7f8f62052c69148dcc2a6c4e8e76ba6ddaf3b39",
+    "M2-S49-T2": "6472b2093b6928f6306c9e4c34215fa0040f72dbe3e4b5dd348ec4e211aac99f",
+    "M2-S50-T1": "e412db6c809878cc2bb3ee4c1c3ce1a941d16a39a9be6cc039bd677c4da1eab3",
+    "M2-S51-T3": "f45db5f0409b5052a2c27dc61ab50fb4b7d8e76f4e33ef7b767573161e379054",
+    "M2-S52-T1": "e370964af8b48c44e4392b9369f2dd7a90cc91616b11a32316bff46058816464",
+    "M2-S53-T1": "13b6113281b6e38994b31179674a2d683996806ef7e03026c019441ca1f24881",
+    "M2-S54-T1": "a42faf14662c3e3a8a715a957dde62f9038878e7f72ff63157bfdcd936039011",
+    "M2-S55-T1": "82268f34679068fce1ec3c5c4cfd7aabe3e59699449b12ef23b1f9dcf824dc46",
+    "M2-S56-T1": "977f914a265defd985284de6af35fb01caaa460eb36aed18208fd0b4a735feff",
+    "M2-S57-T1": "208a3acea9392eeaba1dccf98bd60e5d450f75c7c5134192f6dc9d8677e79cc8",
+    "M2-S58-T2": "e95832f78a18689cf7b0ff043b66b629c675acbac06041124ccc0298840f4392",
+    "M2-S59-T2": "76e3c16555a3dc5ed8c6e44c4d0101cf8be97f37417fc27c58857f4ae8f5f9d9",
+    "M2-S60-T1": "1701c7ee3059841d908616045dbfbc61fede9f7f8eefc675f3c4394b31f04066"
+  },
+  "date": "2026-10-08"
+}

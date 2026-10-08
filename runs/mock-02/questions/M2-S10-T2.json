@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S10-T2",
+  "slot_id": "M2-S10",
+  "try": 2,
+  "point": "1.5-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S10-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the report generation subagent calls a publish_report tool that posts finished reports to client portals. Policy requires a compliance reviewer to approve each report for a regulated client before it is published. You added a hook that intercepts outgoing publish_report calls and blocks them for regulated clients. Logs now show that the report generation subagent retries each blocked call several times and then ends, so these reports reach no one. How should you change the hook?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Make the hook return a success result for each blocked call so that the report generation subagent stops retrying and ends normally.",
+      "correct": false,
+      "reason": "A false success hides the block from the agent, and the report is still never redirected to the compliance reviewer, so the alternative workflow is missing."
+    },
+    {
+      "letter": "B",
+      "text": "Make the hook send each blocked report to the compliance reviewer's queue and tell the report generation subagent that the report awaits review.",
+      "correct": true,
+      "reason": "An interception hook should block the policy-violating call and redirect it to an alternative workflow, such as human escalation, so the report still reaches the compliance reviewer."
+    },
+    {
+      "letter": "C",
+      "text": "Remove publish_report from the allowedTools of the report generation subagent so that it never publishes any report directly.",
+      "correct": false,
+      "reason": "This removes publishing for all clients, including unregulated ones, instead of blocking only the policy-violating calls, and it still sends no report to the compliance reviewer."
+    },
+    {
+      "letter": "D",
+      "text": "Make the hook allow regulated publish_report calls through and write each one to an audit log for later compliance review.",
+      "correct": false,
+      "reason": "The policy needs a guaranteed block before publication; logging after the call lets the violating action happen first."
+    }
+  ]
+}
