@@ -415,6 +415,32 @@ class TestCaseJ(Base):
         self.assertEqual(self.steps.marking_files[2], [outside[1] + "-T2"])
 
 
+class TestRuleC3OverTheMock(Base):
+    """Decision 0052: rule C3 compares the whole mock, so its finding can name a
+    question of another scenario. Another rule cannot."""
+
+    def test_step6_gets_the_questions_of_the_other_scenarios(self):
+        c = self.control()
+        self.run_to_marks(c)
+        self.assertEqual(len(self.steps.scenario_others), 45)
+        self.assertEqual(len(self.steps.scenario_own), 15)
+        self.assertFalse(set(self.steps.scenario_others) & set(self.steps.scenario_own))
+
+    def test_a_c3_finding_can_name_a_question_of_another_scenario(self):
+        self.steps.scenario_script[1] = [self.finding("C3", ["M1-S03-T1", "M1-S20-T1"])]
+        c = self.control()
+        self.run_to_marks(c)
+        report = c.read_marks()
+        self.assertEqual([f["question_ids"] for f in report["step6_findings"]], [["M1-S03-T1", "M1-S20-T1"]])
+
+    def test_another_rule_cannot_name_a_question_of_another_scenario(self):
+        self.steps.scenario_script[1] = [self.finding("D1", ["M1-S03-T1", "M1-S20-T1"])] * 3
+        c = self.control()
+        c.run()
+        errors = [json.load(open(os.path.join(c.folder, "errors", f))) for f in sorted(os.listdir(os.path.join(c.folder, "errors")))]
+        self.assertIn("unknown question: M1-S20-T1", errors[0]["cause"])
+
+
 class TestReviewFindings(Base):
     """The cases of the independent review of 7 October 2026."""
 

@@ -45,7 +45,7 @@ D = {
    example=cf('C2', 'Domain 4 has 11 questions. The plan says 12.'), examplehead=EF,
    why='The plan gives the mock the form of the exam. After many new tries, code makes sure that the mock still agrees with its plan.'),
  'C3': dict(title='Rule C3: no two questions have the same text', who='Code', cls='code',
-   sent=['No two questions of the scenario have the same text.', 'Known limit: code compares the questions of one scenario, not of the complete mock.'],
+   sent=['No two questions of the mock have the same text.', 'Code compares each question of the scenario with the other questions of the scenario and with the questions of the other 3 scenarios (decision 0052).', 'A finding can then name a question of another scenario. Only rule C3 can do that.'],
    example=cf('C3', 'Questions M1-S07-T1 and M1-S52-T2 have the same text.'), examplehead=EF,
    why='Code finds an exact copy for no cost. A copy with different words is the work of the model call. A failure of C3 is a finding for the owner, as for the rules of the calls.'),
  'q15': dict(title='The 15 questions of one scenario', who='From steps 2 to 5', cls='io',
@@ -265,7 +265,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039). Status of the step: built. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039), changed on 8 October 2026 (decision 0052). Status of the step: built. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

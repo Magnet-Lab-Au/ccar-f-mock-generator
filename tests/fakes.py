@@ -91,8 +91,10 @@ class FakeSteps:
              "letter": "C", "point": None, "other_questions": []}]
         return {"verdict": result, "findings": findings}
 
-    def check_scenario(self, scenario, questions):
+    def check_scenario(self, scenario, questions, others=()):
         self.scenario_calls.append(scenario)
+        self.scenario_others = [q["question_id"] for q in others]
+        self.scenario_own = [q["question_id"] for q in questions]
         results = self._next(self.scenario_script, scenario, None)
         if results == "call_fails":
             raise CallFailed("the API call failed")

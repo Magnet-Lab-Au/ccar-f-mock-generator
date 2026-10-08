@@ -8,7 +8,7 @@ Diagram: [`08-step-6-check-the-complete-mock.html`](../diagrams/08-step-6-check-
 
 Steps 3 and 4 look at one question. Some defects show only when many questions are read together. Each writer call sees only its own slot, so two calls can write the same scene.
 
-When each slot has a question that passed steps 3 and 4, code counts the mock against the plan. Then two model calls read the 15 questions of one scenario together. Each call has one job:
+When each slot has a question that passed steps 3 and 4, code counts the mock against the plan. Code also compares the text of each question with all 60 questions of the mock, so an exact copy in another scenario is a finding too (decision 0052). Then two model calls read the 15 questions of one scenario together. Each call has one job:
 
 - **Call 6a, the scenes:** no two questions have the same scene (the same problem and the same correct action), and no question gives away the answer of a different question.
 - **Call 6b, the wrong options:** no wrong idea is a wrong option in more than 2 questions of the scenario, and at most one wrong option of the scenario is the option in which a model rates its own confidence.

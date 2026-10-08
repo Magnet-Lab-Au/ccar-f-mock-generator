@@ -19,11 +19,12 @@ One entry for each work session. Newest entry first.
 
 - The owner confirmed the groups file `data/point-groups.json` and the texts of decisions 0047 to 0050. The text of decision 0045 was not confirmed yet. The owner confirmed it too.
 - Change 3 of decision 0046 (12 questions of Domain 4 in one scenario): the owner agreed to no new rule (decision 0051). Any limit below 12 leaves 2 of the 11 sets of scenarios or none. The point groups already prevent the repeat that it caused in mock 1.
+- Change 4 of decision 0046 (step 6 compares one scenario only): the owner agreed to a change in code only (decision 0052). Rule C3 now compares the text of each question with all 60 questions of the mock. A finding of C3 can name a question of another scenario. 196 tests pass. Diagram 08 and the build guide section of step 6 show the change.
 
 **Open**
 
 - How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
-- Changes 4 to 7 of decision 0046.
+- Changes 5 to 7 of decision 0046.
 
 ## 8 October 2026
 

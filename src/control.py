@@ -7,7 +7,8 @@ do the work of a step. It calls each step through one object, `steps`:
     steps.write(request)                   steps 2 and 5, returns the answer of the writer
     steps.check_code(question, slot)       step 3, returns a verdict
     steps.check_model(question, slot)      step 4, returns a verdict
-    steps.check_scenario(scenario, qs)     step 6, returns the results of one scenario
+    steps.check_scenario(scenario, qs, others)  step 6, returns the results of one scenario.
+                                           others: the questions of the other scenarios (rule C3)
     steps.make_marking_file(round, qs)     step 7, makes the file that the owner fills
     steps.read_marking_file(round)         step 7, returns the marks of the owner
     steps.build(plan, questions)           step 8, builds the two files
@@ -414,12 +415,25 @@ class Control:
     def _step6_needed(self, scenario):
         return self._step6_current(scenario) is None
 
-    def _checked_scenario(self, scenario, questions):
+    def _other_questions(self, scenario):
+        """The current questions of the other scenarios, of each slot that passed
+        (rule C3 compares the whole mock, decision 0052)."""
+        result = []
+        for slot in self.slots():
+            if slot["scenario"] != scenario:
+                state = self.slot_state(slot)
+                if state["status"] == "passed":
+                    result.append(self._question(state["question_id"]))
+        return result
+
+    def _checked_scenario(self, scenario, questions, others):
         """Call step 6 and check its answer. An answer that is not valid counts as a
-        call that failed, as in step 4 (decision 0032)."""
-        results = self.steps.check_scenario(scenario, questions)
-        ids = {q["question_id"] for q in questions}
+        call that failed, as in step 4 (decision 0032). Only a finding of rule C3
+        can name a question of another scenario (decision 0052)."""
+        results = self.steps.check_scenario(scenario, questions, others)
+        own = {q["question_id"] for q in questions}
         for r in results:
+            ids = own | {q["question_id"] for q in others} if r["rule"] == "C3" else own
             if r["result"] == "pass":
                 continue
             if not r["findings"]:
@@ -434,7 +448,7 @@ class Control:
     def _run_step6(self, scenario):
         questions = self._current_questions(scenario)
         results = self._call("check_scenario", "scenario-%s" % scenario,
-                             self._checked_scenario, scenario, questions)
+                             self._checked_scenario, scenario, questions, self._other_questions(scenario))
         if results is None:
             return
         run = len(self.step6_records(scenario)) + 1

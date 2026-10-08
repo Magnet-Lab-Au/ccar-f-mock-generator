@@ -365,6 +365,16 @@ class TestScenarioCheck(unittest.TestCase):
         with self.assertRaises(RunStopped):
             code_count(sc, qs[:-1], PLAN["slots"])
 
+    def test_c3_compares_the_other_scenarios(self):
+        # Decision 0052: the same text in two scenarios is a finding of C3.
+        sc, other = PLAN["scenarios"][0], PLAN["scenarios"][1]
+        qs, os_ = self.questions(sc), self.questions(other)
+        self.assertEqual(code_count(sc, qs, PLAN["slots"], os_), [])
+        os_[2]["question"] = "  " + qs[4]["question"].upper()
+        out = code_count(sc, qs, PLAN["slots"], os_)
+        self.assertEqual(out[0]["findings"][0]["question_ids"], [qs[4]["question_id"], os_[2]["question_id"]])
+        self.assertIn("scenario %s" % other, out[0]["findings"][0]["detail"])
+
     def test_each_result_of_a_call_keeps_the_model(self):
         def answer(req):
             rules = ["D1", "D4"] if "D1." in req["messages"][0]["content"] else ["D2", "D3"]

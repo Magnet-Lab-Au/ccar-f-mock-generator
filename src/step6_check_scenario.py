@@ -1,6 +1,8 @@
 """Step 6: the check of the complete mock, one scenario at a time (decisions 0014, 0034, 0038, 0039 and 0040).
 
-Code counts the questions of the scenario against the plan (rules C2 and C3).
+Code counts the questions of the scenario against the plan (rule C2), and
+compares the text of each question with all questions of the mock (rule C3,
+decision 0052).
 The control already checked rule C1: it starts step 6 only when each slot has
 the status passed. Then two model calls read the 15 questions together: call
 6a (rules D1 and D4) and call 6b (rules D2 and D3). Step 6 sends no question
@@ -21,10 +23,12 @@ SYSTEM = ("You check the 15 questions of one scenario of a mock exam together. G
           "pass, fail or cannot_decide. A finding names the questions by their IDs. " + DESCRIPTION)
 
 
-def code_count(scenario, questions, slots):
+def code_count(scenario, questions, slots, others=()):
     """Rules C2 and C3 for one scenario. C2 failing stops the run with an error
     that names the cause (decision 0034): a new call cannot repair it. C3 failing
-    is a finding. Known limit: C3 compares the questions of one scenario only."""
+    is a finding. C3 compares each question of the scenario with the other
+    questions of the scenario and with others, the questions of the other
+    scenarios (decision 0052)."""
     plan = [s for s in slots if s["scenario"] == scenario]
     by_slot = {q["slot_id"]: q for q in questions}
     if sorted(by_slot) != sorted(s["slot_id"] for s in plan):
@@ -33,14 +37,22 @@ def code_count(scenario, questions, slots):
         q = by_slot[s["slot_id"]]
         if q.get("select") != s["select"] or len(q.get("options", [])) != s["options"]:
             raise RunStopped("Rule C2: %s does not agree with its slot." % q["question_id"])
-    seen, results = {}, []
+    def text(q):
+        return " ".join(q["question"].lower().split())
+    scenario_of = {s["slot_id"]: s["scenario"] for s in slots}
+    seen, findings = {}, []
     for q in questions:
-        key = " ".join(q["question"].lower().split())
+        key = text(q)
         if key in seen:
-            results.append({"rule": "C3", "result": "fail", "findings": [
-                {"question_ids": [seen[key], q["question_id"]], "detail": "The two questions have the same text."}]})
+            findings.append({"question_ids": [seen[key], q["question_id"]],
+                             "detail": "The two questions have the same text."})
         seen.setdefault(key, q["question_id"])
-    return results
+    for o in others:
+        if text(o) in seen:
+            findings.append({"question_ids": [seen[text(o)], o["question_id"]],
+                             "detail": "The two questions have the same text. The second one is in scenario %s."
+                                       % scenario_of.get(o["slot_id"], "another")})
+    return [{"rule": "C3", "result": "fail", "findings": [f]} for f in findings]
 
 
 class ScenarioCheck:
@@ -62,10 +74,11 @@ class ScenarioCheck:
                                      for f in (r.get("findings") or [])]})
         return out, model
 
-    def check(self, scenario, questions):
+    def check(self, scenario, questions, others=()):
         """Return the results of all rules for one scenario, in the form that the
-        control expects. The control checks the findings (decision 0039, rule 11)."""
-        results = code_count(scenario, questions, self.slots)
+        control expects. The control checks the findings (decision 0039, rule 11).
+        others: the questions of the other scenarios, for rule C3."""
+        results = code_count(scenario, questions, self.slots, others)
         scenes = "\n\n".join("QUESTION %s\n%s" % (q["question_id"], show(q, with_key=True)) for q in questions)
         wrong = "\n\n".join("QUESTION %s\n%s" % (q["question_id"], "\n".join(
             "%s. %s\n   Reason: %s" % (o["letter"], o["text"], o["reason"]) for o in q["options"] if not o["correct"]))

@@ -62,8 +62,8 @@ class RealSteps:
         return self.checker.check(question, slot)
 
     # step 6
-    def check_scenario(self, scenario, questions):
-        return ScenarioCheck(self._plan(), self.model_call).check(scenario, questions)
+    def check_scenario(self, scenario, questions, others=()):
+        return ScenarioCheck(self._plan(), self.model_call).check(scenario, questions, others)
 
     # step 7
     def make_marking_file(self, round_number, questions):
