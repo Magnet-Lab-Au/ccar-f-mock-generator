@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S21-T1",
+  "slot_id": "M2-S21",
+  "try": 1,
+  "point": "2.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses a custom MCP tool named analyze_code that accepts a file path and a free-text request, and it returns unstructured prose. Engineers rely on it to trace function callers, summarize legacy modules, and draft boilerplate code. The agent often sends vague requests, and later steps cannot parse the varied outputs. Which change would most effectively make this tool use reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Merge analyze_code with the built-in Grep tool into one broader search-and-analysis tool so the agent has fewer tools to choose between.",
+      "correct": false,
+      "reason": "Merging makes the tool even more generic and adds functional overlap, which the guide says causes misrouting; the guide's fix is purpose-specific tools."
+    },
+    {
+      "letter": "B",
+      "text": "Add a system prompt rule telling the agent to call analyze_code whenever an engineer's message contains the words analyze, explain, trace, or generate.",
+      "correct": false,
+      "reason": "Keyword-sensitive system prompt instructions create unintended tool associations, and the rule does nothing about the generic interface or the unparseable outputs."
+    },
+    {
+      "letter": "C",
+      "text": "Keep analyze_code as a single tool and greatly lengthen its description with many example free-text requests, so the agent learns which phrasings produce which kinds of prose output.",
+      "correct": false,
+      "reason": "A longer description keeps one generic interface with no defined input/output contract, so requests stay vague and the outputs stay unstructured."
+    },
+    {
+      "letter": "D",
+      "text": "Replace analyze_code with separate tools such as trace_callers, summarize_module, and generate_boilerplate, each with defined input parameters and a defined output structure.",
+      "correct": true,
+      "reason": "Splitting a generic tool into purpose-specific tools with defined input/output contracts gives the agent clear selection boundaries and gives later steps predictable outputs."
+    }
+  ]
+}

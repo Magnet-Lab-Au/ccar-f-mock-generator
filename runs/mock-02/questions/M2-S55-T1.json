@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S55-T1",
+  "slot_id": "M2-S55",
+  "try": 1,
+  "point": "5.1-S6",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes long supplier contracts. Several extraction subagents each analyze one contract section and return verbose reports with full reasoning chains and verbatim quoted passages. A synthesis agent with a limited context budget combines these reports into one JSON record, but it often omits payment terms and renewal dates that the extraction subagents found. What is the most effective change to fix this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the synthesis agent condense each subagent report into a brief prose summary as it arrives, then build the final record from those accumulated summaries at the end.",
+      "correct": false,
+      "reason": "Progressive summarization risks condensing numerical values and dates, such as payment terms and renewal dates, into vague summaries, so the details can still be lost."
+    },
+    {
+      "letter": "B",
+      "text": "Pass all subagent reports unchanged in one long input and place the most recent reports at the end so that the synthesis agent reads them with full attention.",
+      "correct": false,
+      "reason": "The verbose reports still exceed the budget, and the lost-in-the-middle effect means findings in the middle reports may still be omitted."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the subagent reports unchanged and truncate each one to the first part that fits inside the remaining token budget of the synthesis agent.",
+      "correct": false,
+      "reason": "The verbose content still uses the budget, and truncation drops any facts that appear after the cut instead of keeping the relevant facts."
+    },
+    {
+      "letter": "D",
+      "text": "Change the extraction subagents to return structured records of key facts, source citations, and relevance scores instead of quoted passages and reasoning chains.",
+      "correct": true,
+      "reason": "When a downstream agent has a limited context budget, upstream agents should return structured data such as key facts, citations, and relevance scores instead of verbose content and reasoning."
+    }
+  ]
+}

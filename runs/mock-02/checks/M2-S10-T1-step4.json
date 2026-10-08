@@ -1,0 +1,97 @@
+{
+  "question_id": "M2-S10-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "04911991e693b356e84d9fb34ba59f23531ded13eababe52ab27d9c5a1905082",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Compliance here has to be deterministic, and prompt instructions still fail some of the time. A hook that intercepts outgoing fetch_page calls can block blocklisted URLs before any retrieval happens and route those requests to the human reviewer. A is still prompt-based and probabilistic. C and D act only after the page has already been fetched, so the policy is already violated.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP tools",
+      "found": true
+    },
+    {
+      "name": "PostToolUse",
+      "found": true
+    },
+    {
+      "name": "tool call interception",
+      "found": true
+    },
+    {
+      "name": "hooks",
+      "found": true
+    },
+    {
+      "name": "system prompts",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

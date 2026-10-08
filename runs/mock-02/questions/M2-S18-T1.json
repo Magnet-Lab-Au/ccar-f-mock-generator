@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S18-T1",
+  "slot_id": "M2-S18",
+  "try": 1,
+  "point": "1.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer tool, built with the Claude Agent SDK, helps engineers explore a legacy codebase. Logs show that Claude requests the same Grep call on every iteration until an iteration cap stops the loop. Your loop code runs Grep correctly, but each new request contains only the original user message and the tool definitions. Which change fixes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Set tool_choice to force the Read tool after every Grep call so that Claude moves on to opening files instead of repeating the same search.",
+      "correct": false,
+      "reason": "This replaces model-driven decisions with a pre-configured tool sequence. Claude still lacks the Grep output, so it cannot know which files to read."
+    },
+    {
+      "letter": "B",
+      "text": "Raise the iteration cap so that Claude has more attempts to finish exploring the codebase before the loop stops.",
+      "correct": false,
+      "reason": "Claude still never sees the Grep output, so it keeps repeating the call. The guide also names arbitrary iteration caps as an anti-pattern for a primary stopping mechanism."
+    },
+    {
+      "letter": "C",
+      "text": "Add a system prompt instruction telling Claude never to call the same tool twice in a row during one task.",
+      "correct": false,
+      "reason": "The instruction does not give Claude the search results. Without the tool results in the conversation history, Claude cannot reason about what to do next."
+    },
+    {
+      "letter": "D",
+      "text": "Append Claude's tool_use response and the Grep output as a tool result to the conversation history before sending the next request.",
+      "correct": true,
+      "reason": "Tool results must be added to the conversation history between iterations so that Claude can reason about the new information and choose its next action."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S27-T1",
+  "slot_id": "M2-S27",
+  "try": 1,
+  "point": "1.3-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses a coordinator that delegates codebase exploration to a subagent intended to be read-only. Engineers report that this exploration subagent occasionally uses Write or Bash to modify files in legacy repositories that they only wanted analyzed. What change most reliably keeps the exploration subagent from altering files?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a sentence to the exploration subagent's system prompt stating that it must never modify files and should only report its findings.",
+      "correct": false,
+      "reason": "A system prompt instruction is guidance that the model usually follows. It cannot guarantee compliance while Write and Bash are still available to the subagent."
+    },
+    {
+      "letter": "B",
+      "text": "Add a PostToolUse hook that detects file changes made by the exploration subagent and logs them so engineers can review them afterward.",
+      "correct": false,
+      "reason": "A PostToolUse hook runs after the tool has already executed. It records the modification but does not prevent it."
+    },
+    {
+      "letter": "C",
+      "text": "Include a reminder in every Task prompt the coordinator sends, telling the exploration subagent to treat the repository as strictly read-only.",
+      "correct": false,
+      "reason": "A reminder in the prompt is still a probabilistic instruction. It leaves the write-capable tools available, so the occasional modifications can continue."
+    },
+    {
+      "letter": "D",
+      "text": "Restrict the exploration subagent's AgentDefinition so that its tool list includes only Read, Grep, and Glob, removing Write and Bash from that subagent type.",
+      "correct": true,
+      "reason": "The AgentDefinition sets tool restrictions for each subagent type. Removing the write-capable tools means the subagent cannot modify files at all."
+    }
+  ]
+}

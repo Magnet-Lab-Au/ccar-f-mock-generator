@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S26-T2",
+  "slot_id": "M2-S26",
+  "try": 2,
+  "point": "3.2-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S26-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team shares a boilerplate-generation skill in .claude/skills/ that needs a target module name to create a new service scaffold. Engineers often invoke the skill without any arguments, and the agent then guesses a module name or produces generic placeholder code. What is the most effective way to make sure engineers supply the required module name?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move the scaffold instructions from the skill into the project CLAUDE.md file so they are always loaded in every session.",
+      "correct": false,
+      "reason": "CLAUDE.md holds always-loaded universal standards, while skills fit on-demand task workflows; moving the instructions does not prompt engineers for the module name."
+    },
+    {
+      "letter": "B",
+      "text": "Add an argument-hint field to the skill's SKILL.md frontmatter that describes the required module name parameter.",
+      "correct": true,
+      "reason": "The argument-hint frontmatter option prompts engineers for required parameters when they invoke the skill without arguments, so engineers supply the module name."
+    },
+    {
+      "letter": "C",
+      "text": "Set allowed-tools in the skill's SKILL.md frontmatter to permit only the Write tool during skill execution.",
+      "correct": false,
+      "reason": "The allowed-tools option restricts which tools the skill may use, for example to prevent destructive actions; it does not ask engineers for required arguments."
+    },
+    {
+      "letter": "D",
+      "text": "Add context: fork to the skill's SKILL.md frontmatter so the skill runs in an isolated sub-agent context.",
+      "correct": false,
+      "reason": "The context: fork option isolates verbose or exploratory skill output from the main session; it does not prompt engineers for a missing parameter."
+    }
+  ]
+}

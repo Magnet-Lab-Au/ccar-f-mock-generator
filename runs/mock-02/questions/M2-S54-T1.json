@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S54-T1",
+  "slot_id": "M2-S54",
+  "try": 1,
+  "point": "4.4-K2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction pipeline validates each output with Pydantic and retries failed extractions, appending the specific validation errors to the prompt. A review of the failures shows two groups. Some invoices return dates as \"03/14/2024\" when the schema requires ISO 8601 format. Other invoices fail because the payment terms field is empty, and those invoices state only \"terms per master agreement,\" a document that is never given to the system. Which conclusions about the retry loop are correct?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Both groups of failures should bypass the retry loop and go straight to human review, because retries cannot correct any kind of validation failure.",
+      "correct": false,
+      "reason": "The guide distinguishes the cases: retry with error feedback works for format and structural errors, so it remains useful for the date failures."
+    },
+    {
+      "letter": "B",
+      "text": "Raising the retry limit for the payment terms failures will eventually produce valid terms, because each attempt gives the model another chance to find them.",
+      "correct": false,
+      "reason": "No number of retries can produce information that is absent from the source document, so more attempts only waste calls or invite fabricated values."
+    },
+    {
+      "letter": "C",
+      "text": "Retrying the date failures with the specific format error appended is likely to succeed, because the model can correct a format mismatch.",
+      "correct": true,
+      "reason": "The guide says that retries succeed for format mismatches and structural output errors, especially when the specific validation error is fed back."
+    },
+    {
+      "letter": "D",
+      "text": "Retrying the payment terms failures will not help, because the terms exist only in the master agreement, which the extraction system never receives.",
+      "correct": true,
+      "reason": "The guide says that retries are ineffective when the required information is absent from the source, for example when it exists only in an external document that was not provided."
+    },
+    {
+      "letter": "E",
+      "text": "The date failures will persist under retry, because the dates come from the source document and the model cannot change how the source writes them.",
+      "correct": false,
+      "reason": "The date value is present in the source, and only its output format is wrong. The guide treats such format mismatches as errors that retries can fix."
+    }
+  ]
+}

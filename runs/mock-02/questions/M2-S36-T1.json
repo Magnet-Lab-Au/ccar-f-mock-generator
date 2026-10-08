@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S36-T1",
+  "slot_id": "M2-S36",
+  "try": 1,
+  "point": "4.5-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline uses the Message Batches API to generate test cases for merged pull requests, and the team promises developers results within 28 hours of a merge. Merges arrive continuously throughout the day. Batch processing can take up to 24 hours, and parsing results and posting them back to the pull request takes up to 1 hour. How often should the pipeline submit batches to guarantee the 28-hour commitment?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Submit a batch every 12 hours, because most batches finish well before the 24-hour limit and typical turnaround stays under 28 hours.",
+      "correct": false,
+      "reason": "The guide states that the Message Batches API has no guaranteed latency SLA. A guarantee must therefore plan for the full 24-hour processing window, not for typical completion times."
+    },
+    {
+      "letter": "B",
+      "text": "Submit a batch every 4 hours, because the 28-hour commitment minus the 24-hour processing window leaves exactly 4 hours of slack.",
+      "correct": false,
+      "reason": "This ignores the 1 hour needed to post results. The worst case becomes 4 plus 24 plus 1, which is 29 hours and breaks the 28-hour commitment."
+    },
+    {
+      "letter": "C",
+      "text": "Submit one batch each night, because the 24-hour processing window already fits inside the 28-hour commitment with time to spare.",
+      "correct": false,
+      "reason": "A merge that arrives just after the nightly submission waits almost 24 hours before it is submitted. The total can then reach about 49 hours, so the frequency must account for the wait before submission."
+    },
+    {
+      "letter": "D",
+      "text": "Submit a batch every 3 hours, so the longest wait before submission plus processing and posting stays within 28 hours.",
+      "correct": true,
+      "reason": "The worst case is 3 hours of waiting plus 24 hours of processing plus 1 hour of posting, which equals 28 hours. This is the SLA-based frequency calculation that the guide describes."
+    }
+  ]
+}

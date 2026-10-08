@@ -1,0 +1,105 @@
+{
+  "question_id": "M2-S26-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "01c41f5813f639e2b228396bffd292aab2f4909528d525c9145809f3b7f30085",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The argument-hint frontmatter field (3.2-S4) shows engineers the required parameter when they invoke the skill, so they know to supply the module name. The other options address different concerns: A covers always-loaded standards, C restricts tools, and D isolates context.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".claude/skills/",
+      "found": true
+    },
+    {
+      "name": "SKILL.md",
+      "found": true
+    },
+    {
+      "name": "argument-hint",
+      "found": true
+    },
+    {
+      "name": "allowed-tools",
+      "found": true
+    },
+    {
+      "name": "context",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "Write",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

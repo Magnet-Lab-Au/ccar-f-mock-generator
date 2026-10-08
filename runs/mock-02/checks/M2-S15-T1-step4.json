@@ -1,0 +1,89 @@
+{
+  "question_id": "M2-S15-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "e042a8fd497e1df8e166157b5b2c527ded9d890d27a3a2e43879c341b7449f1e",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Most of the stored search results are now stale, so starting a new session with an injected structured summary is more reliable than resuming (1.7-K4, 1.7-S3). The summary should flag which sources must be searched again. Option A's /compact keeps stale content, only in summarized form. Option B's fork_session inherits yesterday's stale context, so it is not a clean baseline. Option D leaves the stale results in context and relies on the coordinator to reconcile them.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "--resume",
+      "found": true
+    },
+    {
+      "name": "/compact",
+      "found": true
+    },
+    {
+      "name": "fork_session",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

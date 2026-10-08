@@ -1,0 +1,81 @@
+{
+  "question_id": "M2-S36-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "eb8fe93fc395e912d902419ef340b26584fa4116dc1731c0ab571743dbf6a54a",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Worst case = wait until next submission + 24h processing + 1h posting ≤ 28h, so the submission interval must be ≤ 3 hours. B ignores the 1-hour posting time. A and C rely on typical rather than worst-case processing, or exceed the window outright.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

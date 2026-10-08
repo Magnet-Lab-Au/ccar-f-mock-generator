@@ -1,0 +1,90 @@
+{
+  "question_id": "M2-S43-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "66a9c041655df3d0c18097aa903a40587d11d79f78a0f44bf494c642e556253a",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "D"
+    ],
+    "reason": "--output-format json gives machine-parseable output instead of prose, and --json-schema enforces required fields (file path, line number, severity, message) for every finding. That combination fixes both the parsing failures and the missing fields. Interactive mode, regex parsing and prompt-only CLAUDE.md rules are unreliable or unsuitable for CI.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "--json-schema",
+      "found": true
+    },
+    {
+      "name": "--output-format",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

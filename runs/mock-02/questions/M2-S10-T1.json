@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S10-T1",
+  "slot_id": "M2-S10",
+  "try": 1,
+  "point": "1.5-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the web search subagent calls an MCP tool named fetch_page to retrieve source content. Company policy forbids retrieving pages from domains on a licensing blocklist, and such requests must go to a human reviewer who can approve licensed access. The subagent's system prompt states this rule, yet logs show that it still fetched blocklisted domains in a small share of runs. How should you enforce the policy?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rewrite the system prompt with stronger wording and few-shot examples that show the subagent declining blocklisted domains and asking the human reviewer instead.",
+      "correct": false,
+      "reason": "Prompt instructions give only probabilistic compliance, and the logs already show that the prompt fails sometimes; the policy needs a guaranteed block."
+    },
+    {
+      "letter": "B",
+      "text": "Add a tool call interception hook that checks each outgoing fetch_page URL against the blocklist, blocks matching calls, and redirects those requests to the human reviewer.",
+      "correct": true,
+      "reason": "A hook that intercepts outgoing tool calls deterministically blocks policy-violating actions before they run and redirects them to an alternative workflow such as human escalation."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator agent scan each final report for citations from blocklisted domains and send flagged reports to the human reviewer.",
+      "correct": false,
+      "reason": "This check runs after the forbidden fetches have already happened, so it does not block the policy-violating tool call before it executes."
+    },
+    {
+      "letter": "D",
+      "text": "Add a PostToolUse hook that removes content from blocklisted domains out of the fetch_page results before the subagent processes them.",
+      "correct": false,
+      "reason": "A PostToolUse hook transforms results after the tool has run, so the forbidden fetch has already happened and no request goes to the human reviewer."
+    }
+  ]
+}

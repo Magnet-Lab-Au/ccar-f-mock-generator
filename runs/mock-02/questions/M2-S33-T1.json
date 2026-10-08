@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S33-T1",
+  "slot_id": "M2-S33",
+  "try": 1,
+  "point": "3.5-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team wants Claude Code to build a caching layer that reuses review results for unchanged files between pipeline runs, so repeated pushes to a pull request skip redundant reviews. Nobody on the team has designed a cache before, and a quick prototype once produced stale feedback after a dependency changed. What is the most effective way to start this implementation with Claude Code?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give Claude two or three input/output examples of review results so that it infers the caching rules from the shown pattern.",
+      "correct": false,
+      "reason": "Concrete input/output examples clarify a transformation that prose describes inconsistently, but they do not uncover design considerations that the team has not thought of yet."
+    },
+    {
+      "letter": "B",
+      "text": "Write a detailed prose specification of the cache yourself and send every requirement to Claude together in a single message.",
+      "correct": false,
+      "reason": "A single detailed message suits interacting issues that are already known, but a team new to caching would leave out the considerations it did not anticipate, which the interview pattern would surface."
+    },
+    {
+      "letter": "C",
+      "text": "Ask Claude to implement the caching layer right away, then fix each stale-feedback problem one at a time as it appears in pipeline runs.",
+      "correct": false,
+      "reason": "This skips the step of surfacing design considerations before implementing, so the team finds gaps like invalidation only after they cause bad feedback in production runs."
+    },
+    {
+      "letter": "D",
+      "text": "Ask Claude to interview you first, raising questions about invalidation triggers and failure modes, before it writes any implementation code.",
+      "correct": true,
+      "reason": "The interview pattern has Claude ask questions that surface considerations the developer may not have anticipated, such as cache invalidation strategies and failure modes, before it implements a solution in an unfamiliar domain."
+    }
+  ]
+}

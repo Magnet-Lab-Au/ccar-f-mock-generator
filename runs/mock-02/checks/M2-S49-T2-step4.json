@@ -1,0 +1,76 @@
+{
+  "question_id": "M2-S49-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "6472b2093b6928f6306c9e4c34215fa0040f72dbe3e4b5dd348ec4e211aac99f",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Field-level confidence scores, with the threshold calibrated on a labeled validation set (4.6-S3, 5.5-K3/S3), send limited reviewer time to the fields most likely to be wrong. Option B uses an uncalibrated threshold. Option A works per document, not per field. Option D relies on self-review in the same session, which tends to repeat its own errors.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

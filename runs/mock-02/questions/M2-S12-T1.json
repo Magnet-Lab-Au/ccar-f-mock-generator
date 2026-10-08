@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S12-T1",
+  "slot_id": "M2-S12",
+  "try": 1,
+  "point": "1.6-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the coordinator sends 12 source documents to the document analysis subagent, which reviews all of them in one prompt. Its output gives shallow notes for documents in the middle of the batch. It also misses places where two sources contradict each other. Which approach should you take to make this review more reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Analyze each document in its own focused pass, then run a separate integration pass that compares the per-document findings to detect contradictions across sources.",
+      "correct": true,
+      "reason": "Prompt chaining breaks the review into per-item local passes plus a cross-item integration pass, which avoids attention dilution and still catches cross-source issues."
+    },
+    {
+      "letter": "B",
+      "text": "Add instructions to the prompt that tell the document analysis subagent to give every document equal attention and to flag every contradiction.",
+      "correct": false,
+      "reason": "Instructions do not change the single-pass structure that causes attention dilution; the guide recommends splitting the review into focused sequential passes."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the single review pass but switch to a model with a larger context window so that all twelve documents fit easily.",
+      "correct": false,
+      "reason": "A larger context window does not fix attention dilution when many items are processed in one pass."
+    },
+    {
+      "letter": "D",
+      "text": "Run the same single-pass review three times and keep only the findings that appear in at least two of the three runs.",
+      "correct": false,
+      "reason": "Repeating the same diluted pass does not fix the shallow analysis, and the consensus filter can drop real findings that appear only intermittently."
+    }
+  ]
+}

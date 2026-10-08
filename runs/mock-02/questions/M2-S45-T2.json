@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S45-T2",
+  "slot_id": "M2-S45",
+  "try": 2,
+  "point": "4.3-S6",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M2-S45-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code in non-interactive mode with --json-schema to turn output from several linters into review findings on pull requests. Every response is valid JSON, but the linters format values differently: some file paths are absolute and others are repo-relative, and line ranges appear as \"L42-L45\" or \"42 to 45\". The downstream deduplication step fails to match identical findings. Which two actions should you take?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Remove the output schema and have Claude return free-form text, then extract paths and line ranges with regular expressions in a post-processing script.",
+      "correct": false,
+      "reason": "Dropping the schema gives up the schema-compliant output that the guide calls the most reliable approach, and it still does not normalize the formats."
+    },
+    {
+      "letter": "B",
+      "text": "Add format normalization rules to the prompt that define one canonical form, such as repo-relative file paths and line ranges written as start-end integers.",
+      "correct": true,
+      "reason": "The guide recommends including format normalization rules in prompts to handle inconsistent source formatting."
+    },
+    {
+      "letter": "C",
+      "text": "Make no prompt changes, because a strict output schema already guarantees that values follow one consistent format across all linter sources.",
+      "correct": false,
+      "reason": "The guide states that strict schemas eliminate syntax errors but do not prevent semantic errors, so a schema alone cannot normalize inconsistent value formats."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the --json-schema output schema in place, because it still guarantees syntactically valid JSON while the prompt rules handle value formatting.",
+      "correct": true,
+      "reason": "The guide pairs normalization rules with strict output schemas: the schema enforces the structure and the prompt rules normalize the values."
+    },
+    {
+      "letter": "E",
+      "text": "Change the file path and line range fields to optional so Claude can omit any value whose source format is inconsistent.",
+      "correct": false,
+      "reason": "The guide uses optional fields for information that the source may lack; here the information is present, so omitting it loses data and does not normalize it."
+    }
+  ]
+}

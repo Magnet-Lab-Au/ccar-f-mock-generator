@@ -1,0 +1,114 @@
+{
+  "question_id": "M2-S26-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question and options call the actor 'engineers', but the reason for option D calls the same actor 'developers' and then 'engineers' in one sentence. The actor has two names.",
+      "letter": "D",
+      "point": "3.2-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "9f3e67493070f5504be66d5c6ad3f5f513d2e6902fbb298ce063baa9886e3f9b",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "The argument-hint frontmatter field prompts developers for required parameters when they invoke the skill without arguments (3.2-S4). The other options miss the problem: context: fork isolates output, allowed-tools restricts tool access, and moving the instructions into CLAUDE.md loads them in every session without ensuring a module name is supplied.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question and options call the actor 'engineers', but the reason for option D calls the same actor 'developers' and then 'engineers' in one sentence. The actor has two names.",
+      "letter": "D",
+      "point": "3.2-S4"
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".claude/skills/",
+      "found": true
+    },
+    {
+      "name": "SKILL.md",
+      "found": true
+    },
+    {
+      "name": "context: fork",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "allowed-tools",
+      "found": true
+    },
+    {
+      "name": "Write",
+      "found": true
+    },
+    {
+      "name": "argument-hint",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

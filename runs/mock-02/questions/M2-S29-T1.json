@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S29-T1",
+  "slot_id": "M2-S29",
+  "try": 1,
+  "point": "1.6-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses the agent for two recurring jobs. The first generates boilerplate for a new API endpoint, and it always follows the same steps: scaffold the handler, add input validation, write unit tests, and update the docs. The second investigates why a legacy billing module sometimes produces wrong totals, and each finding can change what the agent should examine next. Which decomposition strategy fits these two jobs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use a fixed sequential prompt chain for both jobs, defining every billing investigation step upfront so that each run follows the same predictable order.",
+      "correct": false,
+      "reason": "The billing investigation is open-ended, and the guide says such tasks need adaptive plans that generate subtasks from each step's findings, which a fixed chain cannot do."
+    },
+    {
+      "letter": "B",
+      "text": "Use dynamic decomposition for the endpoint boilerplate and a fixed sequential prompt chain for the billing investigation, because debugging needs a stable step order.",
+      "correct": false,
+      "reason": "This reverses the guide's pattern: the predictable boilerplate fits prompt chaining, while the investigation, whose next steps depend on findings, needs dynamic decomposition."
+    },
+    {
+      "letter": "C",
+      "text": "Use dynamic decomposition for both jobs, so the agent re-plans the endpoint boilerplate steps after every tool call just as it does for the billing investigation.",
+      "correct": false,
+      "reason": "The boilerplate job has known, predictable steps, so the guide pairs it with a fixed sequential pipeline; adaptive re-planning adds nothing there."
+    },
+    {
+      "letter": "D",
+      "text": "Use a fixed sequential prompt chain for the endpoint boilerplate, and use dynamic decomposition that generates new subtasks from intermediate findings for the billing investigation.",
+      "correct": true,
+      "reason": "The guide recommends prompt chaining for predictable multi-step work and dynamic adaptive decomposition for open-ended investigations whose next steps depend on what is discovered."
+    }
+  ]
+}

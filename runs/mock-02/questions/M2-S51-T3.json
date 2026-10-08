@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S51-T3",
+  "slot_id": "M2-S51",
+  "try": 3,
+  "point": "5.2-K4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S51-T2",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction agent processes plain-text purchase order emails and calls a customer lookup tool with the extracted customer name to link each order to an account. Orders that the extraction agent cannot complete go to a human review queue, where staff can add missing data. For one email, the lookup returns three records with the same name in different cities, and the extraction agent links the order to the record with the most recent activity. Audits show that some orders reach the wrong accounts. Which change best fixes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the extraction agent choose the record whose city most closely matches the shipping address in the email, because location is the strongest available signal.",
+      "correct": false,
+      "reason": "This replaces one heuristic with another, and the guide says that multiple matches need a request for additional identifiers instead of heuristic selection."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the most-recent-activity rule and add an output field that lists the other matching record IDs so that downstream systems can review them later.",
+      "correct": false,
+      "reason": "The order is still linked by a heuristic, while the guide says that multiple matches require a request for additional identifiers rather than heuristic selection."
+    },
+    {
+      "letter": "C",
+      "text": "Have the extraction agent route the order to the human review queue with a request for an additional identifier, such as an account number.",
+      "correct": true,
+      "reason": "The guide says that multiple matches require clarification by requesting additional identifiers rather than heuristic selection, and the review queue is where staff can supply them."
+    },
+    {
+      "letter": "D",
+      "text": "Have the extraction agent report a self-assessed confidence score for each candidate record and link the order automatically when the top score exceeds 0.9.",
+      "correct": false,
+      "reason": "This change still selects one record automatically instead of requesting an additional identifier, and the guide says that multiple matches require clarification rather than heuristic selection."
+    }
+  ]
+}

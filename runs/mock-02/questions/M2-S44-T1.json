@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S44-T1",
+  "slot_id": "M2-S44",
+  "try": 1,
+  "point": "3.1-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request. When the senior developer runs reviews on her laptop, Claude Code flags missing input validation and uses the team's severity labels. In the CI pipeline, the same reviews follow neither convention. The senior developer wrote both conventions in ~/.claude/CLAUDE.md on her laptop. What is the most likely root cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The conventions must be split into topic-specific files in .claude/rules/, because Claude Code cannot load one long CLAUDE.md file in a CI pipeline.",
+      "correct": false,
+      "reason": "The guide presents .claude/rules/ as an organizational alternative to a monolithic CLAUDE.md, not as a fix for files that fail to load."
+    },
+    {
+      "letter": "B",
+      "text": "The -p flag runs Claude Code in non-interactive mode, and this mode skips every CLAUDE.md file, so the CI reviews receive no written conventions at all.",
+      "correct": false,
+      "reason": "The guide describes -p only as the non-interactive mode for CI; it does not say this mode skips CLAUDE.md, and the real gap is the user-level location."
+    },
+    {
+      "letter": "C",
+      "text": "The conventions need a directory-level CLAUDE.md in every package folder, because Claude Code ignores root-level files when it reviews changes inside subdirectories.",
+      "correct": false,
+      "reason": "The guide lists a root or .claude/CLAUDE.md as valid project-level configuration; directory-level files are optional additions, not a requirement."
+    },
+    {
+      "letter": "D",
+      "text": "The conventions sit in user-level configuration, which applies only to that developer and is not shared through version control with the CI runner.",
+      "correct": true,
+      "reason": "The guide states that ~/.claude/CLAUDE.md is user-level and not shared via version control, so the CI checkout never contains these instructions."
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S23-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "43d3f70a9677555db3d9f433971eacf40f4af75ae962d7550b86de19ce22e6bc",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Per 1.3-S4, coordinator prompts should specify research goals and quality criteria rather than step-by-step procedures, so the subagent can adapt its search when refunds go by other names or run in background jobs. A splits the work into rigid fixed steps. B only patches the step list. D is false because subagents do not inherit the coordinator's context.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

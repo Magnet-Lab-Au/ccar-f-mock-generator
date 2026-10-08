@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S16-T1",
+  "slot_id": "M2-S16",
+  "try": 1,
+  "point": "2.2-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK tool connects to an internal MCP server that exposes a lookup_dependencies tool for a legacy package registry. When the registry lookup fails, the tool returns the failure text as an ordinary successful result. The agent sometimes treats this failure text as real dependency data. How should the MCP tool communicate the failure back to the agent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Return an empty result marked as successful, so the agent can continue the exploration without any interruption from the failed lookup.",
+      "correct": false,
+      "reason": "The guide says an access failure must be distinguished from a valid empty result; an empty result marked as successful hides the failure and blocks any recovery decision."
+    },
+    {
+      "letter": "B",
+      "text": "Return the failure details in the tool result with the isError flag set to true, so the agent knows the call failed.",
+      "correct": true,
+      "reason": "The guide names the MCP isError flag as the pattern for communicating tool failures back to the agent, so the agent can recognize the failure and decide how to recover."
+    },
+    {
+      "letter": "C",
+      "text": "Return a generic \"Operation failed\" message as a normal successful result, so the agent sees the same text for every failure.",
+      "correct": false,
+      "reason": "The guide says uniform generic error responses prevent appropriate recovery decisions, and this result is still not flagged as a failure, so the agent can still mistake it for data."
+    },
+    {
+      "letter": "D",
+      "text": "Throw an exception that ends the whole agent session, so that an engineer can inspect the legacy registry by hand.",
+      "correct": false,
+      "reason": "Ending the whole workflow on one tool failure removes any chance of recovery; the guide favors returning the failure to the agent so that the agent can decide what to do."
+    }
+  ]
+}

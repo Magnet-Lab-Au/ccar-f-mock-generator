@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S32-T1",
+  "slot_id": "M2-S32",
+  "try": 1,
+  "point": "3.3-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to generate test cases for pull requests. The test conventions live in .claude/rules/testing.md with the frontmatter paths: [\"tests/**/*\"]. However, the team keeps each test file next to its component, for example packages/ui/Button.test.tsx and src/checkout/Cart.test.tsx, so the generated tests often ignore the conventions. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Change the paths value to the glob pattern \"**/*.test.tsx\" so the rule loads for every test file in any directory.",
+      "correct": true,
+      "reason": "Glob patterns in path-specific rules apply conventions by file type regardless of directory location, and the rule still loads only when matching files are edited."
+    },
+    {
+      "letter": "B",
+      "text": "Move the test conventions into the root CLAUDE.md file so they load in every session, whatever file is edited.",
+      "correct": false,
+      "reason": "The conventions would load even when non-test files are edited, which adds irrelevant context and token usage that path-scoped rules are meant to avoid."
+    },
+    {
+      "letter": "C",
+      "text": "Copy the test conventions into a CLAUDE.md file in each directory that contains test files.",
+      "correct": false,
+      "reason": "Directory-level CLAUDE.md files are bound to directories, so conventions for files spread across the codebase must be duplicated; glob-pattern rules are the guide's preferred choice for this case."
+    },
+    {
+      "letter": "D",
+      "text": "Change the paths value to \"src/**/*\" so the rule loads for every file under the src directory.",
+      "correct": false,
+      "reason": "This pattern is directory-based, so it loads for non-test source files and still misses test files under packages/; it does not target files by type."
+    }
+  ]
+}

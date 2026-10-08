@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S06-T1",
+  "slot_id": "M2-S06",
+  "try": 1,
+  "point": "2.1-S2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the coordinator agent can call two tools: analyze_content, which is meant for web search results, and analyze_document, which is meant for uploaded PDF reports. The two tool descriptions are almost identical, and logs show that the coordinator often sends web search results to analyze_document. Which two changes most directly eliminate the functional overlap between these tools?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rewrite the description of the renamed tool so that it states its web search input and explains when analyze_document is the better choice.",
+      "correct": true,
+      "reason": "The guide pairs the rename with a web-specific description, and descriptions are the main way the model chooses between similar tools."
+    },
+    {
+      "letter": "B",
+      "text": "Rename analyze_content to extract_web_results so that the tool name itself signals that the tool handles web search output.",
+      "correct": true,
+      "reason": "The guide names renaming an overlapping tool, such as analyze_content to extract_web_results, as a way to remove functional overlap."
+    },
+    {
+      "letter": "C",
+      "text": "Merge both tools into one generic analysis tool so that the coordinator never has to choose between two similar options.",
+      "correct": false,
+      "reason": "The guide favors purpose-specific tools with clear contracts, and a generic tool removes the clear boundary between web and document processing."
+    },
+    {
+      "letter": "D",
+      "text": "Add a system prompt instruction that routes every request mentioning the word 'document' to analyze_document, while keeping both tool names and their current descriptions unchanged.",
+      "correct": false,
+      "reason": "The guide warns that keyword-sensitive prompt instructions create unintended tool associations, and the overlapping names and descriptions stay in place."
+    },
+    {
+      "letter": "E",
+      "text": "Shorten both tool descriptions to a single line each so that the coordinator spends fewer tokens when it compares the two tools.",
+      "correct": false,
+      "reason": "The guide states that minimal descriptions lead to unreliable selection among similar tools, so shorter descriptions make the misrouting worse."
+    }
+  ]
+}

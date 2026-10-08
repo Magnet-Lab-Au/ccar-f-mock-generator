@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S17-T1",
+  "slot_id": "M2-S17",
+  "try": 1,
+  "point": "1.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks your Claude Agent SDK coordinator to explain how authentication works across a large legacy monolith. The coordinator spawns three subagents: one for the login controller, one for password hashing, and one for the user database schema. Each subagent finishes its assigned area thoroughly, and the final summary reports their findings accurately. However, the summary leaves out the token refresh, session middleware, and single sign-on code, which also handle authentication. What is the most likely root cause of the gap?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The coordinator split the topic into subtasks that were too narrow, so no subagent was assigned the token, session, or single sign-on code.",
+      "correct": true,
+      "reason": "The guide names overly narrow task decomposition by the coordinator as a risk that leaves a broad topic only partly covered, even when each subagent does its own part well."
+    },
+    {
+      "letter": "B",
+      "text": "The subagents used Grep patterns that were too strict, so they missed relevant files inside their own assigned areas of the code.",
+      "correct": false,
+      "reason": "Each subagent covered its own area thoroughly, and the missing code lies outside every assigned area. Better searching within those areas would not cover topics that the coordinator never delegated."
+    },
+    {
+      "letter": "C",
+      "text": "The subagents did not inherit the coordinator's conversation history, so each one lost track of the engineer's original request.",
+      "correct": false,
+      "reason": "The guide says isolated subagent context is by design, and here each subagent completed its assigned area thoroughly. The missing areas were never delegated, so isolated context is not the cause."
+    },
+    {
+      "letter": "D",
+      "text": "The final synthesis dropped the subagent findings about token refresh, session middleware, and single sign-on when it combined the outputs.",
+      "correct": false,
+      "reason": "The summary reports the subagent findings accurately, and no subagent was assigned those areas. There were no such findings to drop, so the gap comes from the decomposition, not from aggregation."
+    }
+  ]
+}

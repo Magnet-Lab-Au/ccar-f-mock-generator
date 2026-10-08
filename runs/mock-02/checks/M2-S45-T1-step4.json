@@ -1,0 +1,95 @@
+{
+  "question_id": "M2-S45-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B6",
+      "detail": "The feature \"-p\" is not in the exam guide.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "6cae5bd6a44accd65bf312949d3975289c2a82323801f48fe36804a770b5e845",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "D"
+    ],
+    "reason": "Per 4.3-S6, keep the strict schema to guarantee syntactic validity (B). Add format normalization rules to the prompt so values are written in one canonical form, which the schema alone cannot enforce semantically (D). Making the fields optional, dropping the schema, or making no change would not fix the deduplication failure.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "-p",
+      "found": false
+    },
+    {
+      "name": "--json-schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

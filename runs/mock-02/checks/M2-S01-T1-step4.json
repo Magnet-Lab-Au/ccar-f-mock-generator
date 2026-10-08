@@ -1,0 +1,81 @@
+{
+  "question_id": "M2-S01-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "2ce6758e06ea9b8508c7d4e8659a71b970d6cedb5e0a117a59a55bdb804a6ebd",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Per 1.7-K3/S4, when resuming after changes, explicitly inform the session about the specific changed files so it re-analyzes them in a targeted way. A full re-exploration is wasteful, since most of the prior context is still valid, and the agent won't automatically detect the stale results.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "--resume",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

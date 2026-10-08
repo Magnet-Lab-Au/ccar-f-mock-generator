@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S43-T2",
+  "slot_id": "M2-S43",
+  "try": 2,
+  "point": "3.6-K2",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M2-S43-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code in non-interactive mode to review each pull request. A script then posts the findings as inline PR comments. The script often fails because Claude returns the review as free-form prose. When parsing does succeed, some findings lack the file path or line number that an inline comment needs. Which changes should you make to fix both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add the --json-schema flag with a schema that requires file path, line number, severity, and message for every finding.",
+      "correct": true,
+      "reason": "The guide names --json-schema as the CLI flag that enforces the structure of CI output, so every finding has the fields that an inline comment needs."
+    },
+    {
+      "letter": "B",
+      "text": "Switch the pipeline to an interactive session so that a developer can confirm the format of each finding before posting.",
+      "correct": false,
+      "reason": "The guide says Claude Code must run in non-interactive mode in automated pipelines to prevent hangs on interactive input, so an interactive session breaks the automated pipeline."
+    },
+    {
+      "letter": "C",
+      "text": "Extend the posting script with regular expressions that pull file paths and line numbers out of the free-form prose review text.",
+      "correct": false,
+      "reason": "The guide's approach is to have Claude Code emit machine-parseable structured findings with --output-format json and --json-schema, not to parse prose in the posting script."
+    },
+    {
+      "letter": "D",
+      "text": "Add the --output-format json flag so that the review result comes back as machine-parseable JSON rather than prose.",
+      "correct": true,
+      "reason": "The guide names --output-format json as the CLI flag that produces machine-parseable output in CI contexts, which fixes the parsing failures."
+    },
+    {
+      "letter": "E",
+      "text": "Add a rule to CLAUDE.md asking Claude to write each finding as a JSON object that includes the file path and line number fields.",
+      "correct": false,
+      "reason": "The guide presents CLAUDE.md as the place for project context such as review criteria; it presents the --output-format json and --json-schema flags as the way to enforce structured output."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S39-T1",
+  "slot_id": "M2-S39",
+  "try": 1,
+  "point": "4.5-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline uses the Message Batches API to generate unit tests overnight for about 4,000 changed functions. In last night's run, 35% of the responses had to be resubmitted because the generated tests did not follow the project's test format. You have revised the prompt for tonight's run. Which approach best maximizes first-pass success and reduces resubmission costs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Submit the revised prompt for all 4,000 functions at once, then resubmit only the failed requests, identified by custom_id, until every test passes.",
+      "correct": false,
+      "reason": "Resubmitting failures by custom_id handles failures after they occur, but an unproven prompt on the full volume risks repeated resubmission cycles that sample-set refinement is meant to avoid."
+    },
+    {
+      "letter": "B",
+      "text": "Let each batch request run the generated tests through a tool and return the results, so Claude can fix its format mid-request.",
+      "correct": false,
+      "reason": "The batch API does not support multi-turn tool calling within a single request, so tools cannot be executed mid-request with their results returned."
+    },
+    {
+      "letter": "C",
+      "text": "Move tonight's whole test generation job to the synchronous API so that each formatting failure can be corrected right away.",
+      "correct": false,
+      "reason": "Nightly test generation is a latency-tolerant workload that suits the batch API, and moving it to the synchronous API gives up the 50% cost savings without improving the prompt."
+    },
+    {
+      "letter": "D",
+      "text": "Test the revised prompt on a small sample of functions, fix the problems you find, and then submit the full batch.",
+      "correct": true,
+      "reason": "The guide recommends refining the prompt on a sample set before batch-processing large volumes, which maximizes first-pass success and reduces the costs of iterative resubmission."
+    }
+  ]
+}

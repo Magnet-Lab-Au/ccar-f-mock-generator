@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S22-T1",
+  "slot_id": "M2-S22",
+  "try": 1,
+  "point": "1.2-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses a coordinator that sends every engineer request through four subagents in a fixed order: codebase exploration, legacy analysis, boilerplate generation, and test execution. Logs show that simple requests, such as locating where a function is defined, take minutes and consume tokens in all four subagents. Complex refactoring requests do need several of these subagents. What is the most effective way to change the coordinator?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run all four subagents in parallel for every request so that the full pipeline finishes faster while each subagent still contributes its output.",
+      "correct": false,
+      "reason": "This still routes every request through the full pipeline and wastes tokens on unneeded subagents; the guide asks the coordinator to choose subagents by query complexity."
+    },
+    {
+      "letter": "B",
+      "text": "Replace the four subagents with one general agent that has every tool, so that no routing decision is needed for any request.",
+      "correct": false,
+      "reason": "This abandons the coordinator-subagent pattern instead of fixing it; the guide's remedy is a coordinator that dynamically selects the specialized subagents each request needs."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator analyze each request's requirements and invoke only the subagents that the request needs, using the full sequence only for complex tasks.",
+      "correct": true,
+      "reason": "The guide says a coordinator should analyze query requirements and dynamically select which subagents to invoke rather than always routing through the full pipeline."
+    },
+    {
+      "letter": "D",
+      "text": "Have each subagent inspect the incoming request first and return an empty result immediately whenever it decides that the request falls outside its own specialty area.",
+      "correct": false,
+      "reason": "Every subagent is still invoked for every request, and the guide places the decision of which subagents to invoke with the coordinator, not with each subagent."
+    }
+  ]
+}

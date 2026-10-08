@@ -1,0 +1,89 @@
+{
+  "question_id": "M2-S52-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "e370964af8b48c44e4392b9369f2dd7a90cc91616b11a32316bff46058816464",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Adding a detected_pattern field to each finding (4.4-K3/S3) records which source construct triggered it. Dismissals can then be grouped by pattern, so the team can fix the prompt systematically. Retrying with the dismissal (A) only corrects one document at a time. Strict mode (B) only prevents malformed output. Uncalibrated self-reported confidence suppression (D) hides findings without showing what causes the false positives.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "detected_pattern",
+      "found": true
+    },
+    {
+      "name": "strict mode",
+      "found": true
+    },
+    {
+      "name": "JSON Schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

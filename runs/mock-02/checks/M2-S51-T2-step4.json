@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S51-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for option C says that the guide calls self-reported confidence scores unreliable in general. The guide says only that they are unreliable proxies for actual case complexity (5.2-K3). Elsewhere it endorses field-level confidence scores that are calibrated with labeled validation sets (5.5-S3). The reason overstates the guide. Its second clause, that C still picks a record without requesting an identifier, is accurate.",
+      "letter": "C",
+      "point": "5.2-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "b82d0edd0a15014ee0031a4ad64021da2e505465ef2bf9f66625e993c8cae485",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "When a lookup returns multiple matching records, the agent should get an additional identifier rather than pick one by heuristic (5.2-K4, 5.2-S5). In this pipeline, the human review queue is where staff can supply that missing identifier. Option A keeps the flawed heuristic. Option C depends on self-reported confidence, which is unreliable. Option D is just another heuristic and can still pick the wrong account.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for option C says that the guide calls self-reported confidence scores unreliable in general. The guide says only that they are unreliable proxies for actual case complexity (5.2-K3). Elsewhere it endorses field-level confidence scores that are calibrated with labeled validation sets (5.5-S3). The reason overstates the guide. Its second clause, that C still picks a record without requesting an identifier, is accurate.",
+      "letter": "C",
+      "point": "5.2-K3"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

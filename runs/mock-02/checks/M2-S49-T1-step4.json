@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S49-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B1",
+      "detail": "Option C does not answer the stem as written. The stem asks for reviewer time to go to the findings most likely to be real errors. A confidence score on a finding is naturally read as confidence that the flagged error is real. So routing low-confidence findings sends reviewers to the findings least likely to be real errors. The marked answer conflicts with the stated goal unless the stem or option is reworded, for example to say what the confidence measures or what is routed.",
+      "letter": "C",
+      "point": "4.6-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "53998b881bfa4a0e08976d0ea46433238dd3415918354689d3449a0b7f57f257",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Per-finding confidence scores with thresholds calibrated on a labeled validation set (4.6-S3, 5.5-S3) let limited reviewer time go to the findings most likely to be real errors. A uses an uncalibrated 0.9 threshold, which is unreliable. B is coarse and floods reviewers with whole documents. D relies on same-session self-review, which tends to miss its own errors.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "fail",
+      "finding": "Option C does not answer the stem as written. The stem asks for reviewer time to go to the findings most likely to be real errors. A confidence score on a finding is naturally read as confidence that the flagged error is real. So routing low-confidence findings sends reviewers to the findings least likely to be real errors. The marked answer conflicts with the stated goal unless the stem or option is reworded, for example to say what the confidence measures or what is routed.",
+      "letter": "C",
+      "point": "4.6-S3"
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

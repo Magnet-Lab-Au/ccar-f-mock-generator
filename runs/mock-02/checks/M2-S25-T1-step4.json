@@ -1,0 +1,103 @@
+{
+  "question_id": "M2-S25-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B8",
+      "detail": "Close copy of sample question 9. Sample 9 has a subagent that returns control to the coordinator for frequent lookups, a percentage split between simple and complex cases (85/15 there, 80/20 here), and a correct action of a scoped cross-role tool for the simple case with complex cases still routed through the coordinator. The distractors also mirror it: batching the needs, giving the full toolset, and pre-loading or caching context. Only the surface story changes (synthesis/verify_fact becomes generation/lookup_signature). The correct action is the same: sample option A, split here into options B and E.",
+      "letter": "E",
+      "point": "2.3-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "519386ae6123595e4feb0a92edd1f11cd29d29638315a79654f87f4c8a251000",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "E"
+    ],
+    "reason": "Following 2.3-S3, the frequent case (80% single-symbol signature checks) is handled by giving the generation subagent a narrow, scoped lookup_signature tool, which removes most round trips. Complex multi-module call-path tracing (20%) still goes through the coordinator to the exploration subagent, so each subagent stays within its role and remains reliable. Giving the generation subagent the full exploration toolset invites cross-specialization misuse, pre-loading every signature bloats its context, and batching lookups at the end of its pass doesn't work because it needs the answers during generation.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "fail",
+      "finding": "Close copy of sample question 9. Sample 9 has a subagent that returns control to the coordinator for frequent lookups, a percentage split between simple and complex cases (85/15 there, 80/20 here), and a correct action of a scoped cross-role tool for the simple case with complex cases still routed through the coordinator. The distractors also mirror it: batching the needs, giving the full toolset, and pre-loading or caching context. Only the surface story changes (synthesis/verify_fact becomes generation/lookup_signature). The correct action is the same: sample option A, split here into options B and E.",
+      "letter": "E",
+      "point": "2.3-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

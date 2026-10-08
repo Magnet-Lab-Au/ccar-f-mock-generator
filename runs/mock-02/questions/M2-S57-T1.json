@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S57-T1",
+  "slot_id": "M2-S57",
+  "try": 1,
+  "point": "5.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system uses a coordinator agent that sends subagents to extract contract terms from three sources: the signed contract, the invoices, and an amendments archive. The amendments subagent reports a timeout that it could not resolve with local retries, while the other two subagents return complete results. The coordinator must now synthesize one output record for the downstream billing system. What is the best way to structure that synthesized output?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Discard the results from the contract and invoices and return a single generic failure status for the whole record to the downstream system.",
+      "correct": false,
+      "reason": "The guide calls terminating an entire workflow on a single failure an anti-pattern, and a generic error status hides the valuable context of what succeeded."
+    },
+    {
+      "letter": "B",
+      "text": "Add coverage annotations showing which fields are well-supported by the contract and invoices and which areas have gaps because the amendments archive was unavailable.",
+      "correct": true,
+      "reason": "The guide says synthesis output should carry coverage annotations that separate well-supported findings from topic areas with gaps due to unavailable sources."
+    },
+    {
+      "letter": "C",
+      "text": "Fill the amendment-related fields with values inferred from the contract and invoices so that the record passes JSON schema validation without gaps.",
+      "correct": false,
+      "reason": "This fabricates values and hides the gap; the guide wants unavailable sources to be marked as gaps, not covered over to satisfy the schema."
+    },
+    {
+      "letter": "D",
+      "text": "Return the fields extracted from the contract and invoices as a complete successful record, leaving out any mention of the amendments archive timeout.",
+      "correct": false,
+      "reason": "This silently suppresses the error and presents partial data as success, which the guide calls an anti-pattern because downstream consumers cannot see the gap."
+    }
+  ]
+}

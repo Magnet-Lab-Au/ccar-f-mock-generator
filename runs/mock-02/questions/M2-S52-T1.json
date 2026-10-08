@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S52-T1",
+  "slot_id": "M2-S52",
+  "try": 1,
+  "point": "4.4-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system flags possible issues in invoices, such as line items that look duplicated. Human reviewers dismiss many of these findings as false positives. The team wants to learn which kinds of source content cause the dismissed findings, so that it can fix the extraction prompt systematically. Today each finding records only the field name and a short message. What change best supports this analysis?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Retry each dismissed extraction with the reviewer's dismissal appended to the prompt, so that the model corrects that single document on the next attempt.",
+      "correct": false,
+      "reason": "Retry with error feedback in the guide fixes validation errors in one extraction; it does not record trigger patterns for systematic analysis across many dismissals."
+    },
+    {
+      "letter": "B",
+      "text": "Enable strict mode on the JSON schema for findings, so that the model can no longer produce malformed or invalid output.",
+      "correct": false,
+      "reason": "The guide says strict mode eliminates schema syntax errors, but these false positives are semantic findings, and strict mode adds no data about what triggered them."
+    },
+    {
+      "letter": "C",
+      "text": "Add a detected_pattern field to each finding that records which construct in the source document triggered it, so that dismissals can be grouped by pattern.",
+      "correct": true,
+      "reason": "The guide says that a detected_pattern field on structured findings enables systematic analysis of false positive patterns when reviewers dismiss findings."
+    },
+    {
+      "letter": "D",
+      "text": "Have the model report its own confidence score for each finding, and automatically suppress any finding whose score falls below a fixed threshold before human review.",
+      "correct": false,
+      "reason": "A confidence score does not record which construct triggered a finding, so it gives no data to analyze dismissal patterns, and the guide calls for calibrating confidence with labeled validation sets."
+    }
+  ]
+}

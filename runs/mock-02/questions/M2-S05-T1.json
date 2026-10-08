@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S05-T1",
+  "slot_id": "M2-S05",
+  "try": 1,
+  "point": "2.5-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "You join the team building the multi-agent research system and must find why citations from the document analysis subagent are missing in final reports. The repository contains several hundred Python files, and you do not yet know where citations are created or passed between modules. How should you build your understanding of the citation flow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Grep to search for citation-related names and rely only on the matching lines, without using Read to follow imports between modules.",
+      "correct": false,
+      "reason": "Grep finds entry points, but the guide says to then use Read to follow imports and trace flows; matching lines alone do not show the flow."
+    },
+    {
+      "letter": "B",
+      "text": "Use Glob to list all Python files, then use Read on each listed file in order until you find the code that creates and passes citations.",
+      "correct": false,
+      "reason": "Glob matches file paths, not content, and reading each file in turn still amounts to reading files upfront instead of starting from Grep-found entry points."
+    },
+    {
+      "letter": "C",
+      "text": "Use Grep to search for citation-related names to find the entry points, then use Read on those files and follow their imports to trace how citations reach the report generation subagent.",
+      "correct": true,
+      "reason": "The guide recommends building codebase understanding incrementally: start with Grep to find entry points, then use Read to follow imports and trace flows."
+    },
+    {
+      "letter": "D",
+      "text": "Use Read on every Python file in the repository first, so that the complete codebase is in context before you start tracing the citation flow.",
+      "correct": false,
+      "reason": "The guide says to build understanding incrementally rather than reading all files upfront."
+    }
+  ]
+}

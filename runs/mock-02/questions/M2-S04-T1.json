@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S04-T1",
+  "slot_id": "M2-S04",
+  "try": 1,
+  "point": "1.3-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your multi-agent research system produces reports in which many claims lack citations or cite the wrong source. Investigation shows that the coordinator passes the web search and document analysis outputs to the synthesis subagent as merged prose summaries. These summaries mention source URLs and page numbers inline only occasionally. What change would most effectively preserve source attribution through the pipeline?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add an instruction to the synthesis subagent's system prompt stating that every claim in its output must include an accurate citation to its original source.",
+      "correct": false,
+      "reason": "An instruction cannot restore source metadata that the merged prose summaries never carried. The guide's fix is to pass that metadata in a structured format kept separate from the content."
+    },
+    {
+      "letter": "B",
+      "text": "Have the synthesis subagent run its own follow-up web searches to find a likely source for each uncited claim before it writes the final synthesis of the research findings.",
+      "correct": false,
+      "reason": "New searches only guess at sources after the original attribution is already lost. The guide preserves attribution by passing source metadata in a structured format from the start."
+    },
+    {
+      "letter": "C",
+      "text": "Configure the synthesis subagent to inherit the coordinator's full conversation context so that it can see where each finding originally came from.",
+      "correct": false,
+      "reason": "The guide states that subagents do not automatically inherit parent context. Context must be provided explicitly in the prompt, and attribution is preserved by structuring that context."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator pass findings as structured records that separate each claim's content from its metadata fields for source URL, document name, and page number.",
+      "correct": true,
+      "reason": "The guide recommends structured data formats that separate content from metadata such as source URLs, document names, and page numbers, so attribution survives when context passes between agents."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S23-T1",
+  "slot_id": "M2-S23",
+  "try": 1,
+  "point": "1.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator spawns an exploration subagent to explain how a legacy payment service handles refunds. The coordinator's prompt lists exact steps: grep for \"refund\", read the first three matching files, then summarize the controller. In repositories where refunds are called \"reversals\" or are processed in a background job, the subagent follows the steps and returns incomplete summaries. What change to the coordinator's prompt would most improve the subagent's results?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Split the procedure into separate subagents, one per step, so that a grep subagent, a file-reading subagent, and a summarizing subagent each run one fixed instruction in a strict, predetermined sequence.",
+      "correct": false,
+      "reason": "Splitting the steps across subagents keeps the same rigid procedure, so no subagent can adapt to codebases where refunds use different names or locations."
+    },
+    {
+      "letter": "B",
+      "text": "Extend the step list with more grep terms such as \"reversal\", \"chargeback\", and \"credit\", and require the subagent to read the first five matching files instead of three.",
+      "correct": false,
+      "reason": "This stays a step-by-step procedure, so it still prevents the subagent from adapting when a codebase uses names or structures the list does not anticipate."
+    },
+    {
+      "letter": "C",
+      "text": "State the goal of explaining the complete refund flow and quality criteria such as citing file paths and covering background jobs, leaving search strategy to the subagent.",
+      "correct": true,
+      "reason": "Coordinator prompts should specify research goals and quality criteria rather than step-by-step procedures, so the subagent can adapt its search to how each codebase is actually organized."
+    },
+    {
+      "letter": "D",
+      "text": "Tell the subagent to rely on the coordinator's earlier exploration of the repository, because subagents automatically share memory with the coordinator that spawns them.",
+      "correct": false,
+      "reason": "Subagents do not automatically inherit parent context or share memory, so any needed context must be provided explicitly in the subagent's prompt."
+    }
+  ]
+}

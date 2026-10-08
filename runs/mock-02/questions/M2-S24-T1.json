@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S24-T1",
+  "slot_id": "M2-S24",
+  "try": 1,
+  "point": "2.3-S4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent generates boilerplate code for new service modules. It must call an MCP tool, map_module_dependencies, before it uses Write or any other tool, because the generated code depends on that output. Logs show that in about 15% of sessions the agent skips this tool and writes files immediately. Which two changes to the agent's Claude API requests best enforce this order while still letting the agent finish the remaining steps?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Set tool_choice to {\"type\": \"tool\", \"name\": \"map_module_dependencies\"} on the first request so that the model must call this tool before anything else.",
+      "correct": true,
+      "reason": "Forced tool selection guarantees that the named tool is called first, which is how the guide says to ensure a specific tool runs before the others."
+    },
+    {
+      "letter": "B",
+      "text": "Set tool_choice to \"any\" on the first request so that the model is guaranteed to call map_module_dependencies before it calls Write.",
+      "correct": false,
+      "reason": "The \"any\" setting only guarantees that the model calls some tool instead of returning text; it does not guarantee which tool, so the model could still call Write first."
+    },
+    {
+      "letter": "C",
+      "text": "After the forced tool result returns, send the follow-up requests with tool_choice set to \"auto\" so the model can choose Read, Write, or other tools.",
+      "correct": true,
+      "reason": "The guide says the later steps are processed in follow-up turns once the forced call is done, so the model must be free again to choose its next tools."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the forced tool_choice for map_module_dependencies on every request in the session so that the dependency map is refreshed before each step.",
+      "correct": false,
+      "reason": "Forcing the same tool on every request would block the later steps; the guide forces the first call only and handles the next steps in follow-up turns."
+    },
+    {
+      "letter": "E",
+      "text": "Add a firm instruction to the system prompt that says map_module_dependencies must always be called before any other tool in the session.",
+      "correct": false,
+      "reason": "A prompt instruction is only guidance and can still fail, as the 15% of skipped calls shows; forced tool selection is the reliable way to ensure the first call."
+    }
+  ]
+}

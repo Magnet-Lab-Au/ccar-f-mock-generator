@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S49-T1",
+  "slot_id": "M2-S49",
+  "try": 1,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes 20,000 invoices per week and validates each output against a JSON schema. A verification pass then compares each extracted field with the source document and flags possible errors. The human reviewers can check only a small share of these findings. How should you design the verification pass so that reviewer time goes to the findings most likely to be real errors?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the verification pass report a confidence score with each finding, and route findings to human reviewers using a fixed 0.9 threshold without any calibration.",
+      "correct": false,
+      "reason": "The guide requires calibrating confidence scores against labeled validation sets; an uncalibrated fixed threshold may not match actual error rates."
+    },
+    {
+      "letter": "B",
+      "text": "Have the verification pass return one pass or fail verdict per document, and send every document that fails to the human reviewers for a full manual check.",
+      "correct": false,
+      "reason": "A single document-level verdict gives no confidence per finding, so findings cannot be routed by calibrated confidence and reviewer time is not focused."
+    },
+    {
+      "letter": "C",
+      "text": "Have the verification pass report a confidence score with each finding, calibrate thresholds on a labeled validation set, and route low-confidence findings to human reviewers.",
+      "correct": true,
+      "reason": "Self-reported confidence per finding enables calibrated review routing, and the guide calls for calibrating confidence with labeled validation sets."
+    },
+    {
+      "letter": "D",
+      "text": "Have the same extraction session re-check its own output in a second pass, and route a record to the human reviewers only when the two passes disagree on any extracted field value.",
+      "correct": false,
+      "reason": "A session that keeps its generation reasoning context is less likely to question its own decisions, so self-review misses subtle errors and gives no calibrated routing signal."
+    }
+  ]
+}

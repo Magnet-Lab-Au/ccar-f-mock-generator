@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S49-T2",
+  "slot_id": "M2-S49",
+  "try": 2,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S49-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes 20,000 invoices per week and validates each output against a JSON schema. A verification pass then checks every extracted field against the source document. The human reviewers can check only a small share of the fields. How should you design the verification pass so that reviewer time goes to the fields most likely to be wrong?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the verification pass return one pass or fail verdict per document, and send every failed document to the human reviewers for a full manual check.",
+      "correct": false,
+      "reason": "A single verdict per document gives no confidence for each field, so the reviewers cannot focus on the fields most likely to be wrong."
+    },
+    {
+      "letter": "B",
+      "text": "Have the verification pass state how confident it is that each field value is correct, and route fields below a fixed 0.9 threshold to reviewers without any calibration.",
+      "correct": false,
+      "reason": "The guide calls for calibrating confidence scores against labeled validation sets, and an uncalibrated fixed threshold may not match the actual error rates."
+    },
+    {
+      "letter": "C",
+      "text": "Have the verification pass report its confidence that each field value is correct, calibrate the threshold on a labeled validation set, and route low-confidence fields to reviewers.",
+      "correct": true,
+      "reason": "Self-reported confidence for each finding enables calibrated review routing, and the guide calibrates confidence thresholds with labeled validation sets."
+    },
+    {
+      "letter": "D",
+      "text": "Have the same extraction session re-check its own output in a second pass, and route a field to the human reviewers only when the two passes disagree about the extracted value of that field.",
+      "correct": false,
+      "reason": "A session that keeps its generation reasoning context is less likely to question its own decisions, so it repeats its errors and gives no calibrated routing signal."
+    }
+  ]
+}

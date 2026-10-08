@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S25-T1",
+  "slot_id": "M2-S25",
+  "try": 1,
+  "point": "2.3-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK coordinator delegates work to a codebase exploration subagent and a boilerplate generation subagent. During generation, the generation subagent often needs to confirm an existing function signature, so it returns control to the coordinator, which invokes the exploration subagent and then re-invokes the generation subagent. Logs show that 80% of these requests are single-symbol signature checks, while 20% require tracing call paths across several legacy modules. Which two changes best reduce round trips while keeping each subagent reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the exploration subagent pre-load every function signature in the repository into the generation subagent's context before each generation task starts.",
+      "correct": false,
+      "reason": "Speculatively loading context fills the generation subagent's context with mostly irrelevant data and does not provide the scoped tool for frequent needs that the guide recommends."
+    },
+    {
+      "letter": "B",
+      "text": "Keep routing multi-module call-path tracing through the coordinator, which invokes the exploration subagent for these complex cases.",
+      "correct": true,
+      "reason": "Complex cases should still go through the coordinator to the specialist subagent, so the generation subagent does not take on exploration work outside its role."
+    },
+    {
+      "letter": "C",
+      "text": "Give the generation subagent the exploration subagent's full toolset, including Grep, Glob, and Bash, so it can answer every lookup directly.",
+      "correct": false,
+      "reason": "Giving tools outside an agent's specialization increases decision complexity and invites misuse; the guide favors scoped access with only limited cross-role tools."
+    },
+    {
+      "letter": "D",
+      "text": "Have the generation subagent collect all of its lookup needs and return them to the coordinator as one batch at the end of its pass.",
+      "correct": false,
+      "reason": "The generation subagent needs answers while it generates, and batching keeps every simple check on the slow coordinator path instead of using a scoped tool for the frequent case."
+    },
+    {
+      "letter": "E",
+      "text": "Give the generation subagent a scoped lookup_signature tool that returns only the signature of one named symbol.",
+      "correct": true,
+      "reason": "A limited cross-role tool for the high-frequency simple need removes most round trips while keeping the generation subagent's tool set small and role-focused."
+    }
+  ]
+}

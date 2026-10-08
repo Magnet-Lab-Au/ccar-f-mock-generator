@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S02-T2",
+  "slot_id": "M2-S02",
+  "try": 2,
+  "point": "2.2-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S02-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, the web search subagent calls an MCP search tool. When the search service times out, the tool returns an empty result list, which is the same response it gives when a query has no matches. The final reports now state that no sources exist for topics that were never actually searched. What is the most effective fix?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add an instruction to the coordinator agent's system prompt that any topic without sources lacks published coverage and should be left out of the report.",
+      "correct": false,
+      "reason": "This treats every empty result as a valid empty result, so topics missed because of a timeout are still reported wrongly and are dropped instead of retried."
+    },
+    {
+      "letter": "B",
+      "text": "Have the MCP search tool return the same generic 'Operation failed' message for timeouts and for queries with no matches, so that the coordinator agent reviews every such case itself.",
+      "correct": false,
+      "reason": "A uniform generic error hides whether the query failed or found nothing, which prevents the coordinator agent from making the right recovery decision."
+    },
+    {
+      "letter": "C",
+      "text": "Have the MCP search tool flag timeouts with isError and a retryable transient category, and return a normal empty result only for queries that ran and matched nothing.",
+      "correct": true,
+      "reason": "Structured error metadata separates an access failure, which needs a retry decision, from a valid empty result, which is a successful query with no matches."
+    },
+    {
+      "letter": "D",
+      "text": "Have the web search subagent treat every empty result as a failure and retry the same query three times before it reports that no sources exist.",
+      "correct": false,
+      "reason": "This still does not tell access failures from valid empty results, and it wastes retries on successful queries that simply had no matches."
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "question_id": "M2-S42-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question stem and the reason for option B call the automated actor 'the CI runner', but option A calls it 'the CI job'. One actor has two names.",
+      "letter": "A",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "87de0564fcf43c056581d0cbd3f7968f14dc6221cc86c53d2fddd602c0fefa2e",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Splitting the 900-line file into topic files such as testing.md and api-conventions.md in the project's .claude/rules/ directory gives each topic its own maintainable file, which reduces merge conflicts. Because the rules live in the project and are version-controlled, every developer and the CI runner still receive them. B fails because user-level ~/.claude/CLAUDE.md files are not shared with teammates or CI. A fails because slash commands load only when invoked, not automatically. D fails because it keeps the single monolithic file, so the merge conflicts remain.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question stem and the reason for option B call the automated actor 'the CI runner', but option A calls it 'the CI job'. One actor has two names.",
+      "letter": "A",
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "slash commands",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S56-T1",
+  "slot_id": "M2-S56",
+  "try": 1,
+  "point": "5.5-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes invoices, contracts, and shipping manifests, and it outputs JSON that downstream systems consume. On a labeled validation set, the extractions show 97% overall accuracy. The operations team now proposes to end human review for high-confidence extractions. What should you do before human review is reduced?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Approve the proposal, because 97% overall accuracy on a labeled validation set shows the extractions are reliable enough for automation across all documents.",
+      "correct": false,
+      "reason": "The guide warns that aggregate accuracy metrics such as 97% overall may mask poor performance on specific document types or fields."
+    },
+    {
+      "letter": "B",
+      "text": "Add a prompt instruction asking the model to state its overall confidence for each whole document, then automate every document where the model reports high confidence.",
+      "correct": false,
+      "reason": "The guide calls for field-level confidence scores calibrated with labeled validation sets, not uncalibrated document-level self-reports, and it still skips the per-segment accuracy check."
+    },
+    {
+      "letter": "C",
+      "text": "Measure accuracy separately for each document type and each extracted field, and confirm that every segment performs consistently before reducing review.",
+      "correct": true,
+      "reason": "The guide says to analyze accuracy by document type and field to verify consistent performance across all segments before reducing human review."
+    },
+    {
+      "letter": "D",
+      "text": "Expand the labeled validation set until the overall accuracy estimate is statistically precise, then automate every extraction above the existing confidence threshold.",
+      "correct": false,
+      "reason": "A more precise aggregate figure is still an aggregate, so it can hide weak document types or fields that the guide says must be validated per segment."
+    }
+  ]
+}

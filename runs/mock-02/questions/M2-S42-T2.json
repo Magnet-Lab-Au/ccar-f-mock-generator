@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S42-T2",
+  "slot_id": "M2-S42",
+  "try": 2,
+  "point": "3.1-K4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S42-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review pull requests and generate tests, and the project's root CLAUDE.md has grown into one 900-line file. It mixes testing conventions, API conventions, deployment checks and review criteria, and developers often hit merge conflicts when they edit it. You want each topic kept in its own maintainable file, and every developer and the CI runner must still receive the instructions. Which change best achieves this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move each topic into the ~/.claude/CLAUDE.md file of the developer who owns that topic, so that each owner edits a separate file.",
+      "correct": false,
+      "reason": "User-level instructions in ~/.claude/CLAUDE.md apply only to that user and are not shared through version control, so other developers and the CI runner would lose them."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the single CLAUDE.md file and add a table of contents with clear section headings so that each topic is easier to find and edit.",
+      "correct": false,
+      "reason": "The file stays monolithic, so the maintenance problem and the merge conflicts remain; the guide recommends splitting large CLAUDE.md files into topic files in .claude/rules/."
+    },
+    {
+      "letter": "C",
+      "text": "Split the content into focused topic files such as testing.md and api-conventions.md inside the project's .claude/rules/ directory.",
+      "correct": true,
+      "reason": "The guide names the .claude/rules/ directory for topic-specific rule files as an alternative to a monolithic CLAUDE.md, and project files reach everyone who clones the repository."
+    },
+    {
+      "letter": "D",
+      "text": "Turn each topic into a separate slash command in .claude/commands/ that developers and the CI runner invoke before each review.",
+      "correct": false,
+      "reason": "The .claude/commands/ directory holds slash commands that must be invoked on demand; the guide names .claude/rules/ as the place for topic-specific rule files."
+    }
+  ]
+}

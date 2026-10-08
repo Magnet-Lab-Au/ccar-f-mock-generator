@@ -1,0 +1,89 @@
+{
+  "question_id": "M2-S37-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "fa97bf58bb371cee556ba54d78c0d56e687db6551aed96b26c18738f082d20e5",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Project-level CLAUDE.md is committed to the repository and loaded on every CI run, so it gives CI-invoked Claude Code the project context it needs, including review criteria and testing standards (3.6-K3, 3.6-S5). A user-level CLAUDE.md is not shared and does not reach the CI environment. A JSON schema only controls the output format, not the review criteria. Pausing for input defeats non-interactive -p mode.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "--output-format",
+      "found": true
+    },
+    {
+      "name": "--json-schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,89 @@
+{
+  "question_id": "M2-S16-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "09e804953810cf326d61a34b067b246bcc05c96ab276264954cdcb737f847c91",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The MCP isError flag pattern lets the tool return its failure details while marking the result as an error. The agent then knows the lookup failed and won't mistake the text for dependency data. Option A silently suppresses the error, C ends the whole workflow over one failure, and D gives a generic message that still looks like success.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "isError",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

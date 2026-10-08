@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S25-T2",
+  "slot_id": "M2-S25",
+  "try": 2,
+  "point": "2.3-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M2-S25-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK coordinator delegates work to a codebase exploration subagent and a boilerplate generation subagent. The generation subagent checks the pinned version of a dependency many times per task, so an engineer added Bash to its allowedTools. Since then, the generation subagent sometimes installs packages and runs full test suites, and it starts long dependency-conflict investigations across legacy modules on its own. Which two changes best fix this while keeping the frequent version checks fast?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the generation subagent hand dependency-conflict investigations back to the coordinator, which delegates them to the exploration subagent.",
+      "correct": true,
+      "reason": "Complex cases are routed through the coordinator to the specialist, so the generation subagent stays inside its role."
+    },
+    {
+      "letter": "B",
+      "text": "Keep Bash in the generation subagent's tools and add a system prompt instruction that tells it to use Bash only for reading the pinned dependency versions.",
+      "correct": false,
+      "reason": "The guide recommends replacing generic tools with constrained alternatives; a prompt instruction leaves the broad Bash access in place, so misuse can continue."
+    },
+    {
+      "letter": "C",
+      "text": "Remove Bash and send every version check back through the coordinator, which then invokes the exploration subagent and returns the answer.",
+      "correct": false,
+      "reason": "This stops the misuse but puts the high-frequency simple need on the slow coordinator path; the guide recommends a scoped cross-role tool for such frequent needs."
+    },
+    {
+      "letter": "D",
+      "text": "Give the generation subagent the exploration subagent's full toolset as well, so it can complete conflict investigations itself without needing the coordinator at all.",
+      "correct": false,
+      "reason": "More tools outside the subagent's specialization increase decision complexity and cross-role misuse; the guide favors scoped access with only limited cross-role tools."
+    },
+    {
+      "letter": "E",
+      "text": "Replace Bash in the generation subagent's tools with a scoped get_pinned_version tool that returns only the pinned version of one named dependency.",
+      "correct": true,
+      "reason": "A limited cross-role tool serves the high-frequency need directly, and its narrow scope removes the generic Bash access that the subagent was misusing."
+    }
+  ]
+}

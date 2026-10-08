@@ -1,0 +1,110 @@
+{
+  "question_id": "M2-S44-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B2",
+      "detail": "The reason for option B argues from silence: it says the guide does not mention -p skipping CLAUDE.md. The guide gives a direct reason that B is wrong. Point 3.6-K3 names CLAUDE.md as the mechanism for providing project context to CI-invoked Claude Code, so non-interactive mode does not skip CLAUDE.md. The reason should cite this point.",
+      "letter": "B",
+      "point": "3.6-K3",
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B6",
+      "detail": "The feature \"-p\" is not in the exam guide.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "a44e7a35efb5ee95f42799df8d5a28bae15a943a0b89bcc8f5a7359ddd89680d",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "~/.claude/CLAUDE.md is user-level config. It applies only to that developer's machine and is not committed to the repo, so the CI runner never sees it. The conventions belong in a project-level CLAUDE.md. The -p flag does not skip CLAUDE.md files, and file length or directory placement is not the issue here.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "fail",
+      "finding": "The reason for option B argues from silence: it says the guide does not mention -p skipping CLAUDE.md. The guide gives a direct reason that B is wrong. Point 3.6-K3 names CLAUDE.md as the mechanism for providing project context to CI-invoked Claude Code, so non-interactive mode does not skip CLAUDE.md. The reason should cite this point.",
+      "letter": "B",
+      "point": "3.6-K3"
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "-p",
+      "found": false
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

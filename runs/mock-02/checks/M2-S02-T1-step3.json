@@ -1,0 +1,17 @@
+{
+  "question_id": "M2-S02-T1",
+  "step": 3,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 3,
+      "rule": "A12",
+      "detail": "The longest option is a correct option (191 characters). The slot needs a wrong option that is longer than each correct option.",
+      "letter": "A",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "b9b656e02f9da9bff79fe530147ff39f8246e65d58e2bf3e4f1084a72c561de2",
+  "date": "2026-10-08"
+}

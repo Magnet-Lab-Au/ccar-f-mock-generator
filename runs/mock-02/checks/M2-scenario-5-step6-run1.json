@@ -1,0 +1,157 @@
+{
+  "mock": 2,
+  "scenario": 5,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S31-T1",
+            "M2-S35-T1"
+          ],
+          "detail": "Both questions use the same scene: migrating a test library across about 50 files with two valid approaches that have different infrastructure requirements. In both, the correct action is to start in plan mode to explore and design before editing. S31 adds the switch to direct execution afterwards, but the problem and the core correct action are the same."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S37-T2",
+            "M2-S43-T2"
+          ],
+          "detail": "S37 option C names \"--output-format json with --json-schema\" as the flags that make the pipeline produce structured findings. That is exactly the pair of correct answers in S43."
+        },
+        {
+          "question_ids": [
+            "M2-S40-T1",
+            "M2-S31-T1",
+            "M2-S35-T1"
+          ],
+          "detail": "S40 option A says to start in plan mode and then switch to direct execution, \"as is done for large library migrations\". This gives away the correct workflow for the library-migration questions S31 and S35."
+        },
+        {
+          "question_ids": [
+            "M2-S45-T2",
+            "M2-S43-T2"
+          ],
+          "detail": "S45's stem and option D present --json-schema as the CI flag that guarantees valid JSON output. This points to a correct answer of S43."
+        },
+        {
+          "question_ids": [
+            "M2-S44-T2",
+            "M2-S42-T2"
+          ],
+          "detail": "S44 option B describes splitting one long CLAUDE.md into topic-specific files in .claude/rules/. This hints at S42's correct answer C."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S41-T1"
+          ],
+          "detail": "Two wrong options use the model's own confidence as a filter. Option B has Claude assign a confidence score to each finding and posts only findings above a fixed threshold. Option C tells Claude to report only high-confidence findings, so its self-rated confidence decides what is dropped. Neither is the calibrated, field-level human-review routing that the guide teaches, and neither is the correct answer. The rule allows at most one such option per scenario."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M2-SC5-R1-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M2-S31-T1",
+        "M2-S35-T1"
+      ],
+      "detail": "Both questions use the same scene: migrating a test library across about 50 files with two valid approaches that have different infrastructure requirements. In both, the correct action is to start in plan mode to explore and design before editing. S31 adds the switch to direct execution afterwards, but the problem and the core correct action are the same."
+    },
+    {
+      "id": "M2-SC5-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S37-T2",
+        "M2-S43-T2"
+      ],
+      "detail": "S37 option C names \"--output-format json with --json-schema\" as the flags that make the pipeline produce structured findings. That is exactly the pair of correct answers in S43."
+    },
+    {
+      "id": "M2-SC5-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S40-T1",
+        "M2-S31-T1",
+        "M2-S35-T1"
+      ],
+      "detail": "S40 option A says to start in plan mode and then switch to direct execution, \"as is done for large library migrations\". This gives away the correct workflow for the library-migration questions S31 and S35."
+    },
+    {
+      "id": "M2-SC5-R1-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S45-T2",
+        "M2-S43-T2"
+      ],
+      "detail": "S45's stem and option D present --json-schema as the CI flag that guarantees valid JSON output. This points to a correct answer of S43."
+    },
+    {
+      "id": "M2-SC5-R1-F5",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M2-S44-T2",
+        "M2-S42-T2"
+      ],
+      "detail": "S44 option B describes splitting one long CLAUDE.md into topic-specific files in .claude/rules/. This hints at S42's correct answer C."
+    },
+    {
+      "id": "M2-SC5-R1-F6",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M2-S41-T1"
+      ],
+      "detail": "Two wrong options use the model's own confidence as a filter. Option B has Claude assign a confidence score to each finding and posts only findings above a fixed threshold. Option C tells Claude to report only high-confidence findings, so its self-rated confidence decides what is dropped. Neither is the calibrated, field-level human-review routing that the guide teaches, and neither is the correct answer. The rule allows at most one such option per scenario."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M2-S31-T1": "c7aa1381fcbe6e83f047bd4749559ca0ae1b4bc7dd98d96e97f3f25e4d2cf669",
+    "M2-S32-T1": "94f4d96f65862ae8fcd6aae9ce4caaa2c236669a7a5c44c1cb13ff1a4371ed53",
+    "M2-S33-T1": "f225f37d159841506bb2bb98882c3769e555c79dfb876a2674902c015ef64014",
+    "M2-S34-T1": "3d8b0b16ada670f6a15f96203cc03d3870c449cc05b0e1af77df80c8baf1d562",
+    "M2-S35-T1": "95175228e9da6ba8b5ccf0d9cf722e27686b872eff0978bf064af3e8c44e44e0",
+    "M2-S36-T1": "eb8fe93fc395e912d902419ef340b26584fa4116dc1731c0ab571743dbf6a54a",
+    "M2-S37-T2": "fa97bf58bb371cee556ba54d78c0d56e687db6551aed96b26c18738f082d20e5",
+    "M2-S38-T1": "7ae514236c0358e2e23f8daa527308b408a4e0629faa22b7dca2263116e813df",
+    "M2-S39-T1": "c409585674a78dc6b7091120e4b7fff91c1f17ccee12dabb64f5e78a606a87dc",
+    "M2-S40-T1": "a050f747dcb6f37a2875499702ebdc70e33c7dc869506016ed953c0539ff0c80",
+    "M2-S41-T1": "857b6891f5fd36e72364fce638ec7c8a84085cfbae53bce8bdaf1eccadb2ea8f",
+    "M2-S42-T2": "e5e1498698a940edf323734ad126b087fe5454aeb370a432b11fde0ec55bc223",
+    "M2-S43-T2": "66a9c041655df3d0c18097aa903a40587d11d79f78a0f44bf494c642e556253a",
+    "M2-S44-T2": "c1f753d6a4a2d425cabc17560ccaf90a4badcff7a6803ac0465efd5020489284",
+    "M2-S45-T2": "e6699dd3ee0187561a3c2313e01fc45887f59703f9a6268fe2fded7d124f23a4"
+  },
+  "date": "2026-10-08"
+}

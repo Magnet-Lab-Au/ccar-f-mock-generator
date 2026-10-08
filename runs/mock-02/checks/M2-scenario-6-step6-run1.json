@@ -1,0 +1,100 @@
+{
+  "mock": 2,
+  "scenario": 6,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S49-T2",
+            "M2-S50-T1",
+            "M2-S51-T3",
+            "M2-S52-T1",
+            "M2-S56-T1"
+          ],
+          "detail": "One wrong idea is a wrong option in five questions: the model reports its own confidence and an uncalibrated threshold or cutoff on that self-rating filters, routes or automates the output. These options are S49 B, S50 A, S51 D, S52 D and S56 B, and S56 D is a related case. The rule allows at most 2 questions per wrong idea. Other repeated ideas stay within 2 questions: generic error status or terminating the workflow (S48, S57), silent suppression as success (S48, S57), 'be conservative' instructions (S50, S58), prose summaries (S47, S55), and schema or strict mode treated as proof of correctness (S52, S60)."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M2-S49-T2",
+            "M2-S50-T1",
+            "M2-S51-T3",
+            "M2-S52-T1",
+            "M2-S56-T1"
+          ],
+          "detail": "Several wrong options use the model's self-rated confidence as a filter, threshold or trigger. S49 B routes fields below an uncalibrated fixed 0.9 threshold. S50 A suppresses findings below a self-reported score threshold. S51 D links automatically when self-assessed confidence exceeds 0.9. S52 D suppresses findings below a fixed self-reported threshold. S56 B automates documents where the model reports high document-level confidence. None of these is the calibrated, field-level use for review routing that the guide teaches, so the count is far above the allowed maximum of one."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M2-SC6-R1-F1",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M2-S49-T2",
+        "M2-S50-T1",
+        "M2-S51-T3",
+        "M2-S52-T1",
+        "M2-S56-T1"
+      ],
+      "detail": "One wrong idea is a wrong option in five questions: the model reports its own confidence and an uncalibrated threshold or cutoff on that self-rating filters, routes or automates the output. These options are S49 B, S50 A, S51 D, S52 D and S56 B, and S56 D is a related case. The rule allows at most 2 questions per wrong idea. Other repeated ideas stay within 2 questions: generic error status or terminating the workflow (S48, S57), silent suppression as success (S48, S57), 'be conservative' instructions (S50, S58), prose summaries (S47, S55), and schema or strict mode treated as proof of correctness (S52, S60)."
+    },
+    {
+      "id": "M2-SC6-R1-F2",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M2-S49-T2",
+        "M2-S50-T1",
+        "M2-S51-T3",
+        "M2-S52-T1",
+        "M2-S56-T1"
+      ],
+      "detail": "Several wrong options use the model's self-rated confidence as a filter, threshold or trigger. S49 B routes fields below an uncalibrated fixed 0.9 threshold. S50 A suppresses findings below a self-reported score threshold. S51 D links automatically when self-assessed confidence exceeds 0.9. S52 D suppresses findings below a fixed self-reported threshold. S56 B automates documents where the model reports high document-level confidence. None of these is the calibrated, field-level use for review routing that the guide teaches, so the count is far above the allowed maximum of one."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M2-S46-T1": "3433464d9fa5a01adbd4bcf4623ead73d258884831efd279644deb74edf525b2",
+    "M2-S47-T1": "9644db2609fdc0e820fa7c7715de0a28451b285e7fcfadd27d7080d50c523b76",
+    "M2-S48-T1": "9b2aac0f9f1c90ca385606c0ceb790db072f31c6fb92aede42fc71a104976b0f",
+    "M2-S49-T2": "6472b2093b6928f6306c9e4c34215fa0040f72dbe3e4b5dd348ec4e211aac99f",
+    "M2-S50-T1": "e412db6c809878cc2bb3ee4c1c3ce1a941d16a39a9be6cc039bd677c4da1eab3",
+    "M2-S51-T3": "f45db5f0409b5052a2c27dc61ab50fb4b7d8e76f4e33ef7b767573161e379054",
+    "M2-S52-T1": "e370964af8b48c44e4392b9369f2dd7a90cc91616b11a32316bff46058816464",
+    "M2-S53-T1": "13b6113281b6e38994b31179674a2d683996806ef7e03026c019441ca1f24881",
+    "M2-S54-T1": "a42faf14662c3e3a8a715a957dde62f9038878e7f72ff63157bfdcd936039011",
+    "M2-S55-T1": "82268f34679068fce1ec3c5c4cfd7aabe3e59699449b12ef23b1f9dcf824dc46",
+    "M2-S56-T1": "977f914a265defd985284de6af35fb01caaa460eb36aed18208fd0b4a735feff",
+    "M2-S57-T1": "208a3acea9392eeaba1dccf98bd60e5d450f75c7c5134192f6dc9d8677e79cc8",
+    "M2-S58-T1": "710e568d0af53da9017639cc7e401a0999ca2e0cd1cb9f3f01cb3d0dc7d9e559",
+    "M2-S59-T1": "f0405e1fda6abdb72e9b4fe5bf9819d7fc1ea64f89c8735363a2b06acc4de5dc",
+    "M2-S60-T1": "1701c7ee3059841d908616045dbfbc61fede9f7f8eefc675f3c4394b31f04066"
+  },
+  "date": "2026-10-08"
+}

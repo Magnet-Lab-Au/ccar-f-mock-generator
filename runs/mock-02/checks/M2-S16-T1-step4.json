@@ -1,0 +1,98 @@
+{
+  "question_id": "M2-S16-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The stem uses the word \"tool\" for two different things. \"Your Agent SDK tool\" is the developer productivity tool. The \"lookup_dependencies tool\" is the MCP tool. The next sentence then says \"the tool returns the failure text\", so the reader cannot tell at first reading which tool is meant. The stem also calls the SDK-built system \"Your Agent SDK tool\" and then \"the agent\". Name the built system consistently, for example \"Your agent built with the Claude Agent SDK\", and refer to \"the lookup_dependencies tool\" explicitly.",
+      "letter": null,
+      "point": "2.2-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "76171da65a6b21d3c58581d9bff0f62dd5ba413b87a03acf1741143147ed38ea",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The MCP isError flag is the standard way for a tool to signal failure. With it set, the agent knows the result is an error, not dependency data, and can make an appropriate recovery decision. The other options are anti-patterns: A silently suppresses the error, C gives a generic message with no error signal, and D ends the whole workflow on a single failure.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The stem uses the word \"tool\" for two different things. \"Your Agent SDK tool\" is the developer productivity tool. The \"lookup_dependencies tool\" is the MCP tool. The next sentence then says \"the tool returns the failure text\", so the reader cannot tell at first reading which tool is meant. The stem also calls the SDK-built system \"Your Agent SDK tool\" and then \"the agent\". Name the built system consistently, for example \"Your agent built with the Claude Agent SDK\", and refer to \"the lookup_dependencies tool\" explicitly.",
+      "letter": null,
+      "point": "2.2-K1"
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "isError",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

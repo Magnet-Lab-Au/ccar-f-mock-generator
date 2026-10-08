@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S14-T1",
+  "slot_id": "M2-S14",
+  "try": 1,
+  "point": "5.4-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator agent has finished a first research phase in which the web search subagent and the document analysis subagent returned long, detailed outputs. The coordinator now needs to spawn the synthesis subagent for the next phase. In early tests, the synthesis subagent either missed earlier findings or lost focus in a context filled with raw output. How should the coordinator start the synthesis subagent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Paste the complete raw outputs of both first-phase subagents into the synthesis subagent's prompt so that no detail from the exploration phase is lost.",
+      "correct": false,
+      "reason": "Raw verbose output fills the context and causes the degradation and loss of focus seen in the tests. The guide says to pass a summary of key findings instead of the full exploration output."
+    },
+    {
+      "letter": "B",
+      "text": "Summarize the key findings from the first phase and inject that summary into the initial context of the synthesis subagent.",
+      "correct": true,
+      "reason": "The guide recommends summarizing key findings from one exploration phase before spawning subagents for the next phase. The summary goes into the subagent's initial context, so it starts with focused findings and no verbose raw output."
+    },
+    {
+      "letter": "C",
+      "text": "Instruct the synthesis subagent to repeat the web searches and document analysis itself so that it rebuilds the first-phase findings on its own.",
+      "correct": false,
+      "reason": "This duplicates the work of the first phase and fills the synthesis subagent's context with verbose exploration output again. The guide instead carries findings forward as a summary injected into the next phase's initial context."
+    },
+    {
+      "letter": "D",
+      "text": "Spawn the synthesis subagent with only its task description, because it automatically inherits the coordinator's conversation history from the first phase.",
+      "correct": false,
+      "reason": "Subagents do not automatically inherit the coordinator's context. The guide says findings must be passed explicitly in the subagent's prompt, which is why the synthesis subagent missed earlier findings."
+    }
+  ]
+}

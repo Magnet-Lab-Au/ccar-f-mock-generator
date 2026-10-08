@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S28-T1",
+  "slot_id": "M2-S28",
+  "try": 1,
+  "point": "1.2-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator spawns three subagents via the Task tool to document a legacy payments monolith before a migration. Each subagent receives the same prompt: \"Explore the codebase and report how payments flow.\" Logs show that all three use Grep and Read on largely the same files. Their reports overlap heavily, and the reconciliation jobs and the reporting module go unexamined. What change best addresses this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep the identical prompts but run the three subagents one after another, so that later subagents can skip files that earlier ones covered.",
+      "correct": false,
+      "reason": "Subagents do not inherit context automatically, so later subagents would not know what earlier ones read, and identical prompts still produce overlap."
+    },
+    {
+      "letter": "B",
+      "text": "Have the coordinator assign each subagent a distinct area, such as the API layer, the reconciliation jobs, or the reporting module, in its task prompt.",
+      "correct": true,
+      "reason": "Partitioning the research scope by giving each subagent a distinct subtopic minimizes duplication and covers the areas that were missed."
+    },
+    {
+      "letter": "C",
+      "text": "Let the three subagents share one conversation history so that each one can see which files the others have already read.",
+      "correct": false,
+      "reason": "The guide's hub-and-spoke pattern routes all communication through the coordinator, and shared history does not give any subagent a distinct scope."
+    },
+    {
+      "letter": "D",
+      "text": "Add a final deduplication step in which the coordinator merges the three overlapping reports and removes repeated findings before synthesis, keeping the exploration process unchanged.",
+      "correct": false,
+      "reason": "This only cleans up the output after the duplicated work is done, and it does not fix the gap in coverage of the unexamined modules."
+    }
+  ]
+}

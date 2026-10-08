@@ -1,0 +1,97 @@
+{
+  "question_id": "M2-S44-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "c1f753d6a4a2d425cabc17560ccaf90a4badcff7a6803ac0465efd5020489284",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Instructions in ~/.claude/CLAUDE.md are user-level: they apply only to that developer's machine and are not shared via version control, so the CI runner never receives them. A is wrong because -p mode still loads CLAUDE.md, which is the CI context mechanism. B is wrong because a long file still loads. D is wrong because root-level project files do apply when reviewing subdirectories.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    },
+    {
+      "name": ".claude/CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

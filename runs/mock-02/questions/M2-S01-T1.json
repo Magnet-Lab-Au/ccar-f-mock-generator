@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S01-T1",
+  "slot_id": "M2-S01",
+  "try": 1,
+  "point": "1.7-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday you ran a named session, energy-policy-review, in which the document analysis agent examined 40 source files for a research report. Overnight, a colleague replaced three of those files with revised versions, and the other 37 files did not change. You resume the session with --resume energy-policy-review to continue the work. What is the most effective way to proceed?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Tell the resumed session which three files were revised and ask it to re-analyze only those files before continuing.",
+      "correct": true,
+      "reason": "The guide says to inform a resumed session about specific file changes so that it re-analyzes them in a targeted way instead of re-exploring everything."
+    },
+    {
+      "letter": "B",
+      "text": "Continue the resumed session without mentioning the revisions, because the agent will detect changed files when it next reads them.",
+      "correct": false,
+      "reason": "The guide stresses informing the agent about changes to previously analyzed files. Without that information, the agent may rely on stale results for the three revised files."
+    },
+    {
+      "letter": "C",
+      "text": "Discard the named session and start a new one that explores all 40 files from scratch without any prior context.",
+      "correct": false,
+      "reason": "Most of the prior context is still valid, so the guide favors resuming the session. This option throws away valid work and repeats a full exploration."
+    },
+    {
+      "letter": "D",
+      "text": "Ask the resumed session to re-read and re-analyze all 40 files so that every finding reflects the current versions of the documents.",
+      "correct": false,
+      "reason": "This forces a full re-exploration, although the analysis of the 37 unchanged files is still valid. The guide prefers a targeted re-analysis of only the changed files."
+    }
+  ]
+}

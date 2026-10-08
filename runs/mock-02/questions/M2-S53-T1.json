@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S53-T1",
+  "slot_id": "M2-S53",
+  "try": 1,
+  "point": "4.5-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction pipeline processes invoices through the synchronous Claude API. For each invoice, Claude calls a lookup_vendor tool, your code runs the database lookup and returns the result, and Claude then finishes the JSON extraction. A teammate proposes moving the nightly run of 40,000 invoices to the Message Batches API to cut costs. Which limitation of the batch API must the redesign account for?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The Message Batches API guarantees completion within one hour, so the nightly run must be split into several smaller hourly batches.",
+      "correct": false,
+      "reason": "The guide says the batch API has up to a 24-hour processing window and no guaranteed latency SLA, so there is no one-hour guarantee."
+    },
+    {
+      "letter": "B",
+      "text": "Batch results can arrive in any order, and the API offers no way to match each response to its originating invoice request.",
+      "correct": false,
+      "reason": "The guide names custom_id fields as the way to correlate batch request and response pairs, so matching is supported."
+    },
+    {
+      "letter": "C",
+      "text": "A batch request cannot pause for your code to run the vendor lookup and return its result to Claude mid-request.",
+      "correct": true,
+      "reason": "The guide states that the batch API does not support multi-turn tool calling within a single request, so tools cannot be executed mid-request with results returned."
+    },
+    {
+      "letter": "D",
+      "text": "The Message Batches API suits only blocking workflows, so a nightly run that no one waits on should stay on the synchronous API.",
+      "correct": false,
+      "reason": "The guide says batch processing fits non-blocking, latency-tolerant workloads such as overnight jobs and is inappropriate for blocking workflows, the reverse of this claim."
+    }
+  ]
+}

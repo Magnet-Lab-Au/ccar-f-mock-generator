@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S59-T1",
+  "slot_id": "M2-S59",
+  "try": 1,
+  "point": "5.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system uses a coordinator agent that sends each company's documents to an extraction subagent and then passes the results to a synthesis step. For one company, the subagent finds that the audited annual report and a press release state different annual revenue figures. Both sources are credible. How should the subagent handle this conflict?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep only the figure from the most recently published document, because newer sources usually supersede older ones, and drop the other figure from the structured output.",
+      "correct": false,
+      "reason": "This arbitrarily selects one value and discards the other. The guide says to annotate conflicts with source attribution instead of picking one value."
+    },
+    {
+      "letter": "B",
+      "text": "Complete the extraction, record both revenue figures with their source documents, and flag the conflict for the coordinator to reconcile before synthesis.",
+      "correct": true,
+      "reason": "The guide says to complete the analysis with conflicting values included and explicitly annotated. The coordinator then decides how to reconcile them before synthesis."
+    },
+    {
+      "letter": "C",
+      "text": "Average the two revenue figures into a single value and lower the field-level confidence score to signal the uncertainty to downstream systems.",
+      "correct": false,
+      "reason": "Averaging replaces both credible values with an invented one and loses the source attribution. The guide says to keep both values annotated and let the coordinator reconcile them."
+    },
+    {
+      "letter": "D",
+      "text": "Stop the extraction for this company and return an error to the coordinator so a human can resolve the conflicting figures first.",
+      "correct": false,
+      "reason": "The guide says the subagent should complete the document analysis with the conflict annotated. Halting the extraction is not what the guide prescribes."
+    }
+  ]
+}

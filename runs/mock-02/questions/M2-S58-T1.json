@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S58-T1",
+  "slot_id": "M2-S58",
+  "try": 1,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system processes vendor invoices and adds anomaly flags in three categories for the accounts payable team: duplicate line items, missing tax IDs, and unusual payment terms. An audit shows that most unusual-payment-terms flags are false positives, while the other two categories are almost always accurate. The accounts payable team now dismisses all flags without reading them, including correct duplicate-line-item flags. What should you do first to restore the team's trust in the flags?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Turn off all three anomaly categories until the prompts for every category have been rewritten and tested against a new set of invoices.",
+      "correct": false,
+      "reason": "The guide targets only the high false-positive categories for temporary disabling; turning off the two accurate categories removes reliable flags without need."
+    },
+    {
+      "letter": "B",
+      "text": "Disable the unusual-payment-terms category temporarily and keep the other two categories active while you rewrite its prompt with explicit criteria for which terms to flag.",
+      "correct": true,
+      "reason": "The guide recommends temporarily disabling high false-positive categories to restore trust while improving the prompts for those categories, and keeping the accurate categories in use."
+    },
+    {
+      "letter": "C",
+      "text": "Add an instruction to the prompt for all three categories that tells Claude to be conservative and report only anomalies it is highly confident about.",
+      "correct": false,
+      "reason": "The guide states that general instructions like 'be conservative' or 'only report high-confidence findings' fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "D",
+      "text": "Keep all three categories active and tell the accounts payable team that unusual-payment-terms flags are less reliable than the other flags.",
+      "correct": false,
+      "reason": "The guide states that a high false-positive category undermines confidence in the accurate categories, so keeping it active continues to erode trust instead of restoring it."
+    }
+  ]
+}

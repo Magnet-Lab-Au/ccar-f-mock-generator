@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S09-T1",
+  "slot_id": "M2-S09",
+  "try": 1,
+  "point": "1.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "A user submits one research request that covers three concerns: the market size of home batteries, the safety record of lithium chemistries, and pending battery regulations in the EU. In testing, the coordinator agent passes the whole request to the web search subagent as one task, and the final report covers only the market size. How should you change the coordinator agent's workflow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the coordinator split the request into three distinct items and deliver three separate reports, one per item, so that the user combines the findings.",
+      "correct": false,
+      "reason": "This decomposes the request but skips the synthesis step, so the user does not get the unified result that the guide's pattern requires."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the request as one task for the web search subagent, but add a system prompt instruction that tells this subagent to cover every topic in the request thoroughly and in equal detail.",
+      "correct": false,
+      "reason": "The request is never decomposed into distinct items, so nothing ensures that each concern is investigated, and no parallel investigation or synthesis takes place."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator split the request into three distinct items, investigate them in parallel with a shared context of the user's goal, and synthesize one unified report.",
+      "correct": true,
+      "reason": "The guide's pattern for multi-concern requests is to decompose them into distinct items, investigate each in parallel with shared context, and then synthesize a unified result."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator ask the user to submit each concern as a separate research request, so that each run of the system handles only one topic.",
+      "correct": false,
+      "reason": "This moves the decomposition onto the user and removes both the shared context and the unified synthesis that the guide's pattern produces."
+    }
+  ]
+}

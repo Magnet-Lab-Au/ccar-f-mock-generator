@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S15-T1",
+  "slot_id": "M2-S15",
+  "try": 1,
+  "point": "1.7-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your research system ran a named session yesterday in which the web search subagent gathered sources on semiconductor export rules. Overnight, regulators published new rules, so most of the search results stored in that session's context are now outdated. You want to continue the research today. Which approach is most reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Resume the named session with --resume and run /compact first, so the outdated search results take up less space in the context window.",
+      "correct": false,
+      "reason": "Compacting only reduces the space the context uses. The resumed session still relies on stale tool results, which is the case where the guide prefers a fresh session with an injected summary."
+    },
+    {
+      "letter": "B",
+      "text": "Use fork_session on yesterday's session to create a separate branch, so the new research starts from a clean baseline without the old results in its context.",
+      "correct": false,
+      "reason": "fork_session creates independent branches from a shared baseline. The branch keeps the prior context, including the stale results, so it does not give a clean start."
+    },
+    {
+      "letter": "C",
+      "text": "Start a new session and inject a structured summary of the prior findings, noting which sources are outdated and must be searched again.",
+      "correct": true,
+      "reason": "When prior tool results are stale, the guide says that starting a new session with a structured summary is more reliable than resuming with them."
+    },
+    {
+      "letter": "D",
+      "text": "Resume the named session with --resume and continue the research, because the coordinator agent can reconcile the old and new results itself.",
+      "correct": false,
+      "reason": "Resumption suits a session whose prior context is mostly valid. Here most tool results are stale, and resuming with stale tool results is less reliable than starting fresh with a summary."
+    }
+  ]
+}

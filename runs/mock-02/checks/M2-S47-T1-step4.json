@@ -1,0 +1,81 @@
+{
+  "question_id": "M2-S47-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "9644db2609fdc0e820fa7c7715de0a28451b285e7fcfadd27d7080d50c523b76",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The root cause is that the subagent outputs carry no metadata. If each figure includes its reporting period, filing date and source page and section (5.1-S5, 5.6-S1, 5.6-S4), the synthesis agent can tell quarterly figures from annual ones and amended filings from superseded ones, and reviewers can trace each figure to its source. Option A adds a lot of context but does not fix attribution at the source. Option C is a prompt instruction that cannot work without the period data. Option D loses structure and makes the problem worse.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "system prompt",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

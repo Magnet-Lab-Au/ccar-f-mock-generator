@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S51-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B5",
+      "detail": "Scenario 6 is an automated extraction pipeline with no customer in the loop. The correct option A tells the extraction agent to 'request an additional identifier' but never says from whom: no customer, user or reviewer exists in the story. Point 5.2-K4 comes from a customer conversation and does not fit cleanly here. The stem also relies on reading scanned forms, which leans on vision, and the guide lists vision as out of scope. The scene should name a recipient for the request, such as a human review queue, or else rest the clarification on identifiers that are present in the document.",
+      "letter": "A",
+      "point": "5.2-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "bcb2827c243f88f664c3f721f3558345a5b109d4e7c5467760220255412f0db9",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Per 5.2-K4/5.2-S5, multiple matches should trigger a request for additional identifiers rather than heuristic selection. B relies on unreliable self-reported confidence, C is still a heuristic, and D keeps the faulty rule.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "fail",
+      "finding": "Scenario 6 is an automated extraction pipeline with no customer in the loop. The correct option A tells the extraction agent to 'request an additional identifier' but never says from whom: no customer, user or reviewer exists in the story. Point 5.2-K4 comes from a customer conversation and does not fit cleanly here. The stem also relies on reading scanned forms, which leans on vision, and the guide lists vision as out of scope. The scene should name a recipient for the request, such as a human review queue, or else rest the clarification on identifiers that are present in the document.",
+      "letter": "A",
+      "point": "5.2-K4"
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

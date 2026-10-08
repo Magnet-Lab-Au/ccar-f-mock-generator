@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S40-T1",
+  "slot_id": "M2-S40",
+  "try": 1,
+  "point": "3.4-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline's automated review reports that the parse_pr_labels function in one file accepts an empty label list and later crashes. The fix is clear: add a single validation check at the start of that one function. A developer opens Claude Code to make this change. Which approach fits this task best?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start in plan mode to investigate the function, then switch to direct execution for the edit, as is done for large library migrations.",
+      "correct": false,
+      "reason": "The guide combines plan mode and direct execution for complex work such as library migrations, and a single validation check in one function needs no planning phase."
+    },
+    {
+      "letter": "B",
+      "text": "Use direct execution to add the validation check to that function, because the change is simple and its scope is clear.",
+      "correct": true,
+      "reason": "The guide says direct execution is appropriate for simple, well-scoped changes, such as adding a single validation check to one function."
+    },
+    {
+      "letter": "C",
+      "text": "Enter plan mode to explore the codebase and design the change first, because plan mode is the safe choice for any edit to pipeline code.",
+      "correct": false,
+      "reason": "The guide says plan mode is for complex tasks with large-scale changes, multiple valid approaches, architectural decisions or multi-file edits, and this one-function fix is none of these."
+    },
+    {
+      "letter": "D",
+      "text": "Delegate to the Explore subagent to summarize the whole repository first, so that verbose discovery output stays out of the main conversation context.",
+      "correct": false,
+      "reason": "The guide says the Explore subagent is for verbose discovery phases in multi-phase tasks, and this fix needs no discovery because its location and scope are already known."
+    }
+  ]
+}

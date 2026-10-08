@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S44-T2",
+  "slot_id": "M2-S44",
+  "try": 2,
+  "point": "3.1-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M2-S44-T1",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code in non-interactive mode to review each pull request. When the senior developer runs reviews on her laptop, Claude Code flags missing input validation and uses the team's severity labels. In the CI pipeline, the same reviews follow neither convention. The senior developer wrote both conventions in ~/.claude/CLAUDE.md on her laptop. What is the most likely root cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Claude Code in non-interactive mode skips every CLAUDE.md file, so the CI reviews receive no written conventions from any configuration level.",
+      "correct": false,
+      "reason": "The guide names CLAUDE.md as the mechanism for providing project context to CI-invoked Claude Code, so non-interactive mode does not skip CLAUDE.md files."
+    },
+    {
+      "letter": "B",
+      "text": "The conventions sit in one long CLAUDE.md file, which Claude Code cannot load in a CI pipeline until it is split into topic-specific files in .claude/rules/.",
+      "correct": false,
+      "reason": "The guide presents .claude/rules/ as an organizational alternative to a monolithic CLAUDE.md, not as a fix for a file that fails to load."
+    },
+    {
+      "letter": "C",
+      "text": "The conventions sit in user-level configuration, which applies only to that developer and is not shared through version control with the CI pipeline.",
+      "correct": true,
+      "reason": "The guide states that ~/.claude/CLAUDE.md is user-level and not shared via version control, so the CI pipeline never receives these instructions."
+    },
+    {
+      "letter": "D",
+      "text": "The conventions need a directory-level CLAUDE.md in every package folder, because Claude Code ignores root-level files when it reviews changes inside subdirectories.",
+      "correct": false,
+      "reason": "The guide lists a root CLAUDE.md or .claude/CLAUDE.md as valid project-level configuration; directory-level files are optional additions, not a requirement."
+    }
+  ]
+}

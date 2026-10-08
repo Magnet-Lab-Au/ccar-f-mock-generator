@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S20-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The same actor has two names. The stem calls the code-writing actor \"the agent\" (\"Your team uses the agent to write a converter\"), but options A, B, C and D and their reasons call it \"Claude\". A reader may wonder whether these are two different actors. Use one name throughout.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "7e3c35fb529b2e21c3aab3588dde7a56d0e2dde6f14e02d71eda9343af16ae19",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Test-driven iteration (3.5-K2/S2): writing a suite of expected behaviors, edge cases, and performance requirements before implementation and sharing failing test output catches regressions automatically, so each iteration builds on the last. A locks in current buggy behavior. B gives vague feedback. D discards progress and still relies on manual checks.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The same actor has two names. The stem calls the code-writing actor \"the agent\" (\"Your team uses the agent to write a converter\"), but options A, B, C and D and their reasons call it \"Claude\". A reader may wonder whether these are two different actors. Use one name throughout.",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

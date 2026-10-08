@@ -1,0 +1,85 @@
+{
+  "question_id": "M2-S19-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for option B says a structured handoff protocol 'must include' the completed work. The guide (1.4-K3, 1.4-S3) lists customer details or identifiers, root cause analysis and recommended actions. It does not list completed work as a required element, so the reason claims a requirement that the guide does not state.",
+      "letter": "B",
+      "point": "1.4-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "414fd37637add5cd5efd7cf8445c7ebbea4e13f231d4267134c1fa72f161b0ff",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Per 1.4-K3/S3, escalating to a human who can't see the transcript calls for a structured handoff. It should name the affected service, the root cause, the work already completed and a recommended action. Raw transcripts, bare stack traces or a vague status message don't give the engineer what they need.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for option B says a structured handoff protocol 'must include' the completed work. The guide (1.4-K3, 1.4-S3) lists customer details or identifiers, root cause analysis and recommended actions. It does not list completed work as a required element, so the reason claims a requirement that the guide does not state.",
+      "letter": "B",
+      "point": "1.4-K3"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

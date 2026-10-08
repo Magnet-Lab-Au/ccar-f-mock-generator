@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S34-T1",
+  "slot_id": "M2-S34",
+  "try": 1,
+  "point": "3.2-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline invokes a generate-tests skill, defined in .claude/skills/ with a SKILL.md file, to write new test files for each pull request. In one run, the skill executed a Bash command that deleted an existing fixture directory. The skill only needs to read source files and write new test files. What change most directly prevents destructive actions like this during skill execution?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add allowed-tools to the SKILL.md frontmatter, listing only Read, Grep, and Write so that Bash is unavailable while the skill runs.",
+      "correct": true,
+      "reason": "The allowed-tools frontmatter restricts tool access during skill execution, so limiting the skill to read and file write operations prevents destructive commands."
+    },
+    {
+      "letter": "B",
+      "text": "Add context: fork to the SKILL.md frontmatter so the skill runs in an isolated sub-agent context separate from the main session.",
+      "correct": false,
+      "reason": "The context: fork option isolates skill output from the main conversation, but it does not restrict which tools the skill can use."
+    },
+    {
+      "letter": "C",
+      "text": "Add argument-hint to the SKILL.md frontmatter so the pipeline must pass the target directory as a required parameter for the skill.",
+      "correct": false,
+      "reason": "The argument-hint option prompts for required parameters when the skill is invoked without arguments, and it does not limit tool access."
+    },
+    {
+      "letter": "D",
+      "text": "Add a rule to the project CLAUDE.md stating that the skill must never run shell commands that delete or overwrite files in the repository.",
+      "correct": false,
+      "reason": "CLAUDE.md holds always-loaded standards as instructions, but it does not remove Bash from the skill, so the tool restriction is not enforced."
+    }
+  ]
+}

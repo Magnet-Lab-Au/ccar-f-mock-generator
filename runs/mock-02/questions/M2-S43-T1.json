@@ -1,0 +1,45 @@
+{
+  "question_id": "M2-S43-T1",
+  "slot_id": "M2-S43",
+  "try": 1,
+  "point": "3.6-K2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request. A script then posts the findings as inline PR comments. The script often fails because Claude returns the review as free-form prose. When parsing does succeed, some findings lack the file path or line number that an inline comment needs. Which changes should you make to fix both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add the --output-format json flag so that the review result comes back as machine-parseable JSON rather than prose.",
+      "correct": true,
+      "reason": "The guide names --output-format json as the CLI flag that produces machine-parseable output in CI contexts, which fixes the parsing failures."
+    },
+    {
+      "letter": "B",
+      "text": "Extend the posting script with regular expressions that pull file paths and line numbers out of the free-form prose review text.",
+      "correct": false,
+      "reason": "The guide's approach is to have Claude Code emit machine-parseable structured findings with --output-format json and --json-schema, not to parse prose in the posting script."
+    },
+    {
+      "letter": "C",
+      "text": "Add the --json-schema flag with a schema that requires file path, line number, severity, and message for every finding.",
+      "correct": true,
+      "reason": "The guide names --json-schema as the CLI flag that enforces the structure of CI output, so every finding has the fields that an inline comment needs."
+    },
+    {
+      "letter": "D",
+      "text": "Add a rule to CLAUDE.md asking Claude to write each finding as a JSON object that includes the file path and line number fields.",
+      "correct": false,
+      "reason": "The guide presents CLAUDE.md as the place for project context such as review criteria; it presents the --output-format json and --json-schema flags as the way to enforce structured output."
+    },
+    {
+      "letter": "E",
+      "text": "Remove the -p flag so that a developer can check the format of the review interactively before the script posts any comments.",
+      "correct": false,
+      "reason": "The guide says -p is needed in CI to run non-interactively and to prevent hangs on interactive input, so removing it breaks the automated pipeline."
+    }
+  ]
+}

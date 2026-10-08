@@ -1,0 +1,39 @@
+{
+  "question_id": "M2-S48-T1",
+  "slot_id": "M2-S48",
+  "try": 1,
+  "point": "5.3-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system uses a coordinator agent that assigns each section of a supplier contract to a subagent. The pricing subagent has extracted three of the five required fields, but then its query to the internal rate-card database times out. The coordinator must decide how to complete the JSON output that downstream systems consume. What should the pricing subagent return to the coordinator?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Return a short generic status saying the rate-card lookup is unavailable, so the coordinator knows the pricing section failed and can route the entire section to human review.",
+      "correct": false,
+      "reason": "A generic error status hides the failure type, the attempted query and the partial results, so the coordinator cannot choose an intelligent recovery."
+    },
+    {
+      "letter": "B",
+      "text": "Raise an error that stops the entire extraction workflow for this contract, so that no partial pricing data reaches the downstream systems.",
+      "correct": false,
+      "reason": "Terminating the whole workflow on a single failure is an anti-pattern; it discards the partial results and other sections instead of enabling recovery."
+    },
+    {
+      "letter": "C",
+      "text": "Return the three extracted fields with the two missing fields left empty and a success status, so the downstream systems receive valid JSON without delay.",
+      "correct": false,
+      "reason": "Returning empty results as success silently suppresses the error, which the guide names as an anti-pattern because the coordinator never learns of the failure."
+    },
+    {
+      "letter": "D",
+      "text": "Return the failure type as a timeout, the rate-card query it attempted, the three extracted fields, and possible alternatives such as retrying or using the contract appendix.",
+      "correct": true,
+      "reason": "Structured error context with failure type, attempted query, partial results and alternatives lets the coordinator make an informed recovery decision."
+    }
+  ]
+}

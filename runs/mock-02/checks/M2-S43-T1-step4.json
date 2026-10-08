@@ -1,0 +1,103 @@
+{
+  "question_id": "M2-S43-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B6",
+      "detail": "The feature \"-p\" is not in the exam guide.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "b39a1ba01480fb148f376ea0ac4aebe95ab8e24d45dc5b494eda6eb81b30822c",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "C"
+    ],
+    "reason": "Using --output-format json makes the review output machine-parseable instead of prose, and --json-schema enforces a schema that requires file path and line number on every finding. Together these fix both problems. Regex parsing and CLAUDE.md requests are fragile and only probabilistic. Removing -p would break non-interactive CI.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "-p",
+      "found": false
+    },
+    {
+      "name": "--output-format",
+      "found": true
+    },
+    {
+      "name": "--json-schema",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}
