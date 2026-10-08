@@ -45,7 +45,8 @@ class RealSteps:
 
     # step 1
     def plan(self, mock, seed):
-        return step1_plan.make_plan(self.records, mock, seed, self.today())
+        return step1_plan.make_plan(self.records, mock, seed, self.today(),
+                                    earlier=step1_plan.earlier_points(self.mocks_folder, mock))
 
     # steps 2 and 5
     def write(self, request):

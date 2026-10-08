@@ -209,10 +209,25 @@ def _extras(orders, need, ts_groups):
     return None
 
 
-def make_plan(records, mock, seed, date, groups=None):
+def earlier_points(mocks_folder, mock):
+    """The points of each built mock with a lower number (decision 0050): a map
+    from the mock number to the list of its points. A mock is built when its file
+    mock-NN.questions.json exists."""
+    found = {}
+    for n in range(1, mock):
+        path = os.path.join(mocks_folder, "mock-%02d.questions.json" % n)
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                built = json.load(f)
+            found[n] = [q["point"] for g in built["groups"] for q in g["questions"]]
+    return found
+
+
+def make_plan(records, mock, seed, date, groups=None, earlier=None):
     """Return the plan of one mock. Raise PlanError, and make no plan, if a record
     is missing, a count does not add up, or the groups allow no plan. groups is the
-    content of data/point-groups.json. None reads that file."""
+    content of data/point-groups.json. None reads that file. earlier is the result
+    of earlier_points: the points of the built mocks before this one."""
     check_records(records)
     if groups is None:
         groups = point_groups.load()
@@ -249,10 +264,19 @@ def make_plan(records, mock, seed, date, groups=None):
     #    that are left. Each one gets at most one extra question. Code takes the
     #    first choice in that order that keeps a full plan possible, over all
     #    domains together.
-    # 4. The seed sets the order of the points of each task statement. Code takes
-    #    the first point whose group is free and that keeps a full plan possible.
+    # 4. The seed sets the order of the points of each task statement, and the
+    #    groups that earlier mocks used least come first (decision 0050). Code
+    #    takes the first point whose group is free and that keeps a full plan
+    #    possible.
     #    No two slots get points of the same group (decisions 0047 and 0048).
     of = point_groups.group_of(groups)
+    earlier = earlier or {}
+    use = {}
+    for points in earlier.values():
+        for p in points:
+            if p not in of:
+                raise PlanError("An earlier mock has the point %s, which is in no group." % p)
+            use[of[p]["id"]] = use.get(of[p]["id"], 0) + 1
     ts_groups = {ts["id"]: frozenset(of[p["id"]]["id"] for p in ts["points"]) for ts in records["task_statements"]}
     statements = {}
     need = {}
@@ -294,6 +318,9 @@ def make_plan(records, mock, seed, date, groups=None):
         for ts in statements[d]:
             pool = list(ts["points"])
             _shuffle(rng, pool)
+            # Decision 0050: the groups that earlier mocks used least come first.
+            # The seed keeps the order inside the same count.
+            pool.sort(key=lambda p: use.get(of[p["id"]]["id"], 0))
             picked[ts["id"]] = []
             for _ in range(need[ts["id"]]):
                 rest[ts["id"]] -= 1
@@ -340,6 +367,7 @@ def make_plan(records, mock, seed, date, groups=None):
         raise PlanError("Two slots are in one group: %s" % "; ".join(
             "%s: %s" % (g["id"], ", ".join(x for x, _ in items)) for g, items in same))
     return {"mock": mock, "seed": seed, "guide_version": records["guide"]["version"], "date": date,
+            "earlier_mocks": sorted(earlier),
             "scenarios": scenarios,
             "table": {str(s): {str(d): n for d, n in sorted(table[s].items())} for s in scenarios},
             "slots": slots}
@@ -352,6 +380,7 @@ def main(argv=None):
     parser.add_argument("--runs", default=os.path.join(ROOT, "runs"))
     parser.add_argument("--records", default=RECORDS)
     parser.add_argument("--groups", default=point_groups.GROUPS)
+    parser.add_argument("--mocks", default=os.path.join(ROOT, "mocks"))
     args = parser.parse_args(argv)
     path = os.path.join(args.runs, "mock-%02d" % args.mock, "plan.json")
     if os.path.exists(path):
@@ -369,7 +398,8 @@ def main(argv=None):
         print("No plan: the groups file cannot be read: %s" % e)
         return 1
     try:
-        plan = make_plan(records, args.mock, args.seed, datetime.date.today().isoformat(), groups)
+        plan = make_plan(records, args.mock, args.seed, datetime.date.today().isoformat(), groups,
+                         earlier_points(args.mocks, args.mock))
     except PlanError as e:
         print("No plan: " + str(e))
         return 1

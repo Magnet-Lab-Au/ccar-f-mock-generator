@@ -17,4 +17,4 @@ A diagram for participants uses plain words and no decision numbers. The decisio
 | `09-step-7-the-owner-marks-the-questions.html` | Step 7, in the new visual form: a question card, the marking sheet with the two columns that the owner fills, 60 squares for the size of the sample, and two bars for what the marks decide. Each part opens a popup. |
 | `10-step-8-build-the-files.html` | Step 8, in the new visual form: the question records with their checks, the three checks and the fingerprint before the build, the two files, the 4 scenario groups, and what a participant gets during and after the mock. Each part opens a popup. |
 
-On 7 October 2026 the text of diagrams 01, 02 and 04 to 10 was corrected to describe the built steps and decisions 0038 to 0043. Each diagram says its status in its footer.
+On 7 October 2026 the text of diagrams 01, 02 and 04 to 10 was corrected to describe the built steps and decisions 0038 to 0043. On 8 October 2026 diagrams 01 and 02 got the point groups of step 1 (decisions 0047, 0048 and 0050). Each diagram says its status in its footer.

@@ -78,7 +78,7 @@ D = {
    sent=['Each task statement has %d to %d points. A point is one thing to know or one skill.' % (lo, hi),
          'The file data/point-groups.json puts each of the 240 points into one group. Two points in one group describe one idea. A group can hold points of different task statements (decision 0047).',
          'No two slots of one mock get points of the same group.',
-         'The seed sets an order of the points. Code takes the first point whose group is free and that keeps a full plan possible (decision 0048).',
+         'The seed sets an order of the points. The groups that earlier mocks used least come first (decision 0050). Code takes the first point whose group is free and that keeps a full plan possible (decision 0048).',
          'Code checks "possible" with a matching of task statements to free groups. No model makes this check.'],
    why='The writer and the checker know exactly what the question must test. Mock 1 got repeats from two points on one idea (decision 0046). The groups prevent this before a question is written.'),
  '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
@@ -108,7 +108,7 @@ def box(key, top, h, num, name, tag, tagcls, what, ts, extra='', left=40, w=540)
             '<p class="what">%s</p>%s</div>') % (cls, key, left, top, w, h, numhtml, e(name), tagcls, e(tag), e(what), tshtml)
 
 boxes = ''.join([
- box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, the point groups, a mock number and a seed.', 'Step 0 makes the guide records. The owner confirms the point groups.'),
+ box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, the point groups, the points of the earlier mocks, a mock number and a seed.', 'Step 0 makes the guide records. The owner confirms the point groups.'),
  box('S', 150, 88, '', 'Step 1: plan the mock', 'Code', 'code', 'Code makes the plan in 5 parts. No model works.', 'Exam guide: task statements 1.4 and 1.6', extra='hdr'),
  box('1', 246, 112, '1', 'Select 4 scenarios', 'Code', 'code', 'The seed selects 4 of the 6 scenarios, from the 11 sets that fit.', 'Exam guide: Section 5. The limit to 11 sets is not from the guide.'),
  box('2', 378, 112, '2', 'Share the 60 questions', 'Code', 'code', '15 questions for each scenario. 16, 11, 12, 12 and 9 questions for the 5 domains.', 'Exam guide: Section 4. The number 15 is not from the guide.'),

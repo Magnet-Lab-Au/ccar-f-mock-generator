@@ -11,7 +11,7 @@ Sections:
 
 | Step | File | Status |
 |---|---|---|
-| 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026) |
+| 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026), changed on 8 October 2026 (point groups) |
 | 2. Write the question | `step-2-write-the-question.md` | built (7 October 2026) |
 | 3. Check by code | `step-3-check-by-code.md` | built (7 October 2026) |
 | 4. Check by a model | `step-4-check-by-a-model.md` | built (7 October 2026) |

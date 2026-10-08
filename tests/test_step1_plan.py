@@ -23,6 +23,7 @@ with open(step1_plan.RECORDS, encoding="utf-8") as f:
 TS = {t["id"]: t for t in RECORDS["task_statements"]}
 PRIMARY = {s["id"]: s["primary_domains"] for s in RECORDS["scenarios"]}
 SEEDS = range(40)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GROUPS = point_groups.load()
 OF = point_groups.group_of(GROUPS)
 TS_GROUPS = {t: {OF[p["id"]]["id"] for p in TS[t]["points"]} for t in TS}
@@ -113,7 +114,8 @@ class TestPlan(unittest.TestCase):
     def test_the_slot_fields_of_decision_0029(self):
         for s in self.plans[0]["slots"]:
             self.assertEqual(set(s), {"slot_id", "scenario", "task_statement", "point", "type", "options", "select"})
-        self.assertEqual(set(self.plans[0]), {"mock", "seed", "guide_version", "date", "scenarios", "table", "slots"})
+        self.assertEqual(set(self.plans[0]), {"mock", "seed", "guide_version", "date", "earlier_mocks",
+                                              "scenarios", "table", "slots"})
 
     def test_the_same_seed_gives_the_same_plan(self):
         step1_plan._TABLES.clear()
@@ -142,6 +144,50 @@ class TestPlan(unittest.TestCase):
     def test_a_later_mock_has_its_own_ids(self):
         plan = make_plan(RECORDS, 2, 5, "2026-10-07")
         self.assertEqual(plan["slots"][0]["slot_id"], "M2-S01")
+
+
+class TestEarlierMocks(unittest.TestCase):
+    """Decision 0050: the groups that earlier mocks used least come first."""
+
+    def groups_of(self, plan):
+        return {OF[s["point"]]["id"] for s in plan["slots"]}
+
+    def test_a_plan_shares_fewer_ideas_with_the_earlier_mock(self):
+        with_rule, without = 0, 0
+        for seed in range(10):
+            first = make_plan(RECORDS, 1, 100 + seed, "2026-10-08")
+            earlier = {1: [s["point"] for s in first["slots"]]}
+            with_rule += len(self.groups_of(first) & self.groups_of(make_plan(RECORDS, 2, seed, "2026-10-08", None, earlier)))
+            without += len(self.groups_of(first) & self.groups_of(make_plan(RECORDS, 2, seed, "2026-10-08")))
+        self.assertLess(with_rule, without - 50)
+
+    def test_the_plan_names_the_earlier_mocks(self):
+        plan = make_plan(RECORDS, 3, 1, "2026-10-08", None, {1: ["1.1-K1"], 2: ["1.1-K2"]})
+        self.assertEqual(plan["earlier_mocks"], [1, 2])
+        self.assertEqual(make_plan(RECORDS, 1, 1, "2026-10-08")["earlier_mocks"], [])
+
+    def test_an_unknown_earlier_point_makes_no_plan(self):
+        with self.assertRaises(PlanError) as e:
+            make_plan(RECORDS, 2, 1, "2026-10-08", None, {1: ["9.9-K9"]})
+        self.assertIn("9.9-K9", str(e.exception))
+
+    def test_earlier_points_reads_the_built_mocks_before_this_one(self):
+        folder = tempfile.mkdtemp()
+        try:
+            for n, point in ((1, "1.1-K1"), (3, "1.1-K2")):
+                built = {"groups": [{"questions": [{"point": point}]}]}
+                with open(os.path.join(folder, "mock-%02d.questions.json" % n), "w", encoding="utf-8") as f:
+                    json.dump(built, f)
+            self.assertEqual(step1_plan.earlier_points(folder, 3), {1: ["1.1-K1"]})
+            self.assertEqual(step1_plan.earlier_points(folder, 4), {1: ["1.1-K1"], 3: ["1.1-K2"]})
+            self.assertEqual(step1_plan.earlier_points(folder, 1), {})
+        finally:
+            shutil.rmtree(folder)
+
+    def test_the_real_mock_1_is_read(self):
+        found = step1_plan.earlier_points(os.path.join(ROOT, "mocks"), 2)
+        self.assertEqual(list(found), [1])
+        self.assertEqual(len(found[1]), 60)
 
 
 class TestPlanFails(unittest.TestCase):

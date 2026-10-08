@@ -14,10 +14,14 @@ One entry for each work session. Newest entry first.
 
 - The owner decided: the program makes 5 mocks (decision 0049). With 95 ideas and 300 slots, each idea comes in about 3 mocks.
 
+- The owner asked for a simple way to spread similar questions over the mocks. The assistant suggested one rule in step 1, in code only, and the owner said yes (decision 0050): the groups that earlier mocks used least come first. In a simulation of mocks 2 to 5, no idea is left out, and most ideas come in 2 to 4 mocks. The assistant had first said "3 or 4 mocks", which was too exact.
+- Diagrams 01 and 02 and the build guide section of step 1 show decisions 0047, 0048 and 0050.
+
 **Open**
 
-- The owner confirms the groups file and the texts of decisions 0047, 0048 and 0049.
-- How the program spreads the ideas and the scenarios over the 5 mocks.
+- The owner confirms the groups file and the texts of decisions 0047 to 0050.
+- How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
+- Changes 3 to 7 of decision 0046.
 - Changes 3 to 7 of decision 0046.
 
 ## 8 October 2026
