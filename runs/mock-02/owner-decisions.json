@@ -124,5 +124,61 @@
     "date": "2026-10-08",
     "question_id": "M2-S41-T1",
     "after_try": 1
+  },
+  {
+    "id": "D015",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F2",
+    "reason": "The owner: ignore the findings of rule D4.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D016",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F3",
+    "reason": "The owner: ignore the findings of rule D4.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D017",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F4",
+    "reason": "The owner: ignore the findings of rule D4.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D018",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F5",
+    "reason": "The owner: ignore the findings of rule D4.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D019",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F6",
+    "reason": "The owner: ignore the findings of rule D4.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D020",
+    "action": "ignore",
+    "target": "M2-SC5-R2-F1",
+    "reason": "Known limit of mock 2 (decision 0059): M2-S35 has the scene of M2-S31. The owner decided no rewrite.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D021",
+    "action": "ignore",
+    "target": "M2-SC6-R2-F1",
+    "reason": "Known limit of mock 2 (decision 0059): the findings of step 6 on model confidence. The owner decided no rewrite.",
+    "date": "2026-10-08"
+  },
+  {
+    "id": "D022",
+    "action": "ignore",
+    "target": "M2-SC6-R2-F2",
+    "reason": "Known limit of mock 2 (decision 0059): the findings of step 6 on model confidence. The owner decided no rewrite.",
+    "date": "2026-10-08"
   }
 ]
