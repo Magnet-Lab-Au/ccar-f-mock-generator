@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1)
 
 ## Question
@@ -54,7 +55,7 @@ The assistant suggested this rule and a second rule for the writer (the earlier 
 
 The assistant first said that each idea then comes in 3 or 4 of the 5 mocks. The simulation shows that this was too exact: most ideas come in 2 to 4 mocks. A reviewer then found a wrong number in the first text of this file ("about 7 ideas in each mock"). The table now comes from the committed script.
 
-One independent reviewer checked this file and the records of the session on 8 October 2026. The assistant fixed its findings. The owner has not confirmed the text of this file.
+One independent reviewer checked this file and the records of the session on 8 October 2026. The assistant fixed its findings. The owner confirmed the text of this file on 8 October 2026.
 
 ## Exam guide points
 

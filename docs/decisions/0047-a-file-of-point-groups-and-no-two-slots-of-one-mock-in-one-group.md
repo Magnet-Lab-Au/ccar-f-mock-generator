@@ -1,7 +1,8 @@
 # 0047: A file of point groups, and no two slots of one mock in one group
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Item 3 is changed by decision 0048.
+- Text confirmed by the owner: 8 October 2026
 - Diagram: none. Diagram 02 (step 1) changes when the rule is built.
 
 ## Question
@@ -37,7 +38,7 @@ Not decided yet:
 
 The assistant suggested the file and the rule, and to treat changes 1 and 2 as one decision. The owner agreed, and added the test against mock 1 and the form of the table for the confirmation.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

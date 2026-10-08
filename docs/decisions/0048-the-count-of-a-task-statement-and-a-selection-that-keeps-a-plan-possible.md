@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1)
 
 ## Question
@@ -44,7 +45,7 @@ After the second review of the groups, the owner agreed that the 9 points of 4.2
 
 The assistant drafted the groups and ran the rule of decision 0047 over 2000 seeds. Each seed failed. The assistant suggested the two changes and showed the result of a prototype. The owner asked for a short explanation, and then said yes.
 
-One independent reviewer checked this file, the code of step 1, diagram 02 and the build guide section on 8 October 2026. The assistant fixed its findings. The main fix: code gave the extra questions one domain at a time and never went back, so it could stop although a plan existed. Now it searches over all domains together. The owner has not confirmed the text of this file.
+One independent reviewer checked this file, the code of step 1, diagram 02 and the build guide section on 8 October 2026. The assistant fixed its findings. The main fix: code gave the extra questions one domain at a time and never went back, so it could stop although a plan existed. Now it searches over all domains together. The owner confirmed the text of this file on 8 October 2026.
 
 ## Exam guide points
 

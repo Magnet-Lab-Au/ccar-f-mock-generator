@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: none
 
 ## Question
@@ -35,7 +36,7 @@ Not decided yet:
 
 The assistant measured how many ideas two mocks share, and said that the limit across mocks depends on the number of mocks. The owner said: "We need 5 mocks."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 
