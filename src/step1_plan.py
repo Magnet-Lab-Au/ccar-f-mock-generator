@@ -187,6 +187,28 @@ def _possible(need, ts_groups, used):
     return True
 
 
+def _extras(orders, need, ts_groups):
+    """Give the extra questions of each domain (decision 0048, item 2). orders is a
+    list of (domain, task statements in the order of the seed, number of extra
+    questions). Return the first counts in the order of the seed that keep a full
+    plan possible, or None if no such counts exist. A task statement gets at most
+    one extra question."""
+    if not orders:
+        return need
+    (d, order, left), rest = orders[0], orders[1:]
+    if left > len(order):
+        return None
+    for chosen in itertools.combinations(order, left):
+        more = dict(need)
+        for ts in chosen:
+            more[ts] += 1
+        if _possible(more, ts_groups, frozenset()):
+            found = _extras(rest, more, ts_groups)
+            if found is not None:
+                return found
+    return None
+
+
 def make_plan(records, mock, seed, date, groups=None):
     """Return the plan of one mock. Raise PlanError, and make no plan, if a record
     is missing, a count does not add up, or the groups allow no plan. groups is the
@@ -224,8 +246,9 @@ def make_plan(records, mock, seed, date, groups=None):
     # 3. In each domain, the task statements share the questions equally. A task
     #    statement gets no more questions than it has groups (decision 0048).
     #    The seed sets the order in which task statements get the questions
-    #    that are left. Each one gets at most one extra question, and only if a
-    #    full plan stays possible.
+    #    that are left. Each one gets at most one extra question. Code takes the
+    #    first choice in that order that keeps a full plan possible, over all
+    #    domains together.
     # 4. The seed sets the order of the points of each task statement. Code takes
     #    the first point whose group is free and that keeps a full plan possible.
     #    No two slots get points of the same group (decisions 0047 and 0048).
@@ -244,24 +267,26 @@ def make_plan(records, mock, seed, date, groups=None):
         for ts in statements[d]:
             need[ts["id"]] = min(share, len(ts_groups[ts["id"]]))
     if not _possible(need, ts_groups, frozenset()):
-        raise PlanError("No plan is possible with these groups, even with no extra questions.")
+        start = {}
+        for t in sorted(need, key=lambda x: [int(n) for n in x.split(".")]):
+            start[t] = need[t]
+            if not _possible(start, ts_groups, frozenset()):
+                raise PlanError("No plan is possible with these groups, even with no extra questions. "
+                                "Task statement %s cannot get its %d questions." % (t, need[t]))
+    orders = []
     for d in sorted(counts):
-        share = counts[d] // len(statements[d])
-        left = counts[d] - sum(need[ts["id"]] for ts in statements[d])
         order = list(statements[d])
         _shuffle(rng, order)
-        for ts in order:
-            if left == 0:
-                break
-            if need[ts["id"]] > share:
-                continue
-            more = dict(need)
-            more[ts["id"]] += 1
-            if more[ts["id"]] <= len(ts_groups[ts["id"]]) and _possible(more, ts_groups, frozenset()):
-                need = more
-                left -= 1
-        if left:
-            raise PlanError("Domain %d: %d questions find no task statement with a free group." % (d, left))
+        left = counts[d] - sum(need[ts["id"]] for ts in statements[d])
+        share = counts[d] // len(statements[d])
+        orders.append((d, [ts["id"] for ts in order if need[ts["id"]] == share
+                           and share < len(ts_groups[ts["id"]])], left))
+    found = _extras(orders, need, ts_groups)
+    if found is None:
+        raise PlanError("No plan is possible with these groups: the extra questions of domains %s "
+                        "find no task statements with free groups."
+                        % ", ".join(str(d) for d, _, left in orders if left))
+    need = found
     used = set()
     picked = {}
     rest = dict(need)

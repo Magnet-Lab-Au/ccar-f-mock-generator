@@ -135,7 +135,8 @@ class TestPlan(unittest.TestCase):
     def test_no_function_of_random_other_than_random_is_used(self):
         with open(step1_plan.__file__, encoding="utf-8") as f:
             code = f.read()
-        for name in ("rng.choice", "rng.shuffle", "rng.sample", "rng.randint"):
+        for name in ("rng.choice", "rng.shuffle", "rng.sample", "rng.randint", "rng.randrange",
+                     "rng.uniform", "rng.getrandbits", "rng.choices"):
             self.assertNotIn(name, code)
 
     def test_a_later_mock_has_its_own_ids(self):
@@ -178,7 +179,6 @@ class TestPlanFails(unittest.TestCase):
 
     def test_each_task_statement_must_get_a_question(self):
         def crowd(r):
-            five = [t for t in r["task_statements"] if t["domain"] == 5]
             for t in r["task_statements"][:4]:
                 t["domain"] = 5
         self.broken(crowd, "more task statements than questions")
@@ -195,6 +195,24 @@ class TestPlanFails(unittest.TestCase):
         with self.assertRaises(PlanError) as e:
             make_plan(RECORDS, 1, 1, "2026-10-07", groups)
         self.assertIn("No plan is possible", str(e.exception))
+        self.assertIn("Task statement 1.", str(e.exception))
+
+    def test_possible_is_a_matching(self):
+        ts_groups = {"a": frozenset({"G1", "G2"}), "b": frozenset({"G1"}), "c": frozenset({"G2", "G3"})}
+        self.assertTrue(step1_plan._possible({"a": 1, "b": 1, "c": 1}, ts_groups, frozenset()))
+        self.assertTrue(step1_plan._possible({"a": 1, "b": 1, "c": 1}, ts_groups, frozenset({"G4"})))
+        self.assertFalse(step1_plan._possible({"a": 2, "b": 1}, ts_groups, frozenset()))
+        self.assertFalse(step1_plan._possible({"b": 1}, ts_groups, frozenset({"G1"})))
+        self.assertFalse(step1_plan._possible({"a": 1, "b": 1, "c": 2}, ts_groups, frozenset()))
+
+    def test_extras_go_back_to_an_earlier_domain(self):
+        # Domain 1 has one extra question for x or y. y takes the group that z of
+        # domain 2 needs. The seed order puts y first, so code must go back.
+        ts_groups = {"x": frozenset({"G1", "G2"}), "y": frozenset({"G3", "G4"}), "z": frozenset({"G4", "G5"})}
+        need = {"x": 1, "y": 1, "z": 1}
+        found = step1_plan._extras([(1, ["y", "x"], 1), (2, ["z"], 1)], need, ts_groups)
+        self.assertEqual(found, {"x": 2, "y": 1, "z": 2})
+        self.assertIsNone(step1_plan._extras([(1, ["y"], 1), (2, ["z"], 1)], need, ts_groups))
 
     def test_a_bad_groups_file_makes_no_plan(self):
         groups = copy.deepcopy(GROUPS)

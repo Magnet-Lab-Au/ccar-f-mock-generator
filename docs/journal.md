@@ -2,6 +2,20 @@
 
 One entry for each work session. Newest entry first.
 
+## 8 October 2026, later session
+
+- The owner said to start the first change before mock 2. The assistant suggested a file of point groups and a rule of step 1, with changes 1 and 2 of decision 0046 as one decision. The owner agreed, and added a test against mock 1 and the form of the table for the confirmation (decision 0047).
+- The assistant drafted `data/point-groups.json` from the 240 texts: 100 groups, 68 with two or more points. A script checks it (`src/point_groups.py check`), with tests in `tests/test_point_groups.py`.
+- The test against mock 1: the rule rejects the plan of mock 1. It catches 9 of the 11 known pairs. It does not catch S53/S54 (decision 0046 says that 4.4-K1 and 4.4-K4 are not twins) or S33/S40 (two different correct answers). It also finds S12 with S20 and S22 (generic error messages), which no earlier review listed.
+- An independent reviewer checked the groups. The assistant applied its low-cost findings: two merges, two splits and two idea texts. Its finding 1a waits for the owner: all of 4.2 and three points of 3.5 have the answer "give concrete examples".
+- The rule of decision 0047 could not make a plan: task statement 3.3 is one group, and Domain 1 failed for each of 2000 seeds. The assistant suggested two changes, and the owner said yes (decision 0048): a task statement gets no more questions than its groups, and code selects so that a full plan stays possible.
+- Step 1 has the rule. Over 2000 seeds each seed gives a plan with no two slots in one group. 11 points never get a slot, because a tighter task statement always takes their group. Diagram 02 and the build guide section of step 1 show the rule.
+
+**Open**
+
+- The owner confirms the groups file and the texts of decisions 0047 and 0048, and decides finding 1a.
+- Changes 3 to 7 of decision 0046.
+
 ## 8 October 2026
 
 This entry continues the second session of 7 October. The work went on after midnight.

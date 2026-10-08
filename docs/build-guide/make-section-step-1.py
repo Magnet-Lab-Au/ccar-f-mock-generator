@@ -48,7 +48,7 @@ Not from the exam guide. Each part has a plain reason:
 - Each of the 30 task statements gets at least 1 question, so that each mock covers the complete guide. In each domain, the task statements share the questions equally. But a task statement gets no more questions than its number of point groups (decision 0048). Example: task statement 3.3 has one group, so it gets 1 question.
 - Each question is in a primary domain of its scenario, so that no question is forced into a story that does not fit it. So the step uses only 11 of the 15 possible sets of 4 scenarios. This is a difference from the exam, which can use all 15 sets.
 - No two slots of one mock get points of the same group (decision 0047). The file `data/point-groups.json` puts each of the 240 points into one group, and two points in one group describe one idea. Mock 1 got repeats from two points on one idea (decision 0046).
-- The seed sets the order of the task statements for the extra questions, and the order of the points. Code takes the first choice that keeps a full plan possible. It checks this with a matching of task statements to free groups (decision 0048).
+- The seed sets the order of the task statements for the extra questions, and the order of the points. Code takes the first choice in that order that keeps a full plan possible. It checks this with a matching of task statements to free groups (decision 0048).
 - 2 questions of each scenario are multiple-response, with 5 options and 2 answers to select. These numbers are a guess. They have no source.
 
 If a record of the guide or the groups file is not valid, a count does not add up, or the groups allow no plan, the step stops with an error that names the cause. It writes no plan.
@@ -74,7 +74,7 @@ The guide does not cover two parts of this step: a list of slots before the writ
 
 The record is `runs/mock-01/plan.json`. Code writes it one time, and never writes over it.
 
-The plan of mock 1 was made before the point groups. The command `python3 src/point_groups.py plan runs/mock-01/plan.json` shows 9 groups with two or more slots of that plan. The command `python3 src/point_groups.py seeds 2000` runs step 1 over 2000 seeds with the groups: each seed gives a plan.
+Code made the plan of mock 1 before the point groups existed. The command `python3 src/point_groups.py plan runs/mock-01/plan.json` shows 9 groups with two or more slots of that plan. The command `python3 src/point_groups.py seeds 2000` runs step 1 over 2000 seeds with the groups: each seed gives a plan.
 
 ## The exam guide points that the step uses
 

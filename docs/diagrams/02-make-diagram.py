@@ -69,7 +69,7 @@ D = {
  '3': dict(title='Part 3: select the task statements', cls='code', who='Code', status='built', points=[], none=NONE,
    sent=['Each of the 30 task statements gets at least 1 question.',
          'In each domain, the task statements share the questions equally. But a task statement gets no more questions than its number of point groups (decision 0048).',
-         'The seed sets an order of the task statements. In that order, a task statement gets one extra question if a full plan stays possible.',
+         'The seed sets an order of the task statements. Code takes the first choice in that order that keeps a full plan possible, over all domains together. A task statement gets at most one extra question.',
          'Example: Domain 5 has 6 task statements and 9 questions. Each task statement gets 1 question, and 3 of them get a second question.',
          'Example: task statement 3.3 has one group, so it gets 1 question. Another task statement of Domain 3 gets 3.',
          'The seed also decides which scenario of the table each question goes to.'],
@@ -116,7 +116,7 @@ boxes = ''.join([
  box('4', 642, 112, '4', 'Select one point for each question', 'Code', 'code', 'Each question gets one point of its task statement. No two points of one mock are in one group.', 'Not from the exam guide. Plain reason.'),
  box('5', 774, 112, '5', 'Set the question type', 'Code', 'code', '2 questions of each scenario are multiple-response. The other 52 are multiple-choice.', 'Exam guide: Section 3. The number 8 is a guess.'),
  box('OUT', 934, 130, '', 'What the step returns', 'Output', 'io', 'One plan file with 60 slots and the seed. Example from the plan of mock 1: scenario %s, task statement %s, point %s, %s, select %s.' % (EX['scenario'], EX['task_statement'], EX['point'], EX['type'].replace('_', '-'), EX['select']), 'The same seed gives the same plan.'),
- box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record or the groups file is not valid, or the counts do not add up to 60. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
+ box('F', 500, 132, '', 'The step stops', 'No plan', 'stop', 'A record or the groups file is not valid, the counts do not add up to 60, or the groups allow no plan. The step names the cause and writes no plan.', '', extra='stop', left=700, w=270),
 ])
 
 extra_css = '''
