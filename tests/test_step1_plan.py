@@ -104,6 +104,14 @@ class TestPlan(unittest.TestCase):
                 expected = (5, 2) if s["type"] == "multiple_response" else (4, 1)
                 self.assertEqual((s["options"], s["select"]), expected)
 
+    def test_the_longest_option_may_be_correct_on_the_chance_numbers(self):
+        # Decision 0053: 13 of the 52 slots with 1 answer, 3 of the 8 with 2 answers.
+        for plan in self.plans:
+            got = Counter((s["select"], s["longest_may_be_correct"]) for s in plan["slots"])
+            self.assertEqual(got, Counter({(1, True): 13, (1, False): 39, (2, True): 3, (2, False): 5}))
+        self.assertNotEqual([s["longest_may_be_correct"] for s in self.plans[0]["slots"]],
+                            [s["longest_may_be_correct"] for s in self.plans[1]["slots"]])
+
     def test_slot_numbers_follow_the_groups(self):
         for plan in self.plans:
             slots = plan["slots"]
@@ -113,7 +121,8 @@ class TestPlan(unittest.TestCase):
 
     def test_the_slot_fields_of_decision_0029(self):
         for s in self.plans[0]["slots"]:
-            self.assertEqual(set(s), {"slot_id", "scenario", "task_statement", "point", "type", "options", "select"})
+            self.assertEqual(set(s), {"slot_id", "scenario", "task_statement", "point", "type", "options", "select",
+                                      "longest_may_be_correct"})
         self.assertEqual(set(self.plans[0]), {"mock", "seed", "guide_version", "date", "earlier_mocks",
                                               "scenarios", "table", "slots"})
 

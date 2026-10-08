@@ -197,7 +197,7 @@ page = '''<!doctype html>
     <div class="shead" style="top:2px"><i>1</i>Without the answer key: does a second expert select the same answer?</div>
     <div class="shead" style="top:176px"><i>2</i>With the answer key: does the question pass 7 rules?</div>
     <div class="panel" style="left:570px;top:212px;width:410px;height:517px"></div>
-    <div class="ptitle" style="left:584px;top:222px">The 7 rules<small>group B of the 18 rules for a good question</small></div>
+    <div class="ptitle" style="left:584px;top:222px">The 7 rules<small>group B of the 19 rules for a good question</small></div>
     <div class="shead" style="top:745px"><i>3</i>Code makes the verdict</div>
     ''' + ''.join(boxes) + '''
     ''' + popdiv + '''

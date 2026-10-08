@@ -28,6 +28,9 @@ PER_SCENARIO = 15
 SCENARIOS_IN_MOCK = 4
 MULTIPLE_RESPONSE_PER_SCENARIO = 2   # a guess with no source (decision 0027)
 DOMAIN_COUNTS = {1: 16, 2: 11, 3: 12, 4: 12, 5: 9}   # decision 0027, item 1
+# Decision 0053: the slots on which the longest option may be correct. The chance
+# numbers: 1 in 4 of the 52 slots with 1 answer, 2 in 5 of the 8 slots with 2 answers.
+LONGEST_MAY_BE_CORRECT = {1: 13, 2: 3}
 
 
 class PlanError(Exception):
@@ -365,6 +368,14 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None):
                           "options": 5 if many else 4, "select": 2 if many else 1})
     if len(slots) != QUESTIONS:
         raise PlanError("The plan has %d slots, not %d." % (len(slots), QUESTIONS))
+    # 8. The seed selects the slots on which the longest option may be correct
+    #    (decision 0053). On the other slots, step 3 checks that a wrong option is
+    #    the longest (rule A12).
+    for select, number in sorted(LONGEST_MAY_BE_CORRECT.items()):
+        group = [s for s in slots if s["select"] == select]
+        allowed = {s["slot_id"] for s in _sample(rng, group, number)}
+        for s in group:
+            s["longest_may_be_correct"] = s["slot_id"] in allowed
     same = point_groups.conflicts([(x["slot_id"], x["point"]) for x in slots], groups)
     if same:
         raise PlanError("Two slots are in one group: %s" % "; ".join(

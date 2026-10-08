@@ -26,6 +26,7 @@ Not from the exam guide. Each part has a plain reason:
 - The seed sets the order of the task statements for the extra questions, and the order of the points. Code takes the first choice in that order that keeps a full plan possible. It checks this with a matching of task statements to free groups (decision 0048).
 - The program makes 5 mocks (decision 0049). The guide has fewer ideas than 5 mocks have slots, so each idea comes in more than one mock. Step 1 counts how often the built mocks used each group, and puts the least-used groups first (decision 0050). In a simulation of mocks 2 to 5, no idea is left out, and 82 of the 95 ideas come in 2 to 4 of the 5 mocks.
 - 2 questions of each scenario are multiple-response, with 5 options and 2 answers to select. These numbers are a guess. They have no source.
+- The seed marks 13 of the 52 multiple-choice slots and 3 of the 8 multiple-response slots: on these the longest option may be correct. These are the chance numbers. On the other slots, step 3 checks that a wrong option is the longest (rule A12, decision 0053).
 
 If a record of the guide or the groups file is not valid, a count does not add up, or the groups allow no plan, the step stops with an error that names the cause. It writes no plan.
 

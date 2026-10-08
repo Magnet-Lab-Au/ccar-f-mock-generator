@@ -1,6 +1,6 @@
 """Step 3 of the pipeline: code checks each question (decisions 0011, 0030, 0031 and 0038, part 8).
 
-Code checks the rules A1 to A11, which have an exact answer. No model works in
+Code checks the rules A1 to A12, which have an exact answer. No model works in
 this step. The control calls check(question, slot) and saves the verdict record
 with the fingerprint and the date (decision 0039).
 
@@ -148,4 +148,14 @@ def check(question, slot, rules=None):
         m = re.search(r"\b(not|except)\b", last)
         if m:
             found.append(finding("A11", 'The last sentence of the question has "%s".' % m.group(0)))
+    if use("A12") and slot is not None and slot.get("longest_may_be_correct") is False:
+        # Decision 0053. A slot of a plan before decision 0053 has no field, and
+        # the rule does not apply to it.
+        right = [len(o["text"]) for o in texts if o.get("correct") is True]
+        wrong = [len(o["text"]) for o in texts if o.get("correct") is False]
+        if right and wrong and max(right) >= max(wrong):
+            longest = max(texts, key=lambda o: (len(o["text"]), o.get("correct") is True))
+            found.append(finding("A12", "The longest option is a correct option (%d characters). The slot needs a "
+                                        "wrong option that is longer than each correct option." % max(right),
+                                 longest.get("letter")))
     return {"verdict": "fail" if found else "pass", "findings": found}

@@ -47,8 +47,8 @@ D = {
  'slot': dict(title='The slot', who='From the plan of step 1', cls='io',
    sent=['The slot says what the question must be: the scenario, the point, the number of options and the number of correct answers.',
          'Code compares the question with its slot.']),
- 'hdr': dict(title='Step 3: code checks 11 rules', who='Code', cls='code',
-   sent=['Each of these 11 rules has one exact answer. So code checks them, and not a model.',
+ 'hdr': dict(title='Step 3: code checks 12 rules', who='Code', cls='code',
+   sent=['Each of these 12 rules has one exact answer. So code checks them, and not a model.',
          'The step is cheap and fast. It runs before the model check of step 4, so a question with a simple defect does not use a model call.',
          'The rules that need judgment are the work of step 4, for example "only the marked answer is correct".'],
    points=[point('1.4-K1'), point('1.4-K2'), point('4.3-K3'), point('4.4-K4')],
@@ -99,6 +99,12 @@ D = {
          'The options do not count.'],
    example=finding('A11', 'The last sentence of the question has "not".'), examplehead=EH,
    why='No sample question of the guide is a negative question. A negative question tests careful reading more than knowledge.'),
+ 'A12': dict(title='Rule A12: the longest option', who='Code', cls='code',
+   sent=['The plan marks each slot: may the longest option be correct? The seed says yes for 13 of the 52 slots with 1 answer and for 3 of the 8 slots with 2 answers (decision 0053).',
+         'On the other slots, a wrong option must be longer (in characters) than each correct option. An equal length fails.',
+         'A slot of a plan before decision 0053 has no mark. The rule does not apply to it.'],
+   example=finding('A12', 'The longest option is a correct option (96 characters). The slot needs a wrong option that is longer than each correct option.'), examplehead=EH,
+   why='In mock 1, the correct option was the longest in 37 of the 52 questions with 1 answer. Chance is 13. A participant who selects the longest option should not gain from it.'),
  'pass': dict(title='Pass', who='Usual', cls='owner',
    sent=['No rule fails.', 'The question goes to step 4. There a model checks the rules that need judgment.']),
  'fail': dict(title='Fail', who='Back to the writer', cls='stop',
@@ -140,9 +146,10 @@ rows = [('A1', 'The form is complete', 'Each option: a text, a mark, a reason.')
         ('A8', 'A question mark at the end', 'The question ends with "?".'),
         ('A9', '2 to 5 sentences', 'In the text of the question.'),
         ('A10', 'Each option is one sentence', 'No sentence end inside an option.'),
-        ('A11', 'Not a negative question', 'No "NOT" or "EXCEPT" in capital letters.')]
+        ('A11', 'Not a negative question', 'No "NOT" or "EXCEPT" in capital letters.'),
+        ('A12', 'The longest option', 'Most slots: a wrong option is the longest.')]
 boxes, paths = [], []
-boxes.append(box('hdr', 312, 84, 376, 60, 'Code checks 11 rules', 'Each rule has one exact answer.', 'Code', 'code', extra='hdr row'))
+boxes.append(box('hdr', 312, 84, 376, 60, 'Code checks 12 rules', 'Each rule has one exact answer.', 'Code', 'code', extra='hdr row'))
 for i, (key, name, what) in enumerate(rows):
     boxes.append(rowbox(key, 312, 150 + i * 58, 376, 54, key, name, what))
 MID = 465
@@ -154,13 +161,13 @@ boxes.append(box('pass', 750, 330, 230, 110, 'Pass', 'No rule fails. Step 4 chec
 boxes.append(box('fail', 750, 490, 230, 110, 'Fail', 'A rule fails. The question goes back to the writer with the findings.', extra='fail'))
 paths.append('<path class="flow" d="M700,%d C724,%d 724,385 746,385" marker-end="url(#a)"/>' % (MID, MID))
 paths.append('<path class="failp" d="M700,%d C724,%d 724,545 746,545" marker-end="url(#af)"/>' % (MID, MID))
-boxes.append(box('rec', 20, 856, 300, 118, 'The verdict record', 'One new file for each check: the question, the verdict and the findings.', 'File', 'io'))
-boxes.append(box('finding', 350, 856, 300, 118, 'A finding is exact', 'It names the rule and the detail, so the writer knows what to change.', 'Code', 'code'))
-boxes.append(box('err', 680, 856, 300, 118, 'An error is not a pass', 'If code cannot read the question, it reports an error.', extra='stop'))
+boxes.append(box('rec', 20, 914, 300, 118, 'The verdict record', 'One new file for each check: the question, the verdict and the findings.', 'File', 'io'))
+boxes.append(box('finding', 350, 914, 300, 118, 'A finding is exact', 'It names the rule and the detail, so the writer knows what to change.', 'Code', 'code'))
+boxes.append(box('err', 680, 914, 300, 118, 'An error is not a pass', 'If code cannot read the question, it reports an error.', extra='stop'))
 
 extra_css = g3[g3.index("extra_css = '''") + 15:g3.index("'''\na = js.index")]
-extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 990px; }')
-assert '990px' in extra_css
+extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 1048px; }')
+assert '1048px' in extra_css
 extra_css += '''  .box.row .num { width: 34px; height: 34px; font-size: 14px; }
   .box.fail .name { color: var(--fail); }
 '''
@@ -180,25 +187,25 @@ page = '''<!doctype html>
 </head>
 <body>
 <main>
-  <h1>Step 3: code checks each question against 11 exact rules</h1>
+  <h1>Step 3: code checks each question against 12 exact rules</h1>
   <p class="sub">This diagram shows step 3. The step is built, and it ran in the test of 7 October 2026. Before a model looks at a question, code checks the rules that have one exact answer. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
-    <svg viewBox="0 0 1000 990" width="1000" height="990" aria-hidden="true">
+    <svg viewBox="0 0 1000 1048" width="1000" height="1048" aria-hidden="true">
       ''' + marker + '''
       ''' + '\n      '.join(paths) + '''
     </svg>
-    <div class="shead" style="top:2px"><i>1</i>One question goes through 11 rules</div>
-    <div class="panel" style="left:300px;top:38px;width:400px;height:762px"></div>
-    <div class="ptitle" style="left:314px;top:46px">The 11 rules<small>group A of the 18 rules for a good question</small></div>
-    <div class="shead" style="top:818px"><i>2</i>Code saves the verdict</div>
+    <div class="shead" style="top:2px"><i>1</i>One question goes through 12 rules</div>
+    <div class="panel" style="left:300px;top:38px;width:400px;height:820px"></div>
+    <div class="ptitle" style="left:314px;top:46px">The 12 rules<small>group A of the 19 rules for a good question</small></div>
+    <div class="shead" style="top:876px"><i>2</i>Code saves the verdict</div>
     ''' + ''.join(boxes) + '''
     ''' + popdiv + '''
   </div>
   </div>
 
-  <footer>Diagram 05. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0031, 0037 and 0038). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file, and measured the 12 sample questions.</footer>
+  <footer>Diagram 05. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0031, 0037 and 0038) and on 8 October 2026 (rule A12, decision 0053). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file, and measured the 12 sample questions.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

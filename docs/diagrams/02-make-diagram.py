@@ -85,13 +85,14 @@ D = {
    why='The writer and the checker know exactly what the question must test. Mock 1 got repeats from two points on one idea (decision 0046). The groups prevent this before a question is written.'),
  '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
    sent=['Multiple-choice: the participant selects 1 answer.', 'Multiple-response: the question has 5 options, and the participant selects 2 answers. A multiple-choice question has 4 options.',
-         'The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions.'],
+         'The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions.',
+         'The seed also marks the slots on which the longest option may be correct: 13 of the 52 multiple-choice slots and 3 of the 8 multiple-response slots. These are the chance numbers. On the other slots, step 3 checks that a wrong option is the longest (rule A12, decision 0053).'],
    points=[fact('Section 3', 'Multiple-choice and multiple-response items; each item states how many responses to select')],
    why='The guide gives no number for each type. All 12 sample questions of the guide are multiple-choice. The number 8 is a guess. It has no source.'),
  'OUT': dict(title='What the step returns', cls='io', who='Output', status='built', points=[], none=NONE,
    sent=['One plan file: the mock number, the seed, the version of the guide, the date, the numbers of the earlier mocks that step 1 counted, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
          'The slots get the numbers 1 to 60, group by group. The seed sets the sequence inside a group. The slot number is the question number in the finished mock.',
-         'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options and the number of answers to select.',
+         'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options, the number of answers to select, and longest_may_be_correct (true or false).',
          'The first slot of the plan of mock 1: %s.' % json.dumps(EX)],
    why='Step 2 writes one question for each slot. The later checks compare each question with its slot.'),
  'F': dict(title='The step stops', cls='stop', who='The step stops', status='built', points=[], none=NONE,
@@ -223,7 +224,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048 and 0050). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050 and 0053). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

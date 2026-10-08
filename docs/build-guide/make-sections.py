@@ -101,13 +101,14 @@ section('step-3-check-by-code.md', 'Step 3: check by code',
         'built. It ran in the test before the first full run, on 7 October 2026.', '05-step-3-check-by-code.html', '''
 ## What the step does
 
-Before a model looks at a question, code checks the 11 rules that have one exact answer (rules A1 to A11):
+Before a model looks at a question, code checks the 12 rules that have one exact answer (rules A1 to A12):
 
 - The form is complete, and the numbers of options and of correct options agree with the slot.
 - No two options have the same text, and no text names a letter or a different option ("Option B", "all of the above").
 - The question has 25 to 110 words and each option 5 to 45 words. The correct option is not much longer than the wrong options.
 - The question ends with a question mark and has 2 to 5 sentences. Each option is one sentence.
 - The question is not a negative question.
+- On most slots, a wrong option is the longest option (rule A12, decision 0053). The plan lets the longest option be correct on 13 of the 52 slots with 1 answer and on 3 of the 8 slots with 2 answers, the chance numbers. In mock 1, before this rule, the correct option was the longest in 37 of 52 questions.
 
 A script measured the 12 sample questions of the guide. The length limits (A6 and A7) are their range with a small margin. Rules A8 to A10 are true for all 12 with no margin. The limit of A11 is weaker than what the script measured: it permits "not" outside the last sentence. The check is cheap and fast, so a question with a simple defect does not use a model call.
 
@@ -115,7 +116,7 @@ Each finding names the rule and the detail, so the writer of step 5 knows what t
 
 ## The test run
 
-All %d questions of the writer passed the 11 rules. A test of the code also showed that the 12 sample questions of the guide pass the rules A4 to A11 (the rules that need no slot and no reason for each option).
+All %d questions of the writer passed the 11 rules of that time (rule A12 came later). A test of the code also showed that the 12 sample questions of the guide pass the rules A4 to A11 (the rules that need no slot and no reason for each option).
 ''' % n_written, [
     ('1.4-K1', 'Written for the order of the steps of an agent workflow. Here: a rule with one exact answer is checked by code, not by a model.'),
     ('1.4-K2', 'The same context. Here: an instruction to a model can fail, so code checks the rules that code can check.'),

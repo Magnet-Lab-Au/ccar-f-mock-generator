@@ -90,6 +90,23 @@ class TestCheck(unittest.TestCase):
         long_text = "Return structured error context with the partial results, the failure type and the query that was attempted to the coordinator."
         self.assertIn("A7", rules_of(self.changed(lambda q: q["options"][0].update(text=long_text))))
 
+    def test_a12_the_longest_option_on_a_slot_that_does_not_allow_it(self):
+        # Decision 0053. In GOOD, option A (correct) is the longest.
+        no = dict(SLOT, longest_may_be_correct=False)
+        result = check(GOOD, no)
+        self.assertEqual(rules_of(result), ["A12"])
+        self.assertEqual(result["findings"][0]["letter"], "A")
+        self.assertEqual(check(GOOD, dict(SLOT, longest_may_be_correct=True))["verdict"], "pass")
+        self.assertEqual(check(GOOD, SLOT)["verdict"], "pass")   # a plan before decision 0053
+        longer = "Increase the timeout of each subagent to a much larger value, and log each timeout for the team."
+        self.assertEqual(self.changed(lambda q: q["options"][1].update(text=longer), no)["verdict"], "pass")
+
+    def test_a12_a_tie_fails(self):
+        no = dict(SLOT, longest_may_be_correct=False)
+        def tie(q):
+            q["options"][1]["text"] = q["options"][0]["text"][:-1] + "!"
+        self.assertIn("A12", rules_of(self.changed(tie, no)))
+
     def test_a8_a_question_mark_at_the_end(self):
         self.assertIn("A8", rules_of(self.changed(lambda q: q.update(question=GOOD["question"].replace("design?", "design. Select the best change.")))))
 

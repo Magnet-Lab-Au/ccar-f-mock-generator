@@ -21,7 +21,7 @@ def plain(text):
     return re.sub(r"\\(.)", r"\1", text)
 
 
-# Decisions 0030 and 0043: the 18 rules. The writer gets all of them. The text of each
+# Decisions 0030, 0043 and 0053: the 19 rules. The writer gets all of them. The text of each
 # rule is the text of decision 0030, with rule A11 of decision 0038, part 8.
 RULES = """Rules for a good question. Code checks group A. A second model checks group B.
 
@@ -37,6 +37,7 @@ A8. The text of the question ends with a question mark.
 A9. The text of the question has 2 to 5 sentences.
 A10. Each option is one sentence.
 A11. The question is not a negative question. The question text does not have "NOT" or "EXCEPT" in capital letters. The last sentence of the question text does not have "not" or "except".
+A12. When the slot has "longest_may_be_correct": false, at least one wrong option is longer (in characters) than each correct option.
 
 Group B, rules that need judgment:
 B1. Each option that is marked correct is correct, and no other option is correct.
@@ -96,7 +97,8 @@ def request_text(request, records):
     parts += ["- " + plain(t) for t in records["section_17"]["technologies"]]
     parts += ["", "The slot: " + json.dumps({"scenario": slot["scenario"], "task_statement": slot["task_statement"],
                                            "point": point, "type": slot["type"], "options": slot["options"],
-                                           "select": slot["select"]}),
+                                           "select": slot["select"],
+                                           "longest_may_be_correct": slot.get("longest_may_be_correct", True)}),
               "Write %d options. Mark exactly %d of them correct." % (slot["options"], slot["select"])]
     if request["step"] == 2 and (request.get("findings") or request.get("other_questions")):
         # Decision 0045: a rewrite with a new point. The writer must not repeat the other questions.

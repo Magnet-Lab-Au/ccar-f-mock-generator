@@ -89,7 +89,7 @@ def written(slot, n_correct=None, tag=""):
     options = []
     for i in range(slot["options"]):
         right = i < n_correct
-        options.append({"text": "%s option number %d of the slot %s%s is here." % ("RIGHT" if right else "Other", i, slot["slot_id"], tag),
+        options.append({"text": "%s option number %d of the slot %s%s is here." % ("RIGHT" if right else "Another", i, slot["slot_id"], tag),
                         "correct": right, "reason": "The reason of option %d." % i})
     return {"status": "written",
             "question": ("A team builds an agent for the slot %s%s and sees a problem in production. The coordinator gets an empty "
