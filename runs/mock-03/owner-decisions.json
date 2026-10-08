@@ -31,5 +31,23 @@
     "reason": "The tries failed on rules B7 and B1. Try again.",
     "date": "2026-10-08",
     "after_try": 3
+  },
+  {
+    "id": "D005",
+    "action": "rewrite",
+    "target": "M3-S34-T1",
+    "reason": "Copy of M2-S13 (decisions 0060 and 0062): two MCP tools with different formats, the answer a PostToolUse hook, and the same three wrong ideas. Write a new question on the same point with a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-09",
+    "question_id": "M3-S34-T1",
+    "after_try": 1
+  },
+  {
+    "id": "D006",
+    "action": "rewrite",
+    "target": "M3-S49-T1",
+    "reason": "Copy of M1-S34 (decisions 0060 and 0062): a migration of about 50 files with two approaches, the answer plan mode first, and two of the same wrong ideas. Write a new question on the same point with a different scene and a different angle: the cause, the fix, or a choice between rules. Do not use a wrong option of the earlier question.",
+    "date": "2026-10-09",
+    "question_id": "M3-S49-T1",
+    "after_try": 1
   }
 ]
