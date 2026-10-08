@@ -18,11 +18,12 @@ One entry for each work session. Newest entry first.
 - Diagrams 01 and 02 and the build guide section of step 1 show decisions 0047, 0048 and 0050. A reviewer checked the records, and the assistant fixed its findings. 192 tests pass.
 
 - The owner confirmed the groups file `data/point-groups.json` and the texts of decisions 0047 to 0050. The text of decision 0045 was not confirmed yet. The owner confirmed it too.
+- Change 3 of decision 0046 (12 questions of Domain 4 in one scenario): the owner agreed to no new rule (decision 0051). Any limit below 12 leaves 2 of the 11 sets of scenarios or none. The point groups already prevent the repeat that it caused in mock 1.
 
 **Open**
 
 - How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
-- Changes 3 to 7 of decision 0046.
+- Changes 4 to 7 of decision 0046.
 
 ## 8 October 2026
 

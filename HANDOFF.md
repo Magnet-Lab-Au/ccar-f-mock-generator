@@ -42,7 +42,7 @@ The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the 
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0050. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+4. `docs/decisions/`: decisions 0001 to 0051. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
 5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
 
 Read these only when you need them:
@@ -57,7 +57,7 @@ Read these only when you need them:
 
 State on 7 October 2026, second session. The table of steps and the next steps below have the state of 8 October 2026.
 
-- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. The owner also confirmed 0040 to 0050 (each file has the line "Text confirmed by the owner"). Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
+- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. The owner also confirmed 0040 to 0051 (each file has the line "Text confirmed by the owner"). Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
 - Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
 - Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
 - Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.
@@ -125,7 +125,7 @@ Not decided:
 
 ## The next steps
 
-1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. The 7 changes before mock 2 of decision 0046 come one at a time, each with its own decision file. Changes 1 and 2 (twin points) are built: `data/point-groups.json`, `src/point_groups.py` and the rule in step 1 (decisions 0047 and 0048). Step 1 also spreads the ideas over the 5 mocks (decisions 0049 and 0050). The owner confirmed the groups file and the texts of 0047 to 0050 on 8 October 2026. Next: changes 3 to 7. Then mock 2.
+1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. The 7 changes before mock 2 of decision 0046 come one at a time, each with its own decision file. Changes 1 and 2 (twin points) are built: `data/point-groups.json`, `src/point_groups.py` and the rule in step 1 (decisions 0047 and 0048). Step 1 also spreads the ideas over the 5 mocks (decisions 0049 and 0050). The owner confirmed the groups file and the texts of 0047 to 0050 on 8 October 2026. Change 3 needs no new rule (decision 0051). Next: changes 4 to 7. Then mock 2.
 2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
 3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
 
