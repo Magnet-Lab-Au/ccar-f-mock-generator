@@ -49,7 +49,7 @@ B6. No text depends on a feature that the guide does not name. A feature is a th
 
 B7. Each actor has one name in the question, the options and the reasons. A reader understands each sentence at the first reading.
 B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.
-B9. The question is not a repeat of an earlier question on the same idea: not the same scene with the same answer, and no wrong option of an earlier question.
+B9. The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). The same problem means that the same thing goes wrong, or the team must make the same choice, so the same reasoning leads to the answer. A question on the same idea passes only with a different problem: for example the cause against the fix, a different failure, or a choice between two rules. Not the same set of wrong options as an earlier question on the same idea. At most one wrong option may repeat.
 
 Two more instructions:
 - The options of a question have the same form. Example: all are actions, or all are places, or all are causes.
@@ -81,9 +81,11 @@ def examples(records, slot, count=3):
     return out
 
 
-EARLIER_RULE = ("EARLIER QUESTIONS ON THE SAME IDEA (decision 0056). Earlier mocks have the questions below on the idea "
-                "of this slot. Use a different scene and a different angle: the cause, the fix, or a choice between rules. "
-                "The correct action may be the same, if the idea has only one. Do not use a wrong option of an earlier question.")
+EARLIER_RULE = ("EARLIER QUESTIONS ON THE SAME IDEA (decisions 0056 and 0066). Earlier mocks have the questions below on the idea "
+                "of this slot. Write a question with a different problem, also if you change the setting: a different thing "
+                "goes wrong, or the team must make a different choice. For example the cause against the fix, a different "
+                "failure, or a choice between two rules. The correct action may be the same, if the idea has only one. "
+                "Do not use the same set of wrong options as an earlier question. At most one wrong option may repeat.")
 
 
 def earlier_text(questions):

@@ -95,7 +95,8 @@ class TestWriterAndCheck(unittest.TestCase):
             pass
         self.assertIn(EARLIER_RULE, call.texts[0])
         self.assertIn("M1-S28-T2", call.texts[0])
-        self.assertIn("B9. The question is not a repeat", call.texts[0])
+        self.assertIn("B9. The question does not have the same problem", call.texts[0])
+        self.assertIn("At most one wrong option may repeat.", call.texts[0])
 
     def test_no_earlier_question_no_section(self):
         self.assertNotIn(EARLIER_RULE, request_text(self.request(), RECORDS))
