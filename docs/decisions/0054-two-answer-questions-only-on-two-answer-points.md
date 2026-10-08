@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1). Diagram 04 shows the instruction to the writer.
 
 ## Question
@@ -39,7 +40,7 @@ The assistant suggested the list, the rule of step 1 and the instruction to the 
 
 The assistant drafted 85 points. An independent reviewer checked them against the exam guide. It found 2 points that are sure errors (3.6-K3 and 3.6-S5) and several judgment calls. The assistant removed 8 points and added 8. For 7 points that list the fields of one structure (1.4-K3, 1.4-S3, 2.1-K2, 2.1-S1, 2.2-S1, 5.3-K1, 5.3-S1), the assistant suggested to remove them, because two fields come close to two examples of one idea. The owner agreed.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file and the list on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

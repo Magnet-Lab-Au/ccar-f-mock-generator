@@ -27,7 +27,7 @@ One entry for each work session. Newest entry first.
 
 - How the program prevents the same scene in two mocks, and selects the scenarios across mocks.
 - Change 7 of decision 0046.
-- The owner confirms the text of decision 0054.
+- (Done: the owner confirmed decision 0054 and the list.)
 
 ## 8 October 2026
 
