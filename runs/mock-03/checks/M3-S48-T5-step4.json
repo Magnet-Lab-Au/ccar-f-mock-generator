@@ -1,0 +1,101 @@
+{
+  "question_id": "M3-S48-T5",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The scene is new (bug-report labels instead of docstrings), but the correct answer is the same as in M1-S44-T1: a stratified random sample of high-confidence outputs. Option B reuses the earlier wrong option 'Track one overall acceptance rate for all docstrings'. Both rely on a single combined error rate across all segments. Option D also reuses the threshold-raising part of that same earlier wrong option. Replace B with a distractor that the earlier question did not use.",
+      "letter": "B",
+      "point": "5.5-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "57383d7d3279dd43ed6457ddb1a55f4bc7c3565608013c53996a2c016ff54c60",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Stratified random sampling within each component and field makes sure small segments such as mobile get enough reviewed labels to show their own error rate and reveal new error patterns. A uniform sample lets these segments disappear into the aggregate figure.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The scene is new (bug-report labels instead of docstrings), but the correct answer is the same as in M1-S44-T1: a stratified random sample of high-confidence outputs. Option B reuses the earlier wrong option 'Track one overall acceptance rate for all docstrings'. Both rely on a single combined error rate across all segments. Option D also reuses the threshold-raising part of that same earlier wrong option. Replace B with a distractor that the earlier question did not use.",
+      "letter": "B",
+      "point": "5.5-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "-p",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

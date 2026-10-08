@@ -1,0 +1,90 @@
+{
+  "mock": 3,
+  "scenario": 1,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S23-T1",
+            "M3-S28-T1"
+          ],
+          "detail": "Option B of M3-S23-T1 says that setting tool_choice to \"any\" means the model must call a tool on every turn. Its reason repeats that \"any\" only forces a tool call. This tells the reader the answer to M3-S28-T1, whose correct option is to set tool_choice to \"any\" to guarantee a tool call while the model still chooses the tool."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S19-T1",
+            "M3-S23-T1",
+            "M3-S24-T1"
+          ],
+          "detail": "The same wrong idea appears as a wrong option in three questions: hand the case to a human through escalate_to_human instead of letting the agent handle it. M3-S19-T1 D escalates every multi-concern message. M3-S23-T1 A routes every routine account change through escalate_to_human. M3-S24-T1 C escalates at the first lookup_order timeout. The triggers differ, but each distractor offers unnecessary escalation as the safe fix, and two of the reasons give the same argument about first-contact resolution. Replace one of these distractors with a different misconception."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M3-SC1-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S23-T1",
+        "M3-S28-T1"
+      ],
+      "detail": "Option B of M3-S23-T1 says that setting tool_choice to \"any\" means the model must call a tool on every turn. Its reason repeats that \"any\" only forces a tool call. This tells the reader the answer to M3-S28-T1, whose correct option is to set tool_choice to \"any\" to guarantee a tool call while the model still chooses the tool."
+    },
+    {
+      "id": "M3-SC1-R1-F2",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M3-S19-T1",
+        "M3-S23-T1",
+        "M3-S24-T1"
+      ],
+      "detail": "The same wrong idea appears as a wrong option in three questions: hand the case to a human through escalate_to_human instead of letting the agent handle it. M3-S19-T1 D escalates every multi-concern message. M3-S23-T1 A routes every routine account change through escalate_to_human. M3-S24-T1 C escalates at the first lookup_order timeout. The triggers differ, but each distractor offers unnecessary escalation as the safe fix, and two of the reasons give the same argument about first-contact resolution. Replace one of these distractors with a different misconception."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M3-S16-T2": "c1199651016e0f9008373c1cc770e2b6c80368b2d0ba3114571b8011e21692fa",
+    "M3-S17-T1": "57df77dd55ef87744a78a51983702c67b8e03883f12e5b042e728d2c4897b892",
+    "M3-S18-T1": "0dab83a5b39ca1ccb0ddf9e2b47bd44a04b2832b33a9ec13a5fe6a37b2bc096d",
+    "M3-S19-T1": "2310d720a93dd68b95cad9d8d2f691148f09c913dbad1f8bb8752b7366269caa",
+    "M3-S20-T1": "78076b3c3bd825162f58697597bd4a5d43d19e2abf0d4d184ea1a48a77caf6f9",
+    "M3-S21-T2": "342a0cbdc4598918a30ec8c23090f1e7ad2478f230a2f4059b69a01d483c1789",
+    "M3-S22-T3": "3738e607da685eabdaa76b8c7abb63742cdb51fa71ba85db696e2f9727eafa16",
+    "M3-S23-T1": "b973b3d90db4d351b8d9c011cb97cc6d60fbc20e66a88a7e19e37683b5a8149c",
+    "M3-S24-T1": "9f36aba4f7a365748b722c36bb5220014470683d53f79fa600d160944d38b2cb",
+    "M3-S25-T2": "a3c547be7f1838f251c454ec47cc5b0ee8b8637fa921314b4a6f1d8397425176",
+    "M3-S26-T1": "02c481e93d58167b35f7d2b13f514cfc7daa23d904a785c5e8fb8d1b0ac79322",
+    "M3-S27-T1": "02b8165462591ec138b7bc0ceb6172d1aca9d7d741910d29efedef48760b64f8",
+    "M3-S28-T1": "518832e3aa14755f543c630fde54eee47547e26eef47a945767c72cda483ab34",
+    "M3-S29-T1": "19007b0cd221a59ce9722c3a5152d1b6f43df95f8274a01caae706eda1d6ffdf",
+    "M3-S30-T2": "7652d174e31d92f0f383ab1a09d0ebec3f03b33cd26ce99967f0caf0ce63c8e5"
+  },
+  "date": "2026-10-08"
+}

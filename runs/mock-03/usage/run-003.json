@@ -1,0 +1,9 @@
+{
+  "calls": 26,
+  "input_tokens": 311341,
+  "output_tokens": 30658,
+  "dollars": 1.86,
+  "run": 3,
+  "model": "claude-opus-5-5",
+  "effort": "high"
+}

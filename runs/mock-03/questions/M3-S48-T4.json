@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S48-T4",
+  "slot_id": "M3-S48",
+  "try": 4,
+  "point": "5.5-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S48-T3",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in a CI pipeline to draft release-note entries from merged pull requests, extracting fields such as change type, breaking-change flag and affected module. Entries with high field-level confidence are published without human review. Before launch, the team validated accuracy by change type and module against a labeled set, and every segment performed well. The codebase and its pull request styles keep changing. Which plan best keeps the published entries trustworthy over time?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Each release, have reviewers check a stratified random sample of high-confidence entries across change types and modules to track the error rate and spot new error patterns.",
+      "correct": true,
+      "reason": "The guide recommends stratified random sampling of high-confidence extractions for ongoing error rate measurement and novel pattern detection. Stratifying by change type and module keeps every segment represented in each sample."
+    },
+    {
+      "letter": "B",
+      "text": "Each release, re-run the original labeled validation set through the pipeline and stop automatic publishing if its accuracy drops below the launch result.",
+      "correct": false,
+      "reason": "A fixed validation set contains only the old inputs. It cannot reveal novel error patterns in new pull requests, which the guide says stratified random sampling of high-confidence extractions is meant to detect."
+    },
+    {
+      "letter": "C",
+      "text": "Stop human review of high-confidence entries, because the launch validation already showed accurate results for every change type and module.",
+      "correct": false,
+      "reason": "The guide calls for ongoing error rate measurement of high-confidence extractions. A one-time launch check cannot detect error patterns that appear later as the inputs change."
+    },
+    {
+      "letter": "D",
+      "text": "Each release, have reviewers check only the high-confidence entries whose scores sit just above the threshold, because these entries are the most likely to be wrong, and publish higher-scoring entries unchecked.",
+      "correct": false,
+      "reason": "This sample is not random across the high-confidence entries. Errors in the highest-scoring entries are never measured, so the guide's goals of measuring the error rate and detecting novel patterns are not met."
+    }
+  ]
+}

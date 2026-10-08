@@ -1,0 +1,45 @@
+{
+  "question_id": "M3-S53-T4",
+  "slot_id": "M3-S53",
+  "try": 4,
+  "point": "3.5-S2",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M3-S53-T3",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "You will use Claude Code to build a currency-rounding module for an invoicing service. On your previous module, you described the requirements in prose and accepted whatever Claude Code produced. That module later failed on zero amounts and ran too slowly on large invoice batches in production. For this module, you want each iteration to improve on the last in a measurable way. Which practices should you adopt?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "After each round, give Claude Code the specific failing test names and their error output, and ask it to fix those failures.",
+      "correct": true,
+      "reason": "The guide's test-driven iteration works by sharing test failures with Claude Code, which gives each round concrete guidance for progressive improvement."
+    },
+    {
+      "letter": "B",
+      "text": "When a test fails, ask Claude Code to update the test's expected value so that it matches the module's current output.",
+      "correct": false,
+      "reason": "In the guide's approach the tests define the expected behavior and their failures guide the fixes; changing tests to match the code removes that guidance."
+    },
+    {
+      "letter": "C",
+      "text": "Write tests only for typical invoice amounts first, and add edge-case and performance tests after the module passes those tests.",
+      "correct": false,
+      "reason": "The guide says the suite written before implementation should already cover edge cases and performance requirements, not only typical behavior."
+    },
+    {
+      "letter": "D",
+      "text": "Before implementation, write tests covering expected rounding results, edge cases such as zero and negative amounts, and batch performance limits.",
+      "correct": true,
+      "reason": "The guide says to write test suites covering expected behavior, edge cases and performance requirements before implementation, so the failures of the previous module would be caught."
+    },
+    {
+      "letter": "E",
+      "text": "Ask Claude Code to explain in prose how the module handles edge cases, and accept the module when the explanation sounds complete.",
+      "correct": false,
+      "reason": "A prose explanation is not a test result; the guide's technique is to verify behavior with a test suite and iterate by sharing its failures."
+    }
+  ]
+}

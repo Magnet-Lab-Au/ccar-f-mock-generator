@@ -1,0 +1,201 @@
+{
+  "mock": 3,
+  "scenario": 6,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S13-T2",
+            "M3-S08-T1"
+          ],
+          "detail": "The stem of S13 describes the verification design as 'An independent Claude instance runs a verification pass'. This presents an independent reviewer instance as the established practice, which gives away the correct answer of S08 (option A: send the output to a separate Claude instance that never saw the extraction conversation)."
+        },
+        {
+          "question_ids": [
+            "M3-S05-T2",
+            "M3-S09-T1"
+          ],
+          "detail": "Option D of S05 states as fact that the Message Batches API has 'an up-to-24-hour processing window with no guaranteed latency'. That is the exact premise needed to reject the batch API for the clerk's blocking workflow and to choose the synchronous API in S09 (option E)."
+        },
+        {
+          "question_ids": [
+            "M3-S01-T4",
+            "M3-S07-T4"
+          ],
+          "detail": "The reason for option A of S01 says that retries succeed on format and structural errors but not on problems that come from the source content. This states the retry rule that is the correct answer of S07 (option B)."
+        },
+        {
+          "question_ids": [
+            "M3-S02-T2",
+            "M3-S11-T1"
+          ],
+          "detail": "Option B of S02 and its reason tie format normalization rules in the prompt to the fact that the schema does not normalize inconsistent date and currency formats. The reason says the guide puts normalization rules in prompts alongside strict schemas. This gives away the root cause in S11 (option A: no format normalization rules in the prompt)."
+        },
+        {
+          "question_ids": [
+            "M3-S05-T2",
+            "M3-S12-T1"
+          ],
+          "detail": "The reason for option C of S05 says custom_id is used to identify failed documents for resubmission. This hints at the correct answer of S12 (option A: resubmit only the failed contracts, identified by custom_id)."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S07-T4",
+            "M3-S10-T2",
+            "M3-S13-T2",
+            "M3-S14-T1"
+          ],
+          "detail": "The wrong idea that a model's self-rated confidence works as a filter, threshold or routing basis appears as a wrong option in 4 questions: S07-T4 A, S10-T2 B, S13-T2 B and S14-T1 D."
+        },
+        {
+          "question_ids": [
+            "M3-S08-T1",
+            "M3-S11-T1",
+            "M3-S15-T1"
+          ],
+          "detail": "The wrong idea that strict mode or schema syntax enforcement explains or fixes semantic value errors appears as a wrong option in 3 questions: S08-T1 C, S11-T1 B and S15-T1 D."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M3-S07-T4",
+            "M3-S10-T2",
+            "M3-S13-T2",
+            "M3-S14-T1"
+          ],
+          "detail": "Several wrong options use model self-rated confidence as a filter, threshold or trigger, and none is the calibrated, review-routing use that the guide teaches. S07-T4 A retries below a confidence threshold. S10-T2 B sets the flag only at high confidence. S13-T2 B routes flags by the extractor's own confidence. S14-T1 D assigns the high level only when highly confident. The limit is one."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M3-SC6-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S13-T2",
+        "M3-S08-T1"
+      ],
+      "detail": "The stem of S13 describes the verification design as 'An independent Claude instance runs a verification pass'. This presents an independent reviewer instance as the established practice, which gives away the correct answer of S08 (option A: send the output to a separate Claude instance that never saw the extraction conversation)."
+    },
+    {
+      "id": "M3-SC6-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S05-T2",
+        "M3-S09-T1"
+      ],
+      "detail": "Option D of S05 states as fact that the Message Batches API has 'an up-to-24-hour processing window with no guaranteed latency'. That is the exact premise needed to reject the batch API for the clerk's blocking workflow and to choose the synchronous API in S09 (option E)."
+    },
+    {
+      "id": "M3-SC6-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S01-T4",
+        "M3-S07-T4"
+      ],
+      "detail": "The reason for option A of S01 says that retries succeed on format and structural errors but not on problems that come from the source content. This states the retry rule that is the correct answer of S07 (option B)."
+    },
+    {
+      "id": "M3-SC6-R1-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S02-T2",
+        "M3-S11-T1"
+      ],
+      "detail": "Option B of S02 and its reason tie format normalization rules in the prompt to the fact that the schema does not normalize inconsistent date and currency formats. The reason says the guide puts normalization rules in prompts alongside strict schemas. This gives away the root cause in S11 (option A: no format normalization rules in the prompt)."
+    },
+    {
+      "id": "M3-SC6-R1-F5",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M3-S05-T2",
+        "M3-S12-T1"
+      ],
+      "detail": "The reason for option C of S05 says custom_id is used to identify failed documents for resubmission. This hints at the correct answer of S12 (option A: resubmit only the failed contracts, identified by custom_id)."
+    },
+    {
+      "id": "M3-SC6-R1-F6",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M3-S07-T4",
+        "M3-S10-T2",
+        "M3-S13-T2",
+        "M3-S14-T1"
+      ],
+      "detail": "The wrong idea that a model's self-rated confidence works as a filter, threshold or routing basis appears as a wrong option in 4 questions: S07-T4 A, S10-T2 B, S13-T2 B and S14-T1 D."
+    },
+    {
+      "id": "M3-SC6-R1-F7",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M3-S08-T1",
+        "M3-S11-T1",
+        "M3-S15-T1"
+      ],
+      "detail": "The wrong idea that strict mode or schema syntax enforcement explains or fixes semantic value errors appears as a wrong option in 3 questions: S08-T1 C, S11-T1 B and S15-T1 D."
+    },
+    {
+      "id": "M3-SC6-R1-F8",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M3-S07-T4",
+        "M3-S10-T2",
+        "M3-S13-T2",
+        "M3-S14-T1"
+      ],
+      "detail": "Several wrong options use model self-rated confidence as a filter, threshold or trigger, and none is the calibrated, review-routing use that the guide teaches. S07-T4 A retries below a confidence threshold. S10-T2 B sets the flag only at high confidence. S13-T2 B routes flags by the extractor's own confidence. S14-T1 D assigns the high level only when highly confident. The limit is one."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M3-S01-T4": "1376bb7dea991a13698ecb51cb00b5564638be2ec778eb4c5c7a315c39d61531",
+    "M3-S02-T2": "eac52022a67e0f9a2933623fc2addd325a2c23baab57aeb285a082d698ed0b46",
+    "M3-S03-T3": "880626e6f043904e918037f053f91b10c95cb62861b8ab49cbca3a7d968fb2c0",
+    "M3-S04-T2": "0f6096284f13056d8970657985ccefb7b99e907512ad0c2cae907b0268faf714",
+    "M3-S05-T2": "d78a29d691c6383c38e0f249bc766342eebdf20710be9808e84df48ea95c642b",
+    "M3-S06-T1": "bcc1f88bc9f486b60b517f1c0a0072bcd6cc4961d7c626ddcb435c3512aaea4e",
+    "M3-S07-T4": "743b5f717c31ab343fa27c930cf65a19249fe21fbedb2e64fb2de60dfb4d1484",
+    "M3-S08-T1": "fdf9295ed6bafaf7f5b3bc7863a496252fdeb66498a9dc2ddde530b95a300dcc",
+    "M3-S09-T1": "c1b42c593ab6e0c51367cf47f5a2324cdb89bb2cfdf4bbcedf7966a74e78ae93",
+    "M3-S10-T2": "d2ff2110683b463822b395d3b175eee2b7efbfc100b208cbac77dfdcaa2aa091",
+    "M3-S11-T1": "ae27a142e47de57c4ec57362bc0ecdc9112ecd69b7d6edcf981085376db62e10",
+    "M3-S12-T1": "fc2b74c13ad73d9affb937f31143aab541dfd87ffa513abce952dc1a286a6622",
+    "M3-S13-T2": "06211864fc24514b4cb04219b3be1889e5dd8f1f77d502bc1bc9f5ed6e15ec63",
+    "M3-S14-T1": "71bcbdbe5775a80f339a9f9c137529749d705b574c36bdbfcd0b309ffca9edd6",
+    "M3-S15-T1": "065b447dbff44813990608cd6d67f2796b846b5f9c9a6cdaa00187563b59675c"
+  },
+  "date": "2026-10-08"
+}

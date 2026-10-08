@@ -1,0 +1,100 @@
+{
+  "question_id": "M3-S01-T4",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "1376bb7dea991a13698ecb51cb00b5564638be2ec778eb4c5c7a315c39d61531",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Per 4.4-S4, extracting stated_total and calculated_total separately with a conflict_detected flag preserves both values and surfaces the source inconsistency for downstream handling. Option A forces the values to agree, which hides a real discrepancy in the source. Options B and D lose information.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "JSON Schema",
+      "found": true
+    },
+    {
+      "name": "stated_total",
+      "found": true
+    },
+    {
+      "name": "calculated_total",
+      "found": true
+    },
+    {
+      "name": "conflict_detected",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

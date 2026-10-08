@@ -1,0 +1,97 @@
+{
+  "question_id": "M3-S48-T4",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The scene repeats earlier question M1-S44-T1, with only the artifact swapped (release notes instead of docstrings). Both describe a Claude Code pipeline that publishes high-confidence generated documentation without human review. Both ask how to keep measuring the error rate and catch new error patterns. The correct action is the same: reviewers check a stratified random sample of high-confidence outputs across segments.",
+      "letter": "A",
+      "point": "5.5-S1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "90cfcc083c301647e874d3e6d8b06cad0d43e4f0a0dd18d61ea9b154c2048e19",
+  "date": "2026-10-08",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Stratified random sampling of high-confidence outputs across segments gives ongoing error-rate measurement and catches novel error patterns as the codebase and PR styles drift. A static labeled set (B) cannot detect drift. C abandons monitoring altogether. D misses errors made with high confidence.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The scene repeats earlier question M1-S44-T1, with only the artifact swapped (release notes instead of docstrings). Both describe a Claude Code pipeline that publishes high-confidence generated documentation without human review. Both ask how to keep measuring the error rate and catch new error patterns. The correct action is the same: reviewers check a stratified random sample of high-confidence outputs across segments.",
+      "letter": "A",
+      "point": "5.5-S1"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

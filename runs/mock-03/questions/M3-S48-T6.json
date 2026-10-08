@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S48-T6",
+  "slot_id": "M3-S48",
+  "try": 6,
+  "point": "5.5-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S48-T5",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in CI with the -p flag to label new bug reports with a component and a severity. Labels with high field-level confidence are applied without human review. Each week, reviewers check a uniform random 2% sample of these high-confidence labels, and the measured error rate stays low. Developers later find that labels for the small mobile component have shown a new error pattern for weeks. Which change to the weekly audit best supports ongoing error rate measurement and detection of new error patterns?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have reviewers check only the labels whose confidence scores sit just above the automation threshold, because these borderline labels are the most likely to contain errors.",
+      "correct": false,
+      "reason": "This sample is not random across the high-confidence labels. Errors among the highest-confidence labels and new error patterns in small segments stay unmeasured, which the guide's stratified random sampling is meant to catch."
+    },
+    {
+      "letter": "B",
+      "text": "Review every mobile label each week, and keep the uniform 2% sample for all other components and fields as before.",
+      "correct": false,
+      "reason": "This fixes only the segment that already failed. The uniform sample still under-samples the other small segments, so the next novel error pattern can stay hidden, unlike with the stratified sampling that the guide recommends."
+    },
+    {
+      "letter": "C",
+      "text": "Pause the weekly audit for components with a low measured error rate, and move all reviewer time to the mobile component's labels.",
+      "correct": false,
+      "reason": "The guide calls for ongoing error rate measurement of high-confidence extractions. Stopping the audit for most components removes that measurement, so new error patterns there go undetected."
+    },
+    {
+      "letter": "D",
+      "text": "Stratify the weekly random sample by component and field, so each segment, including small ones like mobile, gets enough reviewed labels to show its own error rate.",
+      "correct": true,
+      "reason": "The guide recommends stratified random sampling of high-confidence extractions for ongoing error rate measurement and novel pattern detection. Stratifying makes sure that small segments are sampled often enough to reveal their errors."
+    }
+  ]
+}

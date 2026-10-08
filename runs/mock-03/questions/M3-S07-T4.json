@@ -1,0 +1,39 @@
+{
+  "question_id": "M3-S07-T4",
+  "slot_id": "M3-S07",
+  "try": 4,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M3-S07-T3",
+  "status": "written",
+  "date": "2026-10-08",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts fields from insurance claim forms and validates each output against a JSON schema. On failure, a follow-up request sends the original form, the failed extraction, and the specific validation errors. Retry costs are rising, so the team must add a rule that decides which failures enter the retry loop. Which rule should the team adopt?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Retry only the failures whose field-level confidence score falls below a set threshold, because low confidence shows that another attempt will find the missing value.",
+      "correct": false,
+      "reason": "A confidence score does not show whether the value is present in the source; the guide ties retry success to the error type and to whether the information is in the provided document."
+    },
+    {
+      "letter": "B",
+      "text": "Retry format mismatches and structural output errors, but send a failure to human review when the missing value exists only in a document the system never receives.",
+      "correct": true,
+      "reason": "The guide says retries succeed for format mismatches and structural output errors but are ineffective when the information exists only in an external document that is not provided."
+    },
+    {
+      "letter": "C",
+      "text": "Skip retries for format mismatches and structural errors, because tool use with JSON schemas already eliminates them, and retry only the failures with empty required fields.",
+      "correct": false,
+      "reason": "Tool use eliminates schema syntax errors, while format mismatches and structural errors are exactly the failures that retries fix; empty fields whose value is absent from the source cannot be fixed by retrying."
+    },
+    {
+      "letter": "D",
+      "text": "Retry only the failures on required fields, because optional fields can stay null, and send each of these failures back with a more detailed error message.",
+      "correct": false,
+      "reason": "Whether a field is required does not decide retry success; a required value that is absent from the provided source stays missing however detailed the error message is."
+    }
+  ]
+}
