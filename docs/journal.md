@@ -13,7 +13,7 @@ One entry for each work session. Newest entry first.
 **Open**
 
 - (Done: the owner confirmed the list of narrow ideas without G078, 20 groups, and accepted the cost estimate of $32 to $40.)
-- The owner confirms the text of decision 0066.
+- (Done: the owner confirmed decision 0066, with two additions: the rule is a judgment, and who proposed each part.)
 
 ## 9 October 2026, mock 3 accepted
 

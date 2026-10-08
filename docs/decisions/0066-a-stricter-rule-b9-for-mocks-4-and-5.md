@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/11-repeats-across-mocks.html`. Diagram 06 (step 4) shows the new text of B9.
 
 ## Question
@@ -48,7 +49,7 @@ Option 1.
 | G083 | Findings in the middle of a long input are missed: key findings first, with headers |
 
 
-**The result of the test** (report: `docs/reviews/test-b9-mock-3.md`): the new B9 fails 24 of the 60 questions of mock 3. 12 of them the independent agent also named. 12 the agent did not name. 14 that the agent named pass the rule. The test cost $6.33, not $3 to $4.
+**The result of the test** (report: `docs/reviews/test-b9-mock-3.md`): the new B9 fails 24 of the 60 questions of mock 3. 12 of them the independent agent also named. 12 the agent did not name. 14 that the agent named pass the rule. The test cost $6.33, not $3 to $4. It agreed with the independent agent on 12. It also failed 12 that the agent did not call the same problem, and passed 14 that the agent did. So the rule is a judgment, and it will sometimes fail a good question or pass a close one.
 
 This changes item 4 of decision 0060 ("Rule B9 does not change") from mock 4, as decision 0062 says.
 
@@ -62,9 +63,9 @@ The cost of mock 4: mocks 2 and 3 cost about $0.23 for each written try, with al
 
 ## How we decided
 
-The assistant suggested the text, the test and the cost. The owner agreed with three changes: the rule on the wrong options, a check that the preference for unused groups is built (it is), and 5 failed questions from the test for the owner to judge. After the test, the owner decided: use the stricter B9 for mock 4, with the exception for narrow ideas.
+The assistant suggested the text, the test and the cost. The owner agreed with three changes: the rule on the wrong options, a check that the preference for unused groups is built (it is), and 5 failed questions from the test for the owner to judge. After the test, the owner decided: use the stricter B9 for mock 4, with the exception for narrow ideas. The stricter rule was proposed by Claude Code. The change to the wrong options and the exception for narrow ideas came from the second review in Cowork. The owner decided each one.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026, with the two additions above. No independent reviewer checked this file.
 
 ## Exam guide points
 
