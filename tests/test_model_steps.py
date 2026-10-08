@@ -172,6 +172,15 @@ class TestWriter(unittest.TestCase):
             self.assertIn(re.sub(r"\\(.)", r"\1", t)[:40], text)
         self.assertNotIn("A NEW TRY", text)
 
+    def test_a_two_answer_slot_asks_for_two_different_parts(self):
+        # Decision 0054.
+        two = next(x for x in PLAN["slots"] if x["select"] == 2)
+        one = next(x for x in PLAN["slots"] if x["select"] == 1)
+        sentence = "The two correct options test two different parts of the point."
+        self.assertIn(sentence, request_text(self.request(slot=two, point=two["point"]), RECORDS))
+        self.assertNotIn(sentence, request_text(self.request(slot=one, point=one["point"]), RECORDS))
+        self.assertIn("A12. When the slot has", request_text(self.request(), RECORDS))
+
     def test_three_examples_from_other_scenarios_with_no_letters(self):
         ex = examples(RECORDS, SLOT)
         self.assertEqual(len(ex), 3)

@@ -112,6 +112,32 @@ class TestPlan(unittest.TestCase):
         self.assertNotEqual([s["longest_may_be_correct"] for s in self.plans[0]["slots"]],
                             [s["longest_may_be_correct"] for s in self.plans[1]["slots"]])
 
+    def test_two_answer_slots_are_on_two_answer_points(self):
+        # Decision 0054.
+        two = step1_plan.load_two_answer_points(RECORDS)
+        for plan in self.plans:
+            for s in plan["slots"]:
+                if s["select"] == 2:
+                    self.assertIn(s["point"], two)
+
+    def test_too_few_two_answer_points_make_no_plan(self):
+        with self.assertRaises(PlanError) as e:
+            make_plan(RECORDS, 1, 1, "2026-10-08", two_answer={"1.1-K1"})
+        self.assertIn("two-answer point", str(e.exception))
+
+    def test_a_bad_two_answer_file_makes_no_plan(self):
+        folder = tempfile.mkdtemp()
+        try:
+            path = os.path.join(folder, "two.json")
+            for content in ('{"guide_version": "x", "points": ["1.1-K1"]}', "not json",
+                            json.dumps({"guide_version": RECORDS["guide"]["version"], "points": ["9.9-K9"]})):
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                with self.assertRaises(PlanError):
+                    step1_plan.load_two_answer_points(RECORDS, path)
+        finally:
+            shutil.rmtree(folder)
+
     def test_slot_numbers_follow_the_groups(self):
         for plan in self.plans:
             slots = plan["slots"]

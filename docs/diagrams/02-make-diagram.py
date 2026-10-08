@@ -86,6 +86,7 @@ D = {
  '5': dict(title='Part 5: set the question type', cls='code', who='Code', status='built', none=NONE,
    sent=['Multiple-choice: the participant selects 1 answer.', 'Multiple-response: the question has 5 options, and the participant selects 2 answers. A multiple-choice question has 4 options.',
          'The step makes 2 questions of each scenario multiple-response. That gives 8 multiple-response questions and 52 multiple-choice questions.',
+         'A multiple-response question goes only to a point on the list data/two-answer-points.json: a point with two or more separate actions or facts (decision 0054). If a scenario has fewer than 2 such points, code swaps two questions of one domain between scenarios. If that is not possible, the step stops, and the owner uses another seed.',
          'The seed also marks the slots on which the longest option may be correct: 13 of the 52 multiple-choice slots and 3 of the 8 multiple-response slots. These are the chance numbers. On the other slots, step 3 checks that a wrong option is the longest (rule A12, decision 0053).'],
    points=[fact('Section 3', 'Multiple-choice and multiple-response items; each item states how many responses to select')],
    why='The guide gives no number for each type. All 12 sample questions of the guide are multiple-choice. The number 8 is a guess. It has no source.'),
@@ -111,7 +112,7 @@ def box(key, top, h, num, name, tag, tagcls, what, ts, extra='', left=40, w=540)
             '<p class="what">%s</p>%s</div>') % (cls, key, left, top, w, h, numhtml, e(name), tagcls, e(tag), e(what), tshtml)
 
 boxes = ''.join([
- box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, the point groups, the points of the earlier mocks, a mock number and a seed.', 'Step 0 makes the guide records. The owner confirms the point groups.'),
+ box('IN', 10, 100, '', 'What the step receives', 'Input', 'io', 'The guide records, the point groups, the two-answer points, the points of the earlier mocks, a mock number and a seed.', 'Step 0 makes the guide records. The owner confirms the point groups.'),
  box('S', 150, 88, '', 'Step 1: plan the mock', 'Code', 'code', 'Code makes the plan in 5 parts. No model works.', 'Exam guide: task statements 1.4 and 1.6', extra='hdr'),
  box('1', 246, 112, '1', 'Select 4 scenarios', 'Code', 'code', 'The seed selects 4 of the 6 scenarios, from the 11 sets that fit.', 'Exam guide: Section 5. The limit to 11 sets is not from the guide.'),
  box('2', 378, 112, '2', 'Share the 60 questions', 'Code', 'code', '15 questions for each scenario. 16, 11, 12, 12 and 9 questions for the 5 domains.', 'Exam guide: Section 4. The number 15 is not from the guide.'),
@@ -224,7 +225,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050 and 0053). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053 and 0054). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

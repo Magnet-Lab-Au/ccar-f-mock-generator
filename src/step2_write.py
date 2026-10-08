@@ -100,6 +100,9 @@ def request_text(request, records):
                                            "select": slot["select"],
                                            "longest_may_be_correct": slot.get("longest_may_be_correct", True)}),
               "Write %d options. Mark exactly %d of them correct." % (slot["options"], slot["select"])]
+    if slot["select"] == 2:
+        # Decision 0054: a question with 2 answers needs two different correct options.
+        parts.append("The two correct options test two different parts of the point. They are not two examples of one idea.")
     if request["step"] == 2 and (request.get("findings") or request.get("other_questions")):
         # Decision 0045: a rewrite with a new point. The writer must not repeat the other questions.
         parts += ["", "A NEW QUESTION FOR THIS SLOT, ON THE POINT MARKED ABOVE. The owner asks for it:",

@@ -22,6 +22,7 @@ import point_groups
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORDS = os.path.join(ROOT, "reference", "guide-records.json")
+TWO_ANSWER_POINTS = os.path.join(ROOT, "data", "two-answer-points.json")   # decision 0054
 
 QUESTIONS = 60
 PER_SCENARIO = 15
@@ -229,7 +230,23 @@ def earlier_points(mocks_folder, mock):
     return found
 
 
-def make_plan(records, mock, seed, date, groups=None, earlier=None):
+def load_two_answer_points(records, path=TWO_ANSWER_POINTS):
+    """The points that can carry a question with 2 answers (decision 0054)."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError) as e:
+        raise PlanError("The file of the two-answer points cannot be read: %s" % e)
+    known = {p["id"] for ts in records["task_statements"] for p in ts["points"]}
+    if not isinstance(data, dict) or data.get("guide_version") != records["guide"]["version"]:
+        raise PlanError("The file of the two-answer points has another guide version.")
+    points = data.get("points")
+    if not isinstance(points, list) or not points or len(set(points)) != len(points) or not set(points) <= known:
+        raise PlanError("The file of the two-answer points has no list of known points, each one time.")
+    return set(points)
+
+
+def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=None):
     """Return the plan of one mock. Raise PlanError, and make no plan, if a record
     is missing, a count does not add up, or the groups allow no plan. groups is the
     content of data/point-groups.json. None reads that file. earlier is the result
@@ -275,6 +292,8 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None):
     #    takes the first point whose group is free and that keeps a full plan
     #    possible.
     #    No two slots get points of the same group (decisions 0047 and 0048).
+    if two_answer is None:
+        two_answer = load_two_answer_points(records)
     of = point_groups.group_of(groups)
     earlier = earlier or {}
     use = {}
@@ -348,9 +367,36 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None):
         if len(places) != len(items):
             raise PlanError("Domain %d: the table has %d places for %d questions." % (d, len(places), len(items)))
         _shuffle(rng, places)
-        questions.extend((s, ts, p) for s, (ts, p) in zip(places, items))
+        questions.extend([s, ts, p] for s, (ts, p) in zip(places, items))
+    # Decision 0054: each scenario needs 2 questions on a two-answer point. If a
+    # scenario has fewer, code swaps the scenarios of two questions of the same
+    # domain with a scenario that has more than 2.
+    domain_of = {ts["id"]: ts["domain"] for ts in records["task_statements"]}
 
-    # 6. Two multiple-response slots in each scenario.
+    def listed(s):
+        return [q for q in questions if q[0] == s and q[2] in two_answer]
+    for s in sorted(table):
+        while len(listed(s)) < MULTIPLE_RESPONSE_PER_SCENARIO:
+            swap = None
+            for give in sorted(table):
+                if give == s or len(listed(give)) <= MULTIPLE_RESPONSE_PER_SCENARIO:
+                    continue
+                for q2 in listed(give):
+                    q1 = next((q for q in questions if q[0] == s and q[2] not in two_answer
+                               and domain_of[q[1]] == domain_of[q2[1]]), None)
+                    if q1 is not None:
+                        swap = (q1, q2)
+                        break
+                if swap:
+                    break
+            if swap is None:
+                raise PlanError("Scenario %d has fewer than %d questions on a two-answer point (decision 0054)."
+                                % (s, MULTIPLE_RESPONSE_PER_SCENARIO))
+            swap[0][0], swap[1][0] = swap[1][0], swap[0][0]
+    questions = [tuple(q) for q in questions]
+
+    # 6. Two multiple-response slots in each scenario, on two-answer points
+    #    (decision 0054). The seed selects them.
     # 7. The slots get the numbers 1 to 60, group by group. The seed sets the
     #    sequence inside a group.
     slots = []
@@ -359,7 +405,8 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None):
         if len(group) != PER_SCENARIO:
             raise PlanError("Scenario %d has %d questions, not %d." % (s, len(group), PER_SCENARIO))
         _shuffle(rng, group)
-        multiple = set(_sample(rng, range(PER_SCENARIO), MULTIPLE_RESPONSE_PER_SCENARIO))
+        multiple = set(_sample(rng, [i for i, q in enumerate(group) if q[2] in two_answer],
+                               MULTIPLE_RESPONSE_PER_SCENARIO))
         for i, (_, ts, p) in enumerate(group):
             many = i in multiple
             slots.append({"slot_id": "M%d-S%02d" % (mock, len(slots) + 1), "scenario": s,
