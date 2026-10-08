@@ -2,6 +2,7 @@
 
 - Date: 8 October 2026
 - Status: accepted
+- Text confirmed by the owner: 8 October 2026
 - Diagram: none
 
 ## Question
@@ -51,7 +52,7 @@ Not decided yet:
 
 The owner asked which rule the program applies. The assistant said that the program applies the stop limit, and suggested option 2. The owner agreed. The assistant first suggested that code selects the new point at random. The owner changed that: the owner gives the point, and code checks three conditions, because a random point can be a twin again (example: 4.6-K2 for S60 is the idea of S48). The owner selected the four points.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 8 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 
