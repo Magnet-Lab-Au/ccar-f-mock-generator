@@ -2,6 +2,23 @@
 
 One entry for each work session. Newest entry first.
 
+## 8 October 2026, mock 2
+
+- Mock 2 ran with seed 167622, scenarios 3, 4, 5 and 6: 60 slots passed, $16.27. The owner marked 20 of 20 good (`marking/M2-round1.xlsx`, committed before anybody read it, SHA-256 e39069af...).
+- A second review and an independent agent compared mock 2 with mock 1: 13 strong repeats and 4 close repeats, and M2-S35 repeats M2-S31. The cause: the plan checks groups only inside one mock, step 1 did not prefer an unused point inside a group, and the writer did not know mock 1.
+- The owner decided the rule against repeats across mocks (decision 0056): step 1 prefers an unused point inside a group, the writer sees the earlier questions on the same idea (a different scene and angle, never the same wrong options), and rule B9 in call 4b fails a repeat. The assistant suggested the check in step 4, not in step 6, and the owner agreed. 21 rules now.
+- The owner fixed the scenarios of mocks 3 to 5: 1-2-4-6, 1-3-4-6, 1-2-4-5 (decision 0057). Each set is permitted by decision 0027. Plans work for 300 seeds of each.
+- The 4 close repeats stay as known limits of mock 2 (decision 0058).
+- The program read the marks of round 1 (no bad mark). The owner's 14 rewrites ran: the 13 strong repeats (M2-S35 among them, as a rewrite of finding M2-SC5-R1-F1) and M2-S41 (ruling 2, finding M2-SC5-R1-F6). Each passed steps 3 and 4. No try failed rule B9. Cost $4.46. Mock 2 so far: $20.73.
+- New diagrams 11 (repeats across mocks) and 12 (scenarios of the 5 mocks) in the form of diagrams 09 and 10. Diagrams 02 and 04 to 07, the build guide sections of steps 1, 2 and 4, and the README files are updated. 216 tests pass.
+
+**Open**
+
+- The owner marks round 2 of mock 2 (`marking/M2-round2.xlsx`, 14 questions).
+- The other step 6 findings of mock 2 wait for the owner after the marks.
+- The owner confirms the texts of decisions 0056, 0057 and 0058.
+- No independent reviewer has checked decisions 0056 to 0058, diagrams 11 and 12, or the code of rule B9.
+
 ## 8 October 2026, later session
 
 - The owner said to start the first change before mock 2. The assistant suggested a file of point groups and a rule of step 1, with changes 1 and 2 of decision 0046 as one decision. The owner agreed, and added a test against mock 1 and the form of the table for the confirmation (decision 0047).
