@@ -1,6 +1,6 @@
 {
   "decision": "0066",
-  "status": "decisions 0066, 0068 and 0072",
+  "status": "decisions 0066, 0068, 0072 and 0075",
   "groups": [
     {
       "id": "G001",
@@ -101,6 +101,10 @@
     {
       "id": "G041",
       "problem": "Callers behind a wrapper module: list the exported names, then search for each"
+    },
+    {
+      "id": "G042",
+      "problem": "Conventions for some files: path-scoped rules, not a directory CLAUDE.md"
     },
     {
       "id": "G043",
