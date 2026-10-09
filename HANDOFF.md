@@ -35,7 +35,7 @@ The build guide is a product of this work. It has the same weight as the program
 - **Structure.** One section for each pipeline step. Each section has a short explanation, one diagram, and a table of the exam guide points that the step uses. The sections are files in `docs/build-guide/`, one file for each pipeline step.
 - **Status.** Each section has the status "planned" or "built". A section becomes "built" only when a run record shows the step.
 
-All 8 sections exist, for steps 1 to 8. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Diagrams 11 (repeats across mocks) and 12 (the scenarios of the 5 mocks) show the rules across mocks. Rule 18 still applies to the portal page "How the Mocks Are Built New".
+All 9 sections exist, for steps 0 to 8. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Diagrams 11 (repeats across mocks) and 12 (the scenarios of the 5 mocks) show the rules across mocks. Rule 18 still applies to the portal page "How the Mocks Are Built New".
 
 ## Read these files first, in this sequence
 

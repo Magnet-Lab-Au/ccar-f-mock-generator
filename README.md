@@ -22,7 +22,7 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `docs/lessons.md` | Private history of the first build. Not a source for the design. |
 | `docs/decisions/` | The decisions, in sequence. `TEMPLATE.md` shows the form. |
 | `docs/diagrams/` | The diagrams, as HTML files |
-| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. All 8 sections exist (steps 1 to 8). |
+| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. All 9 sections exist (steps 0 to 8). |
 | `docs/reviews/` | The reports of independent reviewers |
 | `docs/journal.md` | What we did in each work session |
 | `docs/portal-notes.md` | Notes for the people who put the mocks on the portal |

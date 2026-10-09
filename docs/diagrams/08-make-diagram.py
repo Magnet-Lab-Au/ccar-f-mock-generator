@@ -83,7 +83,8 @@ D = {
  'finding': dict(title='A finding has an ID, and it waits', who='Code', cls='code',
    sent=['Each "fail" and each "cannot decide" of a call is a finding. Code gives each finding an ID.',
          'Example: M1-SC3-R1-F1 is mock 1, scenario 3, run 1 of step 6, finding 1.',
-         'Step 6 sends no question back. Each finding waits for the owner.'],
+         'Step 6 sends no question back. Each finding waits for the owner.',
+         'The rule of the owner since mock 2 (decisions 0059, 0064, 0069 and 0077): a finding of rule D4 (a question gives away another answer) is ignored. A finding of rule D2 or D3 (one wrong idea in too many questions) is recorded as a known limit of the mock. A finding of any other kind, for example rule D1 (the same scene twice), goes to the owner, who decides it.'],
    example=js_({'id': 'M1-SC3-R1-F1', 'rule': 'D1', 'result': 'fail', 'question_ids': ['M1-S33-T1', 'M1-S38-T1'],
                 'detail': 'Both questions describe a subagent that times out, and both ask how the error goes back to the coordinator.'}),
    examplehead='Example: one finding in the record of step 6',
@@ -265,7 +266,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039), changed on 8 October 2026 (decision 0052). Status of the step: built. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 08. Design of 7 October 2026 (decisions 0034, 0038 and 0039), changed on 8 October 2026 (decision 0052) and 9 October 2026 (the rule for the findings, decisions 0059, 0064, 0069 and 0077). Status of the step: built. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

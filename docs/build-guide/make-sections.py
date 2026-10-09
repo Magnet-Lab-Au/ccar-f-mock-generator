@@ -194,6 +194,8 @@ When each slot has a question that passed steps 3 and 4, code counts the mock ag
 
 Step 6 sends no question back. Each finding gets an ID and waits for the owner. The owner first marks the questions, with no finding in view. Then the owner selects "ignore" or "rewrite" for each finding. A rewrite sends one question of the finding to step 5. Then step 6 runs again for that scenario only.
 
+For mocks 2 to 5 the owner decided the findings by one rule (decisions 0059, 0064, 0069 and 0077). A finding of rule D4, a question that gives away the answer of another, is ignored. A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock. A finding of any other kind, for example rule D1 (the same scene twice in one scenario), goes to the owner, who decides it.
+
 ## The test run
 
 The test put two questions with the same scene into a set of 15 questions of one scenario. %s Step 6 also found real problems of the writer: one more pair of questions with the same scene, and pairs of questions that give away an answer.

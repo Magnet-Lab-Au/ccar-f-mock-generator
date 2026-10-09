@@ -11,16 +11,17 @@ Sections:
 
 | Step | File | Status |
 |---|---|---|
+| 0. Prepare the guide records | `step-0-prepare-the-guide-records.md` | built (6 October 2026), section written on 9 October 2026 |
 | 1. Plan the mock | `step-1-plan-the-mock.md` | built (7 October 2026), changed on 8 October 2026 (point groups, the spread over the mocks, the fixed scenarios of mocks 3 to 5) and 9 October 2026 (balanced correct letters) |
 | 2. Write the question | `step-2-write-the-question.md` | built (7 October 2026), changed on 8 October 2026 (rules A12, B8 and B9, two-answer slots, the earlier questions on the same idea) and 9 October 2026 (stricter B9, narrow ideas, cached rules, balanced letters) |
 | 3. Check by code | `step-3-check-by-code.md` | built (7 October 2026), changed on 8 October 2026 (rule A12) |
 | 4. Check by a model | `step-4-check-by-a-model.md` | built (7 October 2026), changed on 8 October 2026 (rules B8 and B9) and 9 October 2026 (stricter B9, narrow ideas, prompt caching, the cost of all 5 mocks) |
 | 5. Try again | `step-5-try-again.md` | built (8 October 2026), changed on 9 October 2026 (the reason of the owner after more tries) |
-| 6. Check the complete mock | `step-6-check-the-complete-mock.md` | built (7 October 2026), changed on 8 October 2026 (rule C3 over the whole mock) |
+| 6. Check the complete mock | `step-6-check-the-complete-mock.md` | built (7 October 2026), changed on 8 October 2026 (rule C3 over the whole mock) and 9 October 2026 (the rule for the findings) |
 | 7. The owner marks the questions | `step-7-the-owner-marks-the-questions.md` | built (7 October 2026), changed on 9 October 2026 (the second review marks mocks 4 and 5, all 60 of mock 5) |
 | 8. Build the files | `step-8-build-the-files.md` | built (8 October 2026), built mocks 1 to 5 by 9 October 2026 |
 
-A script makes each section: `make-section-step-1.py` makes step 1, and `make-sections.py` makes steps 2 to 8. Step 0 has no section yet: it ran before the build guide existed.
+A script makes each section: `make-section-step-0.py` makes step 0, `make-section-step-1.py` makes step 1, and `make-sections.py` makes steps 2 to 8.
 
 ## What participants should know about the mocks
 
