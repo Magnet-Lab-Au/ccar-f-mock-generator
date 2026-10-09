@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/06-step-4-check-by-a-model.html` (step 4). Diagram 04 shows the cached rules of the writer.
 
 ## Question
@@ -49,7 +50,7 @@ The owner also named the stricter rule B9 of decision 0066 as a possible cause. 
 
 The owner asked if the program uses prompt caching. The assistant said no, estimated a saving of about $10 for each mock from the run records of mock 3, and showed the change. The owner agreed, and added the test on 10 questions, the check of the minimum size, and the measured saving. The owner rejected the Message Batches API. After the test, the owner decided: no repeat test, record the decision as it is, and mock 3 stays accepted.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. No independent reviewer checked this file.
 
 ## Exam guide points
 

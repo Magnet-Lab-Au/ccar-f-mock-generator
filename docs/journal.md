@@ -12,7 +12,7 @@ One entry for each work session. Newest entry first.
 **Open**
 
 - Mock 4 waits for the go of the owner.
-- The owner confirms the text of decision 0067.
+- (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9
 
