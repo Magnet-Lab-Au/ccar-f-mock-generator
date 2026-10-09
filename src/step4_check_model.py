@@ -46,17 +46,28 @@ def show(question, with_key):
     return "\n".join(lines)
 
 
-def guide_text(records, scenario):
-    """Decision 0032, part 3: the story of the scenario, all 30 task statements
-    with their 240 points, and the three lists of Section 17."""
+def story_text(records, scenario):
+    """The story of the scenario of the question (decision 0032, part 3)."""
     sc = next(s for s in records["scenarios"] if s["id"] == scenario)
-    parts = ["THE EXAM GUIDE", "", "The story of scenario %d (%s):" % (sc["id"], sc["name"]), plain(sc["story"]), ""]
+    return "\n".join(["The story of scenario %d (%s):" % (sc["id"], sc["name"]), plain(sc["story"])])
+
+
+def guide_core(records):
+    """All 30 task statements with their 240 points, and the three lists of
+    Section 17. The same text for each call, so it can be cached (decision 0067)."""
+    parts = ["THE EXAM GUIDE", ""]
     for t in records["task_statements"]:
         parts.append("Task statement %s: %s" % (t["id"], t["title"]))
         parts += ["  %s: %s" % (p["id"], plain(p["text"])) for p in t["points"]]
     for key, title in (("technologies", "Technologies"), ("in_scope", "Topics in scope"), ("out_of_scope", "Topics out of scope")):
         parts += ["", "Section 17, %s:" % title] + ["- " + plain(x) for x in records["section_17"][key]]
     return "\n".join(parts)
+
+
+def guide_text(records, scenario):
+    """Decision 0032, part 3: the story of the scenario, all 30 task statements
+    with their 240 points, and the three lists of Section 17."""
+    return story_text(records, scenario) + "\n\n" + guide_core(records)
 
 
 def sample_text(records):
@@ -133,8 +144,9 @@ class ModelCheck:
 
     def blind(self, question, slot):
         """Call 4a. Raise CallFailed for an answer that is not valid (decision 0032)."""
-        text = "\n".join([guide_text(self.records, slot["scenario"]), "", "THE QUESTION:", show(question, with_key=False)])
-        answer, model = self.model_call.ask(SYSTEM_4A, text, SCHEMA_4A)
+        # Decision 0067: the guide comes first as a cached block. The story follows.
+        text = "\n".join([story_text(self.records, slot["scenario"]), "", "THE QUESTION:", show(question, with_key=False)])
+        answer, model = self.model_call.ask(SYSTEM_4A, text, SCHEMA_4A, cached=[guide_core(self.records)])
         letters = {o["letter"] for o in question["options"]}
         if not isinstance(answer, dict) or answer.get("status") not in ("answered", "cannot_decide"):
             raise CallFailed("Call 4a: the answer has no valid status.")
@@ -152,13 +164,16 @@ class ModelCheck:
         earlier = self.earlier(point) if self.earlier is not None else []
         narrow = self.narrow(point) if self.narrow is not None else False
         rules_text = RULES_TEXT.replace(B9_STRICT, B9_COPY) if narrow else RULES_TEXT
-        text = "\n".join([guide_text(self.records, slot["scenario"]), "", sample_text(self.records), "",
+        # Decision 0067: the guide and the 12 sample questions come first as two
+        # cached blocks. The story and the rest follow.
+        text = "\n".join([story_text(self.records, slot["scenario"]), "",
                           "THE EARLIER QUESTIONS ON THE SAME IDEA (for rule B9):",
                           earlier_text(earlier) if earlier else "None.", "",
                           "THE RULES", rules_text, "",
                           "THE SLOT: task statement %s, point %s, scenario %d." % (slot["task_statement"], question.get("point", slot["point"]), slot["scenario"]),
                           "", "THE QUESTION, with the marks and the reasons of the writer:", show(question, with_key=True)])
-        answer, model = self.model_call.ask(SYSTEM_4B, text, SCHEMA_4B)
+        answer, model = self.model_call.ask(SYSTEM_4B, text, SCHEMA_4B,
+                                            cached=[guide_core(self.records), sample_text(self.records)])
         letters = {o["letter"] for o in question["options"]}
         results = answer.get("results") if isinstance(answer, dict) else None
         if not isinstance(results, list) or sorted(r.get("rule") for r in results) != RULES_B:

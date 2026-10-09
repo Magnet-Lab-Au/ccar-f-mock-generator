@@ -72,8 +72,8 @@ class FakeCall:
         self.answer = answer
         self.texts = []
 
-    def ask(self, system, text, schema):
-        self.texts.append(text)
+    def ask(self, system, text, schema, cached=()):
+        self.texts.append("\n".join(list(cached) + [text]))
         return self.answer, "claude-x"
 
 

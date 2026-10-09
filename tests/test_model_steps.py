@@ -262,12 +262,30 @@ class TestModelCheck(unittest.TestCase):
         blind_text = client.requests[0]["messages"][0]["content"]
         scen = next(s for s in RECORDS["scenarios"] if s["id"] == SLOT["scenario"])
         self.assertIn(scen["story"][:80], blind_text)
-        self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", blind_text, re.M)), 240)
+        # Decision 0067: the guide is the first system block, with a cache mark.
+        guide = client.requests[0]["system"][0]
+        self.assertEqual(guide["cache_control"], {"type": "ephemeral"})
+        self.assertEqual(len(re.findall(r"^  \d\.\d-[KS]\d+:", guide["text"], re.M)), 240)
+        self.assertNotIn(scen["story"][:80], guide["text"])
+
+    def test_the_cached_blocks_are_identical_in_each_call(self):
+        # Decision 0067: the same guide block for calls 4a and 4b and for each
+        # scenario, and the same sample block for each call 4b.
+        firsts, seconds = set(), set()
+        for slot in [s for s in PLAN["slots"]][::15]:
+            q = question_of(slot)
+            client = FakeClient([response(blind_for(q)), response(check_4b())])
+            ModelCheck(RECORDS, ModelCall(client)).check(q, slot)
+            for req in client.requests:
+                firsts.add(req["system"][0]["text"])
+            seconds.add(client.requests[1]["system"][1]["text"])
+        self.assertEqual(len(firsts), 1)
+        self.assertEqual(len(seconds), 1)
 
     def test_the_rule_check_gets_the_rules_the_slot_and_the_point(self):
         q = question_of(SLOT)
         _, client = self.run_check(blind_for(q), check_4b(), q)
-        text = client.requests[1]["messages"][0]["content"]
+        text = client.requests[1]["system"][1]["text"] + "\n" + client.requests[1]["messages"][0]["content"]
         for part in ("B1.", "B6.", "B7.", "B8.", "point %s" % SLOT["point"], "task statement %s" % SLOT["task_statement"]):
             self.assertIn(part, text)
         # Decision 0055: the 12 sample questions, each with its correct answer.
@@ -278,6 +296,13 @@ class TestModelCheck(unittest.TestCase):
         import step4_check_model as s4
         words = {6: "six", 7: "seven", 8: "eight", 9: "nine"}
         self.assertIn("against %s rules" % words[len(s4.RULES_B)], s4.SYSTEM_4B)
+
+    def test_the_cost_counts_the_cached_tokens(self):
+        # Decision 0067: a cache write costs 1.25 times and a cache read 0.05 times the input price.
+        from model_call import cost
+        c = cost([{"input": 1000000, "output": 0, "cache_write": 1000000, "cache_read": 1000000}])
+        self.assertEqual(c["dollars"], round(4.0 + 5.0 + 0.2, 2))
+        self.assertEqual(c["cache_read_tokens"], 1000000)
 
     def test_the_form_of_call_4b_has_each_rule(self):
         # The review of 8 October 2026: the enum of the form must have each rule,
@@ -427,6 +452,9 @@ class TestWholePipeline(unittest.TestCase):
     def test_from_the_plan_to_the_files(self):
         def answer(req):
             system, text = req["system"], req["messages"][0]["content"]
+            if isinstance(system, list):   # decision 0067: cached blocks first, then the instruction
+                text = "\n".join(b["text"] for b in system[:-1]) + "\n" + text
+                system = system[-1]["text"]
             if system.startswith("You write"):
                 slot_id = re.search(r'"point": "([^"]+)"', text.split("The slot: ")[1]).group(1)
                 slot = next(s for s in plan_slots if s["point"] == slot_id)

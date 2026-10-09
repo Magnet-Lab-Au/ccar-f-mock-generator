@@ -26,13 +26,21 @@ EFFORT = "high"
 MAX_TOKENS = 64000
 # US dollars per million tokens, Claude Opus 5.5, page "Pricing", read on 7 October 2026 (decision 0042).
 PRICE = {"input": 4.0, "output": 20.0}
+# Decision 0067, page "Prompt caching", section "Pricing", read on 9 October 2026:
+# a 5-minute cache write costs 1.25 times the input price, and a cache hit on
+# Claude Opus 5.5 costs 0.05 times the input price ($0.20 per million tokens).
+CACHE_WRITE = 1.25
+CACHE_READ = 0.05
 
 
 def cost(usage):
     i = sum(u["input"] for u in usage)
     o = sum(u["output"] for u in usage)
+    w = sum(u.get("cache_write", 0) for u in usage)
+    r = sum(u.get("cache_read", 0) for u in usage)
+    dollars = (i + w * CACHE_WRITE + r * CACHE_READ) * PRICE["input"] / 1e6 + o * PRICE["output"] / 1e6
     return {"calls": len(usage), "input_tokens": i, "output_tokens": o,
-            "dollars": round(i * PRICE["input"] / 1e6 + o * PRICE["output"] / 1e6, 2)}
+            "cache_write_tokens": w, "cache_read_tokens": r, "dollars": round(dollars, 2)}
 
 # The errors that a new call can repair (the Claude API skill, shared/error-codes.md):
 # 429, 5xx and network errors. Each other error stops the run.
@@ -97,8 +105,13 @@ class ModelCall:
             self._client = default_client()
         return self._client
 
-    def ask(self, system, text, schema):
-        """Send one request. Return (answer as a dict, the model that answered)."""
+    def ask(self, system, text, schema, cached=()):
+        """Send one request. Return (answer as a dict, the model that answered).
+        cached: texts that come first in the system prompt, each with a cache mark
+        (decision 0067). Each one must be the same, byte for byte, in each call."""
+        if cached:
+            system = [{"type": "text", "text": c, "cache_control": {"type": "ephemeral"}} for c in cached] + [
+                {"type": "text", "text": system}]
         try:
             with self.client.messages.stream(
                     model=self.model, max_tokens=self.max_tokens, system=system,
@@ -111,7 +124,9 @@ class ModelCall:
             raise classify(e)
         u = getattr(response, "usage", None)
         if u is not None:
-            self.usage.append({"input": getattr(u, "input_tokens", 0) or 0, "output": getattr(u, "output_tokens", 0) or 0})
+            self.usage.append({"input": getattr(u, "input_tokens", 0) or 0, "output": getattr(u, "output_tokens", 0) or 0,
+                               "cache_write": getattr(u, "cache_creation_input_tokens", 0) or 0,
+                               "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0})
         stop = getattr(response, "stop_reason", None)
         if stop == "refusal":
             details = getattr(response, "stop_details", None)

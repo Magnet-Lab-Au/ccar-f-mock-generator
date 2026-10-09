@@ -106,13 +106,20 @@ def earlier_text(questions):
                        for q in questions], indent=2, ensure_ascii=False)
 
 
-def request_text(request, records):
-    """The text of the request of step 2 or step 5 (decisions 0029 and 0033)."""
+def rules_for(request):
+    """The list of rules for this request: the copy rule B9 for a narrow idea (decision 0066)."""
+    return RULES.replace(B9_STRICT, B9_COPY) if request.get("narrow") else RULES
+
+
+def request_text(request, records, with_rules=True):
+    """The text of the request of step 2 or step 5 (decisions 0029 and 0033).
+    with_rules=False leaves out the rules, which the writer sends as a cached
+    block (decision 0067)."""
     slot = request["slot"]
     scenarios = {s["id"]: s for s in records["scenarios"]}
     ts = next(t for t in records["task_statements"] if t["id"] == slot["task_statement"])
     point = request["point"]
-    parts = [RULES.replace(B9_STRICT, B9_COPY) if request.get("narrow") else RULES, "",
+    parts = ([rules_for(request), ""] if with_rules else []) + [
              "Examples of the form of a question (from the exam guide, with the letters removed):",
              json.dumps(examples(records, slot), indent=2, ensure_ascii=False), "",
              "The story of the scenario %d (%s):" % (slot["scenario"], scenarios[slot["scenario"]]["name"]),
@@ -198,7 +205,9 @@ class Writer:
             request = dict(request, earlier_questions=self.earlier(request["point"]))
         if self.narrow is not None:
             request = dict(request, narrow=self.narrow(request["point"]))
-        answer, model = self.model_call.ask(SYSTEM, request_text(request, self.records), SCHEMA)
+        # Decision 0067: the rules come first as a cached block.
+        answer, model = self.model_call.ask(SYSTEM, request_text(request, self.records, with_rules=False), SCHEMA,
+                                            cached=[rules_for(request)])
         check_answer(answer)
         out = {"status": answer["status"], "model": model,
                "cannot_write_reason": answer.get("cannot_write_reason")}
