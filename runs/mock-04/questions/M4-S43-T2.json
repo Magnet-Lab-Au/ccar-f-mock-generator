@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S43-T2",
+  "slot_id": "M4-S43",
+  "try": 2,
+  "point": "1.2-K4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S43-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support lead asks the Claude Agent SDK coordinator to investigate why billing disputes rose sharply this quarter. The coordinator delegates three subtasks: duplicate charges from the payment processor, duplicate charges on subscription renewals, and duplicate charges on gift cards. Each subagent investigates thoroughly, and the final report blames the rise on duplicate charges. A later manual review finds that most new disputes came from delayed refunds and a recent price change, which the report never mentions. Which change to the coordinator best prevents this gap in future investigations?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Have the coordinator map all likely causes of billing disputes before delegating, and assign subtasks that cover each cause rather than only duplicate charges.",
+      "correct": true,
+      "reason": "The gap comes from overly narrow task decomposition, so the coordinator must decompose the broad topic to cover all its relevant areas before it delegates."
+    },
+    {
+      "letter": "B",
+      "text": "Instruct each subagent to call lookup_order on a much larger sample of disputed orders, so that its findings rest on more complete data within its subtask.",
+      "correct": false,
+      "reason": "Each subagent still studies only duplicate charges, so more data within a narrow subtask does not add coverage of the topics that the coordinator left out."
+    },
+    {
+      "letter": "C",
+      "text": "Raise max_tokens for the synthesis step, so that the final report has room to describe every finding from the subagents in much greater detail.",
+      "correct": false,
+      "reason": "Synthesis can only report what the subagents found, and no subagent was assigned refunds or pricing, so a longer report cannot close the gap."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator spawn more subagents for each duplicate charge subtask, so that every charge type gets a deeper and more detailed investigation.",
+      "correct": false,
+      "reason": "More depth inside the same narrow subtasks still leaves refunds and pricing unassigned, so the coverage gap from the narrow decomposition remains."
+    }
+  ]
+}

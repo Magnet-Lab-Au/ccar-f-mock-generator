@@ -1,0 +1,12 @@
+{
+  "round": 2,
+  "question_ids": [
+    "M4-S09-T2",
+    "M4-S43-T3"
+  ],
+  "fingerprints": {
+    "M4-S09-T2": "cc12ab73fd16b5365dd9ea1524ccaa0914dfafb9976dbbb5d6040877bbb44fed",
+    "M4-S43-T3": "f7636a7a637208f5d2df80601700397dd1c8484ce9a1a8d5b766c836bd306fa3"
+  },
+  "date": "2026-10-09"
+}

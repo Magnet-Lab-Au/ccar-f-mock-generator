@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S09-T2",
+  "slot_id": "M4-S09",
+  "try": 2,
+  "point": "4.1-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S09-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads vendor contracts and sets a flag_for_legal field when a clause appears non-standard. The lawyers reject most flagged clauses as routine, so the team added one sentence at the end of the system prompt: \"Be conservative and only flag clauses you are highly confident about.\" A week of results shows almost no change in the false positive rate. What best explains why the added sentence failed to improve precision?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The sentence gives no categorical definition of a non-standard clause, so Claude still applies its own broad judgment about which clauses qualify.",
+      "correct": true,
+      "reason": "The guide states that general instructions like \"be conservative\" or \"only report high-confidence findings\" do not improve precision as well as specific categorical criteria that define what to flag."
+    },
+    {
+      "letter": "B",
+      "text": "The sentence sits at the end of a long system prompt, so lost-in-the-middle effects cause Claude to overlook it during extraction.",
+      "correct": false,
+      "reason": "The sentence is at the end, not in the middle. The guide also says that a general instruction does not improve precision even when Claude follows it, because it does not define categories."
+    },
+    {
+      "letter": "C",
+      "text": "The output is not produced through tool_use with a JSON schema, so syntax errors in the responses corrupt the flag values that the lawyers receive.",
+      "correct": false,
+      "reason": "A JSON schema in tool_use removes syntax errors, but the lawyers reject flags on routine clauses. That is a judgment problem, and a schema does not define which clauses count as non-standard."
+    },
+    {
+      "letter": "D",
+      "text": "The sentence uses mild wording, and Claude follows precision instructions only when they are written in capital letters as strict commands.",
+      "correct": false,
+      "reason": "Stronger emphasis leaves the instruction just as general. The guide says general instructions fail because they lack specific categorical criteria, not because of their tone."
+    }
+  ]
+}
