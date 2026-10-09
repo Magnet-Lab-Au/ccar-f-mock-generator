@@ -1,0 +1,43 @@
+[
+  {
+    "id": "D001",
+    "action": "more_tries",
+    "target": "M4-S06",
+    "reason": "B9 failed three times on the same problem. The idea has almost only one problem, so it joins the narrow list (decision 0068).",
+    "date": "2026-10-09",
+    "after_try": 3
+  },
+  {
+    "id": "D002",
+    "action": "more_tries",
+    "target": "M4-S50",
+    "reason": "B9 failed three times on the same problem. The idea has almost only one problem, so it joins the narrow list (decision 0068).",
+    "date": "2026-10-09",
+    "after_try": 3
+  },
+  {
+    "id": "D003",
+    "action": "more_tries",
+    "target": "M4-S54",
+    "reason": "B9 failed three times on the same problem. The idea has almost only one problem, so it joins the narrow list (decision 0068).",
+    "date": "2026-10-09",
+    "after_try": 3
+  },
+  {
+    "id": "D004",
+    "action": "new_point",
+    "target": "M4-S23",
+    "reason": "B9 failed three times. The owner gives a new point of the same task statement that no mock used.",
+    "date": "2026-10-09",
+    "after_try": 3,
+    "point": "2.1-S1"
+  },
+  {
+    "id": "D005",
+    "action": "more_tries",
+    "target": "M4-S27",
+    "reason": "The last try failed on the form (rules A1 and A2), not on B9.",
+    "date": "2026-10-09",
+    "after_try": 3
+  }
+]

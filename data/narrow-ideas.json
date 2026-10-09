@@ -1,6 +1,6 @@
 {
   "decision": "0066",
-  "status": "confirmed by the owner on 9 October 2026",
+  "status": "confirmed by the owner on 9 October 2026 (decision 0066), with 3 groups added on 9 October 2026 (decision 0068)",
   "groups": [
     {
       "id": "G001",
@@ -67,12 +67,24 @@
       "problem": "A skill runs with a missing argument: argument-hint"
     },
     {
+      "id": "G059",
+      "problem": "A developer in an unfamiliar domain misses design considerations: the interview pattern before implementing"
+    },
+    {
+      "id": "G060",
+      "problem": "Several issues to fix: one message for interacting issues, a sequence for independent ones"
+    },
+    {
       "id": "G061",
       "problem": "Claude Code hangs in CI waiting for input: the -p flag"
     },
     {
       "id": "G062",
       "problem": "CI needs machine-readable output: --output-format json with --json-schema"
+    },
+    {
+      "id": "G074",
+      "problem": "A retry cannot help when the information is absent from the source"
     },
     {
       "id": "G077",
