@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S60-T4",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "ea85b2cc403f9c7da75aaedc1b92d389c5ec83a254a4d2cc6832a33bbf126218",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "E"
+    ],
+    "reason": "An errorCategory field lets the agent tell apart validation failures (it can ask the customer to correct the order number), permission failures (escalate to a human) and transient failures. A human-readable description that names the invalid input lets the agent ask the customer for exactly the right correction. A is wrong because it treats every failure the same way, including permission denials that need a human. B is wrong because repeating a call with the same mistyped number cannot succeed. D is wrong because it hides a real error behind a fake successful empty result.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "isError",
+      "found": true
+    },
+    {
+      "name": "isRetryable",
+      "found": true
+    },
+    {
+      "name": "errorCategory",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

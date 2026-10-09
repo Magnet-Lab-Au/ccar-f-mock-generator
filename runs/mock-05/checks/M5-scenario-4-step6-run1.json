@@ -1,0 +1,105 @@
+{
+  "mock": 5,
+  "scenario": 4,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S02-T2",
+            "M5-S05-T1"
+          ],
+          "detail": "Both questions share a problem and its fix. In each, a coordinator spawns subagents one after another through the Task tool, which causes a long sequential wait. In each, the correct fix is to spawn the subagents at the same time so they run in parallel (S02 option D, S05 option C). S02 also adds a synthesis problem, but its parallel-spawning part repeats the scene of S05."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S05-T1",
+            "M5-S14-T1"
+          ],
+          "detail": "S14 option C says parallel subagents need one Task call per turn across separate turns. A candidate who reads S05 option C (emit all three Task calls in one response to run them in parallel) learns that S14 C is wrong. In the other direction, S14 C's wording ('across three separate turns rather than in one response') points to the answer of S05."
+        },
+        {
+          "question_ids": [
+            "M5-S02-T2",
+            "M5-S05-T1"
+          ],
+          "detail": "S02 option D says the coordinator should spawn the three subagents at the same time to remove the sequential wait. This states the fix that S05 asks for when its coordinator emits one Task call per turn."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M5-SC4-R1-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M5-S02-T2",
+        "M5-S05-T1"
+      ],
+      "detail": "Both questions share a problem and its fix. In each, a coordinator spawns subagents one after another through the Task tool, which causes a long sequential wait. In each, the correct fix is to spawn the subagents at the same time so they run in parallel (S02 option D, S05 option C). S02 also adds a synthesis problem, but its parallel-spawning part repeats the scene of S05."
+    },
+    {
+      "id": "M5-SC4-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S05-T1",
+        "M5-S14-T1"
+      ],
+      "detail": "S14 option C says parallel subagents need one Task call per turn across separate turns. A candidate who reads S05 option C (emit all three Task calls in one response to run them in parallel) learns that S14 C is wrong. In the other direction, S14 C's wording ('across three separate turns rather than in one response') points to the answer of S05."
+    },
+    {
+      "id": "M5-SC4-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S02-T2",
+        "M5-S05-T1"
+      ],
+      "detail": "S02 option D says the coordinator should spawn the three subagents at the same time to remove the sequential wait. This states the fix that S05 asks for when its coordinator emits one Task call per turn."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M5-S01-T1": "66066f24fb3bc8bcd03443c6fc5c01ea705234a549994c3b00c8d71183b2e3d6",
+    "M5-S02-T2": "49482778d40d0d9c1b03403c3ec8e7679661f67017fd2d25df728ddc976e6bfa",
+    "M5-S03-T1": "d458b351bef32166b4ebcd76da6b56c91ae0165b50a7a7808655c9112faa2c42",
+    "M5-S04-T1": "038b59a36b7d79f1d20feb08244d4077837424cc501507925671d8a512f94957",
+    "M5-S05-T1": "4c50b9e7999cb663c4ba92affe5a68c9166f294538feb23350fc11ee128c2569",
+    "M5-S06-T2": "0498c6a467a4801c73cf58f866d148b403cf14540d13e0bdd6dce5591a5d994b",
+    "M5-S07-T2": "3e52e81ce2989968787fc31403262d1e40f1835bc41e6e29bfc3f914e07ce2ef",
+    "M5-S08-T1": "89f471bc51574bf7e300c75b32ba5361317dbe8f418aabd49929114e6829f8f7",
+    "M5-S09-T1": "faf3c9989e02cf433bf605f2d36ab5ad970c4054427c0782277940bbb1c19ecb",
+    "M5-S10-T1": "9c9ed9990458fa9e763772a5136af54e2b55321aa4035e13516ef050b64a6665",
+    "M5-S11-T1": "292ce95e238395499dbeb532144b5d4d6278d24be141a092cef3ad447840efde",
+    "M5-S12-T2": "d160ae8848c758615e04db9e71bb6d7a1818b65d481709add496eb50bba4e3ad",
+    "M5-S13-T1": "21285bc22411d951c37e29d4cb7e36e9cf807ac831627b1de38d5e9806cab31d",
+    "M5-S14-T1": "4b8fe07a9c2945a82f161c3c4c8aeb264c4cd2d2e11797503a70f4229dd776e4",
+    "M5-S15-T1": "3ecf598a43fa61a1c34ab47d03ad0d3d8cb0dec3c3ebcf6c287e5955287743bd"
+  },
+  "date": "2026-10-09"
+}

@@ -1,0 +1,143 @@
+{
+  "mock": 5,
+  "scenario": 5,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S41-T1",
+            "M5-S45-T3"
+          ],
+          "detail": "Both questions share one scene. A verification step that runs in the same session that generated the output fails to question that output: S41 approves weak tests and S45 inflates confidence levels. In both, the correct answer is the same cause, retained reasoning in the same session, which leads to the same fix of verifying in an independent session."
+        }
+      ]
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S38-T5",
+            "M5-S43-T2"
+          ],
+          "detail": "Option E of S38 states as fact that 'The batch API has no guaranteed latency SLA'. This is exactly the correct answer of S43, which asks why a batch finished late."
+        },
+        {
+          "question_ids": [
+            "M5-S41-T1",
+            "M5-S45-T3"
+          ],
+          "detail": "Option B of S45 says that a model keeps its earlier reasoning in the same session and is unlikely to question its own output. This is the correct answer of S41. Option D of S41 and its stem, where a fresh session catches what the same session missed, give away the answer of S45 in the same way."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S39-T6",
+            "M5-S40-T1",
+            "M5-S45-T3"
+          ],
+          "detail": "The same wrong idea appears as a wrong option in three questions. The idea is a general instruction to be conservative or to report only high-confidence findings as a way to improve precision. It is S39 option C, S40 option B and S45 option C. All three reasons cite the same guide statement."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S40-T1",
+            "M5-S45-T3"
+          ],
+          "detail": "More than one wrong option has the model rate its own confidence and uses that rating as a filter or threshold. S40 option A asks for a self-reported score from 1 to 10 and downgrades blockers below seven. S40 option B assigns blocker only when the model is highly confident. S45 option C reports only the findings the model is highly confident about. None of these is the guide's calibrated field-level confidence routing, and none is a correct answer."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M5-SC5-R1-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M5-S41-T1",
+        "M5-S45-T3"
+      ],
+      "detail": "Both questions share one scene. A verification step that runs in the same session that generated the output fails to question that output: S41 approves weak tests and S45 inflates confidence levels. In both, the correct answer is the same cause, retained reasoning in the same session, which leads to the same fix of verifying in an independent session."
+    },
+    {
+      "id": "M5-SC5-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S38-T5",
+        "M5-S43-T2"
+      ],
+      "detail": "Option E of S38 states as fact that 'The batch API has no guaranteed latency SLA'. This is exactly the correct answer of S43, which asks why a batch finished late."
+    },
+    {
+      "id": "M5-SC5-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S41-T1",
+        "M5-S45-T3"
+      ],
+      "detail": "Option B of S45 says that a model keeps its earlier reasoning in the same session and is unlikely to question its own output. This is the correct answer of S41. Option D of S41 and its stem, where a fresh session catches what the same session missed, give away the answer of S45 in the same way."
+    },
+    {
+      "id": "M5-SC5-R1-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S39-T6",
+        "M5-S40-T1",
+        "M5-S45-T3"
+      ],
+      "detail": "The same wrong idea appears as a wrong option in three questions. The idea is a general instruction to be conservative or to report only high-confidence findings as a way to improve precision. It is S39 option C, S40 option B and S45 option C. All three reasons cite the same guide statement."
+    },
+    {
+      "id": "M5-SC5-R1-F5",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M5-S40-T1",
+        "M5-S45-T3"
+      ],
+      "detail": "More than one wrong option has the model rate its own confidence and uses that rating as a filter or threshold. S40 option A asks for a self-reported score from 1 to 10 and downgrades blockers below seven. S40 option B assigns blocker only when the model is highly confident. S45 option C reports only the findings the model is highly confident about. None of these is the guide's calibrated field-level confidence routing, and none is a correct answer."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M5-S31-T1": "223b4ea0e93cc83d9faf55c89974220cb45a8655332502adab1488e081341a77",
+    "M5-S32-T1": "db9bafad7a5e4295d9a30e802cd8231ca1737b7f2751e5bc6b65b72ace2f1704",
+    "M5-S33-T1": "b693de8096c763bf1071c7ab7350e1acd111f6db6326add6b9b08d7f73ecebe5",
+    "M5-S34-T1": "f2836aed7114e08c6bf08a8bf77dd5bd8abc96ecc85be19c06c7be4d900ca49d",
+    "M5-S35-T2": "09704cd05bd271d5173a635f67179e22ad82e7df33b5b5e8e81bfe5c4a63d684",
+    "M5-S36-T1": "d6b26af880d894909a2a95d4e27e5aa7869492c35c5f0ae20eb898f07b4492b1",
+    "M5-S37-T4": "c8186fe746702a6d9e6876c86b75d15baf11aed4c15f2542229329dfdb6a6e20",
+    "M5-S38-T5": "a322838c09784732a2e9651e2c56dd0ff479bb6d1a2591d6a410431ccf71d372",
+    "M5-S39-T6": "4e6fd85659b9b364cdedf97589c2d7c9a174b76826435e3e53e1a419f567d7c0",
+    "M5-S40-T1": "99f8cd0ed62fb9a45b03123eafdfa492c27f3e534f117e54e545e432b047416d",
+    "M5-S41-T1": "360e66c2603d5702dbb93935de838dbc885aff5be9e934cbce7bc8b78fbeb3a5",
+    "M5-S42-T1": "f9bff84be48eaed31d0b72c67c0e11194d5138201a138213e67c0bdb0c482b3b",
+    "M5-S43-T2": "9f865dfb61392b4e66b48b6c125ca53fe42a5f695c902969b2a151fd31b472dd",
+    "M5-S44-T2": "6705192615c91d327eae396bcde6836a0d829dbb555f96c1c927b9e32b058793",
+    "M5-S45-T3": "9c6b9ba6429ce80dd88d15be465442f239e2eb1150318a5d463d5ca25464a2fb"
+  },
+  "date": "2026-10-09"
+}

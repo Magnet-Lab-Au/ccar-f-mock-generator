@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S60-T4",
+  "slot_id": "M5-S60",
+  "try": 4,
+  "point": "2.2-S1",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent's lookup_order tool now returns the isError flag and an isRetryable boolean on every failure. Logs show that the agent no longer repeats failed calls, but it sends every non-retryable failure to escalate_to_human. Many of these failures are order numbers that customers mistyped, which the agent could resolve by asking the customer for the correct number. Others are permission denials that truly need a human. Which two additions to the error response best let the agent choose the right recovery?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a system prompt rule telling the agent to ask the customer to re-enter the order number whenever any lookup_order call fails for any reason.",
+      "correct": false,
+      "reason": "Without an error category, the agent would also ask the customer to re-enter numbers after permission denials and timeouts, where new input cannot help."
+    },
+    {
+      "letter": "B",
+      "text": "Change isRetryable to true for mistyped order numbers so the agent repeats the same lookup_order call until it succeeds.",
+      "correct": false,
+      "reason": "The same invalid input fails again on every retry, so this brings back the wasted retry attempts that structured metadata should prevent."
+    },
+    {
+      "letter": "C",
+      "text": "Add an errorCategory field whose values separate validation failures from permission failures and from transient failures.",
+      "correct": true,
+      "reason": "The errorCategory tells the agent whether the problem is invalid input, which it can fix with the customer, or a permission failure, which needs escalation."
+    },
+    {
+      "letter": "D",
+      "text": "Return a successful empty result for mistyped order numbers, so the agent treats them as orders that do not exist.",
+      "correct": false,
+      "reason": "This disguises a failed lookup as a valid empty result, so the agent cannot tell the customer that the number was wrong."
+    },
+    {
+      "letter": "E",
+      "text": "Add a human-readable description that states which input was invalid, such as the expected order number format.",
+      "correct": true,
+      "reason": "A human-readable description gives the agent the detail it needs to explain the problem and ask the customer for a corrected order number."
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "mock": 5,
+  "scenario": 1,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S47-T1",
+            "M5-S48-T2",
+            "M5-S51-T1",
+            "M5-S60-T4"
+          ],
+          "detail": "M5-S47-T1 asks how process_refund should report a failure, and the answer is the isError flag. Other questions give this away. M5-S48-T2 option B says that a tool that returns errors without the isError flag leaves the agent unable to see that its calls failed. M5-S51-T1 option C says the same about process_refund returning failures without the isError flag. The M5-S60-T4 stem says that once lookup_order returns the isError flag on every failure, the agent stops repeating failed calls. Any of these texts tells a candidate that the isError flag is how a tool signals failure to the agent."
+        },
+        {
+          "question_ids": [
+            "M5-S51-T1",
+            "M5-S53-T2"
+          ],
+          "detail": "M5-S51-T1 option A, and the stem's mention of example queries, present input formats and example queries as what a tool description needs so the model can use the tool correctly. This hints at the correct answer of M5-S53-T2, which is to expand the process_refund description with the input format, an example and the edge case."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S47-T1",
+            "M5-S56-T1",
+            "M5-S60-T4"
+          ],
+          "detail": "The same wrong idea appears in three questions: report a failed tool call as a successful result instead of signalling the error. In M5-S47-T1 this is options A, B and D. In M5-S56-T1 it is option A, which returns empty results as success. In M5-S60-T4 it is option D, which returns a successful empty result."
+        },
+        {
+          "question_ids": [
+            "M5-S57-T1",
+            "M5-S58-T2",
+            "M5-S59-T1"
+          ],
+          "detail": "The same wrong idea appears in three questions: hand the case to escalate_to_human instead of fixing the real problem, which hurts first-contact resolution. This is M5-S57-T1 B (escalate at the start of each dispute), M5-S58-T2 A (escalate automatically after a repeated lookup) and M5-S59-T1 D (route every return to a human)."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M5-SC1-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S47-T1",
+        "M5-S48-T2",
+        "M5-S51-T1",
+        "M5-S60-T4"
+      ],
+      "detail": "M5-S47-T1 asks how process_refund should report a failure, and the answer is the isError flag. Other questions give this away. M5-S48-T2 option B says that a tool that returns errors without the isError flag leaves the agent unable to see that its calls failed. M5-S51-T1 option C says the same about process_refund returning failures without the isError flag. The M5-S60-T4 stem says that once lookup_order returns the isError flag on every failure, the agent stops repeating failed calls. Any of these texts tells a candidate that the isError flag is how a tool signals failure to the agent."
+    },
+    {
+      "id": "M5-SC1-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S51-T1",
+        "M5-S53-T2"
+      ],
+      "detail": "M5-S51-T1 option A, and the stem's mention of example queries, present input formats and example queries as what a tool description needs so the model can use the tool correctly. This hints at the correct answer of M5-S53-T2, which is to expand the process_refund description with the input format, an example and the edge case."
+    },
+    {
+      "id": "M5-SC1-R1-F3",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S47-T1",
+        "M5-S56-T1",
+        "M5-S60-T4"
+      ],
+      "detail": "The same wrong idea appears in three questions: report a failed tool call as a successful result instead of signalling the error. In M5-S47-T1 this is options A, B and D. In M5-S56-T1 it is option A, which returns empty results as success. In M5-S60-T4 it is option D, which returns a successful empty result."
+    },
+    {
+      "id": "M5-SC1-R1-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S57-T1",
+        "M5-S58-T2",
+        "M5-S59-T1"
+      ],
+      "detail": "The same wrong idea appears in three questions: hand the case to escalate_to_human instead of fixing the real problem, which hurts first-contact resolution. This is M5-S57-T1 B (escalate at the start of each dispute), M5-S58-T2 A (escalate automatically after a repeated lookup) and M5-S59-T1 D (route every return to a human)."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M5-S46-T1": "8c64036eea905c19eaaf46bcba4dbaf065de27157e923886f5a568663be32637",
+    "M5-S47-T1": "f11db7d592e264da5266f7a1baf5df9025cf53b93c6c8e8a5baf630a10cd5f63",
+    "M5-S48-T2": "739d6c61aebd37032324040aff336a8db7cc8433e8800db7bdebb73b0a8bf126",
+    "M5-S49-T1": "f84324922a2150c3000fcc47fa60efb356f4418ea24aa161edc42bba95cd0a7f",
+    "M5-S50-T1": "ae81993a3dc6a82095ea1d516a0d2c50d91cdfe04cb17c1f00e9439601b1474e",
+    "M5-S51-T1": "f457c0637666256c4923976edc1122b74ceb8974e02629ed618343e52ac96867",
+    "M5-S52-T1": "c60199f6e72bd01e6db99e236d779a3a43cfe5e4e002c0391e04a3728c790d4a",
+    "M5-S53-T2": "0e9fa634e32ab5303b0ca45c6ba76481ce1d517d963b5f32142c5e8fc98c9604",
+    "M5-S54-T1": "a6ddd0e323884cb1ba0bc564f694050b464acdc2856093cf3984f3a0fe9e1597",
+    "M5-S55-T1": "2cb807ae90e92efab2dc480c5e823347960b9051019d69dc52cab158cb674ab8",
+    "M5-S56-T1": "820dbcb87684af827d4637ccf0467f265a868a0c8f2de0f76413636cbfaacbac",
+    "M5-S57-T1": "9f003b0917d5f936090966049578776694773b88bf91f8ea3edace861624f959",
+    "M5-S58-T2": "aafca2ef4e2bd6b727a61de1f78a51678061d0c753fe6dfe98b0c50a7a0ccc0d",
+    "M5-S59-T1": "c63f9ad432c5d22c3175542e2ef30da958f743c24ae3be92cfb4871880f52305",
+    "M5-S60-T4": "ea85b2cc403f9c7da75aaedc1b92d389c5ec83a254a4d2cc6832a33bbf126218"
+  },
+  "date": "2026-10-09"
+}
