@@ -121,7 +121,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 12. Decision 0057 of 8 October 2026. Status: built in step 1. It ran for mocks 3 and 4, not yet for mock 5. Blue: a set that the seed selected. Green: a set that the owner fixed. The sets come from runs/mock-01/plan.json, runs/mock-02/plan.json and data/mock-scenarios.json.</footer>
+  <footer>Diagram 12. Decision 0057 of 8 October 2026. Status: built in step 1. It ran for mocks 3, 4 and 5. Blue: a set that the seed selected. Green: a set that the owner fixed. The sets come from runs/mock-01/plan.json, runs/mock-02/plan.json and data/mock-scenarios.json.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

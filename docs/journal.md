@@ -28,8 +28,9 @@ One entry for each work session. Newest entry first.
 **Open**
 
 - (Done: the second review marked 58 good and 2 bad, M5-S33 and M5-S45. The assistant typed the marks on the instruction of the owner. Both get a rewrite. M5-S41 stays. Decision 0076: 46 close questions are a known limit, and mock 5 is a review mock, in the build guide and in `docs/portal-notes.md`.)
-- Round 2 of mock 5 (the 2 rewrites) for the second review.
-- The owner confirms decisions 0073 to 0076.
+- (Done: round 2 of mock 5, 2 of 2 good by the second review. 13 findings by the rule of the owner, and the D1 finding M5-SC4-R1-F1 a known limit. The owner accepted mock 5. Step 8 built it. Decision 0077. Mock 5 cost $11.68.)
+- The owner confirms decisions 0073 to 0077.
+- An independent check of all documents before the push.
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9

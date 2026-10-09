@@ -158,7 +158,8 @@ From mock 4, the guide is the first block of the request, the same in each call,
 
 | Mock | Cost, with caching |
 |---|---|
-| Mock 4 | $12.16 for 326 calls. 3.69 million input tokens came from the cache, and 0.77 million were at the full price. |
+| Mock 4 | $12.83 for 337 calls, with the 2 rewrites of the second review. Most input tokens came from the cache. |
+| Mock 5 | $11.68 for 295 calls. |
 
 Mock 4 also had the stricter rule B9 and more tries than mock 3, and it still cost about half of mock 3.
 

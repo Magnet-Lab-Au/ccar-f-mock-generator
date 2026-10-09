@@ -1,0 +1,1749 @@
+{
+  "mock": 5,
+  "guide_version": "Version 1.0 · Effective July 2026 · Exam code: CCAR-F · This guide is subject to change without notice.",
+  "seed": 203660,
+  "date": "2026-10-09",
+  "minutes": 120,
+  "groups": [
+    {
+      "scenario": 4,
+      "name": "Developer Productivity with Claude",
+      "story": "You are building developer productivity tools using the Claude Agent SDK. The agent helps engineers explore unfamiliar codebases, understand legacy systems, generate boilerplate code, and automate repetitive tasks. It uses the built-in tools (Read, Write, Bash, Grep, Glob) and integrates with Model Context Protocol (MCP) servers.",
+      "questions": [
+        {
+          "number": 1,
+          "question_id": "M5-S01-T1",
+          "domain": 1,
+          "task_statement": "1.6",
+          "point": "1.6-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer asks your agent to review a legacy billing module of 16 files before a shared library upgrade. The review must find deprecated library calls in each file. It must also find data that one file passes to another file in a format that the receiving file no longer accepts. A single review pass over all 16 files missed deprecated calls in the later files and found no cross-file mismatches. Which design of the review best fixes both problems?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Run a focused pass for each file, and give each pass the full text of all 16 files so it can check data exchange."
+            },
+            {
+              "letter": "B",
+              "text": "Chain a focused pass for each file that reports its local deprecated calls, then a separate integration pass that checks the data passed between the files."
+            },
+            {
+              "letter": "C",
+              "text": "Split the single pass into two passes over all 16 files, one that looks for deprecated calls and one that looks for data mismatches."
+            },
+            {
+              "letter": "D",
+              "text": "Run a focused pass for each file and join the 16 reports, with no later pass that examines how the files exchange data."
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "question_id": "M5-S02-T2",
+          "domain": 1,
+          "task_statement": "1.4",
+          "point": "1.4-S2",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "An engineer sends your coordinator agent one message about a legacy payments service: explain how the retry module works, find where request timeouts are configured, and explain why the integration tests time out. The coordinator agent spawns one subagent per concern through the Task tool, waits for each subagent to finish before it spawns the next, and gives each subagent only its own concern. The engineer waits long, and the final reply lists three separate answers. The test answer cites a default timeout, but the configuration answer shows that a config file overrides this default. Which two changes best fix both problems?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Give every subagent the full message and the engineer's goal as shared context, and have the coordinator agent synthesize the findings into one reconciled answer."
+            },
+            {
+              "letter": "B",
+              "text": "Add a programmatic prerequisite gate that blocks the test subagent until the configuration subagent completes, so that the concerns always run in a fixed order."
+            },
+            {
+              "letter": "C",
+              "text": "Escalate the conflicting answers to a human engineer with a structured handoff summary of the root cause and the recommended action for each concern."
+            },
+            {
+              "letter": "D",
+              "text": "Have the coordinator agent spawn the three subagents at the same time, so that the three concerns are investigated in parallel instead of one after another."
+            },
+            {
+              "letter": "E",
+              "text": "Keep the sequential order, and add a system prompt instruction that tells the test subagent to check config files before it cites any default value."
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "question_id": "M5-S03-T1",
+          "domain": 3,
+          "task_statement": "3.5",
+          "point": "3.5-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer on your team will use the agent to build a function that normalizes phone numbers from a legacy CRM export into one standard format. The function must handle empty fields, international prefixes, and numbers with extensions. It must also process one million records within a nightly time limit. Earlier agent-written utilities passed review but failed on unusual input in production. Which approach gives the most reliable progressive improvement?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Before implementation, write tests for expected outputs, edge cases such as empty fields and extensions, and the nightly time limit, then share each round's test failures with the agent."
+            },
+            {
+              "letter": "B",
+              "text": "Ask the agent to state its confidence that each edge case is handled, and accept the version once it reports high confidence for every case."
+            },
+            {
+              "letter": "C",
+              "text": "Write a detailed prose specification that describes every phone format and edge case, have the agent implement it in one pass, and then spot-check a few hundred converted records by hand afterward."
+            },
+            {
+              "letter": "D",
+              "text": "Have the agent implement the normalizer first, then generate tests from that code so the suite records its current behavior as correct."
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "question_id": "M5-S04-T1",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Yesterday an engineer used your agent in a named session to map a legacy billing module with Read, Grep, and Glob. Overnight, a teammate merged a refactor that split and renamed most of the files that the agent had read. The engineer will start a new session with a structured summary instead of resuming the old one. What should the summary include to make the new session most reliable?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Include only the original task request, so the agent rebuilds its understanding of the billing module with no prior findings."
+            },
+            {
+              "letter": "B",
+              "text": "Include the conclusions that still hold and a list of the refactored files that the agent must read again before it relies on them."
+            },
+            {
+              "letter": "C",
+              "text": "Include yesterday's conclusions about every file as current facts, so the agent does not spend tokens reading the refactored files again."
+            },
+            {
+              "letter": "D",
+              "text": "Include the full transcript of yesterday's session with every Read and Grep output, so the agent has the original contents of each file."
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "question_id": "M5-S05-T1",
+          "domain": 1,
+          "task_statement": "1.3",
+          "point": "1.3-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent, built with the Claude Agent SDK, helps an engineer understand a legacy monorepo. Its coordinator spawns three subagents through the Task tool: one maps the authentication module, one maps the billing module, and one maps the reporting module. The three analyses are independent of each other. Logs show that the coordinator emits one Task call per turn and waits for each result before it spawns the next subagent. How should you change the coordinator to cut the total analysis time?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Remove the subagents and have the coordinator read all three modules itself with Grep and Glob, so that no Task calls are needed."
+            },
+            {
+              "letter": "B",
+              "text": "Use fork_session to branch the coordinator's session three times, and have each branch analyze one module before the coordinator merges the branches."
+            },
+            {
+              "letter": "C",
+              "text": "Have the coordinator emit all three Task tool calls in one response, so that the three module subagents run in parallel."
+            },
+            {
+              "letter": "D",
+              "text": "Keep one Task call per turn, but pass each subagent the complete findings of the previous subagent so that later subagents skip repeated work."
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "question_id": "M5-S06-T2",
+          "domain": 1,
+          "task_statement": "1.5",
+          "point": "1.5-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent releases code through deploy_service, an MCP tool with an environment parameter. Policy requires an on-call engineer to approve each production release, but staging releases need no approval. Your team added a hook that intercepts every outgoing deploy_service call and redirects it to on-call approval. On-call engineers now receive dozens of staging requests each day, and these requests delay urgent production approvals. How should you change the hook?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep the hook redirecting every deploy_service call to approval, and add a second approval queue so that a separate group of engineers reviews all staging release requests each day."
+            },
+            {
+              "letter": "B",
+              "text": "Make the hook check the environment parameter of each intercepted deploy_service call, redirect only production releases to on-call approval, and let staging releases run."
+            },
+            {
+              "letter": "C",
+              "text": "Make the hook reject each production deploy_service call with an error message, and let staging deploy_service calls run without any approval step."
+            },
+            {
+              "letter": "D",
+              "text": "Remove the hook and add a system prompt rule that tells the agent to request on-call approval only before production releases of deploy_service."
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "question_id": "M5-S07-T2",
+          "domain": 1,
+          "task_statement": "1.6",
+          "point": "1.6-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer asks the agent to add comprehensive tests to a legacy codebase. The agent maps the structure with Glob and Grep, identifies the billing module as the highest-impact area, and builds a prioritized plan that starts there. While writing billing tests, the agent uses Read on the billing code and discovers that every total depends on an untested date-handling module that the plan did not list. How should the agent's plan respond to this discovery?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a subtask to test the date-handling module and move it ahead of the remaining billing tests, since the billing results depend on that module."
+            },
+            {
+              "letter": "B",
+              "text": "Keep the original order of the plan and put the date-handling module on a follow-up list for after all planned modules are tested."
+            },
+            {
+              "letter": "C",
+              "text": "Replace the prioritized plan with an alphabetical pass over all modules, so that the agent reaches the date-handling module without special handling."
+            },
+            {
+              "letter": "D",
+              "text": "Stop the current plan, map the entire codebase again from the start, and build a completely new plan before writing any more tests."
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "question_id": "M5-S08-T1",
+          "domain": 2,
+          "task_statement": "2.5",
+          "point": "2.5-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "An engineer uses your agent to change the signature of the calculateLateFee function in a legacy billing service. The service has several hundred TypeScript files in many directories, and the engineer does not know which files call this function. Before the change, the agent must locate every caller of the function. Which use of the built-in tools is the most effective for this step?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use Grep to search the file contents across the codebase for the calculateLateFee name, so that the results list each file and line that calls it."
+            },
+            {
+              "letter": "B",
+              "text": "Use Edit with calculateLateFee as the anchor text, so that the tool reports which files contain a match for the function name."
+            },
+            {
+              "letter": "C",
+              "text": "Use Glob with the pattern **/*.test.ts to find the test files, because the tests of the service exercise every caller of the function."
+            },
+            {
+              "letter": "D",
+              "text": "Use Read on the file that defines calculateLateFee, then follow its import statements to other files until each caller is found."
+            }
+          ]
+        },
+        {
+          "number": 9,
+          "question_id": "M5-S09-T1",
+          "domain": 2,
+          "task_statement": "2.4",
+          "point": "2.4-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team's developer productivity agent connects to an internal MCP server that holds the architecture documentation and database schemas for a legacy billing system. Logs show that at the start of each task, the agent makes many Grep, Glob and search_docs calls only to learn which documents and schema tables exist. These calls add latency and fill the context window. Which change most directly gives the agent visibility into the available content without these exploratory calls?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a PostToolUse hook that trims the result of each exploratory call, so the discovery calls use less space in the context window."
+            },
+            {
+              "letter": "B",
+              "text": "Remove Grep and Glob from allowedTools, so the agent must use the search_docs MCP tool for every lookup of documents and schema tables."
+            },
+            {
+              "letter": "C",
+              "text": "Raise the max_tokens value in each request to the model, so the agent has enough room to finish all of its exploratory discovery calls in one long response."
+            },
+            {
+              "letter": "D",
+              "text": "Expose the documentation hierarchy and a catalog of the database schemas as MCP resources, so the agent sees what content exists before it calls tools."
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "question_id": "M5-S10-T1",
+          "domain": 2,
+          "task_statement": "2.3",
+          "point": "2.3-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your Agent SDK developer productivity agent used only Read, Write, Bash, Grep, and Glob, and it chose the right tool almost every time. Last month the team connected four MCP servers for tickets, CI, documentation, and deployments, so the agent now has 21 tools. Since then, the agent often picks a wrong tool even for simple steps, such as calling the ticket search tool when an engineer asks it to find a function name in the code. A review found that every tool description is clear and distinct. What is the most likely cause of the drop in tool selection reliability?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The environment variables in the .mcp.json configuration did not expand, so the new MCP servers start without credentials and confuse the agent's choices."
+            },
+            {
+              "letter": "B",
+              "text": "The agent now chooses among 21 tools at every step, and this larger decision complexity degrades the reliability of its tool selection."
+            },
+            {
+              "letter": "C",
+              "text": "The tool_choice setting is \"auto\", and this setting makes the model pick among its available tools at random whenever two tool names look similar to it."
+            },
+            {
+              "letter": "D",
+              "text": "The max_tokens limit of each response is too low, so the model cuts its reasoning short and calls the first tool that it happens to list."
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "question_id": "M5-S11-T1",
+          "domain": 1,
+          "task_statement": "1.1",
+          "point": "1.1-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your Agent SDK tool generates boilerplate code for new service endpoints. An engineer asks for a controller and its test file, but no files are created. The logs show that Claude's first response had stop_reason \"tool_use\" and contained the text \"I'll create the controller first\" together with a request for the Write tool. Your loop ended at that response and showed the text to the engineer, because the loop ends whenever a response contains assistant text. Which change should you make to the loop?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a system prompt rule that tells Claude never to include explanatory text in a response that also requests a tool, so the existing text check keeps working."
+            },
+            {
+              "letter": "B",
+              "text": "Replace the text check with a fixed sequence of Glob, Read, and Write calls that your code runs for every boilerplate request."
+            },
+            {
+              "letter": "C",
+              "text": "Ignore assistant text in responses and stop the loop after a fixed cap of ten iterations, using this cap as the main stopping rule."
+            },
+            {
+              "letter": "D",
+              "text": "Decide termination by stop_reason, so the loop executes the requested tools and continues while it is \"tool_use\" and ends only when it is \"end_turn\"."
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "question_id": "M5-S12-T2",
+          "domain": 2,
+          "task_statement": "2.4",
+          "point": "2.4-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent, built with the Claude Agent SDK, has two MCP servers in its configuration: a code search server and a CI log server. While it investigated a failing build in a legacy service, the agent called a code search tool and then a CI log tool within the same task, with no server switch in between. An engineer reviews the logs and suspects a misconfiguration, because he expected the agent to reach only one MCP server at a time. What explains the behavior in the logs?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Nothing is misconfigured, because tools from every configured MCP server are discovered at connection time and are available to the agent at the same time."
+            },
+            {
+              "letter": "B",
+              "text": "The agent used the Bash tool to start the CI log server partway through the task, so the tools of that server appeared only after the agent needed them."
+            },
+            {
+              "letter": "C",
+              "text": "The SDK loads the next configured server after each completed tool call, so the agent rotates through the configured servers during one task."
+            },
+            {
+              "letter": "D",
+              "text": "The code search server returned a result with the isError flag set, which made the agent disconnect from that server and switch over to the CI log server for the rest of the task."
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "question_id": "M5-S13-T1",
+          "domain": 3,
+          "task_statement": "3.6",
+          "point": "3.6-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team's developer productivity agent includes a CI job that runs Claude Code with the -p flag to review merge requests for a legacy billing service. The job posts its findings as inline comments. Each time an engineer pushes a new commit, the job re-runs and posts comments again for issues that earlier runs already flagged. Which change best stops these duplicate comments?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Move the re-runs to the Message Batches API so that all findings for each commit are posted together in a single batch."
+            },
+            {
+              "letter": "B",
+              "text": "Pass the findings from the previous review run into the context and instruct Claude to report only issues that are new or still unaddressed."
+            },
+            {
+              "letter": "C",
+              "text": "Add few-shot examples of well-written inline review comments to the review prompt so that the comments become more consistent."
+            },
+            {
+              "letter": "D",
+              "text": "Run each re-review inside the same Claude session that generated the code changes so that Claude remembers its earlier work."
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "question_id": "M5-S14-T1",
+          "domain": 1,
+          "task_statement": "1.3",
+          "point": "1.3-K1",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your team builds a legacy-code exploration agent with the Claude Agent SDK. A coordinator should hand the analysis of each legacy module to an exploration subagent that has its own AgentDefinition. The coordinator's allowedTools list contains Read, Grep, Glob and Bash. In testing, the coordinator never spawns the exploration subagent and reads every module itself, so its context fills up. Which statements about making this delegation work are accurate?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The coordinator spawns the exploration subagent by emitting a Task tool call, because the Task tool is the mechanism for spawning subagents."
+            },
+            {
+              "letter": "B",
+              "text": "The exploration subagent automatically inherits the coordinator's conversation history, so a short Task prompt that refers to earlier findings gives it enough context."
+            },
+            {
+              "letter": "C",
+              "text": "To explore three modules in parallel, the coordinator must emit one Task call per turn across three separate turns rather than in one response."
+            },
+            {
+              "letter": "D",
+              "text": "Because the subagent has its own AgentDefinition and tool restrictions, the coordinator can invoke it with no change to the coordinator's allowedTools."
+            },
+            {
+              "letter": "E",
+              "text": "The coordinator's allowedTools must include \"Task\", because its current list of Read, Grep, Glob and Bash gives it no way to invoke subagents."
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "question_id": "M5-S15-T1",
+          "domain": 2,
+          "task_statement": "2.5",
+          "point": "2.5-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your developer productivity agent is updating a legacy Python module for an engineer. The module has three request functions, and each one contains the identical line that sets a 30-second timeout. The engineer asks the agent to raise the timeout in the payment function only. Edit fails because its anchor text matches three places in the file. Which approach should the agent take to make this change reliably?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use Bash to run a stream editor command that replaces every copy of the timeout line in the module with the new value."
+            },
+            {
+              "letter": "B",
+              "text": "Stop the task and tell the engineer that the built-in tools cannot change only one copy of a line that appears several times in a file."
+            },
+            {
+              "letter": "C",
+              "text": "Use Read to load the full module, change the timeout line inside the payment function, and then Write the complete file back."
+            },
+            {
+              "letter": "D",
+              "text": "Use Glob to find every Python file that matches the module's name pattern, and then run Edit again on each file it returns."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 2,
+      "name": "Code Generation with Claude Code",
+      "story": "You are using Claude Code to accelerate software development. Your team uses it for code generation, refactoring, debugging, and documentation. You need to integrate it into your development workflow with custom slash commands, CLAUDE.md configurations, and understand when to use plan mode vs direct execution.",
+      "questions": [
+        {
+          "number": 16,
+          "question_id": "M5-S16-T1",
+          "domain": 3,
+          "task_statement": "3.4",
+          "point": "3.4-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "A developer uses Claude Code in plan mode to design a change to the order-pricing logic, which spans many files. While exploring, Claude Code finds that a nightly billing job also reads the pricing tables, so the developer revises the design to cover that job. At that point, no file had been edited and nothing had to be reverted. Which characteristic of plan mode best explains why this discovery caused no rework?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Plan mode isolates verbose discovery output in a separate context and returns only a summary, so the main conversation context stays free."
+            },
+            {
+              "letter": "B",
+              "text": "Plan mode is designed for simple, well-scoped changes, so Claude Code keeps each edit small enough that undoing it is always easy."
+            },
+            {
+              "letter": "C",
+              "text": "Plan mode edits one file at a time, so a new finding only affects the single file that Claude Code is changing at that moment."
+            },
+            {
+              "letter": "D",
+              "text": "Plan mode lets Claude Code explore the codebase and design an approach before committing to changes, so the design can still change at little cost."
+            }
+          ]
+        },
+        {
+          "number": 17,
+          "question_id": "M5-S17-T1",
+          "domain": 3,
+          "task_statement": "3.4",
+          "point": "3.4-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team is migrating a payment service from one HTTP client library to another with Claude Code. The library is called in about 50 files. The team has not yet decided whether to wrap the new library in an adapter or to replace each call directly. Which workflow best fits this migration?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Start in plan mode to explore the call sites and choose an approach, then switch to direct execution to apply the approved plan across the files."
+            },
+            {
+              "letter": "B",
+              "text": "Ask the Explore subagent to make all the file edits, so that the verbose output of the migration stays out of the main conversation."
+            },
+            {
+              "letter": "C",
+              "text": "Stay in plan mode for the whole migration, including the file edits, so that each of the 50 files is redesigned before Claude Code changes it."
+            },
+            {
+              "letter": "D",
+              "text": "Start in direct execution and edit the files one by one, choosing between the adapter and direct replacement when the first difficult call site appears."
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "question_id": "M5-S18-T1",
+          "domain": 3,
+          "task_statement": "3.1",
+          "point": "3.1-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code in a monorepo. The billing package has its own CLAUDE.md file with testing rules for that package. Two developers report that Claude Code follows these rules in some sessions and ignores them in others, even for similar tasks. Before anyone edits configuration files, you want to see which instruction files a session actually uses. What should you do first?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Split the billing CLAUDE.md file into topic-specific files in .claude/rules/, such as testing.md, so that the rules are easier for Claude Code to find."
+            },
+            {
+              "letter": "B",
+              "text": "Start each billing session in plan mode so that Claude Code explores the package and its configuration before it writes any code."
+            },
+            {
+              "letter": "C",
+              "text": "Run the /memory command in a session that ignored the billing rules to see which memory files Claude Code has loaded."
+            },
+            {
+              "letter": "D",
+              "text": "Move the billing testing rules into the root CLAUDE.md file so that every session in the repository loads them."
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "question_id": "M5-S19-T1",
+          "domain": 3,
+          "task_statement": "3.2",
+          "point": "3.2-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses a shared skill named release-notes, which lives in .claude/skills/ and is committed to version control. Marco, a developer on the team, wants a variant of this skill that writes shorter notes for his own drafts. His teammates must keep their current skill set with no change to their sessions. Which approach should Marco take?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Create a personal skill in ~/.claude/skills/ under a new name, such as release-notes-short, that holds his shorter note format."
+            },
+            {
+              "letter": "B",
+              "text": "Create a new skill named release-notes-short in the project's .claude/skills/ directory, and then commit it to version control."
+            },
+            {
+              "letter": "C",
+              "text": "Save the shorter format as a project slash command in .claude/commands/ so that he can run it whenever he drafts notes."
+            },
+            {
+              "letter": "D",
+              "text": "Add a context: fork setting to the shared release-notes SKILL.md file so that his shorter format runs in an isolated sub-agent context."
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "question_id": "M5-S20-T1",
+          "domain": 5,
+          "task_statement": "5.4",
+          "point": "5.4-S3",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "You are using Claude Code to explore a large legacy monorepo before a refactor of its billing module. In phase one, several subagents traced the billing module's callers, database tables and shared utilities, and they produced long discovery output. For phase two, you will spawn one subagent per billing service to plan its refactor. In a trial run, the phase-two subagents ignored the phase-one discoveries and described generic billing patterns. Which two steps should you take to start the phase-two subagents well?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Spawn each phase-two subagent with only its service name, and rely on it to inherit the main session's phase-one history automatically."
+            },
+            {
+              "letter": "B",
+              "text": "Before spawning, have the main session write a concise summary of the key phase-one findings, such as the callers, tables and shared utilities."
+            },
+            {
+              "letter": "C",
+              "text": "Give each phase-two subagent a general description of common billing architecture, rather than the specific classes and call paths that phase one discovered."
+            },
+            {
+              "letter": "D",
+              "text": "Skip the subagents and run every phase-two refactor plan in the one main session, so that the raw phase-one output stays in the same growing context."
+            },
+            {
+              "letter": "E",
+              "text": "Inject that phase-one summary into the initial prompt of each phase-two subagent, because a subagent starts without the main session's history."
+            }
+          ]
+        },
+        {
+          "number": 21,
+          "question_id": "M5-S21-T1",
+          "domain": 5,
+          "task_statement": "5.6",
+          "point": "5.6-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses a Claude Code slash command to write a deprecation report for an internal payments API. Three subagents return findings as records that pair each claim with a file path and an excerpt: one reads the changelog, one reads the design docs, and one searches the codebase. When two subagents report the same claim, the final report shows it once but cites only one source, so reviewers cannot see which claims several sources confirm. What change would most effectively fix this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "When the synthesis step merges records with the same claim, have it keep only the source from the most authoritative document, so that each claim has one clear citation in the report."
+            },
+            {
+              "letter": "B",
+              "text": "Have the synthesis step move the sources of all merged claims into one reference list at the end of the report, so that reviewers see every source consulted."
+            },
+            {
+              "letter": "C",
+              "text": "When the synthesis step merges records with the same claim, have it combine their source lists so that the merged claim keeps every file path and excerpt."
+            },
+            {
+              "letter": "D",
+              "text": "Run the synthesis step in plan mode, so that a developer reviews the planned outline of the report before Claude Code writes the final text."
+            }
+          ]
+        },
+        {
+          "number": 22,
+          "question_id": "M5-S22-T1",
+          "domain": 5,
+          "task_statement": "5.3",
+          "point": "5.3-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code to write an onboarding guide for a payments service. Claude Code sends one subagent to read the source code, one to read the test suite, and one to query the team's design-decision wiki through an MCP server. The wiki subagent's calls keep timing out after local retries, so it returns the error with its attempted queries, while the other two subagents return full findings. How should Claude Code structure the synthesized onboarding guide?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Open the guide with one generic line saying that the wiki search was unavailable, and then present every section that follows as equally complete and well-supported."
+            },
+            {
+              "letter": "B",
+              "text": "Write the design rationale sections from patterns that Claude Code infers in the source code and tests, and present them as documented team decisions."
+            },
+            {
+              "letter": "C",
+              "text": "Annotate each section as well-supported by the code and tests or as a coverage gap, naming the design rationale as missing because the wiki was unavailable."
+            },
+            {
+              "letter": "D",
+              "text": "State in the guide that the team has recorded no design decisions for the payments service, because the wiki subagent returned no design findings."
+            }
+          ]
+        },
+        {
+          "number": 23,
+          "question_id": "M5-S23-T2",
+          "domain": 3,
+          "task_statement": "3.5",
+          "point": "3.5-S5",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "You use Claude Code to migrate your team's checkout service from floating-point dollar amounts to integer cents. Tests then show four problems: the discount function still treats stored prices as dollars, the tax function rounds each cent value to two decimal places, the invoice formatter divides amounts by 100 twice, and the changelog entry names the wrong release number. The first three fixes all depend on how the price model represents amounts, while the changelog problem affects nothing else. Which approaches should you take for the next iterations?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Fix the changelog release number in its own separate iteration, because that change does not interact with any of the price fixes."
+            },
+            {
+              "letter": "B",
+              "text": "Paste the raw test output into one message and ask Claude Code to fix whichever failure it judges most important first."
+            },
+            {
+              "letter": "C",
+              "text": "Add a CLAUDE.md rule stating that prices are integer cents, then rerun the original migration prompt without describing the failures."
+            },
+            {
+              "letter": "D",
+              "text": "Describe the discount, tax, and formatter problems together in one detailed message that explains how all three depend on the cents representation."
+            },
+            {
+              "letter": "E",
+              "text": "Fix the discount function alone first, because its failing tests sit in a different test file from the tax and formatter tests."
+            }
+          ]
+        },
+        {
+          "number": 24,
+          "question_id": "M5-S24-T1",
+          "domain": 5,
+          "task_statement": "5.1",
+          "point": "5.1-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "You are using Claude Code in a long session to refactor a data export module. Early on, you stated the product manager's expectations: exports of 2 million rows must finish within 90 seconds, use under 512 MB of memory, and ship by April 2. For the first hour, Claude's plans quoted these exact values. After several /compact runs, its plan now says only that exports should be \"fast, memory-efficient, and shipped soon.\" What is the most likely cause of this change?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The lost-in-the-middle effect made Claude skip the constraints in the middle of the full history, which Claude still reads unchanged after each compaction."
+            },
+            {
+              "letter": "B",
+              "text": "Claude Code reads constraints only from the CLAUDE.md file, so Claude ignored the values stated in the conversation and guessed at them from the start of the session."
+            },
+            {
+              "letter": "C",
+              "text": "The outputs of the test runs filled the context with many fields, and these tool results pushed the constraints out of the context window before any compaction."
+            },
+            {
+              "letter": "D",
+              "text": "The compactions condensed the exact time limit, memory limit, and ship date into a vague summary, so the precise values left the context."
+            }
+          ]
+        },
+        {
+          "number": 25,
+          "question_id": "M5-S25-T1",
+          "domain": 5,
+          "task_statement": "5.2",
+          "point": "5.2-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team keeps a custom slash command in .claude/commands/ that a developer runs with a customer name to reproduce a reported bug. The command tells Claude Code to call an MCP tool that looks up the customer account and then load that account's test data. When the lookup returns several accounts with the same name, Claude Code picks the first account in the list and continues. Developers then spend hours debugging the wrong account. Which change to the command best fixes this behavior?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Edit the command file so that Claude Code asks the developer for an additional identifier, such as an account ID, whenever the lookup returns multiple matches."
+            },
+            {
+              "letter": "B",
+              "text": "Edit the command file so that Claude Code picks the account with the most recent bug report, since that account most likely belongs to the reporter."
+            },
+            {
+              "letter": "C",
+              "text": "Tell developers to run the command in plan mode so that Claude Code explores the matching accounts before it loads any test data into the session."
+            },
+            {
+              "letter": "D",
+              "text": "Convert the command into a skill with context: fork so that the account lookup runs in an isolated subagent and its verbose output stays out of the main session conversation."
+            }
+          ]
+        },
+        {
+          "number": 26,
+          "question_id": "M5-S26-T2",
+          "domain": 5,
+          "task_statement": "5.5",
+          "point": "5.5-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team runs Claude Code with the -p flag in CI to extract API reference entries, such as HTTP method, path and auth requirement, from route handlers in many services. Each field gets a confidence score. Entries whose fields all score above a threshold are published to the internal developer portal without review, and the rest go to reviewers. A tech lead proposes that reviewers also check a stratified random sample of the published high-confidence entries every week, drawn from each service and field. What is the main benefit of this proposal?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It measures the ongoing error rate of the published high-confidence entries in each service and field, and it can reveal new error patterns that no existing check targets."
+            },
+            {
+              "letter": "B",
+              "text": "It lets the team drop the field-level confidence scores, because reviewers who check a random sample of entries no longer need a score to decide which entries to publish."
+            },
+            {
+              "letter": "C",
+              "text": "It lets the team stop routing low-confidence entries to reviewers, because the weekly sample of published entries now covers all of the review work that the pipeline will need from now on."
+            },
+            {
+              "letter": "D",
+              "text": "It produces one combined accuracy figure for all published entries across every service, which is the clearest single number for deciding whether to lower the threshold."
+            }
+          ]
+        },
+        {
+          "number": 27,
+          "question_id": "M5-S27-T2",
+          "domain": 5,
+          "task_statement": "5.5",
+          "point": "5.5-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team runs Claude Code in CI with the -p flag to extract endpoint metadata from service source files: route path, HTTP method, and whether authentication is required. On a labeled validation set, high-confidence outputs are 97% accurate overall. TypeScript services score 98% or higher on every field. Java services make up 5% of the files and score 97% on route path and HTTP method, but only 72% on the authentication field. Which review plan best fits these results?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep full human review of every output in both languages, because one weak segment shows that no part of the pipeline can be trusted yet."
+            },
+            {
+              "letter": "B",
+              "text": "End review for high-confidence outputs in segments that validated well, and keep human review of the Java authentication field until it improves and is validated again."
+            },
+            {
+              "letter": "C",
+              "text": "End review for all high-confidence outputs now, and later run stratified random sampling on them to catch Java authentication errors after they reach downstream systems."
+            },
+            {
+              "letter": "D",
+              "text": "End review for all high-confidence outputs, because Java files are only 5% of the volume and the 97% overall figure shows the pipeline is reliable enough."
+            }
+          ]
+        },
+        {
+          "number": 28,
+          "question_id": "M5-S28-T5",
+          "domain": 5,
+          "task_statement": "5.6",
+          "point": "5.6-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team runs a custom slash command in Claude Code that reads benchmark reports from two performance teams and writes a performance section for the project documentation. Both reports are credible and were collected in the same week on the same hardware, but they state different p99 latency values for one endpoint. The generated section shows only one value, cites one report, and does not mention the other report. Which instruction in the command file most likely caused this?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "It tells Claude to give one definitive value per metric, so Claude picks one credible figure instead of listing both with sources and annotating the conflict."
+            },
+            {
+              "letter": "B",
+              "text": "It does not ask for collection dates, so Claude treats a temporal difference between the reports as a contradiction and drops the older value."
+            },
+            {
+              "letter": "C",
+              "text": "It asks Claude to present benchmark figures as a table, and a table cannot show two attributed values for the same metric."
+            },
+            {
+              "letter": "D",
+              "text": "It asks Claude to keep a claim-source mapping for each figure, and that mapping allows only one source to support each claim."
+            }
+          ]
+        },
+        {
+          "number": 29,
+          "question_id": "M5-S29-T5",
+          "domain": 3,
+          "task_statement": "3.4",
+          "point": "3.4-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code for several different tasks during this sprint. The team lead wants the Explore subagent used only where it protects the main conversation from context exhaustion. All simpler work should stay in the main conversation. For which task is the Explore subagent most appropriate?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "A single-file bug fix where the stack trace already names the failing line and the needed change is clear."
+            },
+            {
+              "letter": "B",
+              "text": "The implementation phase of a migration, where the list of files and the edits were already decided earlier in plan mode."
+            },
+            {
+              "letter": "C",
+              "text": "A framework upgrade where Claude Code must first search hundreds of files for deprecated calls, before separate planning and implementation phases."
+            },
+            {
+              "letter": "D",
+              "text": "Adding one date validation conditional to a known function, where the scope of the change is clear from the start."
+            }
+          ]
+        },
+        {
+          "number": 30,
+          "question_id": "M5-S30-T1",
+          "domain": 3,
+          "task_statement": "3.1",
+          "point": "3.1-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code in a mobile app repository with an ios/ directory and an android/ directory, and each directory has its own CLAUDE.md file. Human-readable standards live in docs/standards/, including swift-style.md and kotlin-style.md. These style guides change every few weeks. The Android maintainer wants Claude Code to follow kotlin-style.md whenever it edits files under android/. What should the Android maintainer do?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Paste the full text of kotlin-style.md into android/CLAUDE.md, and add a pull request checklist item that reminds engineers to update both copies together."
+            },
+            {
+              "letter": "B",
+              "text": "Write a sentence in android/CLAUDE.md that says a Kotlin style guide exists somewhere in the docs folder and that Claude should look for it when relevant."
+            },
+            {
+              "letter": "C",
+              "text": "Convert kotlin-style.md into a custom slash command in .claude/commands/, and ask Android developers to run that command before each editing session."
+            },
+            {
+              "letter": "D",
+              "text": "Add an @import reference to docs/standards/kotlin-style.md in android/CLAUDE.md so that the guide is included from its single source file."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 5,
+      "name": "Claude Code for Continuous Integration",
+      "story": "You are integrating Claude Code into your Continuous Integration/Continuous Deployment (CI/CD) pipeline. The system runs automated code reviews, generates test cases, and provides feedback on pull requests. You need to design prompts that provide actionable feedback and minimize false positives.",
+      "questions": [
+        {
+          "number": 31,
+          "question_id": "M5-S31-T1",
+          "domain": 4,
+          "task_statement": "4.3",
+          "point": "4.3-S6",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your CI pipeline calls the Claude API with a forced record_test_case tool to generate test cases from requirement documents that different teams write. Every tool_use response passes schema validation. However, the timeout string field holds values such as \"30s\", \"30000 ms\" and \"half a minute\", and the date field mixes \"2024-03-04\" with \"4 March 2024\". The test runner cannot parse many of these values. Which two actions should you take?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add an \"other\" enum value and a detail string to the timeout field so Claude can place unusual formats in the detail string."
+            },
+            {
+              "letter": "B",
+              "text": "Add format normalization rules to the prompt that define one canonical form, such as timeouts as integer milliseconds and dates as ISO 8601 strings."
+            },
+            {
+              "letter": "C",
+              "text": "Keep the record_test_case tool and its JSON schema, because the schema still prevents JSON syntax errors while the prompt rules handle value formats."
+            },
+            {
+              "letter": "D",
+              "text": "Replace the tool with a prompt instruction to return JSON as text, and retry the request whenever the JSON fails to parse."
+            },
+            {
+              "letter": "E",
+              "text": "Change tool_choice from the forced tool to \"auto\" so Claude can answer in plain text when a source format is unclear."
+            }
+          ]
+        },
+        {
+          "number": 32,
+          "question_id": "M5-S32-T1",
+          "domain": 4,
+          "task_statement": "4.4",
+          "point": "4.4-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code on each pull request and posts structured review findings as comments. Developers dismiss many of these findings as false positives. The team wants to learn which kinds of code cause the dismissed findings, so that it can fix the review prompt systematically. Today each finding records only the file, the line, a severity, and a short message. What change best supports this analysis?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Record the pull request author and the repository for each dismissed finding, so that the team can see which developers and teams dismiss the most findings."
+            },
+            {
+              "letter": "B",
+              "text": "Ask developers to type a free-text comment that explains each dismissal, and store these comments with the pull request so that the team can read them later."
+            },
+            {
+              "letter": "C",
+              "text": "Post only the findings that the model marks as high severity, so that developers see fewer comments and dismiss fewer findings on each pull request."
+            },
+            {
+              "letter": "D",
+              "text": "Add a detected_pattern field to each finding that names the code construct that triggered it, so that dismissed findings can be grouped by pattern."
+            }
+          ]
+        },
+        {
+          "number": 33,
+          "question_id": "M5-S33-T2",
+          "domain": 3,
+          "task_statement": "3.2",
+          "point": "3.2-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team keeps a project skill in .claude/skills/ that generates test cases for one module, and the CI pipeline runs those tests on each pull request. Developers often invoke the skill without naming a module. In those runs the skill guesses a target, and pull requests arrive with tests for the wrong code. Which change best ensures that developers are asked for the target module when they invoke the skill without arguments?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add context: fork to the SKILL.md frontmatter so that the skill runs in an isolated sub-agent context apart from the main conversation."
+            },
+            {
+              "letter": "B",
+              "text": "Add argument-hint to the SKILL.md frontmatter so that the skill prompts developers for the target module when they give no arguments."
+            },
+            {
+              "letter": "C",
+              "text": "Add a rule file in .claude/rules/ whose YAML frontmatter lists glob patterns for each module so that module conventions load automatically."
+            },
+            {
+              "letter": "D",
+              "text": "Add allowed-tools to the SKILL.md frontmatter and list only the file read and write tools that the test generation step needs."
+            }
+          ]
+        },
+        {
+          "number": 34,
+          "question_id": "M5-S34-T1",
+          "domain": 4,
+          "task_statement": "4.3",
+          "point": "4.3-S5",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with the --json-schema flag to review each pull request. Each finding has a required verdict field whose enum lists only defect and acceptable. Developers report many false positives on code that calls helpers defined outside the diff, where Claude cannot confirm the actual behavior. All of these findings are labeled defect. What is the most likely cause of these false positives in the review design?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The verdict enum has no \"unclear\" value, so Claude must label findings that it cannot confirm from the diff as either defect or acceptable."
+            },
+            {
+              "letter": "B",
+              "text": "The verdict enum has no \"other\" value with a detail string field, so findings that fit neither listed verdict are forced into the defect value."
+            },
+            {
+              "letter": "C",
+              "text": "The prompt lacks format normalization rules, so Claude misreads inconsistently formatted code in the diff as defects and labels those findings accordingly."
+            },
+            {
+              "letter": "D",
+              "text": "The --json-schema flag checks only JSON syntax, so malformed verdict strings slip through and the parser treats each malformed string as a defect."
+            }
+          ]
+        },
+        {
+          "number": 35,
+          "question_id": "M5-S35-T2",
+          "domain": 4,
+          "task_statement": "4.2",
+          "point": "4.2-S5",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with the --json-schema flag to extract release metadata from each pull request description, and the schema marks rollback_steps as required. A review of the empty rollback_steps results finds two groups. In the first group, the description contains no rollback steps at all. In the second group, the steps are present but written in a table, while the single example in the prompt uses a Rollback heading. Which plan handles both groups correctly?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep rollback_steps required, add few-shot examples of table descriptions, and instruct Claude that every pull request has rollback steps that must be extracted."
+            },
+            {
+              "letter": "B",
+              "text": "Make rollback_steps nullable and accept null for both groups, because a null value in the output correctly signals that no rollback steps were found."
+            },
+            {
+              "letter": "C",
+              "text": "Make rollback_steps nullable so that the first group can return null, and add few-shot examples that show correct extraction of rollback steps from table descriptions."
+            },
+            {
+              "letter": "D",
+              "text": "Keep rollback_steps required and add a validation-retry loop that rejects every empty result and asks Claude to try again until the field contains a value for each description."
+            }
+          ]
+        },
+        {
+          "number": 36,
+          "question_id": "M5-S36-T1",
+          "domain": 4,
+          "task_statement": "4.4",
+          "point": "4.4-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with the -p flag and --json-schema to generate test cases for each pull request and to record the acceptance criteria that each test covers. A validation step rejects bad outputs and retries up to three times, appending the specific validation errors to the prompt. Outputs with misnamed fields pass on the first retry. Outputs with an empty acceptance criteria field still fail after all three retries, and those pull request descriptions say only \"criteria in the design doc,\" a file the pipeline never passes to Claude Code. What is the most likely reason these retries keep failing?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The limit of three retries is too low, because Claude Code needs more attempts to locate the criteria inside the pull request description."
+            },
+            {
+              "letter": "B",
+              "text": "The acceptance criteria exist only in the design document, which the pipeline never provides, so no retry can produce them from the pull request."
+            },
+            {
+              "letter": "C",
+              "text": "The JSON schema lacks strict mode, so syntax errors in the generated output keep clearing the acceptance criteria field on each attempt."
+            },
+            {
+              "letter": "D",
+              "text": "The appended validation errors are too vague to guide Claude Code toward the criteria, so the error messages need more detail about the expected values."
+            }
+          ]
+        },
+        {
+          "number": 37,
+          "question_id": "M5-S37-T4",
+          "domain": 3,
+          "task_statement": "3.3",
+          "point": "3.3-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code to review pull requests and generate tests in a repository with forty service directories under services/. Data-retention conventions apply only to files inside services/payments. Input-validation conventions apply to every file named *.handler.ts, and such handler files sit in every service directory. You want each set of conventions to load automatically, and only when Claude Code works on matching files. Which configuration best meets this goal?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Put the data-retention conventions in a CLAUDE.md file inside services/payments, and put the input-validation conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.handler.ts\"]."
+            },
+            {
+              "letter": "B",
+              "text": "Put the input-validation conventions in a CLAUDE.md file inside services/payments, and put the data-retention conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.ts\"]."
+            },
+            {
+              "letter": "C",
+              "text": "Put both sets of conventions in one .claude/rules/ file whose YAML frontmatter sets paths: [\"services/**/*\"], so that they load for any file in a service directory."
+            },
+            {
+              "letter": "D",
+              "text": "Put the data-retention conventions in the root CLAUDE.md under a payments heading, and put the input-validation conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.handler.ts\"]."
+            }
+          ]
+        },
+        {
+          "number": 38,
+          "question_id": "M5-S38-T5",
+          "domain": 4,
+          "task_statement": "4.5",
+          "point": "4.5-S3",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your CI pipeline runs a nightly Message Batches API job that reviews 2,000 source files, and each request has a custom_id set to its file path. Each night, about 40 requests fail because their files exceed the context limit. The pipeline's retry step then resubmits all 2,000 requests unchanged in a second batch. Since then, nightly batch costs have nearly doubled, and the same 40 files fail again in every retry. Which causes explain these two results?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The retry step resubmits every request instead of only the failed ones identified by their custom_id, so successful reviews are paid for twice."
+            },
+            {
+              "letter": "B",
+              "text": "The retry step sends the oversized files without changes instead of first splitting each one into chunks that fit within the context limit."
+            },
+            {
+              "letter": "C",
+              "text": "The batch API does not support multi-turn tool calling, so Claude cannot fetch the remaining parts of each oversized file in the middle of a request."
+            },
+            {
+              "letter": "D",
+              "text": "The retry step matches each result to its file by custom_id, which links the reviews of the retried files to the wrong source files."
+            },
+            {
+              "letter": "E",
+              "text": "The batch API has no guaranteed latency SLA, so the oversized files time out in the queue before the model can finish reviewing them."
+            }
+          ]
+        },
+        {
+          "number": 39,
+          "question_id": "M5-S39-T6",
+          "domain": 4,
+          "task_statement": "4.1",
+          "point": "4.1-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline uses Claude Code to review pull requests in three categories: security, null-handling bugs, and naming conventions. A spot check of last month's findings shows false-positive rates of 6% for security, 9% for null-handling, and 68% for naming conventions, while security produces the most findings overall. Developers on several teams now ignore every Claude Code finding, including accurate security findings. Which change should you make first?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Replace the naming-convention category with a broader code-style category that also covers formatting, comment wording, and file layout."
+            },
+            {
+              "letter": "B",
+              "text": "Temporarily disable the naming-convention category, keep security and null-handling active, and re-enable the naming-convention category after its rewritten criteria pass testing."
+            },
+            {
+              "letter": "C",
+              "text": "Keep all three categories active, and add an instruction to the review prompt telling Claude Code to be conservative about naming-convention findings."
+            },
+            {
+              "letter": "D",
+              "text": "Temporarily disable the security category because it produces the most findings, and keep the null-handling and naming-convention categories active."
+            }
+          ]
+        },
+        {
+          "number": 40,
+          "question_id": "M5-S40-T1",
+          "domain": 4,
+          "task_statement": "4.1",
+          "point": "4.1-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team uses Claude Code in CI to review pull requests for a payments service. Each finding gets one of three severity levels: blocker, warning, or note, and any blocker stops the merge. Developers complain that a missing input check in the same API handler was a blocker on Monday and a note on Thursday. The review prompt currently says only that Claude should assign a severity that reflects the risk of the issue. Which change to the prompt would most effectively make these severity assignments consistent?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Ask Claude to report a confidence score from 1 to 10 with each finding, and downgrade any blocker whose score falls below seven."
+            },
+            {
+              "letter": "B",
+              "text": "Tell Claude to be careful and conservative, and to assign the blocker level only when it is highly confident about the risk of the finding."
+            },
+            {
+              "letter": "C",
+              "text": "Rewrite the severity instruction as a longer paragraph that stresses why consistent severity matters to developers, while still leaving the three levels undefined."
+            },
+            {
+              "letter": "D",
+              "text": "Define explicit criteria for blocker, warning, and note, and give a concrete code example of a typical finding for each of the three levels."
+            }
+          ]
+        },
+        {
+          "number": 41,
+          "question_id": "M5-S41-T1",
+          "domain": 4,
+          "task_statement": "4.6",
+          "point": "4.6-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with the -p flag to generate unit tests for each pull request. The pipeline then resumes this generation session with --resume and asks it to check whether each test verifies the changed behavior. The check approves almost every test. Yet the same check prompt, run in a fresh session with the same flags, marks many tests as weak because their assertions pass without testing the change. What is the most likely cause of this difference?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The check returns its results with --json-schema, so the schema of the structured output limits the kinds of weak tests that Claude is able to report."
+            },
+            {
+              "letter": "B",
+              "text": "The check prompt contains no few-shot examples of weak tests, so Claude has no demonstration of how an assertion can pass without verifying the changed behavior."
+            },
+            {
+              "letter": "C",
+              "text": "The job runs Claude Code with the -p flag, so the check cannot pause for developer input and approves each test whenever it is uncertain."
+            },
+            {
+              "letter": "D",
+              "text": "The check runs in the generation session, so Claude keeps the reasoning behind each test and is less likely to question its own test design."
+            }
+          ]
+        },
+        {
+          "number": 42,
+          "question_id": "M5-S42-T1",
+          "domain": 3,
+          "task_statement": "3.6",
+          "point": "3.6-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team's CI pipeline runs Claude Code with the -p flag to generate tests for pull requests in a payments service. The project CLAUDE.md already documents testing standards and available fixtures, and the generated tests follow them well. However, about half of the suggested tests for the refunds module repeat edge cases that tests/test_refunds.py already checks. The prompt contains only the pull request diff and the changed source files. Which change most directly addresses this problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Send the generated tests to a second, independent Claude Code instance that reviews them for duplication, using the same diff and changed source files as context."
+            },
+            {
+              "letter": "B",
+              "text": "Add five few-shot examples of well-structured refund tests to the prompt, so Claude learns the team's preferred test style and assertion patterns before generating."
+            },
+            {
+              "letter": "C",
+              "text": "Add tests/test_refunds.py and the other existing test files for the changed modules to the prompt context, so Claude can see which scenarios are already covered."
+            },
+            {
+              "letter": "D",
+              "text": "Expand the fixtures section of CLAUDE.md with a detailed description of every refund fixture, including its setup data, so that generated tests reuse these fixtures correctly."
+            }
+          ]
+        },
+        {
+          "number": 43,
+          "question_id": "M5-S43-T2",
+          "domain": 4,
+          "task_statement": "4.5",
+          "point": "4.5-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your team moved nightly test generation in the CI/CD pipeline to the Message Batches API. A scheduled job submits the batch at 01:00, and the generated tests usually return within an hour, well before the 09:00 team review. Last night the batch finished at 15:00, so the team missed the review, and a developer opened a bug ticket against the batch job. What best explains the late results?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The test generation requests called tools mid-request, and the Message Batches API paused each request until the tool results were returned."
+            },
+            {
+              "letter": "B",
+              "text": "The batch broke the guaranteed latency SLA of the Message Batches API, so the delay points to a fault that the team should report."
+            },
+            {
+              "letter": "C",
+              "text": "The Message Batches API has no guaranteed latency SLA, so a batch that finishes within the 24-hour processing window is behaving as designed."
+            },
+            {
+              "letter": "D",
+              "text": "The batch job omitted custom_id fields on its requests, so the Message Batches API placed the whole batch at a lower processing priority."
+            }
+          ]
+        },
+        {
+          "number": 44,
+          "question_id": "M5-S44-T2",
+          "domain": 4,
+          "task_statement": "4.4",
+          "point": "4.4-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with --json-schema to summarize each pull request. The schema has one conflict_detected boolean, and the prompt tells Claude to set it to true when the file count claimed in the pull request description differs from the number of files changed in the diff. Every report contains this field, and every value is false. Spot checks of small pull requests, each with an explicit file count in its description, find many real mismatches. What is the most likely root cause?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The schema asks only for the boolean, so Claude never extracts the stated and calculated counts that would anchor the comparison and let a check verify it."
+            },
+            {
+              "letter": "B",
+              "text": "The pull request descriptions do not state the file count in a form Claude can read, so the needed information is absent from the source and cannot be compared."
+            },
+            {
+              "letter": "C",
+              "text": "The conflict_detected field is optional in the schema, so Claude often omits it and the pipeline fills in a default value of false for it."
+            },
+            {
+              "letter": "D",
+              "text": "The pull request diffs are too long for Claude to track reliably, so lost-in-the-middle effects hide the changed files that sit in the middle of each diff."
+            }
+          ]
+        },
+        {
+          "number": 45,
+          "question_id": "M5-S45-T5",
+          "domain": 4,
+          "task_statement": "4.6",
+          "point": "4.6-S3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request. An independent verification pass then reports one confidence score for the whole review, and thresholds calibrated on a labeled validation set decide whether the review is posted directly or held for the maintainers. Auto-posted reviews still contain some false-positive comments, and held reviews make the maintainers check many findings that are clearly correct. What is the most likely cause of this routing problem?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The routing thresholds were set by checking the verification scores against a labeled validation set instead of being chosen by the maintainers from their own review experience."
+            },
+            {
+              "letter": "B",
+              "text": "The verification pass gives one confidence score per review instead of a confidence level for each finding, so routing cannot separate doubtful findings from sure ones."
+            },
+            {
+              "letter": "C",
+              "text": "The review covers every changed file in one pass instead of per-file passes plus an integration pass, which causes attention dilution and contradictory findings across the review."
+            },
+            {
+              "letter": "D",
+              "text": "The pipeline runs Claude Code with the -p flag in non-interactive mode, so the verification pass cannot ask the maintainers questions before it scores a review."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": 1,
+      "name": "Customer Support Resolution Agent",
+      "story": "You are building a customer support resolution agent using the Claude Agent SDK. The agent handles high-ambiguity requests like returns, billing disputes, and account issues. It has access to your backend systems through custom Model Context Protocol (MCP) tools (get_customer, lookup_order, process_refund, escalate_to_human). Your target is 80%+ first-contact resolution while knowing when to escalate.",
+      "questions": [
+        {
+          "number": 46,
+          "question_id": "M5-S46-T1",
+          "domain": 2,
+          "task_statement": "2.5",
+          "point": "2.5-S4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support resolution agent sometimes completes refunds above the $500 policy limit through the process_refund MCP tool. You open the MCP server repository in Claude Code to find where this limit is checked. The repository has about 300 Python files, and you do not know where refund requests are validated before they reach the payment backend. How should you build your understanding of the refund flow?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Use Bash to join all 300 Python files into one large file, then use Read on that file so the whole codebase is in context at once."
+            },
+            {
+              "letter": "B",
+              "text": "Use Glob to find files whose names contain the word refund, then use Read on only those files, assuming the limit check lives in a file named after it."
+            },
+            {
+              "letter": "C",
+              "text": "Use Read on the server's main module, then use Read on every module it imports and their imports, before you search for any refund-related names."
+            },
+            {
+              "letter": "D",
+              "text": "Use Grep to search for process_refund and limit-related names to find the entry points, then use Read on the matching files and follow their imports to trace the validation."
+            }
+          ]
+        },
+        {
+          "number": 47,
+          "question_id": "M5-S47-T1",
+          "domain": 2,
+          "task_statement": "2.2",
+          "point": "2.2-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent, built with the Claude Agent SDK, calls the process_refund MCP tool after it approves a return. When the payment gateway is unavailable, process_refund returns the message \"Refund not submitted: gateway unavailable\" as a normal successful result. The agent then confirms to customers that their refund is complete. How should process_refund communicate this failure back to the agent?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Return a successful result with a refund status of pending, so the agent tells the customer that the refund will arrive later."
+            },
+            {
+              "letter": "B",
+              "text": "Return the failure text in a longer and more detailed successful result, so the agent has more context to notice that the refund failed."
+            },
+            {
+              "letter": "C",
+              "text": "Return the gateway failure details in the tool result with the isError flag set to true, so the agent knows the refund failed."
+            },
+            {
+              "letter": "D",
+              "text": "Record the gateway failure only in a server log and return the normal confirmation text, so the customer conversation continues without disruption."
+            }
+          ]
+        },
+        {
+          "number": 48,
+          "question_id": "M5-S48-T2",
+          "domain": 2,
+          "task_statement": "2.3",
+          "point": "2.3-S2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "In an early build of your support agent, the agent has five tools: get_customer, lookup_order, process_refund, escalate_to_human, and a generic update_account tool that accepts any field name and value. Logs show that the agent sometimes changes credit limits when customers ask, although policy lets it change only contact details. A system prompt rule against such changes reduced these cases but did not stop them. What is the most likely root cause of the remaining changes?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The agent holds too many tools, so the added decision complexity makes it choose update_account when a more suitable tool exists for the customer's request."
+            },
+            {
+              "letter": "B",
+              "text": "The update_account tool returns its errors without the isError flag, so the agent cannot see that its attempted changes to restricted fields have failed and keeps retrying them."
+            },
+            {
+              "letter": "C",
+              "text": "The tool_choice setting is \"auto\", so the model may answer with conversational text when the customer's request should have produced a call to update_account instead."
+            },
+            {
+              "letter": "D",
+              "text": "The update_account interface accepts any field name, so only a prompt rule that the model follows probabilistically stands between a customer request and a forbidden change."
+            }
+          ]
+        },
+        {
+          "number": 49,
+          "question_id": "M5-S49-T1",
+          "domain": 1,
+          "task_statement": "1.2",
+          "point": "1.2-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support resolution agent now uses a coordinator agent with three subagents: one for account lookups, one for order lookups, and one for refunds. Currently the refund subagent asks the order subagent for order details directly. It also calls escalate_to_human on its own whenever process_refund returns an error. Support leads cannot see why some refund cases were escalated, and similar failures are handled differently across cases. Which design change best addresses these problems?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Route every subagent request, result, and error through the coordinator agent, which applies one error-handling policy and decides what information each subagent receives."
+            },
+            {
+              "letter": "B",
+              "text": "Give the refund subagent the coordinator agent's full conversation history so that it can make its own escalation decisions with complete customer context."
+            },
+            {
+              "letter": "C",
+              "text": "Have each subagent record every direct call it makes to another subagent in a shared log file, while each subagent keeps its own rules for handling tool errors and escalations."
+            },
+            {
+              "letter": "D",
+              "text": "Have the refund subagent retry process_refund several times with exponential backoff and call escalate_to_human only after every retry has failed."
+            }
+          ]
+        },
+        {
+          "number": 50,
+          "question_id": "M5-S50-T1",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "While building your customer support resolution agent, you use Claude Code to trace why the agent calls escalate_to_human for simple refunds that process_refund could handle. You named that Claude Code session refund-escalation-trace. Two days later you return to the work, and nobody has changed the agent's code or prompts since then. How should you continue that specific investigation?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Run Claude Code with the -p flag and the prompt refund-escalation-trace so that it continues the earlier investigation non-interactively."
+            },
+            {
+              "letter": "B",
+              "text": "Run Claude Code with --resume refund-escalation-trace so that the named session continues with its earlier context."
+            },
+            {
+              "letter": "C",
+              "text": "Open a new Claude Code session and run /compact so that it rebuilds the context of the refund-escalation-trace conversation."
+            },
+            {
+              "letter": "D",
+              "text": "Open a new Claude Code session and run /memory to load the refund-escalation-trace conversation from the project memory files."
+            }
+          ]
+        },
+        {
+          "number": 51,
+          "question_id": "M5-S51-T1",
+          "domain": 2,
+          "task_statement": "2.1",
+          "point": "2.1-K4",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent's system prompt tells it to use process_refund whenever a customer mentions a refund. The lookup_order description clearly states that it returns order and refund status, and its example queries include checking whether a refund has been paid. Logs show that refund status questions, such as whether the refund for order 4471 has gone through, trigger process_refund calls instead of lookup_order calls. What is the most likely cause of this misrouting?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The lookup_order description lacks input formats and example queries, so the model cannot tell that refund status questions belong to lookup_order instead of process_refund."
+            },
+            {
+              "letter": "B",
+              "text": "The tool_choice setting is \"auto\", which lets the model ignore tool descriptions, so the agent picks process_refund at random for refund messages."
+            },
+            {
+              "letter": "C",
+              "text": "The process_refund tool returns failures without the isError flag, so the agent keeps calling it instead of switching to lookup_order for status questions."
+            },
+            {
+              "letter": "D",
+              "text": "The keyword-sensitive refund instruction in the system prompt ties the word refund to process_refund and overrides the clear lookup_order description."
+            }
+          ]
+        },
+        {
+          "number": 52,
+          "question_id": "M5-S52-T1",
+          "domain": 1,
+          "task_statement": "1.2",
+          "point": "1.2-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support agent's coordinator sends every customer message through four subagents in a fixed order: account verification, order history analysis, refund policy evaluation, and billing review. Logs show that a simple question about the delivery status of an order takes as long as a complex billing dispute, and most subagent outputs for simple questions go unused. Complex billing disputes do need all four subagents. What change to the coordinator best reduces this waste while still handling complex cases fully?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Let the subagents pass their results directly to each other so that the coordinator no longer routes information between them."
+            },
+            {
+              "letter": "B",
+              "text": "Send all customer messages through the Message Batches API so that the full sequence of subagents runs at half the cost."
+            },
+            {
+              "letter": "C",
+              "text": "Have the coordinator analyze each message's requirements and invoke only the subagents it needs, using the full sequence only for complex cases."
+            },
+            {
+              "letter": "D",
+              "text": "Lower max_tokens for each of the four subagents so that the full sequence finishes faster and uses fewer tokens on every message."
+            }
+          ]
+        },
+        {
+          "number": 53,
+          "question_id": "M5-S53-T2",
+          "domain": 2,
+          "task_statement": "2.1",
+          "point": "2.1-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support agent issues refunds through the MCP tool process_refund, whose description reads only \"Refunds a customer for an order.\" Logs show that the agent always picks the right tool, but the backend rejects many of its calls. The agent sends amounts such as \"$45.00\" while the backend accepts only whole cents such as 4500, and it omits the item ID when a customer returns one item from a multi-item order. Which change most directly reduces these rejected calls?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Set tool_choice to force process_refund on every turn, so that the agent always reaches the refund tool as soon as a customer mentions a return."
+            },
+            {
+              "letter": "B",
+              "text": "Make the agent retry each rejected process_refund call up to three times with the same arguments before it tells the customer that the refund could not be processed."
+            },
+            {
+              "letter": "C",
+              "text": "Expand the process_refund description to state that amounts are whole cents, show an example call, and say that single-item returns need the item ID."
+            },
+            {
+              "letter": "D",
+              "text": "Rename process_refund to refund_in_cents and keep its one-line description, so that the new tool name alone signals the expected amount format."
+            }
+          ]
+        },
+        {
+          "number": 54,
+          "question_id": "M5-S54-T1",
+          "domain": 1,
+          "task_statement": "1.7",
+          "point": "1.7-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "You used a Claude Code session to analyze why your customer support agent mishandles billing disputes, reading the tool descriptions of lookup_order and process_refund and twenty disputed-charge conversations. You now want to try two divergent fixes: rewriting both tool descriptions to state when each tool applies, and splitting dispute handling into a prompt chain with a separate verification pass. Each fix should start from the shared analysis, and work on one fix should not shape the other. What should you do?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Start a new session for each fix that names only the fix, and have each session begin its work without the earlier analysis."
+            },
+            {
+              "letter": "B",
+              "text": "Save the analysis findings in a scratchpad file, and then explore both fixes one after the other in the analysis session."
+            },
+            {
+              "letter": "C",
+              "text": "Use /memory to add the analysis findings to the project CLAUDE.md, and then explore both fixes together in the analysis session."
+            },
+            {
+              "letter": "D",
+              "text": "Use fork_session on the analysis session to create two branches, and then explore one fix in each branch from the shared baseline."
+            }
+          ]
+        },
+        {
+          "number": 55,
+          "question_id": "M5-S55-T1",
+          "domain": 1,
+          "task_statement": "1.2",
+          "point": "1.2-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your support coordinator spends several turns with a customer, who verifies their identity, gives an order number, and explains that a blender arrived with a cracked jar. The coordinator then spawns a returns subagent through the Task tool with the prompt \"Handle this customer's return request.\" The returns subagent replies by asking for the order number and a description of the damage. What is the most likely cause of this behavior?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "The coordinator's conversation grew too long, so the earliest customer turns were trimmed from the conversation history that the returns subagent shares with the coordinator."
+            },
+            {
+              "letter": "B",
+              "text": "The returns subagent does not inherit the coordinator's conversation history, so the order number and damage details had to be written directly into its prompt."
+            },
+            {
+              "letter": "C",
+              "text": "The returns subagent was spawned before the coordinator's latest customer turns were synchronized into its context, so it worked from an outdated copy of the conversation."
+            },
+            {
+              "letter": "D",
+              "text": "The returns subagent's allowedTools configuration omits lookup_order, so it could not read the order number and damage details that the customer gave earlier in the conversation."
+            }
+          ]
+        },
+        {
+          "number": 56,
+          "question_id": "M5-S56-T1",
+          "domain": 5,
+          "task_statement": "5.3",
+          "point": "5.3-K4",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "A customer asks to return items from three separate orders. Your coordinator agent spawns one subagent per order, and each subagent calls lookup_order. When any subagent fails, the coordinator currently ends the whole case and sends the customer a generic apology, even when the other two checks succeeded. A teammate proposes that subagents catch every lookup_order failure and return an empty order record marked as success, so that cases never stop. Which changes should the team make?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Adopt the teammate's proposal, so that the coordinator always receives a successful response and completes every return without stopping the case for a lookup failure."
+            },
+            {
+              "letter": "B",
+              "text": "Keep ending the whole case on any failure, but first rerun all three subagents from the start once so that a transient lookup error has a second chance."
+            },
+            {
+              "letter": "C",
+              "text": "Have a failed subagent report the failure type, the lookup it attempted and any partial results instead of returning a success response."
+            },
+            {
+              "letter": "D",
+              "text": "Let the coordinator finish the two orders whose checks succeeded and handle only the failed order through a retry or a targeted escalation."
+            },
+            {
+              "letter": "E",
+              "text": "Have a failed subagent return a short generic status such as 'order lookup unavailable' so that the coordinator can move on without extra detail about the failure."
+            }
+          ]
+        },
+        {
+          "number": 57,
+          "question_id": "M5-S57-T1",
+          "domain": 1,
+          "task_statement": "1.4",
+          "point": "1.4-K3",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "A customer contacts your support agent about an annual renewal that was charged twice. Using lookup_order, the agent finds that a payment retry created a duplicate $480 charge, which exceeds its refund limit, so it calls escalate_to_human. The escalation currently passes only a short note that the customer needs billing help, and the human agents cannot see the conversation transcript. Which change best lets the human agents resolve such cases without repeating the investigation?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Keep the short note but add an urgency rating from one to five, so human agents can sort the escalation queue by priority."
+            },
+            {
+              "letter": "B",
+              "text": "Have the agent call escalate_to_human at the start of each billing dispute, so a human agent handles the investigation from the beginning."
+            },
+            {
+              "letter": "C",
+              "text": "Have the agent pass a structured summary with the customer ID, the payment-retry root cause, the $480 refund amount, and its recommended action."
+            },
+            {
+              "letter": "D",
+              "text": "Attach the customer's original messages word for word, so the human agent can read the complaint in the customer's own words."
+            }
+          ]
+        },
+        {
+          "number": 58,
+          "question_id": "M5-S58-T2",
+          "domain": 1,
+          "task_statement": "1.1",
+          "point": "1.1-K2",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support resolution agent runs an agentic loop with the Claude Agent SDK. A customer asks for a refund, and Claude requests lookup_order, which the loop code runs correctly and saves to an audit log for the support team. However, each next request holds only the customer's messages and Claude's earlier responses. Logs show that Claude keeps requesting lookup_order for the same order and never calls process_refund. Which change fixes this behavior?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Call escalate_to_human automatically whenever Claude requests lookup_order twice for the same order, so that a human agent completes the refund."
+            },
+            {
+              "letter": "B",
+              "text": "Add few-shot examples to the system prompt that show Claude how to move from lookup_order to process_refund in refund requests."
+            },
+            {
+              "letter": "C",
+              "text": "Rewrite the lookup_order tool description so that it explains each field in the returned order record in more detail."
+            },
+            {
+              "letter": "D",
+              "text": "Append Claude's tool_use response and the lookup_order output as a tool result to the conversation history before the next request."
+            }
+          ]
+        },
+        {
+          "number": 59,
+          "question_id": "M5-S59-T1",
+          "domain": 1,
+          "task_statement": "1.5",
+          "point": "1.5-S1",
+          "type": "multiple_choice",
+          "select": 1,
+          "question": "Your customer support agent checks return eligibility before it calls process_refund. The lookup_order tool returns delivery dates as Unix timestamps and order status as numeric codes, while the get_customer tool returns dates as ISO 8601 strings. The agent sometimes misreads the timestamps and approves returns outside the 30-day return window. Which change most reliably makes the agent work with one consistent data format?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add few-shot examples to the system prompt that show the agent how to convert Unix timestamps and numeric status codes before it checks the return window."
+            },
+            {
+              "letter": "B",
+              "text": "Implement a PostToolUse hook that converts the lookup_order timestamps and status codes into ISO 8601 dates and readable labels before the agent processes them."
+            },
+            {
+              "letter": "C",
+              "text": "Add a custom convert_formats MCP tool and instruct the agent in the system prompt to call it on every lookup_order result before it decides whether the order is still inside the return window."
+            },
+            {
+              "letter": "D",
+              "text": "Route every return request to the escalate_to_human tool so that a human reviewer checks the order dates and status codes before any refund is processed."
+            }
+          ]
+        },
+        {
+          "number": 60,
+          "question_id": "M5-S60-T4",
+          "domain": 2,
+          "task_statement": "2.2",
+          "point": "2.2-S1",
+          "type": "multiple_response",
+          "select": 2,
+          "question": "Your support agent's lookup_order tool now returns the isError flag and an isRetryable boolean on every failure. Logs show that the agent no longer repeats failed calls, but it sends every non-retryable failure to escalate_to_human. Many of these failures are order numbers that customers mistyped, which the agent could resolve by asking the customer for the correct number. Others are permission denials that truly need a human. Which two additions to the error response best let the agent choose the right recovery?",
+          "options": [
+            {
+              "letter": "A",
+              "text": "Add a system prompt rule telling the agent to ask the customer to re-enter the order number whenever any lookup_order call fails for any reason."
+            },
+            {
+              "letter": "B",
+              "text": "Change isRetryable to true for mistyped order numbers so the agent repeats the same lookup_order call until it succeeds."
+            },
+            {
+              "letter": "C",
+              "text": "Add an errorCategory field whose values separate validation failures from permission failures and from transient failures."
+            },
+            {
+              "letter": "D",
+              "text": "Return a successful empty result for mistyped order numbers, so the agent treats them as orders that do not exist."
+            },
+            {
+              "letter": "E",
+              "text": "Add a human-readable description that states which input was invalid, such as the expected order number format."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -141,5 +141,19 @@
     "target": "M5-SC1-R1-F4",
     "reason": "Known limit of mock 5, as for mocks 2 to 4. No rewrite.",
     "date": "2026-10-09"
+  },
+  {
+    "id": "D020",
+    "action": "ignore",
+    "target": "M5-SC4-R1-F1",
+    "reason": "Known limit of mock 5: option D of M5-S02 is the answer of M5-S05 (spawn the subagents in parallel). The point 1.4-S2 of M5-S02 names parallel investigation itself. The owner decided no rewrite.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D021",
+    "action": "accept",
+    "target": "M5",
+    "reason": "",
+    "date": "2026-10-09"
   }
 ]
