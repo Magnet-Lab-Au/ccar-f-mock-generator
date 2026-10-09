@@ -22,9 +22,14 @@ One entry for each work session. Newest entry first.
 - Decision 0072: the 38 sure narrow groups join the list (62 of 95). The 11 judgment calls keep the stricter rule. The build guide tells participants plainly that mocks 4 and 5 often test the same problem as mocks 1 to 3 in a new setting, that only copies are blocked, and that no person reads the questions of mocks 4 and 5.
 - Fixes before the confirmation: 0069 (nobody read round 1, the second review found 2 questions to fix, 31 of 60 close), 0071 (no person reads mocks 4 and 5, the owner agreed to mark mocks 1 and 2 only), 0068 (the new point of an open slot is decision 0039, item 7, not 0045. The citation of 0045 in 0071 is right). The owner confirmed 0068 to 0072. The second review in Cowork checked them.
 
+- Mock 5 ran (seed 203660, scenarios 1, 2, 4 and 5, balanced letters). The API usage limit stopped one run. The owner raised it. 7 slots opened on B9 or the form: new points for M5-S28, S29, S39 and S60, more tries for M5-S38 (with the reason of the owner, decision 0074) and M5-S37 (G042 joins the narrow list, decision 0075). All 60 passed. Mock 5 cost $11.02, plus under $1 of a stopped run (decision 0073). The marking file has all 60 questions (decision 0073).
+- An independent agent compared mock 5 with mocks 1 to 4 (`docs/reviews/mock-5-comparison.md`): 1 copy (M5-S33 with M2-S34), 46 close (14 near copies), 12 same idea only, 1 new. One pair inside mock 5: M5-S41 and M5-S45.
+
 **Open**
 
-- Mock 5 (scenarios 1, 2, 4 and 5): the second review marks it (decision 0071).
+- The second review in Cowork marks `marking/M5-round1.xlsx` (60 questions).
+- The copy M5-S33 and the pair M5-S41/M5-S45: the owner decides after the marking.
+- The owner confirms decisions 0073 to 0075.
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9
