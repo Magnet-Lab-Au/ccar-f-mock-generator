@@ -1,0 +1,105 @@
+{
+  "question_id": "M5-S29-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as the earlier questions M2-S40-T1 and M3-S50-T2. All three ask which kind of task gets direct execution, and the same reasoning gives the answer: a simple, well-scoped change goes to direct execution. Framing it as a workflow rule does not change the choice. Correct option C even reuses the scene of M2-S40-T1 (a single validation check in one function). Two wrong options repeat M3-S50-T2: option A (several valid approaches, like the choice between infrastructure approaches) and option D (library migration touching 45+ files). Only one wrong option may repeat.",
+      "letter": "C",
+      "point": "3.4-K2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "a743c19681337723978335f382057303d58a08efb32f99d3bba09bfc54741911",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Direct execution is the right choice for simple, well-scoped changes, such as adding one validation check to one function. Plan mode suits tasks with multiple valid approaches or large multi-file migrations, which rules out A and D. A close deadline (B) is not a good criterion, because skipping planning on complex work risks costly rework.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as the earlier questions M2-S40-T1 and M3-S50-T2. All three ask which kind of task gets direct execution, and the same reasoning gives the answer: a simple, well-scoped change goes to direct execution. Framing it as a workflow rule does not change the choice. Correct option C even reuses the scene of M2-S40-T1 (a single validation check in one function). Two wrong options repeat M3-S50-T2: option A (several valid approaches, like the choice between infrastructure approaches) and option D (library migration touching 45+ files). Only one wrong option may repeat.",
+      "letter": "C",
+      "point": "3.4-K2"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "direct execution",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

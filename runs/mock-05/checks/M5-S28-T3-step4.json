@@ -1,0 +1,100 @@
+{
+  "question_id": "M5-S28-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for option D says the guide recommends tables for 'financial and numeric data'. The guide (5.6-S5) only says financial data should be rendered as tables. It does not mention numeric data in general, so the reason misstates the guide.",
+      "letter": "D",
+      "point": "5.6-S5",
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question has the same problem as the earlier question M3-S46-T1, also in scenario 2 with Claude Code. Claude Code reads old design documents and other mixed-age sources and misreads a temporal difference: as a contradiction there, as a false decline here. Both are fixed by adding source dates to each structured finding. The same reasoning leads to the same correct action, so this is not a different problem such as the cause against the fix or a choice between rules.",
+      "letter": "A",
+      "point": "5.6-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "fe019318ee6f130edf2a3e863817698d40bea7e2b810e12dea81868575ebbfcd",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The trend was reported backwards because the extracted entries had no dates, so Claude Code could not tell which figure came first. Requiring a publication or collection date on each entry fixes this (5.6-K4/S4). Averaging the figures hides the trend, confidence scores don't establish order, and a table changes presentation without fixing the time ordering.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for option D says the guide recommends tables for 'financial and numeric data'. The guide (5.6-S5) only says financial data should be rendered as tables. It does not mention numeric data in general, so the reason misstates the guide.",
+      "letter": "D",
+      "point": "5.6-S5"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question has the same problem as the earlier question M3-S46-T1, also in scenario 2 with Claude Code. Claude Code reads old design documents and other mixed-age sources and misreads a temporal difference: as a contradiction there, as a false decline here. Both are fixed by adding source dates to each structured finding. The same reasoning leads to the same correct action, so this is not a different problem such as the cause against the fix or a choice between rules.",
+      "letter": "A",
+      "point": "5.6-S4"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

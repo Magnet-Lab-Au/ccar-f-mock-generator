@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S16-T1",
+  "slot_id": "M5-S16",
+  "try": 1,
+  "point": "3.4-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "A developer uses Claude Code in plan mode to design a change to the order-pricing logic, which spans many files. While exploring, Claude Code finds that a nightly billing job also reads the pricing tables, so the developer revises the design to cover that job. At that point, no file had been edited and nothing had to be reverted. Which characteristic of plan mode best explains why this discovery caused no rework?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Plan mode isolates verbose discovery output in a separate context and returns only a summary, so the main conversation context stays free.",
+      "correct": false,
+      "reason": "The guide gives this isolation and summarizing role to the Explore subagent, not to plan mode, and it does not explain the absence of rework."
+    },
+    {
+      "letter": "B",
+      "text": "Plan mode is designed for simple, well-scoped changes, so Claude Code keeps each edit small enough that undoing it is always easy.",
+      "correct": false,
+      "reason": "The guide says plan mode is for complex, multi-file tasks, while direct execution fits simple, well-scoped changes."
+    },
+    {
+      "letter": "C",
+      "text": "Plan mode edits one file at a time, so a new finding only affects the single file that Claude Code is changing at that moment.",
+      "correct": false,
+      "reason": "The guide describes plan mode as exploration and design before committing to changes, so no edits happen in it."
+    },
+    {
+      "letter": "D",
+      "text": "Plan mode lets Claude Code explore the codebase and design an approach before committing to changes, so the design can still change at little cost.",
+      "correct": true,
+      "reason": "The guide states that plan mode enables safe codebase exploration and design before committing to changes, which prevents costly rework."
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "question_id": "M5-S26-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question nearly copies M1-S44-T1. Both have a Claude Code pipeline that auto-commits outputs above a confidence threshold, the same goal (ongoing error rate plus new error patterns) and the same correct answer (stratified random sampling). Two wrong options also repeat. Option B (move all reviewer time below the threshold because high-confidence outputs are proven accurate) repeats the earlier 'send only low-confidence docstrings to reviewers'. Option C (check only rewrites that a later check flags) repeats the earlier 'check only docstrings that developers later report as wrong'. Only option D is new, so more than one wrong option repeats.",
+      "letter": "C",
+      "point": "5.5-K2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "62fdc2f2cae0414ec7d04db19a5f46bd217e9965426e1572d9b989e5195b886d",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Taking a stratified random sample of the merged high-confidence rewrites gives an unbiased, ongoing error rate for each segment and surfaces new error patterns. B stops measuring the high-confidence rewrites altogether. C only sees errors that tests happen to catch. D uses a fixed set that cannot detect new patterns.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question nearly copies M1-S44-T1. Both have a Claude Code pipeline that auto-commits outputs above a confidence threshold, the same goal (ongoing error rate plus new error patterns) and the same correct answer (stratified random sampling). Two wrong options also repeat. Option B (move all reviewer time below the threshold because high-confidence outputs are proven accurate) repeats the earlier 'send only low-confidence docstrings to reviewers'. Option C (check only rewrites that a later check flags) repeats the earlier 'check only docstrings that developers later report as wrong'. Only option D is new, so more than one wrong option repeats.",
+      "letter": "C",
+      "point": "5.5-K2"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "-p",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

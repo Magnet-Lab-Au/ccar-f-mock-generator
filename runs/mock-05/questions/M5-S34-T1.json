@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S34-T1",
+  "slot_id": "M5-S34",
+  "try": 1,
+  "point": "4.3-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the --json-schema flag to review each pull request. Each finding has a required verdict field whose enum lists only defect and acceptable. Developers report many false positives on code that calls helpers defined outside the diff, where Claude cannot confirm the actual behavior. All of these findings are labeled defect. What is the most likely cause of these false positives in the review design?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The verdict enum has no \"unclear\" value, so Claude must label findings that it cannot confirm from the diff as either defect or acceptable.",
+      "correct": true,
+      "reason": "The guide recommends an \"unclear\" enum value for ambiguous cases; without it, uncertain findings are forced into a definite verdict such as defect, which creates false positives."
+    },
+    {
+      "letter": "B",
+      "text": "The verdict enum has no \"other\" value with a detail string field, so findings that fit neither listed verdict are forced into the defect value.",
+      "correct": false,
+      "reason": "The guide uses \"other\" plus a detail field for extensible categories; these findings do not need a new category, because the actual problem is that Claude cannot tell which verdict applies."
+    },
+    {
+      "letter": "C",
+      "text": "The prompt lacks format normalization rules, so Claude misreads inconsistently formatted code in the diff as defects and labels those findings accordingly.",
+      "correct": false,
+      "reason": "The guide uses format normalization rules to handle inconsistent source formatting in the output; the false positives come from code whose behavior Claude cannot confirm, which is an ambiguity problem."
+    },
+    {
+      "letter": "D",
+      "text": "The --json-schema flag checks only JSON syntax, so malformed verdict strings slip through and the parser treats each malformed string as a defect.",
+      "correct": false,
+      "reason": "Schema-enforced structured output gives schema-compliant output and eliminates syntax errors; the findings carry valid defect values, so malformed strings are not the cause."
+    }
+  ]
+}

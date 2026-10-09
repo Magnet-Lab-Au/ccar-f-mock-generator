@@ -1,0 +1,128 @@
+{
+  "question_id": "M5-S10-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "9c9ed9990458fa9e763772a5136af54e2b55321aa4035e13516ef050b64a6665",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 2.3-K1, giving an agent too many tools (21 instead of 4-5) increases decision complexity and degrades selection reliability, even with clear descriptions. A: missing credentials would cause call failures, not wrong tool choices. C: \"auto\" does not mean random selection. D: a low max_tokens limit truncates output; it does not make the model pick the first tool listed.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    },
+    {
+      "name": "Write",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    },
+    {
+      "name": ".mcp.json",
+      "found": true
+    },
+    {
+      "name": "environment variable expansion",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": "max_tokens",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

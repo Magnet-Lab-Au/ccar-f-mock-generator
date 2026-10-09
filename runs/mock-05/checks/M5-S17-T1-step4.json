@@ -1,0 +1,96 @@
+{
+  "question_id": "M5-S17-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "108a71f03a511efeb700cb328652f1f288b3c26439c495a06e791a82921ce08f",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "This is a migration across about 50 files, and the team still has to choose between an adapter and direct replacement. That fits 3.4-S4: use plan mode to investigate the call sites and pick an approach, then switch to direct execution to apply the agreed plan. B is wrong because the Explore subagent is for isolating discovery output, not for making edits. C is wrong because plan mode is not meant for applying changes. D commits to edits before the architectural decision has been made.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "direct execution",
+      "found": true
+    },
+    {
+      "name": "Explore subagent",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

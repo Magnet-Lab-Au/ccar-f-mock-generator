@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S33-T1",
+  "slot_id": "M5-S33",
+  "try": 1,
+  "point": "3.2-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI/CD pipeline uses a project skill in .claude/skills/ that generates test cases for the code in each pull request. During one run, the skill used a Bash command that deleted a directory of test fixtures. The team wants the skill to keep reading source files and writing new test files, but to have no access to other tools while it runs. Which change best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move the skill instructions into the project CLAUDE.md file and add a sentence that tells Claude to avoid deleting files during any kind of test generation work.",
+      "correct": false,
+      "reason": "The guide places always-loaded universal standards in CLAUDE.md, while a tool restriction for one on-demand workflow is configured with allowed-tools in the skill frontmatter."
+    },
+    {
+      "letter": "B",
+      "text": "Add allowed-tools to the SKILL.md frontmatter and list only the file read and write tools that test generation needs.",
+      "correct": true,
+      "reason": "The guide says that allowed-tools in skill frontmatter restricts tool access during skill execution, for example to prevent destructive actions."
+    },
+    {
+      "letter": "C",
+      "text": "Add context: fork to the SKILL.md frontmatter so that the skill runs in an isolated sub-agent context apart from the main session.",
+      "correct": false,
+      "reason": "The guide says that context: fork isolates the skill's output from the main conversation, but this option does not restrict which tools the skill can use."
+    },
+    {
+      "letter": "D",
+      "text": "Add argument-hint to the SKILL.md frontmatter so that developers must name the target module before the skill starts to run.",
+      "correct": false,
+      "reason": "The guide says that argument-hint prompts developers for required parameters, and this has no effect on which tools the skill can call."
+    }
+  ]
+}

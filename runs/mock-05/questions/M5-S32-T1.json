@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S32-T1",
+  "slot_id": "M5-S32",
+  "try": 1,
+  "point": "4.4-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code on each pull request and posts structured review findings as comments. Developers dismiss many of these findings as false positives. The team wants to learn which kinds of code cause the dismissed findings, so that it can fix the review prompt systematically. Today each finding records only the file, the line, a severity, and a short message. What change best supports this analysis?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Record the pull request author and the repository for each dismissed finding, so that the team can see which developers and teams dismiss the most findings.",
+      "correct": false,
+      "reason": "This groups dismissals by who dismisses them, not by the code construct that triggered the finding, so it cannot show which patterns cause false positives."
+    },
+    {
+      "letter": "B",
+      "text": "Ask developers to type a free-text comment that explains each dismissal, and store these comments with the pull request so that the team can read them later.",
+      "correct": false,
+      "reason": "Free-text comments are not a structured field tied to the triggering code construct, so they do not enable systematic analysis of dismissal patterns."
+    },
+    {
+      "letter": "C",
+      "text": "Post only the findings that the model marks as high severity, so that developers see fewer comments and dismiss fewer findings on each pull request.",
+      "correct": false,
+      "reason": "Filtering by severity hides findings but records nothing about which code constructs trigger dismissals, so the team still cannot analyze false positive patterns."
+    },
+    {
+      "letter": "D",
+      "text": "Add a detected_pattern field to each finding that names the code construct that triggered it, so that dismissed findings can be grouped by pattern.",
+      "correct": true,
+      "reason": "The guide states that a detected_pattern field on structured findings tracks which code constructs trigger findings and enables analysis of false positive patterns when developers dismiss them."
+    }
+  ]
+}

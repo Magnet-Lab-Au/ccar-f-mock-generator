@@ -1,0 +1,17 @@
+{
+  "question_id": "M5-S37-T1",
+  "step": 3,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 3,
+      "rule": "A12",
+      "detail": "The longest option is a correct option (169 characters). The slot needs a wrong option that is longer than each correct option.",
+      "letter": "A",
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "5f57abb8cabec5aa1721bcab4cc76fdfdc6439989bdbde61a6b214a6e342638a",
+  "date": "2026-10-09"
+}

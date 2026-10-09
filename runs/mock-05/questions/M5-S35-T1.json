@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S35-T1",
+  "slot_id": "M5-S35",
+  "try": 1,
+  "point": "4.2-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the --json-schema flag to extract release metadata from each pull request description, and the schema marks rollback_steps as required. Teams write descriptions in different formats: some use a Rollback heading, some use a table, and some mention the steps inside a Notes paragraph. The prompt has one example, which uses the heading format. For table and Notes descriptions, rollback_steps often comes back empty even though the steps are present. Which change most effectively reduces these empty extractions?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Re-run the extraction with the same prompt whenever rollback_steps comes back empty, and keep the first result in which the field has a value.",
+      "correct": false,
+      "reason": "The same prompt has the same gap for these formats, and the guide says retries help only with specific error feedback, so a later value may be fabricated."
+    },
+    {
+      "letter": "B",
+      "text": "Add an instruction that every pull request contains rollback steps and that the rollback_steps field must never come back empty.",
+      "correct": false,
+      "reason": "Forcing a value does not show where the steps appear in other formats, and the guide warns that forcing values when information may be absent leads to fabrication."
+    },
+    {
+      "letter": "C",
+      "text": "Add few-shot examples of table and Notes descriptions, each paired with the correct output that fills rollback_steps.",
+      "correct": true,
+      "reason": "The guide recommends few-shot examples that show correct extraction from documents with varied formats to fix empty or null extraction of required fields."
+    },
+    {
+      "letter": "D",
+      "text": "Expand the written definition of rollback steps in the prompt, describing in more detail what content counts as a rollback step.",
+      "correct": false,
+      "reason": "The problem is where the steps appear across formats, not their meaning, and the guide says detailed instructions alone are less effective than examples."
+    }
+  ]
+}

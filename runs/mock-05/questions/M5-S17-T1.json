@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S17-T1",
+  "slot_id": "M5-S17",
+  "try": 1,
+  "point": "3.4-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team is migrating a payment service from one HTTP client library to another with Claude Code. The library is called in about 50 files. The team has not yet decided whether to wrap the new library in an adapter or to replace each call directly. Which workflow best fits this migration?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start in plan mode to explore the call sites and choose an approach, then switch to direct execution to apply the approved plan across the files.",
+      "correct": true,
+      "reason": "The guide recommends plan mode for investigation and design, followed by direct execution to implement the planned approach, for example in a library migration."
+    },
+    {
+      "letter": "B",
+      "text": "Ask the Explore subagent to make all the file edits, so that the verbose output of the migration stays out of the main conversation.",
+      "correct": false,
+      "reason": "The guide uses the Explore subagent to isolate verbose discovery output and return summaries. It does not use the Explore subagent to implement the planned changes."
+    },
+    {
+      "letter": "C",
+      "text": "Stay in plan mode for the whole migration, including the file edits, so that each of the 50 files is redesigned before Claude Code changes it.",
+      "correct": false,
+      "reason": "Plan mode is for exploration and design before committing to changes. After the plan is approved, the guide says to implement it with direct execution."
+    },
+    {
+      "letter": "D",
+      "text": "Start in direct execution and edit the files one by one, choosing between the adapter and direct replacement when the first difficult call site appears.",
+      "correct": false,
+      "reason": "A multi-file change with multiple valid approaches calls for plan mode first. Deciding the approach during implementation risks costly rework."
+    }
+  ]
+}

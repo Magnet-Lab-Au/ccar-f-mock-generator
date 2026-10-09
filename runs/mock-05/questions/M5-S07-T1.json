@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S07-T1",
+  "slot_id": "M5-S07",
+  "try": 1,
+  "point": "1.6-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks the agent to find every module that depends on a legacy payment module before the team retires it. The agent first uses Grep for import statements. It finds that some services load the payment module by name from YAML config files, so it adds subtasks to Read those files and Grep for the loaded names. A teammate proposes replacing this approach with a fixed checklist of steps written in advance. What value of the adaptive investigation plan would the fixed checklist lose?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The agent can add subtasks based on what each step uncovers, such as reading the YAML config files that the Grep results revealed, which a checklist written in advance could miss.",
+      "correct": true,
+      "reason": "The guide names the value of adaptive investigation plans as generating subtasks from what is discovered at each step, which catches dependencies that a predefined plan cannot anticipate."
+    },
+    {
+      "letter": "B",
+      "text": "The agent no longer needs a separate cross-file integration pass, because each module is examined once and its dependencies are resolved inside that single local pass.",
+      "correct": false,
+      "reason": "The guide describes a cross-file integration pass as part of prompt chaining for code reviews; removing it is unrelated to the value of adaptive investigation."
+    },
+    {
+      "letter": "C",
+      "text": "The agent always runs the same steps in the same order on every request, so results from different retirement checks are easy to compare with each other.",
+      "correct": false,
+      "reason": "A stable, repeated order is a property of fixed sequential pipelines, which the guide fits to predictable tasks; it is the opposite of an adaptive plan."
+    },
+    {
+      "letter": "D",
+      "text": "The agent decides every subtask from the engineer's first request before any tool runs, so the plan stays complete even when later search results surprise it.",
+      "correct": false,
+      "reason": "Planning all subtasks upfront without revising them ignores intermediate findings; the guide says adaptive plans generate subtasks from what each step discovers."
+    }
+  ]
+}

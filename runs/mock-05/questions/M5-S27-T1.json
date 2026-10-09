@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S27-T1",
+  "slot_id": "M5-S27",
+  "try": 1,
+  "point": "5.5-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in CI with the -p flag and --json-schema to extract API documentation metadata from service source files: route path, HTTP method, and whether authentication is required. Most services are written in TypeScript, and a few legacy services are written in Java. On a labeled validation set, high-confidence outputs are 98% accurate overall. The team lead proposes ending human review of high-confidence outputs. What should you do before review is reduced?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Raise the automation threshold so that only outputs with very high confidence skip review, and accept the 98% overall figure as proof of reliability.",
+      "correct": false,
+      "reason": "A stricter threshold still rests on the aggregate figure. That figure can hide poor accuracy in the small Java segment or in one field, so accuracy must first be checked for each segment."
+    },
+    {
+      "letter": "B",
+      "text": "Measure accuracy separately for each language and each extracted field, and confirm that every segment performs well before review ends.",
+      "correct": true,
+      "reason": "The guide says to validate accuracy by document type and by field before automating high-confidence extractions, because an aggregate figure can mask poor performance in a small segment."
+    },
+    {
+      "letter": "C",
+      "text": "Run the labeled validation set again in plan mode to confirm that the 98% overall figure is stable, then end review for all high-confidence outputs.",
+      "correct": false,
+      "reason": "Plan mode does not affect extraction accuracy, and a repeated aggregate figure still cannot show consistent performance for each language and each field."
+    },
+    {
+      "letter": "D",
+      "text": "Add a CLAUDE.md instruction that tells Claude Code to report its own certainty for each file, then skip review for every file it reports as certain.",
+      "correct": false,
+      "reason": "Self-reported certainty for a whole file is not a field-level score calibrated on a labeled validation set, and it gives no accuracy check for each segment."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S37-T3",
+  "slot_id": "M5-S37",
+  "try": 3,
+  "point": "3.3-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S37-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review pull requests in a repository with dozens of service directories. Helm chart conventions apply only to files inside the infra/helm directory. Dockerfile conventions apply to the Dockerfile in each service directory, and the team adds new services often. You want each set of conventions to load automatically, and only when Claude Code works on matching files. Which configuration best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Put the Helm conventions in a CLAUDE.md file inside infra/helm, and put the Dockerfile conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/Dockerfile\"].",
+      "correct": true,
+      "reason": "The Helm conventions belong to one directory, so a directory-level CLAUDE.md fits them. The Dockerfiles are spread across the codebase, so a glob-scoped rule covers every Dockerfile in any directory, including new ones."
+    },
+    {
+      "letter": "B",
+      "text": "Put the Helm conventions in a CLAUDE.md file inside infra/helm, and copy the Dockerfile conventions into a separate CLAUDE.md file inside each service directory that contains a Dockerfile.",
+      "correct": false,
+      "reason": "Subdirectory CLAUDE.md files are the wrong choice for conventions spread across the codebase. The copies multiply, and new service directories get no conventions until someone adds another file."
+    },
+    {
+      "letter": "C",
+      "text": "Put the Helm conventions in a CLAUDE.md file inside infra/helm, and put the Dockerfile conventions in a CLAUDE.md file inside a new root-level docker/ directory.",
+      "correct": false,
+      "reason": "A directory-level CLAUDE.md applies to files in its own directory. The Dockerfiles sit in the service directories, not under docker/, so their conventions would never load for them."
+    },
+    {
+      "letter": "D",
+      "text": "Package both sets of conventions as skills in .claude/skills/, and have the CI job invoke each skill before Claude Code reviews a pull request.",
+      "correct": false,
+      "reason": "Skills are invoked on demand and do not load automatically based on the paths of the edited files. Conditional loading by file path is what path-specific rules and the CLAUDE.md hierarchy provide."
+    }
+  ]
+}

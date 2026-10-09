@@ -1,0 +1,92 @@
+{
+  "question_id": "M5-S28-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats the problem of M3-S46-T1, which is also in scenario 2. There, values that were correct at different times are misread as contradictions. The correct fix is the same: give each finding the publication or data collection date of its source. The file-timestamp twist does not change the reasoning that leads to A. Two wrong options also repeat. B (keep the figure with the most recent timestamp) matches the earlier 'keep only the official changelog value' option, since both arbitrarily select one value. D (contested section with source attribution) matches the earlier 'list each conflicting value beside its source and flag it as a contradiction' option. The rule allows at most one repeated wrong option.",
+      "letter": null,
+      "point": "5.6-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "07460a601e72c3a6badf7a4ef6f943339c7875337db7e48532a2aa3926e8dcb4",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The dates come from file timestamps, and every file was bulk-copied last month, so all figures look current. Requiring the real publication or data-collection date (5.6-S4) lets the synthesis read figures measured years apart as change over time rather than as conflicting current values. B selects by the same meaningless timestamp. C removes structured metadata. D keeps treating differences that come from timing as genuine conflicts.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats the problem of M3-S46-T1, which is also in scenario 2. There, values that were correct at different times are misread as contradictions. The correct fix is the same: give each finding the publication or data collection date of its source. The file-timestamp twist does not change the reasoning that leads to A. Two wrong options also repeat. B (keep the figure with the most recent timestamp) matches the earlier 'keep only the official changelog value' option, since both arbitrarily select one value. D (contested section with source attribution) matches the earlier 'list each conflicting value beside its source and flag it as a contradiction' option. The rule allows at most one repeated wrong option.",
+      "letter": null,
+      "point": "5.6-S4"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

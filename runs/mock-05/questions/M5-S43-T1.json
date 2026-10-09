@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S43-T1",
+  "slot_id": "M5-S43",
+  "try": 1,
+  "point": "4.5-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team moved nightly test generation in the CI/CD pipeline to the Message Batches API. A scheduled job submits the batch at 1 a.m., and the generated tests usually return within an hour, well before the 9 a.m. team review. Last night the batch finished at 3 p.m., and the team missed the review. A developer opens a bug ticket against the batch job. What best explains the late results?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The batch broke the guaranteed latency SLA of the Message Batches API, so the delay points to a fault that the team should report.",
+      "correct": false,
+      "reason": "The guide states that the Message Batches API has no guaranteed latency SLA, so there is no SLA that this batch could break."
+    },
+    {
+      "letter": "B",
+      "text": "The batch job omitted custom_id fields on its requests, so the Message Batches API placed the whole batch at a lower processing priority.",
+      "correct": false,
+      "reason": "The guide describes custom_id as a field for correlating batch request and response pairs, not as a setting that controls processing priority."
+    },
+    {
+      "letter": "C",
+      "text": "The Message Batches API has no guaranteed latency SLA, so a batch that finishes within the 24-hour processing window is behaving as designed.",
+      "correct": true,
+      "reason": "The guide states that the Message Batches API has an up to 24-hour processing window with no guaranteed latency SLA, so a finish at 3 p.m. is expected behavior and not a bug."
+    },
+    {
+      "letter": "D",
+      "text": "The test generation requests called tools mid-request, and the Message Batches API paused each request until the tool results were returned.",
+      "correct": false,
+      "reason": "The guide states that the batch API does not support multi-turn tool calling within a request, so it cannot pause to execute tools and return their results."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S30-T1",
+  "slot_id": "M5-S30",
+  "try": 1,
+  "point": "3.1-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code in a mobile app repository with an ios/ directory and an android/ directory, and each directory has its own CLAUDE.md file. Human-readable standards live in docs/standards/, including swift-style.md and kotlin-style.md. These style guides change every few weeks. The Android maintainer wants Claude Code to follow kotlin-style.md whenever it edits files under android/. What should the Android maintainer do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Paste the full text of kotlin-style.md into android/CLAUDE.md, and add a pull request checklist item that reminds engineers to update both copies together.",
+      "correct": false,
+      "reason": "A pasted copy drifts from the source when the guide changes, while @import references the external file and keeps CLAUDE.md modular."
+    },
+    {
+      "letter": "B",
+      "text": "Write a sentence in android/CLAUDE.md that says a Kotlin style guide exists somewhere in the docs folder and that Claude should look for it when relevant.",
+      "correct": false,
+      "reason": "A vague mention does not include the file's content in the configuration, while an @import reference includes the specific standards file directly."
+    },
+    {
+      "letter": "C",
+      "text": "Convert kotlin-style.md into a custom slash command in .claude/commands/, and ask Android developers to run that command before each editing session.",
+      "correct": false,
+      "reason": "A slash command runs only when a developer invokes it, so it is not standing configuration; @import is the way to include a standards file in CLAUDE.md."
+    },
+    {
+      "letter": "D",
+      "text": "Add an @import reference to docs/standards/kotlin-style.md in android/CLAUDE.md so that the guide is included from its single source file.",
+      "correct": true,
+      "reason": "The @import syntax references an external file from CLAUDE.md, which keeps the configuration modular and includes only the standards that are relevant to the package."
+    }
+  ]
+}

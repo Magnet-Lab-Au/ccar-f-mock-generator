@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S07-T2",
+  "slot_id": "M5-S07",
+  "try": 2,
+  "point": "1.6-K3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S07-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks the agent to add comprehensive tests to a legacy codebase. The agent maps the structure with Glob and Grep, identifies the billing module as the highest-impact area, and builds a prioritized plan that starts there. While writing billing tests, the agent uses Read on the billing code and discovers that every total depends on an untested date-handling module that the plan did not list. How should the agent's plan respond to this discovery?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a subtask to test the date-handling module and move it ahead of the remaining billing tests, since the billing results depend on that module.",
+      "correct": true,
+      "reason": "The guide says that an adaptive plan generates subtasks from what each step discovers, and that the prioritized plan adapts as dependencies are discovered."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the original order of the plan and put the date-handling module on a follow-up list for after all planned modules are tested.",
+      "correct": false,
+      "reason": "This treats the plan as fixed and ignores the discovered dependency until the end, so the plan does not adapt as dependencies are discovered, as the guide requires."
+    },
+    {
+      "letter": "C",
+      "text": "Replace the prioritized plan with an alphabetical pass over all modules, so that the agent reaches the date-handling module without special handling.",
+      "correct": false,
+      "reason": "The guide says to identify high-impact areas and follow a prioritized plan; an alphabetical pass drops the priorities and ignores what the discovery revealed."
+    },
+    {
+      "letter": "D",
+      "text": "Stop the current plan, map the entire codebase again from the start, and build a completely new plan before writing any more tests.",
+      "correct": false,
+      "reason": "The guide describes a prioritized plan that adapts as dependencies are discovered; it does not call for discarding the existing map and plan after each new finding."
+    }
+  ]
+}

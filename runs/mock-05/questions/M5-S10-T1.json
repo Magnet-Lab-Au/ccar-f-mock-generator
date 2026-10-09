@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S10-T1",
+  "slot_id": "M5-S10",
+  "try": 1,
+  "point": "2.3-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK developer productivity agent used only Read, Write, Bash, Grep, and Glob, and it chose the right tool almost every time. Last month the team connected four MCP servers for tickets, CI, documentation, and deployments, so the agent now has 21 tools. Since then, the agent often picks a wrong tool even for simple steps, such as calling the ticket search tool when an engineer asks it to find a function name in the code. A review found that every tool description is clear and distinct. What is the most likely cause of the drop in tool selection reliability?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The environment variables in the .mcp.json configuration did not expand, so the new MCP servers start without credentials and confuse the agent's choices.",
+      "correct": false,
+      "reason": "Missing credentials would make calls to the new MCP tools fail. They would not make the agent choose a ticket tool for a code search, so the cause is the growth in tool count."
+    },
+    {
+      "letter": "B",
+      "text": "The agent now chooses among 21 tools at every step, and this larger decision complexity degrades the reliability of its tool selection.",
+      "correct": true,
+      "reason": "The guide states that giving an agent too many tools, such as 18 instead of 4-5, degrades tool selection reliability by increasing decision complexity."
+    },
+    {
+      "letter": "C",
+      "text": "The tool_choice setting is \"auto\", and this setting makes the model pick among its available tools at random whenever two tool names look similar to it.",
+      "correct": false,
+      "reason": "With tool_choice \"auto\", the model decides whether to call a tool or to return text. The setting does not make the model choose at random, so it does not explain the wrong picks."
+    },
+    {
+      "letter": "D",
+      "text": "The max_tokens limit of each response is too low, so the model cuts its reasoning short and calls the first tool that it happens to list.",
+      "correct": false,
+      "reason": "The max_tokens limit caps the length of the generated output and does not decide which tool the model selects. The reliability drop follows the growth from 5 to 21 tools."
+    }
+  ]
+}

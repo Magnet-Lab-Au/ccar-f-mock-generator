@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S45-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question asks for the fix to a routing design that sends findings to the wrong place. Its correct answer, option B, is the same as in the earlier questions M2-S49-T2 and M3-S13-T2: add per-item confidence from a verification pass and calibrate the thresholds on a labeled validation set. The setting is new (CI review findings instead of extracted fields), and the flawed routing input is new (a severity label). The team still makes the same choice of how to route review attention, so the same reasoning leads to the answer. The question is not a cause-versus-fix variant and does not test a different failure.",
+      "letter": "B",
+      "point": "4.6-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "615eb134be1c305a01a4a2045b47888040e10e0a92f8fac67ab30afb1ce3d84c",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "The labels mix up how serious a finding is with how likely it is to be real. Option B adds a verification pass that reports confidence for each finding. It then routes findings using thresholds calibrated on a labeled validation set, which aligns routing with likely correctness. Option C relies on vague 'be confident' prompting, which does not reliably improve precision. Option A routes by coarse category, which ignores whether a finding is actually correct. Option D, extended thinking, does not calibrate the routing decision.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question asks for the fix to a routing design that sends findings to the wrong place. Its correct answer, option B, is the same as in the earlier questions M2-S49-T2 and M3-S13-T2: add per-item confidence from a verification pass and calibrate the thresholds on a labeled validation set. The setting is new (CI review findings instead of extracted fields), and the flawed routing input is new (a severity label). The team still makes the same choice of how to route review attention, so the same reasoning leads to the answer. The question is not a cause-versus-fix variant and does not test a different failure.",
+      "letter": "B",
+      "point": "4.6-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "extended thinking",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

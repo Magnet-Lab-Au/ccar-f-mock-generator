@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S39-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question has the same problem as earlier question M4-S09-T2. Both ask for the cause of an added 'only report high-confidence findings' line failing to give precision. In both, the answer comes from the same reasoning: a confidence instruction is not a categorical criterion. Moving the setting from contract extraction to CI review and adding the detail of lost race conditions does not change the problem. The wrong option C (instruction worded too mildly, needs a stricter demand) also repeats the mild-wording distractor of M4-S09-T2.",
+      "letter": null,
+      "point": "4.1-K2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "a298f8d5c3629901c9fa11a30686d8d7ea54e97fe270e566f3e2133cf3f6d036",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Confidence-based filtering doesn't target issue categories: style remarks are easy to be confident about and survive, while subtle race conditions are harder to confirm and get dropped. Explicit categorical criteria (report bugs/security, skip style) are needed. A is false, C is the same flawed approach with a number attached, and D is unlikely because PR size didn't change.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question has the same problem as earlier question M4-S09-T2. Both ask for the cause of an added 'only report high-confidence findings' line failing to give precision. In both, the answer comes from the same reasoning: a confidence instruction is not a categorical criterion. Moving the setting from contract extraction to CI review and adding the detail of lost race conditions does not change the problem. The wrong option C (instruction worded too mildly, needs a stricter demand) also repeats the mild-wording distractor of M4-S09-T2.",
+      "letter": null,
+      "point": "4.1-K2"
+    }
+  ],
+  "features": [
+    {
+      "name": "-p",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

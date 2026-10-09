@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S48-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question has the same problem as the earlier question M4-S41-T1, which is in the same scenario. In both, a generic tool (fetch_url there, run_backend_query here) lets the agent reach data it should not use. In both, the team chooses the same fix: replace the generic tool with a constrained tool that validates its input and rejects other requests with an error (load_policy_document there, lookup_order in D). The same reasoning leads to the answer, so the question does not test a different problem such as the cause against the fix or a choice between rules. The wrong options differ, but the problem and the correct action are the same.",
+      "letter": "D",
+      "point": "2.3-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "e18d53d6edcb5c20d2337f66393fc21d817740365207ced43ceaa944c6bee9a1",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Replacing the generic SQL tool with a constrained lookup_order tool makes the interface itself enforce ownership. The tool requires the verified customer ID and returns an error for orders owned by another account (2.3-S2, 1.4-S1). Few-shot examples, forced first-turn tool choice and longer descriptions are all probabilistic and leave arbitrary queries possible.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question has the same problem as the earlier question M4-S41-T1, which is in the same scenario. In both, a generic tool (fetch_url there, run_backend_query here) lets the agent reach data it should not use. In both, the team chooses the same fix: replace the generic tool with a constrained tool that validates its input and rejects other requests with an error (load_policy_document there, lookup_order in D). The same reasoning leads to the answer, so the question does not test a different problem such as the cause against the fix or a choice between rules. The wrong options differ, but the problem and the correct action are the same.",
+      "letter": "D",
+      "point": "2.3-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

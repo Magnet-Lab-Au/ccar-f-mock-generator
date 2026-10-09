@@ -1,0 +1,96 @@
+{
+  "question_id": "M5-S47-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "f11db7d592e264da5266f7a1baf5df9025cf53b93c6c8e8a5baf630a10cd5f63",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "The MCP isError flag is the standard way for a tool to report a failure to the agent. Returning the gateway failure details with isError: true tells the agent the refund was not submitted, so it can retry or escalate instead of confirming a refund that never happened. The other options either hide the failure (D), misreport it as pending (A), or still mark it as a success (B).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP",
+      "found": true
+    },
+    {
+      "name": "isError",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

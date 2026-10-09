@@ -1,0 +1,109 @@
+{
+  "question_id": "M5-S37-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Options A, B and C all use the same directory-level CLAUDE.md for the Helm conventions, so the reader never chooses between two rules. The only real decision concerns the Dockerfile conventions. Those files are spread across service directories and new directories keep being added, and the choice is a **/ glob rule against per-directory CLAUDE.md copies. That is the same problem and the same reasoning as M1-S43-T1, which uses spread *.test.tsx files in feature directories that grow every sprint. Option B also repeats the per-directory-copies distractor of M1-S43-T1. A wrong option has to put the Helm conventions in the wrong place, so that the question truly tests a choice between directory CLAUDE.md and path rules.",
+      "letter": null,
+      "point": "3.3-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "4e67b0dc2d80761301ed7587e38370cf423b9b43d93f8f4d5c6dedd132e24c49",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The Helm conventions apply to a single directory, so a directory-level CLAUDE.md in infra/helm loads them only when Claude Code works on files there. The Dockerfile conventions apply to files spread across many directories, and new services are added often. A .claude/rules/ file with the glob paths: [\"**/Dockerfile\"] loads them automatically for any matching file, including Dockerfiles in future services. B requires copying the file into every service and drifts as services are added. C would only apply to files inside docker/, not the service Dockerfiles. D relies on manual invocation instead of automatic, file-scoped loading.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Options A, B and C all use the same directory-level CLAUDE.md for the Helm conventions, so the reader never chooses between two rules. The only real decision concerns the Dockerfile conventions. Those files are spread across service directories and new directories keep being added, and the choice is a **/ glob rule against per-directory CLAUDE.md copies. That is the same problem and the same reasoning as M1-S43-T1, which uses spread *.test.tsx files in feature directories that grow every sprint. Option B also repeats the per-directory-copies distractor of M1-S43-T1. A wrong option has to put the Helm conventions in the wrong place, so that the question truly tests a choice between directory CLAUDE.md and path rules.",
+      "letter": null,
+      "point": "3.3-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    },
+    {
+      "name": "paths",
+      "found": true
+    },
+    {
+      "name": ".claude/skills/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

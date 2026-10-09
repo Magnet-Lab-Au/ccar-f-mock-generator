@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S46-T1",
+  "slot_id": "M5-S46",
+  "try": 1,
+  "point": "2.5-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support resolution agent sometimes completes refunds above the $500 policy limit through the process_refund MCP tool. You open the MCP server repository in Claude Code to find where this limit is checked. The repository has about 300 Python files, and you do not know where refund requests are validated before they reach the payment backend. How should you build your understanding of the refund flow?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Bash to join all 300 Python files into one large file, then use Read on that file so the whole codebase is in context at once.",
+      "correct": false,
+      "reason": "This is reading all files upfront, which the guide advises against. Starting with Grep to find entry points and then tracing imports with Read is the incremental approach."
+    },
+    {
+      "letter": "B",
+      "text": "Use Glob to find files whose names contain the word refund, then use Read on only those files, assuming the limit check lives in a file named after it.",
+      "correct": false,
+      "reason": "Glob matches file paths, not file contents. The limit check can be in a file with any name, so Grep is the tool for finding where the code actually appears."
+    },
+    {
+      "letter": "C",
+      "text": "Use Read on the server's main module, then use Read on every module it imports and their imports, before you search for any refund-related names.",
+      "correct": false,
+      "reason": "This reads a large part of the codebase upfront without first locating the relevant entry points with Grep. It fills the context with code that has nothing to do with refund validation."
+    },
+    {
+      "letter": "D",
+      "text": "Use Grep to search for process_refund and limit-related names to find the entry points, then use Read on the matching files and follow their imports to trace the validation.",
+      "correct": true,
+      "reason": "This builds understanding incrementally. Grep finds the entry points, and Read then follows the imports to trace the flow, without loading all files upfront."
+    }
+  ]
+}

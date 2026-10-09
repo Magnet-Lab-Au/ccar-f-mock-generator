@@ -1,0 +1,109 @@
+{
+  "question_id": "M5-S27-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question closely copies M2-S56-T1. Only the domain changes, from invoices to API metadata. The stem has the same structure: a labeled validation set, a high overall accuracy figure, a proposal to end review of high-confidence outputs, and 'What should you do before review is reduced?'. The correct answer is the same: measure accuracy per segment and per field. More than one wrong option repeats. D (self-reported certainty per whole file) repeats M2-S56-T1's whole-document self-reported confidence option. C (rerun the validation set to confirm the overall figure is stable) repeats the option that expands the validation set to make the overall estimate precise. A (accept the 98% overall figure) repeats the 'approve because of overall accuracy' option.",
+      "letter": null,
+      "point": "5.5-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "e1bdb2de68c8c2aab0448bbd94e73bd400866badd52c02fd72f5c292a17ff955",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "A 98% overall figure can hide weak results on a small segment, such as the few legacy Java services or a particular field like the authentication flag. Accuracy should be checked separately for each language and each extracted field before human review is reduced (5.5-K1, 5.5-S2). The other options either rely on the aggregate number, misuse plan mode, or depend on uncalibrated self-reported confidence.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question closely copies M2-S56-T1. Only the domain changes, from invoices to API metadata. The stem has the same structure: a labeled validation set, a high overall accuracy figure, a proposal to end review of high-confidence outputs, and 'What should you do before review is reduced?'. The correct answer is the same: measure accuracy per segment and per field. More than one wrong option repeats. D (self-reported certainty per whole file) repeats M2-S56-T1's whole-document self-reported confidence option. C (rerun the validation set to confirm the overall figure is stable) repeats the option that expands the validation set to make the overall estimate precise. A (accept the 98% overall figure) repeats the 'approve because of overall accuracy' option.",
+      "letter": null,
+      "point": "5.5-K4"
+    }
+  ],
+  "features": [
+    {
+      "name": "-p",
+      "found": true
+    },
+    {
+      "name": "--json-schema",
+      "found": true
+    },
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

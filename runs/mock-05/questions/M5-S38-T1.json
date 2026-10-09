@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S38-T1",
+  "slot_id": "M5-S38",
+  "try": 1,
+  "point": "4.5-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline submits a nightly Message Batches API job that generates test cases for 1,200 source files, and each request carries a custom_id derived from its file path. When the batch completes, 1,170 requests succeed and 30 fail because those source files exceeded the model's context limit. The pipeline's retry step then resubmits all 1,200 requests unchanged, the same 30 fail again, and the nightly cost doubles. Which changes should the team make to the retry step?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Split each source file that exceeded the context limit into smaller chunks before it is resubmitted.",
+      "correct": true,
+      "reason": "The guide says failed documents need appropriate modifications before resubmission, such as chunking documents that exceeded context limits, so the 30 files stop failing for the same reason."
+    },
+    {
+      "letter": "B",
+      "text": "Read the custom_id values of the failed results and resubmit only those 30 source files instead of the full batch.",
+      "correct": true,
+      "reason": "The guide says to handle batch failures by resubmitting only the failed documents, identified by custom_id, which stops the retry step from paying again for the 1,170 successful requests."
+    },
+    {
+      "letter": "C",
+      "text": "Give each resubmitted request a tool that fetches the oversized source file in sections, so Claude can read it piece by piece during processing.",
+      "correct": false,
+      "reason": "The guide states that the batch API does not support multi-turn tool calling within a single request, so tools cannot be executed mid-request and their results returned."
+    },
+    {
+      "letter": "D",
+      "text": "Resubmit the 30 failed source files unchanged in a separate batch, and give that batch a longer processing window so the large files can finish.",
+      "correct": false,
+      "reason": "The files failed because they exceeded the context limit, which more processing time does not fix; the guide calls for modifications such as chunking, and the processing window is up to 24 hours."
+    },
+    {
+      "letter": "E",
+      "text": "Keep resubmitting the full batch of 1,200 source files, but run the retry step only once a week so the extra cost is spread out.",
+      "correct": false,
+      "reason": "This still reprocesses the requests that already succeeded and sends the 30 oversized files unchanged, while the guide says to resubmit only the failed documents with appropriate modifications."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S26-T2",
+  "slot_id": "M5-S26",
+  "try": 2,
+  "point": "5.5-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S26-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code with the -p flag in CI to extract API reference entries, such as HTTP method, path and auth requirement, from route handlers in many services. Each field gets a confidence score. Entries whose fields all score above a threshold are published to the internal developer portal without review, and the rest go to reviewers. A tech lead proposes that reviewers also check a stratified random sample of the published high-confidence entries every week, drawn from each service and field. What is the main benefit of this proposal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It measures the ongoing error rate of the published high-confidence entries in each service and field, and it can reveal new error patterns that no existing check targets.",
+      "correct": true,
+      "reason": "The guide uses stratified random sampling of high-confidence extractions to measure their ongoing error rate and to detect novel error patterns."
+    },
+    {
+      "letter": "B",
+      "text": "It lets the team drop the field-level confidence scores, because reviewers who check a random sample of entries no longer need a score to decide which entries to publish.",
+      "correct": false,
+      "reason": "The guide keeps calibrated field-level confidence scores to route review attention. Sampling measures errors among high-confidence outputs and does not replace these scores."
+    },
+    {
+      "letter": "C",
+      "text": "It lets the team stop routing low-confidence entries to reviewers, because the weekly sample of published entries now covers all of the review work that the pipeline will need from now on.",
+      "correct": false,
+      "reason": "The guide still routes low-confidence or ambiguous extractions to human review. Sampling the high-confidence entries adds to that routing and does not replace it."
+    },
+    {
+      "letter": "D",
+      "text": "It produces one combined accuracy figure for all published entries across every service, which is the clearest single number for deciding whether to lower the threshold.",
+      "correct": false,
+      "reason": "The guide warns that one aggregate accuracy figure can hide poor performance in specific segments. Stratifying the sample exists to show the error rate of each segment."
+    }
+  ]
+}

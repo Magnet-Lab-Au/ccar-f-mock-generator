@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S23-T2",
+  "slot_id": "M5-S23",
+  "try": 2,
+  "point": "3.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S23-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "You use Claude Code to migrate your team's checkout service from floating-point dollar amounts to integer cents. Tests then show four problems: the discount function still treats stored prices as dollars, the tax function rounds each cent value to two decimal places, the invoice formatter divides amounts by 100 twice, and the changelog entry names the wrong release number. The first three fixes all depend on how the price model represents amounts, while the changelog problem affects nothing else. Which approaches should you take for the next iterations?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Fix the changelog release number in its own separate iteration, because that change does not interact with any of the price fixes.",
+      "correct": true,
+      "reason": "The changelog problem is independent of the other problems, and the guide says sequential iteration suits independent issues."
+    },
+    {
+      "letter": "B",
+      "text": "Paste the raw test output into one message and ask Claude Code to fix whichever failure it judges most important first.",
+      "correct": false,
+      "reason": "This does not explain how the price fixes interact and lets them be fixed one by one, but the guide says interacting issues need one detailed message that addresses them together."
+    },
+    {
+      "letter": "C",
+      "text": "Add a CLAUDE.md rule stating that prices are integer cents, then rerun the original migration prompt without describing the failures.",
+      "correct": false,
+      "reason": "This never tells Claude Code about the specific problems or how they connect, while the guide says interacting issues should be described together in a single detailed message."
+    },
+    {
+      "letter": "D",
+      "text": "Describe the discount, tax, and formatter problems together in one detailed message that explains how all three depend on the cents representation.",
+      "correct": true,
+      "reason": "These three fixes interact through the shared price representation, and the guide says interacting issues belong in a single detailed message."
+    },
+    {
+      "letter": "E",
+      "text": "Fix the discount function alone first, because its failing tests sit in a different test file from the tax and formatter tests.",
+      "correct": false,
+      "reason": "The guide separates issues by whether their fixes interact, not by where tests live, and the discount fix interacts with the tax and formatter fixes."
+    }
+  ]
+}

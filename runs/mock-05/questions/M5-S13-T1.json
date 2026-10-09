@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S13-T1",
+  "slot_id": "M5-S13",
+  "try": 1,
+  "point": "3.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team's developer productivity agent includes a CI job that runs Claude Code with the -p flag to review merge requests for a legacy billing service. The job posts its findings as inline comments. Each time an engineer pushes a new commit, the job re-runs and posts comments again for issues that earlier runs already flagged. Which change best stops these duplicate comments?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move the re-runs to the Message Batches API so that all findings for each commit are posted together in a single batch.",
+      "correct": false,
+      "reason": "The Message Batches API gives cost savings with a processing window of up to 24 hours, but it does not tell Claude which issues it already reported."
+    },
+    {
+      "letter": "B",
+      "text": "Pass the findings from the previous review run into the context and instruct Claude to report only issues that are new or still unaddressed.",
+      "correct": true,
+      "reason": "The guide says to include prior review findings in context on re-runs and to ask for only new or still-unaddressed issues, so that duplicate comments are avoided."
+    },
+    {
+      "letter": "C",
+      "text": "Add few-shot examples of well-written inline review comments to the review prompt so that the comments become more consistent.",
+      "correct": false,
+      "reason": "Few-shot examples improve format and consistency, but the guide's fix for duplicates is to give Claude the prior findings, which this change does not do."
+    },
+    {
+      "letter": "D",
+      "text": "Run each re-review inside the same Claude session that generated the code changes so that Claude remembers its earlier work.",
+      "correct": false,
+      "reason": "The guide says that the session that generated code is less effective at reviewing its own changes than an independent review instance, and this change gives no list of already-posted findings."
+    }
+  ]
+}

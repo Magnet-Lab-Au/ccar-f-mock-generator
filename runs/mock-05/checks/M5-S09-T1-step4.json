@@ -1,0 +1,112 @@
+{
+  "question_id": "M5-S09-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "faf3c9989e02cf433bf605f2d36ab5ad970c4054427c0782277940bbb1c19ecb",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "MCP resources expose content catalogs such as documentation hierarchies and database schemas, so the agent can see what exists without making exploratory tool calls (2.4-K4, 2.4-S5). Option A only shrinks the output of discovery calls that still happen. Option B forces the agent onto one tool but keeps the exploratory lookups. Option C raises max_tokens, which does nothing to remove the calls.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP resources",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    },
+    {
+      "name": "PostToolUse",
+      "found": true
+    },
+    {
+      "name": "allowedTools",
+      "found": true
+    },
+    {
+      "name": "max_tokens",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

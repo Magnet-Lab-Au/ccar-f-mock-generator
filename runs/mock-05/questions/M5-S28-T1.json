@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S28-T1",
+  "slot_id": "M5-S28",
+  "try": 1,
+  "point": "5.6-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs a custom slash command in which Claude Code delegates each source about a logging library to a separate subagent: release notes, an exported issue tracker, and internal benchmark logs. Each subagent returns structured findings with the source document name and a relevant excerpt. The final upgrade plan states that a memory leak is still open, although a later release fixed it. The plan also treats benchmark runs from before and after a hardware change as directly comparable. What is the most likely cause of these errors?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The subagents' structured findings carry no publication or data collection dates, so the synthesis step cannot place the findings in the correct time order.",
+      "correct": true,
+      "reason": "Without publication or collection dates in the structured outputs, an old issue report and a later fix look like equal facts, and older benchmark runs cannot be told apart from newer ones."
+    },
+    {
+      "letter": "B",
+      "text": "The subagents return structured findings instead of prose summaries, so the context that explains each fix is stripped out before synthesis.",
+      "correct": false,
+      "reason": "The guide recommends structured subagent outputs; the problem is a missing date field in that structure, not the use of structure itself."
+    },
+    {
+      "letter": "C",
+      "text": "The synthesis step annotates conflicting values with their sources instead of picking one, so outdated findings stay in the final upgrade plan.",
+      "correct": false,
+      "reason": "Annotating conflicts with source attribution is the practice the guide recommends; moreover, the plan stated the old finding as current rather than annotating a conflict."
+    },
+    {
+      "letter": "D",
+      "text": "The subagents' structured findings omit source document names and excerpts, so the synthesis step cannot trace each claim back to its origin.",
+      "correct": false,
+      "reason": "The story says each finding already includes the source document name and an excerpt; claim-source mapping is present, and attribution alone does not show when a finding was true."
+    }
+  ]
+}

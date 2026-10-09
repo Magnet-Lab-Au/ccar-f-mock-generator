@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S15-T1",
+  "slot_id": "M5-S15",
+  "try": 1,
+  "point": "2.5-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent is updating a legacy Python module for an engineer. The module has three request functions, and each one contains the identical line that sets a 30-second timeout. The engineer asks the agent to raise the timeout in the payment function only. Edit fails because its anchor text matches three places in the file. Which approach should the agent take to make this change reliably?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Bash to run a stream editor command that replaces every copy of the timeout line in the module with the new value.",
+      "correct": false,
+      "reason": "This changes the timeout in all three functions, but the engineer asked for a change in the payment function only. The guide's fallback for a non-unique match is Read plus Write."
+    },
+    {
+      "letter": "B",
+      "text": "Stop the task and tell the engineer that the built-in tools cannot change only one copy of a line that appears several times in a file.",
+      "correct": false,
+      "reason": "This is false. The guide gives Read plus Write as the reliable fallback for exactly this case, so the agent can complete the change."
+    },
+    {
+      "letter": "C",
+      "text": "Use Read to load the full module, change the timeout line inside the payment function, and then Write the complete file back.",
+      "correct": true,
+      "reason": "The guide states that when Edit fails because its anchor text is not unique, the reliable fallback is Read to load the full file and then Write the modified file."
+    },
+    {
+      "letter": "D",
+      "text": "Use Glob to find every Python file that matches the module's name pattern, and then run Edit again on each file it returns.",
+      "correct": false,
+      "reason": "Glob only finds files by path pattern. The problem is a non-unique match inside one file, so Edit fails again for the same reason."
+    }
+  ]
+}

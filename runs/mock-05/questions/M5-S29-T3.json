@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S29-T3",
+  "slot_id": "M5-S29",
+  "try": 3,
+  "point": "3.4-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S29-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code every day, and developers currently open plan mode for every change, even very small ones. The team lead, Marco, wants to add one rule to the team's workflow guide. The rule must say when developers should skip plan mode and use direct execution instead. Which rule should Marco add?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use direct execution when the task has several valid approaches, so that Claude Code can pick one without a separate design step.",
+      "correct": false,
+      "reason": "The guide says that plan mode is designed for tasks with multiple valid approaches, so this rule sends the wrong kind of task to direct execution."
+    },
+    {
+      "letter": "B",
+      "text": "Use direct execution whenever a deadline is close, because plan mode adds an extra step before any code is written.",
+      "correct": false,
+      "reason": "The guide bases the choice on the complexity and scope of the task, and it says that plan mode prevents costly rework on complex tasks."
+    },
+    {
+      "letter": "C",
+      "text": "Use direct execution when the change is simple and well-scoped, such as adding a single validation check to one function.",
+      "correct": true,
+      "reason": "The guide states that direct execution is appropriate for simple, well-scoped changes, and it gives adding a single validation check to one function as the example."
+    },
+    {
+      "letter": "D",
+      "text": "Use direct execution for a library migration whenever the target library is already chosen, even if the change touches 45 or more files.",
+      "correct": false,
+      "reason": "The guide selects plan mode for library migrations that affect 45 or more files, because large multi-file changes need exploration and design first."
+    }
+  ]
+}

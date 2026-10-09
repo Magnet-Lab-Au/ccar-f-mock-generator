@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S41-T1",
+  "slot_id": "M5-S41",
+  "try": 1,
+  "point": "4.6-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to generate unit tests for each pull request. The pipeline then resumes this generation session with --resume and asks it to check whether each test verifies the changed behavior. The check approves almost every test. Yet the same check prompt, run in a fresh session with the same flags, marks many tests as weak because their assertions pass without testing the change. What is the most likely cause of this difference?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The check returns its results with --json-schema, so the schema of the structured output limits the kinds of weak tests that Claude is able to report.",
+      "correct": false,
+      "reason": "The --json-schema flag only produces structured CI output. The fresh session uses the same flags and still reports the weak tests, so the schema is not the cause."
+    },
+    {
+      "letter": "B",
+      "text": "The check prompt contains no few-shot examples of weak tests, so Claude has no demonstration of how an assertion can pass without verifying the changed behavior.",
+      "correct": false,
+      "reason": "The fresh session uses the same check prompt without few-shot examples and still finds the weak tests. The difference therefore comes from the retained generation context, not from the prompt."
+    },
+    {
+      "letter": "C",
+      "text": "The job runs Claude Code with the -p flag, so the check cannot pause for developer input and approves each test whenever it is uncertain.",
+      "correct": false,
+      "reason": "The -p flag only enables non-interactive mode for CI. The fresh session uses the same flags and still finds the weak tests, so the flag does not explain the difference."
+    },
+    {
+      "letter": "D",
+      "text": "The check runs in the generation session, so Claude keeps the reasoning behind each test and is less likely to question its own test design.",
+      "correct": true,
+      "reason": "A model keeps the reasoning context from generation, so in the same session it is less likely to question its own decisions. The fresh session has no such context, which explains why it finds the weak tests."
+    }
+  ]
+}

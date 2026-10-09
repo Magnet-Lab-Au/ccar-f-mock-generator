@@ -1,0 +1,17 @@
+{
+  "question_id": "M5-S43-T1",
+  "step": 3,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 3,
+      "rule": "A9",
+      "detail": "The question has 6 sentences. The limit is 2 to 5.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "a11d30f414a57c722770c0962f40960b7238787ca686b2b4d83b99b10eeee288",
+  "date": "2026-10-09"
+}

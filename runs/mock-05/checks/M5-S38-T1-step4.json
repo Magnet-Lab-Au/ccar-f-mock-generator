@@ -1,0 +1,102 @@
+{
+  "question_id": "M5-S38-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M3-S12-T1 has the same problem: a batch where some requests fail because they exceed the context limit. The same reasoning reaches the same answer there: resubmit only the failed items, identified by custom_id, after chunking them. This question splits that answer into options A and B and moves it from contracts to source files, but the problem does not change. More than one wrong option also repeats. Option E (keep resubmitting the full batch) matches the earlier 'resubmit the full set' option. Option D (resubmit the failed files unchanged) matches the earlier 'resubmit failed unchanged' option. Option C (a tool that fetches content during processing) repeats a wrong option from M1-S46-T1.",
+      "letter": null,
+      "point": "4.5-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "950b66bcdf107932d572459a82bba93b21731e4c4e28e226078281ccd891910d",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "B"
+    ],
+    "reason": "Following 4.5-S3, the retry step should use custom_id to resubmit only the 30 failed requests (B), and chunk the oversized files so they fit within the context limit (A). C won't work because batches don't support multi-turn tool calling. D resends the files unchanged, so they hit the same context limit regardless of the processing window. E still pays for the full batch and never fixes the cause of the failures.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M3-S12-T1 has the same problem: a batch where some requests fail because they exceed the context limit. The same reasoning reaches the same answer there: resubmit only the failed items, identified by custom_id, after chunking them. This question splits that answer into options A and B and moves it from contracts to source files, but the problem does not change. More than one wrong option also repeats. Option E (keep resubmitting the full batch) matches the earlier 'resubmit the full set' option. Option D (resubmit the failed files unchanged) matches the earlier 'resubmit failed unchanged' option. Option C (a tool that fetches content during processing) repeats a wrong option from M1-S46-T1.",
+      "letter": null,
+      "point": "4.5-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "custom_id",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

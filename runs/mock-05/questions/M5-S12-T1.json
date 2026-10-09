@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S12-T1",
+  "slot_id": "M5-S12",
+  "try": 1,
+  "point": "2.4-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your Claude Agent SDK agent helps engineers understand legacy systems, and its .mcp.json configures two MCP servers: a database schema server and an issue tracker server. One task requires the agent to inspect the schema of a legacy table and then file an issue about a missing index. A teammate believes that the agent can use only one MCP server per session, so he wants to change the workflow. What should you do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep one session with both servers configured, because the agent discovers the tools of both servers at connection time and can call either one during the task.",
+      "correct": true,
+      "reason": "The guide states that tools from all configured MCP servers are discovered at connection time and are available to the agent simultaneously."
+    },
+    {
+      "letter": "B",
+      "text": "Run two separate sessions that each configure only one server, and paste the schema findings from the first session into the prompt of the second session that files the issue.",
+      "correct": false,
+      "reason": "This split is unnecessary. Tools from all configured MCP servers are available at the same time, so one session can do both steps."
+    },
+    {
+      "letter": "C",
+      "text": "Restart the agent with only the issue tracker server after the schema step, so that tool discovery runs again and exposes the issue tracker tools.",
+      "correct": false,
+      "reason": "The issue tracker tools were already discovered at connection time together with the schema tools, so a restart adds nothing and loses the schema tools."
+    },
+    {
+      "letter": "D",
+      "text": "Add a system prompt instruction that tells the agent to request activation of the issue tracker server before it calls any tool from that server.",
+      "correct": false,
+      "reason": "No activation step exists. Tools from all configured servers are discovered at connection time and are already available to the agent."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S20-T1",
+  "slot_id": "M5-S20",
+  "try": 1,
+  "point": "5.4-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "You are using Claude Code to explore a large legacy monorepo before a refactor of its billing module. In phase one, several subagents traced the billing module's callers, database tables and shared utilities, and they produced long discovery output. For phase two, you will spawn one subagent per billing service to plan its refactor. In a trial run, the phase-two subagents ignored the phase-one discoveries and described generic billing patterns. Which two steps should you take to start the phase-two subagents well?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Spawn each phase-two subagent with only its service name, and rely on it to inherit the main session's phase-one history automatically.",
+      "correct": false,
+      "reason": "A subagent does not inherit the main session's history, so the phase-one findings must be passed explicitly in its initial context."
+    },
+    {
+      "letter": "B",
+      "text": "Before spawning, have the main session write a concise summary of the key phase-one findings, such as the callers, tables and shared utilities.",
+      "correct": true,
+      "reason": "Summarizing the key findings of one exploration phase before spawning the next phase's subagents is the first part of the guide's practice."
+    },
+    {
+      "letter": "C",
+      "text": "Give each phase-two subagent a general description of common billing architecture, rather than the specific classes and call paths that phase one discovered.",
+      "correct": false,
+      "reason": "Generic typical patterns in place of the specific discovered classes is the symptom of lost context that the guide warns about, so it does not carry the findings forward."
+    },
+    {
+      "letter": "D",
+      "text": "Skip the subagents and run every phase-two refactor plan in the one main session, so that the raw phase-one output stays in the same growing context.",
+      "correct": false,
+      "reason": "A long session full of verbose output causes context degradation, and the guide uses subagents to isolate that output while the main session coordinates."
+    },
+    {
+      "letter": "E",
+      "text": "Inject that phase-one summary into the initial prompt of each phase-two subagent, because a subagent starts without the main session's history.",
+      "correct": true,
+      "reason": "The guide says that summaries are injected into the initial context of the next-phase subagents, because those subagents receive only what their prompt gives them."
+    }
+  ]
+}

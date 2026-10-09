@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S42-T1",
+  "slot_id": "M5-S42",
+  "try": 1,
+  "point": "3.6-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team's CI pipeline runs Claude Code with the -p flag to generate tests for pull requests in a payments service. The project CLAUDE.md already documents testing standards and available fixtures, and the generated tests follow them well. However, about half of the suggested tests for the refunds module repeat edge cases that tests/test_refunds.py already checks. The prompt contains only the pull request diff and the changed source files. Which change most directly addresses this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send the generated tests to a second, independent Claude Code instance that reviews them for duplication, using the same diff and changed source files as context.",
+      "correct": false,
+      "reason": "An independent instance helps with reviewing generated output, but this reviewer also lacks the existing test files, so it cannot tell which scenarios are duplicates."
+    },
+    {
+      "letter": "B",
+      "text": "Add five few-shot examples of well-structured refund tests to the prompt, so Claude learns the team's preferred test style and assertion patterns before generating.",
+      "correct": false,
+      "reason": "Few-shot examples demonstrate format and style, but they do not show Claude which scenarios the existing suite already covers, so duplicates remain."
+    },
+    {
+      "letter": "C",
+      "text": "Add tests/test_refunds.py and the other existing test files for the changed modules to the prompt context, so Claude can see which scenarios are already covered.",
+      "correct": true,
+      "reason": "The guide says that providing existing test files in context lets test generation avoid suggesting duplicate scenarios already covered by the test suite."
+    },
+    {
+      "letter": "D",
+      "text": "Expand the fixtures section of CLAUDE.md with a detailed description of every refund fixture, including its setup data, so that generated tests reuse these fixtures correctly.",
+      "correct": false,
+      "reason": "Documenting fixtures in CLAUDE.md improves test quality, and the team already does this; it does not tell Claude which scenarios the existing tests already check."
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "question_id": "M5-S12-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "d160ae8848c758615e04db9e71bb6d7a1818b65d481709add496eb50bba4e3ad",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Tools from every configured MCP server are discovered when the agent connects, and all of them are available at the same time (2.4-K3). Calling a code search tool and then a CI log tool in one task is therefore expected behavior, not a misconfiguration. The other options describe mechanisms that don't exist: launching servers mid-task through Bash, rotating servers after each call, or disconnecting after an isError result.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "MCP server",
+      "found": true
+    },
+    {
+      "name": "MCP tools",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    },
+    {
+      "name": "isError",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

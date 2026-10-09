@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S21-T1",
+  "slot_id": "M5-S21",
+  "try": 1,
+  "point": "5.6-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses a Claude Code slash command to write a deprecation report for an internal payments API. Three subagents return findings as records that pair each claim with a file path and an excerpt: one reads the changelog, one reads the design docs, and one searches the codebase. When two subagents report the same claim, the final report shows it once but cites only one source, so reviewers cannot see which claims several sources confirm. What change would most effectively fix this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "When the synthesis step merges records with the same claim, have it keep only the source from the most authoritative document, so that each claim has one clear citation in the report.",
+      "correct": false,
+      "reason": "This choice still drops the other sources during the merge. The guide warns against choosing one source arbitrarily instead of preserving every claim-source mapping."
+    },
+    {
+      "letter": "B",
+      "text": "Have the synthesis step move the sources of all merged claims into one reference list at the end of the report, so that reviewers see every source consulted.",
+      "correct": false,
+      "reason": "A shared reference list breaks the link between each claim and its sources. The guide requires mappings at the level of the claim, so reviewers still cannot tell which sources support which claim."
+    },
+    {
+      "letter": "C",
+      "text": "When the synthesis step merges records with the same claim, have it combine their source lists so that the merged claim keeps every file path and excerpt.",
+      "correct": true,
+      "reason": "The guide says the synthesis agent must preserve and merge the structured claim-source mappings. Combining the source lists keeps every source attached to the merged claim."
+    },
+    {
+      "letter": "D",
+      "text": "Run the synthesis step in plan mode, so that a developer reviews the planned outline of the report before Claude Code writes the final text.",
+      "correct": false,
+      "reason": "Plan mode lets a developer review the approach before execution. It does not change how the synthesis step merges records, so the extra sources are still lost."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T3",
+  "slot_id": "M5-S39",
+  "try": 3,
+  "point": "4.1-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S39-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review each pull request. After the team added the line \"Only report findings you are highly confident about\" to the review prompt, the number of review comments fell by about a third. Developers say that most remaining comments are still naming and formatting remarks, and two real race conditions that the old prompt caught are no longer reported. The pull requests are about the same size as before. What best explains this outcome?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The pipeline runs Claude Code with the -p flag, and non-interactive mode makes Claude ignore filtering instructions that are added to the review prompt.",
+      "correct": false,
+      "reason": "The guide describes -p only as non-interactive mode, and the comment count did drop, so the instruction took effect; it failed because it gives no categorical criteria."
+    },
+    {
+      "letter": "B",
+      "text": "The instruction filters findings by how sure Claude is rather than by issue type, so confident style remarks stay and harder-to-confirm race conditions are dropped.",
+      "correct": true,
+      "reason": "The guide says general instructions like \"only report high-confidence findings\" fail to improve precision; only categorical criteria that define what to report and what to skip separate wanted issues from unwanted ones."
+    },
+    {
+      "letter": "C",
+      "text": "The instruction is worded too mildly, and the outcome would improve if the line demanded a strict numeric confidence threshold such as ninety-five percent.",
+      "correct": false,
+      "reason": "A stricter confidence threshold is still a general confidence instruction; the guide says such instructions fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "D",
+      "text": "The pull requests are too large for one review pass, so attention dilution across many files makes Claude miss subtle race conditions in the changed code.",
+      "correct": false,
+      "reason": "The pull requests are the same size as before and the old prompt caught the race conditions, so the change in results comes from the added confidence line."
+    }
+  ]
+}

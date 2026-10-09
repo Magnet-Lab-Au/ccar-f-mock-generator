@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S38-T2",
+  "slot_id": "M5-S38",
+  "try": 2,
+  "point": "4.5-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S38-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a nightly Message Batches API job that generates test cases for 1,200 source files, and each request has a custom_id derived from its file path. Thirty requests fail because their files exceed the context limit. The retry step finds the failed files by their position in the results list, splits each file into chunks, and gives the chunks new sequential custom_ids such as retry-1 and retry-2. The retry batch succeeds, but many generated test suites are attached to the wrong source files. Which changes should the team make to the retry step?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give each chunk a custom_id that combines the original file's custom_id with a chunk number, so every chunk result maps back to its file.",
+      "correct": true,
+      "reason": "Chunking is the modification the guide gives for documents that exceeded context limits. The guide also says custom_id correlates batch requests with responses, so each chunk needs an ID that traces back to its source file."
+    },
+    {
+      "letter": "B",
+      "text": "Identify the failed files by reading the custom_id on each failed result instead of relying on the position of that result in the list.",
+      "correct": true,
+      "reason": "The guide says failed documents are identified by custom_id, the field that correlates batch request/response pairs. Position in the results list is not that mechanism, so the retry step can pick the wrong files."
+    },
+    {
+      "letter": "C",
+      "text": "Sort the retry results into the order in which the chunks were submitted, then attach each result to the source file at that position.",
+      "correct": false,
+      "reason": "This still matches results to files by order. The guide names custom_id as the field for correlating batch request/response pairs, so order-based matching is the wrong mechanism."
+    },
+    {
+      "letter": "D",
+      "text": "Combine the chunks of each oversized file back into a single request, so that every retry result belongs to exactly one source file.",
+      "correct": false,
+      "reason": "These files failed because they exceeded the context limit. The guide calls for modifications such as chunking before resubmission, so recombined requests would fail again for the same reason."
+    },
+    {
+      "letter": "E",
+      "text": "Send each chunk through the synchronous API instead of a batch, so the pipeline receives every result directly after it sends the matching chunk request.",
+      "correct": false,
+      "reason": "The guide says nightly test generation is a latency-tolerant workload suited to the batch API and its 50% cost savings. The correlation problem is solved with custom_id, not by giving up the batch API."
+    }
+  ]
+}

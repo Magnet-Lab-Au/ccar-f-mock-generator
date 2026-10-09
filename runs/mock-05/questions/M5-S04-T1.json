@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S04-T1",
+  "slot_id": "M5-S04",
+  "try": 1,
+  "point": "1.7-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday an engineer used your agent in a named session to map a legacy billing module with Read, Grep, and Glob. Overnight, a teammate merged a refactor that split and renamed most of the files that the agent had read. The engineer will start a new session with a structured summary instead of resuming the old one. What should the summary include to make the new session most reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Include only the original task request, so the agent rebuilds its understanding of the billing module with no prior findings.",
+      "correct": false,
+      "reason": "This drops the prior findings that are still valid and forces a full re-exploration, while the guide prefers injecting a summary and doing targeted re-analysis."
+    },
+    {
+      "letter": "B",
+      "text": "Include the conclusions that still hold and a list of the refactored files that the agent must read again before it relies on them.",
+      "correct": true,
+      "reason": "A structured summary keeps the valid findings without the stale tool results and points the agent to the changed files for targeted re-analysis, which is why starting fresh is more reliable."
+    },
+    {
+      "letter": "C",
+      "text": "Include yesterday's conclusions about every file as current facts, so the agent does not spend tokens reading the refactored files again.",
+      "correct": false,
+      "reason": "Conclusions about the refactored files come from stale tool results, so presenting them as current facts lets the agent reason from outdated information."
+    },
+    {
+      "letter": "D",
+      "text": "Include the full transcript of yesterday's session with every Read and Grep output, so the agent has the original contents of each file.",
+      "correct": false,
+      "reason": "This puts the stale tool results back into the new context, which removes the advantage that a fresh session with a summary has over resuming with stale tool results."
+    }
+  ]
+}

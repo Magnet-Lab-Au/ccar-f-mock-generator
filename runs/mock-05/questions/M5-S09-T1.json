@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S09-T1",
+  "slot_id": "M5-S09",
+  "try": 1,
+  "point": "2.4-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team's developer productivity agent connects to an internal MCP server that holds the architecture documentation and database schemas for a legacy billing system. Logs show that at the start of each task, the agent makes many Grep, Glob and search_docs calls only to learn which documents and schema tables exist. These calls add latency and fill the context window. Which change most directly gives the agent visibility into the available content without these exploratory calls?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a PostToolUse hook that trims the result of each exploratory call, so the discovery calls use less space in the context window.",
+      "correct": false,
+      "reason": "A hook that trims results only makes each discovery call smaller. The agent still makes the exploratory calls, because it still cannot see which content exists."
+    },
+    {
+      "letter": "B",
+      "text": "Remove Grep and Glob from allowedTools, so the agent must use the search_docs MCP tool for every lookup of documents and schema tables.",
+      "correct": false,
+      "reason": "This change only moves discovery to a different tool. The agent still has to make exploratory search_docs calls to learn what exists, because no catalog of the content is exposed."
+    },
+    {
+      "letter": "C",
+      "text": "Raise the max_tokens value in each request to the model, so the agent has enough room to finish all of its exploratory discovery calls in one long response.",
+      "correct": false,
+      "reason": "max_tokens limits the length of the response. A higher value does not tell the agent which content exists, and it does not reduce the number of exploratory calls."
+    },
+    {
+      "letter": "D",
+      "text": "Expose the documentation hierarchy and a catalog of the database schemas as MCP resources, so the agent sees what content exists before it calls tools.",
+      "correct": true,
+      "reason": "The guide names MCP resources as the mechanism for exposing content catalogs, such as documentation hierarchies and database schemas. They give the agent visibility into the available data without exploratory tool calls."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S44-T1",
+  "slot_id": "M5-S44",
+  "try": 1,
+  "point": "4.4-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to extract a structured summary from each pull request. The output holds a stated_migration_count copied from the pull request description and a calculated_migration_count from the migration files in the diff. When the two values differ, the pipeline retries with the specific validation error. Most miscounts are fixed after one retry, but some pull requests fail every retry because the description itself states the wrong count. Which change best handles these pull requests?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a conflict_detected boolean that flags a mismatch between the diff and the description, and route flagged pull requests to a human reviewer instead of retrying.",
+      "correct": true,
+      "reason": "The source data is inconsistent, so retries cannot fix it; a conflict_detected flag surfaces the discrepancy for review instead of hiding it."
+    },
+    {
+      "letter": "B",
+      "text": "Remove the stated count field and keep only the count calculated from the diff, so that the validation check can no longer detect a mismatch.",
+      "correct": false,
+      "reason": "Extracting both the stated and the calculated value is what makes discrepancies visible; dropping one removes the signal instead of handling it."
+    },
+    {
+      "letter": "C",
+      "text": "Raise the retry limit and append more detailed validation errors to each attempt, so that Claude eventually returns a stated count and a calculated count that agree with each other.",
+      "correct": false,
+      "reason": "Retries cannot correct a conflict that exists in the source itself, and forcing agreement would hide the real discrepancy."
+    },
+    {
+      "letter": "D",
+      "text": "Switch the output to tool use with a strict JSON schema, so that schema enforcement prevents the two count fields from disagreeing.",
+      "correct": false,
+      "reason": "Strict schemas eliminate syntax errors only; a mismatch between two valid values is a semantic issue that schema enforcement cannot prevent."
+    }
+  ]
+}

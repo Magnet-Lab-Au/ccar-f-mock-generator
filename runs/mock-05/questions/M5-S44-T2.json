@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S44-T2",
+  "slot_id": "M5-S44",
+  "try": 2,
+  "point": "4.4-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S44-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with --json-schema to summarize each pull request. The schema has one conflict_detected boolean, and the prompt tells Claude to set it to true when the file count claimed in the pull request description differs from the number of files changed in the diff. Every report contains this field, and every value is false. Spot checks of small pull requests, each with an explicit file count in its description, find many real mismatches. What is the most likely root cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The schema asks only for the boolean, so Claude never extracts the stated and calculated counts that would anchor the comparison and let a check verify it.",
+      "correct": true,
+      "reason": "The guide's self-correction flow extracts a stated value alongside a calculated value to flag discrepancies. A bare boolean gives Claude no explicit values to compare and gives the pipeline nothing to validate."
+    },
+    {
+      "letter": "B",
+      "text": "The pull request descriptions do not state the file count in a form Claude can read, so the needed information is absent from the source and cannot be compared.",
+      "correct": false,
+      "reason": "The spot-checked descriptions hold an explicit file count, so the information is present in the source. The guide's case of absent information does not apply."
+    },
+    {
+      "letter": "C",
+      "text": "The conflict_detected field is optional in the schema, so Claude often omits it and the pipeline fills in a default value of false for it.",
+      "correct": false,
+      "reason": "Every report contains the field. The false values come from Claude, not from a default, so an optional field does not explain the result."
+    },
+    {
+      "letter": "D",
+      "text": "The pull request diffs are too long for Claude to track reliably, so lost-in-the-middle effects hide the changed files that sit in the middle of each diff.",
+      "correct": false,
+      "reason": "The mismatches occur in small pull requests, so diff length does not explain why the flag is always false."
+    }
+  ]
+}

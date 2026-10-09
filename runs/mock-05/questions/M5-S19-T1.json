@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S19-T1",
+  "slot_id": "M5-S19",
+  "try": 1,
+  "point": "3.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses a shared skill named release-notes, which lives in .claude/skills/ and is committed to version control. Marco, a developer on the team, wants a variant of this skill that writes shorter notes for his own drafts. His teammates must keep their current skill set with no change to their sessions. Which approach should Marco take?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Create a personal skill in ~/.claude/skills/ under a new name, such as release-notes-short, that holds his shorter note format.",
+      "correct": true,
+      "reason": "The guide says personal variants go in ~/.claude/skills/ under different names, so the shared skill and his teammates' sessions stay unchanged."
+    },
+    {
+      "letter": "B",
+      "text": "Create a new skill named release-notes-short in the project's .claude/skills/ directory, and then commit it to version control.",
+      "correct": false,
+      "reason": "Project-scoped files in .claude/ are shared via version control, so the variant would reach every teammate instead of staying personal to Marco."
+    },
+    {
+      "letter": "C",
+      "text": "Save the shorter format as a project slash command in .claude/commands/ so that he can run it whenever he drafts notes.",
+      "correct": false,
+      "reason": "The guide says commands in .claude/commands/ are project-scoped and shared via version control, so the change would reach his teammates instead of staying personal."
+    },
+    {
+      "letter": "D",
+      "text": "Add a context: fork setting to the shared release-notes SKILL.md file so that his shorter format runs in an isolated sub-agent context.",
+      "correct": false,
+      "reason": "This edits the shared skill that teammates use, and context: fork only isolates skill output from the main conversation; it does not create a personal variant."
+    }
+  ]
+}

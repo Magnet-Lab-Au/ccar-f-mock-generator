@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S28-T2",
+  "slot_id": "M5-S28",
+  "try": 2,
+  "point": "5.6-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S28-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to write an architecture overview of a payment service. Subagents each read one kind of source: decision records, incident postmortems, and exported dashboard reports, all bulk-copied into the repository last month. Each subagent's structured output gives a claim, the document name, an excerpt, and a date taken from the file's last-modified time. The overview presents latency figures measured years apart as conflicting current measurements. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Require each subagent to fill the date field with the source's publication or data collection date, such as a report's measurement period, not the file timestamp.",
+      "correct": true,
+      "reason": "The guide calls for publication or data collection dates in structured outputs so that temporal differences are not misread as contradictions; a bulk-copy timestamp makes every source look equally recent."
+    },
+    {
+      "letter": "B",
+      "text": "Instruct the synthesis step to keep only the figure whose source file has the most recent last-modified time whenever two figures disagree.",
+      "correct": false,
+      "reason": "The timestamps all reflect last month's bulk copy, so they say nothing about when data was measured, and the guide warns against arbitrarily selecting one value."
+    },
+    {
+      "letter": "C",
+      "text": "Have each subagent drop the date field and return a longer excerpt instead, so that the synthesis step can infer when each figure was measured.",
+      "correct": false,
+      "reason": "The guide requires subagents to include dates explicitly in structured outputs; leaving the synthesis step to infer dates from excerpts removes the field that enables correct temporal interpretation."
+    },
+    {
+      "letter": "D",
+      "text": "Move every pair of disagreeing latency figures into a contested-findings section of the overview, with each figure attributed to its source document.",
+      "correct": false,
+      "reason": "The figures are not truly contested; they differ because they were measured at different times, and without correct dates the temporal difference is still misread as a contradiction."
+    }
+  ]
+}

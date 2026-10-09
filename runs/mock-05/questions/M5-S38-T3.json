@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S38-T3",
+  "slot_id": "M5-S38",
+  "try": 3,
+  "point": "4.5-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S38-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a nightly Message Batches API job that generates test cases for 1,500 source files, and each request has a custom_id derived from its file path. Forty requests fail because their files exceed the context limit. The retry step then submits a second batch with all 1,500 requests and the same prompts. Nightly cost doubles, the same 40 files fail again, and the other 1,460 files get duplicate test suites. Which flaws in the retry step cause these outcomes?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The retry step resubmits all 1,500 requests instead of only the 40 failed requests identified by their custom_id values.",
+      "correct": true,
+      "reason": "The guide says to resubmit only the failed documents, identified by custom_id. Resubmitting every request explains the doubled cost and the duplicate test suites for the 1,460 files that had already succeeded."
+    },
+    {
+      "letter": "B",
+      "text": "The retry step sends the 40 oversized files unchanged instead of splitting each one into chunks that fit within the context limit.",
+      "correct": true,
+      "reason": "The guide says failed documents are resubmitted with appropriate modifications, such as chunking documents that exceeded context limits. Unchanged oversized files exceed the limit again, which explains the repeated failures."
+    },
+    {
+      "letter": "C",
+      "text": "The pipeline uses the batch API for nightly test generation, a blocking workload that should run through the synchronous API before each merge.",
+      "correct": false,
+      "reason": "The guide lists nightly test generation as a non-blocking, latency-tolerant workload suited to the batch API. The synchronous API is for blocking pre-merge checks, and switching would not fix the retry flaws."
+    },
+    {
+      "letter": "D",
+      "text": "The retry step omits a file-loading tool that Claude would call during each batch request to read oversized files in smaller parts.",
+      "correct": false,
+      "reason": "The guide says the batch API does not support multi-turn tool calling within a single request, so such a tool cannot work there. The guide's fix for oversized documents is chunking before resubmission."
+    },
+    {
+      "letter": "E",
+      "text": "The custom_id values are derived from file paths, which prevents the pipeline from matching each failed result back to its source file.",
+      "correct": false,
+      "reason": "The guide names custom_id as the field for correlating batch request/response pairs, and an ID derived from the file path serves that purpose. The IDs are not the cause of these outcomes."
+    }
+  ]
+}

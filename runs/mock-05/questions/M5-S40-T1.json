@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S40-T1",
+  "slot_id": "M5-S40",
+  "try": 1,
+  "point": "4.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code in CI to review pull requests for a payments service. Each finding gets one of three severity levels: blocker, warning, or note, and any blocker stops the merge. Developers complain that a missing input check in the same API handler was a blocker on Monday and a note on Thursday. The review prompt currently says only that Claude should assign a severity that reflects the risk of the issue. Which change to the prompt would most effectively make these severity assignments consistent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Ask Claude to report a confidence score from 1 to 10 with each finding, and downgrade any blocker whose score falls below seven.",
+      "correct": false,
+      "reason": "The guide says review criteria should be specific rather than relying on confidence-based filtering, so a score threshold does not define what each level means."
+    },
+    {
+      "letter": "B",
+      "text": "Tell Claude to be careful and conservative, and to assign the blocker level only when it is highly confident about the risk of the finding.",
+      "correct": false,
+      "reason": "The guide says general instructions such as being conservative or reporting only high-confidence findings fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "C",
+      "text": "Rewrite the severity instruction as a longer paragraph that stresses why consistent severity matters to developers, while still leaving the three levels undefined.",
+      "correct": false,
+      "reason": "The guide says explicit criteria work better than vague instructions, and a longer emphasis on consistency still gives no criteria or examples for each level."
+    },
+    {
+      "letter": "D",
+      "text": "Define explicit criteria for blocker, warning, and note, and give a concrete code example of a typical finding for each of the three levels.",
+      "correct": true,
+      "reason": "The guide says explicit severity criteria with concrete code examples for each severity level achieve consistent classification."
+    }
+  ]
+}

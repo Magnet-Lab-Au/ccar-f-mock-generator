@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S12-T2",
+  "slot_id": "M5-S12",
+  "try": 2,
+  "point": "2.4-K3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S12-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent, built with the Claude Agent SDK, has two MCP servers in its configuration: a code search server and a CI log server. While it investigated a failing build in a legacy service, the agent called a code search tool and then a CI log tool within the same task, with no server switch in between. An engineer reviews the logs and suspects a misconfiguration, because he expected the agent to reach only one MCP server at a time. What explains the behavior in the logs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Nothing is misconfigured, because tools from every configured MCP server are discovered at connection time and are available to the agent at the same time.",
+      "correct": true,
+      "reason": "The guide states that tools from all configured MCP servers are discovered at connection time and are available to the agent simultaneously, so calls to both servers in one task are expected."
+    },
+    {
+      "letter": "B",
+      "text": "The agent used the Bash tool to start the CI log server partway through the task, so the tools of that server appeared only after the agent needed them.",
+      "correct": false,
+      "reason": "The CI log server's tools did not appear partway through the task. The guide states that tools from all configured MCP servers are discovered at connection time."
+    },
+    {
+      "letter": "C",
+      "text": "The SDK loads the next configured server after each completed tool call, so the agent rotates through the configured servers during one task.",
+      "correct": false,
+      "reason": "There is no rotation between servers. The guide states that tools from all configured MCP servers are discovered at connection time and are available simultaneously."
+    },
+    {
+      "letter": "D",
+      "text": "The code search server returned a result with the isError flag set, which made the agent disconnect from that server and switch over to the CI log server for the rest of the task.",
+      "correct": false,
+      "reason": "The isError flag reports a failed tool call; it does not disconnect a server. The CI log tools were already available because all servers' tools are discovered at connection time."
+    }
+  ]
+}

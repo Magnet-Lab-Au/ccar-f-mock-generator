@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T2",
+  "slot_id": "M5-S39",
+  "try": 2,
+  "point": "4.1-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S39-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to post security findings on pull requests, and developers dismiss most of these findings as false alarms. The confidence draft of a new prompt adds the line \"Only report vulnerabilities you are highly confident are real\" to the current prompt. The category draft instead lists what to report, such as SQL queries built from user input, and what to skip, such as placeholder credentials in test fixtures. The team will run both drafts on 200 past pull requests that the security team has labeled. Which result should the team expect?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The category draft gives a lower share of valid findings, because a list of categories to skip makes Claude miss the real vulnerabilities as well.",
+      "correct": false,
+      "reason": "The guide recommends defining which issues to report and which to skip; the skipped categories are the false-alarm patterns, so precision rises rather than falls."
+    },
+    {
+      "letter": "B",
+      "text": "The category draft gives the higher share of valid findings, while the confidence draft mostly lowers the number of comments without raising that share much.",
+      "correct": true,
+      "reason": "The guide says general instructions like \"only report high-confidence findings\" fail to improve precision, while specific categorical criteria for what to report and skip do improve it."
+    },
+    {
+      "letter": "C",
+      "text": "Both drafts give about the same share of valid findings, because the wording of a review prompt has little effect on the false positive rate.",
+      "correct": false,
+      "reason": "The guide states that explicit criteria in the prompt improve precision and reduce false positives, so the category draft should outperform the confidence draft."
+    },
+    {
+      "letter": "D",
+      "text": "The confidence draft gives the higher share of valid findings, because Claude's own sense of confidence reliably separates real vulnerabilities from false alarms.",
+      "correct": false,
+      "reason": "The guide states that confidence-based instructions such as \"only report high-confidence findings\" fail to improve precision compared to specific categorical criteria."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T1",
+  "slot_id": "M5-S39",
+  "try": 1,
+  "point": "4.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to review pull requests. To cut noisy comments, the team added the line \"Only report high-confidence findings\" to the review prompt. Two weeks later, the number of review comments has dropped by about 40%. However, developers still dismiss the same share of the remaining comments as style nitpicks, and a few real null-pointer bugs that earlier reviews caught are now missing. What should the team do next?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Strengthen the line so that Claude reports a finding only when it is nearly certain, which should push the remaining style comments below the bar.",
+      "correct": false,
+      "reason": "A stronger general instruction is still a general instruction: it does not define which issues count, so it cuts volume without improving precision."
+    },
+    {
+      "letter": "B",
+      "text": "Replace the confidence line with categories to report, such as bugs and security flaws, and categories to skip, such as minor style.",
+      "correct": true,
+      "reason": "Specific categorical criteria tell Claude which issues to report and which to skip, which improves precision where confidence-based instructions failed."
+    },
+    {
+      "letter": "C",
+      "text": "Ask Claude to attach a numeric confidence score to each finding, and post to the pull request only the findings scored above 0.9.",
+      "correct": false,
+      "reason": "This still relies on confidence-based filtering, which the guide says to replace with specific criteria for what to report and what to skip."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the confidence line and add the missed null-pointer bugs as few-shot examples, so that Claude learns to report them again.",
+      "correct": false,
+      "reason": "It keeps the general confidence instruction and never defines style as a category to skip, so the style false positives remain."
+    }
+  ]
+}

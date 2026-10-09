@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S35-T2",
+  "slot_id": "M5-S35",
+  "try": 2,
+  "point": "4.2-S5",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S35-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the --json-schema flag to extract release metadata from each pull request description, and the schema marks rollback_steps as required. A review of the empty rollback_steps results finds two groups. In the first group, the description contains no rollback steps at all. In the second group, the steps are present but written in a table, while the single example in the prompt uses a Rollback heading. Which plan handles both groups correctly?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep rollback_steps required, add few-shot examples of table descriptions, and instruct Claude that every pull request has rollback steps that must be extracted.",
+      "correct": false,
+      "reason": "The examples help the second group, but forcing a value for the first group, where no steps exist, leads Claude to fabricate rollback steps."
+    },
+    {
+      "letter": "B",
+      "text": "Make rollback_steps nullable and accept null for both groups, because a null value in the output correctly signals that no rollback steps were found.",
+      "correct": false,
+      "reason": "Null is correct only for the first group; in the second group the steps exist, and without examples of the table format the extraction keeps losing them."
+    },
+    {
+      "letter": "C",
+      "text": "Make rollback_steps nullable so that the first group can return null, and add few-shot examples that show correct extraction of rollback steps from table descriptions.",
+      "correct": true,
+      "reason": "Nullable fields prevent fabrication when the information is absent, and few-shot examples of varied formats address empty extraction when the information is present in an unshown format."
+    },
+    {
+      "letter": "D",
+      "text": "Keep rollback_steps required and add a validation-retry loop that rejects every empty result and asks Claude to try again until the field contains a value for each description.",
+      "correct": false,
+      "reason": "Retries cannot recover information that is absent from the source, so the first group gets fabricated values, and the loop does not show how to read the table format."
+    }
+  ]
+}

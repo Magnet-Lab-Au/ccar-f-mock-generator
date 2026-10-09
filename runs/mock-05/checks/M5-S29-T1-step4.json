@@ -1,0 +1,109 @@
+{
+  "question_id": "M5-S29-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats the problem of the earlier questions M2-S40-T1 and M3-S50-T2. All three ask the reader to recognize that direct execution fits simple, well-scoped changes, and the same reasoning leads to the answer. The correct option C reuses the same example as M2-S40-T1: a single validation check in one function. Changing the frame from 'which task' or 'which approach' to 'which rule' does not create a different problem. Wrong option A (microservice restructuring through direct execution) echoes M3-S50-T2. Wrong option B (always plan before every edit) echoes M2-S40-T1.",
+      "letter": "C",
+      "point": "3.4-K2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "86f7bdb548e29df8e1a6353162a1970f6c023f0f7228fb3c64772c16bd80bd3d",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Direct execution suits simple, well-scoped changes such as adding a single validation check to one function. A is wrong because a microservice restructuring needs plan mode whatever the deadline. B is wrong because it forces planning for every change. D is wrong because many-file changes with open design choices call for plan mode.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats the problem of the earlier questions M2-S40-T1 and M3-S50-T2. All three ask the reader to recognize that direct execution fits simple, well-scoped changes, and the same reasoning leads to the answer. The correct option C reuses the same example as M2-S40-T1: a single validation check in one function. Changing the frame from 'which task' or 'which approach' to 'which rule' does not create a different problem. Wrong option A (microservice restructuring through direct execution) echoes M3-S50-T2. Wrong option B (always plan before every edit) echoes M2-S40-T1.",
+      "letter": "C",
+      "point": "3.4-K2"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "plan mode",
+      "found": true
+    },
+    {
+      "name": "direct execution",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S06-T2",
+  "slot_id": "M5-S06",
+  "try": 2,
+  "point": "1.5-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S06-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent releases code through deploy_service, an MCP tool with an environment parameter. Policy requires an on-call engineer to approve each production release, but staging releases need no approval. Your team added a hook that intercepts every outgoing deploy_service call and redirects it to on-call approval. On-call engineers now receive dozens of staging requests each day, and these requests delay urgent production approvals. How should you change the hook?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep the hook redirecting every deploy_service call to approval, and add a second approval queue so that a separate group of engineers reviews all staging release requests each day.",
+      "correct": false,
+      "reason": "The hook still blocks staging releases that violate no policy; it should intercept and redirect only the policy-violating production releases."
+    },
+    {
+      "letter": "B",
+      "text": "Make the hook check the environment parameter of each intercepted deploy_service call, redirect only production releases to on-call approval, and let staging releases run.",
+      "correct": true,
+      "reason": "An interception hook should block only the actions that violate the policy and redirect them to the alternative workflow, so compliant staging releases can proceed."
+    },
+    {
+      "letter": "C",
+      "text": "Make the hook reject each production deploy_service call with an error message, and let staging deploy_service calls run without any approval step.",
+      "correct": false,
+      "reason": "The hook blocks production releases but sends them to no alternative workflow, so they never reach on-call approval; it should redirect them to that approval."
+    },
+    {
+      "letter": "D",
+      "text": "Remove the hook and add a system prompt rule that tells the agent to request on-call approval only before production releases of deploy_service.",
+      "correct": false,
+      "reason": "A prompt rule gives only probabilistic compliance, so the agent may still release to production without approval; the policy needs the deterministic guarantee of a hook."
+    }
+  ]
+}

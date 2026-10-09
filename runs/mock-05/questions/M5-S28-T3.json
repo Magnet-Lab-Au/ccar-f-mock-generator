@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S28-T3",
+  "slot_id": "M5-S28",
+  "try": 3,
+  "point": "5.6-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S28-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to write the performance section of the project documentation. Claude Code reads benchmark logs, release notes, and old design reviews, extracts each throughput figure into a structured list with the document name and an excerpt, and then writes the section. The section claims that throughput fell 40% in the latest release. Investigation shows that the lower figure was measured three years before the higher one, so throughput actually rose. Which change best lets Claude Code describe the trend correctly?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Require each entry in the structured list to include the publication or data collection date of its source, such as the date of each benchmark run.",
+      "correct": true,
+      "reason": "The guide calls for publication or data collection dates in structured outputs so that the synthesis step can interpret figures from different times correctly, including which value is older and which is newer."
+    },
+    {
+      "letter": "B",
+      "text": "Merge all throughput figures for each component into one average value during extraction, so that the section reports a single stable number per component.",
+      "correct": false,
+      "reason": "Averaging values from different years hides the real change over time and loses the claim-source mapping that the guide says synthesis must preserve."
+    },
+    {
+      "letter": "C",
+      "text": "Add a confidence score to each entry in the structured list, so that the section gives more weight to the figures that Claude Code trusts most.",
+      "correct": false,
+      "reason": "A confidence score describes how reliable an extraction is, not when the data was collected, so it cannot show that the lower figure is the older one."
+    },
+    {
+      "letter": "D",
+      "text": "Render the extracted throughput figures as a table in the performance section instead of prose, so that readers can compare the values side by side.",
+      "correct": false,
+      "reason": "The guide recommends tables for financial and numeric data, but a table without dates still gives no information on when each figure was measured, so the false trend remains."
+    }
+  ]
+}

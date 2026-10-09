@@ -1,0 +1,102 @@
+{
+  "question_id": "M5-S38-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M1-S46-T1 uses the same scene: a nightly CI batch that generates test suites per source file. It has the same failure: results are matched to files by position in the results list, so test suites land on the wrong files. Option B gives the same fix, reading custom_id instead of position, so the same reasoning leads to the answer. Option C repeats M1's wrong option, order-based matching by position. Option E echoes M3-S12-T1's wrong option of moving to the synchronous API. Only the chunk-ID detail in option A is new, which is not enough of a different problem.",
+      "letter": "B",
+      "point": "4.5-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "8155eb32b20629b8b775d602553630ac7cdcd6f991ba07b5bff75ba7627490b0",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "B"
+    ],
+    "reason": "Batch results are not guaranteed to come back in submission order, so position-based matching is unreliable. The fix is to identify failed files by reading the custom_id on each failed result. Each chunk should also get a custom_id built from the original file's custom_id plus a chunk number, so every chunk result can be mapped back to its source file. Option C still relies on position. Option D would hit the context limit again. Option E drops the batch API's cost savings and doesn't fix the correlation design.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M1-S46-T1 uses the same scene: a nightly CI batch that generates test suites per source file. It has the same failure: results are matched to files by position in the results list, so test suites land on the wrong files. Option B gives the same fix, reading custom_id instead of position, so the same reasoning leads to the answer. Option C repeats M1's wrong option, order-based matching by position. Option E echoes M3-S12-T1's wrong option of moving to the synchronous API. Only the chunk-ID detail in option A is new, which is not enough of a different problem.",
+      "letter": "B",
+      "point": "4.5-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "custom_id",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

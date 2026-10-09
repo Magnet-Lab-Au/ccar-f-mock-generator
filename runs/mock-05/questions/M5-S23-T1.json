@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S23-T1",
+  "slot_id": "M5-S23",
+  "try": 1,
+  "point": "3.5-S5",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "You use Claude Code to refactor pagination in your team's inventory service. After the first pass, tests show four problems: the server encodes page cursors with a new field order, the client library decodes cursors with the old field order, the docstring of the listing endpoint names a removed parameter, and a log message misspells the word \"inventory\". A change to the cursor format changes what the decoder must do, while the other two problems affect nothing else. Which approaches should you take for the next iterations?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Fix the docstring problem and the log message misspelling in separate, sequential iterations, because neither fix changes anything else in the service.",
+      "correct": true,
+      "reason": "These two problems are independent of each other and of the cursor format, and the guide says that sequential iteration suits independent issues."
+    },
+    {
+      "letter": "B",
+      "text": "Describe the log message misspelling together with the cursor encoding problem in one message, because both problems appear in the server code.",
+      "correct": false,
+      "reason": "The guide groups problems by whether their fixes interact, not by where the code lives, and the misspelling does not interact with the cursor format."
+    },
+    {
+      "letter": "C",
+      "text": "Ask Claude Code to fix the failing cursor tests one test at a time, without explaining that the encoder and decoder share one field order.",
+      "correct": false,
+      "reason": "This handles interacting problems sequentially and hides how they connect, but the guide says interacting issues need one detailed message that explains them together."
+    },
+    {
+      "letter": "D",
+      "text": "Describe the cursor encoding and decoding problems together in one detailed message that explains how the shared field order links the two fixes.",
+      "correct": true,
+      "reason": "The encoder and decoder problems interact through the cursor format, and the guide says that interacting issues belong in a single detailed message."
+    },
+    {
+      "letter": "E",
+      "text": "Report the decoding problem first, and report the encoding problem only after the client library passes its cursor tests.",
+      "correct": false,
+      "reason": "The two cursor problems interact, so fixing them in sequence lets one fix break the other; the guide says interacting issues go in one message."
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "question_id": "M5-S14-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "4b8fe07a9c2945a82f161c3c4c8aeb264c4cd2d2e11797503a70f4229dd776e4",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "E"
+    ],
+    "reason": "In the Agent SDK, a coordinator starts a subagent by emitting a Task tool call (A). It can only do that if \"Task\" is in its allowedTools. The current list of Read, Grep, Glob and Bash doesn't include it, which explains why the subagent is never spawned (E). B is wrong because subagents don't inherit the coordinator's context. C is wrong because parallel subagents are spawned with multiple Task calls in a single response. D is wrong because the coordinator's allowedTools still needs Task.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    },
+    {
+      "name": "AgentDefinition",
+      "found": true
+    },
+    {
+      "name": "allowedTools",
+      "found": true
+    },
+    {
+      "name": "Task",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    },
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Glob",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

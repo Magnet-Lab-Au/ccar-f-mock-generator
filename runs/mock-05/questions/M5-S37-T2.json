@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S37-T2",
+  "slot_id": "M5-S37",
+  "try": 2,
+  "point": "3.3-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S37-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to generate test cases for pull requests. API handler files named *.handler.ts sit in dozens of service directories, and the team copied its handler testing conventions into a CLAUDE.md file in each service directory. Reviewers find that tests for handlers in newly added services ignore the conventions, and that the copies now differ from each other. Which change best fixes this configuration?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Replace the copies with one .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.handler.ts\"], so the conventions load for any handler file.",
+      "correct": true,
+      "reason": "A path-specific rule with a glob pattern applies conventions to files by type regardless of directory, which the guide prefers over subdirectory CLAUDE.md files for conventions spread across the codebase."
+    },
+    {
+      "letter": "B",
+      "text": "Move the conventions into one CLAUDE.md file in a shared services/common directory, so that every service directory inherits the conventions from that single file.",
+      "correct": false,
+      "reason": "A directory-level CLAUDE.md applies only within its own directory, and the other service directories are not inside services/common, so their handler files would not receive the conventions."
+    },
+    {
+      "letter": "C",
+      "text": "Add a CI step that copies the most recent service CLAUDE.md into every service directory before Claude Code runs on the pull request.",
+      "correct": false,
+      "reason": "This keeps the directory-level approach and its duplicated copies, so the team still maintains one file per directory instead of one path-scoped rule for files spread across the codebase."
+    },
+    {
+      "letter": "D",
+      "text": "Move the conventions into a custom slash command in .claude/commands/ that the CI job runs before Claude Code generates tests for any pull request.",
+      "correct": false,
+      "reason": "A slash command is invoked on demand and does not load conventions automatically based on the paths of the edited files, which is what path-specific rules provide."
+    }
+  ]
+}

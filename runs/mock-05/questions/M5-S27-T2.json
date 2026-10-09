@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S27-T2",
+  "slot_id": "M5-S27",
+  "try": 2,
+  "point": "5.5-K4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S27-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code in CI with the -p flag to extract endpoint metadata from service source files: route path, HTTP method, and whether authentication is required. On a labeled validation set, high-confidence outputs are 97% accurate overall. TypeScript services score 98% or higher on every field. Java services make up 5% of the files and score 97% on route path and HTTP method, but only 72% on the authentication field. Which review plan best fits these results?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep full human review of every output in both languages, because one weak segment shows that no part of the pipeline can be trusted yet.",
+      "correct": false,
+      "reason": "The guide says to prioritize limited reviewer capacity, and the segment analysis shows that every segment except the Java authentication field performs consistently, so full review of everything wastes that capacity."
+    },
+    {
+      "letter": "B",
+      "text": "End review for high-confidence outputs in segments that validated well, and keep human review of the Java authentication field until it improves and is validated again.",
+      "correct": true,
+      "reason": "The guide says to validate accuracy by document type and field before automating, so review can drop only where every segment shows consistent performance."
+    },
+    {
+      "letter": "C",
+      "text": "End review for all high-confidence outputs now, and later run stratified random sampling on them to catch Java authentication errors after they reach downstream systems.",
+      "correct": false,
+      "reason": "Stratified sampling measures ongoing error rates after automation, but the guide requires consistent segment accuracy before review is reduced, and the Java authentication field already fails that check."
+    },
+    {
+      "letter": "D",
+      "text": "End review for all high-confidence outputs, because Java files are only 5% of the volume and the 97% overall figure shows the pipeline is reliable enough.",
+      "correct": false,
+      "reason": "The guide warns that an aggregate figure can mask poor performance in a specific segment, and here it hides 72% accuracy on the Java authentication field."
+    }
+  ]
+}

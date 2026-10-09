@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S14-T1",
+  "slot_id": "M5-S14",
+  "try": 1,
+  "point": "1.3-K1",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team builds a legacy-code exploration agent with the Claude Agent SDK. A coordinator should hand the analysis of each legacy module to an exploration subagent that has its own AgentDefinition. The coordinator's allowedTools list contains Read, Grep, Glob and Bash. In testing, the coordinator never spawns the exploration subagent and reads every module itself, so its context fills up. Which statements about making this delegation work are accurate?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The coordinator spawns the exploration subagent by emitting a Task tool call, because the Task tool is the mechanism for spawning subagents.",
+      "correct": true,
+      "reason": "The guide names the Task tool as the mechanism for spawning subagents."
+    },
+    {
+      "letter": "B",
+      "text": "The exploration subagent automatically inherits the coordinator's conversation history, so a short Task prompt that refers to earlier findings gives it enough context.",
+      "correct": false,
+      "reason": "The guide states that subagents do not automatically inherit parent context. Context must be explicitly provided in the prompt."
+    },
+    {
+      "letter": "C",
+      "text": "To explore three modules in parallel, the coordinator must emit one Task call per turn across three separate turns rather than in one response.",
+      "correct": false,
+      "reason": "The guide says parallel subagents are spawned by emitting multiple Task tool calls in a single coordinator response, not across separate turns."
+    },
+    {
+      "letter": "D",
+      "text": "Because the subagent has its own AgentDefinition and tool restrictions, the coordinator can invoke it with no change to the coordinator's allowedTools.",
+      "correct": false,
+      "reason": "The subagent's AgentDefinition does not remove the requirement that the coordinator's allowedTools include \"Task\" to invoke subagents."
+    },
+    {
+      "letter": "E",
+      "text": "The coordinator's allowedTools must include \"Task\", because its current list of Read, Grep, Glob and Bash gives it no way to invoke subagents.",
+      "correct": true,
+      "reason": "The guide states that allowedTools must include \"Task\" for a coordinator to invoke subagents. The current list lacks it."
+    }
+  ]
+}

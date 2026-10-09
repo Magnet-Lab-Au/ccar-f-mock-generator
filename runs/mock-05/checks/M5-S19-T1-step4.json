@@ -1,0 +1,104 @@
+{
+  "question_id": "M5-S19-T1",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "b95e6dbbdc5dfc7a6171e11618623cd8ccabd49f8056822255a96d7b9da6beeb",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Personal variants belong in ~/.claude/skills/ under a different name. This keeps the change out of version control and leaves the shared release-notes skill untouched, so teammates' sessions are unaffected. Options B and C would add files to the shared project, changing what teammates see. Option D would modify the shared skill itself.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".claude/skills/",
+      "found": true
+    },
+    {
+      "name": "~/.claude/skills/",
+      "found": true
+    },
+    {
+      "name": "SKILL.md",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    },
+    {
+      "name": "context: fork",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

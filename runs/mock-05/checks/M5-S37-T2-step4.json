@@ -1,0 +1,113 @@
+{
+  "question_id": "M5-S37-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question repeats the problem of M1-S43-T1. In both, files of one type (*.test.tsx there, *.handler.ts here) sit in dozens of directories, and new directories keep being added. In both, the answer replaces per-directory CLAUDE.md files with a single .claude/rules/ file using a **/*.ext glob. The same reasoning leads to the answer, and the 'fix the existing copies' framing does not change the choice. Two wrong options also repeat earlier ones. C repeats S43's per-directory CLAUDE.md copies. D repeats the slash-command distractor of M1-S33-T1 and M1-S40-T2.",
+      "letter": "A",
+      "point": "3.3-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "2ea24aa3ef8d66b48f07e5202cfdb2df057ecd31b59e9c7fd724f47e1d50d620",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "A single path-scoped rule in .claude/rules/ with the glob paths: [\"**/*.handler.ts\"] loads the conventions for every handler file, whatever directory it sits in. That covers newly added services and removes the drift between copies. B fails because a CLAUDE.md in a sibling common directory is not inherited by other service directories. C keeps the duplication and just automates it. D wrongly uses a slash command for conventions that should load automatically.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question repeats the problem of M1-S43-T1. In both, files of one type (*.test.tsx there, *.handler.ts here) sit in dozens of directories, and new directories keep being added. In both, the answer replaces per-directory CLAUDE.md files with a single .claude/rules/ file using a **/*.ext glob. The same reasoning leads to the answer, and the 'fix the existing copies' framing does not change the choice. Two wrong options also repeat earlier ones. C repeats S43's per-directory CLAUDE.md copies. D repeats the slash-command distractor of M1-S33-T1 and M1-S40-T2.",
+      "letter": "A",
+      "point": "3.3-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    },
+    {
+      "name": "YAML frontmatter",
+      "found": true
+    },
+    {
+      "name": "paths",
+      "found": true
+    },
+    {
+      "name": ".claude/commands/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

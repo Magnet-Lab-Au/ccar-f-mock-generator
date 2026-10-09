@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S45-T3",
+  "slot_id": "M5-S45",
+  "try": 3,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S45-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request, and most pull requests touch only two or three files. After the review lists its findings, the same session is asked to report a confidence level for each finding, and findings above a threshold are posted as blocking comments. Almost every finding receives a high confidence level. A check against a labeled validation set shows that these levels barely separate real defects from false positives. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The pipeline runs Claude Code in non-interactive mode with the -p flag, so the model cannot pause to reconsider a finding before it assigns that finding a confidence level.",
+      "correct": false,
+      "reason": "The guide names the -p flag as the way to run Claude Code non-interactively in CI. The flag does not cause inflated confidence; the shared session with the reviewer's reasoning does."
+    },
+    {
+      "letter": "B",
+      "text": "The confidence levels come from the same session that produced the findings, so the model keeps its earlier reasoning and is unlikely to question its own findings.",
+      "correct": true,
+      "reason": "The guide states that a model keeps its reasoning context from generation and is less likely to question its own decisions in the same session. The confidence-reporting verification pass should run in an independent instance."
+    },
+    {
+      "letter": "C",
+      "text": "The review prompt lacks a general instruction telling Claude to report only the findings that it is highly confident about, so too many weak findings get high scores.",
+      "correct": false,
+      "reason": "The guide states that general instructions such as reporting only high-confidence findings do not improve precision. Such an instruction would also leave the scoring inside the session that produced the findings."
+    },
+    {
+      "letter": "D",
+      "text": "Each review covers all changed files in a single pass instead of per-file passes, so attention dilution makes the model rate every finding with the same confidence.",
+      "correct": false,
+      "reason": "The guide uses per-file passes against attention dilution in large multi-file reviews. These pull requests touch only two or three files, and the uniform scores come from scoring in the session that produced the findings."
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "question_id": "M5-S06-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Two wrong options repeat wrong options of earlier questions on the same idea. Option C uses a PostToolUse hook to block a call that has already run, which repeats the PostToolUse wrong option of M1-S14-T2 and the cause in M4-S19-T1. Option D replaces the hook with a system prompt rule, which repeats the prompt wrong options of M1-S14-T2 and M1-S18-T1. The blocking half of the question therefore needs the same reasoning as M1-S14-T2: intercept the outgoing call rather than use PostToolUse or a prompt. Only option A adds a new problem, the normalization side. At most one wrong option may repeat.",
+      "letter": null,
+      "point": "1.5-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "d3d43ef9ce7be550381a4ecc5a382de0f61f30e06d2ffb71913c83e74e85523d",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Blocking production releases has to happen before the tool runs, so it needs a hook that intercepts the outgoing deploy_service call. The date formats only show up in the tool results, so a PostToolUse hook should normalize them. A is wrong because the outgoing call contains no dates to fix. C is wrong because a PostToolUse hook runs after the deploy has already happened. D is wrong because a prompt rule is only probabilistic, not guaranteed compliance.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Two wrong options repeat wrong options of earlier questions on the same idea. Option C uses a PostToolUse hook to block a call that has already run, which repeats the PostToolUse wrong option of M1-S14-T2 and the cause in M4-S19-T1. Option D replaces the hook with a system prompt rule, which repeats the prompt wrong options of M1-S14-T2 and M1-S18-T1. The blocking half of the question therefore needs the same reasoning as M1-S14-T2: intercept the outgoing call rather than use PostToolUse or a prompt. Only option A adds a new problem, the normalization side. At most one wrong option may repeat.",
+      "letter": null,
+      "point": "1.5-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "PostToolUse",
+      "found": true
+    },
+    {
+      "name": "MCP",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

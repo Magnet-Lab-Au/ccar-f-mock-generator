@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S48-T2",
+  "slot_id": "M5-S48",
+  "try": 2,
+  "point": "2.3-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S48-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In an early build of your support agent, the agent has five tools: get_customer, lookup_order, process_refund, escalate_to_human, and a generic update_account tool that accepts any field name and value. Logs show that the agent sometimes changes credit limits when customers ask, although policy lets it change only contact details. A system prompt rule against such changes reduced these cases but did not stop them. What is the most likely root cause of the remaining changes?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The agent holds too many tools, so the added decision complexity makes it choose update_account when a more suitable tool exists for the customer's request.",
+      "correct": false,
+      "reason": "The agent has only five tools, which is within the 4-5 range that the guide treats as reliable, and the failure is the content of the call, not the tool choice."
+    },
+    {
+      "letter": "B",
+      "text": "The update_account tool returns its errors without the isError flag, so the agent cannot see that its attempted changes to restricted fields have failed and keeps retrying them.",
+      "correct": false,
+      "reason": "The forbidden changes succeed, so the problem is not hidden errors; the generic tool accepts the restricted field and applies the change."
+    },
+    {
+      "letter": "C",
+      "text": "The tool_choice setting is \"auto\", so the model may answer with conversational text when the customer's request should have produced a call to update_account instead.",
+      "correct": false,
+      "reason": "The \"auto\" setting only decides whether the model calls a tool; the failure here is a tool call that writes a restricted field, which tool_choice does not control."
+    },
+    {
+      "letter": "D",
+      "text": "The update_account interface accepts any field name, so only a prompt rule that the model follows probabilistically stands between a customer request and a forbidden change.",
+      "correct": true,
+      "reason": "A generic tool puts no constraint on its inputs, so prompt guidance is the only barrier; a constrained alternative that validates its inputs would block these changes."
+    }
+  ]
+}

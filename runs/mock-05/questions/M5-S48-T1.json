@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S48-T1",
+  "slot_id": "M5-S48",
+  "try": 1,
+  "point": "2.3-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In an early build of your support agent, the agent reads order data through a generic run_backend_query tool that accepts any SQL statement. Production logs show that when a customer gives a mistyped order number, the agent sometimes reads and quotes an order that belongs to a different customer. Your team wants the tool interface itself to block such lookups. Which change best achieves this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep run_backend_query and add few-shot examples to the system prompt that show the agent writing queries filtered by the current customer's ID.",
+      "correct": false,
+      "reason": "Few-shot examples only guide the model's behavior; the unconstrained tool still accepts queries for other customers' orders."
+    },
+    {
+      "letter": "B",
+      "text": "Keep run_backend_query and force tool_choice to get_customer on the first turn, so that the agent always identifies the customer before it runs any query.",
+      "correct": false,
+      "reason": "Forced tool selection only fixes the order of calls; the generic query tool can still read any customer's order afterward."
+    },
+    {
+      "letter": "C",
+      "text": "Keep run_backend_query and greatly lengthen its description with the full table schema and column meanings, so that the agent writes more precise SQL statements for each order lookup it performs.",
+      "correct": false,
+      "reason": "A richer description may improve query accuracy, but the tool remains generic and still lets a mistyped order number return another customer's data."
+    },
+    {
+      "letter": "D",
+      "text": "Replace run_backend_query with a lookup_order tool that takes an order ID and the verified customer ID, and that rejects orders owned by another account with an error.",
+      "correct": true,
+      "reason": "Replacing a generic tool with a constrained alternative that validates its input makes the interface itself refuse lookups outside the customer's account."
+    }
+  ]
+}

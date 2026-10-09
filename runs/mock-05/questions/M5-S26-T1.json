@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S26-T1",
+  "slot_id": "M5-S26",
+  "try": 1,
+  "point": "5.5-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs Claude Code with the -p flag in CI to rewrite calls to a deprecated logging API across many modules. Each rewrite receives a confidence score, and rewrites above a threshold merge without human review. The team now wants an ongoing measure of the error rate in these high-confidence rewrites, and it also wants to catch error patterns that nobody has seen yet. Which review plan best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Each week, have reviewers check a random sample of merged high-confidence rewrites, stratified by module and rewrite type, and track the error rate for each stratum.",
+      "correct": true,
+      "reason": "Stratified random sampling of high-confidence outputs gives an unbiased, ongoing error rate for each segment and can surface novel error patterns that no existing check targets."
+    },
+    {
+      "letter": "B",
+      "text": "Move all reviewer time to the rewrites below the threshold, because the labeled validation set already showed that rewrites above the threshold are accurate.",
+      "correct": false,
+      "reason": "Validation-set calibration sets thresholds but does not replace ongoing sampling of high-confidence outputs, so their error rate and novel error patterns would go unmeasured."
+    },
+    {
+      "letter": "C",
+      "text": "Each week, have reviewers check only the merged rewrites whose CI tests later fail, because a failing test is the clearest sign of a rewrite error.",
+      "correct": false,
+      "reason": "This sample is selected by an existing check, so it is biased and cannot measure the true error rate or reveal new error patterns that the tests do not catch."
+    },
+    {
+      "letter": "D",
+      "text": "Each month, have reviewers check the same fixed benchmark set of 50 high-confidence rewrites that was chosen once at launch, so that the results stay comparable from month to month.",
+      "correct": false,
+      "reason": "A fixed set is not a fresh random sample of new high-confidence rewrites, so it cannot measure the ongoing error rate or detect error patterns that appear later."
+    }
+  ]
+}

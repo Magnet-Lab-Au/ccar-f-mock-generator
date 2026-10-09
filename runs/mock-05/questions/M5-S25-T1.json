@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S25-T1",
+  "slot_id": "M5-S25",
+  "try": 1,
+  "point": "5.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team keeps a custom slash command in .claude/commands/ that a developer runs with a customer name to reproduce a reported bug. The command tells Claude Code to call an MCP tool that looks up the customer account and then load that account's test data. When the lookup returns several accounts with the same name, Claude Code picks the first account in the list and continues. Developers then spend hours debugging the wrong account. Which change to the command best fixes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Edit the command file so that Claude Code asks the developer for an additional identifier, such as an account ID, whenever the lookup returns multiple matches.",
+      "correct": true,
+      "reason": "The guide says that multiple matches require clarification through a request for additional identifiers, not heuristic selection."
+    },
+    {
+      "letter": "B",
+      "text": "Edit the command file so that Claude Code picks the account with the most recent bug report, since that account most likely belongs to the reporter.",
+      "correct": false,
+      "reason": "This only swaps one heuristic for another, and the guide says multiple matches need additional identifiers rather than heuristic selection."
+    },
+    {
+      "letter": "C",
+      "text": "Tell developers to run the command in plan mode so that Claude Code explores the matching accounts before it loads any test data into the session.",
+      "correct": false,
+      "reason": "Plan mode adds exploration before action, but Claude Code still has no identifier to tell same-name accounts apart, so it must still guess."
+    },
+    {
+      "letter": "D",
+      "text": "Convert the command into a skill with context: fork so that the account lookup runs in an isolated subagent and its verbose output stays out of the main session conversation.",
+      "correct": false,
+      "reason": "Context isolation keeps the main session clean but does not resolve which of several matching accounts is correct, so the guessing continues."
+    }
+  ]
+}

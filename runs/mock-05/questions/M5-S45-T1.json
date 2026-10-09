@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S45-T1",
+  "slot_id": "M5-S45",
+  "try": 1,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a Claude code review on each pull request, and then a verification pass assigns one overall confidence score to the full set of findings for that pull request. Reviews scored above 0.85 have all their findings posted as pull request comments, and the rest go to a human reviewer queue. Developers now see doubtful findings posted next to real bugs, and reviewers spend time on queued reviews that contain obvious defects. Which change best fixes this routing?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add an instruction to the review prompt that tells Claude to be conservative and to report only the findings that it is highly confident about.",
+      "correct": false,
+      "reason": "The guide states that general instructions such as reporting only high-confidence findings fail to improve precision, and they give no per-finding scores for routing."
+    },
+    {
+      "letter": "B",
+      "text": "Have the verification pass report a confidence level alongside each finding, and route each finding by its own level against thresholds calibrated on a labeled validation set.",
+      "correct": true,
+      "reason": "The guide calls for confidence reported with each finding, and it calibrates the thresholds on labeled validation sets, so each finding goes to the right destination."
+    },
+    {
+      "letter": "C",
+      "text": "Have the same review session check its own findings a second time before scoring, and post as pull request comments only the findings that both of the review passes in that session report.",
+      "correct": false,
+      "reason": "The same session keeps its reasoning context and is unlikely to question its own findings, and agreement between the passes is not a calibrated per-finding confidence."
+    },
+    {
+      "letter": "D",
+      "text": "Raise the threshold for the overall review score from 0.85 to 0.95, so that only the reviews with the strongest overall scores get their findings posted as comments.",
+      "correct": false,
+      "reason": "One score per review still mixes strong and doubtful findings, so each finding cannot be routed on its own merit."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S45-T2",
+  "slot_id": "M5-S45",
+  "try": 2,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S45-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a Claude review on each pull request. The review labels each finding as critical or minor. Critical findings are posted as blocking pull request comments, and minor findings go to a human reviewer queue. Developers report that many blocking comments are false positives, while reviewers find that many queued minor findings are clear, real defects. Which change best fixes this routing?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Route findings by category instead of severity, so that all security findings become blocking pull request comments and all style findings go to the human reviewer queue for checking.",
+      "correct": false,
+      "reason": "A category, like a severity label, says nothing about whether a finding is correct. Doubtful security findings would still be posted, and certain style defects would still be queued, so routing needs calibrated confidence per finding."
+    },
+    {
+      "letter": "B",
+      "text": "Add a verification pass that reports a confidence level with each finding, and route findings by that confidence against thresholds calibrated on a labeled validation set.",
+      "correct": true,
+      "reason": "Severity measures how serious a finding would be, not how likely it is to be real. The guide routes review findings by self-reported confidence per finding, with thresholds calibrated on labeled validation sets."
+    },
+    {
+      "letter": "C",
+      "text": "Add an instruction to the review prompt that tells Claude to label a finding as critical only when it is highly confident that the finding is a real defect.",
+      "correct": false,
+      "reason": "The guide states that general instructions such as reporting only high-confidence findings do not improve precision. The labels would still mix seriousness with certainty and would give no calibrated confidence for routing."
+    },
+    {
+      "letter": "D",
+      "text": "Turn on extended thinking in the review session so that Claude reasons longer about each finding before it assigns the critical or minor label to that finding.",
+      "correct": false,
+      "reason": "The guide says extended thinking is less effective than an independent review instance. Routing would also still depend on the severity label, which does not measure how likely a finding is to be correct."
+    }
+  ]
+}
