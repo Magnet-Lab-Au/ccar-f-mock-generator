@@ -23,7 +23,7 @@ Option 1.
 
 ## Reason
 
-Plain reason: the owner decided not to mark mock 5. The second review marked the rounds of mocks 1 to 4 in parallel with the owner. In mocks 2 to 4, its marks agreed with the owner's marks. In mock 1, it found 7 problems of the mock as a set that the owner had not marked (decision 0045). So the second review is not the same as the owner, and its marks are recorded as its own.
+Plain reason: the owner decided not to mark mock 5. The second review marked the rounds of mocks 1 to 4. In mocks 2 and 3, its marks agreed with the owner's marks. In mock 4, the owner did not read the questions of either round. In mock 1, it found 7 problems of the mock as a set that the owner had not marked (decision 0045). So the second review is not the same as the owner, and its marks are recorded as its own.
 
 ## How we decided
 

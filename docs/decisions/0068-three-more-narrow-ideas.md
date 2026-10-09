@@ -1,4 +1,4 @@
-# 0068: Three more narrow ideas
+# 0068: Four more narrow ideas
 
 - Date: 9 October 2026
 - Status: accepted
@@ -15,7 +15,7 @@ Decision 0066 confirmed a list of 20 narrow ideas: ideas with almost only one pr
 
 ## Decision
 
-Option 1. The list `data/narrow-ideas.json` now has 24 groups. Added:
+Option 1. The list `data/narrow-ideas.json` now has 24 groups. Added (G041 on the same day, see below):
 
 | Group | The one problem |
 |---|---|

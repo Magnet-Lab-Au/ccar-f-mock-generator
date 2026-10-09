@@ -6,7 +6,7 @@
 
 ## Question
 
-The owner marked round 1 of mock 4: 20 of 20 good. The second review in Cowork found 2 questions to fix. After the 2 rewrites, round 2 had 2 questions, and step 6 had findings. How is mock 4 finished?
+The marking file of round 1 of mock 4 has 20 of 20 good. The second review in Cowork found 2 questions to fix. After the 2 rewrites, round 2 had 2 questions, and step 6 had findings. How is mock 4 finished?
 
 ## Options
 
@@ -31,7 +31,7 @@ Option 1.
 
 ## Reason
 
-Plain reason: the owner and the second review found each marked question good. The rule for the findings is the rule of decisions 0059 and 0064.
+Plain reason: the marking files and the second review found each marked question good. The rule for the findings is the rule of decisions 0059 and 0064.
 
 The correct letters of mock 4 are not balanced: in the 52 questions with one answer, D is correct 22 times and B 8 times (chance is 13). In the 20 questions that the owner marked, B was never correct. The letters stay, because a change after the checks breaks the fingerprints of the build. Decision 0070 balances the letters from mock 5.
 
