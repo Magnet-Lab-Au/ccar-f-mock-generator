@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S01-T1",
+  "slot_id": "M5-S01",
+  "try": 1,
+  "point": "1.6-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks your agent to review a legacy billing module of 16 files before a shared library upgrade. The review must find deprecated library calls in each file. It must also find data that one file passes to another file in a format that the receiving file no longer accepts. A single review pass over all 16 files missed deprecated calls in the later files and found no cross-file mismatches. Which design of the review best fixes both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run a focused pass for each file, and give each pass the full text of all 16 files so it can check data exchange.",
+      "correct": false,
+      "reason": "Each pass would load all 16 files, so it would no longer be focused and attention would be diluted again. The guide puts cross-file checks in a separate integration pass instead."
+    },
+    {
+      "letter": "B",
+      "text": "Chain a focused pass for each file that reports its local deprecated calls, then a separate integration pass that checks the data passed between the files.",
+      "correct": true,
+      "reason": "Per-file local passes avoid attention dilution. The separate cross-file integration pass then catches the mismatches between files, so this design fixes both problems."
+    },
+    {
+      "letter": "C",
+      "text": "Split the single pass into two passes over all 16 files, one that looks for deprecated calls and one that looks for data mismatches.",
+      "correct": false,
+      "reason": "Each pass still covers all 16 files at once, so attention stays diluted. Later files can still get shallow analysis."
+    },
+    {
+      "letter": "D",
+      "text": "Run a focused pass for each file and join the 16 reports, with no later pass that examines how the files exchange data.",
+      "correct": false,
+      "reason": "The per-file passes fix the shallow analysis. Without a cross-file integration pass, however, nothing checks the data passed between files, so the mismatches stay hidden."
+    }
+  ]
+}

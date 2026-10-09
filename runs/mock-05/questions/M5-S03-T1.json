@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S03-T1",
+  "slot_id": "M5-S03",
+  "try": 1,
+  "point": "3.5-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer on your team will use the agent to build a function that normalizes phone numbers from a legacy CRM export into one standard format. The function must handle empty fields, international prefixes, and numbers with extensions. It must also process one million records within a nightly time limit. Earlier agent-written utilities passed review but failed on unusual input in production. Which approach gives the most reliable progressive improvement?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Before implementation, write tests for expected outputs, edge cases such as empty fields and extensions, and the nightly time limit, then share each round's test failures with the agent.",
+      "correct": true,
+      "reason": "The guide recommends writing a test suite first that covers expected behavior, edge cases, and performance requirements. You then iterate by sharing the test failures, which guides progressive improvement."
+    },
+    {
+      "letter": "B",
+      "text": "Ask the agent to state its confidence that each edge case is handled, and accept the version once it reports high confidence for every case.",
+      "correct": false,
+      "reason": "Self-reported confidence does not check behavior against expected outputs or performance requirements. The guide's method is to iterate on actual test failures."
+    },
+    {
+      "letter": "C",
+      "text": "Write a detailed prose specification that describes every phone format and edge case, have the agent implement it in one pass, and then spot-check a few hundred converted records by hand afterward.",
+      "correct": false,
+      "reason": "The guide notes that prose descriptions can be interpreted inconsistently. A single pass with manual spot checks gives no test failures to share, so there is no reliable progressive iteration."
+    },
+    {
+      "letter": "D",
+      "text": "Have the agent implement the normalizer first, then generate tests from that code so the suite records its current behavior as correct.",
+      "correct": false,
+      "reason": "The guide says to write tests before implementation. Tests generated from finished code only lock in existing defects and cannot guide improvement."
+    }
+  ]
+}

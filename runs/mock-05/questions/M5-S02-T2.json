@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S02-T2",
+  "slot_id": "M5-S02",
+  "try": 2,
+  "point": "1.4-S2",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S02-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer sends your coordinator agent one message about a legacy payments service: explain how the retry module works, find where request timeouts are configured, and explain why the integration tests time out. The coordinator agent spawns one subagent per concern through the Task tool, waits for each subagent to finish before it spawns the next, and gives each subagent only its own concern. The engineer waits long, and the final reply lists three separate answers. The test answer cites a default timeout, but the configuration answer shows that a config file overrides this default. Which two changes best fix both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give every subagent the full message and the engineer's goal as shared context, and have the coordinator agent synthesize the findings into one reconciled answer.",
+      "correct": true,
+      "reason": "Shared context and a final synthesis step produce one unified resolution, so the default timeout is reconciled with the config override."
+    },
+    {
+      "letter": "B",
+      "text": "Add a programmatic prerequisite gate that blocks the test subagent until the configuration subagent completes, so that the concerns always run in a fixed order.",
+      "correct": false,
+      "reason": "Prerequisite gates are for steps where compliance requires a fixed order; here they keep the slow sequence instead of parallel investigation, and the answers stay unsynthesized."
+    },
+    {
+      "letter": "C",
+      "text": "Escalate the conflicting answers to a human engineer with a structured handoff summary of the root cause and the recommended action for each concern.",
+      "correct": false,
+      "reason": "Structured handoffs are for escalation to humans who lack the transcript; this does not remove the delay or give the engineer one synthesized answer from the agent."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator agent spawn the three subagents at the same time, so that the three concerns are investigated in parallel instead of one after another.",
+      "correct": true,
+      "reason": "The request is already decomposed into distinct items, and investigating them in parallel removes the long sequential wait."
+    },
+    {
+      "letter": "E",
+      "text": "Keep the sequential order, and add a system prompt instruction that tells the test subagent to check config files before it cites any default value.",
+      "correct": false,
+      "reason": "This keeps the long sequential wait and the three separate answers, so it skips parallel investigation with shared context and a unified synthesis."
+    }
+  ]
+}

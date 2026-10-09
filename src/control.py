@@ -33,6 +33,7 @@ CANNOT_DECIDE = 2      # "cannot decide" results that stop a slot (decision 0023
 MARKS_LATER_MOCK = 20  # the sample of a later mock (decision 0022)
 STOP_MOCK_1 = 7        # bad marks of 60 that stop mock 1 (decision 0035): more than 6
 STOP_LATER_MOCK = 2    # bad marks of 20 that stop a later mock (decision 0035)
+MARK_ALL = {1, 5}      # the mocks whose 60 questions are all in the marking file (decisions 0022 and 0073)
 
 
 class CallFailed(Exception):
@@ -475,7 +476,7 @@ class Control:
         """The slots that the owner must mark (decision 0022).
         Mock 1: all 60. A later mock: 20, 5 from each scenario, with each domain."""
         slots = self.slots()
-        if self.mock == 1:
+        if self.mock in MARK_ALL:
             return [s["slot_id"] for s in slots]
         rng = random.Random("%s-sample" % self.seed)
         def domain(s):
@@ -565,7 +566,7 @@ class Control:
         return [m for m in self.marks() if m["round"] == 1 and m["mark"] == "bad"]
 
     def stop_limit_reached(self):
-        limit = STOP_MOCK_1 if self.mock == 1 else STOP_LATER_MOCK
+        limit = STOP_MOCK_1 if self.mock in MARK_ALL else STOP_LATER_MOCK
         return len(self.bad_marks_first_round()) >= limit
 
     # ----- the decisions of the owner -----

@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S02-T1",
+  "slot_id": "M5-S02",
+  "try": 1,
+  "point": "1.4-S2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer sends your agent one message about a legacy payments service: explain how the retry module works, find where request timeouts are configured, and explain why the integration tests time out. The agent works through the three concerns one after another in a single session, and the engineer waits a long time. The final reply lists three separate answers, and the test answer cites a default timeout, although the configuration answer shows that a config file overrides this default. Which two changes best fix both problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give each subagent a shared context with the full message and the engineer's goal, and have the agent synthesize the findings into one reconciled answer.",
+      "correct": true,
+      "reason": "Shared context plus a final synthesis step produces a unified resolution, so the agent reconciles the timeout default with the config override."
+    },
+    {
+      "letter": "B",
+      "text": "Add a programmatic prerequisite gate that blocks the test investigation until the configuration search completes, so that the items always run in a fixed order.",
+      "correct": false,
+      "reason": "Prerequisite gates enforce ordering where compliance requires it; forcing these independent items into a fixed sequence keeps the delay instead of investigating them in parallel."
+    },
+    {
+      "letter": "C",
+      "text": "Give each subagent only its own item and no details about the other items, so that each investigation stays isolated from the others.",
+      "correct": false,
+      "reason": "The guide calls for parallel investigation using shared context; isolating each item keeps the findings disconnected and the contradiction unresolved."
+    },
+    {
+      "letter": "D",
+      "text": "Have the agent split the message into three distinct items and investigate them in parallel with subagents that it spawns through the Task tool.",
+      "correct": true,
+      "reason": "Decomposing the multi-concern request into distinct items and investigating them in parallel removes the long sequential wait."
+    },
+    {
+      "letter": "E",
+      "text": "Keep the single sequential session, and add a system prompt instruction that tells the agent to check each later answer against its earlier findings.",
+      "correct": false,
+      "reason": "Prompt guidance alone has a non-zero failure rate, and the sequential session keeps the long wait, so this skips decomposition and parallel investigation."
+    }
+  ]
+}

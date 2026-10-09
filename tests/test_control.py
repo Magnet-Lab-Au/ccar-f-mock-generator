@@ -457,6 +457,17 @@ class TestNewPointOfTheOwner(Base):
             c.decide("more_tries", "M1-S05", "x", new_point=free[0])
 
 
+class TestMarkAllOfMock5(Base):
+    """Decision 0073: mock 5 puts all 60 questions in the marking file."""
+
+    def test_mock_5_samples_all_60_and_mock_4_samples_20(self):
+        for mock, n in ((5, 60), (4, 20)):
+            c = Control(tempfile.mkdtemp(), mock, 42, FakeSteps(), GUIDE_POINTS)
+            c.run()
+            self.assertEqual(len(c.sample()), n, mock)
+            shutil.rmtree(c.folder)
+
+
 class TestReviewFindings(Base):
     """The cases of the independent review of 7 October 2026."""
 
