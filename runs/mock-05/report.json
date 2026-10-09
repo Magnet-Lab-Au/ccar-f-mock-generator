@@ -1,9 +1,9 @@
 {
   "mock": 5,
   "date": "2026-10-09",
-  "state": "ready_to_mark",
+  "state": "in_work",
   "waiting_for": [
-    "marks of round 1"
+    "start the program"
   ],
   "slots": [
     {
@@ -232,7 +232,7 @@
     },
     {
       "slot_id": "M5-S33",
-      "status": "passed",
+      "status": "to_write",
       "question_id": "M5-S33-T1",
       "tries": 1,
       "open_reasons": []
@@ -316,7 +316,7 @@
     },
     {
       "slot_id": "M5-S45",
-      "status": "passed",
+      "status": "to_write",
       "question_id": "M5-S45-T3",
       "tries": 3,
       "open_reasons": []
