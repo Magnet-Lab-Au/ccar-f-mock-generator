@@ -81,7 +81,7 @@ The slot also tells the writer two things (decisions 0053 and 0054). If the fiel
 
 When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different problem, also in another setting (the cause, the fix, or a choice between two rules), and not the same set of wrong options. At most one wrong option may repeat (decisions 0056 and 0066).
 
-Code then mixes the options and gives them their letters. The model does not select the letters. In the 12 sample questions of the guide the correct answer is A 10 times, and a model that sees them can copy that (an assumption, not checked). Code saves one file for each try. No file is written over.
+Code then mixes the options and gives them their letters. The model does not select the letters. From mock 5, the correct options take the letters that the plan sets, so the letters are balanced over the mock (decision 0070). In the 12 sample questions of the guide the correct answer is A 10 times, and a model that sees them can copy that (an assumption, not checked). Code saves one file for each try. No file is written over.
 
 Step 5 uses the same request when a question must be written again. It adds the failed question and the exact findings.
 

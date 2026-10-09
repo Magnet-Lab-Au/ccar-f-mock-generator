@@ -94,7 +94,8 @@ D = {
  'OUT': dict(title='What the step returns', cls='io', who='Output', status='built', points=[], none=NONE,
    sent=['One plan file: the mock number, the seed, the version of the guide, the date, the numbers of the earlier mocks that step 1 counted, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
          'The slots get the numbers 1 to 60, group by group. The seed sets the sequence inside a group. The slot number is the question number in the finished mock.',
-         'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options, the number of answers to select, and longest_may_be_correct (true or false).',
+         'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options, the number of answers to select, longest_may_be_correct (true or false), and correct_letters.',
+         'correct_letters (decision 0070): each of A to D is the answer of 13 of the 52 slots with one answer, and the 16 answers of the 8 slots with two answers spread over A to E. The seed sets which slot gets which letter. Mocks 1 to 4 have no such field.',
          'The first slot of the plan of mock 1: %s.' % json.dumps(EX)],
    why='Step 2 writes one question for each slot. The later checks compare each question with its slot.'),
  'F': dict(title='The step stops', cls='stop', who='The step stops', status='built', points=[], none=NONE,
@@ -226,7 +227,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053, 0054, 0056 and 0057). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053, 0054, 0056, 0057 and 0070). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

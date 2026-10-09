@@ -42,6 +42,7 @@ D = {
    sent=['One list of exact rules for a good question. It is the same for each call.',
          'The writer and the checkers use the same list: 21 rules, A1 to A12 for code and B1 to B9 for a model.',
          'The writer gets the list of rules as the first block of its request, with a cache mark, so a repeated list costs less (decision 0067).',
+         'Code gives the letters, not the model. From mock 5, the correct options take the letters that the plan sets for the slot, and the wrong options take the other letters in a mixed order (decision 0070).',
          'The slot shown to the writer says if the longest option may be correct (decision 0053). If not, rule A12 asks for a wrong option that is longer than each correct option.',
          'For a slot with 2 answers, the writer gets: "The two correct options test two different parts of the point. They are not two examples of one idea." (decision 0054)',
          'When the idea of the slot is in an earlier built mock, the writer gets those earlier questions and the rule: a different scene and a different angle, and no wrong option of an earlier question (decision 0056, diagram 11).',
@@ -205,7 +206,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 04. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0053 to 0056). Status of the step: built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
+  <footer>Diagram 04. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 October 2026 (decisions 0053 to 0056, 0067 and 0070). Status of the step: built. Each exam guide text and each example from the records file is an exact copy. A script took it from the file.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
