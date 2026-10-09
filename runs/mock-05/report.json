@@ -1,9 +1,22 @@
 {
   "mock": 5,
   "date": "2026-10-09",
-  "state": "ready_to_mark",
+  "state": "waits_for_owner",
   "waiting_for": [
-    "marks of round 2"
+    "finding M5-SC4-R1-F1 of step 6: ignore or rewrite",
+    "finding M5-SC4-R1-F2 of step 6: ignore or rewrite",
+    "finding M5-SC4-R1-F3 of step 6: ignore or rewrite",
+    "finding M5-SC2-R1-F1 of step 6: ignore or rewrite",
+    "finding M5-SC2-R1-F2 of step 6: ignore or rewrite",
+    "finding M5-SC5-R2-F1 of step 6: ignore or rewrite",
+    "finding M5-SC5-R2-F2 of step 6: ignore or rewrite",
+    "finding M5-SC5-R2-F3 of step 6: ignore or rewrite",
+    "finding M5-SC5-R2-F4 of step 6: ignore or rewrite",
+    "finding M5-SC5-R2-F5 of step 6: ignore or rewrite",
+    "finding M5-SC1-R1-F1 of step 6: ignore or rewrite",
+    "finding M5-SC1-R1-F2 of step 6: ignore or rewrite",
+    "finding M5-SC1-R1-F3 of step 6: ignore or rewrite",
+    "finding M5-SC1-R1-F4 of step 6: ignore or rewrite"
   ],
   "slots": [
     {
@@ -427,6 +440,151 @@
       "open_reasons": []
     }
   ],
-  "step6_findings": [],
+  "step6_findings": [
+    {
+      "id": "M5-SC4-R1-F1",
+      "rule": "D1",
+      "result": "fail",
+      "question_ids": [
+        "M5-S02-T2",
+        "M5-S05-T1"
+      ],
+      "detail": "Both questions share a problem and its fix. In each, a coordinator spawns subagents one after another through the Task tool, which causes a long sequential wait. In each, the correct fix is to spawn the subagents at the same time so they run in parallel (S02 option D, S05 option C). S02 also adds a synthesis problem, but its parallel-spawning part repeats the scene of S05."
+    },
+    {
+      "id": "M5-SC4-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S05-T1",
+        "M5-S14-T1"
+      ],
+      "detail": "S14 option C says parallel subagents need one Task call per turn across separate turns. A candidate who reads S05 option C (emit all three Task calls in one response to run them in parallel) learns that S14 C is wrong. In the other direction, S14 C's wording ('across three separate turns rather than in one response') points to the answer of S05."
+    },
+    {
+      "id": "M5-SC4-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S02-T2",
+        "M5-S05-T1"
+      ],
+      "detail": "S02 option D says the coordinator should spawn the three subagents at the same time to remove the sequential wait. This states the fix that S05 asks for when its coordinator emits one Task call per turn."
+    },
+    {
+      "id": "M5-SC2-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S29-T5",
+        "M5-S17-T1"
+      ],
+      "detail": "Option B of M5-S29-T5 describes 'the implementation phase of a migration, where the list of files and the edits were already decided earlier in plan mode'. That is the plan-first-then-implement workflow for a multi-file migration, which is the correct answer A of M5-S17-T1. A candidate who reads S29 can rule out S17's distractors (staying in plan mode, starting with direct execution, Explore doing the edits) and pick A."
+    },
+    {
+      "id": "M5-SC2-R1-F2",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S18-T1",
+        "M5-S21-T1",
+        "M5-S25-T1"
+      ],
+      "detail": "The same wrong idea appears in three questions: plan mode used as a generic fix for a problem that has nothing to do with planning. M5-S18-T1 B uses it to find which memory files are loaded. M5-S21-T1 D uses it to stop the loss of sources during synthesis. M5-S25-T1 C uses it to choose between same-name accounts. Each reason gives the same rebuttal: plan mode adds exploration or review before execution but does not address the actual cause."
+    },
+    {
+      "id": "M5-SC5-R2-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S38-T5",
+        "M5-S43-T2"
+      ],
+      "detail": "Option E of M5-S38-T5 states that the batch API has no guaranteed latency SLA. Its reason adds that the missing SLA concerns when results arrive. This gives away the correct answer C of M5-S43-T2, which explains a late batch by the absence of a latency SLA."
+    },
+    {
+      "id": "M5-SC5-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S35-T2",
+        "M5-S36-T1"
+      ],
+      "detail": "The reason for option D of M5-S35-T2 states that retries cannot recover information that is absent from the source. This is the principle behind the correct answer B of M5-S36-T1, which says retries fail because the criteria are absent from the input."
+    },
+    {
+      "id": "M5-SC5-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S34-T1",
+        "M5-S31-T1"
+      ],
+      "detail": "The reason for option C of M5-S34-T1 says the guide uses format normalization rules to handle inconsistent source formatting. The reason for option D says schema-enforced output eliminates syntax errors. Together these give away both correct answers of M5-S31-T1: normalization rules (B) and keeping the tool schema (C)."
+    },
+    {
+      "id": "M5-SC5-R2-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S39-T6",
+        "M5-S40-T1"
+      ],
+      "detail": "The reason for option C of M5-S39-T6 says that general instructions like \"be conservative\" fail compared to specific categorical criteria. This points to the correct answer D of M5-S40-T1, which defines explicit criteria for each severity level."
+    },
+    {
+      "id": "M5-SC5-R2-F5",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M5-S40-T1"
+      ],
+      "detail": "Two wrong options use the model's own confidence as a gate. Option A has Claude report a 1-10 confidence score and downgrades blockers below seven, which is a threshold. Option B lets Claude assign the blocker level only when it is highly confident, which is a self-rated confidence trigger. Neither is the guide's calibrated field-level confidence routed to human review, so the scenario has more than one such wrong option."
+    },
+    {
+      "id": "M5-SC1-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S47-T1",
+        "M5-S48-T2",
+        "M5-S51-T1",
+        "M5-S60-T4"
+      ],
+      "detail": "M5-S47-T1 asks how process_refund should report a failure, and the answer is the isError flag. Other questions give this away. M5-S48-T2 option B says that a tool that returns errors without the isError flag leaves the agent unable to see that its calls failed. M5-S51-T1 option C says the same about process_refund returning failures without the isError flag. The M5-S60-T4 stem says that once lookup_order returns the isError flag on every failure, the agent stops repeating failed calls. Any of these texts tells a candidate that the isError flag is how a tool signals failure to the agent."
+    },
+    {
+      "id": "M5-SC1-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S51-T1",
+        "M5-S53-T2"
+      ],
+      "detail": "M5-S51-T1 option A, and the stem's mention of example queries, present input formats and example queries as what a tool description needs so the model can use the tool correctly. This hints at the correct answer of M5-S53-T2, which is to expand the process_refund description with the input format, an example and the edge case."
+    },
+    {
+      "id": "M5-SC1-R1-F3",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S47-T1",
+        "M5-S56-T1",
+        "M5-S60-T4"
+      ],
+      "detail": "The same wrong idea appears in three questions: report a failed tool call as a successful result instead of signalling the error. In M5-S47-T1 this is options A, B and D. In M5-S56-T1 it is option A, which returns empty results as success. In M5-S60-T4 it is option D, which returns a successful empty result."
+    },
+    {
+      "id": "M5-SC1-R1-F4",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M5-S57-T1",
+        "M5-S58-T2",
+        "M5-S59-T1"
+      ],
+      "detail": "The same wrong idea appears in three questions: hand the case to escalate_to_human instead of fixing the real problem, which hurts first-contact resolution. This is M5-S57-T1 B (escalate at the start of each dispute), M5-S58-T2 A (escalate automatically after a repeated lookup) and M5-S59-T1 D (route every return to a human)."
+    }
+  ],
   "errors": []
 }

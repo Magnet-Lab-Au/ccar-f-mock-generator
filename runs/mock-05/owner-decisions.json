@@ -50,5 +50,96 @@
     "date": "2026-10-09",
     "after_try": 3,
     "point": "2.2-S1"
+  },
+  {
+    "id": "D007",
+    "action": "ignore",
+    "target": "M5-SC4-R1-F2",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D008",
+    "action": "ignore",
+    "target": "M5-SC4-R1-F3",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D009",
+    "action": "ignore",
+    "target": "M5-SC2-R1-F1",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D010",
+    "action": "ignore",
+    "target": "M5-SC2-R1-F2",
+    "reason": "Known limit of mock 5, as for mocks 2 to 4. No rewrite.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D011",
+    "action": "ignore",
+    "target": "M5-SC5-R2-F1",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D012",
+    "action": "ignore",
+    "target": "M5-SC5-R2-F2",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D013",
+    "action": "ignore",
+    "target": "M5-SC5-R2-F3",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D014",
+    "action": "ignore",
+    "target": "M5-SC5-R2-F4",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D015",
+    "action": "ignore",
+    "target": "M5-SC5-R2-F5",
+    "reason": "Known limit of mock 5, as for mocks 2 to 4. No rewrite.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D016",
+    "action": "ignore",
+    "target": "M5-SC1-R1-F1",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D017",
+    "action": "ignore",
+    "target": "M5-SC1-R1-F2",
+    "reason": "The owner: ignore the findings of rule D4, as for mocks 2 to 4.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D018",
+    "action": "ignore",
+    "target": "M5-SC1-R1-F3",
+    "reason": "Known limit of mock 5, as for mocks 2 to 4. No rewrite.",
+    "date": "2026-10-09"
+  },
+  {
+    "id": "D019",
+    "action": "ignore",
+    "target": "M5-SC1-R1-F4",
+    "reason": "Known limit of mock 5, as for mocks 2 to 4. No rewrite.",
+    "date": "2026-10-09"
   }
 ]
