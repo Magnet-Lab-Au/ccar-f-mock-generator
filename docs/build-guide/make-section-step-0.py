@@ -46,6 +46,8 @@ If a count is wrong or a text is not exactly in the guide, the script writes no 
 
 ## The exam guide points that the step uses
 
+Decision 0017 chose these points for step 0. Decision 0028 is the design of the step.
+
 | Point | Text of the guide | Context in the guide | How the step uses it |
 |---|---|---|---|
 %s

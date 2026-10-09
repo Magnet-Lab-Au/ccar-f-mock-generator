@@ -1,7 +1,7 @@
 # 0059: Mock 2: more known limits, and the findings of step 6
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none
 

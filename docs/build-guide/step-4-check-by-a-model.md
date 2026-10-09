@@ -1,6 +1,6 @@
 # Step 4: check by a model
 
-Status: built. It ran in the test before the first full run, on 7 October 2026.
+Status: built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.
 
 Diagram: [`06-step-4-check-by-a-model.html`](../diagrams/06-step-4-check-by-a-model.html)
 
@@ -31,7 +31,7 @@ From mock 4, the guide is the first block of the request, the same in each call,
 | Mock | Cost, with caching |
 |---|---|
 | Mock 4 | $12.83 for 337 calls, with the 2 rewrites of the second review. Most input tokens came from the cache. |
-| Mock 5 | $11.68 for 295 calls. |
+| Mock 5 | $11.68 for 295 calls, plus under $1 of a run that the assistant stopped and whose cost the records do not have (decision 0073). |
 
 Mock 4 also had the stricter rule B9 and more tries than mock 3, and it still cost about half of mock 3.
 

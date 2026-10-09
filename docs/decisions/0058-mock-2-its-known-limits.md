@@ -1,7 +1,7 @@
 # 0058: Mock 2: its known limits
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none
 

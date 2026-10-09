@@ -100,6 +100,7 @@ D = {
    why='A mark that the owner gives after a verdict of a checker is not a blind mark.'),
  'ignore': dict(title='ignore: the finding closes', who='The owner', cls='owner',
    sent=['The owner reads the finding and its questions, and decides that the questions can stay.',
+         'Since mock 2 the rule of the owner (decisions 0059, 0064, 0069 and 0077): a finding of rule D4 is ignored. A finding of rule D2 or D3 is ignored and recorded as a known limit of the mock. A finding of any other kind goes to the owner first.',
          'Code saves the decision. No question changes.']),
  'rewrite': dict(title='rewrite: one question goes back', who='The owner', cls='stop',
    sent=['The owner names the current try of one question of the finding, and gives a reason.',
@@ -180,11 +181,13 @@ parts = [
  hot('finding', 'card fcard', 'left:20px;top:606px', fcard, 'A finding has an ID'),
  hot('report', 'filebox', 'left:318px;top:644px', record, 'The report'),
  hot('blind', 'person', 'left:500px;top:610px', person, 'The owner marks first'),
- hot('ignore', 'seg g first2', 'left:720px;top:606px;width:260px', '<b>ignore</b><small>The finding closes.</small>', 'ignore'),
+ hot('ignore', 'seg g first2', 'left:720px;top:606px;width:260px', '<b>ignore</b><small>Closes. D2 and D3: a known limit.</small>', 'ignore'),
  hot('rewrite', 'seg x last2', 'left:720px;top:678px;width:260px', '<b>rewrite M1-S38-T1</b><small>Back to the writer, with a reason.</small>', 'rewrite'),
  hot('again', 'again', 'left:318px;top:784px;width:662px',
      '<b>Checked again.</b> Steps 3 and 4 check the new question. Then step 6 runs again for scenario 3 only, and the owner marks the new question. '
      'No limit counts these rounds: the owner starts each one.', 'Checked again'),
+ '<div class="valid" style="position:absolute;left:318px;top:880px;width:662px"><b>The rule of the owner for the findings</b> (mocks 2 to 5): '
+ 'a D4 finding is ignored. A D2 or D3 finding is recorded as a known limit. Any other kind goes to the owner first.</div>',
 ]
 paths = [
  '<path class="flow" d="M286,330 C320,330 326,306 356,306" marker-end="url(#a)"/>',
@@ -200,8 +203,8 @@ paths = [
 g9 = open(root + '/docs/diagrams/09-make-diagram.py', encoding='utf-8').read()
 Q = "'" * 3
 extra_css = g3[g3.index('extra_css = ' + Q) + 15:g3.index(Q + '\na = js.index')]
-extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 870px; }')
-assert '870px' in extra_css
+extra_css = extra_css.replace('.stage { height: 836px; }', '.stage { height: 930px; }')
+assert '930px' in extra_css
 extra_css += g9[g9.index('extra_css += """') + 16:g9.index('"""\na = js.index')]
 extra_css += """  .gpanel { position: absolute; height: 172px; }
   .g60 { margin-top: 10px; }
@@ -253,7 +256,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 6: code and two model calls check the mock as a whole</h1>
-  <p class="sub">This diagram shows step 6. The step is built, and it ran in the test of 7 October 2026: call 6a found two questions with the same scene that the test put in on purpose. Steps 3 and 4 look at one question. Some defects show only when many questions are read together, for example two questions with the same scene. Step 6 finds them, and the owner decides. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 6. The step is built. It ran for mocks 1 to 5, from 7 to 9 October 2026. In the test of 7 October 2026, call 6a found two questions with the same scene that the test put in on purpose. Steps 3 and 4 look at one question. Some defects show only when many questions are read together, for example two questions with the same scene. Step 6 finds them, and the owner decides. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">

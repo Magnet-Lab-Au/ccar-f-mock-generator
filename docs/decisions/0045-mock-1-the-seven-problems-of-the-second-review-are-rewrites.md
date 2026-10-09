@@ -1,7 +1,7 @@
 # 0045: Mock 1: the 7 problems of the second review are rewrites, and a rewrite can get a new point
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 8 October 2026
 - Diagram: none
 

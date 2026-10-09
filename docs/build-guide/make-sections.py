@@ -68,7 +68,7 @@ good = sum(1 for e in b7['checks'] if e['mark'] == 'good')
 bad = sum(1 for e in b7['checks'] if e['mark'] == 'bad')
 
 section('step-2-write-the-question.md', 'Step 2: write the question',
-        'built. It ran in the test before the first full run, on 7 October 2026.', '04-step-2-write-the-question.html', '''
+        'built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.', '04-step-2-write-the-question.html', '''
 ## What the step does
 
 For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock.
@@ -104,7 +104,7 @@ The writer made %d questions for 10 slots of the plan of mock 1, one call for ea
 ], deviation=True)
 
 section('step-3-check-by-code.md', 'Step 3: check by code',
-        'built. It ran in the test before the first full run, on 7 October 2026.', '05-step-3-check-by-code.html', '''
+        'built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.', '05-step-3-check-by-code.html', '''
 ## What the step does
 
 Before a model looks at a question, code checks the 12 rules that have one exact answer (rules A1 to A12):
@@ -133,7 +133,7 @@ All %d questions of the writer passed the 11 rules of that time (rule A12 came l
 
 ok3 = sum(1 for e in p3['checks'] if e['as_expected'])
 section('step-4-check-by-a-model.md', 'Step 4: check by a model',
-        'built. It ran in the test before the first full run, on 7 October 2026.', '06-step-4-check-by-a-model.html', '''
+        'built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.', '06-step-4-check-by-a-model.html', '''
 ## What the step does
 
 Some rules need judgment, so a model checks them. The step has two calls, and code sits between them.
@@ -161,7 +161,7 @@ From mock 4, the guide is the first block of the request, the same in each call,
 | Mock | Cost, with caching |
 |---|---|
 | Mock 4 | $12.83 for 337 calls, with the 2 rewrites of the second review. Most input tokens came from the cache. |
-| Mock 5 | $11.68 for 295 calls. |
+| Mock 5 | $11.68 for 295 calls, plus under $1 of a run that the assistant stopped and whose cost the records do not have (decision 0073). |
 
 Mock 4 also had the stricter rule B9 and more tries than mock 3, and it still cost about half of mock 3.
 
@@ -182,7 +182,7 @@ Mock 4 also had the stricter rule B9 and more tries than mock 3, and it still co
 
 found = p4['same_scene_found']
 section('step-6-check-the-complete-mock.md', 'Step 6: check the complete mock',
-        'built. It ran in the test before the first full run, on 7 October 2026.', '08-step-6-check-the-complete-mock.html', '''
+        'built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.', '08-step-6-check-the-complete-mock.html', '''
 ## What the step does
 
 Steps 3 and 4 look at one question. Some defects show only when many questions are read together. Each writer call sees only its own slot, so two calls can write the same scene.
@@ -209,16 +209,14 @@ The test put two questions with the same scene into a set of 15 questions of one
 ], deviation=True)
 
 section('step-7-the-owner-marks-the-questions.md', 'Step 7: the owner marks the questions',
-        'built. It ran in the test before the first full run, on 7 October 2026.', '09-step-7-the-owner-marks-the-questions.html', '''
+        'built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.', '09-step-7-the-owner-marks-the-questions.html', '''
 ## What the step does
 
-Each check before this step is code or a model. This step shows if those checks are right: a person reads the questions and marks them.
+Each check before this step is code or a model. This step shows if those checks are right: a reader marks the questions. For mocks 1 to 3 the reader is the owner. For mocks 4 and 5 it is the second review in Cowork, also a Claude model, so in mocks 4 and 5 every check is a model or code (decision 0071).
 
-The owner read and marked the questions of mocks 1 to 3. For mocks 4 and 5, no person reads the questions: the second review, also a Claude model, marks them (decision 0071). So in mocks 4 and 5, every check is a model or code.
+Code builds one Excel file for each round of marking. It has one row for each question: the question, the point that it must test, the options, the correct answer and the reasons. It shows no verdict of a checker. The owner fills two columns: "good" or "bad", and a reason for a bad mark. The sheet is protected, so that only those two columns can change and a mark cannot move to a different question.
 
-Code builds one Excel file for each round of marking. It has one row for each question: the question, the point that it must test, the options, the correct answer and the reasons. It shows no verdict of a checker. The owner fills two columns: "good" or "bad", and a reason for a bad mark. The sheet is protected, so that only those two columns can change and a mark cannot move to a different question. (Not checked in real Excel yet.)
-
-For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073). The owner marked mocks 1 to 3. For mocks 4 and 5 the second review in Cowork, a Claude model, marks the questions, and no person reads them (decision 0071). A bad mark sends the question to step 5, with the reason as the finding. Too many bad marks stop the mock: more than 6 of 60 for mocks 1 and 5, and 2 or more of 20 for mocks 2 to 4.
+For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073). A bad mark sends the question to step 5, with the reason as the finding. Too many bad marks stop the mock: more than 6 of 60 for mocks 1 and 5, and 2 or more of 20 for mocks 2 to 4.
 
 Code saves the marks, and shows the bad marks for each scenario and each domain.
 
@@ -266,7 +264,7 @@ section('step-5-try-again.md', 'Step 5: try again',
 
 A question that fails step 3 or step 4 goes back to the writer. The writer gets the request of step 2, plus the failed question with the letters that the checker saw, and the exact findings. The writer does not see older tries, so the request stays short. The new try goes through steps 3 and 4 again, as a new question.
 
-A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner. The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
+A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner (decision 0045). The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
 
 Each start of a slot has at most 3 tries. Two results "cannot decide" also stop a slot. A slot that stops is open, and the owner decides: more tries, a new point, or a new plan. After "more tries", the writer also gets the reason of the owner as an instruction (decision 0074). In mocks 4 and 5, most open slots came from the stricter rule B9, and the owner gave new points or added the idea to the narrow list (decisions 0068 and 0075). The limit is not the main way to stop. The main way to stop is a question that passes.
 
@@ -299,7 +297,7 @@ Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-file
 
 Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. To change a question, the record changes, and code builds the files again.
 
-The build starts only after the owner accepts the mock. Then code checks six conditions: each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
+The build starts only after the owner accepts the mock (decision 0036). Then code checks six conditions (decision 0039): each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
 
 To know that a question did not change after its checks, each check saves a fingerprint of the question: a code of 64 characters that code calculates from the text. Before the build, code calculates the fingerprint again and compares.
 

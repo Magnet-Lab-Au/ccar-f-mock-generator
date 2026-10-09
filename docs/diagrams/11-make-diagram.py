@@ -171,7 +171,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 11. Decision 0056 of 8 October 2026, with the stricter text of decision 0066 of 9 October 2026. Status: built. The first text ran for the rewrites of mock 2 and for mock 3. The example of the new try M2-S08-T2 was checked with the first text. The question texts in the cards and popups are the real texts from mocks/mock-01.questions.json and runs/mock-02/questions/.</footer>
+  <footer>Diagram 11. Decision 0056 of 8 October 2026, with the stricter text of decision 0066 of 9 October 2026. Status: built. The first text ran for the rewrites of mock 2 and for mock 3. The stricter text ran for mocks 4 and 5. The example of the new try M2-S08-T2 was checked with the first text. The question texts in the cards and popups are the real texts from mocks/mock-01.questions.json and runs/mock-02/questions/.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

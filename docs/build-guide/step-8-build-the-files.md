@@ -8,7 +8,7 @@ Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-file
 
 Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. To change a question, the record changes, and code builds the files again.
 
-The build starts only after the owner accepts the mock. Then code checks six conditions: each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
+The build starts only after the owner accepts the mock (decision 0036). Then code checks six conditions (decision 0039): each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
 
 To know that a question did not change after its checks, each check saves a fingerprint of the question: a code of 64 characters that code calculates from the text. Before the build, code calculates the fingerprint again and compares.
 

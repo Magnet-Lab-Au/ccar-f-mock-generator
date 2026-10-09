@@ -25,7 +25,7 @@ A script makes each section: `make-section-step-0.py` makes step 0, `make-sectio
 
 ## What participants should know about the mocks
 
-- **Mocks 4 and 5 often test the same problem as mocks 1 to 3, in a new setting.** The guide has 95 ideas, and 5 mocks have 300 questions, so each idea comes back. For most ideas the guide gives almost only one problem and one answer. The program blocks only copies: a question with the same scene, the same answer and the same wrong options as an earlier one (decisions 0060, 0066, 0068, 0072 and 0075).
+- **Mocks 2 to 5 often test the same problem as an earlier mock, in a new setting.** The guide has 95 ideas, and 5 mocks have 300 questions, so each idea comes back. From mock 4, rule B9 fails a question with the same problem as an earlier one, except for the narrow ideas (20 to 24 groups in mock 4, then 62 and later 63 of 95 groups in mock 5) that have almost only one problem. For those, only a copy is blocked: the same scene, the same answer and the same wrong options (decisions 0060, 0066, 0068, 0072 and 0075).
 - **Mock 5 is a review mock.** It mostly revisits problems of mocks 1 to 4 in new settings. 46 of its 60 questions are close to a question of an earlier mock (decision 0076). Use it to review, not as a new test.
 - **No person reads the questions of mocks 4 and 5.** The writer, the checkers and the second review are all Claude models. The owner read and marked the questions of mocks 1 to 3 (decisions 0069 and 0071).
 

@@ -1,6 +1,6 @@
 # Step 6: check the complete mock
 
-Status: built. It ran in the test before the first full run, on 7 October 2026.
+Status: built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.
 
 Diagram: [`08-step-6-check-the-complete-mock.html`](../diagrams/08-step-6-check-the-complete-mock.html)
 

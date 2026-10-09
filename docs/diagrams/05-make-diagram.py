@@ -188,7 +188,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 3: code checks each question against 12 exact rules</h1>
-  <p class="sub">This diagram shows step 3. The step is built, and it ran in the test of 7 October 2026. Before a model looks at a question, code checks the rules that have one exact answer. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 3. The step is built. It ran in the test of 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026. Before a model looks at a question, code checks the rules that have one exact answer. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">

@@ -62,7 +62,7 @@ D = {
    sent=['The story of the scenario, all 30 task statements with their 240 points, and the lists of Section 17. That is about %d words.' % round(n_words, -2),
          'Both calls of this step get this text.',
          'The guide comes first, as a cached block in the system prompt. The story of the scenario comes after it, in the user text. Call 4b also has the 12 sample questions as a second cached block. A cached block costs 0.05 times the input price when it is read again (decision 0067).',
-         'Measured on 10 questions of mock 3: $0.58 with caching, $1.72 for the same tokens without caching. Mock 4, with caching: $12.16 for the whole mock.'],
+         'Measured on 10 questions of mock 3: $0.58 with caching, $1.72 for the same tokens without caching. With caching, the whole mock cost $12.83 for mock 4 and $11.68 for mock 5.'],
    why='A wrong option often comes from a different task statement than the one of the slot. And one rule asks what the guide names. So the checker needs the complete guide, not a slice.'),
  'c4b': dict(title='Call 4b: the rule check', who='One model call', cls='model',
    sent=['A new model call checks the 9 rules. It did not write the question.',
@@ -200,7 +200,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 4: a model checks each question two times</h1>
-  <p class="sub">This diagram shows step 4. The step is built, and it ran in the test of 7 October 2026. Some rules need judgment, so a model checks them. First a model answers the question without the answer key. Then a second call checks 9 rules with the answer key. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 4. The step is built. It ran in the test of 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026. Some rules need judgment, so a model checks them. First a model answers the question without the answer key. Then a second call checks 9 rules with the answer key. Put the pointer on a box, or select it with the keyboard, to see the detail and an example. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">

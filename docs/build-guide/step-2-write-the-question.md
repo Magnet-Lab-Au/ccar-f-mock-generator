@@ -1,6 +1,6 @@
 # Step 2: write the question
 
-Status: built. It ran in the test before the first full run, on 7 October 2026.
+Status: built. It ran in the test before the first full run, on 7 October 2026, and for mocks 1 to 5, from 7 to 9 October 2026.
 
 Diagram: [`04-step-2-write-the-question.html`](../diagrams/04-step-2-write-the-question.html)
 

@@ -1,7 +1,7 @@
 # 0064: Mock 3: the findings of step 6
 
 - Date: 9 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 

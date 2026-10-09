@@ -114,7 +114,7 @@ picks = {0: (1, 4, 7, 10, 13), 1: (0, 3, 8, 11, 14), 2: (2, 5, 6, 9, 12), 3: (1,
 SAMPLE = {(r, c) for r, cols in picks.items() for c in cols}
 RISK = {(0, 2), (1, 6), (2, 10), (3, 5), (0, 11), (3, 12)}
 assert len(SAMPLE) == 20 and len(RISK) == 6 and not (SAMPLE & RISK) and all(len(v) == 5 for v in picks.values())
-m1 = '<div class="big">60<small>of 60</small></div><div class="gwrap">%s<span>each row is one scenario</span></div><p>The owner reads everything one time. The 60 marks are also the first labels from a person. We test the checker with them.</p>' % grid(ALL)
+m1 = '<div class="big">60<small>of 60</small></div><div class="gwrap">%s<span>each row is one scenario</span></div><p>Mock 1: the owner read all 60. The marks are the first labels from a person, to test the checker. Mock 5: the second review, a model, marked all 60 (decisions 0071 and 0073).</p>' % grid(ALL)
 later = ('<div class="big">20<small>of 60</small></div><div class="gwrap">%s<span>5 from each scenario, selected at random</span></div>'
          '<p>Up to 6 bad questions can still hide in the 40 that the owner does not read, also when all 20 marks are good.</p>' % grid(SAMPLE, RISK))
 
@@ -138,14 +138,14 @@ parts = [
  hot('read', 'filebox', 'left:852px;top:212px', record, 'The marks record'),
  '<div class="alab" style="left:806px;top:186px">code<br>saves</div>',
  '<div class="shead" style="top:310px"><i>2</i>How many questions the owner marks</div>',
- hot('m1', 'gpanel', 'left:20px;top:346px', '<h4>Mock 1</h4>' + m1, 'Mock 1: all 60 questions'),
- hot('later', 'gpanel', 'left:510px;top:346px', '<h4>Each later mock</h4>' + later, 'Each later mock: 20 questions'),
+ hot('m1', 'gpanel', 'left:20px;top:346px', '<h4>Mocks 1 and 5</h4>' + m1, 'Mocks 1 and 5: all 60 questions'),
+ hot('later', 'gpanel', 'left:510px;top:346px', '<h4>Mocks 2 to 4</h4>' + later, 'Mocks 2 to 4: 20 questions'),
  '<div class="shead" style="top:574px"><i>3</i>What the marks decide</div>',
- bar(612, 'Mock 1', '60 marks', [('good', 'g', 'No bad mark', 'Step 8 builds the files.'),
-                                  ('bad', 'a', '1 to 6 bad marks', 'Those questions go back to the writer.'),
+ bar(612, 'Mocks 1 and 5', '60 marks', [('good', 'g', 'No bad mark', 'Step 8 builds the files.'),
+                                  ('bad', 'a', '1 to 6 bad marks', 'They go back to the writer.'),
                                   ('stop', 'x', '7 or more bad marks', 'The mock stops.')]),
- bar(692, 'A later mock', '20 marks', [('good', 'g', 'No bad mark', 'Step 8 builds the files.'),
-                                        ('bad', 'a', '1 bad mark', 'That question goes back to the writer.'),
+ bar(692, 'Mocks 2 to 4', '20 marks', [('good', 'g', 'No bad mark', 'Step 8 builds the files.'),
+                                        ('bad', 'a', '1 bad mark', 'It goes back to the writer.'),
                                         ('stop', 'x', '2 or more bad marks', 'The mock stops.')]),
 ]
 paths = ['<path class="flow" d="M288,146 H346" marker-end="url(#a)"/>',
@@ -242,7 +242,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 7: a person is the last check</h1>
-  <p class="sub">This diagram shows step 7. The step is built, and it ran in the test of 7 October 2026: the owner marked 10 questions. Each check before this step is code or a model. This step shows if those checks are right: the owner, or for mocks 4 and 5 the second review in Cowork, reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 7. The step is built. It ran for mocks 1 to 5, from 7 to 9 October 2026. In the test of 7 October 2026, the owner marked 10 questions. Each check before this step is code or a model. This step shows if those checks are right: the owner, or for mocks 4 and 5 the second review in Cowork, reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">

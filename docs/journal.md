@@ -2,7 +2,7 @@
 
 One entry for each work session. Newest entry first.
 
-## 9 October 2026, mock 4
+## 9 October 2026, mocks 4 and 5, and the check of the documents
 
 - The owner decided: start mock 4 with scenarios 1, 3, 4 and 6 and the stricter rule B9 (decision 0066). No change to the difficulty of the questions.
 - The plan of mock 4 was made (seed 445312). Before the run, the owner stopped and asked about the cost.
@@ -30,6 +30,8 @@ One entry for each work session. Newest entry first.
 - (Done: the second review marked 58 good and 2 bad, M5-S33 and M5-S45. The assistant typed the marks on the instruction of the owner. Both get a rewrite. M5-S41 stays. Decision 0076: 46 close questions are a known limit, and mock 5 is a review mock, in the build guide and in `docs/portal-notes.md`.)
 - (Done: round 2 of mock 5, 2 of 2 good by the second review. 13 findings by the rule of the owner, and the D1 finding M5-SC4-R1-F1 a known limit. The owner accepted mock 5. Step 8 built it. Decision 0077. Mock 5 cost $11.68.)
 - (Done: an independent agent checked all documents before the push. The assistant fixed the gaps: diagrams 01, 02, 04, 06, 07, 09, 11 and the diagrams README, the build guide sections of steps 2, 4, 5, 7 and 8 and its index, `HANDOFF.md`, `README.md` and `docs/portal-notes.md`. The diagram lines of decisions 0073 to 0075 now name the right diagrams. Decision 0078 records the errors in the confirmed decisions 0047, 0068 and 0071.)
+- (Done: a second independent check of all documents, also diagrams 03, 05, 08 and 10 and the build guide sections of steps 0, 1, 3 and 6. Commit 5244bf6 added the rule for the step 6 findings to diagram 08 and to step 6 (D4 ignored, D2 and D3 recorded as known limits, any other kind to the owner), and the build guide section of step 0. The assistant then fixed the 26 gaps of the check: the dates and statuses of diagrams 01, 02, 03, 06, 07, 08, 09 and 10 and the diagrams README, the status lines of build guide steps 1 to 4, 6 and 7, `HANDOFF.md`, `README.md`, `docs/portal-notes.md`, and the diagram line of decision 0077. Decision 0078 now also records the corrections of the confirmed decisions 0046, 0049, 0051, 0058, 0059, 0061, 0064, 0068 and 0069.)
+- (Done: a third independent check after these fixes found 20 smaller gaps. The assistant fixed them: the step status in diagrams 04, 05, 06, 09 and 11, the 9 rules of call 4b in diagram 01, the decisions in diagram 03 and in build guide steps 5 and 8, the rewrite with only a reason in diagram 07 (decision 0045), the mock 5 marks in diagram 09, the narrow counts in the build guide index and the portal notes, `HANDOFF.md`, and the status lines of 0045, 0046, 0049, 0051, 0058 and 0068. Decision 0078 got a shorter file name and the 0045 row.)
 - The owner confirms decisions 0073 to 0078.
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 

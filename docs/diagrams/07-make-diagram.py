@@ -45,6 +45,7 @@ D = {
  'rw': dict(title='The owner selects rewrite for a finding of step 6', who='The owner', cls='owner',
    sent=['Step 6 sends no question back. It finds a problem across questions, for example two questions with the same scene, and the owner decides.',
          'With "rewrite", the owner names one question of the finding and gives a reason. The writer also gets the text of the other question.',
+         'A rewrite can also have only a reason of the owner, with no finding of step 6, and a new point of the same task statement (decision 0045).',
          'The slot gets a new start: 3 new tries.'],
    example=js_(f6), examplehead=EF),
  'req': dict(title='The request of step 2', who='The same as in step 2', cls='io',
@@ -149,7 +150,7 @@ parts = [
  src_card('s3', 'code', 'Code', 'Step 3', 'A code rule fails.', 20),
  src_card('s4', 'model', 'One model call', 'Step 4', 'A rule fails, or "cannot decide".', 265),
  src_card('bad', 'owner', 'The owner', 'A bad mark', 'In step 7.', 510),
- src_card('rw', 'owner', 'The owner', 'A rewrite', 'Of a finding of step 6.', 755),
+ src_card('rw', 'owner', 'The owner', 'A rewrite', 'Of a finding, or a reason only.', 755),
  '<div class="shead" style="top:186px"><i>2</i>The writer gets the failed question and the exact findings</div>',
  hot('req', 'paper', 'left:20px;top:228px', reqcard, 'The request of step 2'),
  '<div class="plus" style="left:214px;top:300px">+</div>',
@@ -242,7 +243,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 5: a failed question goes back to the writer with the findings</h1>
-  <p class="sub">This diagram shows step 5. The step is built, and it ran in mock 1 on 7 and 8 October 2026. The step runs only for a question that did not pass, or that the owner sent back. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 5. The step is built, and it ran in mocks 1 to 5, from 7 to 9 October 2026. The step runs only for a question that did not pass, or that the owner sent back. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -255,7 +256,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039), the rule numbers of 8 October 2026 (decisions 0053 and 0055), and the reason of the owner after more_tries of 9 October 2026 (decision 0074). Status of the step: built, ran in mocks 1 to 5. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039), the rewrite with a reason only or a new point of 8 October 2026 (decision 0045), the rule numbers of 8 October 2026 (decisions 0053 and 0055), and the reason of the owner after more_tries of 9 October 2026 (decision 0074). Status of the step: built, ran in mocks 1 to 5. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

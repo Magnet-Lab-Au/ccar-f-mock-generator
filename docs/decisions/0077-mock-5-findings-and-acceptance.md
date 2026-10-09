@@ -2,7 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
-- Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html` shows mock 5 as built.
+- Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html` shows mock 5 as built. Diagram 08 (step 6) shows the rule for the findings.
 
 ## Question
 

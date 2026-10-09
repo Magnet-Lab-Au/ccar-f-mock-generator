@@ -25,7 +25,7 @@ ex = slots[0]
 
 text = '''# Step 1: plan the mock
 
-Status: built. The step made the plan of mock 1 on %(date)s.
+Status: built. The step made the plans of mocks 1 to 5, from 7 to 9 October 2026.
 
 Diagram: [`02-step-1-plan-the-mock.html`](../diagrams/02-step-1-plan-the-mock.html)
 

@@ -1,7 +1,7 @@
 # 0061: Rule B6 finds a flag with its hyphens
 
 - Date: 8 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none. Diagram 06 shows rule B6, and its text does not change.
 

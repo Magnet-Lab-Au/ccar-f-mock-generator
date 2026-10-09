@@ -133,7 +133,7 @@ for i, (key, sec, what_l, name_r, what_r) in enumerate(rows):
     paths.append('<path class="flow" d="M532,%d C562,%d 562,%d 588,%d" marker-end="url(#a)"/>' % (MID, MID, yc, yc))
 boxes.append(box('script', 330, 222, 200, 102, 'The script', 'Copies each text with no change. No model works.', 'Code', 'code', extra='hdr'))
 boxes.append(box('', 330, 372, 200, 82, 'If a check fails', 'The script writes no file and names the cause.', extra='stop'))
-boxes.append(box('c2', 20, 534, 310, 104, 'A second script', '41 of 41 checks passed.', 'Passed', 'owner'))
+boxes.append(box('c2', 20, 534, 310, 104, 'A second script', '41 of 41 checks.', 'Passed', 'owner'))
 boxes.append(box('c3', 345, 534, 310, 104, 'An independent reviewer', 'No errors found. 240 of 240 points agree.', 'Passed', 'owner'))
 boxes.append(box('c1', 670, 534, 310, 104, 'Copy against the original', 'Our guide file against the original guide.', 'Not done yet', 'open'))
 boxes.append(box('u1', 20, 702, 280, 118, 'The records file', 'All records of the guide: about %d words.' % round(n_words, -2), 'File', 'io'))
@@ -227,7 +227,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 03. Design of 6 October 2026. The step ran on 6 October 2026. Each example is the exact content of the records file. A script took it from the file.</footer>
+  <footer>Diagram 03. Design of 6 October 2026 (decisions 0017 and 0028). The step ran on 6 October 2026. Each example is the exact content of the records file. A script took it from the file.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

@@ -95,7 +95,7 @@ D = {
    sent=['One plan file: the mock number, the seed, the version of the guide, the date, the numbers of the earlier mocks that step 1 counted, the 4 scenarios in the sequence of the groups, the table of scenarios and domains, and the 60 slots.',
          'The slots get the numbers 1 to 60, group by group. The seed sets the sequence inside a group. The slot number is the question number in the finished mock.',
          'A slot has an ID, the scenario, the task statement, one point, the question type, the number of options, the number of answers to select, longest_may_be_correct (true or false), and correct_letters.',
-         'correct_letters (decision 0070): each of A to D is the answer of 13 of the 52 slots with one answer, and the 16 answers of the 8 slots with two answers spread over A to E. The seed sets which slot gets which letter. Mocks 1 to 4 have no such field.',
+         'correct_letters (decision 0070, from mock 5): each of A to D is the answer of 13 of the 52 slots with one answer, and the 16 answers of the 8 slots with two answers spread over A to E. The seed sets which slot gets which letter. Mocks 1 to 4 have no such field.',
          'The first slot of the plan of mock 1: %s.' % json.dumps(EX)],
    why='Step 2 writes one question for each slot. The later checks compare each question with its slot.'),
  'F': dict(title='The step stops', cls='stop', who='The step stops', status='built', points=[], none=NONE,
@@ -183,7 +183,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 1: plan the mock</h1>
-  <p class="sub">This diagram shows step 1. The step is built. It made the plan of mock 1 on 7 October 2026. Code makes the plan of one mock: a list of 60 slots. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 1. The step is built. It made the plans of mocks 1 to 5, from 7 to 9 October 2026. Code makes the plan of one mock: a list of 60 slots. Put the pointer on a box, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="legend">
     <span class="key"><span class="tag t-code">Code</span> no model works</span>

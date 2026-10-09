@@ -196,7 +196,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 8: code builds the two files of the mock</h1>
-  <p class="sub">This diagram shows step 8. The step is built, and it built mock 1 on 8 October 2026. This is the last step. Code builds the files that the portal uses, and only from records that passed each check. Nobody edits the files by hand. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 8. The step is built, and it built mocks 1 to 5, from 8 to 9 October 2026. This is the last step. Code builds the files that the portal uses, and only from records that passed each check. Nobody edits the files by hand. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -209,7 +209,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 10. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0036 and 0039). Status of the step: built, ran for mock 1. The cards, the files and the bars are drawings. They show the form, not real questions or real results. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 10. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0036 and 0039). Status of the step: built, ran for mocks 1 to 5. The cards, the files and the bars are drawings. They show the form, not real questions or real results. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

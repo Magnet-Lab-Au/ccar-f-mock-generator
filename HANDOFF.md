@@ -39,7 +39,7 @@ All 9 sections exist, for steps 0 to 8. The diagrams 02 to 10 in `docs/diagrams/
 
 ## Read these files first, in this sequence
 
-1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
+1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has rules 30 to 33: the changes after 6 October 2026.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
 4. `docs/decisions/`: decisions 0001 to 0078. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
@@ -58,7 +58,7 @@ Read these only when you need them:
 State on 9 October 2026.
 
 - **All 5 mocks are built** in `mocks/`: `mock-0N.questions.json` and `mock-0N.answers.json`. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83, mock 5 $11.68 (plus under $1 of a stopped run, decision 0073).
-- **Decisions 0001 to 0078** record the design and each change. The owner confirmed the texts of 0001 to 0072. Decisions 0073 to 0078 wait for the confirmation of the owner. Decision 0078 corrects three lines of the confirmed decisions 0047, 0068 and 0071.
+- **Decisions 0001 to 0078** record the design and each change. The owner confirmed the texts of 0001 to 0072. Decisions 0073 to 0078 wait for the confirmation of the owner. Decision 0078 corrects lines of the confirmed decisions 0045, 0046, 0047, 0049, 0051, 0058, 0059, 0061, 0064, 0068, 0069 and 0071.
 - **The marks.** The owner read and marked mocks 1 to 3. For mock 4 the owner did not read the questions. The second review in Cowork, a Claude model, marked mocks 4 and 5 (decisions 0069, 0071 and 0073). So no person read the questions of mocks 4 and 5.
 - **The rules across mocks.** Point groups (decisions 0047, 0048), the spread of ideas (0050), no repeat of an earlier question with rule B9 (0056, stricter in 0066), the narrow list of 63 of 95 ideas that keep the copy rule (0066, 0068, 0072, 0075), the fixed scenarios of mocks 3 to 5 (0057), and no copy across mocks (0060).
 - **Other rules since mock 1:** rule A12 on the longest option (0053), two-answer points (0054), rule B8 against copies of the sample questions (0055), rule C3 over the whole mock (0052), prompt caching (0067), balanced correct letters from mock 5 (0070), the reason of the owner after more tries (0074).
@@ -67,16 +67,16 @@ State on 9 October 2026.
 
 | Step | Decisions | Diagram | State |
 |---|---|---|---|
-| 0. Prepare the guide records | 0028 | 03 | Ran on 6 October 2026. `reference/guide-records.json` exists. |
+| 0. Prepare the guide records | 0017, 0028 | 03 | Ran on 6 October 2026. `reference/guide-records.json` exists. |
 | 1. Plan the mock | 0027, 0047, 0048, 0050, 0053, 0054, 0056, 0057, 0070 | 02, 11, 12 | Built, ran for mocks 1 to 5 |
-| 2. Write the question | 0029, 0053 to 0056, 0066, 0067, 0070 | 04 | Built, ran for mocks 1 to 5 |
+| 2. Write the question | 0029, 0053 to 0056, 0066, 0067, 0068, 0070, 0072, 0075 | 04 | Built, ran for mocks 1 to 5 |
 | The rules for a good question (21 rules: A1 to A12, B1 to B9) | 0030, 0043, 0053, 0055, 0056, 0066 | 05, 06 | Decided |
 | 3. Check by code | 0031, 0053 | 05 | Built, ran for mocks 1 to 5 |
-| 4. Check by a model | 0032, 0055, 0056, 0061, 0066, 0067 | 06 | Built, ran for mocks 1 to 5 |
+| 4. Check by a model | 0032, 0055, 0056, 0061, 0066, 0067, 0068, 0072, 0075 | 06 | Built, ran for mocks 1 to 5 |
 | 5. Try again | 0033, 0045, 0074 | 07 | Built, ran for mocks 1 to 5 |
-| 6. Check the complete mock | 0034, 0052 | 08 | Built, ran for mocks 1 to 5 |
+| 6. Check the complete mock | 0034, 0052, 0059, 0064, 0069, 0077 | 08 | Built, ran for mocks 1 to 5 |
 | 7. Mark the questions | 0035, 0071, 0073 | 09 | Built, ran for mocks 1 to 5 |
-| 8. Build the files | 0036 | 10 | Built mocks 1 to 5 |
+| 8. Build the files | 0036, 0039 | 10 | Built mocks 1 to 5 |
 
 ### How the owner wants the work (from the second session of 6 October)
 

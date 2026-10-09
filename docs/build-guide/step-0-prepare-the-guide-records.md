@@ -22,6 +22,8 @@ If a count is wrong or a text is not exactly in the guide, the script writes no 
 
 ## The exam guide points that the step uses
 
+Decision 0017 chose these points for step 0. Decision 0028 is the design of the step.
+
 | Point | Text of the guide | Context in the guide | How the step uses it |
 |---|---|---|---|
 | 1.3-S2 | "Using structured data formats to separate content from metadata (source URLs, document names, page numbers) when passing context between agents to preserve attribution" | Task statement 1.3: Configure subagent invocation, context passing, and spawning | Written for agents that pass context to other agents. Here: each record keeps its ID, so each later step and each question keeps the link to its source. |

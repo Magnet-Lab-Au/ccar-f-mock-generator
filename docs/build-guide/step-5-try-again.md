@@ -8,7 +8,7 @@ Diagram: [`07-step-5-try-again.html`](../diagrams/07-step-5-try-again.html)
 
 A question that fails step 3 or step 4 goes back to the writer. The writer gets the request of step 2, plus the failed question with the letters that the checker saw, and the exact findings. The writer does not see older tries, so the request stays short. The new try goes through steps 3 and 4 again, as a new question.
 
-A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner. The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
+A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner (decision 0045). The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
 
 Each start of a slot has at most 3 tries. Two results "cannot decide" also stop a slot. A slot that stops is open, and the owner decides: more tries, a new point, or a new plan. After "more tries", the writer also gets the reason of the owner as an instruction (decision 0074). In mocks 4 and 5, most open slots came from the stricter rule B9, and the owner gave new points or added the idea to the narrow list (decisions 0068 and 0075). The limit is not the main way to stop. The main way to stop is a question that passes.
 

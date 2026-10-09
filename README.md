@@ -31,7 +31,7 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `reference/exam-guide.md` | The exam guide, Version 1.0, July 2026 |
 | `reference/task-statements-and-points.md` | The 30 task statements and their 240 points, exact text. An independent reviewer confirmed it on 5 October 2026. |
 | `reference/practice-audit-first-build.md` and `.json` | The audit of the first build against the 240 points |
-| `src/` | The program: the code of each step, the control, the command line `src/run.py`, the point groups (`point_groups.py`), the earlier questions across mocks (`earlier.py`), and two test scripts that call the API (`test_b9.py`, `test_cache.py`). |
+| `src/` | The program: the code of each step, the control, the command line `src/run.py`, the point groups (`point_groups.py`), the earlier questions across mocks (`earlier.py`), two test scripts that call the API (`test_b9.py`, `test_cache.py`), and the test before the first full run (`test_0024.py`, decisions 0024 and 0042). |
 | `tests/` | The tests of the program. No test makes a model call. |
 | `data/` | Data that the owner confirmed: the point groups, the two-answer points, the narrow ideas and the scenarios of mocks 3 to 5 |
 | `marking/` | The Excel files of each marking round. A marked file is committed before anybody else reads it. |
@@ -40,4 +40,4 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 
 ## Status
 
-9 October 2026: all 5 mocks are built, in `mocks/`. The program ran each of the 9 steps for each mock. Decisions 0001 to 0078 record the design and each change. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83 and mock 5 $11.68. The owner read and marked mocks 1 to 3. The second review in Cowork, a Claude model, marked mocks 4 and 5. The next steps are in `HANDOFF.md`.
+9 October 2026: all 5 mocks are built, in `mocks/`. Step 0 ran once, on 6 October 2026. Steps 1 to 8 ran for each mock. Decisions 0001 to 0078 record the design and each change. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83 and mock 5 $11.68. The owner read and marked mocks 1 to 3. The second review in Cowork, a Claude model, marked mocks 4 and 5. The next steps are in `HANDOFF.md`.
