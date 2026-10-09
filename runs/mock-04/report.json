@@ -1,10 +1,8 @@
 {
   "mock": 4,
   "date": "2026-10-09",
-  "state": "ready_to_mark",
-  "waiting_for": [
-    "marks of round 2"
-  ],
+  "state": "built",
+  "waiting_for": [],
   "slots": [
     {
       "slot_id": "M4-S01",

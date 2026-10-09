@@ -186,7 +186,17 @@ def give_letters(answer, slot, seed=0):
     the plan, with the slot and the question text, so the same answer always
     gets the same letters."""
     options = [dict(o) for o in answer["options"]]
-    random.Random("letters-%s-%s-%s" % (seed, slot["slot_id"], answer["question"])).shuffle(options)
+    rng = random.Random("letters-%s-%s-%s" % (seed, slot["slot_id"], answer["question"]))
+    rng.shuffle(options)
+    wanted = slot.get("correct_letters")
+    right = [o for o in options if o.get("correct") is True]
+    if wanted and len(wanted) == len(right):
+        # Decision 0070: the plan sets the letters of the correct options. The
+        # wrong options take the other letters, in the mixed order.
+        wrong = [o for o in options if o.get("correct") is not True]
+        letters = "ABCDEFGHIJ"[:len(options)]
+        placed = dict(zip(wanted, right))
+        options = [placed[l] if l in placed else wrong.pop(0) for l in letters]
     for letter, o in zip("ABCDEFGHIJ", options):
         o["letter"] = letter
     return [{k: o[k] for k in ("letter", "text", "correct", "reason") if k in o} for o in options]

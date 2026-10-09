@@ -451,6 +451,29 @@ def make_plan(records, mock, seed, date, groups=None, earlier=None, two_answer=N
         allowed = {s["slot_id"] for s in _sample(rng, group, number)}
         for s in group:
             s["longest_may_be_correct"] = s["slot_id"] in allowed
+    # 9. Decision 0070: the correct letters are balanced over the mock. Each of
+    #    A to D is the answer of 13 of the 52 slots with 1 answer. The 16 answers
+    #    of the 8 slots with 2 answers spread over A to E (3 or 4 each). The seed
+    #    sets which slot gets which letter.
+    one = [s for s in slots if s["select"] == 1]
+    letters = [l for l in "ABCD" for _ in range(len(one) // 4)]
+    letters += list("ABCD")[:len(one) - len(letters)]
+    _shuffle(rng, letters)
+    for s, l in zip(one, letters):
+        s["correct_letters"] = [l]
+    two = [s for s in slots if s["select"] == 2]
+    if two:
+        pool = [l for l in "ABCDE" for _ in range(2 * len(two) // 5)]
+        pool += list("ABCDE")[:2 * len(two) - len(pool)]
+        for _ in range(100):
+            _shuffle(rng, pool)
+            pairs = [sorted(pool[i:i + 2]) for i in range(0, len(pool), 2)]
+            if all(a != b for a, b in pairs):
+                break
+        else:
+            raise PlanError("No balanced pairs of correct letters for the slots with 2 answers.")
+        for s, pair in zip(two, pairs):
+            s["correct_letters"] = pair
     same = point_groups.conflicts([(x["slot_id"], x["point"]) for x in slots], groups)
     if same:
         raise PlanError("Two slots are in one group: %s" % "; ".join(

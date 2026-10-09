@@ -181,6 +181,22 @@ class TestWriter(unittest.TestCase):
         self.assertNotIn(sentence, request_text(self.request(slot=one, point=one["point"]), RECORDS))
         self.assertIn("A12. When the slot has", request_text(self.request(), RECORDS))
 
+    def test_the_correct_option_gets_the_letter_of_the_plan(self):
+        # Decision 0070.
+        from step2_write import give_letters
+        for wanted in (["A"], ["B"], ["C"], ["D"]):
+            slot = dict(SLOT, correct_letters=wanted)
+            out = give_letters(written(slot), slot, seed=5)
+            self.assertEqual([o["letter"] for o in out if o["correct"]], wanted)
+            self.assertEqual([o["letter"] for o in out], list("ABCD"))
+        two = next(s for s in PLAN["slots"] if s["select"] == 2)
+        slot = dict(two, correct_letters=["B", "E"])
+        out = give_letters(written(slot), slot, seed=5)
+        self.assertEqual([o["letter"] for o in out if o["correct"]], ["B", "E"])
+        # A plan before decision 0070 has no field, and the letters stay mixed.
+        plain = {k: v for k, v in SLOT.items() if k != "correct_letters"}
+        self.assertEqual(len(give_letters(written(plain), plain, seed=5)), 4)
+
     def test_three_examples_from_other_scenarios_with_no_letters(self):
         ex = examples(RECORDS, SLOT)
         self.assertEqual(len(ex), 3)

@@ -139,6 +139,20 @@ class TestPlan(unittest.TestCase):
         finally:
             shutil.rmtree(folder)
 
+    def test_the_correct_letters_are_balanced(self):
+        # Decision 0070: 13 of each A to D for the 52 slots with 1 answer, and
+        # 3 or 4 of each A to E for the 16 answers of the 8 slots with 2 answers.
+        for plan in self.plans:
+            one = Counter(s["correct_letters"][0] for s in plan["slots"] if s["select"] == 1)
+            self.assertEqual(one, Counter({"A": 13, "B": 13, "C": 13, "D": 13}))
+            pairs = [s["correct_letters"] for s in plan["slots"] if s["select"] == 2]
+            self.assertTrue(all(len(p) == 2 and p[0] != p[1] for p in pairs))
+            two = Counter(l for p in pairs for l in p)
+            self.assertEqual(sum(two.values()), 16)
+            self.assertTrue(all(3 <= n <= 4 for n in two.values()) and set(two) == set("ABCDE"))
+        self.assertNotEqual([s["correct_letters"] for s in self.plans[0]["slots"]],
+                            [s["correct_letters"] for s in self.plans[1]["slots"]])
+
     def test_slot_numbers_follow_the_groups(self):
         for plan in self.plans:
             slots = plan["slots"]
@@ -149,7 +163,7 @@ class TestPlan(unittest.TestCase):
     def test_the_slot_fields_of_decision_0029(self):
         for s in self.plans[0]["slots"]:
             self.assertEqual(set(s), {"slot_id", "scenario", "task_statement", "point", "type", "options", "select",
-                                      "longest_may_be_correct"})
+                                      "longest_may_be_correct", "correct_letters"})
         self.assertEqual(set(self.plans[0]), {"mock", "seed", "guide_version", "date", "earlier_mocks",
                                               "scenarios", "table", "slots"})
 
