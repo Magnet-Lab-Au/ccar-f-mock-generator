@@ -1,0 +1,93 @@
+{
+  "question_id": "M4-S38-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M3-S30-T2 uses the same two support workflows: a weekly review of resolved refund tickets and an investigation of unusual account activity. Its answer rests on the same reasoning: prompt chaining for the known set of checks and dynamic decomposition for the open-ended investigation. Recasting the rule set as an explanation of failures does not change the choice the reader must make. Wrong options also repeat earlier ones. B repeats M3-S30-T2's 'multi-aspect reviews are too complex for a fixed sequence'. C repeats the 'extend the fixed sequence with more steps' distractor from M1-S21-T1 and M1-S08-T1.",
+      "letter": "B",
+      "point": "1.6-S1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "c6d788100698f908c437eec868d084220b8cc3900ed80d06704219551ac51735",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "E"
+    ],
+    "reason": "The ticket review is a predictable review of several aspects, so it should be a fixed prompt chain with one pass per check (E). The takeover investigation is open-ended and needs dynamic decomposition, where new subtasks come from what each tool result reveals (A). B, C and D each pair the wrong pattern with the workflow.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M3-S30-T2 uses the same two support workflows: a weekly review of resolved refund tickets and an investigation of unusual account activity. Its answer rests on the same reasoning: prompt chaining for the known set of checks and dynamic decomposition for the open-ended investigation. Recasting the rule set as an explanation of failures does not change the choice the reader must make. Wrong options also repeat earlier ones. B repeats M3-S30-T2's 'multi-aspect reviews are too complex for a fixed sequence'. C repeats the 'extend the fixed sequence with more steps' distractor from M1-S21-T1 and M1-S08-T1.",
+      "letter": "B",
+      "point": "1.6-S1"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S55-T1",
+  "slot_id": "M4-S55",
+  "try": 1,
+  "point": "3.4-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to help engineers migrate a legacy codebase from one ORM library to another in several phases. The discovery phase already runs in the Explore subagent. However, the final message of the Explore subagent copies every Grep result and file excerpt back into the main conversation. Midway through the design phase, the main conversation runs out of context and loses earlier decisions. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Instruct the Explore subagent to return a concise summary of its findings instead of copying the raw search output into the main conversation.",
+      "correct": true,
+      "reason": "The Explore subagent preserves main conversation context only when it isolates verbose discovery output and returns summaries, so the summary is the fix."
+    },
+    {
+      "letter": "B",
+      "text": "Add a second Explore subagent that receives the full output of the first subagent and then forwards all of that output to the main conversation.",
+      "correct": false,
+      "reason": "The verbose output still reaches the main conversation, so this change keeps the cause of the context exhaustion instead of returning a summary."
+    },
+    {
+      "letter": "C",
+      "text": "Move the discovery searches out of the Explore subagent and into the main conversation, so that Claude Code reads every raw result directly.",
+      "correct": false,
+      "reason": "Verbose discovery output in the main conversation is the cause of context window exhaustion that the Explore subagent is meant to prevent."
+    },
+    {
+      "letter": "D",
+      "text": "Switch the whole migration to direct execution, so that Claude Code edits each file as soon as a search finds it and skips the separate design phase entirely.",
+      "correct": false,
+      "reason": "Direct execution suits simple, well-scoped changes, while a library migration across many files needs planning and does not address the verbose output."
+    }
+  ]
+}

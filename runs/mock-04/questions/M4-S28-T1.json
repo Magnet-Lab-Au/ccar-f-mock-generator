@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S28-T1",
+  "slot_id": "M4-S28",
+  "try": 1,
+  "point": "1.3-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator agent spawns subagents through the Task tool. Logs show that it often sends requests to analyze uploaded PDF reports to the web search subagent instead of the document analysis subagent. The AgentDefinition descriptions of both subagents currently read only \"Helps with research tasks.\" What change most directly fixes this misrouting?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a numbered procedure to the coordinator prompt that lists every keyword and file type in user requests and names the exact subagent each one must be sent to.",
+      "correct": false,
+      "reason": "The guide favors coordinator prompts that state goals and quality criteria over step-by-step procedures, and this leaves the vague descriptions, which are the actual cause, in place."
+    },
+    {
+      "letter": "B",
+      "text": "Merge the web search and document analysis subagents into one general research subagent that holds every tool both of them currently use.",
+      "correct": false,
+      "reason": "This gives up the per-type specialization and tool restrictions that AgentDefinition provides, and it gives one agent a larger tool set instead of fixing the unclear descriptions."
+    },
+    {
+      "letter": "C",
+      "text": "Add a line to the web search subagent's system prompt telling it to decline document analysis requests and return them to the coordinator unprocessed.",
+      "correct": false,
+      "reason": "A subagent's system prompt shapes only that subagent's behavior after it is spawned, so the coordinator still misroutes and wastes a delegation on every PDF request."
+    },
+    {
+      "letter": "D",
+      "text": "Rewrite each AgentDefinition description to state what inputs that subagent handles, what it returns, and when to choose it over the other subagents.",
+      "correct": true,
+      "reason": "The description in each AgentDefinition tells the coordinator what each subagent type is for, so identical vague descriptions are the root cause and clear, differentiated descriptions fix the routing."
+    }
+  ]
+}

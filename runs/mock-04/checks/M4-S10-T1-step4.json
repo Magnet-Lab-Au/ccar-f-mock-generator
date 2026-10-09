@@ -1,0 +1,98 @@
+{
+  "question_id": "M4-S10-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M1-S53-T2 tests the same choice with the same answer: a retry follow-up request that holds the original source, the failed output and the specific validation errors. This question asks the same thing in an invoice setting. Two wrong options repeat that question's distractors. Option A matches its generic-note option, and option C matches its rely-on-schema-enforcement option. Option B also repeats the 'information is absent, so discard' distractor from M1-S54-T1.",
+      "letter": null,
+      "point": "4.4-S1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "8ae39dcc7803ede665a945c09c001cb05682b73fca306c78f13c8e1d740d4419",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D",
+      "E"
+    ],
+    "reason": "Effective self-correction follow-ups include the original document, the failed extraction, and the specific validation errors (4.4-S1). The original invoice (D) lets the model recheck amounts against the source. The prior output (E) lets it fix only the flagged fields instead of regenerating correct ones. A drops the useful specific feedback. B is wrong because a sum mismatch is a fixable semantic error, not proof the data is missing. C is wrong because a schema cannot enforce semantic consistency such as the line items summing to the total.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M1-S53-T2 tests the same choice with the same answer: a retry follow-up request that holds the original source, the failed output and the specific validation errors. This question asks the same thing in an invoice setting. Two wrong options repeat that question's distractors. Option A matches its generic-note option, and option C matches its rely-on-schema-enforcement option. Option B also repeats the 'information is absent, so discard' distractor from M1-S54-T1.",
+      "letter": null,
+      "point": "4.4-S1"
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

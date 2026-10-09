@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S32-T1",
+  "slot_id": "M4-S32",
+  "try": 1,
+  "point": "1.1-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "A customer asks for a refund on a damaged blender. Over three iterations, Claude's responses had stop_reason \"tool_use\" and requested get_customer, lookup_order, and process_refund, and your loop executed each tool and returned its result. Claude's fourth response has stop_reason \"end_turn\" and contains a message that confirms the refund to the customer. What should your agentic loop do with this fourth response?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run process_refund a second time to verify the refund, and end the loop only after this extra tool call returns a success result.",
+      "correct": false,
+      "reason": "The loop executes tools only when Claude requests them with stop_reason \"tool_use\". Here Claude returned \"end_turn\", so the loop should simply terminate."
+    },
+    {
+      "letter": "B",
+      "text": "Call escalate_to_human so that a human agent confirms the refund, because the loop must end with a tool call rather than with text.",
+      "correct": false,
+      "reason": "Loop termination depends on stop_reason \"end_turn\", not on a final tool call. Claude did not request escalation, so the loop should not call that tool."
+    },
+    {
+      "letter": "C",
+      "text": "Send the conversation back to Claude and keep looping until a reply contains a closing phrase such as \"anything else I can help with\".",
+      "correct": false,
+      "reason": "The guide names parsing natural language signals to decide loop termination as an anti-pattern. The \"end_turn\" stop_reason is the stopping signal."
+    },
+    {
+      "letter": "D",
+      "text": "End the loop and deliver Claude's confirmation message to the customer, because the \"end_turn\" stop_reason means Claude has finished.",
+      "correct": true,
+      "reason": "The loop should continue while stop_reason is \"tool_use\" and terminate when it is \"end_turn\". This response is \"end_turn\", so the loop ends."
+    }
+  ]
+}

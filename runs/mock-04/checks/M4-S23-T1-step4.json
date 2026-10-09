@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S23-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M2-S06-T2 poses the same problem. Two tools in the research system have near-identical descriptions and the model misroutes between them. The team must choose a fix, and the answer is to rewrite the descriptions so they differentiate each tool's input and when to use the other tool. This question uses the same reasoning with a different pair of tools: identical one-line descriptions, unreliable selection, and option A expands the descriptions. Earlier question M1-S09-T2 already covers the cause side. This question is therefore neither a cause-versus-fix variant nor a different failure.",
+      "letter": "A",
+      "point": "2.1-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "9c31bbf2ab990fc5bd646c42e304f40727de611e560f2d70e38a54d96d07d167",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The two tools share identical, minimal descriptions, and tool descriptions are the main signal the model uses to choose between tools. Expanding each description to state what sources it covers, which queries it suits, and when to use the other tool directly fixes the ambiguity. tool_choice 'any' only forces some tool call. Stricter schemas don't convey purpose. A post-hoc hook treats the symptom, not the cause.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M2-S06-T2 poses the same problem. Two tools in the research system have near-identical descriptions and the model misroutes between them. The team must choose a fix, and the answer is to rewrite the descriptions so they differentiate each tool's input and when to use the other tool. This question uses the same reasoning with a different pair of tools: identical one-line descriptions, unreliable selection, and option A expands the descriptions. Earlier question M1-S09-T2 already covers the cause side. This question is therefore neither a cause-versus-fix variant nor a different failure.",
+      "letter": "A",
+      "point": "2.1-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": "PostToolUse",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

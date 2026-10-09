@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S54-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M1-S35-T1 has the same problem in another setting. A developer new to the domain adds a component (a cache there, a lock here), and the correct answer has Claude ask about expiry/invalidation and failure behavior before coding. The same reasoning leads to correct option A. Only the wrong options differ (style, restatement and permissions here; timing there), and that does not change the problem.",
+      "letter": "A",
+      "point": "3.5-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "28f09cefa381aae3d934fc40f842edd458c751bb13d7bcc67280253dfa56564b",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The interview pattern exists to surface design considerations the developer may not have anticipated, such as failure modes and lock expiry, before implementation in an unfamiliar domain. Crash-while-holding and TTL questions do exactly that. The other options cover style preferences, restating an already stated requirement, or tool permissions.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M1-S35-T1 has the same problem in another setting. A developer new to the domain adds a component (a cache there, a lock here), and the correct answer has Claude ask about expiry/invalidation and failure behavior before coding. The same reasoning leads to correct option A. Only the wrong options differ (style, restatement and permissions here; timing there), and that does not change the problem.",
+      "letter": "A",
+      "point": "3.5-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Read",
+      "found": true
+    },
+    {
+      "name": "Bash",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

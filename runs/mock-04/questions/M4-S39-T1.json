@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S39-T1",
+  "slot_id": "M4-S39",
+  "try": 1,
+  "point": "2.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles refund requests. Policy requires two lookups in a fixed order before any decision: first get_customer, then lookup_order. After both lookups, the agent may call process_refund, call escalate_to_human, or reply to the customer in text. Which tool_choice design best enforces this order across the requests of the agentic loop?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Force get_customer on the first request, then set tool_choice to \"auto\" and state in the lookup_order description that it must be called next.",
+      "correct": false,
+      "reason": "With \"auto\", the model may call any tool or reply in text. A tool description guides the choice but does not guarantee it, so lookup_order is not ensured as the second step."
+    },
+    {
+      "letter": "B",
+      "text": "Force get_customer on the first request, force lookup_order on the next request, then set tool_choice to \"auto\" for the later turns.",
+      "correct": true,
+      "reason": "Forced tool selection guarantees that a specific tool is called. Forcing each required tool in turn fixes the order, and \"auto\" on the later turns lets the agent choose among a refund, an escalation or a text reply."
+    },
+    {
+      "letter": "C",
+      "text": "Set tool_choice to \"any\" on the first two requests, so that the model must call a tool before it decides or replies to the customer.",
+      "correct": false,
+      "reason": "\"any\" only guarantees that some tool is called. The model still chooses which tool, so it could call process_refund before the two lookups."
+    },
+    {
+      "letter": "D",
+      "text": "Force get_customer on every request until lookup_order has been called, then set tool_choice to \"auto\" for the later turns.",
+      "correct": false,
+      "reason": "While get_customer is forced, the model can only call get_customer, so lookup_order is never called and the condition to switch is never met. The forcing should apply to the first request only, with the next steps handled in follow-up turns."
+    }
+  ]
+}

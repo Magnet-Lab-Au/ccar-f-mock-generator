@@ -1,0 +1,92 @@
+{
+  "question_id": "M4-S44-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as M2-S56-T1, only in another setting. The team must decide what to check before it removes human review, and the answer is again to measure accuracy by segment. This version only narrows the segment from type to field, and M2's correct answer already covered both. Two wrong options also repeat M2's wrong options. Option B trusts one aggregate score, like M2's option A. Option D grows the set so the aggregate looks better, like M2's option D. At most one wrong option may repeat.",
+      "letter": "C",
+      "point": "5.5-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "e45a67c691b184bd72ff3596aab824510c905f668b96cb5aac768a1c4631841e",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "The pass criterion checks only the chosen outcome. Removing human approval from process_refund also depends on the refund amount being correct, and the current scores do not measure that field. Evaluating amount accuracy separately, at the field level, shows whether the 93%+ score hides wrong amounts before automation goes ahead.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as M2-S56-T1, only in another setting. The team must decide what to check before it removes human review, and the answer is again to measure accuracy by segment. This version only narrows the segment from type to field, and M2's correct answer already covered both. Two wrong options also repeat M2's wrong options. Option B trusts one aggregate score, like M2's option A. Option D grows the set so the aggregate looks better, like M2's option D. At most one wrong option may repeat.",
+      "letter": "C",
+      "point": "5.5-K1"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

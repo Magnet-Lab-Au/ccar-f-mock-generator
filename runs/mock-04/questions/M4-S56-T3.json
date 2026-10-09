@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S56-T3",
+  "slot_id": "M4-S56",
+  "try": 3,
+  "point": "1.3-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S56-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator spawns a subagent to explain how a legacy billing service calculates late fees. The coordinator's prompt says to Read src/billing/fees.py, then Read src/billing/rates.py, then summarize the formula. In one repository, those modules were moved into a packages/ directory. The subagent reports that step one failed and returns no explanation, even though its logs show that Glob and Grep were available to it. What is the most likely root cause of this failure?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The coordinator spawned the subagent in a separate turn instead of emitting all Task calls in one response, so the subagent ran with less context than it needed.",
+      "correct": false,
+      "reason": "The guide links multiple Task calls in one response to parallel spawning, not to the subagent's context, so this does not explain why the subagent stopped at a fixed path."
+    },
+    {
+      "letter": "B",
+      "text": "The coordinator's allowedTools configuration omits \"Task\", so the subagent was spawned without access to the Glob and Grep tools it needed to find the moved modules.",
+      "correct": false,
+      "reason": "The guide says a missing \"Task\" entry stops the coordinator from invoking subagents at all, but this subagent was spawned and had Glob and Grep, so this is not the cause."
+    },
+    {
+      "letter": "C",
+      "text": "The subagent's AgentDefinition description is too brief, so the coordinator sent the late-fee question to a subagent type that was built for a different task.",
+      "correct": false,
+      "reason": "The subagent received the late-fee instructions and executed them as written, so routing was not the problem; the fixed procedure in the prompt caused the failure."
+    },
+    {
+      "letter": "D",
+      "text": "The coordinator's prompt prescribes fixed file paths and a fixed step order instead of a research goal with quality criteria, so the subagent has no basis to adapt.",
+      "correct": true,
+      "reason": "The guide recommends coordinator prompts that state research goals and quality criteria rather than step-by-step procedures, because rigid procedures prevent subagent adaptability when the codebase differs from expectations."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S17-T1",
+  "slot_id": "M4-S17",
+  "try": 1,
+  "point": "2.3-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your multi-agent research system runs on the Claude Agent SDK. The report generation subagent has the same allowedTools as the document analysis subagent, including the document parsing tools. Logs show that the report generation subagent often parses the source documents again while it writes and adds its own new interpretations. These interpretations differ from the findings of the document analysis subagent. Which change best fixes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Merge the report generation and document analysis subagents into one agent that holds both tool sets, so that one agent owns every interpretation of the documents.",
+      "correct": false,
+      "reason": "A merged agent with both tool sets has more tools, which degrades tool selection reliability, and it gives up the role specialization that scoped tool access protects."
+    },
+    {
+      "letter": "B",
+      "text": "Set tool_choice to \"any\" for the report generation subagent, so that the model must call a tool on every turn instead of returning plain text.",
+      "correct": false,
+      "reason": "The \"any\" setting only guarantees that some tool is called; it does not limit which tools the subagent can reach, so the parsing tools stay available for misuse."
+    },
+    {
+      "letter": "C",
+      "text": "Give the report generation subagent the web search tools as well, so that it can check its new interpretations against current sources before it writes them.",
+      "correct": false,
+      "reason": "Adding more tools outside the subagent's specialization increases cross-role misuse instead of preventing it, and web search belongs to the web search subagent."
+    },
+    {
+      "letter": "D",
+      "text": "Restrict the report generation subagent's allowedTools to the tools that its report writing role needs, and remove the document parsing tools.",
+      "correct": true,
+      "reason": "Scoping each subagent's tools to its role removes the out-of-specialization tools that it misuses, so document analysis stays with the document analysis subagent."
+    }
+  ]
+}

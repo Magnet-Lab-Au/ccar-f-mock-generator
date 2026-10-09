@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S07-T2",
+  "slot_id": "M4-S07",
+  "try": 2,
+  "point": "5.4-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S07-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system's coordinator delegates contract batches to subagents, which validate the extracted fields against JSON schemas. After each batch, every subagent appends a prose note such as \"batch mostly done, a few fields pending\" to a shared progress log. After a crash, the coordinator read these notes on restart, skipped some unfinished batches, and reprocessed some finished ones. Which change makes this resume reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add few-shot examples to the coordinator's prompt that show how to read the prose progress notes and decide whether each batch is complete or incomplete.",
+      "correct": false,
+      "reason": "The cause is unstructured state, and examples cannot remove the ambiguity of notes like \"mostly done\". The guide's fix is structured state exports that the coordinator loads as a manifest."
+    },
+    {
+      "letter": "B",
+      "text": "Restart the coordinator with --resume on its crashed session so that it continues from its earlier conversation history instead of reading the prose progress notes.",
+      "correct": false,
+      "reason": "A resumed conversation can hold stale or partial context and gives no reliable record of batch status. The guide's crash recovery relies on structured state exports that the coordinator loads as a manifest."
+    },
+    {
+      "letter": "C",
+      "text": "Instruct each subagent to write longer and more detailed prose notes that describe every document it processed and every field that it validated.",
+      "correct": false,
+      "reason": "Longer prose is still unstructured, so the coordinator must still interpret it on resume. The guide calls for structured state exports that the coordinator loads as a manifest."
+    },
+    {
+      "letter": "D",
+      "text": "Have each subagent export structured state with each batch ID, its completion status, and its validated results file to a known location for the manifest.",
+      "correct": true,
+      "reason": "The guide's crash recovery design uses structured state exports in a known location. The coordinator loads them as a manifest on resume, so it can tell exactly which batches are complete."
+    }
+  ]
+}

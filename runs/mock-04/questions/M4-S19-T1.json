@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S19-T1",
+  "slot_id": "M4-S19",
+  "try": 1,
+  "point": "1.5-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the report generation subagent emails finished reports through a send_report tool. Policy allows reports to go only to recipients on an approved client list. Your team added a PostToolUse hook that checks the recipient of each send_report call and returns an error when the recipient is off the list. Logs show that the hook flags every such call, yet the unapproved recipients still receive the reports. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Hooks give only probabilistic compliance, like prompt instructions, so the report generation subagent sometimes acts against the error that the hook returns.",
+      "correct": false,
+      "reason": "The guide says hooks give deterministic guarantees and prompts give probabilistic compliance. The real flaw is the timing of the hook, which ran after the email was sent."
+    },
+    {
+      "letter": "B",
+      "text": "The recipient policy is missing from the system prompt of the report generation subagent, and a hook can enforce only rules that the prompt also states.",
+      "correct": false,
+      "reason": "A hook enforces a rule in code, apart from any prompt. The logs also show that the hook detected every violation, so a missing prompt rule cannot explain the delivered emails."
+    },
+    {
+      "letter": "C",
+      "text": "A PostToolUse hook runs after send_report has already executed, so it can flag the call but cannot stop the email from being sent.",
+      "correct": true,
+      "reason": "PostToolUse hooks act on tool results after execution. Blocking a policy-violating action needs a hook that intercepts the outgoing tool call before it runs."
+    },
+    {
+      "letter": "D",
+      "text": "The approved client list sits only in the context of the coordinator agent, and the report generation subagent cannot see it because subagent context is isolated.",
+      "correct": false,
+      "reason": "The hook flagged every off-list recipient, so the check had the list. The emails went out because a PostToolUse hook runs only after the send has already happened."
+    }
+  ]
+}

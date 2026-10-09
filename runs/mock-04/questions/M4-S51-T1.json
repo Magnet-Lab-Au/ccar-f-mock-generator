@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S51-T1",
+  "slot_id": "M4-S51",
+  "try": 1,
+  "point": "1.4-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your agent upgrades a shared logging library across 40 repositories in one run. When a build breaks in a way that it cannot fix safely, it pauses and sends a handoff to the platform on-call engineer, who cannot see the agent's transcript. Each handoff states a clear root cause and a recommended action. However, the on-call engineer often cannot tell which repository and branch a handoff refers to. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add required fields for the repository and the branch to each handoff, next to the existing root cause and recommended action.",
+      "correct": true,
+      "reason": "A structured handoff protocol carries the identifying details of the case together with the root cause and recommended action. Adding the missing identifiers fixes the gap and keeps the useful content."
+    },
+    {
+      "letter": "B",
+      "text": "Attach the agent's full transcript to each handoff, so the on-call engineer can search the conversation for the repository and branch that failed.",
+      "correct": false,
+      "reason": "The guide calls for a compiled structured summary for recipients who lack the transcript. A raw transcript makes the on-call engineer dig for details that a summary field would state directly."
+    },
+    {
+      "letter": "C",
+      "text": "Have the agent keep retrying each broken build with new fixes until the build passes, so that it never needs to hand off to the on-call engineer mid-process.",
+      "correct": false,
+      "reason": "Cases that the agent cannot fix safely still need mid-process escalation. Avoiding the handoff does not fix the missing details in it."
+    },
+    {
+      "letter": "D",
+      "text": "Remove the recommended action from the handoff, so the on-call engineer reaches an independent judgment from the root cause and the build log.",
+      "correct": false,
+      "reason": "The recommended action is part of the structured handoff protocol. Removing it discards useful findings and does nothing about the missing repository and branch."
+    }
+  ]
+}

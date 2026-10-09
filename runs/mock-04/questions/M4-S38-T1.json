@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S38-T1",
+  "slot_id": "M4-S38",
+  "try": 1,
+  "point": "1.6-S1",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An audit of your support agent finds two problems. In the weekly review of resolved refund tickets, every ticket needs the same four checks: refund amount, policy eligibility, identity verification, and reply tone. The agent plans its own steps for each ticket and skips different checks on different tickets. In investigations of suspected account takeover, the agent runs a fixed chain of get_customer, lookup_order, and escalate_to_human, and it misses leads such as a shipping address changed the day before a large order. Which statements correctly explain these two problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The takeover investigation is open-ended, so it fails because its fixed chain cannot add new subtasks based on what each tool result reveals.",
+      "correct": true,
+      "reason": "Open-ended investigation needs dynamic adaptive decomposition. That pattern would generate a follow-up subtask when a finding appears, such as the changed address."
+    },
+    {
+      "letter": "B",
+      "text": "The ticket review fails because a multi-aspect check is too complex for a fixed sequence, so the agent needs freedom to plan new steps for each ticket.",
+      "correct": false,
+      "reason": "The guide matches predictable multi-aspect reviews to prompt chaining, not dynamic decomposition. The current per-ticket planning is the cause of the skipped checks."
+    },
+    {
+      "letter": "C",
+      "text": "The takeover investigation fails because its fixed chain has too few steps, so a longer chain in the same order for every case would catch such leads.",
+      "correct": false,
+      "reason": "A longer fixed chain still cannot react to intermediate findings. The guide says open-ended investigations need subtasks generated from what each step discovers."
+    },
+    {
+      "letter": "D",
+      "text": "Both workflows fail because the agent uses different patterns for different workflows, and one shared pattern for all support workflows would give consistent coverage of checks and leads.",
+      "correct": false,
+      "reason": "The guide says the pattern must match the workflow: prompt chaining for predictable reviews and dynamic decomposition for open-ended investigations. One shared pattern would mismatch one of the two workflows."
+    },
+    {
+      "letter": "E",
+      "text": "The ticket review needs the same known checks on every ticket, so it fails because it lacks a fixed prompt chain with one focused pass per check.",
+      "correct": true,
+      "reason": "A predictable multi-aspect review fits prompt chaining. Letting the agent plan its own steps for each ticket explains why checks are skipped inconsistently."
+    }
+  ]
+}

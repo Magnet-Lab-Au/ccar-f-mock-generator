@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S44-T2",
+  "slot_id": "M4-S44",
+  "try": 2,
+  "point": "5.5-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S44-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent's evaluation set marks each conversation as passed when the agent chose the right outcome: refund, denial, or escalation. When the results are broken down by request type, every type scores at least 93%, including billing disputes. The team now plans to let the agent call process_refund for billing disputes without human approval. Which step should you take next?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Review only the conversations marked as failed, because the conversations that passed already showed correct handling and need no further checking before approval is removed.",
+      "correct": false,
+      "reason": "A wrong refund amount can sit inside a conversation that passed on its outcome, so the failed conversations cannot reveal it; the field itself must be measured."
+    },
+    {
+      "letter": "B",
+      "text": "Replace the per-type scores with the single overall score, because small per-type groups are less reliable than one figure covering the whole set.",
+      "correct": false,
+      "reason": "The guide warns that aggregate accuracy can mask poor performance on specific segments, so dropping the breakdown removes the check that the guide requires."
+    },
+    {
+      "letter": "C",
+      "text": "Measure the accuracy of the refund amount field separately, because a pass covers only the chosen outcome and can hide wrong amounts inside the high score.",
+      "correct": true,
+      "reason": "Aggregate accuracy can mask poor performance on specific fields, so accuracy must be validated per field as well as per type before high-confidence actions are automated."
+    },
+    {
+      "letter": "D",
+      "text": "Add more billing disputes until they form half of the evaluation set, so that the overall score reflects them more strongly before approval is removed.",
+      "correct": false,
+      "reason": "Reweighting the set still yields one aggregate number, and an aggregate can mask poor performance on a specific field such as the refund amount."
+    }
+  ]
+}

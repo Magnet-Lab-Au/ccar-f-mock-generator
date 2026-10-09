@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S34-T2",
+  "slot_id": "M4-S34",
+  "try": 2,
+  "point": "2.1-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S34-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent's system prompt tells it to call escalate_to_human whenever a message contains the word charge or billing. The tool descriptions clearly state that process_refund handles in-policy refunds such as duplicate charges. Logs show that simple duplicate-charge requests are escalated instead of refunded, which lowers first-contact resolution. The team agrees to rewrite the instruction. Which rewrite best fixes the routing while keeping valid escalations?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move the charge and billing keyword rule out of the system prompt and into the escalate_to_human tool description so that it sits beside the tool.",
+      "correct": false,
+      "reason": "The rule still ties words to one tool. It also makes the escalate_to_human description overlap with process_refund, so duplicate-charge requests are still escalated."
+    },
+    {
+      "letter": "B",
+      "text": "Change the trigger so that the agent escalates billing messages only when the customer's wording shows strong frustration, anger, or impatience with the support process.",
+      "correct": false,
+      "reason": "The guide says sentiment is an unreliable proxy for case complexity. This rule still escalates simple refunds from upset customers and can miss explicit requests for a human."
+    },
+    {
+      "letter": "C",
+      "text": "Add the words dispute, invoice, and payment to the trigger list so that the instruction catches every billing request that reaches the agent.",
+      "correct": false,
+      "reason": "A longer keyword list is still a keyword-sensitive instruction. It overrides the process_refund description for even more in-policy requests, so misrouting gets worse."
+    },
+    {
+      "letter": "D",
+      "text": "Replace the keyword trigger with escalation conditions, such as an explicit request for a human or a policy gap, and let the tool descriptions route other requests.",
+      "correct": true,
+      "reason": "Removing the keyword-sensitive instruction stops it from overriding the well-written descriptions, so duplicate charges reach process_refund. Condition-based criteria keep the escalations that are actually needed."
+    }
+  ]
+}

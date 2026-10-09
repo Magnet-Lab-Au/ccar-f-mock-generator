@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S12-T2",
+  "slot_id": "M4-S12",
+  "try": 2,
+  "point": "4.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S12-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system flags possible problems in insurance claim documents, such as a treatment date that falls after the claim submission date. Each finding already carries a detected_pattern field that names the source construct that triggered it, and reviewers mark each finding as accepted or dismissed. After one month, the team has thousands of reviewed findings and must decide where to improve the extraction prompt first. Which use of this data best supports that decision?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Group the dismissed findings by the output field where each one appears, and rewrite the prompt instructions for the output fields that collect the largest number of dismissals.",
+      "correct": false,
+      "reason": "An output field name does not identify which source construct triggered a finding, so this grouping ignores the detected_pattern data and cannot reveal false positive patterns."
+    },
+    {
+      "letter": "B",
+      "text": "Read a random sample of dismissed findings one at a time and write a note on each claim, so that reviewers can later explain their individual decisions in more detail.",
+      "correct": false,
+      "reason": "Case-by-case notes do not group dismissals by triggering construct, so they give no systematic analysis of false positive patterns, which is the purpose of the detected_pattern field."
+    },
+    {
+      "letter": "C",
+      "text": "Count only the accepted findings for each detected_pattern, so that the patterns that produce the most true positives get prompt changes first, and leave dismissed findings out of the count.",
+      "correct": false,
+      "reason": "False positive patterns appear in the dismissals, so a count that leaves out dismissed findings cannot show which triggering constructs cause the false positives."
+    },
+    {
+      "letter": "D",
+      "text": "Group all reviewed findings by detected_pattern and compare the dismissal rate of each pattern, so that the patterns with the most false positives get prompt changes first.",
+      "correct": true,
+      "reason": "The detected_pattern field exists so that dismissals can be analyzed by triggering construct, and this exposes the systematic false positive patterns that the prompt should address first."
+    }
+  ]
+}

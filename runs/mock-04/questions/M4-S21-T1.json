@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S21-T1",
+  "slot_id": "M4-S21",
+  "try": 1,
+  "point": "1.7-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "You resume the named session solar-market-study with --resume solar-market-study; in it, the document analysis subagent had analyzed 60 source reports. Since then, two of those reports were replaced with corrected editions. Your resume message says only \"some sources were updated, so make sure the findings are current.\" The document analysis subagent then spends an hour re-reading all 60 reports. What change to your resume message would best avoid this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Name the two replaced reports in the message and ask the session to re-analyze only those two before continuing.",
+      "correct": true,
+      "reason": "The guide recommends telling a resumed session about the specific file changes, so it can re-analyze them in a targeted way instead of re-exploring everything."
+    },
+    {
+      "letter": "B",
+      "text": "Move the freshness reminder into the coordinator's system prompt so that every resumed session treats current sources as a standing rule.",
+      "correct": false,
+      "reason": "The reminder stays just as vague in the system prompt. Because it does not name the changed reports, the session still cannot do the targeted re-analysis that the guide calls for."
+    },
+    {
+      "letter": "C",
+      "text": "Use fork_session to branch from the resumed session and let the branch re-read all 60 reports while the original session continues.",
+      "correct": false,
+      "reason": "In the guide, fork_session creates branches from a shared baseline to explore divergent approaches. Here the branch still re-reads all 60 reports without being told which ones changed."
+    },
+    {
+      "letter": "D",
+      "text": "Run /compact on the resumed session first so that a full re-read of all 60 reports fits more easily in the context window.",
+      "correct": false,
+      "reason": "Compacting only makes room for the full re-exploration. It does not tell the session which reports changed, so the wasted re-reading still happens."
+    }
+  ]
+}

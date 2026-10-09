@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S42-T1",
+  "slot_id": "M4-S42",
+  "try": 1,
+  "point": "1.7-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Yesterday your support agent ran a named session on a customer's return request. It called get_customer and lookup_order, confirmed that the order is inside the return window, and then waited for the customer to send a photo of the damaged item. This morning the customer sends the photo, and no account or order data has changed since yesterday. Which approach should you use to continue the case?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Start a new session and inject a structured summary of yesterday's findings, because resumed sessions always carry stale tool results that mislead the agent.",
+      "correct": false,
+      "reason": "The guide reserves a fresh start with an injected summary for cases where prior tool results are stale, and here yesterday's results are still valid."
+    },
+    {
+      "letter": "B",
+      "text": "Resume the named session with --resume and give the agent the photo, because its earlier tool results still match the backend.",
+      "correct": true,
+      "reason": "The guide says to choose session resumption when the prior context is mostly valid, and here no account or order data has changed since yesterday."
+    },
+    {
+      "letter": "C",
+      "text": "Use fork_session on yesterday's session to create a separate branch for the photo review, so the original return analysis stays untouched.",
+      "correct": false,
+      "reason": "The guide uses fork_session to explore divergent approaches from a shared baseline, and this case has only one path to continue."
+    },
+    {
+      "letter": "D",
+      "text": "Start a new session without any summary and have the agent call get_customer and lookup_order again to rebuild the full case context.",
+      "correct": false,
+      "reason": "This throws away context that is still valid and forces a full re-exploration, while the guide favors resumption when prior context is mostly valid."
+    }
+  ]
+}

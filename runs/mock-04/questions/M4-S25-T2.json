@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S25-T2",
+  "slot_id": "M4-S25",
+  "try": 2,
+  "point": "1.2-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S25-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator agent checks the first synthesis output of a report on global water scarcity and finds a gap on groundwater depletion. It sends targeted queries on that gap to the web search and document analysis subagents, then re-invokes the synthesis subagent. After this single round, it always passes the new synthesis output to the report subagent. Reviewers find that other gaps, such as agricultural water use, often remain in the final reports. What should you change?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Let the synthesis subagent mark its own output as complete, and have the coordinator call the report subagent when it sees that mark.",
+      "correct": false,
+      "reason": "The coordinator is responsible for evaluating synthesis output for gaps, and the synthesis subagent works with isolated context, so it cannot judge coverage against the full research goal."
+    },
+    {
+      "letter": "B",
+      "text": "Raise the fixed number of refinement rounds to three, so that the coordinator always runs three rounds before it calls the report subagent.",
+      "correct": false,
+      "reason": "A fixed round count does not depend on the coordinator's evaluation of coverage, so gaps can still remain after three rounds while simple topics waste rounds."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator evaluate each new synthesis output for gaps and repeat the targeted re-delegation and synthesis until coverage is sufficient.",
+      "correct": true,
+      "reason": "An iterative refinement loop re-evaluates each synthesis output, re-delegates with targeted queries, and re-invokes synthesis until coverage is sufficient, not just once."
+    },
+    {
+      "letter": "D",
+      "text": "Raise the max_tokens limit of the synthesis subagent so that its output can cover more subtopics in a single pass.",
+      "correct": false,
+      "reason": "The gaps come from missing evidence on subtopics, not from output length, so more tokens do not replace re-delegation with targeted queries and re-evaluation."
+    }
+  ]
+}

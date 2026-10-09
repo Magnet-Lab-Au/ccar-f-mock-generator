@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S27-T1",
+  "slot_id": "M4-S27",
+  "try": 1,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, you changed the signature of parse_pdf_section, a helper that the document analysis subagent uses. A teammate ran Grep for parse_pdf_section and updated every match. The wrapper module doc_tools.py imports this helper and exposes several functions of its own, and the report subagent now fails in a file that calls extract_section from doc_tools.py. Which two actions would find the call sites that the first search missed?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rerun Grep for parse_pdf_section with case-insensitive matching, because the missed call site probably spells the function name with a different capitalization.",
+      "correct": false,
+      "reason": "The missed callers use the names that the wrapper exports, so any search for the original name alone misses them, whatever the capitalization."
+    },
+    {
+      "letter": "B",
+      "text": "Use Grep across the whole codebase for each name that doc_tools.py exports, and update every call site that these searches return.",
+      "correct": true,
+      "reason": "After the exported names are known, searching for each name across the codebase finds the callers that reach the helper through the wrapper."
+    },
+    {
+      "letter": "C",
+      "text": "Update only the file that the runtime error names, because the error trace shows the single call site that the first search missed.",
+      "correct": false,
+      "reason": "One error shows one failure, but other callers can use other exported names; only a search for each exported name finds all of them."
+    },
+    {
+      "letter": "D",
+      "text": "Read doc_tools.py and list every name that it exports, including extract_section and any other function that calls parse_pdf_section.",
+      "correct": true,
+      "reason": "Tracing usage across a wrapper module starts by identifying all the names that the wrapper exports, because callers use those names and not the original one."
+    },
+    {
+      "letter": "E",
+      "text": "Use Grep to search only for extract_section, because the error trace shows that this is the name the first search missed.",
+      "correct": false,
+      "reason": "The wrapper exposes several functions, so searching for one exported name skips the step of identifying all exported names and leaves other callers unfound."
+    }
+  ]
+}

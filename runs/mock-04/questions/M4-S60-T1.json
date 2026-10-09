@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S60-T1",
+  "slot_id": "M4-S60",
+  "try": 1,
+  "point": "3.4-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks Claude Code, working in direct execution, to replace the logging approach in a legacy service, a change that touches about 30 files. Two designs are valid: a shared logging wrapper or a separate adapter in each module. Claude Code starts editing at once and builds per-module adapters, but after 20 files the team decides that the shared wrapper fits better, and most edits must be reverted. What is the most likely root cause of this rework?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Claude Code made the changes with the Edit tool instead of the Write tool, so the files were not rewritten in one consistent way.",
+      "correct": false,
+      "reason": "The choice of editing tool does not decide between the two designs. The rework came from starting edits before a design was chosen, which plan mode prevents."
+    },
+    {
+      "letter": "B",
+      "text": "Verbose discovery output filled the main conversation context, which the Explore subagent would have prevented by returning only a short summary of its findings.",
+      "correct": false,
+      "reason": "The Explore subagent prevents context window exhaustion. The story shows no context problem, and the rework came from an unchosen design, which the Explore subagent does not decide."
+    },
+    {
+      "letter": "C",
+      "text": "The request lacked detailed instructions for each file, and with such instructions direct execution would have been the right mode for the whole task.",
+      "correct": false,
+      "reason": "Direct execution suits simple, well-scoped changes. A task with an open architectural choice across many files needs plan mode, and detailed upfront instructions do not replace exploration and design."
+    },
+    {
+      "letter": "D",
+      "text": "A multi-file task with two valid designs went to direct execution instead of plan mode, so no design was explored and agreed before the edits began.",
+      "correct": true,
+      "reason": "Plan mode is designed for multi-file changes with multiple valid approaches and architectural decisions, and it allows design before committing to changes, which prevents costly rework."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S55-T3",
+  "slot_id": "M4-S55",
+  "try": 3,
+  "point": "3.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S55-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer uses Claude Code to migrate a legacy date utility across a large monorepo in three phases: discovery, planning and implementation. The team already delegates the discovery phase to the Explore subagent. Even so, the main conversation runs out of context during the implementation phase. The transcript shows that the Explore subagent's reply contains every Grep match and the full text of each file that it read. What is the most likely cause of the context exhaustion in the main conversation?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The implementation phase used direct execution, and direct execution reloads every file of the repository into the main conversation before each edit.",
+      "correct": false,
+      "reason": "Direct execution is the mode for carrying out well-scoped changes, and it does not reload the repository. The transcript points to the full discovery output in the Explore subagent's reply as the source."
+    },
+    {
+      "letter": "B",
+      "text": "The Explore subagent works in an isolated context, and that isolated context is too small to hold the search results of a large monorepo.",
+      "correct": false,
+      "reason": "Isolation in the Explore subagent is what protects the main conversation. The exhaustion happens in the main conversation because the verbose output came back to it, not because the subagent's context was too small."
+    },
+    {
+      "letter": "C",
+      "text": "The migration was planned in plan mode, and plan mode by design copies all exploration output from every subagent into the main conversation.",
+      "correct": false,
+      "reason": "Plan mode is for safe exploration and design before changes. It does not copy subagent output into the main conversation; the transcript shows that the subagent's own reply carried the verbose output."
+    },
+    {
+      "letter": "D",
+      "text": "The Explore subagent returns its raw discovery output instead of a summary, so the verbose output still lands in the main conversation.",
+      "correct": true,
+      "reason": "The Explore subagent prevents context exhaustion by isolating verbose discovery output and returning only a summary. Its reply here carries the full output, so that benefit is lost."
+    }
+  ]
+}

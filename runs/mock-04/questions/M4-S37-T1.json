@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S37-T1",
+  "slot_id": "M4-S37",
+  "try": 1,
+  "point": "1.2-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "A customer disputes several charges, and the coordinator of your support agent delegates the investigation to three subagents. Their task prompts read: review the customer's billing problems, review the customer's recent orders, and review refunds issued to the customer. Logs show that all three subagents call lookup_order on the same orders and return largely the same findings about one disputed refund. What is the most likely cause of this duplicated work?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The description of the lookup_order tool is too vague, so each subagent calls it by default instead of choosing get_customer for its own work.",
+      "correct": false,
+      "reason": "A vague tool description affects which tool an agent selects. It does not explain why three subagents return the same findings, which comes from overlapping scope assignments."
+    },
+    {
+      "letter": "B",
+      "text": "The coordinator split the dispute into scopes that are too narrow, so each subagent lacked enough context to finish its part alone.",
+      "correct": false,
+      "reason": "The guide links overly narrow decomposition to incomplete coverage and gaps, not to several subagents doing the same work."
+    },
+    {
+      "letter": "C",
+      "text": "The coordinator routes every subagent result through itself, instead of letting the subagents message each other directly to divide up the remaining work.",
+      "correct": false,
+      "reason": "The guide recommends routing all subagent communication through the coordinator. This routing does not cause overlap; the overlap comes from how the scopes were assigned."
+    },
+    {
+      "letter": "D",
+      "text": "The coordinator gave the subagents overlapping scopes, because billing problems, recent orders, and refunds all cover the same order records.",
+      "correct": true,
+      "reason": "The guide says the coordinator should partition scope into distinct subtopics or source types to minimize duplication. These three scopes share the same orders, so the subagents repeat the same lookups."
+    }
+  ]
+}

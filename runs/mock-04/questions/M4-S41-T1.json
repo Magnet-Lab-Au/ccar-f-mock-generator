@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S41-T1",
+  "slot_id": "M4-S41",
+  "try": 1,
+  "point": "2.3-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent has a generic fetch_url tool so that it can read return and warranty policy pages from your company's help center. Production logs show that the agent also fetches links that customers paste into the chat. It sometimes quotes refund terms from those pages outside the help center. Which change best prevents the agent from basing its answers on these unapproved pages?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep fetch_url and add a system prompt rule telling the agent to fetch only help-center pages and to ignore links from customers.",
+      "correct": false,
+      "reason": "The generic tool still accepts any URL, and a prompt rule only makes compliance more likely, so the agent can still fetch unapproved pages."
+    },
+    {
+      "letter": "B",
+      "text": "Move fetch_url into a separate research subagent so that the agent's own tool set stays small and focused on its role.",
+      "correct": false,
+      "reason": "The subagent still has an unrestricted generic tool, so pages from outside the help center can still reach the agent's answers."
+    },
+    {
+      "letter": "C",
+      "text": "Replace fetch_url with a load_policy_document tool that accepts only help-center document URLs and rejects any other address with an error.",
+      "correct": true,
+      "reason": "A constrained tool that validates its input replaces the generic tool, so the agent cannot load pages from outside the help center."
+    },
+    {
+      "letter": "D",
+      "text": "Keep fetch_url and send every conversation that contains a customer-supplied link to escalate_to_human so that a staff member checks the page.",
+      "correct": false,
+      "reason": "The generic tool stays in place, and escalating many routine conversations works against the 80% first-contact resolution target."
+    }
+  ]
+}

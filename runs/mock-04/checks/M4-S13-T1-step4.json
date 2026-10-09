@@ -1,0 +1,105 @@
+{
+  "question_id": "M4-S13-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "One actor has three names. The stem says \"Message Batches API\". Options A, B and C say \"batch API\". Options B and D say \"batch service\". The question should use one name for it throughout.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "1955783ef8593891ebad7f8a147d8d1087cd4bf85b448f3231898a6cbf66c5ff",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The Message Batches API does not support multi-turn tool calling within a single request. Claude stops with stop_reason \"tool_use\", but nothing in the batch can run the lookup and return the result, so no completed record is produced.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "One actor has three names. The stem says \"Message Batches API\". Options A, B and C say \"batch API\". Options B and D say \"batch service\". The question should use one name for it throughout.",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "stop_reason",
+      "found": true
+    },
+    {
+      "name": "custom_id",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

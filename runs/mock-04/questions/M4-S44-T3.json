@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S44-T3",
+  "slot_id": "M4-S44",
+  "try": 3,
+  "point": "5.5-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S44-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent is scored on a labeled evaluation set of 700 return requests, 250 account issues, and 50 billing disputes. A conversation passes when the agent chooses the correct outcome. After a system prompt change, the overall pass rate rises from 92% to 95%. The team reports only this overall figure. Which conclusion does this result support?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It shows nothing useful, because accuracy on a labeled evaluation set says nothing about how the agent will handle live customer requests in production.",
+      "correct": false,
+      "reason": "The guide relies on labeled validation sets to measure accuracy; the limit of this result is that it is aggregated, not that it comes from labeled data."
+    },
+    {
+      "letter": "B",
+      "text": "It supports a gain for the set as a whole, but it cannot show that billing disputes held steady, because 50 cases barely move the overall figure.",
+      "correct": true,
+      "reason": "An aggregate score can mask poor performance on a small segment, so a decline on the 50 billing disputes could sit inside the higher overall pass rate."
+    },
+    {
+      "letter": "C",
+      "text": "It shows that the new prompt is at least as accurate for every request type, because a gain on one fixed evaluation set cannot hide a drop in any single type.",
+      "correct": false,
+      "reason": "Aggregate accuracy can mask poor performance on a specific segment, and billing disputes are only 5% of the set, so a drop there would barely move the overall figure."
+    },
+    {
+      "letter": "D",
+      "text": "It shows that billing disputes improved the most, because the gain is likely to come from the request type that is hardest to resolve and has the most room to grow.",
+      "correct": false,
+      "reason": "An overall figure does not reveal which segment changed, so the result gives no evidence about billing disputes; only a per-type breakdown could show that."
+    }
+  ]
+}

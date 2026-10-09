@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S03-T1",
+  "slot_id": "M4-S03",
+  "try": 1,
+  "point": "4.1-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads vendor contracts and flags four categories for the legal reviewers: missing clauses, date conflicts, party-name mismatches, and unusual indemnity terms. A spot check finds that 88% of all flags are correct, but nearly all false positives come from the indemnity category. The reviewers now skip most flags, including accurate missing-clause flags. Which explanation best accounts for this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The frequent false indemnity flags have undermined the reviewers' confidence in every category, including the categories whose flags are accurate.",
+      "correct": true,
+      "reason": "The guide states that high false-positive categories undermine confidence in accurate categories, which matches reviewers skipping accurate missing-clause flags."
+    },
+    {
+      "letter": "B",
+      "text": "The reviewers receive flags without any field-level confidence scores, so they cannot tell which flags to trust and they decide to skip the whole list.",
+      "correct": false,
+      "reason": "The data points to one high false-positive category as the cause, and the guide favors specific categorical criteria over confidence-based filtering to fix precision."
+    },
+    {
+      "letter": "C",
+      "text": "The 88% overall rate is too low on its own, so the reviewers distrust the flags of all four categories for the same reason.",
+      "correct": false,
+      "reason": "The errors are concentrated in one category, and the guide ties the loss of trust to a high false-positive category, not to a uniformly low overall rate."
+    },
+    {
+      "letter": "D",
+      "text": "The prompt lacks a general instruction to be conservative, so all four categories over-flag and the reviewers have learned to ignore them.",
+      "correct": false,
+      "reason": "Three categories are accurate, and the guide states that general instructions like \"be conservative\" fail to improve precision compared to specific categorical criteria."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S01-T1",
+  "slot_id": "M4-S01",
+  "try": 1,
+  "point": "4.3-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction tool has a JSON schema with a required payment_status enum whose values are paid, unpaid, and partially_paid. Some scanned invoices carry conflicting evidence, such as a paid stamp next to a handwritten balance due. Reviewers find that the model still picks one of the three values for these invoices and gives no sign of doubt. The accounts team then releases funds based on these guesses. Which change best lets the system route these ambiguous invoices to human review?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Set tool_choice to \"any\" so that the model must always call an extraction tool rather than return a plain text answer.",
+      "correct": false,
+      "reason": "Per the guide, tool_choice \"any\" only forces a tool call; the model already calls the tool here, and the enum still forces it to guess one of three values."
+    },
+    {
+      "letter": "B",
+      "text": "Add an \"unclear\" value to the payment_status enum so that the model can flag invoices whose evidence conflicts instead of guessing.",
+      "correct": true,
+      "reason": "The guide recommends enum values like \"unclear\" for ambiguous cases, which gives the model a valid output for conflicting evidence that downstream code can route to review."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the three enum values and add a prompt instruction that tells the model to choose the most likely status for each invoice.",
+      "correct": false,
+      "reason": "This keeps the schema without a value for ambiguous cases, so the model keeps guessing, which is exactly the failure the guide's \"unclear\" enum value prevents."
+    },
+    {
+      "letter": "D",
+      "text": "Add an \"other\" value to the payment_status enum together with a payment_status_detail string field that describes any status outside the list.",
+      "correct": false,
+      "reason": "The guide uses \"other\" plus a detail field for extensible categories that the list lacks, but these invoices are ambiguous between listed values, so the model still lacks a way to signal doubt."
+    }
+  ]
+}

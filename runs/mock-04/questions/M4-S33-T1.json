@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S33-T1",
+  "slot_id": "M4-S33",
+  "try": 1,
+  "point": "5.1-S4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support resolution agent handles a billing dispute that spans six orders. Before it decides on process_refund, it builds one long input that joins the get_customer result and six lookup_order results. The decision uses details from the first and last orders correctly, but it ignores a duplicate charge recorded in the fourth order, even though the input fits well within the context window. Which two changes to the aggregated input best address this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Switch to a model with a larger context window so that each of the six order results receives more attention.",
+      "correct": false,
+      "reason": "The input already fits in the context window. The missed finding comes from the lost in the middle effect, so the cause is its position in the input and a larger window leaves that position effect in place."
+    },
+    {
+      "letter": "B",
+      "text": "Place a summary of the key findings from all six order lookups at the beginning of the aggregated input.",
+      "correct": true,
+      "reason": "Models reliably process the beginning of long inputs, so a key findings summary placed first keeps middle findings visible and mitigates position effects."
+    },
+    {
+      "letter": "C",
+      "text": "Condense all six order results into one brief progressive summary so that the input becomes short enough to process reliably.",
+      "correct": false,
+      "reason": "Progressive summarization risks turning amounts, dates and statuses into vague statements, so the agent could lose the duplicate charge."
+    },
+    {
+      "letter": "D",
+      "text": "Remove the earlier conversation history from the request so that the order results make up a larger share of the input.",
+      "correct": false,
+      "reason": "The guide says that complete conversation history must be passed in later requests to keep the conversation coherent. Removing it leaves the middle findings in the middle."
+    },
+    {
+      "letter": "E",
+      "text": "Organize the detailed order results under explicit section headers so that the data for each order is clearly labeled.",
+      "correct": true,
+      "reason": "The guide recommends explicit section headers for detailed results. They mitigate the lost in the middle effect, and this complements the summary placed at the beginning."
+    }
+  ]
+}

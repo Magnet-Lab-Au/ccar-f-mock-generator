@@ -1,0 +1,446 @@
+{
+  "mock": 4,
+  "date": "2026-10-09",
+  "state": "waits_for_owner",
+  "waiting_for": [
+    "open slot M4-S06: three_tries",
+    "open slot M4-S23: three_tries",
+    "open slot M4-S27: three_tries",
+    "open slot M4-S50: three_tries",
+    "open slot M4-S54: three_tries"
+  ],
+  "slots": [
+    {
+      "slot_id": "M4-S01",
+      "status": "passed",
+      "question_id": "M4-S01-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S02",
+      "status": "passed",
+      "question_id": "M4-S02-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S03",
+      "status": "passed",
+      "question_id": "M4-S03-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S04",
+      "status": "passed",
+      "question_id": "M4-S04-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S05",
+      "status": "passed",
+      "question_id": "M4-S05-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S06",
+      "status": "open",
+      "question_id": "M4-S06-T3",
+      "tries": 3,
+      "open_reasons": [
+        "three_tries"
+      ]
+    },
+    {
+      "slot_id": "M4-S07",
+      "status": "passed",
+      "question_id": "M4-S07-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S08",
+      "status": "passed",
+      "question_id": "M4-S08-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S09",
+      "status": "passed",
+      "question_id": "M4-S09-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S10",
+      "status": "passed",
+      "question_id": "M4-S10-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S11",
+      "status": "passed",
+      "question_id": "M4-S11-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S12",
+      "status": "passed",
+      "question_id": "M4-S12-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S13",
+      "status": "passed",
+      "question_id": "M4-S13-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S14",
+      "status": "passed",
+      "question_id": "M4-S14-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S15",
+      "status": "passed",
+      "question_id": "M4-S15-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S16",
+      "status": "passed",
+      "question_id": "M4-S16-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S17",
+      "status": "passed",
+      "question_id": "M4-S17-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S18",
+      "status": "passed",
+      "question_id": "M4-S18-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S19",
+      "status": "passed",
+      "question_id": "M4-S19-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S20",
+      "status": "passed",
+      "question_id": "M4-S20-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S21",
+      "status": "passed",
+      "question_id": "M4-S21-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S22",
+      "status": "passed",
+      "question_id": "M4-S22-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S23",
+      "status": "open",
+      "question_id": "M4-S23-T3",
+      "tries": 3,
+      "open_reasons": [
+        "three_tries"
+      ]
+    },
+    {
+      "slot_id": "M4-S24",
+      "status": "passed",
+      "question_id": "M4-S24-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S25",
+      "status": "passed",
+      "question_id": "M4-S25-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S26",
+      "status": "passed",
+      "question_id": "M4-S26-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S27",
+      "status": "open",
+      "question_id": "M4-S27-T3",
+      "tries": 3,
+      "open_reasons": [
+        "three_tries"
+      ]
+    },
+    {
+      "slot_id": "M4-S28",
+      "status": "passed",
+      "question_id": "M4-S28-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S29",
+      "status": "passed",
+      "question_id": "M4-S29-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S30",
+      "status": "passed",
+      "question_id": "M4-S30-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S31",
+      "status": "passed",
+      "question_id": "M4-S31-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S32",
+      "status": "passed",
+      "question_id": "M4-S32-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S33",
+      "status": "passed",
+      "question_id": "M4-S33-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S34",
+      "status": "passed",
+      "question_id": "M4-S34-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S35",
+      "status": "passed",
+      "question_id": "M4-S35-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S36",
+      "status": "passed",
+      "question_id": "M4-S36-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S37",
+      "status": "passed",
+      "question_id": "M4-S37-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S38",
+      "status": "passed",
+      "question_id": "M4-S38-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S39",
+      "status": "passed",
+      "question_id": "M4-S39-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S40",
+      "status": "passed",
+      "question_id": "M4-S40-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S41",
+      "status": "passed",
+      "question_id": "M4-S41-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S42",
+      "status": "passed",
+      "question_id": "M4-S42-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S43",
+      "status": "passed",
+      "question_id": "M4-S43-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S44",
+      "status": "passed",
+      "question_id": "M4-S44-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S45",
+      "status": "passed",
+      "question_id": "M4-S45-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S46",
+      "status": "passed",
+      "question_id": "M4-S46-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S47",
+      "status": "passed",
+      "question_id": "M4-S47-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S48",
+      "status": "passed",
+      "question_id": "M4-S48-T2",
+      "tries": 2,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S49",
+      "status": "passed",
+      "question_id": "M4-S49-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S50",
+      "status": "open",
+      "question_id": "M4-S50-T3",
+      "tries": 3,
+      "open_reasons": [
+        "three_tries"
+      ]
+    },
+    {
+      "slot_id": "M4-S51",
+      "status": "passed",
+      "question_id": "M4-S51-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S52",
+      "status": "passed",
+      "question_id": "M4-S52-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S53",
+      "status": "passed",
+      "question_id": "M4-S53-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S54",
+      "status": "open",
+      "question_id": "M4-S54-T3",
+      "tries": 3,
+      "open_reasons": [
+        "three_tries"
+      ]
+    },
+    {
+      "slot_id": "M4-S55",
+      "status": "passed",
+      "question_id": "M4-S55-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S56",
+      "status": "passed",
+      "question_id": "M4-S56-T3",
+      "tries": 3,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S57",
+      "status": "passed",
+      "question_id": "M4-S57-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S58",
+      "status": "passed",
+      "question_id": "M4-S58-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S59",
+      "status": "passed",
+      "question_id": "M4-S59-T1",
+      "tries": 1,
+      "open_reasons": []
+    },
+    {
+      "slot_id": "M4-S60",
+      "status": "passed",
+      "question_id": "M4-S60-T1",
+      "tries": 1,
+      "open_reasons": []
+    }
+  ],
+  "step6_findings": [],
+  "errors": []
+}

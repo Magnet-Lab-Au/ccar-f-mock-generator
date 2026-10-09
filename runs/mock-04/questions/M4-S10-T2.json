@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S10-T2",
+  "slot_id": "M4-S10",
+  "try": 2,
+  "point": "4.4-S1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S10-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your invoice extraction pipeline validates each output with Pydantic and retries the failures. To save tokens, the retry request holds only the first page of the invoice and the validation error list, such as \"line items sum to 1,240 but total is 1,420\". Retried outputs often change fields that had already passed validation. Corrected amounts for line items on later pages often match no value printed on the invoice. Which causes best explain these retry results?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The retry request omits the later pages of the original invoice, so the model cannot check the flagged amounts against the source text.",
+      "correct": true,
+      "reason": "A self-correction follow-up should include the original document. Without the later pages, the model cannot verify those amounts and produces values that do not appear on the invoice."
+    },
+    {
+      "letter": "B",
+      "text": "The validation errors are semantic rather than syntactic, and retries cannot correct semantic errors such as amounts that fail to sum.",
+      "correct": false,
+      "reason": "Semantic errors such as sums that do not match are what retry with specific error feedback is meant to correct. Retries are ineffective only when the information is absent from the source, and here the amounts are on the invoice."
+    },
+    {
+      "letter": "C",
+      "text": "The retry request lacks few-shot examples of complete invoices, so the model has no format demonstration to follow when it rebuilds the output.",
+      "correct": false,
+      "reason": "The outputs pass the schema, so format is not the failure. The wrong values come from a follow-up request that lacks the original document and the failed extraction."
+    },
+    {
+      "letter": "D",
+      "text": "The error list names the specific failing values, and that level of detail pushes the model to overcorrect fields beyond those it names.",
+      "correct": false,
+      "reason": "Specific validation errors guide the model toward the correction. The problem is the missing document and failed extraction, not the detail of the errors."
+    },
+    {
+      "letter": "E",
+      "text": "The retry request omits the failed extraction, so the model regenerates every field instead of correcting only the fields named in the errors.",
+      "correct": true,
+      "reason": "A self-correction follow-up should include the failed extraction. Without it, the model rebuilds the whole output and changes fields that had already passed validation."
+    }
+  ]
+}

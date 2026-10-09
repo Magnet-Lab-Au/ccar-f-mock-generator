@@ -1,0 +1,25 @@
+{
+  "question_id": "M4-S27-T3",
+  "step": 3,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 3,
+      "rule": "A1",
+      "detail": "The options do not have the letters A to E in sequence.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    },
+    {
+      "step": 3,
+      "rule": "A2",
+      "detail": "The question has 6 options. The slot needs 5.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "bcede0abb1fb1cfed7a1a3f02218661c004bba8949b1dac41ae7ec0df3cf7b79",
+  "date": "2026-10-09"
+}

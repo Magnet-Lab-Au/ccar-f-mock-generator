@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S45-T1",
+  "slot_id": "M4-S45",
+  "try": 1,
+  "point": "1.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "A customer writes in one message that a recent order arrived damaged, that a subscription charge appeared twice this month, and that last month's loyalty points are missing. Your agent handles the three concerns strictly one after another and runs get_customer again for each concern. The chat takes so long that many customers leave before they receive any answer. Which workflow change best fixes this while still giving the customer one coherent answer?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Split the message into three distinct items, investigate them in parallel using the shared verified customer context, and synthesize one unified resolution for the customer.",
+      "correct": true,
+      "reason": "Decomposing a multi-concern request, investigating the items in parallel with shared context, and synthesizing one unified resolution removes the sequential delay and keeps the answer coherent."
+    },
+    {
+      "letter": "B",
+      "text": "Route every message that raises more than one concern straight to escalate_to_human, since a human agent can work on several related account problems at once and answer in a single reply.",
+      "correct": false,
+      "reason": "Several concerns in one message is not a reason to escalate, and handing off requests the agent can resolve works against the 80%+ first-contact resolution target."
+    },
+    {
+      "letter": "C",
+      "text": "Resolve only the first concern in this chat, and ask the customer to open a new conversation for each remaining concern so that every chat stays short and fast.",
+      "correct": false,
+      "reason": "This leaves two concerns unresolved on first contact and pushes the work to the customer instead of decomposing the request and resolving all items together."
+    },
+    {
+      "letter": "D",
+      "text": "Send the three investigations through the Message Batches API to get the 50% cost savings, and give the customer one combined reply after the batch results come back.",
+      "correct": false,
+      "reason": "The Message Batches API has a processing window of up to 24 hours and does not support multi-turn tool calling, so it does not suit a live support chat that needs tool lookups."
+    }
+  ]
+}

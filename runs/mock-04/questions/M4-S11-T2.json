@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S11-T2",
+  "slot_id": "M4-S11",
+  "try": 2,
+  "point": "4.6-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S11-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls policy numbers, claim amounts, and incident dates from insurance claim forms into schema-valid JSON. A separate Claude instance reviews each record, and its flags are sent back to the extraction session, which decides whether to correct each flagged field. The extraction session rejects most flags and writes a justification for each original value, yet human spot checks show that most rejected flags were correct. What is the most likely cause of this pattern?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The long context of the extraction session places the flagged fields in the middle of its window, so lost-in-the-middle effects make Claude overlook the details of each flag.",
+      "correct": false,
+      "reason": "Lost-in-the-middle effects cause missed details. This session does not miss the flags: it addresses each flag and writes a justification for keeping the original value, which is self-review bias."
+    },
+    {
+      "letter": "B",
+      "text": "The review instance uses its own system prompt, so its field definitions differ from those of the extraction session, and the extraction session rightly rejects the flags.",
+      "correct": false,
+      "reason": "Human spot checks show that most rejected flags were correct, so the rejections are not right. The pattern points to the extraction session defending its own earlier decisions."
+    },
+    {
+      "letter": "C",
+      "text": "The extraction session retains the reasoning behind its original values, so it is less likely to question those decisions when it judges the flags.",
+      "correct": true,
+      "reason": "The guide states that a model keeps its reasoning context from generation and is less likely to question its own decisions in that session. Here the extraction session acts as the final judge of its own work and defends its choices."
+    },
+    {
+      "letter": "D",
+      "text": "The flags are sent back without few-shot examples that demonstrate how a corrected field should look, so the extraction session cannot apply the corrections in the right format.",
+      "correct": false,
+      "reason": "The guide uses few-shot examples to demonstrate format and to handle ambiguous cases. The problem here is not format, because the session understands each flag and chooses to keep its original value."
+    }
+  ]
+}

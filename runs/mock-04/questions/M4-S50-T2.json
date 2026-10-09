@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S50-T2",
+  "slot_id": "M4-S50",
+  "try": 2,
+  "point": "3.5-K4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S50-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team reviews two refinement logs from its Agent SDK tool that generates boilerplate code for legacy systems. In the first log, Priya reported a pagination bug and a cursor encoding bug one per message, and for four rounds each fix broke the other. In the second log, Marco reported a misnamed log variable, a missing license header and a stale docstring one per message, and each was fixed in one round. Which statements correctly explain these two outcomes?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Priya's fixes undid each other because her session context grew too large, so running /compact between messages would have let her sequential fixes converge.",
+      "correct": false,
+      "reason": "The breakage comes from the interaction between the two bugs, and the guide's remedy for interacting issues is one combined message, not context reduction."
+    },
+    {
+      "letter": "B",
+      "text": "Priya's outcome shows that interacting bugs should be split across parallel subagents, so that each subagent fixes one bug without interference from the other.",
+      "correct": false,
+      "reason": "Splitting interacting bugs hides how each fix constrains the other, while the guide says interacting issues must be presented together in one message."
+    },
+    {
+      "letter": "C",
+      "text": "Priya's two bugs interact, so she should have described both in one detailed message that explains how the cursor encoding constrains the pagination logic.",
+      "correct": true,
+      "reason": "The guide says to address interacting issues together in a single detailed message, because a fix to one changes what the other fix must do."
+    },
+    {
+      "letter": "D",
+      "text": "Marco's three problems are independent of each other, so fixing them sequentially in separate messages was an appropriate way to iterate.",
+      "correct": true,
+      "reason": "The guide says sequential iteration suits independent issues, and none of Marco's three problems affects another."
+    },
+    {
+      "letter": "E",
+      "text": "Marco's approach worked because each problem was small, so sequential iteration suits any set of problems as long as each message stays short.",
+      "correct": false,
+      "reason": "The guide ties sequential iteration to the independence of the issues, not to their size or the length of each message."
+    }
+  ]
+}

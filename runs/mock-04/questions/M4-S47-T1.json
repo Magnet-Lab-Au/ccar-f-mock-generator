@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S47-T1",
+  "slot_id": "M4-S47",
+  "try": 1,
+  "point": "3.1-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to explore a legacy repository with three service directories, billing, reporting, and auth, and each directory has its own CLAUDE.md file. The billing and reporting files contain the same logging and error-handling standards, copied word for word. Last month an engineer updated the logging standard in the billing file only, and Claude now generates inconsistent logging code in reporting. What is the most maintainable way to keep these CLAUDE.md files modular and consistent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move each shared standard into its own file, such as standards/logging.md, and reference it with @import in both the billing and reporting CLAUDE.md files.",
+      "correct": true,
+      "reason": "The @import syntax references external files, so one standards file is maintained once and only the packages that need it include it."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the copied text in both files, and add a review checklist step that reminds maintainers to update every copy of a changed standard.",
+      "correct": false,
+      "reason": "The duplication and manual syncing stay in place, so copies can drift again, while @import would keep one shared source file."
+    },
+    {
+      "letter": "C",
+      "text": "Merge all service conventions into the root CLAUDE.md under one header per service, and delete the three directory-level CLAUDE.md files.",
+      "correct": false,
+      "reason": "This creates a monolithic file instead of a modular one, and it applies billing and reporting standards to auth, where they are irrelevant."
+    },
+    {
+      "letter": "D",
+      "text": "Ask each engineer to keep the shared logging and error-handling standards in their own user-level ~/.claude/CLAUDE.md file.",
+      "correct": false,
+      "reason": "User-level instructions apply only to that user and are not shared through version control, so teammates can still get different standards."
+    }
+  ]
+}

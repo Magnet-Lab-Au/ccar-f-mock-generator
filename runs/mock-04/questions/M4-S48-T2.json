@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S48-T2",
+  "slot_id": "M4-S48",
+  "try": 2,
+  "point": "3.6-S5",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S48-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team's pipeline runs Claude Code with the -p flag to generate unit tests for each changed module of your developer productivity tools. The project CLAUDE.md describes the team's testing standards and says that valuable tests check business rules rather than trivial getters, and each run includes the existing test files in context. The generated tests now target business rules and do not repeat covered scenarios. However, each test builds its own hand-written database mock instead of using the shared fixtures in the tests/fixtures directory. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The pipeline runs Claude Code with the -p flag, and non-interactive mode prevents Claude Code from reading project files such as the shared fixtures.",
+      "correct": false,
+      "reason": "The guide uses the -p flag only to run Claude Code non-interactively and prevent input hangs. CI-invoked Claude Code still loads project context such as CLAUDE.md, as the working standards show."
+    },
+    {
+      "letter": "B",
+      "text": "The pipeline does not put the existing test files in the context of each run, so Claude Code cannot see which scenarios the suite already covers.",
+      "correct": false,
+      "reason": "The guide uses existing test files in context to avoid duplicate scenarios. The runs already include these files and the tests do not repeat scenarios, so this does not explain the mocks."
+    },
+    {
+      "letter": "C",
+      "text": "The same Claude Code session that generated the tests also reviews them in the pipeline, so it overlooks the problems in its own changes before the tests are committed.",
+      "correct": false,
+      "reason": "Session context isolation explains weaker self-review, but the problem lies in generation. Claude Code was never told which fixtures exist, so this does not explain why it writes its own mocks."
+    },
+    {
+      "letter": "D",
+      "text": "The project CLAUDE.md states the testing standards and valuable test criteria but does not list the shared fixtures, so Claude Code does not know they exist.",
+      "correct": true,
+      "reason": "The guide says CLAUDE.md should document testing standards, valuable test criteria and available fixtures. The standards and criteria already work, so the missing fixture documentation explains the hand-written mocks."
+    }
+  ]
+}

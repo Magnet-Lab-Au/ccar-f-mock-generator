@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S02-T2",
+  "slot_id": "M4-S02",
+  "try": 2,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S02-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system pulls fields from insurance claim forms and validates the output against a JSON schema. An independent verification instance of Claude reports a confidence level alongside each field finding, and the team auto-accepts every field reported at 0.8 or higher. An audit of a sample of auto-accepted fields shows that fields reported at 0.9 are correct only about 70% of the time. What is the most likely cause of this routing failure?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The verification instance reports a separate confidence level for each field finding instead of one score per claim form, which spreads the scoring across too many values.",
+      "correct": false,
+      "reason": "Confidence reported alongside each finding is the design that the guide recommends for review routing. The gap between scores and real accuracy comes from the missing calibration."
+    },
+    {
+      "letter": "B",
+      "text": "Extended thinking is turned off in the verification instance, so it reasons too briefly about each field finding before it reports a confidence level for that finding.",
+      "correct": false,
+      "reason": "Longer reasoning does not check the scores against real accuracy, and the guide says that extended thinking is less effective than an independent review instance."
+    },
+    {
+      "letter": "C",
+      "text": "The verification instance runs without the extraction session's reasoning context, so it lacks the information that it needs to score each field finding accurately.",
+      "correct": false,
+      "reason": "The guide says that an independent instance without the generator's reasoning context catches subtle issues better, so this missing context is a strength and not the cause."
+    },
+    {
+      "letter": "D",
+      "text": "The team chose the 0.8 threshold without checking the reported confidence levels against a labeled validation set, so the scores do not match real accuracy.",
+      "correct": true,
+      "reason": "Self-reported confidence enables routing only after calibration. A 0.9 score that is right only 70% of the time shows that the thresholds were never checked against a labeled validation set."
+    }
+  ]
+}

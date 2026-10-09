@@ -1,0 +1,93 @@
+{
+  "question_id": "M4-S50-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question has the same problem as the earlier question M3-S36-T1. Both questions show an Agent SDK tool refining an automation script. In both, a test run reports two interacting problems and one independent wording problem: date parser plus file naming plus help text typo, against branch age plus protected-branch filter plus log message wording. Both have the same correct action: report the interacting problems together in one detailed message and handle the independent problem in its own iteration. Options C and E only split that earlier correct option into two rules. The wrong options change, but the reasoning that leads to the answer is the same. A new question on 3.5-K4 needs a different problem. Examples: a case where all the problems are independent, so sequential iteration is correct; or diagnosing why sequential fixes kept breaking each other.",
+      "letter": null,
+      "point": "3.5-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "ecc490caa4c17e3330c2aca3414fd12e9672b5cf14f3ec22577eb8013cf7d712",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "E"
+    ],
+    "reason": "Per 3.5-K4/S5, fixes that interact should go together in one detailed message (C), and independent problems can be fixed one at a time in sequential iterations (E). What decides it is whether the fixes interact, not file location, list length, or severity.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question has the same problem as the earlier question M3-S36-T1. Both questions show an Agent SDK tool refining an automation script. In both, a test run reports two interacting problems and one independent wording problem: date parser plus file naming plus help text typo, against branch age plus protected-branch filter plus log message wording. Both have the same correct action: report the interacting problems together in one detailed message and handle the independent problem in its own iteration. Options C and E only split that earlier correct option into two rules. The wrong options change, but the reasoning that leads to the answer is the same. A new question on 3.5-K4 needs a different problem. Examples: a case where all the problems are independent, so sequential iteration is correct; or diagnosing why sequential fixes kept breaking each other.",
+      "letter": null,
+      "point": "3.5-K4"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

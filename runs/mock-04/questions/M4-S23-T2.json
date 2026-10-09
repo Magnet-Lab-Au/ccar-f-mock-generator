@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S23-T2",
+  "slot_id": "M4-S23",
+  "try": 2,
+  "point": "2.1-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S23-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "The document analysis subagent in your research system has two tools: summarize_content and extract_citations. The full description of extract_citations is \"Extracts citations\" and nothing more. When a test forces extract_citations through tool_choice, the tool returns correct citation lists. In normal runs with tool_choice set to \"auto\", requests for the citations of a source usually go to summarize_content instead. Which change should the team make first?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rewrite the extract_citations description to state its input, its output, and when to use it instead of summarize_content.",
+      "correct": true,
+      "reason": "The forced test shows that the tool works, so the failure is in selection. Tool descriptions are the main way the model selects tools, and this minimal description cannot reliably separate the tool from summarize_content."
+    },
+    {
+      "letter": "B",
+      "text": "Debug and rewrite the extract_citations code, because a tool that the model rarely selects most likely has an error in its implementation.",
+      "correct": false,
+      "reason": "The forced test returns correct citation lists, so the code works. The model selects tools mainly from their descriptions, and this description is the weak part."
+    },
+    {
+      "letter": "C",
+      "text": "Increase max_tokens for the subagent so that the model has more room to consider extract_citations before it picks a tool.",
+      "correct": false,
+      "reason": "max_tokens only limits the length of the response. It gives the model no information to tell the two tools apart, which is the job of the tool descriptions."
+    },
+    {
+      "letter": "D",
+      "text": "Set tool_choice to force extract_citations on every request to the subagent, so that citation requests can never go to summarize_content again.",
+      "correct": false,
+      "reason": "Forced tool selection makes the subagent call extract_citations even for summary requests. It also leaves the minimal description that causes the unreliable choice unchanged."
+    }
+  ]
+}

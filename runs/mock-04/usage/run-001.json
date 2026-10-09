@@ -1,0 +1,11 @@
+{
+  "calls": 288,
+  "input_tokens": 638520,
+  "output_tokens": 347740,
+  "cache_write_tokens": 41541,
+  "cache_read_tokens": 3368967,
+  "dollars": 10.39,
+  "run": 1,
+  "model": "claude-opus-5-5",
+  "effort": "high"
+}

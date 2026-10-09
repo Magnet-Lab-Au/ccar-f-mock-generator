@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S39-T2",
+  "slot_id": "M4-S39",
+  "try": 2,
+  "point": "2.3-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S39-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent sets tool_choice to {\"type\": \"tool\", \"name\": \"get_customer\"} on the first request of each refund conversation. Logs show that get_customer is now always called first. However, that response ends with stop_reason \"tool_use\" after the single call, and your code treats it as the final response, so no refund is ever processed. Which change best lets the workflow continue while keeping get_customer as the guaranteed first step?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send the whole conversation as one Message Batches API request, so that the get_customer call and the refund steps are processed together.",
+      "correct": false,
+      "reason": "The Message Batches API has no multi-turn tool calling support, so the follow-up turns that process the steps after get_customer cannot run in it."
+    },
+    {
+      "letter": "B",
+      "text": "Raise max_tokens on the first request, so that the model has room to call lookup_order and process_refund after get_customer in the same response.",
+      "correct": false,
+      "reason": "The response did not stop for lack of tokens; it ended with the forced tool call and stop_reason \"tool_use\". The later steps belong in follow-up turns, so a larger max_tokens does not continue the workflow."
+    },
+    {
+      "letter": "C",
+      "text": "Remove the forced selection and add a system prompt rule to call get_customer first, so that the model can continue the workflow on its own.",
+      "correct": false,
+      "reason": "A prompt instruction does not guarantee that get_customer is called first, so it loses the guarantee that forced selection gives. It also does not fix the code that stops after the first response."
+    },
+    {
+      "letter": "D",
+      "text": "Return the get_customer result in a follow-up request with tool_choice set to \"auto\", and keep looping while stop_reason is \"tool_use\".",
+      "correct": true,
+      "reason": "Forced selection guarantees only the first call. The later steps are processed in follow-up turns, stop_reason \"tool_use\" means the loop must continue, and \"auto\" lets the model then choose lookup_order, process_refund, escalate_to_human or a text reply."
+    }
+  ]
+}

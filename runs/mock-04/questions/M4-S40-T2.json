@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S40-T2",
+  "slot_id": "M4-S40",
+  "try": 2,
+  "point": "2.4-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S40-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team builds the customer support agent with the Claude Agent SDK. Every developer needs the backend server, an MCP server that provides get_customer, lookup_order, process_refund and escalate_to_human. One developer, Priya, also wants to try an MCP server of her own, Priya's experimental server, which drafts refund-policy summaries and may not work yet. Teammates who clone the repository should get the backend server automatically, but they should never see Priya's experimental server. How should the two servers be configured?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Define the backend server in each developer's user-level ~/.claude.json, and define Priya's experimental server in the project's committed .mcp.json.",
+      "correct": false,
+      "reason": "This reverses the two scopes. The backend server would not come with the repository, and Priya's experimental server would reach every teammate through the committed .mcp.json."
+    },
+    {
+      "letter": "B",
+      "text": "Define both servers in the project's committed .mcp.json, and ask teammates to ignore the tools of Priya's experimental server during their work.",
+      "correct": false,
+      "reason": "Any server in the committed .mcp.json is shared with the whole team. Priya's experimental server would reach every teammate, which the requirement forbids, so it belongs in Priya's user-level ~/.claude.json."
+    },
+    {
+      "letter": "C",
+      "text": "Define the backend server in the project's committed .mcp.json, and define Priya's experimental server in her user-level ~/.claude.json.",
+      "correct": true,
+      "reason": "Project-level .mcp.json is the scope for shared team tooling, so cloning delivers the backend server. User-level ~/.claude.json is the scope for personal or experimental servers, so teammates never see Priya's experimental server."
+    },
+    {
+      "letter": "D",
+      "text": "Define both servers in each developer's user-level ~/.claude.json, and share the backend server's settings with new teammates through a wiki page.",
+      "correct": false,
+      "reason": "User-level ~/.claude.json is for personal servers and does not travel with the repository. New teammates would not get the backend server automatically, so the backend server belongs in the project-level .mcp.json."
+    }
+  ]
+}

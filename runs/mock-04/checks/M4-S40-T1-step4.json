@@ -1,0 +1,105 @@
+{
+  "question_id": "M4-S40-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "Priya's server has more than one name. The stem calls it \"an experimental MCP server\" and then \"Priya's trial server\". The options call it \"Priya's experimental server\", and the reason for A calls it \"the trial server\". One name should be used throughout, for example \"Priya's experimental server\".",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "2025098e8abae550b96ed6519dd1d8a845409541d28bb577a11408fb1c23f16f",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Shared team tooling belongs in the project-scoped .mcp.json, which is committed to version control, so anyone who clones the repo gets the backend server automatically. Personal or experimental servers belong in the user-scoped ~/.claude.json, so Priya's trial server stays private to her.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "Priya's server has more than one name. The stem calls it \"an experimental MCP server\" and then \"Priya's trial server\". The options call it \"Priya's experimental server\", and the reason for A calls it \"the trial server\". One name should be used throughout, for example \"Priya's experimental server\".",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".mcp.json",
+      "found": true
+    },
+    {
+      "name": "~/.claude.json",
+      "found": true
+    },
+    {
+      "name": "Claude Agent SDK",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

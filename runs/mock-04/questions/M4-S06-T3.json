@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S06-T3",
+  "slot_id": "M4-S06",
+  "try": 3,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S06-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline extracts fields from purchase orders and validates each output with Pydantic. Each retry sends the original order, the failed extraction, and the specific validation errors, and most date format failures pass on the first retry. One group of orders fails three retries in a row with the same error: the delivery_date field is empty. Each order in this group states only \"delivery as scheduled in the framework contract,\" and the pipeline receives the orders alone. What best explains why the retries keep failing?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The appended validation errors are too vague to guide the model, so the feedback needs more detail before the next retry.",
+      "correct": false,
+      "reason": "The retries already append specific validation errors, which fix other failures. Better feedback cannot help when the value is absent from the source, as the guide says."
+    },
+    {
+      "letter": "B",
+      "text": "The model writes the delivery dates in a non-ISO format, and this format mismatch needs more than three retries to resolve.",
+      "correct": false,
+      "reason": "The field is empty, not misformatted. The guide says format mismatches are the kind of failure that retries correct, and the other date format failures pass on the first retry."
+    },
+    {
+      "letter": "C",
+      "text": "The delivery dates exist only in the framework contract, which the pipeline never receives, so no retry can supply the missing value.",
+      "correct": true,
+      "reason": "The guide says retries are ineffective when the required information is absent from the source and exists only in an external document that is not provided."
+    },
+    {
+      "letter": "D",
+      "text": "Each retry includes the failed extraction, which anchors the model to its earlier empty answer and stops it from rereading the order.",
+      "correct": false,
+      "reason": "The guide recommends sending the failed extraction with the original document and the errors for self-correction. The value stays empty because it is absent from the order."
+    }
+  ]
+}

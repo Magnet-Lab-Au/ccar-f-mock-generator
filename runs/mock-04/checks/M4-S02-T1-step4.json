@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S02-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as M2-S49-T2. The reasoning is the same: move from a whole-document verdict or score to per-field confidence with a calibrated threshold, and route low-confidence fields to reviewers. Two wrong options also repeat. Option A (self-review in the extraction session) matches M2-S49-T2 option D and resembles M3-S13-T2 option B. Option C (keep one score or verdict per whole form) matches M2-S49-T2 option A. At most one wrong option may repeat.",
+      "letter": "B",
+      "point": "4.6-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "1c844e3348d1d3b331fb5f30e47b684f0b2b2322e36760d808387ce8fafa778e",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "A single form-level score hides one wrong field among many correct ones. Field-level confidence scores, calibrated against labeled data, let the system send just the uncertain fields to human review (5.5-K3, 5.5-S3, 4.6-S3). Self-review is weaker than an independent instance. Raising the threshold or adding extended thinking still leaves one score per form, so a single bad field stays hidden.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as M2-S49-T2. The reasoning is the same: move from a whole-document verdict or score to per-field confidence with a calibrated threshold, and route low-confidence fields to reviewers. Two wrong options also repeat. Option A (self-review in the extraction session) matches M2-S49-T2 option D and resembles M3-S13-T2 option B. Option C (keep one score or verdict per whole form) matches M2-S49-T2 option A. At most one wrong option may repeat.",
+      "letter": "B",
+      "point": "4.6-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "extended thinking",
+      "found": true
+    },
+    {
+      "name": "JSON Schema",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

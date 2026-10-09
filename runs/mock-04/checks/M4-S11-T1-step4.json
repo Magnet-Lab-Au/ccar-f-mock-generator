@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S11-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question repeats the problem of M3-S08-T1, which uses the same extraction setting. In both, a same-session verifier approves almost everything while a separate instance catches wrong field values, so the team must make the same choice and the same reasoning (self-review retains context, so use an independent instance) leads to D. The wrong options also repeat. Option B (extended thinking in the same session) repeats a wrong option of M1-S48-T1. Option C (schema validity means no further check is needed) repeats the strict-mode wrong option of M3-S08-T1. Option A (the independent verifier lacks the extraction reasoning) echoes the 'keep the original reasoning' wrong options of M1-S31-T2 and M1-S48-T1. That is more than one repeated wrong option.",
+      "letter": "D",
+      "point": "4.6-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "321bb53863b4bbac7789561837e2ca5618594132455bc5a116f89aab45d33475",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Self-review limitation: the in-session verifier retains the generation reasoning and tends to confirm its own choices. An independent instance without that context catches more subtle errors, and schema validation does not catch semantic errors such as wrong field values.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question repeats the problem of M3-S08-T1, which uses the same extraction setting. In both, a same-session verifier approves almost everything while a separate instance catches wrong field values, so the team must make the same choice and the same reasoning (self-review retains context, so use an independent instance) leads to D. The wrong options also repeat. Option B (extended thinking in the same session) repeats a wrong option of M1-S48-T1. Option C (schema validity means no further check is needed) repeats the strict-mode wrong option of M3-S08-T1. Option A (the independent verifier lacks the extraction reasoning) echoes the 'keep the original reasoning' wrong options of M1-S31-T2 and M1-S48-T1. That is more than one repeated wrong option.",
+      "letter": "D",
+      "point": "4.6-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "JSON Schema",
+      "found": true
+    },
+    {
+      "name": "extended thinking",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

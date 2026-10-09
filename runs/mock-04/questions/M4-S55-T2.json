@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S55-T2",
+  "slot_id": "M4-S55",
+  "try": 2,
+  "point": "3.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S55-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "You use Claude Code to help an engineer replace calls to a legacy billing module with a new API client. The task has three phases: Grep and Glob searches that map every caller of the billing module and return thousands of lines, an interface design discussion with the engineer, and boilerplate generation from the agreed design. The engineer worries that the main conversation will run out of context before the boilerplate phase begins. Which way of using the Explore subagent best addresses this worry?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Delegate all three phases to the Explore subagent, and have it return only the finished boilerplate code to the main conversation.",
+      "correct": false,
+      "reason": "The Explore subagent is meant for the verbose discovery phase. The design discussion with the engineer and its decisions must stay in the main conversation, so moving every phase out loses them."
+    },
+    {
+      "letter": "B",
+      "text": "Delegate the caller-mapping searches to the Explore subagent, and have it return a summary of the callers to the main conversation.",
+      "correct": true,
+      "reason": "The Explore subagent is meant for verbose discovery phases. It isolates the long search output and returns a summary, so the main conversation keeps its context for the design and the boilerplate phases."
+    },
+    {
+      "letter": "C",
+      "text": "Delegate the interface design discussion to the Explore subagent, and keep the caller-mapping searches and their full output in the main conversation.",
+      "correct": false,
+      "reason": "The verbose discovery output still fills the main conversation, which causes the context exhaustion. The Explore subagent is meant for discovery, and the design decisions belong in the main conversation."
+    },
+    {
+      "letter": "D",
+      "text": "Delegate the boilerplate generation to the Explore subagent, and keep the caller-mapping searches in the main conversation with the design discussion.",
+      "correct": false,
+      "reason": "The verbose search output still reaches the main conversation and can exhaust its context before the last phase. The Explore subagent is meant to isolate verbose discovery output, not to generate code."
+    }
+  ]
+}

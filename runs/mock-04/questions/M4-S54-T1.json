@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S54-T1",
+  "slot_id": "M4-S54",
+  "try": 1,
+  "point": "3.5-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer uses your developer productivity agent to build a consumer for a message queue, a domain that the engineer has never worked in. The engineer sent a one-paragraph request, and the agent wrote the consumer right away. In review, a reviewer found that the code ignores duplicate message deliveries and has no plan for messages that fail on every attempt. The engineer admits that neither issue had occurred to them. What is the most likely root cause of these gaps?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The request did not include two or three concrete input/output examples, so the agent interpreted the prose description of the message format inconsistently across the consumer.",
+      "correct": false,
+      "reason": "Concrete examples fix inconsistent interpretation of a transformation; the problem here is unanticipated design considerations, which the engineer could not have put into examples."
+    },
+    {
+      "letter": "B",
+      "text": "No interview step came before implementation, so the agent never asked the engineer about failure modes that the engineer had not anticipated in this unfamiliar domain.",
+      "correct": true,
+      "reason": "The interview pattern has Claude ask questions before implementing in unfamiliar domains to surface considerations such as failure modes that the developer did not anticipate, and this step was skipped."
+    },
+    {
+      "letter": "C",
+      "text": "The request was so long that the key requirements about duplicates and repeated failures were lost in the middle of the agent's context window.",
+      "correct": false,
+      "reason": "The request was one paragraph, and the requirements were never stated at all, so a lost-in-the-middle effect cannot explain the gaps."
+    },
+    {
+      "letter": "D",
+      "text": "The engineer did not write a test suite before implementation, so the agent had no test failures to share and iterate on during the work.",
+      "correct": false,
+      "reason": "Tests written first only cover behavior the engineer already expects; since the engineer never thought of these cases, a test suite would not have surfaced them."
+    }
+  ]
+}

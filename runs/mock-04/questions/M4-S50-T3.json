@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S50-T3",
+  "slot_id": "M4-S50",
+  "try": 3,
+  "point": "3.5-K4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S50-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer uses your Agent SDK tool to refine a Python script that automates the nightly cleanup of stale Git branches. A test run reports four problems, including a wrong branch age calculation, a protected-branch filter that skips some branches, and a misworded summary log message. Before sending the next message to the agent, the engineer wants rules for deciding whether to report problems together or one at a time. Which rules correctly guide that decision?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "If two problems sit in the same source file, describe them together in one message, even when neither fix affects the other.",
+      "correct": false,
+      "reason": "The guide ties the choice to whether the fixes interact, not to where the problems are located in the code."
+    },
+    {
+      "letter": "B",
+      "text": "If the list of problems is long, send one problem per message to keep each message short, even when some of the fixes interact.",
+      "correct": false,
+      "reason": "The guide bases the choice on interaction between fixes, not on message length, and interacting fixes belong in one detailed message."
+    },
+    {
+      "letter": "C",
+      "text": "If fixing the branch age calculation changes what the protected-branch filter must do, describe both problems together in one detailed message.",
+      "correct": true,
+      "reason": "The guide says that interacting issues, where one fix changes what another fix must do, belong together in a single detailed message."
+    },
+    {
+      "letter": "D",
+      "text": "If one problem is more severe, report it alone first, even when its fix changes what another problem's fix must do.",
+      "correct": false,
+      "reason": "The guide says interacting issues should be addressed together in one message, and severity does not change that rule."
+    },
+    {
+      "letter": "E",
+      "text": "If fixing the wording of the summary log message affects no other fix, handle that problem in its own sequential iteration.",
+      "correct": true,
+      "reason": "The guide says that sequential iteration suits independent issues, and a fix that affects no other fix is independent."
+    }
+  ]
+}

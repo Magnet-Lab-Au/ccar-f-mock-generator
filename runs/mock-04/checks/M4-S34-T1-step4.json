@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S34-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as M3-S32-T1, which is also a cause question, and close to M1-S07-T1. All three questions say the tool descriptions are already well written. In all three the answer is a system prompt instruction that ties a keyword to one tool and overrides those descriptions. The same reasoning leads to the answer: a keyword-triggered prompt instruction misroutes tool selection. Correct option D only moves the keyword from report or search to refund. The proactive-review framing and the new wrong options do not create a different failure or a different choice.",
+      "letter": "D",
+      "point": "2.1-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "47f0337c5ba7cd0631095c8de15f4b1089faae27e3cbd35a97efd608c983922e",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "D"
+    ],
+    "reason": "Option D is a keyword-triggered instruction. It would make the agent call process_refund for any message containing the word 'refund', including status checks like 'where is my refund?' that should go to lookup_order. That overrides the tool descriptions and causes unintended tool selection (2.1-K4/S4).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as M3-S32-T1, which is also a cause question, and close to M1-S07-T1. All three questions say the tool descriptions are already well written. In all three the answer is a system prompt instruction that ties a keyword to one tool and overrides those descriptions. The same reasoning leads to the answer: a keyword-triggered prompt instruction misroutes tool selection. Correct option D only moves the keyword from report or search to refund. The proactive-review framing and the new wrong options do not create a different failure or a different choice.",
+      "letter": "D",
+      "point": "2.1-S4"
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP",
+      "found": true
+    },
+    {
+      "name": "system prompt",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

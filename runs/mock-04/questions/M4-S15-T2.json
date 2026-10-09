@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S15-T2",
+  "slot_id": "M4-S15",
+  "try": 2,
+  "point": "5.2-S5",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S15-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction agent reads supplier invoices and calls a vendor lookup tool with the extracted vendor name to add a vendor ID to each JSON record. All records pass schema validation, but audits find that some invoices carry the wrong vendor ID. Logs show that in each failed case the lookup returned two or more vendors with the same name. The system prompt tells the extraction agent to always fill the vendor ID with the closest match. What is the most likely root cause of the wrong vendor IDs?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The JSON schema runs without strict mode, so malformed vendor ID values slip past validation into downstream systems.",
+      "correct": false,
+      "reason": "Strict mode eliminates syntax errors. Here the IDs are well formed and pass validation, but they belong to the wrong vendor because the extraction agent guessed among matches."
+    },
+    {
+      "letter": "B",
+      "text": "The vendor lookup tool has a minimal description, so the extraction agent calls it in place of a more suitable tool.",
+      "correct": false,
+      "reason": "Minimal descriptions cause tool misselection. Here the logs show that the right tool was called and returned several matches, so tool selection is not the failure."
+    },
+    {
+      "letter": "C",
+      "text": "Lost-in-the-middle effects in long invoices cause the extraction agent to miss the vendor name before it calls the lookup.",
+      "correct": false,
+      "reason": "The extraction agent extracted the vendor name, and the lookup returned records with that name. The error comes from choosing among several matches, not from information missed in the context."
+    },
+    {
+      "letter": "D",
+      "text": "The system prompt makes the extraction agent choose among multiple matches by heuristic instead of asking for an additional identifier.",
+      "correct": true,
+      "reason": "When a lookup returns multiple matches, the extraction agent should ask for additional identifiers. The closest-match instruction forces a heuristic guess, which produces valid but wrong vendor IDs."
+    }
+  ]
+}

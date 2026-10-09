@@ -1,0 +1,97 @@
+{
+  "question_id": "M4-S12-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as M2-S52-T1. There, findings recorded only the field name and the answer was a detected_pattern holding the triggering source construct. Here, detected_pattern holds the field name, and the answer is again to record the triggering source construct (B). The same reasoning, field name versus source construct, leads to the answer. The wrong options also largely repeat the earlier ones: a retry-based option (A) and a confidence-score option (C).",
+      "letter": "B",
+      "point": "4.4-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "7600f48420304af71ad7f0437fa9228145782de5dc9eed4c86b8c8f2190ea445",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 4.4-K3/S3, detected_pattern should record the source construct that triggered the finding (e.g., auto-renewal clause with separate notice period). Grouping dismissals by that value shows which patterns produce false positives. Retry validation errors, confidence scores and document category do not identify the triggering construct.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as M2-S52-T1. There, findings recorded only the field name and the answer was a detected_pattern holding the triggering source construct. Here, detected_pattern holds the field name, and the answer is again to record the triggering source construct (B). The same reasoning, field name versus source construct, leads to the answer. The wrong options also largely repeat the earlier ones: a retry-based option (A) and a confidence-score option (C).",
+      "letter": "B",
+      "point": "4.4-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "detected_pattern",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,109 @@
+{
+  "question_id": "M4-S23-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B8",
+      "detail": "Close copy of sample question 2. Both scenes have a tool with a minimal description that loses requests to a similar tool, and both ask for the first fix. The correct action is the same in both: expand the description with inputs, outputs and when to use it instead of the other tool. Moving the story to the research system and adding the forced-test detail does not change the scene or the action.",
+      "letter": "A",
+      "point": "2.1-K1",
+      "other_questions": []
+    },
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as earlier question M2-S06-T2. That question also asks for the fix to misrouting between two similar tools in the research system. Its correct answer is also to rewrite the description so that it states the input and when to use the other tool instead. Calling the description minimal rather than overlapping leaves the reasoning and the answer the same.",
+      "letter": "A",
+      "point": "2.1-K1",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "69969a76922a70e3924f48352267d11f2c07ef6828e73b04bb66e7c93443516a",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "The tool works correctly when forced, so the misrouting comes from its minimal description. Tool descriptions are the main signal the model uses to select tools. The fix is to state the input, the output, and when to use it instead of summarize_content. Forcing the tool every time would break summarization requests.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "fail",
+      "finding": "Close copy of sample question 2. Both scenes have a tool with a minimal description that loses requests to a similar tool, and both ask for the first fix. The correct action is the same in both: expand the description with inputs, outputs and when to use it instead of the other tool. Moving the story to the research system and adding the forced-test detail does not change the scene or the action.",
+      "letter": "A",
+      "point": "2.1-K1"
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as earlier question M2-S06-T2. That question also asks for the fix to misrouting between two similar tools in the research system. Its correct answer is also to rewrite the description so that it states the input and when to use the other tool instead. Calling the description minimal rather than overlapping leaves the reasoning and the answer the same.",
+      "letter": "A",
+      "point": "2.1-K1"
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    },
+    {
+      "name": "max_tokens",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

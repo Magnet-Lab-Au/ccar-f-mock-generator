@@ -1,0 +1,92 @@
+{
+  "question_id": "M4-S06-T3",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as M2-S54-T1. There, date format failures are retried while a field fails because its value exists only in a referenced agreement the system never receives (\"terms per master agreement\"). Here, date format failures pass on retry while delivery_date fails because it exists only in a framework contract the pipeline never receives. The same reasoning leads to correct option C: retries cannot supply information absent from the source. It mirrors M2-S54-T1's correct option D. Recasting the conclusion as a 'cause' question does not change the scene or the reasoning. Wrong option B, which says more retries would fix it, also echoes M2-S54-T1's raise-the-retry-limit option.",
+      "letter": "C",
+      "point": "4.4-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "9937649ee5efa05fbbe0dd680071a49af8311b36727b71ce0f258e9c4f012b85",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Retries cannot recover information that is absent from the source. These orders only point to an external framework contract that the pipeline never receives, so no amount of error feedback can produce a delivery date (4.4-K2, 4.4-S2).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as M2-S54-T1. There, date format failures are retried while a field fails because its value exists only in a referenced agreement the system never receives (\"terms per master agreement\"). Here, date format failures pass on retry while delivery_date fails because it exists only in a framework contract the pipeline never receives. The same reasoning leads to correct option C: retries cannot supply information absent from the source. It mirrors M2-S54-T1's correct option D. Recasting the conclusion as a 'cause' question does not change the scene or the reasoning. Wrong option B, which says more retries would fix it, also echoes M2-S54-T1's raise-the-retry-limit option.",
+      "letter": "C",
+      "point": "4.4-S2"
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

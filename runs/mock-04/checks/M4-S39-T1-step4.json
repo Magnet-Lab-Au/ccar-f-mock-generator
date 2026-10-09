@@ -1,0 +1,97 @@
+{
+  "question_id": "M4-S39-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question has the same problem as M1-S19-T1. Both ask which tool_choice setting enforces get_customer as the first step in the support agent and still lets the workflow continue. Both answer with forced selection on the early request(s) and later steps in follow-up turns. B only adds a second forced step. All three wrong options repeat M1-S19-T1's wrong options: A matches 'auto + instruction to call it', C matches 'any on the first turn(s)', and D matches 'force on every turn' (also the stall problem of M2-S24-T2). At most one wrong option may repeat.",
+      "letter": null,
+      "point": "2.3-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "bc9dfe892d474f404bb21d841e94c4c0f40fb9c62d7a97bbeaafe9b3ac6afdbf",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Forcing get_customer on the first request and lookup_order on the second guarantees the fixed order deterministically. Switching to 'auto' afterward lets the model choose among process_refund, escalate_to_human, or a text reply. Option A relies on a description for ordering, which is probabilistic. Option C ('any') doesn't fix the order. Option D would force get_customer repeatedly, so lookup_order could never be called.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question has the same problem as M1-S19-T1. Both ask which tool_choice setting enforces get_customer as the first step in the support agent and still lets the workflow continue. Both answer with forced selection on the early request(s) and later steps in follow-up turns. B only adds a second forced step. All three wrong options repeat M1-S19-T1's wrong options: A matches 'auto + instruction to call it', C matches 'any on the first turn(s)', and D matches 'force on every turn' (also the stall problem of M2-S24-T2). At most one wrong option may repeat.",
+      "letter": null,
+      "point": "2.3-S4"
+    }
+  ],
+  "features": [
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

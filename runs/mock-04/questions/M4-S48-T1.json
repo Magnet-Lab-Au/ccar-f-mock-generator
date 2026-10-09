@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S48-T1",
+  "slot_id": "M4-S48",
+  "try": 1,
+  "point": "3.6-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team added a step to its developer productivity pipeline in which Claude Code generates unit tests for each changed module. The generated tests do not repeat scenarios that the suite already covers. However, many of them only check trivial getters, and they build hand-written database mocks instead of using the shared fixtures in the tests/fixtures directory. What is the most effective way to raise the value of the generated tests?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add --output-format json with --json-schema to the pipeline command so that each generated test is returned as a structured object that the pipeline can parse.",
+      "correct": false,
+      "reason": "These flags enforce machine-parseable structured output in CI, but they control the format of the output and do not give Claude Code the testing standards or the available fixtures."
+    },
+    {
+      "letter": "B",
+      "text": "Add a second Claude Code instance with its own independent session that reviews each generated test, so that a fresh context catches the problems that the generating session overlooked.",
+      "correct": false,
+      "reason": "Session isolation improves review of generated changes, but a reviewer without the documented standards and fixtures still does not know which tests the team values or which fixtures exist."
+    },
+    {
+      "letter": "C",
+      "text": "Document the testing standards, the criteria that make a test valuable, and the available shared fixtures in the project CLAUDE.md file that Claude Code loads in the pipeline.",
+      "correct": true,
+      "reason": "The guide names CLAUDE.md as the way to give CI-invoked Claude Code testing standards, valuable test criteria and available fixtures, which improves test quality and reduces low-value tests."
+    },
+    {
+      "letter": "D",
+      "text": "Include the existing test files in the context of each run so that Claude Code can see which scenarios the current test suite already covers.",
+      "correct": false,
+      "reason": "The guide uses existing test files in context to avoid duplicate scenarios, but the tests already avoid duplicates, so this does not stop trivial tests or the hand-written mocks."
+    }
+  ]
+}

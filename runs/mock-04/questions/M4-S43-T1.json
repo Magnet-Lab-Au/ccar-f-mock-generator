@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S43-T1",
+  "slot_id": "M4-S43",
+  "try": 1,
+  "point": "1.2-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support coordinator, built with the Claude Agent SDK, spawns subagents to investigate each customer request. A customer writes that a returned blender was never refunded, that a duplicate charge appeared on the same card, and that the password reset for the account fails. The coordinator creates one subtask, \"verify the return status of the blender order,\" and the final reply resolves only the refund. Which change to the coordinator best prevents this kind of incomplete resolution?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Pass the coordinator's full conversation history to the return subagent, so that it can notice the duplicate charge and the password problem and resolve them within its own subtask.",
+      "correct": false,
+      "reason": "The subagent still works only on its narrow assigned task; deciding which subtasks exist is the coordinator's job, so the decomposition gap remains."
+    },
+    {
+      "letter": "B",
+      "text": "Route every request that mentions more than one issue to escalate_to_human, so that a human agent handles all of the issues together in one reply.",
+      "correct": false,
+      "reason": "This does not fix the narrow decomposition and gives up resolvable cases, which works against the 80%+ first-contact resolution target."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator list every issue that the request raises and delegate one subtask for each, covering the refund, the duplicate charge, and the password reset.",
+      "correct": true,
+      "reason": "The gap comes from overly narrow task decomposition, so the coordinator must decompose the request to cover all its issues before it delegates."
+    },
+    {
+      "letter": "D",
+      "text": "Let each subagent send its result straight to the customer instead of to the coordinator, so that replies about individual issues arrive faster and more often.",
+      "correct": false,
+      "reason": "This bypasses the hub-and-spoke routing through the coordinator and still creates no subtask for the missed issues."
+    }
+  ]
+}

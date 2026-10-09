@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S24-T1",
+  "slot_id": "M4-S24",
+  "try": 1,
+  "point": "5.6-S5",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your research system's final reports have a recurring problem. Quarterly revenue figures that the document analysis subagent extracted as structured rows appear in the report as long paragraphs, and step-by-step technical findings are also merged into prose, while news coverage reads well. Every claim in the report still carries its source URL and publication date. What is the most likely cause of this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The subagents omitted publication and data collection dates, so the synthesis subagent misread temporal differences between the quarterly figures as contradictions in the data.",
+      "correct": false,
+      "reason": "Missing dates cause temporal differences to be misread as contradictions. Here the dates are present, and the problem is presentation, not contradictory values."
+    },
+    {
+      "letter": "B",
+      "text": "The document analysis subagent dropped the claim-source mappings while it compressed its findings during summarization, so synthesis lost the structure it needed.",
+      "correct": false,
+      "reason": "Lost claim-source mappings cause lost attribution. Here every claim still carries its source URL, so the mappings were preserved and they do not explain the formatting."
+    },
+    {
+      "letter": "C",
+      "text": "The synthesis subagent is instructed to write every finding in one uniform prose style instead of rendering each content type in a suitable format.",
+      "correct": true,
+      "reason": "Financial and technical content turned into prose while news reads well, which matches a uniform-format instruction; financial data belongs in tables and technical findings in structured lists."
+    },
+    {
+      "letter": "D",
+      "text": "The coordinator passed too many findings at once, so lost-in-the-middle effects made the synthesis subagent omit figures from the middle of its input.",
+      "correct": false,
+      "reason": "Lost-in-the-middle effects cause content to be omitted. Here the figures appear in the report, so the problem is how they are rendered, not whether they are missing."
+    }
+  ]
+}

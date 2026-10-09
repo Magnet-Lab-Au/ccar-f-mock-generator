@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S21-T2",
+  "slot_id": "M4-S21",
+  "try": 2,
+  "point": "1.7-S4",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S21-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs named research sessions with --resume, in which the document analysis subagent builds findings from a corpus of 50 source reports. A teammate proposes a standard step for resumed work: the resume message lists the specific reports that changed and asks the session to re-analyze only those reports. Your lead wants to know when this step is the right choice. In which situation does this step fit best?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Most of the 50 reports were replaced with new editions, so nearly all of the tool results stored in the named session are now stale.",
+      "correct": false,
+      "reason": "When prior tool results are stale, the guide says a new session with an injected structured summary is more reliable than resuming, so targeted re-analysis inside the old session is the wrong choice."
+    },
+    {
+      "letter": "B",
+      "text": "No reports changed since the last work session, and the team simply wants to continue the same investigation the next day with all earlier findings intact.",
+      "correct": false,
+      "reason": "With no changed files, there is nothing to re-analyze, and the guide's plain --resume with the session name already continues the named investigation across work sessions."
+    },
+    {
+      "letter": "C",
+      "text": "The team wants to compare two different synthesis approaches that both start from the same completed analysis of the 50 reports, without one approach affecting the other.",
+      "correct": false,
+      "reason": "The guide uses fork_session to create independent branches from a shared analysis baseline to explore divergent approaches, so this need calls for forking, not a list of changed reports."
+    },
+    {
+      "letter": "D",
+      "text": "Two of the 50 reports received corrected editions, and the earlier analysis of the other 48 reports in the named session is still valid.",
+      "correct": true,
+      "reason": "Prior context is mostly valid, so resuming fits, and the guide says to tell the resumed session about the specific file changes for targeted re-analysis instead of full re-exploration."
+    }
+  ]
+}

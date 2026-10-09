@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S31-T1",
+  "slot_id": "M4-S31",
+  "try": 1,
+  "point": "5.5-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent extracts fields such as request type and refund amount, and it gives each field a confidence score. Requests above a confidence threshold are resolved automatically through process_refund, and the rest go to escalate_to_human. The team computes its error rate only from human reviews of escalated cases, and that rate stays steady. After a pricing change, a new error pattern in automatically resolved billing disputes goes unnoticed for six weeks. What is the most likely reason the monitoring missed it?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The confidence threshold was set too high, so reviewers received more escalated cases than they could check carefully, and their review quality dropped.",
+      "correct": false,
+      "reason": "Weaker reviews of escalated cases do not explain the miss. The errors were in auto-resolved cases, which no reviewer saw at all."
+    },
+    {
+      "letter": "B",
+      "text": "The team reported one overall error rate across all request types, so a drop in accuracy for billing disputes was hidden inside the aggregate figure.",
+      "correct": false,
+      "reason": "Aggregate metrics can mask weak segments, but the measured rate came only from escalated cases. Splitting that rate by type would still never include the auto-resolved billing disputes."
+    },
+    {
+      "letter": "C",
+      "text": "Reviewers sorted the escalated cases by request type instead of using one pooled queue, so the separate counts for each type hid the overall trend in billing disputes.",
+      "correct": false,
+      "reason": "The guide recommends analyzing results by segment, so sorting by type does not hide problems. The billing dispute errors were also never in the escalated queue."
+    },
+    {
+      "letter": "D",
+      "text": "The team never reviewed a stratified random sample of the automatically resolved high-confidence cases, so their error rate and new error patterns went unmeasured.",
+      "correct": true,
+      "reason": "The guide calls for ongoing stratified random sampling of high-confidence outputs to measure their error rate and detect novel patterns. Here only escalated cases were reviewed, so the auto-resolved errors were never seen."
+    }
+  ]
+}

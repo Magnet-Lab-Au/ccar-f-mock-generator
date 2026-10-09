@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S12-T1",
+  "slot_id": "M4-S12",
+  "try": 1,
+  "point": "4.4-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system emits findings when it detects possible problems in supplier contracts, such as a renewal clause that seems to conflict with the stated contract term. Reviewers dismiss about 40% of these findings as false positives. A teammate added a detected_pattern field to each finding, but it holds the name of the output field where the problem appears, and grouping dismissals by this value reveals nothing new. What should the detected_pattern field record instead?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The validation error message from the most recent retry, so that the analysis can see which schema checks each finding failed before the extraction was finally accepted.",
+      "correct": false,
+      "reason": "Validation errors are fed back on retry to help the model correct format or structure. They do not record which source construct triggered a finding, so they cannot reveal false positive patterns."
+    },
+    {
+      "letter": "B",
+      "text": "The specific construct in the source contract that triggered the finding, such as an auto-renewal clause with a separate notice period.",
+      "correct": true,
+      "reason": "The detected_pattern field should capture which construct triggered the finding. Dismissals can then be grouped by trigger, which exposes systematic false positive patterns."
+    },
+    {
+      "letter": "C",
+      "text": "The confidence score that the model assigns to the finding, so that dismissed findings can be grouped into score ranges.",
+      "correct": false,
+      "reason": "A confidence score says how sure the model was. It does not identify which source construct caused the finding, so it cannot explain why reviewers dismiss certain kinds of findings."
+    },
+    {
+      "letter": "D",
+      "text": "The document category of the contract, such as lease or supply agreement, so that dismissed findings can be grouped by contract category.",
+      "correct": false,
+      "reason": "A document category is too coarse. Like the field name, it does not identify the specific construct that triggered each finding, so it cannot show which constructs cause dismissals."
+    }
+  ]
+}

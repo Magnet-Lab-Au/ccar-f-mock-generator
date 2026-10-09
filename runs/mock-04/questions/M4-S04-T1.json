@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S04-T1",
+  "slot_id": "M4-S04",
+  "try": 1,
+  "point": "5.2-K2",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system has a chat assistant that helps vendors correct invoices that failed JSON schema validation. Its system prompt has one escalation rule: 'Escalate to a human reviewer only when you cannot fix the rejection yourself.' Most rejections are simple problems, such as a missing invoice date, but some vendors ask for a human reviewer and others write angrily without asking for one. Before launch, which two changes should the team make to the rule?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "When a frustrated vendor has not asked for a human reviewer, acknowledge the frustration, offer the fix, and escalate only if the vendor then asks for one.",
+      "correct": true,
+      "reason": "The guide says that for a straightforward issue the agent acknowledges frustration, offers resolution, and escalates only if the customer reiterates a preference for a human."
+    },
+    {
+      "letter": "B",
+      "text": "Escalate at once when a vendor explicitly asks for a human reviewer, even when the rejection is simple and the assistant could fix it.",
+      "correct": true,
+      "reason": "The guide says to honor an explicit request for a human immediately, without first trying to investigate or resolve the case."
+    },
+    {
+      "letter": "C",
+      "text": "Escalate whenever the assistant's self-reported confidence that it can fix the rejection falls below a fixed threshold.",
+      "correct": false,
+      "reason": "The guide says self-reported confidence scores are unreliable proxies for case complexity, and this rule ignores whether the vendor explicitly asked for a human."
+    },
+    {
+      "letter": "D",
+      "text": "Before escalating an explicit request for a human reviewer, ask the vendor to explain why the assistant cannot fix the invoice, and escalate only if the reason is convincing.",
+      "correct": false,
+      "reason": "The guide says an explicit request for a human is honored immediately; making the vendor justify it delays the escalation the vendor demanded."
+    },
+    {
+      "letter": "E",
+      "text": "Escalate each vendor chat to a human reviewer as soon as it opens, so that no vendor has to work through a fix with the assistant.",
+      "correct": false,
+      "reason": "The guide says the agent offers to resolve straightforward issues within its capability, so escalating every chat ignores the distinction the point describes."
+    }
+  ]
+}

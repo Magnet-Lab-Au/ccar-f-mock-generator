@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S34-T1",
+  "slot_id": "M4-S34",
+  "try": 1,
+  "point": "2.1-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent's MCP tools now have detailed descriptions that state when to use lookup_order to check an order's status and when to use process_refund to issue an approved refund. Before the next release, you review the system prompt for wording that could override these well-written descriptions. Which system prompt instruction is the most likely to cause unintended tool selection?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Keep replies short and friendly, and summarize the agreed resolution at the end of each conversation.",
+      "correct": false,
+      "reason": "This instruction controls tone and format only. It creates no association between a word in the request and a tool, so it cannot misroute tool selection."
+    },
+    {
+      "letter": "B",
+      "text": "Escalate to a human agent when the customer explicitly asks for one or when policy does not cover the request.",
+      "correct": false,
+      "reason": "These are condition-based escalation criteria that the guide endorses. They do not tie a single word to a tool, so they do not override the tool descriptions."
+    },
+    {
+      "letter": "C",
+      "text": "Confirm the customer's identity with get_customer before you discuss any order or account details.",
+      "correct": false,
+      "reason": "This instruction sets a step order that agrees with the purpose of get_customer. It is not a keyword trigger that conflicts with the lookup_order or process_refund descriptions."
+    },
+    {
+      "letter": "D",
+      "text": "Whenever a customer message contains the word refund, call process_refund right away to resolve the request.",
+      "correct": true,
+      "reason": "This keyword-sensitive instruction ties the word refund to process_refund. It overrides the descriptions, so refund-status questions that need lookup_order go to the wrong tool."
+    }
+  ]
+}

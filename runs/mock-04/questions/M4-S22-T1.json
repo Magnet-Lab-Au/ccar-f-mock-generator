@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S22-T1",
+  "slot_id": "M4-S22",
+  "try": 1,
+  "point": "1.1-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "The document analysis subagent in your research system runs its own agentic loop and calls a load_document tool once for each of five source documents. To keep requests short, the loop code replaces the previous tool result with the newest one before each request. Logs show that Claude requests earlier documents again, and its final analysis covers only the last document loaded. What change fixes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add a system prompt instruction that tells Claude to remember the contents of every document it has loaded earlier in the task.",
+      "correct": false,
+      "reason": "Claude reasons only about the context in each request, so an instruction cannot bring back tool results that the loop has removed from the conversation history."
+    },
+    {
+      "letter": "B",
+      "text": "Append each load_document output to the conversation history as a tool result after Claude's tool_use response, keeping all earlier results in later requests.",
+      "correct": true,
+      "reason": "Tool results must be added to the conversation context between iterations so that Claude can incorporate all new information, including earlier documents, into its reasoning."
+    },
+    {
+      "letter": "C",
+      "text": "Set tool_choice to \"any\" so that Claude must call a tool on every iteration until it has loaded all five source documents for the analysis.",
+      "correct": false,
+      "reason": "Forcing a tool call does not keep earlier results in context, so Claude would still lose the earlier documents and could keep requesting them again."
+    },
+    {
+      "letter": "D",
+      "text": "End the loop as soon as Claude's response contains assistant text, and treat that text as the final analysis of the five source documents for the coordinator.",
+      "correct": false,
+      "reason": "Checking for assistant text as a completion indicator is a named anti-pattern, and it does not restore the earlier tool results that the analysis is missing."
+    }
+  ]
+}

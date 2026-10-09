@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S38-T2",
+  "slot_id": "M4-S38",
+  "try": 2,
+  "point": "1.6-S1",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S38-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent handles disputed charges in two phases. First it must find out what happened, and findings often change the next step; for example, a charge that the customer calls unknown may turn out to be a replacement order created by an earlier return. Then, before any call to process_refund, it must confirm the same four points for every case: refund amount, policy eligibility, identity verification, and payment method. Which design decisions fit these two phases?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Decompose the first phase dynamically, so the agent generates new subtasks from what each tool result reveals, such as looking up the original returned order.",
+      "correct": true,
+      "reason": "Finding out what happened is an open-ended investigation. The guide matches this to dynamic adaptive decomposition, which generates subtasks from intermediate findings."
+    },
+    {
+      "letter": "B",
+      "text": "Combine the four pre-refund points into one pass that checks them all together, because the agent already holds the full case context from the first phase.",
+      "correct": false,
+      "reason": "The guide says prompt chaining breaks a predictable review into focused sequential passes. A single combined pass gives up that focus on each point."
+    },
+    {
+      "letter": "C",
+      "text": "Run the pre-refund phase as a fixed prompt chain with one focused pass for each of the four points, in the same order for every case.",
+      "correct": true,
+      "reason": "Confirming the same four points for every case is a predictable multi-aspect review. The guide matches this to prompt chaining with sequential focused passes."
+    },
+    {
+      "letter": "D",
+      "text": "Plan every first-phase subtask from the customer's opening message, then execute that plan without changing it after tool results arrive, so each case runs predictably.",
+      "correct": false,
+      "reason": "The first phase is open-ended, and its findings change the next step. The guide says such tasks need a plan that generates subtasks from what each step discovers."
+    },
+    {
+      "letter": "E",
+      "text": "Let the adaptive investigation also decide which pre-refund points to check, so the agent skips any point that its findings in the first phase make seem irrelevant to the case.",
+      "correct": false,
+      "reason": "The four points are the same known set for every case, so this is a predictable multi-aspect review. The guide matches that to prompt chaining, which does not skip checks."
+    }
+  ]
+}

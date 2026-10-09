@@ -1,0 +1,106 @@
+{
+  "question_id": "M4-S50-T2",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as earlier question M3-S36-T1. Both are set in an Agent SDK tool that generates boilerplate for legacy systems. Both show a mix of interacting and independent problems. In both, the answer comes from the same reasoning: combine the interacting issues in one detailed message and iterate sequentially on the independent ones. Splitting that one answer into two correct statements (C and D) and framing it as explaining outcomes does not make it a different problem.",
+      "letter": null,
+      "point": "3.5-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "b7f973c95c9a3cce0161ac8f4ad99e167bda84838ccad90d73faa72bbf477202",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "D"
+    ],
+    "reason": "Per 3.5-K4/S5: Priya's pagination and cursor encoding bugs interact, so both should go in one detailed message that explains how they constrain each other. Marco's three issues are independent, so fixing them one per message was appropriate. A misdiagnoses the cause as context size. B splits the interacting bugs, which makes interference worse. E gives the wrong reason: independence matters, not how small each problem is.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as earlier question M3-S36-T1. Both are set in an Agent SDK tool that generates boilerplate for legacy systems. Both show a mix of interacting and independent problems. In both, the answer comes from the same reasoning: combine the interacting issues in one detailed message and iterate sequentially on the independent ones. Splitting that one answer into two correct statements (C and D) and framing it as explaining outcomes does not make it a different problem.",
+      "letter": null,
+      "point": "3.5-K4"
+    }
+  ],
+  "features": [
+    {
+      "name": "Agent SDK",
+      "found": true
+    },
+    {
+      "name": "/compact",
+      "found": true
+    },
+    {
+      "name": "subagents",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,92 @@
+{
+  "question_id": "M4-S22-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "8b00bf67901465ced3123f08e8f913066b60125813efea07de5f367212d6f43b",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Each request is stateless, so Claude only sees what is in the conversation history. Overwriting earlier tool results removes documents Claude has already read, which is why it re-requests them and analyzes only the last one. Appending every load_document result to the history (1.1-K2/S2) fixes this. A cannot work because Claude cannot recall content that is no longer in its context. C (raising max_tokens) does not restore the missing inputs. D is a termination anti-pattern.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "max_tokens",
+      "found": true
+    },
+    {
+      "name": "system prompt",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S56-T1",
+  "slot_id": "M4-S56",
+  "try": 1,
+  "point": "1.3-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator spawns an exploration subagent with the prompt \"Find out how the legacy session-handling module works.\" The subagent returns a short, general overview with no file references, and it skips token expiry and error handling, so engineers cannot act on it. A teammate wants to fix this by writing an exact list of Grep patterns and files to read. Which change would best improve the results while keeping the subagent able to adapt to the codebase?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send the same prompt again in a new invocation, so that the subagent builds on the memory of its first attempt.",
+      "correct": false,
+      "reason": "The guide states that subagents do not share memory between invocations, and the unchanged prompt still lacks quality criteria."
+    },
+    {
+      "letter": "B",
+      "text": "Limit the subagent's tools to Read only, so that it examines just the files that the coordinator names in its prompt.",
+      "correct": false,
+      "reason": "This removes the subagent's ability to search and adapt, and it still gives no quality criteria for what a complete, usable answer must contain."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the goal in the coordinator's prompt and add quality criteria, such as citing a file path for each claim, covering token expiry and error handling, and flagging uncertain findings.",
+      "correct": true,
+      "reason": "The guide recommends coordinator prompts that state research goals and quality criteria rather than procedures, so the subagent adapts its search while meeting a clear standard."
+    },
+    {
+      "letter": "D",
+      "text": "Replace the goal with a numbered procedure that lists the exact Grep patterns to run, the files to Read in a fixed order, and the summary headings to fill in at the end.",
+      "correct": false,
+      "reason": "The guide warns against step-by-step procedural instructions, because they remove subagent adaptability when the codebase differs from what the coordinator expected."
+    }
+  ]
+}

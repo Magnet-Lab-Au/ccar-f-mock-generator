@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S06-T1",
+  "slot_id": "M4-S06",
+  "try": 1,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your system extracts fields from supplier contracts and validates each output against a JSON schema. On failure, a follow-up request sends the original contract, the failed extraction, and the specific validation errors, and most structural errors pass on the first retry. One group of contracts fails all three retries with an empty renewal_date, and each of these contracts says only \"renewal as set out in Schedule B.\" The pipeline receives only the main contract body. What best explains why the retries fail for this group?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The renewal dates are written in a non-standard date format, which is a mismatch that error feedback cannot correct.",
+      "correct": false,
+      "reason": "The guide names format mismatches as failures that retries with error feedback do correct, and the contracts do not contain a date at all."
+    },
+    {
+      "letter": "B",
+      "text": "The retry limit of three is too low, and more attempts with the same error feedback would eventually let the model find the date.",
+      "correct": false,
+      "reason": "The guide says retries cannot help when the information is absent from the source, so more attempts will not produce a real renewal date."
+    },
+    {
+      "letter": "C",
+      "text": "The failures are schema syntax errors in the JSON output, which retries cannot fix while the extraction uses tool use.",
+      "correct": false,
+      "reason": "The guide says tool use with JSON schemas eliminates schema syntax errors, and an empty required value caused by absent source information is not a syntax error."
+    },
+    {
+      "letter": "D",
+      "text": "The renewal date exists only in Schedule B, which the system never receives, so no retry can supply the missing value.",
+      "correct": true,
+      "reason": "The guide states that retries are ineffective when the required information is absent from the source, for example when it exists only in an external document that is not provided."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S09-T1",
+  "slot_id": "M4-S09",
+  "try": 1,
+  "point": "4.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads vendor contracts and sets a flag_for_legal field when a clause appears non-standard. The lawyers reject most flagged clauses as routine, so the team added one sentence at the end of the system prompt: \"Be conservative and only flag clauses you are highly confident about.\" A week of results shows almost no change in the false positive rate. What best explains why the added sentence failed to improve precision?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The sentence gives no categorical definition of a non-standard clause, so Claude still applies its own broad judgment about which clauses qualify.",
+      "correct": true,
+      "reason": "The guide states that general instructions like \"be conservative\" or \"only report high-confidence findings\" fail to improve precision compared to specific categorical criteria that define what to flag."
+    },
+    {
+      "letter": "B",
+      "text": "The sentence uses mild wording, and Claude follows precision instructions only when they are written in capital letters as strict commands.",
+      "correct": false,
+      "reason": "Stronger emphasis leaves the instruction just as general; the guide says general instructions fail because they lack specific categorical criteria, not because of their tone."
+    },
+    {
+      "letter": "C",
+      "text": "The output schema has no confidence field, so Claude has nowhere to record its certainty and cannot filter its flags by that value.",
+      "correct": false,
+      "reason": "The guide recommends specific categorical criteria rather than relying on confidence-based filtering, so adding a confidence field would not fix the missing definition."
+    },
+    {
+      "letter": "D",
+      "text": "The sentence sits at the end of a long system prompt, so lost-in-the-middle effects cause Claude to overlook it during extraction.",
+      "correct": false,
+      "reason": "The sentence is at the end, not in the middle, and the guide says that even a followed general instruction fails to improve precision because it does not define categories."
+    }
+  ]
+}

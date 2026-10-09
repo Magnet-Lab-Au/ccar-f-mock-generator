@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S23-T3",
+  "slot_id": "M4-S23",
+  "try": 3,
+  "point": "2.1-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S23-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "The web search subagent in your research system first had one tool, search_web, whose full description is \"Searches the web.\" With that single tool, selection was reliable. The team then added search_papers, described only as \"Searches for papers.\" Since then, news queries sometimes go to search_papers and paper queries sometimes go to search_web, although the search_web code and description are unchanged and the system prompt names neither tool. What best explains why tool selection became unreliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Adding search_papers introduced an error into the search_web code, so search_web fails on news queries and the model then retries them with search_papers.",
+      "correct": false,
+      "reason": "The stem says the search_web code is unchanged, and requests go to the wrong tool in both directions. That is a selection failure, which comes from the minimal descriptions the model relies on to choose."
+    },
+    {
+      "letter": "B",
+      "text": "The model selects tools mainly from their descriptions, and the two minimal descriptions give it no basis to separate two similar search tools.",
+      "correct": true,
+      "reason": "Tool descriptions are the main way the model selects tools. A minimal description was enough while there was no similar tool. Now two similar tools have minimal descriptions, so the model cannot reliably tell them apart."
+    },
+    {
+      "letter": "C",
+      "text": "The max_tokens limit of the subagent is too low for the model to compare two tools, so it now picks one of them without weighing the other.",
+      "correct": false,
+      "reason": "max_tokens only limits the length of the response. The model tells similar tools apart through their descriptions, and these two minimal descriptions give it nothing to compare."
+    },
+    {
+      "letter": "D",
+      "text": "The model favors the most recently added tool whenever two tools could apply, so search_papers now takes requests that belong to search_web.",
+      "correct": false,
+      "reason": "The guide gives no such recency rule; the model selects from descriptions. The misrouting also goes both ways, with paper queries going to search_web, which a preference for the new tool cannot explain."
+    }
+  ]
+}

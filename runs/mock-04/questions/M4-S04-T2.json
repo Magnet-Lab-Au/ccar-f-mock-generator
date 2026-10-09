@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S04-T2",
+  "slot_id": "M4-S04",
+  "try": 2,
+  "point": "5.2-K2",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S04-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction service has a support assistant for clients whose extracted shipping manifests fail JSON schema validation. A transcript review shows two opposite failures. When a client writes 'Let me talk to a human agent,' the assistant first asks for the manifest and tries to repair it, but when a client complains angrily about a simple unit-field error without asking for a human agent, the assistant hands the client to one. Which two causes in the assistant's system prompt best explain these failures?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The prompt treats an angry tone as an escalation trigger, instead of having the assistant acknowledge frustration and offer the simple fix.",
+      "correct": true,
+      "reason": "The guide says that for a straightforward issue the agent acknowledges frustration and offers resolution, escalating only if the client reiterates a preference, so a tone trigger explains the second failure."
+    },
+    {
+      "letter": "B",
+      "text": "The prompt lacks a self-reported confidence threshold, so the assistant has no dependable signal for deciding which client conversations need a human agent.",
+      "correct": false,
+      "reason": "The guide says self-reported confidence scores are unreliable proxies for case complexity, so their absence is not the cause and adding one would not fix either failure."
+    },
+    {
+      "letter": "C",
+      "text": "The schema marks the unit field as required rather than nullable, so the assistant cannot finish simple repairs and must hand them to a human agent.",
+      "correct": false,
+      "reason": "A schema choice cannot explain why the assistant repairs cases where clients asked for a human agent; the guide ties this escalation choice to an explicit request versus a straightforward issue."
+    },
+    {
+      "letter": "D",
+      "text": "The descriptions of the repair tool and the handoff tool overlap, so the assistant picks between the two tools at random on unclear client messages.",
+      "correct": false,
+      "reason": "Random tool selection would not track the pattern seen, which follows explicit requests and angry tone; the guide places this distinction in the escalation criteria of the prompt."
+    },
+    {
+      "letter": "E",
+      "text": "The prompt requires a repair attempt before any escalation, so the assistant fails to honor explicit requests for a human agent immediately.",
+      "correct": true,
+      "reason": "The guide says an explicit request for a human is honored immediately without first attempting investigation, and a repair-first rule explains the first failure."
+    }
+  ]
+}

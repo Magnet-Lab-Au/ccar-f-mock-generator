@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S26-T1",
+  "slot_id": "M4-S26",
+  "try": 1,
+  "point": "1.5-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your document analysis subagent calls an MCP document fetch tool that returns numeric status codes such as 200, 403 and 404 together with the page content. The subagent sometimes cites error pages from 403 responses as source content. A teammate registers a PostToolUse hook that replaces each numeric status code with a readable label such as \"access denied\". What will the document analysis subagent receive on its next fetch?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It receives the raw numeric code first, because the hook changes the tool result only after the model has processed it.",
+      "correct": false,
+      "reason": "The guide states that PostToolUse hooks transform tool results before the model processes them, not after."
+    },
+    {
+      "letter": "B",
+      "text": "It receives the raw numeric code, because the hook transforms tool results only for the coordinator agent and not for subagents.",
+      "correct": false,
+      "reason": "The guide describes PostToolUse hooks as transforming tool results before the model that made the call processes them, with no restriction to the coordinator."
+    },
+    {
+      "letter": "C",
+      "text": "It receives the result with the readable label, because the hook transforms each tool result before the model processes it.",
+      "correct": true,
+      "reason": "A PostToolUse hook intercepts tool results and transforms them before the model processes them, so the subagent sees only the normalized label."
+    },
+    {
+      "letter": "D",
+      "text": "It receives the raw numeric code, because the hook runs on the outgoing call before the fetch tool returns any result.",
+      "correct": false,
+      "reason": "Intercepting outgoing tool calls is a different hook pattern; a PostToolUse hook acts on the tool result that the tool returns."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S57-T1",
+  "slot_id": "M4-S57",
+  "try": 1,
+  "point": "3.6-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team adds a nightly scheduled job to the developer productivity tooling. The job starts Claude Code with a prompt that summarizes recently changed legacy modules for the onboarding notes, and no engineer is present when it runs. On the first night, the job stalls after it starts Claude Code, and the logs show that Claude Code opened an interactive session. Which change to the Claude Code invocation lets the job run unattended?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add the --json-schema flag with a schema for the summary so the job receives structured output without user interaction.",
+      "correct": false,
+      "reason": "The guide presents --json-schema for enforcing structured output in CI contexts; it does not make the run non-interactive, which is the job of the -p flag."
+    },
+    {
+      "letter": "B",
+      "text": "Add the --resume flag with the name of an earlier session so Claude Code continues that session instead of opening a new one.",
+      "correct": false,
+      "reason": "The guide presents --resume for session resumption, which restores prior context; it does not switch Claude Code to non-interactive mode, so the job still waits for input."
+    },
+    {
+      "letter": "C",
+      "text": "Start the invocation in plan mode so Claude Code only explores the modules and makes no changes that need approval.",
+      "correct": false,
+      "reason": "The guide presents plan mode as a choice between planning and direct execution, not as a non-interactive mode; only the -p flag stops Claude Code from waiting for input."
+    },
+    {
+      "letter": "D",
+      "text": "Add the -p flag to the invocation so Claude Code processes the prompt, prints the summary, and exits without waiting for input.",
+      "correct": true,
+      "reason": "The guide names the -p (or --print) flag as the way to run Claude Code in non-interactive mode in automated pipelines, which prevents hangs on interactive input."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S46-T1",
+  "slot_id": "M4-S46",
+  "try": 1,
+  "point": "3.1-S3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Engineers use your developer productivity agent in a monorepo whose root CLAUDE.md file has grown to 1,200 lines. Its testing, API and deployment conventions are mixed together, and engineers struggle to find and update the section they need. The team decides to split the file by topic, but each topic applies to code in every package, not to a single directory. Where should the team put the topic content?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move each topic into a CLAUDE.md file inside the subdirectory of the package whose maintainers know that topic best.",
+      "correct": false,
+      "reason": "A directory-level CLAUDE.md applies only to its own subdirectory. Conventions that cover every package would then be missing everywhere else."
+    },
+    {
+      "letter": "B",
+      "text": "Turn each topic into a skill under .claude/skills/ with a SKILL.md file that engineers invoke when they need those conventions.",
+      "correct": false,
+      "reason": "Skills are invoked on demand for specific tasks. They are not the place for standing conventions that must always apply, and the guide names .claude/rules/ for splitting CLAUDE.md by topic."
+    },
+    {
+      "letter": "C",
+      "text": "Create focused files such as testing.md, api-conventions.md and deployment.md in the project's .claude/rules/ directory.",
+      "correct": true,
+      "reason": "The guide names the .claude/rules/ directory as the place for topic-specific rule files that replace a monolithic CLAUDE.md. This keeps each topic in its own file while the rules stay project-wide."
+    },
+    {
+      "letter": "D",
+      "text": "Save each topic as a separate Markdown file in the repository root, such as testing.md, without referencing it from any configuration file.",
+      "correct": false,
+      "reason": "A plain Markdown file is not part of the CLAUDE.md hierarchy unless it sits in .claude/rules/ or is referenced with @import. Without that, the conventions would not be loaded."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S50-T1",
+  "slot_id": "M4-S50",
+  "try": 1,
+  "point": "3.5-K4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your Agent SDK tool is refining a script that renames configuration keys across legacy repositories. You reported a key matching problem first, and after the agent fixed it, you reported that special characters in key names are escaped incorrectly. For three rounds, each escaping fix has broken the matching pattern again, and each matching fix has broken the escaping. A third problem, a wrong count in the progress output, affects no other step. Which two conclusions should guide your next iteration?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Sequential iteration has failed here, so always report every problem from a test run together in one message, including the progress count.",
+      "correct": false,
+      "reason": "The guide reserves the single combined message for interacting issues and keeps sequential iteration for independent ones like the progress count."
+    },
+    {
+      "letter": "B",
+      "text": "The repeated breakage means each problem needs a fresh agent session, so that earlier fixes do not bias the next fix.",
+      "correct": false,
+      "reason": "The breakage comes from interacting fixes, and the guide's remedy is to present interacting issues together, which separate sessions prevent."
+    },
+    {
+      "letter": "C",
+      "text": "The progress count problem is independent, so it can be fixed in its own separate iteration without affecting the other two fixes.",
+      "correct": true,
+      "reason": "The guide says sequential iteration suits independent issues, and the progress count affects no other step."
+    },
+    {
+      "letter": "D",
+      "text": "The matching and escaping problems interact, so describe both in one detailed message that explains how each fix constrains the other.",
+      "correct": true,
+      "reason": "The guide says to address interacting issues together in a single detailed message, because a fix to one changes what the other fix must do."
+    },
+    {
+      "letter": "E",
+      "text": "The repeated breakage comes from the order of the reports, so report the escaping problem first and the matching problem afterwards.",
+      "correct": false,
+      "reason": "Reversing the order is still sequential fixing of interacting issues, which the guide says should be addressed together in one message."
+    }
+  ]
+}

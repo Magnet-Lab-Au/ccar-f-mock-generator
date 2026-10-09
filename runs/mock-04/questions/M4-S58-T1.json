@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S58-T1",
+  "slot_id": "M4-S58",
+  "try": 1,
+  "point": "2.2-S4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your developer productivity agent uses an MCP log-search tool to help engineers investigate a legacy billing service. When a query runs and matches no log lines, the tool returns an isError response with errorCategory \"transient\" and isRetryable true. The agent then retries each such search several times and tells engineers that the log service is unstable. The same tool also receives permission-denied replies from the log service for restricted log groups. Which changes to the tool's responses should the team make?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Return an isError response with errorCategory \"permission\" and isRetryable false when the log service denies access to a restricted log group.",
+      "correct": true,
+      "reason": "A denied access is a real access failure. Structured metadata marks it as a non-retryable permission error, so the agent does not waste retries and can report the problem."
+    },
+    {
+      "letter": "B",
+      "text": "Return a successful empty match list for permission-denied replies as well, so that the agent continues its investigation without stopping on restricted log groups.",
+      "correct": false,
+      "reason": "This hides an access failure as a valid empty result. The agent would wrongly conclude that the restricted log groups contain no matching lines."
+    },
+    {
+      "letter": "C",
+      "text": "Keep the transient error for searches with no matching lines but limit the agent to one retry, so that fewer tool calls are wasted on each empty search.",
+      "correct": false,
+      "reason": "The empty result is still misclassified as a transient failure. The agent still retries and still reports an unstable service for successful queries."
+    },
+    {
+      "letter": "D",
+      "text": "Return a successful result with an empty match list and no isError flag when the query runs and no log lines match.",
+      "correct": true,
+      "reason": "A query that ran and found nothing is a valid empty result. It is a success, so it must not be flagged as a retryable failure."
+    },
+    {
+      "letter": "E",
+      "text": "Add a system prompt instruction that tells the agent to treat every transient error from the tool as a search that found no matching log lines.",
+      "correct": false,
+      "reason": "Real timeouts would then be reported as empty results. The fix belongs in the tool, which must separate access failures from valid empty results."
+    }
+  ]
+}

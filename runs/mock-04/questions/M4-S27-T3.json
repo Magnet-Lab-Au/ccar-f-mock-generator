@@ -1,0 +1,51 @@
+{
+  "question_id": "M4-S27-T3",
+  "slot_id": "M4-S27",
+  "try": 3,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S27-T2",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, you plan to change the signature of score_credibility, a helper that the web search subagent and the synthesis subagent depend on. The wrapper module credibility_api.py exposes functions that call this helper. A teammate listed every name that credibility_api.py exports and ran Grep for each name across the codebase. Apart from credibility_api.py itself, the only matches are in research_tools.py, a second wrapper module that the subagents import. Which two next steps find the remaining callers of score_credibility?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Conclude that research_tools.py is the only caller, because the Grep runs already covered every name that credibility_api.py exports.",
+      "correct": false,
+      "reason": "The subagents call the names that research_tools.py exports, so the first set of searches cannot reach them."
+    },
+    {
+      "letter": "B",
+      "text": "Run Grep across the codebase only for score_credibility, because every indirect caller still contains that original name in its code.",
+      "correct": false,
+      "reason": "Callers that go through a wrapper use the names the wrapper exports, which is why usage is traced by searching for each exported name."
+    },
+    {
+      "letter": "C",
+      "text": "Run Grep across the whole codebase for each name that research_tools.py exports.",
+      "correct": true,
+      "reason": "After the exported names are identified, each name must be searched across the codebase to find the callers that use the second wrapper."
+    },
+    {
+      "letter": "D",
+      "text": "Run Grep only for the string research_tools, and treat every file that imports that module as a caller of score_credibility.",
+      "correct": false,
+      "reason": "A file that imports the module may use only its other functions, so each exported name must be searched separately to find the real callers."
+    },
+    {
+      "letter": "E",
+      "text": "Read research_tools.py and list every name it exports, including the functions that wrap credibility_api.py.",
+      "correct": true,
+      "reason": "research_tools.py is itself a wrapper, so tracing through it starts by identifying all the names it exports."
+    },
+    {
+      "letter": "F",
+      "text": "Use Edit now to change score_credibility in both wrapper modules, with Read and Write as the fallback if Edit finds non-unique text.",
+      "correct": false,
+      "reason": "The Read and Write fallback fixes Edit failures on non-unique text, but it does not find the callers that use the second wrapper's names."
+    }
+  ]
+}

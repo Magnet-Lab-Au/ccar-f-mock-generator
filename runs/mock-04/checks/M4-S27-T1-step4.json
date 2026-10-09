@@ -1,0 +1,102 @@
+{
+  "question_id": "M4-S27-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "This question has the same problem as M2-S11-T1. A helper's signature changes, a wrapper module re-exports it, and the task is to find every caller. The correct pair is the same: read the wrapper to list its exported names (D), then run Grep for each exported name (B). The same reasoning reaches the answer. Framing it as a search that missed callers after a runtime error does not change the choice the solver must make. Option A also repeats an earlier wrong option, a Grep for the original name only.",
+      "letter": null,
+      "point": "2.5-S5",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "7b76ea8f33ac4198f04dbf0b071f5da42b1e3a3685f38bd13e1e6dfdb38b3de6",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B",
+      "D"
+    ],
+    "reason": "Following 2.5-S5, trace usage through a wrapper module in two steps. First, Read doc_tools.py to list every name it exports (D). Then Grep the whole codebase for each of those names and update every call site found (B). Options C and E only cover the one call site in the error trace and would miss other wrappers. Option A does not address calls made through the wrapper.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "This question has the same problem as M2-S11-T1. A helper's signature changes, a wrapper module re-exports it, and the task is to find every caller. The correct pair is the same: read the wrapper to list its exported names (D), then run Grep for each exported name (B). The same reasoning reaches the answer. Framing it as a search that missed callers after a runtime error does not change the choice the solver must make. Option A also repeats an earlier wrong option, a Grep for the original name only.",
+      "letter": null,
+      "point": "2.5-S5"
+    }
+  ],
+  "features": [
+    {
+      "name": "Grep",
+      "found": true
+    },
+    {
+      "name": "Read",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

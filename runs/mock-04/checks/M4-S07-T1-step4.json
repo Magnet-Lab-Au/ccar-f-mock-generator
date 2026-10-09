@@ -1,0 +1,101 @@
+{
+  "question_id": "M4-S07-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Earlier question M3-S06-T1 covers the same crash-recovery idea in the same setting. Option B, the correct answer here, is nearly identical to that question's second correct option: inject each subagent's saved state from the manifest into its prompt. The same reasoning (saved state must be injected into respawned subagent prompts) leads to both answers. The wrong options also echo the earlier set. D repeats the 'keep state only in the coordinator's context' distractor. C repeats the 'make more context room' idea that the earlier question tested with /compact. That is more than one repeated wrong option. The question should test a different problem, for example where to export state or how a manifest's contents must be structured.",
+      "letter": "B",
+      "point": "5.4-S4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "97b49a47e1add8a548ae988fb23a6e102aadda02c28ccb93599a03c2dd77f9b4",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 5.4-S4, crash recovery works by having the coordinator load the manifest and inject each subagent's exported state into its prompt on respawn. Subagents do not inherit parent context, so without the injection they start fresh and redo work. A relies on stale session history rather than the structured exports. C does not address the missing context. D leaves the subagents unaware of what they already completed.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Earlier question M3-S06-T1 covers the same crash-recovery idea in the same setting. Option B, the correct answer here, is nearly identical to that question's second correct option: inject each subagent's saved state from the manifest into its prompt. The same reasoning (saved state must be injected into respawned subagent prompts) leads to both answers. The wrong options also echo the earlier set. D repeats the 'keep state only in the coordinator's context' distractor. C repeats the 'make more context room' idea that the earlier question tested with /compact. That is more than one repeated wrong option. The question should test a different problem, for example where to export state or how a manifest's contents must be structured.",
+      "letter": "B",
+      "point": "5.4-S4"
+    }
+  ],
+  "features": [
+    {
+      "name": "--resume",
+      "found": true
+    },
+    {
+      "name": "max_tokens",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

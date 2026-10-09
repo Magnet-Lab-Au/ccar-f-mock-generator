@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S46-T2",
+  "slot_id": "M4-S46",
+  "try": 2,
+  "point": "3.1-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S46-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your engineers use Claude Code to explore and extend a legacy codebase. To shrink a 1,000-line root CLAUDE.md, a teammate moved its testing, API and deployment sections into testing.md, api-conventions.md and deployment.md in a new docs/conventions/ folder. The root CLAUDE.md now holds only general notes and does not mention the new files. Since the change, Claude ignores the testing conventions in every engineer's sessions. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The shortened root CLAUDE.md is now too small for Claude Code to treat it as the project-level configuration for the repository.",
+      "correct": false,
+      "reason": "The guide defines project-level configuration by its location (root CLAUDE.md or .claude/CLAUDE.md), not by its length, so a short file still loads."
+    },
+    {
+      "letter": "B",
+      "text": "The topic files are committed to version control, while Claude Code reads convention files only from each engineer's personal ~/.claude/ directory.",
+      "correct": false,
+      "reason": "The guide states that project-level configuration is shared through version control. Only ~/.claude/CLAUDE.md is user-level, so committed project files are not the problem."
+    },
+    {
+      "letter": "C",
+      "text": "The topic files sit in a folder that is neither the .claude/rules/ directory nor imported with @import, so Claude Code never loads them.",
+      "correct": true,
+      "reason": "The guide names .claude/rules/ for topic-specific rule files that replace a monolithic CLAUDE.md, and @import for referencing external files. A plain docs/conventions/ folder uses neither, so the split content is never loaded."
+    },
+    {
+      "letter": "D",
+      "text": "Claude Code needs every project convention inside one CLAUDE.md file, so any split into several files breaks the loading of instructions.",
+      "correct": false,
+      "reason": "The guide presents the .claude/rules/ directory as an alternative to a monolithic CLAUDE.md, so splitting by topic is supported when the files are placed there."
+    }
+  ]
+}

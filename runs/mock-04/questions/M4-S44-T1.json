@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S44-T1",
+  "slot_id": "M4-S44",
+  "try": 1,
+  "point": "5.5-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent handles returns, billing disputes, and account issues. After you revise its system prompt, a labeled evaluation set shows the correct-resolution rate rising from 91% to 95% overall. Billing disputes make up 6% of the set. A teammate concludes that the revision improved the agent's handling of every request type. How should you assess this conclusion?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Accept it, because a four-point overall gain on a labeled evaluation set is too large for any single request type to have gotten worse.",
+      "correct": false,
+      "reason": "A rise in the overall metric can still mask a drop on a small segment such as billing disputes, which the overall number cannot reveal."
+    },
+    {
+      "letter": "B",
+      "text": "Test it by rerunning the full evaluation set several times, and accept it if the overall 95% figure stays stable across all runs.",
+      "correct": false,
+      "reason": "A stable overall figure still says nothing about each segment, so a poor result on billing disputes can stay hidden in every run."
+    },
+    {
+      "letter": "C",
+      "text": "Treat it as unproven, because the overall gain can hide worse results on billing disputes, so compare accuracy per request type.",
+      "correct": true,
+      "reason": "Aggregate accuracy can mask poor performance on a specific segment, especially a small one, so the per-segment results must be checked before concluding anything about each type."
+    },
+    {
+      "letter": "D",
+      "text": "Test it by having the agent report a confidence score for each conversation, and accept it if the average reported confidence also rose.",
+      "correct": false,
+      "reason": "Confidence scores are useful only after calibration against labeled validation sets, and an averaged confidence figure is also an aggregate that hides segment-level problems."
+    }
+  ]
+}

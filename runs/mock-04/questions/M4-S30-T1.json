@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S30-T1",
+  "slot_id": "M4-S30",
+  "try": 1,
+  "point": "1.6-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the document analysis subagent analyzes each of 20 sources in its own focused pass, and the synthesis subagent then runs an integration pass to find contradictions between sources. The coordinator gives the synthesis subagent the full text of all 20 sources together with the per-source notes. The synthesis subagent flags contradictions among the first few sources but misses clear contradictions among the later sources. Which change best fixes this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Raise the max_tokens value for the synthesis subagent so that its response has enough room to report contradictions for all 20 sources.",
+      "correct": false,
+      "reason": "max_tokens limits the length of the output, but the problem is diluted attention over a very large input. The subagent misses the later contradictions rather than running out of room to report them."
+    },
+    {
+      "letter": "B",
+      "text": "Give the synthesis subagent only the structured findings from the per-source passes, so that its integration pass compares claims instead of rereading every full source.",
+      "correct": true,
+      "reason": "The integration pass should focus on cross-source relationships. Feeding it all 20 full texts again re-creates the attention dilution that the per-source split was meant to avoid."
+    },
+    {
+      "letter": "C",
+      "text": "Split the integration pass into two passes that each receive the full text and the notes of ten sources, and then merge their two contradiction lists.",
+      "correct": false,
+      "reason": "Neither half sees the sources of the other half, so contradictions between a source in one half and a source in the other half are missed. The cross-source integration purpose is lost."
+    },
+    {
+      "letter": "D",
+      "text": "Remove the per-source passes and have the synthesis subagent analyze all 20 full sources in one single pass, so that every source and every claim is seen together in the same context.",
+      "correct": false,
+      "reason": "One pass over all sources is the pattern that causes attention dilution. It makes both the local analysis and the cross-source analysis shallower instead of fixing the missed contradictions."
+    }
+  ]
+}

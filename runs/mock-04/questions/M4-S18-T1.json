@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S18-T1",
+  "slot_id": "M4-S18",
+  "try": 1,
+  "point": "5.4-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your document analysis subagent works through a long series of sources in one extended session on a single research topic. Early on, it extracted specific figures, such as a 12% adoption rate from a 2023 industry survey. Later in the session, when the coordinator asks follow-up questions, the subagent gives answers that conflict with those figures and cites \"typical industry trends\" instead of the specific sources. Which change most effectively addresses this problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Raise the max_tokens value for the subagent so that its responses have room to restate all of the earlier findings in detail.",
+      "correct": false,
+      "reason": "max_tokens limits the length of the output and does not help the subagent reliably use findings from earlier in a degraded context."
+    },
+    {
+      "letter": "B",
+      "text": "Add a system prompt instruction telling the subagent to keep its answers consistent with whatever it concluded earlier in the session.",
+      "correct": false,
+      "reason": "An instruction does not restore the specific findings that degrade in a long context; the guide's fix is to persist them in a scratchpad file the agent references."
+    },
+    {
+      "letter": "C",
+      "text": "Have the subagent record each key finding with its source in a scratchpad file and consult that file before answering later questions.",
+      "correct": true,
+      "reason": "The guide says agents should keep scratchpad files of key findings and reference them for later questions, which counteracts context degradation in extended sessions."
+    },
+    {
+      "letter": "D",
+      "text": "Have the coordinator resend the full text of every analyzed document with each follow-up question so the subagent sees all sources again.",
+      "correct": false,
+      "reason": "Resending verbose full documents fills the context even more, which worsens degradation; the guide recommends persisting compact key findings instead."
+    }
+  ]
+}

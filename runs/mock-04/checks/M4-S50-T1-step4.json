@@ -1,0 +1,98 @@
+{
+  "question_id": "M4-S50-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "Same problem as earlier question M3-S36-T1: two interacting problems plus one independent problem, and the same choice. The answer is to combine the interacting pair in one message and fix the independent issue in its own iteration. The oscillation detail and the multi-select format do not change the reasoning. Two wrong options also repeat that question's wrong options. Option A repeats 'always report every problem together'. Option E repeats 'change the order of the sequential reports'. Only one repeated wrong option is allowed.",
+      "letter": "E",
+      "point": "3.5-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "4432702f189a384520f4377260a6dbd712c57dad20ff874010807b2b05cc62f7",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C",
+      "D"
+    ],
+    "reason": "Interacting issues (matching and escaping) should be addressed together in one detailed message that explains how each fix constrains the other. The independent progress-count issue can be fixed in its own sequential iteration (3.5-K4, 3.5-S5).",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "Same problem as earlier question M3-S36-T1: two interacting problems plus one independent problem, and the same choice. The answer is to combine the interacting pair in one message and fix the independent issue in its own iteration. The oscillation detail and the multi-select format do not change the reasoning. Two wrong options also repeat that question's wrong options. Option A repeats 'always report every problem together'. Option E repeats 'change the order of the sequential reports'. Only one repeated wrong option is allowed.",
+      "letter": "E",
+      "point": "3.5-K4"
+    }
+  ],
+  "features": [
+    {
+      "name": "Agent SDK",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

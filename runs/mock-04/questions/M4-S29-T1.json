@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S29-T1",
+  "slot_id": "M4-S29",
+  "try": 1,
+  "point": "2.4-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the web search subagent is configured with two MCP servers: a web search server and a citation lookup server. During one task, the subagent must find sources and then confirm the publication details of each source. A teammate claims that the subagent can reach the tools of only one MCP server at a time, and he proposes a change to the design. What should you do?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Build a custom wrapper MCP server that re-exposes the tools of both servers, so that the subagent connects to a single server only.",
+      "correct": false,
+      "reason": "The wrapper rests on the false idea of one server at a time; the guide says tools from all configured servers are available together, and it reserves custom servers for team-specific workflows."
+    },
+    {
+      "letter": "B",
+      "text": "Split the web search subagent into two subagents that each have one MCP server, and have the coordinator pass the found sources from the first subagent to the second.",
+      "correct": false,
+      "reason": "One agent already gets the tools of all its configured MCP servers at the same time, so splitting the subagent adds complexity to solve a problem that does not exist."
+    },
+    {
+      "letter": "C",
+      "text": "Disconnect the web search server after the search step and connect the citation lookup server, so that its tools are discovered for the verification step.",
+      "correct": false,
+      "reason": "The guide says tools from all configured servers are discovered at connection time and are available together, so swapping servers between steps is unnecessary."
+    },
+    {
+      "letter": "D",
+      "text": "Keep both servers configured as they are, because tools from both servers are discovered at connection time and are available to the subagent together.",
+      "correct": true,
+      "reason": "The guide states that tools from all configured MCP servers are discovered at connection time and are available to the agent at the same time, so no change is needed."
+    }
+  ]
+}

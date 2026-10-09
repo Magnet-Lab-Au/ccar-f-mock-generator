@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S07-T1",
+  "slot_id": "M4-S07",
+  "try": 1,
+  "point": "5.4-S4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system's coordinator delegates invoice batches to subagents, and each subagent validates its extracted fields against JSON schemas. During a run, the system crashed. Each subagent had already exported its state to a known location, and on restart the coordinator loaded a manifest of those exports. However, the respawned subagents started with fresh prompts and re-extracted invoices whose validated results were already in the exports. Which change fixes this resume behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Restart each subagent with --resume on its crashed session so that it simply continues from the conversation history it had before the crash.",
+      "correct": false,
+      "reason": "The guide's crash recovery relies on structured state exports that the coordinator injects into prompts. It does not rely on resuming crashed conversations, whose context may be stale or partial."
+    },
+    {
+      "letter": "B",
+      "text": "Inject each subagent's exported state from the loaded manifest into that subagent's prompt when the coordinator respawns it.",
+      "correct": true,
+      "reason": "In the guide's crash recovery design, the coordinator loads the manifest on resume and injects the saved state into agent prompts. Without that step, the respawned subagents do not know about their earlier progress."
+    },
+    {
+      "letter": "C",
+      "text": "Raise max_tokens for every respawned subagent so that each one has enough room to hold all the invoices from its earlier batches.",
+      "correct": false,
+      "reason": "max_tokens limits the length of the model's output. It does not restore saved state, so the subagents still would not know which invoices were already validated."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the loaded manifest only in the coordinator's own context so that the coordinator can answer subagent questions about earlier progress when they come up.",
+      "correct": false,
+      "reason": "Subagents do not inherit the coordinator's context. The saved state must be injected into their prompts. A fresh subagent has no reason to ask about progress it does not know exists."
+    }
+  ]
+}

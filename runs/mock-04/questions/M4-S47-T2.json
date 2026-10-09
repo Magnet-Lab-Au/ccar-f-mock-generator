@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S47-T2",
+  "slot_id": "M4-S47",
+  "try": 2,
+  "point": "3.1-K3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S47-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code to explore a legacy repository with three service directories: billing, reporting, and auth. Each service directory has its own CLAUDE.md file. The billing and reporting CLAUDE.md files contain the same logging and error-handling standards, copied word for word. Last month an engineer updated the logging standard in the billing CLAUDE.md file only, and Claude now generates inconsistent logging code in the reporting service directory. What is the most maintainable way to keep these CLAUDE.md files modular and consistent?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Move each shared standard into its own file, such as standards/logging.md, and reference it with @import in the billing and reporting CLAUDE.md files.",
+      "correct": true,
+      "reason": "The @import syntax references external files, so each shared standard is kept in one file, and only the service directories that need it include it."
+    },
+    {
+      "letter": "B",
+      "text": "Keep the copied text in both CLAUDE.md files, and add a review checklist step that reminds engineers to update every copy of a changed standard.",
+      "correct": false,
+      "reason": "The duplicated text and the manual updates remain, so the copies can drift apart again, while @import would keep one shared source file."
+    },
+    {
+      "letter": "C",
+      "text": "Merge all conventions into the root CLAUDE.md under one header per service directory, and delete the three service directory CLAUDE.md files.",
+      "correct": false,
+      "reason": "This creates one monolithic file instead of a modular setup, and it applies the billing and reporting standards to the auth service directory, where they are irrelevant."
+    },
+    {
+      "letter": "D",
+      "text": "Ask each engineer to keep the shared logging and error-handling standards in their own user-level ~/.claude/CLAUDE.md file.",
+      "correct": false,
+      "reason": "User-level instructions apply only to that user and are not shared through version control, so engineers can still get different standards."
+    }
+  ]
+}

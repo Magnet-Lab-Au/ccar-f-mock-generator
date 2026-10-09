@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S27-T2",
+  "slot_id": "M4-S27",
+  "try": 2,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S27-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, you plan to rename score_credibility, a helper that the web search subagent and the synthesis subagent depend on. The wrapper module credibility_api.py imports this helper and exports five functions of its own. A teammate copied three exported names from the README of the module and then ran Grep for each name only inside the synthesis subagent's folder. After the rename, several callers still break. Which two flaws in the teammate's method explain the missed callers?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Each exported name was searched only inside the synthesis subagent's folder, rather than across the whole codebase.",
+      "correct": true,
+      "reason": "After the exported names are identified, each name must be searched across the codebase, so a search limited to one folder misses callers elsewhere."
+    },
+    {
+      "letter": "B",
+      "text": "The teammate used Grep rather than Glob, although Glob is the tool that matches function names inside file contents.",
+      "correct": false,
+      "reason": "Glob matches file paths by name or extension patterns, while Grep searches file contents, so Grep was the right tool for finding callers."
+    },
+    {
+      "letter": "C",
+      "text": "The list of exported names came from the README instead of from credibility_api.py itself, so two exported names were never searched.",
+      "correct": true,
+      "reason": "Tracing usage across a wrapper module starts by identifying all the exported names, and an incomplete list leaves the callers of the missing names unfound."
+    },
+    {
+      "letter": "D",
+      "text": "The teammate searched for the wrapper's exported names, although every caller of credibility_api.py still contains the original name score_credibility in its own code.",
+      "correct": false,
+      "reason": "Callers that go through the wrapper use the names it exports, which is why the guide traces usage by searching for each exported name."
+    },
+    {
+      "letter": "E",
+      "text": "The teammate ran targeted Grep searches instead of reading every file in the repository upfront, which is the only reliable way to find all callers.",
+      "correct": false,
+      "reason": "The guide recommends building understanding incrementally with Grep and Read rather than reading all files upfront, so targeted searches were not the flaw."
+    }
+  ]
+}

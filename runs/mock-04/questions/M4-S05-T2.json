@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S05-T2",
+  "slot_id": "M4-S05",
+  "try": 2,
+  "point": "4.3-K1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S05-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team has moved invoice extraction away from JSON written in Claude's text replies. Claude now calls an extraction tool whose input parameters are the invoice JSON schema, and the pipeline reads the data from the tool_use block. The pipeline still runs several safeguards and prompt rules from the old design. Which change to the pipeline does the new tool-based design justify?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Remove the check that each date sits in the correct field, such as the invoice date versus the due date, because a strict schema prevents values in wrong fields.",
+      "correct": false,
+      "reason": "The guide says strict schemas eliminate syntax errors but do not prevent semantic errors such as values in wrong fields, so this check must stay."
+    },
+    {
+      "letter": "B",
+      "text": "Remove the prompt rules that normalize dates and currency amounts, because the schema itself converts inconsistent source formats into one standard form.",
+      "correct": false,
+      "reason": "The guide includes format normalization rules in prompts alongside strict schemas to handle inconsistent source formatting; the schema does not do this conversion."
+    },
+    {
+      "letter": "C",
+      "text": "Change every optional field to required, because tool use now guarantees that Claude fills each field with a real value taken from the document.",
+      "correct": false,
+      "reason": "The guide makes fields optional (nullable) when documents may lack the information, because required fields can push the model to fabricate values."
+    },
+    {
+      "letter": "D",
+      "text": "Remove the repair script that fixes missing brackets and unescaped quotes, because tool use with a JSON schema eliminates these JSON syntax errors.",
+      "correct": true,
+      "reason": "The guide names tool use with JSON schemas as the most reliable approach for schema-compliant output, and it eliminates JSON syntax errors, so a syntax repair step is no longer needed."
+    }
+  ]
+}

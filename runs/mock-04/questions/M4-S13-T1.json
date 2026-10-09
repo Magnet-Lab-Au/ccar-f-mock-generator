@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S13-T1",
+  "slot_id": "M4-S13",
+  "try": 1,
+  "point": "4.5-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your extraction system reads shipping manifests and fills a JSON schema for each one. On the synchronous Claude API, Claude calls a lookup_port_code tool, your code returns the code, and Claude then completes the record. After the team moved the nightly run to the Message Batches API, most responses ended with stop_reason \"tool_use\" and no completed record. What is the most likely cause?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The batch API cannot execute the port lookup mid-request and send its result back to Claude within the same request.",
+      "correct": true,
+      "reason": "The guide states that the batch API does not support multi-turn tool calling. Each request therefore stops at the tool call without a finished record."
+    },
+    {
+      "letter": "B",
+      "text": "The 24-hour processing window ran out before the port codes arrived, so the batch service cut off each extraction before Claude could finish it.",
+      "correct": false,
+      "reason": "The 24-hour window is the maximum processing time, and the responses did come back. The real cause is that the batch API never returns tool results to Claude mid-request."
+    },
+    {
+      "letter": "C",
+      "text": "The 50% cost savings come from a smaller model in the batch API that cannot produce the complete JSON schema output.",
+      "correct": false,
+      "reason": "The guide names the 50% cost savings but no reduced model. The responses stopped because the batch API has no multi-turn tool calling."
+    },
+    {
+      "letter": "D",
+      "text": "Duplicate custom_id values made the batch service match each response to the wrong manifest request in the results.",
+      "correct": false,
+      "reason": "The guide describes custom_id as the field that correlates requests with responses. A correlation error would mismatch records, but it would not make responses stop at a tool call."
+    }
+  ]
+}

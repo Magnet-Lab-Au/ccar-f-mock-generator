@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S06-T2",
+  "slot_id": "M4-S06",
+  "try": 2,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S06-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline extracts data from shipment manifests and validates each output with Pydantic. Each retry sends the original manifest, the failed extraction, and the specific validation errors. In one failure group, every package weight is printed in the manifest, but the model places the weights in the dimensions field. A teammate wants to send this group straight to human review, because retries recently failed on manifests whose values existed only in a customs declaration that the system never receives. Which assessment of this failure group is correct?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Human review is required, because a manifest that failed extraction once will fail again when the same document is sent back to the model.",
+      "correct": false,
+      "reason": "The guide describes retry with specific validation errors as a way to guide the model toward correction. A structural error on information that is present in the source is the kind of failure that retries fix."
+    },
+    {
+      "letter": "B",
+      "text": "Retrying is likely to succeed, because the weights are in the manifest and the misplaced values are a structural error that specific error feedback can correct.",
+      "correct": true,
+      "reason": "The guide says retries succeed for format mismatches and structural output errors. They fail only when the information is absent from the source, and here the weights are present."
+    },
+    {
+      "letter": "C",
+      "text": "Retrying should stop, and the weights field should become nullable, so that the model returns null instead of a misplaced value.",
+      "correct": false,
+      "reason": "Nullable fields suit information that is absent from the source. Here the weights are present, and a retry with error feedback can correct the structural error without discarding the data."
+    },
+    {
+      "letter": "D",
+      "text": "Retrying cannot help, because tool use with JSON schemas already eliminates such errors, so the weights must be missing from the manifests.",
+      "correct": false,
+      "reason": "The guide says tool use eliminates schema syntax errors, but wrong field placement is a semantic validation error. The scenario also states that the weights are printed in the manifests."
+    }
+  ]
+}

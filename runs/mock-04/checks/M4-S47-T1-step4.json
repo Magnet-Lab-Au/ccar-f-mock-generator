@@ -1,0 +1,109 @@
+{
+  "question_id": "M4-S47-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The billing, reporting and auth units have more than one name. The question calls them 'service directories' and 'directory', and option C calls them 'service'. The reason for option A calls them 'packages'. Use one name, for example 'service directory', everywhere.",
+      "letter": "A",
+      "point": "3.1-K3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "d0074e94b2cbb5078f841f3f6d6cb03d9231a1c2d65f47c86271512dab9a4ff1",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "Putting each shared standard in a single file (e.g., standards/logging.md) and pulling it into the billing and reporting CLAUDE.md files with @import gives one source of truth, so both services stay consistent and modular. B keeps the duplication and relies on people remembering to update every copy. C loses directory-level scoping. D makes the standards personal rather than shared, and they can drift between engineers.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The billing, reporting and auth units have more than one name. The question calls them 'service directories' and 'directory', and option C calls them 'service'. The reason for option A calls them 'packages'. Use one name, for example 'service directory', everywhere.",
+      "letter": "A",
+      "point": "3.1-K3"
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "found": true
+    },
+    {
+      "name": "@import",
+      "found": true
+    },
+    {
+      "name": "~/.claude/CLAUDE.md",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

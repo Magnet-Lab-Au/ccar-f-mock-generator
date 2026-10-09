@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S54-T2",
+  "slot_id": "M4-S54",
+  "try": 2,
+  "point": "3.5-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S54-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks your developer productivity agent to add a distributed lock to a legacy batch scheduler, so that two servers never run the same job at once. The engineer has never built a distributed lock before. Before any code is written, the engineer tells the agent to use the interview pattern. Which questions from the agent best serve the purpose of this pattern?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The agent asks what must happen when a server crashes while it still holds the lock, and how long a lock may stay held before it expires.",
+      "correct": true,
+      "reason": "In an unfamiliar domain, the interview pattern has Claude ask about design considerations the developer may not have anticipated, such as failure modes, before implementing."
+    },
+    {
+      "letter": "B",
+      "text": "The agent asks which file names, code formatting rules, and comment style the engineer prefers for the new lock module in the scheduler.",
+      "correct": false,
+      "reason": "These are routine style preferences, not design considerations such as failure modes, so they do not surface what the engineer failed to anticipate."
+    },
+    {
+      "letter": "C",
+      "text": "The agent asks the engineer to restate the requirement that two servers must never run the same job at once, and then confirms that it understood.",
+      "correct": false,
+      "reason": "The engineer already stated this requirement, so repeating it surfaces no unanticipated consideration, and surfacing those is the purpose of the interview pattern."
+    },
+    {
+      "letter": "D",
+      "text": "The agent asks whether it may read the scheduler files with the Read tool and run commands with the Bash tool before it edits code.",
+      "correct": false,
+      "reason": "Tool permissions are not design considerations of the solution, so these questions surface no failure modes or other points the engineer did not anticipate."
+    }
+  ]
+}
