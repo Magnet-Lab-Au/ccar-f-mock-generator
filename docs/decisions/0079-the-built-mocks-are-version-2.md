@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 
 ## Question
@@ -25,7 +26,7 @@ Plain reason: the portal already has a version 1. The same name for two differen
 
 The owner asked for the tag `mocks-v1`. Then the owner asked to rename it to `mocks-v2`, because the portal already has a version 1.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 
