@@ -1,6 +1,6 @@
 {
   "decision": "0066",
-  "status": "confirmed by the owner on 9 October 2026 (decision 0066), with 3 groups added on 9 October 2026 (decision 0068)",
+  "status": "confirmed by the owner on 9 October 2026 (decision 0066), with 4 groups added on 9 October 2026 (decision 0068)",
   "groups": [
     {
       "id": "G001",
@@ -45,6 +45,10 @@
     {
       "id": "G039",
       "problem": "Edit fails on text that is not unique: Read, then Write"
+    },
+    {
+      "id": "G041",
+      "problem": "Callers behind a wrapper module: list the exported names, then search for each"
     },
     {
       "id": "G044",

@@ -39,5 +39,13 @@
     "reason": "The last try failed on the form (rules A1 and A2), not on B9.",
     "date": "2026-10-09",
     "after_try": 3
+  },
+  {
+    "id": "D006",
+    "action": "more_tries",
+    "target": "M4-S27",
+    "reason": "B9 failed three more times on the problem of M2-S11. G041 joins the narrow list (decision 0068). The copy rule holds: not the same scene, answer and wrong options as M2-S11.",
+    "date": "2026-10-09",
+    "after_try": 6
   }
 ]
