@@ -1,0 +1,92 @@
+{
+  "mock": 4,
+  "scenario": 3,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S26-T1",
+            "M4-S19-T1"
+          ],
+          "detail": "The M4-S26-T1 stem describes a PostToolUse hook that rewrites the status codes inside returned tool results. Its option C also says the hook transforms each tool result. Together these tell the examinee that a PostToolUse hook acts only after the tool has run and returned. That is the answer of M4-S19-T1: the PostToolUse hook ran after send_report had already sent the email, so it could not block it. Option D of M4-S26-T1 ('runs on the outgoing call before the fetch tool returns') also points to the timing distinction that M4-S19-T1 tests."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S18-T1",
+            "M4-S22-T2",
+            "M4-S25-T2",
+            "M4-S30-T1"
+          ],
+          "detail": "The wrong idea 'raise max_tokens so the output has more room, which fixes the problem' is a wrong option in 4 questions: S18 A, S22 C, S25 D and S30 A. The limit is 2."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M4-SC3-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S26-T1",
+        "M4-S19-T1"
+      ],
+      "detail": "The M4-S26-T1 stem describes a PostToolUse hook that rewrites the status codes inside returned tool results. Its option C also says the hook transforms each tool result. Together these tell the examinee that a PostToolUse hook acts only after the tool has run and returned. That is the answer of M4-S19-T1: the PostToolUse hook ran after send_report had already sent the email, so it could not block it. Option D of M4-S26-T1 ('runs on the outgoing call before the fetch tool returns') also points to the timing distinction that M4-S19-T1 tests."
+    },
+    {
+      "id": "M4-SC3-R1-F2",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M4-S18-T1",
+        "M4-S22-T2",
+        "M4-S25-T2",
+        "M4-S30-T1"
+      ],
+      "detail": "The wrong idea 'raise max_tokens so the output has more room, which fixes the problem' is a wrong option in 4 questions: S18 A, S22 C, S25 D and S30 A. The limit is 2."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M4-S16-T1": "f1b5061f174cf875c61e7130108c1d08c714ec3a5a17d5c76fbb52f5d86186af",
+    "M4-S17-T1": "b56777f4b2bc494edd593b8afb9f20bbc2268b947299c1bc2628468781edbbcf",
+    "M4-S18-T1": "95adcdd5feeb42da408f8a46c95fef9a901d301d1838f6b8e3c6ca1f1f852220",
+    "M4-S19-T1": "ee9ac2fb152baae27ff6f94aec685265d426b456a736ea258e95aac306d6cc0d",
+    "M4-S20-T1": "e6c84a844295449600327a31360a43a7dfb924444b1fa6485bd4f0a4711db4d3",
+    "M4-S21-T2": "1a8161bf81a624d7e1e15b8cd07b4f06b6cc6eb639169b9fccb82d18ae201133",
+    "M4-S22-T2": "8b00bf67901465ced3123f08e8f913066b60125813efea07de5f367212d6f43b",
+    "M4-S23-T5": "eb77fd9202e6b080f4c030135478804c1d9df99e64bcc486dffbc91d5d540470",
+    "M4-S24-T1": "a5f9937d60e2663a430ab63684516f1f19fafef4131f09554d96c8e7ff41d4f8",
+    "M4-S25-T2": "f7961d81ec8c827aec7c6c55e360bf40e809899b810e5d36fb9b8e2db46dac7a",
+    "M4-S26-T1": "1693cc480de7926759102c86067b19c0a837f05fea4a0bcd8e9a63e885b3dc45",
+    "M4-S27-T7": "599bd13194ffb837cf5f4a9872202fb71934bd977ab8b3d30ccfc818208878fb",
+    "M4-S28-T1": "3a3cea0e8e891d0945e27c9bf8cf4f1be80cf51a0751cb1187894751c2985227",
+    "M4-S29-T1": "b65e7a2577529825a3999aacb06bd05d505897646df15f8ae4f32b18f970fca3",
+    "M4-S30-T1": "bc2bf14f1803a027058068d80188c43d1fd2478fde8d39981011ff32771709f8"
+  },
+  "date": "2026-10-09"
+}

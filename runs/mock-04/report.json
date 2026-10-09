@@ -1,9 +1,9 @@
 {
   "mock": 4,
   "date": "2026-10-09",
-  "state": "waits_for_owner",
+  "state": "ready_to_mark",
   "waiting_for": [
-    "open slot M4-S27: three_tries"
+    "marks of round 1"
   ],
   "slots": [
     {
@@ -190,12 +190,10 @@
     },
     {
       "slot_id": "M4-S27",
-      "status": "open",
-      "question_id": "M4-S27-T6",
-      "tries": 6,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M4-S27-T7",
+      "tries": 7,
+      "open_reasons": []
     },
     {
       "slot_id": "M4-S28",

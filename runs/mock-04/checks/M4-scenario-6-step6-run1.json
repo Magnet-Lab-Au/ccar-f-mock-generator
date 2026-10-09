@@ -1,0 +1,128 @@
+{
+  "mock": 4,
+  "scenario": 6,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D2",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S09-T1",
+            "M4-S11-T2",
+            "M4-S15-T2"
+          ],
+          "detail": "The wrong idea that lost-in-the-middle effects cause the failure is a wrong option in 3 questions (S09 D, S11 A, S15 C)."
+        },
+        {
+          "question_ids": [
+            "M4-S03-T1",
+            "M4-S04-T2",
+            "M4-S09-T1"
+          ],
+          "detail": "The wrong idea that missing confidence scores or a confidence-based filter or threshold causes the failure is a wrong option in 3 questions (S03 B, S04 B, S09 C)."
+        },
+        {
+          "question_ids": [
+            "M4-S07-T2",
+            "M4-S10-T2",
+            "M4-S11-T2"
+          ],
+          "detail": "The wrong idea that adding few-shot examples fixes the failure is a wrong option in 3 questions (S07 A, S10 C, S11 D)."
+        }
+      ]
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S04-T2",
+            "M4-S09-T1"
+          ],
+          "detail": "At least two wrong options use model self-rated confidence as a threshold or filter outside the taught calibrated review-routing use: S04 B (a self-reported confidence threshold for escalation) and S09 C (a confidence field used to filter flags). S03 B (uncalibrated field confidence that reviewers use to decide which flags to trust) is arguably a third."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M4-SC6-R1-F1",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M4-S09-T1",
+        "M4-S11-T2",
+        "M4-S15-T2"
+      ],
+      "detail": "The wrong idea that lost-in-the-middle effects cause the failure is a wrong option in 3 questions (S09 D, S11 A, S15 C)."
+    },
+    {
+      "id": "M4-SC6-R1-F2",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M4-S03-T1",
+        "M4-S04-T2",
+        "M4-S09-T1"
+      ],
+      "detail": "The wrong idea that missing confidence scores or a confidence-based filter or threshold causes the failure is a wrong option in 3 questions (S03 B, S04 B, S09 C)."
+    },
+    {
+      "id": "M4-SC6-R1-F3",
+      "rule": "D2",
+      "result": "fail",
+      "question_ids": [
+        "M4-S07-T2",
+        "M4-S10-T2",
+        "M4-S11-T2"
+      ],
+      "detail": "The wrong idea that adding few-shot examples fixes the failure is a wrong option in 3 questions (S07 A, S10 C, S11 D)."
+    },
+    {
+      "id": "M4-SC6-R1-F4",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M4-S04-T2",
+        "M4-S09-T1"
+      ],
+      "detail": "At least two wrong options use model self-rated confidence as a threshold or filter outside the taught calibrated review-routing use: S04 B (a self-reported confidence threshold for escalation) and S09 C (a confidence field used to filter flags). S03 B (uncalibrated field confidence that reviewers use to decide which flags to trust) is arguably a third."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M4-S01-T1": "8d8137ca6214f66be14bb2a40f8fcbcf06a9fdf8709ea549100e2cee1fe25ac6",
+    "M4-S02-T2": "ff95bcdcc8d30314a163a1c29a874f905843e179aacc724644265909ba0ed099",
+    "M4-S03-T1": "96ff5deee77bc73c4762d781ca85588fb4c00dee033adb9bce7219a95fdc31a3",
+    "M4-S04-T2": "53a0636a3a1afa44aec68ffca363aed4c7401d39d239cc1175dddb63aa253735",
+    "M4-S05-T3": "7b473f75b882f17b92b191806c9f4be2c49f98b2da913024e837b0e1fd4f9152",
+    "M4-S06-T5": "7b65f805956decb0dfa91b8e12906c4263977c1ed3c970f002dfe8344de86ff7",
+    "M4-S07-T2": "6aa4b5eb6053f9da73d39af1f488e0cc079a961bdc6e175c2a9b7066679ec6d7",
+    "M4-S08-T1": "f87bb821aa039e5430163014e95ee4d7b3f0d507659fa402a1d5f678d57d318e",
+    "M4-S09-T1": "d5898497b94ea810f330c175250bf75863d8f22bedc5babc0cab2a05a153024e",
+    "M4-S10-T2": "cf985407490500b878837f6f366ac629c521c2514945c300b7df00d57755a772",
+    "M4-S11-T2": "21a2227ab90bbd11eba8cb10cb65f22b26e4f0bb841fd1f025219cbec33f7b3d",
+    "M4-S12-T2": "d2436c64f6cbbd6d17fef977ef4ee6e52d59b477e9ca6df9a7625786e6c50ffd",
+    "M4-S13-T2": "94de87138be7472a0719fdf40dc76868a438825570742016bd878875bbec3171",
+    "M4-S14-T1": "500bb3d2560aac83762fbce4a520dc66e1c62f60a48241d217e02633d8174455",
+    "M4-S15-T2": "1298e4eb227c32d7cbedbc4c76ad74e75ba9d768d007847c24544b5da0605154"
+  },
+  "date": "2026-10-09"
+}

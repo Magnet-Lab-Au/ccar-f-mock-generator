@@ -1,0 +1,138 @@
+{
+  "mock": 4,
+  "scenario": 4,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S60-T1",
+            "M4-S55-T3"
+          ],
+          "detail": "Option B of M4-S60-T1 says the Explore subagent prevents context exhaustion by returning only a short summary of its findings. That is the answer of M4-S55-T3, whose correct option says the subagent returned raw output instead of a summary."
+        },
+        {
+          "question_ids": [
+            "M4-S48-T2",
+            "M4-S57-T1"
+          ],
+          "detail": "The stem of M4-S48-T2 and its option A describe the -p flag as running Claude Code in non-interactive mode in a pipeline. This gives away the correct option D of M4-S57-T1, which adds -p so the job runs unattended."
+        },
+        {
+          "question_ids": [
+            "M4-S53-T1",
+            "M4-S52-T1"
+          ],
+          "detail": "Option D of M4-S53-T1 states that the allowed-tools frontmatter of a skill restricts which tools (Edit and Write) it may use. This reveals the mechanism that is the correct answer of M4-S52-T1 (add allowed-tools to the SKILL.md frontmatter)."
+        },
+        {
+          "question_ids": [
+            "M4-S57-T1",
+            "M4-S49-T1"
+          ],
+          "detail": "Option A of M4-S57-T1 says the --json-schema flag makes the job receive structured output. This points directly to the correct option B of M4-S49-T1 (--output-format json with --json-schema for machine-parseable findings)."
+        },
+        {
+          "question_ids": [
+            "M4-S46-T3",
+            "M4-S47-T2"
+          ],
+          "detail": "Correct option C of M4-S46-T3 states that files are loaded when they are imported with @import. This hints at the correct option A of M4-S47-T2, which references a shared standards file with @import."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M4-SC4-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S60-T1",
+        "M4-S55-T3"
+      ],
+      "detail": "Option B of M4-S60-T1 says the Explore subagent prevents context exhaustion by returning only a short summary of its findings. That is the answer of M4-S55-T3, whose correct option says the subagent returned raw output instead of a summary."
+    },
+    {
+      "id": "M4-SC4-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S48-T2",
+        "M4-S57-T1"
+      ],
+      "detail": "The stem of M4-S48-T2 and its option A describe the -p flag as running Claude Code in non-interactive mode in a pipeline. This gives away the correct option D of M4-S57-T1, which adds -p so the job runs unattended."
+    },
+    {
+      "id": "M4-SC4-R1-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S53-T1",
+        "M4-S52-T1"
+      ],
+      "detail": "Option D of M4-S53-T1 states that the allowed-tools frontmatter of a skill restricts which tools (Edit and Write) it may use. This reveals the mechanism that is the correct answer of M4-S52-T1 (add allowed-tools to the SKILL.md frontmatter)."
+    },
+    {
+      "id": "M4-SC4-R1-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S57-T1",
+        "M4-S49-T1"
+      ],
+      "detail": "Option A of M4-S57-T1 says the --json-schema flag makes the job receive structured output. This points directly to the correct option B of M4-S49-T1 (--output-format json with --json-schema for machine-parseable findings)."
+    },
+    {
+      "id": "M4-SC4-R1-F5",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S46-T3",
+        "M4-S47-T2"
+      ],
+      "detail": "Correct option C of M4-S46-T3 states that files are loaded when they are imported with @import. This hints at the correct option A of M4-S47-T2, which references a shared standards file with @import."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M4-S46-T3": "5ef8431cfb395a032d41f052c92cb8d6bda6c9189e9b6957a2d4a11e3701ec3a",
+    "M4-S47-T2": "03d1c2e660f3e81e563ba0fdd18e870228511bd98c9b9a4dfceb788267bf7b74",
+    "M4-S48-T2": "1bf7a8777d92411711929a18469eb4bdb682b0bf525351ba60968c7b4589131e",
+    "M4-S49-T1": "b37712ba651b80e7e92303763a12033854f08b9a651108c65632cb3c6e4e9d16",
+    "M4-S50-T4": "c1f3d9a00d3dcb17bdd79ad2631a5b620997ee27d0a20637fb39713fc7435424",
+    "M4-S51-T1": "8a1d7d8eccd219586ae951f0a1c6c67ebfd0ebf335688f9aa77c697c84075dfb",
+    "M4-S52-T1": "6cf91c5c6c652fe3491031407bd58ea9c86881d246febc5854c2fb9bae9a4ae2",
+    "M4-S53-T1": "943b08656fa1268a646b2af92f715468d881001a16cf9caedef96bab65c1da0a",
+    "M4-S54-T4": "14918adc7acb431c434c618a4f730bc7be5758db04e96dc043a2aee222eb3185",
+    "M4-S55-T3": "90173c58adf1c0d1ce860d67797f26aa2a360694c0830a37babf2964fff2936c",
+    "M4-S56-T3": "c40baaa7914e1909cd449205e5b73680669a641d1ed56ffb26305ba26b795df6",
+    "M4-S57-T1": "af69ccddab326fe8a0b8a7aa8129e7e9dbf7e824aac343eece06fd1261f76838",
+    "M4-S58-T1": "4dfeb90a4ac71be3744d41425a0d736a833c8309d9e2daacd5ea6c2e7a67bad3",
+    "M4-S59-T1": "88202f6fdaaf97d47f7d95bb689f750500fbc3e762507e7cc6d69bbbd3a1618e",
+    "M4-S60-T1": "04ac9591e9373efb435e9cd1dc4ecfdebbc55313c38486d92d06bc879557f354"
+  },
+  "date": "2026-10-09"
+}

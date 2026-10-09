@@ -1,0 +1,87 @@
+{
+  "mock": 4,
+  "scenario": 1,
+  "run": 1,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M4-S32-T1",
+            "M4-S39-T2"
+          ],
+          "detail": "The stem of M4-S32-T1 shows the correct loop: after each stop_reason \"tool_use\" response, the loop executed the tool, returned its result and continued. M4-S39-T2 asks what to do when code treats a \"tool_use\" response as final. Its answer, D (return the result and keep looping while stop_reason is \"tool_use\"), can be read directly off M4-S32-T1. In the other direction, M4-S39-T2 option D hints that the loop stops once stop_reason is no longer \"tool_use\", which is the answer of M4-S32-T1."
+        },
+        {
+          "question_ids": [
+            "M4-S45-T1",
+            "M4-S43-T1"
+          ],
+          "detail": "The correct option A of M4-S45-T1 says to split a multi-concern customer message into distinct items, investigate each one and synthesize one resolution. This gives away the answer of M4-S43-T1, option C: list every issue in the multi-issue request and delegate one subtask for each. Both questions also share a nearly identical wrong option B (escalate multi-issue messages), which makes the link easy to see."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "M4-SC1-R1-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S32-T1",
+        "M4-S39-T2"
+      ],
+      "detail": "The stem of M4-S32-T1 shows the correct loop: after each stop_reason \"tool_use\" response, the loop executed the tool, returned its result and continued. M4-S39-T2 asks what to do when code treats a \"tool_use\" response as final. Its answer, D (return the result and keep looping while stop_reason is \"tool_use\"), can be read directly off M4-S32-T1. In the other direction, M4-S39-T2 option D hints that the loop stops once stop_reason is no longer \"tool_use\", which is the answer of M4-S32-T1."
+    },
+    {
+      "id": "M4-SC1-R1-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M4-S45-T1",
+        "M4-S43-T1"
+      ],
+      "detail": "The correct option A of M4-S45-T1 says to split a multi-concern customer message into distinct items, investigate each one and synthesize one resolution. This gives away the answer of M4-S43-T1, option C: list every issue in the multi-issue request and delegate one subtask for each. Both questions also share a nearly identical wrong option B (escalate multi-issue messages), which makes the link easy to see."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M4-S31-T1": "96d1747cc75a09826575a981fd657fd38c746bc78fe9338b4ae7d29da9113700",
+    "M4-S32-T1": "6c132952ce4f903a1a1e65ad0e75c9027410fe56443c5b67ef37ce4e6781e572",
+    "M4-S33-T1": "8e9b208c47971bcd2bb9aaede7763b7e7a865759c696b3945bf1154624219c6f",
+    "M4-S34-T2": "729e7f988525bd42ff168edb9b3523c6271380ae15d95ec68f0d85ea3ed92ecc",
+    "M4-S35-T1": "32e5ae88ec4bb81fbcb949a1659a7ec760a604475bde33e3af835307cd9e4d90",
+    "M4-S36-T1": "e054f58c7d8efcf6bd578186691898a553d3b8c40de82994dab1907b6f39cefb",
+    "M4-S37-T1": "dab1097b2af728a1901b824ce85fc3c9934696089311b13fe35589f7262b694e",
+    "M4-S38-T3": "3b21ecc31b02824498809f7c477ae743321df4ad990989eb7383c0c07a6068ca",
+    "M4-S39-T2": "536cb217c4584ed5cdad1813f0676450bb96acd7c674b2f96c75c8bfc1653a94",
+    "M4-S40-T2": "ccfd7ff4e9f51408dd7aa9b249ac487485764c427e4e332beea209b904302487",
+    "M4-S41-T1": "6162a8f0c4985013216c68c85bcecf418e05edf7a5a391270f114dda6f32d9bf",
+    "M4-S42-T1": "f745804e2b8149dc62894f9dd83b6a3ccb0768f75d1b9873c222fa25db08c5d4",
+    "M4-S43-T1": "a2034c1d58f880217e46eccfabdfeee6374f64574dc25e742123cc8cfeb87752",
+    "M4-S44-T3": "b12b7b9dbc47c6d199bece6379de71c520d9e62ae647a0c7b18d62d3e6d01716",
+    "M4-S45-T1": "6da3367a5e2010893f903bf8ce8388554fbbfbc8c9ca921db777769db42c6103"
+  },
+  "date": "2026-10-09"
+}

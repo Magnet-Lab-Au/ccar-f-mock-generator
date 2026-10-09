@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S27-T7",
+  "slot_id": "M4-S27",
+  "try": 7,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S27-T6",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, the document analysis subagent relies on a function named extract_passages, which will soon return a new result format. A wrapper module, doc_access.py, wraps extract_passages in three functions with new names and exports them. Other modules import only those three functions. You need a complete list of the affected code before you edit anything. Which two steps should you take?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Use Grep across the whole codebase for each name that doc_access.py exports.",
+      "correct": true,
+      "reason": "After the exported names are known, each one must be searched across the codebase, and Grep is the tool that searches file contents."
+    },
+    {
+      "letter": "B",
+      "text": "Use Grep for each export of doc_access.py only inside the directory that holds doc_access.py, because callers usually sit next to the wrapper module.",
+      "correct": false,
+      "reason": "Each exported name must be searched across the whole codebase, so callers in other directories, such as other subagents, would be missed."
+    },
+    {
+      "letter": "C",
+      "text": "Use Grep across the whole codebase for only the most widely used export of doc_access.py, and assume the other two exports have the same callers.",
+      "correct": false,
+      "reason": "The trace requires a search for each exported name, because callers of the other two exports can differ and would be missed."
+    },
+    {
+      "letter": "D",
+      "text": "Use Edit to change extract_passages first, and then treat the runtime errors from the next research run as the complete list of affected callers.",
+      "correct": false,
+      "reason": "Edit is for targeted modifications, not for tracing usage, and one run reaches only some code paths instead of a search for every exported name."
+    },
+    {
+      "letter": "E",
+      "text": "Read doc_access.py and list every name that it exports, including any aliases for the wrapped function.",
+      "correct": true,
+      "reason": "Tracing usage across a wrapper module starts by identifying all of the names that the wrapper exports."
+    }
+  ]
+}
