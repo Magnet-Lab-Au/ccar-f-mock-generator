@@ -27,9 +27,9 @@ One entry for each work session. Newest entry first.
 
 **Open**
 
-- The second review in Cowork marks `marking/M5-round1.xlsx` (60 questions).
-- The copy M5-S33 and the pair M5-S41/M5-S45: the owner decides after the marking.
-- The owner confirms decisions 0073 to 0075.
+- (Done: the second review marked 58 good and 2 bad, M5-S33 and M5-S45. The assistant typed the marks on the instruction of the owner. Both get a rewrite. M5-S41 stays. Decision 0076: 46 close questions are a known limit, and mock 5 is a review mock, in the build guide and in `docs/portal-notes.md`.)
+- Round 2 of mock 5 (the 2 rewrites) for the second review.
+- The owner confirms decisions 0073 to 0076.
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9
