@@ -47,5 +47,26 @@
     "reason": "B9 failed three more times on the problem of M2-S11. G041 joins the narrow list (decision 0068). The copy rule holds: not the same scene, answer and wrong options as M2-S11.",
     "date": "2026-10-09",
     "after_try": 6
+  },
+  {
+    "id": "D007",
+    "action": "rewrite",
+    "target": "M4-S43-T1",
+    "reason": "Finding of the second review in Cowork (not a mark of the owner): this question copies M3-S19 and repeats M4-S45 in the same scenario. All three are about one customer message with several concerns. Keep point 1.2-K4, but use a broad investigation, for example why refund complaints went up this month, where a too narrow decomposition by the coordinator leaves parts of the topic uncovered. Do not use a customer message with several concerns.",
+    "date": "2026-10-09",
+    "question_id": "M4-S43-T1",
+    "after_try": 1,
+    "other_questions": [
+      "M4-S45-T1"
+    ]
+  },
+  {
+    "id": "D008",
+    "action": "rewrite",
+    "target": "M4-S09-T1",
+    "reason": "Finding of the second review in Cowork (not a mark of the owner): option C is the second wrong option about the model's own confidence in scenario 6 (ruling 2 of the owner). Option B of M4-S04 is the first. Keep the question, the correct option and the other options as they are. Replace only option C with a wrong option that does not use the model's own confidence.",
+    "date": "2026-10-09",
+    "question_id": "M4-S09-T1",
+    "after_try": 1
   }
 ]
