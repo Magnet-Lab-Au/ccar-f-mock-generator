@@ -41,6 +41,7 @@ D = {
  'rules': dict(title='The rules for a good question', who='Fixed text', cls='io',
    sent=['One list of exact rules for a good question. It is the same for each call.',
          'The writer and the checkers use the same list: 21 rules, A1 to A12 for code and B1 to B9 for a model.',
+         'The writer gets the list of rules as the first block of its request, with a cache mark, so a repeated list costs less (decision 0067).',
          'The slot shown to the writer says if the longest option may be correct (decision 0053). If not, rule A12 asks for a wrong option that is longer than each correct option.',
          'For a slot with 2 answers, the writer gets: "The two correct options test two different parts of the point. They are not two examples of one idea." (decision 0054)',
          'When the idea of the slot is in an earlier built mock, the writer gets those earlier questions and the rule: a different scene and a different angle, and no wrong option of an earlier question (decision 0056, diagram 11).',

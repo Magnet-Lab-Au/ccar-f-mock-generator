@@ -1,0 +1,234 @@
+{
+  "decision": "0067",
+  "mock": 3,
+  "results": [
+    {
+      "question_id": "M3-S01-T4",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 502,
+          "output": 144,
+          "cache_write": 15327,
+          "cache_read": 0
+        },
+        {
+          "input": 2061,
+          "output": 942,
+          "cache_write": 19042,
+          "cache_read": 0
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S07-T4",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 491,
+          "output": 190,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1756,
+          "output": 1160,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S13-T2",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 478,
+          "output": 209,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1716,
+          "output": 1259,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S19-T1",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 548,
+          "output": 146,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1763,
+          "output": 830,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S25-T2",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 599,
+          "output": 162,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1761,
+          "output": 893,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S31-T2",
+      "stored": "pass",
+      "new": "fail",
+      "stored_findings": [],
+      "new_findings": [
+        {
+          "rule": "B9",
+          "detail": "The question repeats the scene and answer of earlier question M1-S10-T1. In both, a developer ran an investigation in a named Claude Code session on an earlier day. No code has changed since then, and the developer wants to continue. The answer in both is to run --resume with the session name. Option D only turns the earlier 'what should you do' into a 'what went wrong' question. The domain change from citation loss to ledger mapping does not make the scene different."
+        }
+      ],
+      "usage": [
+        {
+          "input": 532,
+          "output": 138,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1686,
+          "output": 1276,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S37-T1",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 513,
+          "output": 141,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1364,
+          "output": 1262,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S43-T2",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 514,
+          "output": 155,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 2033,
+          "output": 1064,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S49-T2",
+      "stored": "pass",
+      "new": "fail",
+      "stored_findings": [],
+      "new_findings": [
+        {
+          "rule": "B8",
+          "detail": "The scene is sample question 5's scene: restructuring a module into microservices in Claude Code. Correct option E is close to word for word the sample's correct answer (enter plan mode to explore the codebase and design the approach before changes). Option A adds the switch to direct execution, but the core scene and the main correct action are copied."
+        }
+      ],
+      "usage": [
+        {
+          "input": 504,
+          "output": 140,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1744,
+          "output": 1393,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    },
+    {
+      "question_id": "M3-S55-T1",
+      "stored": "pass",
+      "new": "pass",
+      "stored_findings": [],
+      "new_findings": [],
+      "usage": [
+        {
+          "input": 483,
+          "output": 118,
+          "cache_write": 0,
+          "cache_read": 15327
+        },
+        {
+          "input": 1683,
+          "output": 1076,
+          "cache_write": 0,
+          "cache_read": 19042
+        }
+      ]
+    }
+  ],
+  "cost": {
+    "calls": 20,
+    "input_tokens": 22731,
+    "output_tokens": 12698,
+    "cache_write_tokens": 34369,
+    "cache_read_tokens": 309321,
+    "dollars": 0.58
+  }
+}

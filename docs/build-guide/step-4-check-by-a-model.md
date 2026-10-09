@@ -16,6 +16,18 @@ For rule B6, the model lists each feature name. Code searches each name in the r
 
 Code, not a model, makes the verdict. A question that fails, or that the checker cannot decide, goes to step 5 with its findings.
 
+## The cost, with and without caching
+
+Each call of this step sends the full text of the guide. Until mock 3, each call sent it at the full input price, with no caching:
+
+| Mock | Cost, no caching |
+|---|---|
+| Mock 1 | $17.17 |
+| Mock 2 | $20.73 |
+| Mock 3 | $23.85 |
+
+From mock 4, the guide is the first block of the request, the same in each call, with a cache mark (decision 0067). A block that is read again from the cache costs 0.05 times the input price. A test on 10 questions of mock 3 measured the two calls of this step: $0.58 with caching, $1.72 for the same tokens without caching, about 66% less. The checks gave the same verdict for 8 of the 10 questions. 2 borderline questions changed from pass to fail, and the cause is not known.
+
 ## The test run
 
 - Call 4a answered the 12 sample questions of the guide. 12 of 12 were right.

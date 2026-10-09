@@ -60,7 +60,9 @@ D = {
          'The call does not get the private notes of the writer.']),
  'guide': dict(title='The text of the exam guide', who='From the records file', cls='io',
    sent=['The story of the scenario, all 30 task statements with their 240 points, and the lists of Section 17. That is about %d words.' % round(n_words, -2),
-         'Both calls of this step get this text.'],
+         'Both calls of this step get this text.',
+         'The guide comes first, as a cached block in the system prompt. The story of the scenario comes after it, in the user text. Call 4b also has the 12 sample questions as a second cached block. A cached block costs 0.05 times the input price when it is read again (decision 0067).',
+         'Measured on 10 questions of mock 3: $0.58 with caching, $1.72 for the same tokens without caching.'],
    why='A wrong option often comes from a different task statement than the one of the slot. And one rule asks what the guide names. So the checker needs the complete guide, not a slice.'),
  'c4b': dict(title='Call 4b: the rule check', who='One model call', cls='model',
    sent=['A new model call checks the 9 rules. It did not write the question.',
@@ -216,7 +218,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061 and 0066). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061, 0066 and 0067). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

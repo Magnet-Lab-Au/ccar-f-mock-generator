@@ -5,6 +5,14 @@ One entry for each work session. Newest entry first.
 ## 9 October 2026, mock 4
 
 - The owner decided: start mock 4 with scenarios 1, 3, 4 and 6 and the stricter rule B9 (decision 0066). No change to the difficulty of the questions.
+- The plan of mock 4 was made (seed 445312). Before the run, the owner stopped and asked about the cost.
+- The program did not use prompt caching. The owner agreed to decision 0067: the guide text, the 12 sample questions and the writer rules come first in each request, as cached blocks. No Message Batches API. The minimum cacheable size for Claude Opus 5.5 is 512 tokens, from the page "Prompt caching".
+- A test on 10 questions of mock 3 measured the saving: $0.58 with caching against $1.72 without, about 66% on the check calls. 2 of 10 verdicts changed from pass to fail (M3-S31 on B9, M3-S49 on B8), both borderline. The causes are not separated. The owner named the stricter B9 as a third cause, but the test used the old text of B9, so the assistant recorded that it does not apply. Mock 3 stays accepted. 224 tests pass.
+
+**Open**
+
+- Mock 4 waits for the go of the owner.
+- The owner confirms the text of decision 0067.
 
 ## 9 October 2026, the stricter rule B9
 
