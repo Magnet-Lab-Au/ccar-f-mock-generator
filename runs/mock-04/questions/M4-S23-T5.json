@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S23-T5",
+  "slot_id": "M4-S23",
+  "try": 5,
+  "point": "2.1-S1",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S23-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your research system, the web search subagent has two tools, search_web and fetch_page. The search_web description says that it takes a short keyword query and gives one example query, and logs show that the subagent picks search_web correctly and writes well-formed queries. However, the subagent then quotes result snippets in its findings as if they were full article text, and it rarely calls fetch_page. Which gap in the search_web description most likely causes this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It does not explain how the tool behaves when the query string is empty or when the query contains characters that the search backend rejects.",
+      "correct": false,
+      "reason": "Input edge cases are useful in a description, but the failure here is a misunderstanding of what the tool returns, not a problem with the input."
+    },
+    {
+      "letter": "B",
+      "text": "It gives only one example query, so it should add several more examples that show question-style queries, keyword lists, and queries limited to a specific date range.",
+      "correct": false,
+      "reason": "Example queries help the model form inputs, but the logs show that the queries are already well-formed, so more examples do not fix the misread output."
+    },
+    {
+      "letter": "C",
+      "text": "It does not name the search engine provider behind the tool, the rate limits of that provider, or the timeout that the tool applies to each request.",
+      "correct": false,
+      "reason": "Implementation details do not tell the subagent what the tool returns or when to use fetch_page instead, so they do not differentiate the two tools."
+    },
+    {
+      "letter": "D",
+      "text": "It does not state that search_web returns only short snippets and links, or that fetch_page must be called to get a page's full text before quoting it.",
+      "correct": true,
+      "reason": "A good description states the tool's output and when to use a similar alternative, and without both the subagent treats snippets as full text and skips fetch_page."
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "question_id": "M4-S06-T4",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for C says the guide counts wrong field placement among the structural output errors that a retry corrects. The guide does not say this. In 4.4-K4 it names wrong field placement as a semantic validation error and sets it apart from schema syntax errors. The reason for D repeats the same misclassification ('This failure is a structural error'). Both reasons misstate the guide's terms.",
+      "letter": "C",
+      "point": "4.4-K4",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "e8c21d70c02271e6d63f579d36111ba360a40dc76bcf960fd4df76d0736f98c7",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "The grant numbers are present in the source and were only placed in the wrong field. That is a semantic placement error, which retry-with-error-feedback can fix. Retries fail only when the information is absent from the source, which is not the case here.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for C says the guide counts wrong field placement among the structural output errors that a retry corrects. The guide does not say this. In 4.4-K4 it names wrong field placement as a semantic validation error and sets it apart from schema syntax errors. The reason for D repeats the same misclassification ('This failure is a structural error'). Both reasons misstate the guide's terms.",
+      "letter": "C",
+      "point": "4.4-K4"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [],
+  "model": "claude-opus-5-5"
+}

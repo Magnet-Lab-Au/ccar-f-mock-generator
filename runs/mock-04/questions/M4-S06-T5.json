@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S06-T5",
+  "slot_id": "M4-S06",
+  "try": 5,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S06-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline extracts tenant details from residential lease agreements and validates each output with Pydantic. In one group of failures, the model returns phone numbers as \"(555) 123-4567\" when the schema requires digits only, and every lease prints the full number. A colleague proposes sending this group to human review, because retries already failed for leases whose rent amount appears only in a separate addendum that the pipeline never receives. How should the team handle the phone number group?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send this group to human review, because a value that failed validation once will keep failing on every retry, just as the addendum rent amounts did.",
+      "correct": false,
+      "reason": "The guide limits ineffective retries to information that is absent from the source, such as data only in an external document. The phone numbers are present, so this group differs from the rent group."
+    },
+    {
+      "letter": "B",
+      "text": "Retry this group with the specific format error appended, because each lease contains the phone number and only its format is wrong.",
+      "correct": true,
+      "reason": "The guide says retries succeed for format mismatches. The phone numbers are present in each lease, so the specific error lets the model correct the format."
+    },
+    {
+      "letter": "C",
+      "text": "Remove the digits-only constraint from the phone field, so that the pipeline accepts the numbers as written instead of retrying them.",
+      "correct": false,
+      "reason": "The guide says retries succeed for format mismatches, so the correct format is recoverable. Dropping the constraint passes wrongly formatted data to the downstream systems instead of fixing it."
+    },
+    {
+      "letter": "D",
+      "text": "Retry this group with only the original lease and no validation errors, so that the model makes a fresh attempt free of its earlier output.",
+      "correct": false,
+      "reason": "The guide says a follow-up request should include the original document, the failed extraction, and the specific validation errors, because these errors guide the model toward the correction."
+    }
+  ]
+}

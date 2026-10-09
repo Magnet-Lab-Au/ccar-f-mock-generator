@@ -3,11 +3,7 @@
   "date": "2026-10-09",
   "state": "waits_for_owner",
   "waiting_for": [
-    "open slot M4-S06: three_tries",
-    "open slot M4-S23: three_tries",
-    "open slot M4-S27: three_tries",
-    "open slot M4-S50: three_tries",
-    "open slot M4-S54: three_tries"
+    "open slot M4-S27: three_tries"
   ],
   "slots": [
     {
@@ -47,12 +43,10 @@
     },
     {
       "slot_id": "M4-S06",
-      "status": "open",
-      "question_id": "M4-S06-T3",
-      "tries": 3,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M4-S06-T5",
+      "tries": 5,
+      "open_reasons": []
     },
     {
       "slot_id": "M4-S07",
@@ -168,12 +162,10 @@
     },
     {
       "slot_id": "M4-S23",
-      "status": "open",
-      "question_id": "M4-S23-T3",
-      "tries": 3,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M4-S23-T5",
+      "tries": 5,
+      "open_reasons": []
     },
     {
       "slot_id": "M4-S24",
@@ -199,8 +191,8 @@
     {
       "slot_id": "M4-S27",
       "status": "open",
-      "question_id": "M4-S27-T3",
-      "tries": 3,
+      "question_id": "M4-S27-T6",
+      "tries": 6,
       "open_reasons": [
         "three_tries"
       ]
@@ -361,12 +353,10 @@
     },
     {
       "slot_id": "M4-S50",
-      "status": "open",
-      "question_id": "M4-S50-T3",
-      "tries": 3,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M4-S50-T4",
+      "tries": 4,
+      "open_reasons": []
     },
     {
       "slot_id": "M4-S51",
@@ -391,12 +381,10 @@
     },
     {
       "slot_id": "M4-S54",
-      "status": "open",
-      "question_id": "M4-S54-T3",
-      "tries": 3,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M4-S54-T4",
+      "tries": 4,
+      "open_reasons": []
     },
     {
       "slot_id": "M4-S55",

@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S50-T4",
+  "slot_id": "M4-S50",
+  "try": 4,
+  "point": "3.5-K4",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S50-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer uses your Agent SDK tool to repair a legacy log parser and reports one problem per message over five messages. The field splitter cuts each log line at positions that depend on where the timestamp pattern ends. The timestamp fix broke the splitter, and the next splitter fix broke the timestamp pattern again. A renamed command-line option and a corrected error message were each fixed in one message with no side effects. Which conclusions about this history are correct?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The timestamp and splitter fixes kept breaking because each message was too short, so each should be resent alone with more detail.",
+      "correct": false,
+      "reason": "The guide ties the choice to whether fixes interact, not to message length, and interacting issues belong together in one message."
+    },
+    {
+      "letter": "B",
+      "text": "All four problems should have gone into one message from the start, because every problem found together must always be reported together.",
+      "correct": false,
+      "reason": "The guide says independent issues suit sequential iteration, so the option rename and error message did not need to join the others."
+    },
+    {
+      "letter": "C",
+      "text": "The option rename and the error message were independent problems, so fixing them one at a time in sequential messages was a suitable approach.",
+      "correct": true,
+      "reason": "The guide says that sequential iteration suits independent issues, and neither of these fixes affected any other fix."
+    },
+    {
+      "letter": "D",
+      "text": "The agent lost track of earlier fixes, so the engineer should start a fresh session for each of the two interacting problems.",
+      "correct": false,
+      "reason": "Separate sessions still fix the interacting problems one at a time, while the guide says interacting issues belong in one detailed message."
+    },
+    {
+      "letter": "E",
+      "text": "The timestamp pattern and the field splitter are interacting problems, so the engineer should describe both together in one detailed message.",
+      "correct": true,
+      "reason": "The guide says that when fixes interact, the issues should be addressed together in a single detailed message instead of sequentially."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S27-T5",
+  "slot_id": "M4-S27",
+  "try": 5,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S27-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "In your multi-agent research system, you changed the signature of parse_citation, and the report subagent then failed at runtime. The wrapper module citation_tools.py calls parse_citation and exports two functions, format_reference and build_bibliography. Before the change, your trace read citation_tools.py, recorded only format_reference as an export, and ran Grep for parse_citation and format_reference inside the synthesis subagent's directory. Which two gaps in the trace explain why it missed the report subagent's call?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The trace did not Read every file in the repository upfront before it ran any search, so the full codebase was never in context.",
+      "correct": false,
+      "reason": "The guide recommends building understanding incrementally with Grep and targeted Read calls rather than reading all files upfront, so this is not the gap."
+    },
+    {
+      "letter": "B",
+      "text": "The trace ran Grep in one subagent directory instead of searching for each exported name across the whole codebase.",
+      "correct": true,
+      "reason": "Each exported name must be searched across the codebase, so a search limited to the synthesis directory cannot reach the report subagent's code."
+    },
+    {
+      "letter": "C",
+      "text": "The trace missed build_bibliography, so its list of the names that citation_tools.py exports was incomplete.",
+      "correct": true,
+      "reason": "Tracing usage through a wrapper module starts by identifying all exported names, and a caller of build_bibliography stays hidden when that name is left out."
+    },
+    {
+      "letter": "D",
+      "text": "The trace treated citation_tools.py as a path to callers, when only direct calls of parse_citation should be counted as usage.",
+      "correct": false,
+      "reason": "The guide traces function usage across wrapper modules, so callers that reach parse_citation through exported wrapper names must be counted."
+    },
+    {
+      "letter": "E",
+      "text": "The trace used Grep to find the call sites, when Glob is the tool that searches file contents for function names.",
+      "correct": false,
+      "reason": "Glob matches file paths by name or extension patterns, while Grep is the correct tool for searching file contents such as function names."
+    }
+  ]
+}

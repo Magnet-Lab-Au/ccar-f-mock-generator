@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S06-T4",
+  "slot_id": "M4-S06",
+  "try": 4,
+  "point": "4.4-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S06-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your pipeline extracts metadata from research papers and validates each output with Pydantic. In one group of failures, the grants list is empty because the model wrote every grant number into the free-text funding_note field instead. The grant numbers appear plainly in the acknowledgments section of each paper. A colleague proposes sending this whole group to human review, arguing that retries cannot fill a field that comes back empty. How should the team handle this group?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Retry with only the original paper and no validation errors, so that the model makes a fresh attempt free of its earlier output.",
+      "correct": false,
+      "reason": "The guide says a follow-up request should include the original document, the failed extraction, and the specific validation errors. These errors guide the model toward the correction."
+    },
+    {
+      "letter": "B",
+      "text": "Make the grants list optional and nullable, so that the pipeline stores an empty list for these papers instead of retrying them.",
+      "correct": false,
+      "reason": "Nullable fields suit information that is absent from the source. Here the data is present and only misplaced, and the guide says a retry corrects structural output errors, so this change discards recoverable data."
+    },
+    {
+      "letter": "C",
+      "text": "Retry this group with the specific validation error appended, because the grant numbers are in each paper and only their placement is wrong.",
+      "correct": true,
+      "reason": "The guide says retries succeed for structural output errors such as wrong field placement. Retries fail only when the information is absent from the source, and here the grant numbers are present."
+    },
+    {
+      "letter": "D",
+      "text": "Send the group to human review, because the grant numbers exist only in funding agency records that the pipeline never receives.",
+      "correct": false,
+      "reason": "The scene states that the grant numbers are in each paper. The guide limits ineffective retries to information found only in an external document. This failure is a structural error that a retry can correct."
+    }
+  ]
+}

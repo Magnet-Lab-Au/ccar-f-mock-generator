@@ -1,0 +1,39 @@
+{
+  "question_id": "M4-S54-T4",
+  "slot_id": "M4-S54",
+  "try": 4,
+  "point": "3.5-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M4-S54-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "An engineer asks your developer productivity agent to add a scheduled job runner to a legacy billing service that runs on several servers. The engineer has never built job scheduling before, and he suspects that this domain holds design decisions he has not yet thought of. He wants these decisions settled before any code is written. Which approach best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Give the agent two or three examples of schedule settings with the exact run times that each setting must produce, and then let it implement the runner.",
+      "correct": false,
+      "reason": "Input/output examples clarify a transformation when prose descriptions are interpreted inconsistently. They state only what the engineer already knows, so they do not surface the decisions that he has not thought of."
+    },
+    {
+      "letter": "B",
+      "text": "Split the work into a chain of focused prompts, one each for the job queue, the timer, and the logging, and run the passes one after another.",
+      "correct": false,
+      "reason": "Prompt chaining decomposes a task into focused sequential passes. Each pass still implements only what was requested, and no step surfaces design considerations before implementation."
+    },
+    {
+      "letter": "C",
+      "text": "Before writing code, have the agent ask the engineer questions, for example about duplicate runs across servers and about jobs that fail halfway.",
+      "correct": true,
+      "reason": "This is the interview pattern. In an unfamiliar domain, Claude asks questions before implementing, and these questions surface considerations such as failure modes that the engineer did not anticipate."
+    },
+    {
+      "letter": "D",
+      "text": "Have the agent search the codebase with Grep and Glob for existing scheduling code, and then implement the new runner in the same style as that code.",
+      "correct": false,
+      "reason": "Exploring the code shows how the codebase is written, but the agent asks the engineer nothing. Design decisions that the engineer has not anticipated stay unsettled before implementation."
+    }
+  ]
+}

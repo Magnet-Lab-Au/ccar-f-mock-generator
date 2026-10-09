@@ -1,0 +1,45 @@
+{
+  "question_id": "M4-S27-T6",
+  "slot_id": "M4-S27",
+  "try": 6,
+  "point": "2.5-S5",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M4-S27-T5",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your multi-agent research system will drop a parameter from parse_citation, so you are tracing every use of it. The wrapper module citation_tools.py calls parse_citation and exports format_reference and build_bibliography. You listed both exports and ran Grep for each name across the codebase. The hits show a direct call of format_reference in the synthesis subagent and a module, report_helpers.py, that imports both names and wraps them in functions of its own. Which two next steps complete the trace?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run Grep again for format_reference and build_bibliography, because callers behind report_helpers.py still use those two names in their code.",
+      "correct": false,
+      "reason": "The same search returns the same hits, because callers behind report_helpers.py use the names that report_helpers.py exports instead."
+    },
+    {
+      "letter": "B",
+      "text": "Run Grep across the whole codebase for each name that report_helpers.py exports, to find callers behind the second layer.",
+      "correct": true,
+      "reason": "After the exported names are identified, each one must be searched across the codebase, and Grep is the tool for searching file contents."
+    },
+    {
+      "letter": "C",
+      "text": "Read report_helpers.py and list every name that it exports, because it is a second wrapper layer around parse_citation.",
+      "correct": true,
+      "reason": "Tracing usage across a wrapper module starts by identifying all of its exported names, and report_helpers.py now acts as a wrapper."
+    },
+    {
+      "letter": "D",
+      "text": "Use Glob with the pattern **/report*.py to find the report subagent's files, and count each matching file as a caller of parse_citation.",
+      "correct": false,
+      "reason": "Glob matches file paths by name patterns and cannot show whether a file calls a function, while Grep searches file contents."
+    },
+    {
+      "letter": "E",
+      "text": "Conclude that the synthesis subagent is the only caller, because no file outside citation_tools.py contains a direct call of parse_citation.",
+      "correct": false,
+      "reason": "Usage through wrapper modules counts as usage, and report_helpers.py is a further wrapper whose callers have not yet been searched."
+    }
+  ]
+}
