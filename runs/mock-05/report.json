@@ -1,9 +1,9 @@
 {
   "mock": 5,
   "date": "2026-10-09",
-  "state": "in_work",
+  "state": "ready_to_mark",
   "waiting_for": [
-    "start the program"
+    "marks of round 2"
   ],
   "slots": [
     {
@@ -232,9 +232,9 @@
     },
     {
       "slot_id": "M5-S33",
-      "status": "to_write",
-      "question_id": "M5-S33-T1",
-      "tries": 1,
+      "status": "passed",
+      "question_id": "M5-S33-T2",
+      "tries": 2,
       "open_reasons": []
     },
     {
@@ -316,9 +316,9 @@
     },
     {
       "slot_id": "M5-S45",
-      "status": "to_write",
-      "question_id": "M5-S45-T3",
-      "tries": 3,
+      "status": "passed",
+      "question_id": "M5-S45-T5",
+      "tries": 5,
       "open_reasons": []
     },
     {

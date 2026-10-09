@@ -1,0 +1,108 @@
+{
+  "question_id": "M5-S33-T2",
+  "step": 4,
+  "verdict": "pass",
+  "findings": [],
+  "fingerprint": "5413631f8c694971694b2478f3489b6022c64206cc47d4033f91c0699783cf78",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 3.2-S4, the argument-hint frontmatter is what prompts developers for a required parameter when they invoke a skill without arguments. Option A (context: fork) only isolates the skill's context. Option C (path-scoped rules) only loads conventions for matching files. Option D (allowed-tools) only restricts which tools the skill can use. None of those three asks the developer for the target module.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": ".claude/skills/",
+      "found": true
+    },
+    {
+      "name": "SKILL.md",
+      "found": true
+    },
+    {
+      "name": "context: fork",
+      "found": true
+    },
+    {
+      "name": "argument-hint",
+      "found": true
+    },
+    {
+      "name": "allowed-tools",
+      "found": true
+    },
+    {
+      "name": ".claude/rules/",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

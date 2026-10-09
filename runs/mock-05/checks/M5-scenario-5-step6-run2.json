@@ -1,0 +1,137 @@
+{
+  "mock": 5,
+  "scenario": 5,
+  "run": 2,
+  "results": [
+    {
+      "rule": "D1",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D4",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S38-T5",
+            "M5-S43-T2"
+          ],
+          "detail": "Option E of M5-S38-T5 states that the batch API has no guaranteed latency SLA. Its reason adds that the missing SLA concerns when results arrive. This gives away the correct answer C of M5-S43-T2, which explains a late batch by the absence of a latency SLA."
+        },
+        {
+          "question_ids": [
+            "M5-S35-T2",
+            "M5-S36-T1"
+          ],
+          "detail": "The reason for option D of M5-S35-T2 states that retries cannot recover information that is absent from the source. This is the principle behind the correct answer B of M5-S36-T1, which says retries fail because the criteria are absent from the input."
+        },
+        {
+          "question_ids": [
+            "M5-S34-T1",
+            "M5-S31-T1"
+          ],
+          "detail": "The reason for option C of M5-S34-T1 says the guide uses format normalization rules to handle inconsistent source formatting. The reason for option D says schema-enforced output eliminates syntax errors. Together these give away both correct answers of M5-S31-T1: normalization rules (B) and keeping the tool schema (C)."
+        },
+        {
+          "question_ids": [
+            "M5-S39-T6",
+            "M5-S40-T1"
+          ],
+          "detail": "The reason for option C of M5-S39-T6 says that general instructions like \"be conservative\" fail compared to specific categorical criteria. This points to the correct answer D of M5-S40-T1, which defines explicit criteria for each severity level."
+        }
+      ]
+    },
+    {
+      "rule": "D2",
+      "result": "pass",
+      "model": "claude-opus-5-5",
+      "findings": []
+    },
+    {
+      "rule": "D3",
+      "result": "fail",
+      "model": "claude-opus-5-5",
+      "findings": [
+        {
+          "question_ids": [
+            "M5-S40-T1"
+          ],
+          "detail": "Two wrong options use the model's own confidence as a gate. Option A has Claude report a 1-10 confidence score and downgrades blockers below seven, which is a threshold. Option B lets Claude assign the blocker level only when it is highly confident, which is a self-rated confidence trigger. Neither is the guide's calibrated field-level confidence routed to human review, so the scenario has more than one such wrong option."
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M5-SC5-R2-F1",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S38-T5",
+        "M5-S43-T2"
+      ],
+      "detail": "Option E of M5-S38-T5 states that the batch API has no guaranteed latency SLA. Its reason adds that the missing SLA concerns when results arrive. This gives away the correct answer C of M5-S43-T2, which explains a late batch by the absence of a latency SLA."
+    },
+    {
+      "id": "M5-SC5-R2-F2",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S35-T2",
+        "M5-S36-T1"
+      ],
+      "detail": "The reason for option D of M5-S35-T2 states that retries cannot recover information that is absent from the source. This is the principle behind the correct answer B of M5-S36-T1, which says retries fail because the criteria are absent from the input."
+    },
+    {
+      "id": "M5-SC5-R2-F3",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S34-T1",
+        "M5-S31-T1"
+      ],
+      "detail": "The reason for option C of M5-S34-T1 says the guide uses format normalization rules to handle inconsistent source formatting. The reason for option D says schema-enforced output eliminates syntax errors. Together these give away both correct answers of M5-S31-T1: normalization rules (B) and keeping the tool schema (C)."
+    },
+    {
+      "id": "M5-SC5-R2-F4",
+      "rule": "D4",
+      "result": "fail",
+      "question_ids": [
+        "M5-S39-T6",
+        "M5-S40-T1"
+      ],
+      "detail": "The reason for option C of M5-S39-T6 says that general instructions like \"be conservative\" fail compared to specific categorical criteria. This points to the correct answer D of M5-S40-T1, which defines explicit criteria for each severity level."
+    },
+    {
+      "id": "M5-SC5-R2-F5",
+      "rule": "D3",
+      "result": "fail",
+      "question_ids": [
+        "M5-S40-T1"
+      ],
+      "detail": "Two wrong options use the model's own confidence as a gate. Option A has Claude report a 1-10 confidence score and downgrades blockers below seven, which is a threshold. Option B lets Claude assign the blocker level only when it is highly confident, which is a self-rated confidence trigger. Neither is the guide's calibrated field-level confidence routed to human review, so the scenario has more than one such wrong option."
+    }
+  ],
+  "verdict": "fail",
+  "fingerprints": {
+    "M5-S31-T1": "223b4ea0e93cc83d9faf55c89974220cb45a8655332502adab1488e081341a77",
+    "M5-S32-T1": "db9bafad7a5e4295d9a30e802cd8231ca1737b7f2751e5bc6b65b72ace2f1704",
+    "M5-S33-T2": "5413631f8c694971694b2478f3489b6022c64206cc47d4033f91c0699783cf78",
+    "M5-S34-T1": "f2836aed7114e08c6bf08a8bf77dd5bd8abc96ecc85be19c06c7be4d900ca49d",
+    "M5-S35-T2": "09704cd05bd271d5173a635f67179e22ad82e7df33b5b5e8e81bfe5c4a63d684",
+    "M5-S36-T1": "d6b26af880d894909a2a95d4e27e5aa7869492c35c5f0ae20eb898f07b4492b1",
+    "M5-S37-T4": "c8186fe746702a6d9e6876c86b75d15baf11aed4c15f2542229329dfdb6a6e20",
+    "M5-S38-T5": "a322838c09784732a2e9651e2c56dd0ff479bb6d1a2591d6a410431ccf71d372",
+    "M5-S39-T6": "4e6fd85659b9b364cdedf97589c2d7c9a174b76826435e3e53e1a419f567d7c0",
+    "M5-S40-T1": "99f8cd0ed62fb9a45b03123eafdfa492c27f3e534f117e54e545e432b047416d",
+    "M5-S41-T1": "360e66c2603d5702dbb93935de838dbc885aff5be9e934cbce7bc8b78fbeb3a5",
+    "M5-S42-T1": "f9bff84be48eaed31d0b72c67c0e11194d5138201a138213e67c0bdb0c482b3b",
+    "M5-S43-T2": "9f865dfb61392b4e66b48b6c125ca53fe42a5f695c902969b2a151fd31b472dd",
+    "M5-S44-T2": "6705192615c91d327eae396bcde6836a0d829dbb555f96c1c927b9e32b058793",
+    "M5-S45-T5": "b614c869127cfc4fb1e14e370f162cbe0fa86fdb560b6e5d4f4fe4e76beea0e7"
+  },
+  "date": "2026-10-09"
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S45-T5",
+  "slot_id": "M5-S45",
+  "try": 5,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S45-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request. An independent verification pass then reports one confidence score for the whole review, and thresholds calibrated on a labeled validation set decide whether the review is posted directly or held for the maintainers. Auto-posted reviews still contain some false-positive comments, and held reviews make the maintainers check many findings that are clearly correct. What is the most likely cause of this routing problem?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The routing thresholds were set by checking the verification scores against a labeled validation set instead of being chosen by the maintainers from their own review experience.",
+      "correct": false,
+      "reason": "The guide recommends calibrating confidence thresholds with labeled validation sets. Calibration is the correct method, so it is not the cause of this routing problem."
+    },
+    {
+      "letter": "B",
+      "text": "The verification pass gives one confidence score per review instead of a confidence level for each finding, so routing cannot separate doubtful findings from sure ones.",
+      "correct": true,
+      "reason": "The guide has the verification pass report confidence alongside each finding to enable calibrated review routing. A single score per review sends sure and doubtful findings down the same path."
+    },
+    {
+      "letter": "C",
+      "text": "The review covers every changed file in one pass instead of per-file passes plus an integration pass, which causes attention dilution and contradictory findings across the review.",
+      "correct": false,
+      "reason": "The guide uses per-file and integration passes to improve detection in large reviews. That does not explain why routing posts doubtful findings and holds sure ones inside the same review."
+    },
+    {
+      "letter": "D",
+      "text": "The pipeline runs Claude Code with the -p flag in non-interactive mode, so the verification pass cannot ask the maintainers questions before it scores a review.",
+      "correct": false,
+      "reason": "The guide names the -p flag as the way to run Claude Code in CI. Non-interactive mode does not cause the mix of sure and doubtful findings in one routing decision."
+    }
+  ]
+}

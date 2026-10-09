@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S45-T4",
+  "slot_id": "M5-S45",
+  "try": 4,
+  "point": "4.6-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S45-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code with the -p flag to review each pull request. Today two maintainers read every finding before it is posted as a blocking comment, because many findings are false positives. The maintainers cannot keep up with the volume, and the team does not want unchecked false positives to reach developers. Which change best reduces the maintainers' workload while keeping false positives out of the posted comments?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run the review with --output-format json and --json-schema so that each finding arrives in a fixed structure that the maintainers can scan faster before posting it.",
+      "correct": false,
+      "reason": "The guide uses JSON schemas to fix the output format, which does not show which findings are real. The maintainers still have to read every finding."
+    },
+    {
+      "letter": "B",
+      "text": "Add a verification pass that reports a confidence level with each finding, calibrate thresholds on a labeled validation set, and send only low-confidence findings to the maintainers.",
+      "correct": true,
+      "reason": "The guide uses verification passes that report confidence with each finding for calibrated review routing. Calibrated high-confidence findings can be posted directly, and the maintainers check only the doubtful ones."
+    },
+    {
+      "letter": "C",
+      "text": "Split each review into per-file passes for local issues plus a separate cross-file integration pass, and keep sending every finding from both kinds of pass to the maintainers before posting.",
+      "correct": false,
+      "reason": "The guide uses per-file and integration passes against attention dilution in large reviews. This design gives no routing signal, so every finding still goes to the maintainers."
+    },
+    {
+      "letter": "D",
+      "text": "Submit the pull request reviews through the Message Batches API overnight for the 50% cost savings, and have the maintainers check the whole batch each morning.",
+      "correct": false,
+      "reason": "The guide fits the Message Batches API to latency-tolerant work, not blocking pull request checks. It also leaves the maintainers checking every finding."
+    }
+  ]
+}

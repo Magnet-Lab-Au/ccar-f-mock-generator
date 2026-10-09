@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S33-T2",
+  "slot_id": "M5-S33",
+  "try": 2,
+  "point": "3.2-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S33-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team keeps a project skill in .claude/skills/ that generates test cases for one module, and the CI pipeline runs those tests on each pull request. Developers often invoke the skill without naming a module. In those runs the skill guesses a target, and pull requests arrive with tests for the wrong code. Which change best ensures that developers are asked for the target module when they invoke the skill without arguments?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add context: fork to the SKILL.md frontmatter so that the skill runs in an isolated sub-agent context apart from the main conversation.",
+      "correct": false,
+      "reason": "The guide says that context: fork isolates skill output from the main conversation, so it does not ask developers for a missing module parameter."
+    },
+    {
+      "letter": "B",
+      "text": "Add argument-hint to the SKILL.md frontmatter so that the skill prompts developers for the target module when they give no arguments.",
+      "correct": true,
+      "reason": "The guide says that argument-hint in skill frontmatter prompts developers for required parameters when they invoke the skill without arguments."
+    },
+    {
+      "letter": "C",
+      "text": "Add a rule file in .claude/rules/ whose YAML frontmatter lists glob patterns for each module so that module conventions load automatically.",
+      "correct": false,
+      "reason": "The guide says that rule files with glob patterns apply conventions based on file paths, so they do not ask developers for a missing module parameter."
+    },
+    {
+      "letter": "D",
+      "text": "Add allowed-tools to the SKILL.md frontmatter and list only the file read and write tools that the test generation step needs.",
+      "correct": false,
+      "reason": "The guide says that allowed-tools restricts tool access during skill execution, so it does not ask developers for a missing module parameter."
+    }
+  ]
+}
