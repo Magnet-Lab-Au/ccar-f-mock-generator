@@ -33,5 +33,13 @@
     "reason": "B9 failed three times on the problem of resubmitting failed requests. Use the second problem of the point instead: custom_id to match each answer to its request, because batch results do not come back in the order of the requests.",
     "date": "2026-10-09",
     "after_try": 3
+  },
+  {
+    "id": "D005",
+    "action": "more_tries",
+    "target": "M5-S37",
+    "reason": "G042 joins the narrow list (decision 0075). The copy rule holds: no copy of sample question 6 of the guide, and no copy of a question of an earlier mock.",
+    "date": "2026-10-09",
+    "after_try": 3
   }
 ]
