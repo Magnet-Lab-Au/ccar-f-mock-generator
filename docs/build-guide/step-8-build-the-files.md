@@ -1,6 +1,6 @@
 # Step 8: build the files
 
-Status: built. It ran for mock 1 on 8 October 2026.
+Status: built. It built mocks 1 to 5, from 8 to 9 October 2026.
 
 Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-files.html)
 
@@ -17,6 +17,10 @@ The questions file has the 60 questions in 4 groups, one for each scenario. Each
 ## The run of mock 1
 
 The owner accepted mock 1 on 8 October 2026, with known limits. Code checked the six conditions and built the two files: `mocks/mock-01.questions.json`, with 60 questions in 4 groups (scenarios 3, 1, 2, 5) and 120 minutes, and `mocks/mock-01.answers.json`, with 60 answers. The build saved 60 fingerprints. Mock 1 cost $17.17 for 265 model calls.
+
+## The later mocks
+
+Step 8 built mocks 2 to 5 in the same way, after the owner accepted each one: `mocks/mock-02` to `mocks/mock-05`, each with a questions file and an answers file of 60 questions in 4 groups. The cost of each mock is in the section of step 4.
 
 ## The exam guide texts that the step uses
 

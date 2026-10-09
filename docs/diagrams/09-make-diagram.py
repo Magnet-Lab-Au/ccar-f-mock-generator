@@ -49,11 +49,12 @@ D = {
    points=[point('5.5-K1')],
    why='The guide wrote this point for the extraction of data. Here it applies to the marks: one total can hide a bad part. 3 bad marks in one domain show a different problem than 3 bad marks in 3 domains.'),
  'm1': dict(title='Mock 1: all 60 questions', who='The owner', cls='owner',
-   sent=['For mock 1 the owner marks all 60 questions.',
+   sent=['For mock 1 the owner marks all 60 questions. For mock 5, all 60 questions are in the file too, and the second review in Cowork marks them, not the owner (decisions 0071 and 0073).',
          'These 60 marks are also the first set of labels from a person. With them we can test the checker: does it pass what the owner marks good, and fail what the owner marks bad?'],
    why='Before mock 1, nobody knows how good the checker is. So the owner reads everything one time.'),
  'later': dict(title='Each later mock: 20 questions', who='The owner', cls='owner',
-   sent=['For each later mock the owner marks 20 questions: 5 from each scenario, with questions from each domain. Code selects them at random.',
+   sent=['For mocks 2 to 4 the file has 20 questions: 5 from each scenario, with questions from each domain. Code selects them at random.',
+         'The owner marked mocks 2 and 3. For mock 4 the owner did not read the questions, and the second review in Cowork found the questions to fix. No person reads the questions of mocks 4 and 5: the writer, the checkers and the second review are all Claude models (decision 0071).',
          'A sample with no bad mark still permits bad questions in the part that the owner did not read. For a mock of 60 questions and a clean sample of 20, that part can still have up to 6 bad questions (95% confidence).',
          'The number goes below 20 only when the results of the first mocks permit it. That number is not decided.'],
    points=[point('5.5-S2')],
@@ -66,7 +67,7 @@ D = {
    sent=['A question with a bad mark goes to step 5. The reason of the owner is the finding.',
          'The new question goes through steps 3, 4 and 6. Then the owner gets a new file with only the new questions.']),
  'stop': dict(title='Too many marks are bad: the mock stops', who='The mock stops', cls='stop',
-   sent=['Mock 1: more than 6 bad marks of 60. A later mock: 2 or more bad marks of 20. Both numbers are guesses. Only the bad marks of the first round count.',
+   sent=['Mocks 1 and 5 (60 marks): more than 6 bad marks. Mocks 2 to 4 (20 marks): 2 or more bad marks (decisions 0035 and 0073). Both numbers are guesses. Only the bad marks of the first round count.',
          'The mock is not released. We correct the rules of the checker. Then all 60 questions go through the checks again.'],
    why='A bad mark says two things: this question is bad, and the checker passed a bad question. Many bad marks show that the checker is wrong, not only the questions. In a sample, more bad questions are probably in the part that the owner did not read.'),
 }
@@ -241,7 +242,7 @@ page = '''<!doctype html>
 <body>
 <main>
   <h1>Step 7: a person is the last check</h1>
-  <p class="sub">This diagram shows step 7. The step is built, and it ran in the test of 7 October 2026: the owner marked 10 questions. Each check before this step is code or a model. This step shows if those checks are right: a person reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
+  <p class="sub">This diagram shows step 7. The step is built, and it ran in the test of 7 October 2026: the owner marked 10 questions. Each check before this step is code or a model. This step shows if those checks are right: the owner, or for mocks 4 and 5 the second review in Cowork, reads the questions and marks them. Put the pointer on a part of the picture, or select it with the keyboard, to see the detail. A click keeps the detail open.</p>
 
   <div class="scroll">
   <div class="stage">
@@ -254,7 +255,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 09. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0035, 0038 and 0039). Status of the step: built. The question card and the sheet are drawings. They show the form, not real questions. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 09. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0035, 0038 and 0039) and on 9 October 2026 (decisions 0071 and 0073). Status of the step: built. The question card and the sheet are drawings. They show the form, not real questions. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

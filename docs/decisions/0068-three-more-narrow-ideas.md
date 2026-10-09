@@ -1,7 +1,7 @@
 # 0068: Four more narrow ideas
 
 - Date: 9 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none. Diagram 11 shows the narrow ideas.
 

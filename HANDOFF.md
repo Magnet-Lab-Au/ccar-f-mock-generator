@@ -35,15 +35,15 @@ The build guide is a product of this work. It has the same weight as the program
 - **Structure.** One section for each pipeline step. Each section has a short explanation, one diagram, and a table of the exam guide points that the step uses. The sections are files in `docs/build-guide/`, one file for each pipeline step.
 - **Status.** Each section has the status "planned" or "built". A section becomes "built" only when a run record shows the step.
 
-The section of step 1 exists. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Rule 18 still applies to the portal page "How the Mocks Are Built New".
+All 8 sections exist, for steps 1 to 8. The diagrams 02 to 10 in `docs/diagrams/` are the diagrams of steps 0 to 8. Diagrams 11 (repeats across mocks) and 12 (the scenarios of the 5 mocks) show the rules across mocks. Rule 18 still applies to the portal page "How the Mocks Are Built New".
 
 ## Read these files first, in this sequence
 
 1. `WORKING-RULES.md`: how the assistant works here. Part A has the rules of the owner. Part B has rules that the assistant suggested. The owner confirmed Part B on 6 October 2026. Part C has one change of rule 1.
 2. `README.md`: what is in this folder.
 3. `docs/journal.md`: the top entry.
-4. `docs/decisions/`: decisions 0001 to 0077. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
-5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8. Diagrams 09 and 10 have the visual form that the owner wants.
+4. `docs/decisions/`: decisions 0001 to 0078. Read decision 0038 before the step files: it changes the control. Read 0039 after 0038: it describes the control code. Read 0019 together with 0003 to 0018. Decisions 0027 to 0036 are the design of steps 0 to 8 and the rules for a good question. Decision 0037 has the answers to the 14 serious items of the first review. Read them completely.
+5. `docs/diagrams/01-pipeline-overview.html`: the nine steps on one page. Then diagrams 02 to 10, one for each of the steps 0 to 8, and diagrams 11 and 12 for the rules across mocks. Diagrams 09 to 12 have the visual form that the owner wants.
 
 Read these only when you need them:
 
@@ -55,37 +55,28 @@ Read these only when you need them:
 
 ## Where we are
 
-State on 7 October 2026, second session. The table of steps and the next steps below have the state of 8 October 2026.
+State on 9 October 2026.
 
-- Decisions 0001 to 0039 exist. The owner confirmed the text of each one. The owner also confirmed 0040 to 0072 (each file has the line "Text confirmed by the owner"). Rule 26 applies to all of them. The owner confirmed 0019 to 0036 and 0039 on 7 October 2026, after a summary of one line for each file.
-- Decisions 0003 to 0008 set the form of a mock, its scope and its source of facts.
-- Decisions 0009 to 0017 are the steps 0 to 8 of the pipeline. Decision 0018 sets two rules for the design of the steps. Decision 0019 corrects errors in the reasons of 0003 to 0018. Decisions 0020 to 0025 close open questions and confirm the list of steps.
-- Decision 0026: the build guide does not show MCP, subagents, hooks or sessions at work.
-- **Each of the 9 steps has a design decision and a diagram. The design is not complete.** A first review found 14 serious items in decisions 0026 to 0036. Decision 0037 (third session of 6 October 2026) has an answer to each one, and the owner confirmed its text. Decisions 0024, 0027 and 0029 to 0036 were changed and have those answers. Where decision 0037 and a step file disagree, tell the owner.
-- **A second review checked the changed files.** Of the 14 items, 8 are closed and 6 are closed in part. The reviewers found 3 new errors and 10 new serious items. A programmer who has only the decision files still meets cases with no path. The report is `docs/reviews/review-decisions-0024-to-0037.md`. Read it before you continue. In the table below, "Designed" means: a decision and a diagram exist. It does not mean: ready for code.
-- **Decision 0038 stops the cycle of reviews.** The fixes of the first review made the 10 new items. All of them are in the control. The theme: too much automatic repair, designed before one real run. So the control is simple for mock 1. One automatic loop stays: a question that fails step 3 or step 4 goes to step 5, with the limits of decisions 0033 and 0037. Each other failure waits for the owner. Step 6 sends no question back. The owner accepts a mock with a command before step 8 builds the files.
-- **The control exists as code with tests** (decision 0039): `src/control.py`, `tests/fakes.py` and `tests/test_control.py`. 53 tests pass, and no test makes a model call. Two independent reviewers checked it. No reviewer checked the last round of fixes. Each step is a fake. The owner has no command line yet.
-- Where decision 0038 and an older file disagree, decision 0038 is correct. Decisions 0024 and 0027 to 0036 were corrected on 7 October 2026 so that they describe the control. Diagrams 07 and 08 were made again. The other diagrams do not show decisions 0038 and 0039 yet.
+- **All 5 mocks are built** in `mocks/`: `mock-0N.questions.json` and `mock-0N.answers.json`. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83, mock 5 $11.68 (plus under $1 of a stopped run, decision 0073).
+- **Decisions 0001 to 0078** record the design and each change. The owner confirmed the texts of 0001 to 0072. Decisions 0073 to 0078 wait for the confirmation of the owner. Decision 0078 corrects three lines of the confirmed decisions 0047, 0068 and 0071.
+- **The marks.** The owner read and marked mocks 1 to 3. For mock 4 the owner did not read the questions. The second review in Cowork, a Claude model, marked mocks 4 and 5 (decisions 0069, 0071 and 0073). So no person read the questions of mocks 4 and 5.
+- **The rules across mocks.** Point groups (decisions 0047, 0048), the spread of ideas (0050), no repeat of an earlier question with rule B9 (0056, stricter in 0066), the narrow list of 63 of 95 ideas that keep the copy rule (0066, 0068, 0072, 0075), the fixed scenarios of mocks 3 to 5 (0057), and no copy across mocks (0060).
+- **Other rules since mock 1:** rule A12 on the longest option (0053), two-answer points (0054), rule B8 against copies of the sample questions (0055), rule C3 over the whole mock (0052), prompt caching (0067), balanced correct letters from mock 5 (0070), the reason of the owner after more tries (0074).
+- **Known limits** of each mock: decisions 0046 (mock 1), 0058 and 0059 (mock 2), 0063 (mock 3), 0069 (mock 4), 0076 and 0077 (mock 5). Mock 5 is a review mock: 46 of its 60 questions are close to an earlier mock.
+- **The program:** `src/` with 228 tests in `tests/`. The command line is `src/run.py`. No test makes a model call.
 
-| Step | Decision | Diagram | State |
+| Step | Decisions | Diagram | State |
 |---|---|---|---|
-| 0. Prepare the guide records | 0028 | 03 | Designed, and the step ran. The file `reference/guide-records.json` exists. |
-| 1. Plan the mock | 0027, 0047, 0048, 0050, 0053, 0054 | 02 | Built and ran: `src/step1_plan.py`. The plan of mock 1 exists: `runs/mock-01/plan.json`, seed 366341. Build guide section: `docs/build-guide/step-1-plan-the-mock.md`. On 8 October 2026 step 1 got the rule of the point groups (decisions 0047 and 0048) and the spread over the mocks (decision 0050). Code made the plan of mock 1 before that rule existed. |
-| 2. Write the question | 0029, 0053, 0054, 0055 | 04 | Built, ran in the test and in mock 1. Build guide section exists. |
-| The rules for a good question (20 rules) | 0030, 0043, 0053, 0055 | none | Decided |
-| 3. Check by code | 0031, 0053 | 05 | Built, ran in the test and in mock 1. Build guide section exists. |
-| 4. Check by a model | 0032, 0055 | 06 | Built, ran in the test and in mock 1. Build guide section exists. |
-| 5. Try again | 0033 | 07 | Built, ran in mock 1. Build guide section exists. |
-| 6. Check the complete mock | 0034, 0052 | 08 | Built, ran in the test and in mock 1. Build guide section exists. |
-| 7. The owner marks the questions | 0035 | 09 | Built, ran in the test and in mock 1. Build guide section exists. |
-| 8. Build the files | 0036 | 10 | Built, built mock 1 on 8 October 2026. Build guide section exists. |
-
-- Code that exists: `src/step0_prepare_guide_records.py`, `src/check_guide_records.py` and `src/control.py`, with the tests in `tests/`. No real step from 1 to 8 exists. Four check scripts are in `docs/decisions/`, for decisions 0027, 0031 and 0037.
-- The checks of the records file: a second script passed 41 of 41 checks. An independent reviewer found no errors (`docs/reviews/review-guide-records.md`). The comparison of `reference/exam-guide.md` with the original guide is not done.
-- No agreed step uses a subagent, MCP or the Agent SDK. Each model step is a call of the plain API with a fixed answer form (decisions 0029 and 0032). The owner asked why, and said: "keep the simple api".
-- One mock needs these model calls when no question fails: 60 writer calls, 60 blind answers, 60 rule checks, and 8 calls of step 6 (2 for each scenario).
-- The design names three folders that do not exist yet. The program makes them: `runs/mock-01/` (the plan, the question records, the verdict records, the marks record, the decisions of the owner and the report), `marking/` (the Excel files that the owner fills) and `mocks/` (the two files of each mock).
-- `docs/lessons.md` is private history of the first build. It is not a source for the design.
+| 0. Prepare the guide records | 0028 | 03 | Ran on 6 October 2026. `reference/guide-records.json` exists. |
+| 1. Plan the mock | 0027, 0047, 0048, 0050, 0053, 0054, 0056, 0057, 0070 | 02, 11, 12 | Built, ran for mocks 1 to 5 |
+| 2. Write the question | 0029, 0053 to 0056, 0066, 0067, 0070 | 04 | Built, ran for mocks 1 to 5 |
+| The rules for a good question (21 rules: A1 to A12, B1 to B9) | 0030, 0043, 0053, 0055, 0056, 0066 | 05, 06 | Decided |
+| 3. Check by code | 0031, 0053 | 05 | Built, ran for mocks 1 to 5 |
+| 4. Check by a model | 0032, 0055, 0056, 0061, 0066, 0067 | 06 | Built, ran for mocks 1 to 5 |
+| 5. Try again | 0033, 0045, 0074 | 07 | Built, ran for mocks 1 to 5 |
+| 6. Check the complete mock | 0034, 0052 | 08 | Built, ran for mocks 1 to 5 |
+| 7. Mark the questions | 0035, 0071, 0073 | 09 | Built, ran for mocks 1 to 5 |
+| 8. Build the files | 0036 | 10 | Built mocks 1 to 5 |
 
 ### How the owner wants the work (from the second session of 6 October)
 
@@ -114,24 +105,25 @@ Also decided:
 - The two owner rulings of 29 September 2026 apply. Ruling 1 is in decisions 0005 and 0007. Ruling 2 is in decision 0006.
 - The exam guide is the only source of facts in the first version (decision 0008).
 - The numbers of one mock (decision 0027): 16, 11, 12, 12 and 9 questions for the 5 domains. 15 questions for each scenario. At least 1 question for each of the 30 task statements. 52 multiple-choice and 8 multiple-response questions, 2 in each scenario.
-- The program selects the 4 scenarios at random, from 11 of the 15 possible sets (decision 0027).
+- The program selects the 4 scenarios at random, from 11 of the 15 possible sets (decision 0027). The owner fixed the sets of mocks 3 to 5 (decision 0057).
 - A finished mock is two JSON files: the questions, and the answers with the reasons (decision 0036). The format that the portal reads is not known. A converter comes later.
 - A multiple-choice question has 4 options and 1 correct answer. A multiple-response question has 5 options and 2 correct answers (decision 0029). The number 8 and the form "5 options, 2 correct" are guesses with no source.
 
+Decided later:
+
+- The program makes 5 mocks (decision 0049). Their scenarios (0057) and the rules against repeats (0056, 0060, 0066) are decided.
+
 Not decided:
 
-- How the program selects the scenarios across the 5 mocks, and prevents the same scene in two mocks. Step 1 spreads the ideas (decision 0050).
 - If a later version can use other sources than the exam guide (decision 0008 covers the first version only).
 
 ## The next steps
 
-1. Mock 1 is built (`mocks/mock-01.questions.json` and `mocks/mock-01.answers.json`), with the known limits of decision 0046. It cost $17.17. The 7 changes before mock 2 of decision 0046 come one at a time, each with its own decision file. Changes 1 and 2 (twin points) are built: `data/point-groups.json`, `src/point_groups.py` and the rule in step 1 (decisions 0047 and 0048). Step 1 also spreads the ideas over the 5 mocks (decisions 0049 and 0050). The owner confirmed the groups file and the texts of 0047 to 0050 on 8 October 2026. Change 3 needs no new rule (decision 0051). Change 4 is built: rule C3 compares the whole mock (decision 0052). Change 5 is built: rule A12 on the longest option (decision 0053). Change 6 is built: two-answer questions only on the points of `data/two-answer-points.json` (decision 0054). The list has 78 points, and a reviewer checked it. Change 7 is built: rule B8 against copies of the sample questions (decision 0055). All 7 changes are done. Mock 2 ran (seed 167622). The owner marked round 1: 20 of 20 good. The rule against repeats across mocks (decision 0056, rule B9) and the fixed scenarios of mocks 3 to 5 (decision 0057) are built. 14 rewrites ran. Mock 2 is built (`mocks/mock-02.*`), with its known limits in decisions 0058 and 0059. Decision 0060: a copy across mocks is not allowed, a close repeat is a known limit. Mock 3 ran (seed 788092, scenarios 1, 2, 4 and 6): 60 slots passed. Rule B6 finds flags such as -p (decision 0061). The comparison found 2 copies and 47 close repeats (decision 0062). Mock 3 is built (`mocks/mock-03.*`), with its known limits in decision 0063 (decisions 0064 and 0065). The stricter rule B9 is built (decision 0066), with the copy rule for narrow ideas (`data/narrow-ideas.json`, 20 groups, confirmed by the owner). Cost estimate of mock 4: $32 to $40. The calls use prompt caching (decision 0067). Mock 4 ran (seed 445312): 60 slots passed, $12.16. The narrow list has 24 groups (decision 0068). Mock 4 is built (`mocks/mock-04.*`, decision 0069). From mock 5: balanced correct letters (decision 0070), and the second review in Cowork marks, not the owner (decision 0071). The narrow list has 62 of 95 groups (decision 0072). Mock 5 ran: 60 passed, $11.02 (decisions 0073 to 0075). The second review marked round 1: 58 good, 2 bad (M5-S33, M5-S45), both rewritten (decision 0076). Mock 5 is a review mock (`docs/portal-notes.md`). Mock 5 is built (`mocks/mock-05.*`, decision 0077). All 5 mocks are built: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83, mock 5 $11.68. Mocks 4 and 5 wait for the owner.
-2. A script checks the workbook `docs/coverage/task-statement-decisions.xlsx`: each of the 240 points has an answer, and each answer names a step that exists (decision 0018). The three yellow columns of the workbook are still empty.
-3. Set up the API key. It must not be in a file of the repository. Then the test of decision 0024, and then mock 1. Before mock 1, the real steps and a command line for the owner must exist.
+1. The owner confirms the texts of decisions 0073 to 0078.
+2. A converter from the two files of each mock to the format of the portal, when that format is known (decision 0036). The notes for the portal are in `docs/portal-notes.md`.
+3. The workbook `docs/coverage/task-statement-decisions.xlsx`: its three yellow columns are still empty (decision 0018).
 
-A rule for each of these steps, so that nobody has to reconstruct the build guide later: when a pipeline step is built and a run record shows it, write its build guide section in `docs/build-guide/` and correct its diagram, before the next pipeline step starts. The section "The build guide" above gives the source and the structure. The control program is not a pipeline step. It gets a decision file and a journal entry.
-
-### The 10 serious items of the second review, after decision 0038
+### History: the 10 serious items of the second review, after decision 0038
 
 | # | Item | Result |
 |---|---|---|
@@ -159,40 +151,17 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
-| Decision 0040: structured outputs | The model steps 2, 4, 5 and 6 send their form as structured outputs, because the current models reject a forced tool call. This deviates from the exam guide (4.3-K1, 4.3-S3). The build guide sections of these steps must show the deviation, with the page, the section and the exact text. The pages are saved in `docs/sources/`. |
-| Rule A11 and words like "cannot" | Step 3 follows the text of decision 0038, part 8: "not" or "except" in small letters, or "NOT" or "EXCEPT" in capital letters. So "cannot", "doesn't", and "Not" or "Except" at the start of the last sentence pass. Also, an abbreviation with a dot can hide the last sentence. A change needs a new decision. |
-| Decision 0009, points 1.6-K1 and 1.6-S1 | Its Reason uses these points for a plan that code makes. The guide wrote them for a sequence of model calls (prompt chaining), and step 1 has no model call. The build guide section of step 1 states the limit. The owner confirmed the text of 0009, so a correction needs a new decision file (rule 26). Ask the owner. |
-| The real steps | Each step has code and tests. Steps 0 to 4, 6 and 7 ran (step 0 on 6 October, the others in the test of 7 October 2026). Steps 5 and 8 have not run yet. |
-| The command line of the owner | `src/run.py`, with the commands `run`, `report`, `mark`, `decide` and `accept`. It has not run on a real mock yet. |
-| Review | Two reviewers checked decisions 0024 and 0027 to 0037 on 6 October 2026, after the changes. No independent reviewer checked decision 0038, decisions 0001, 0002, 0019 to 0023, 0025 and 0026, or diagram 01. Nobody reviewed this file or `CLAUDE.md`. Two reviewers checked `src/control.py` and decision 0039 on 7 October 2026. One reviewer checked the corrected decisions 0024 and 0027 to 0036, and one checked diagrams 07 and 08. Later on 7 October, one reviewer checked decisions 0040 to 0043 (corrections in decision 0044), and one checked the build guide sections of steps 2, 3, 4, 6 and 7 and the corrected diagrams. Nobody checked the last fixes or decision 0044. |
-| The other findings of the second review | Corrected on 7 October 2026 in decisions 0024 and 0027 to 0036. Open parts are now in the lists "Not decided yet" of those files, for example rule B6 (0030) and case (h) (0032). |
-| Decision 0037, one sentence | Its Reason says that point 1.4-K2 tells us that code must enforce a rule. The point says only that an instruction can fail. The owner confirmed the text, so the correction needs a new file (rule 26). |
-| The findings of the first review on the diagrams | 10 diagram errors of the first review are not corrected. Diagrams 02 to 10 also show the design before decision 0037. |
-| Items that the decisions list as "not decided yet" | Each decision from 0027 to 0036 has a list "Not decided yet". The review said that this table does not have each of those items. Read those lists in the decision files. |
-| A false sentence in diagram 06 | Corrected on 7 October 2026. |
-| The copy of the exam guide | `reference/exam-guide.md` is a copy of a file in the Claude project "CPN Learning path". The comparison with the original, character for character, is not done. The assistant can read the original only as text in the chat, not as a file. The assistant asked the owner if the original file is on the computer. The owner did not answer yet. |
-| The number of mocks | 5 mocks (decision 0049). Step 1 spreads the ideas over the mocks (decision 0050). Not decided: how the program selects the scenarios across mocks, and how it prevents the same scene in two different mocks. |
-| A task statement that does not fit its scenario | The plan does not prevent it (decision 0027). The writer can answer `cannot_write`. Then the slot gets the status `open`, and the owner decides (decision 0037). An automatic path is decided after the test of decision 0024. |
-| Numbers | Decided, but each one is a guess or has a margin with no source, and can change after the test: 3 tries for one slot (decision 0033), 3 runs of step 6 for one scenario and 3 runs of a call that fails (decision 0037), the limits of rules A6 and A7 (decision 0031), at most 2 questions with the same wrong idea (decision 0034), and the bad marks that stop a mock: more than 6 of 60 for mock 1, 2 or more of 20 for a later mock (decision 0035). Not decided: when the sample of the owner goes below 20. |
-| Rule B6 | Decided in decision 0037: the model lists the feature names, and code searches them in the records file. Not decided: a part of a word against a complete word, a plural, and if a name on the list "out of scope" of Section 17 counts as named. |
-| Rule A5 | The exact list of words is not decided (decision 0031). |
-| The 5 texts with a backslash | 5 texts of the records file have a backslash from the file format. A step that shows them must handle it (`docs/reviews/review-guide-records.md`). |
-| The models and the cost | First values, not decisions: Claude Opus 5.5 at effort "high" (decision 0041). Price checked on 7 October 2026: $4 per million input tokens and $20 per million output tokens. The test cost $3.86. Estimate for mock 1: $12 to $16. |
-| The format of the portal | Not known. Step 8 writes our own two files. A converter for the portal comes later (decision 0036). |
-| The fingerprint | Decided in decisions 0036, 0037 and 0039: the fields as JSON with sorted keys, in UTF-8. |
-| The correct letters | Not decided: if the correct letters are spread well over a mock (decisions 0034 and 0036). |
-| The answer forms | The JSON schemas of decisions 0029, 0032 and 0034 are sent as structured outputs (decision 0040). They worked in the test of 7 October 2026. Decision 0041 changed the description of the "reason" fields, and decision 0043 added "B7". |
-| The Agent SDK | Decision 0002 names it. The design of all 9 steps is complete, and no step uses it (decisions 0012, 0029, 0032 and 0034). So a new decision must say so. It is not written yet. |
-| Version control | Decided on 7 October 2026: a folder in WSL with a private repository on GitHub. The owner makes it. Check it at the start (next step 1). |
-| Which product writes the code | Decided on 7 October 2026: the work moves to Claude Code now (decisions 0002 and 0038). The two scripts of step 0 and the four check scripts were written in Cowork. |
-| The audit | 52 of its 240 rows had one check, not two. These are the rows with a weak fit or no fit. |
-| The portal pages | Two prototype pages exist on claude.ai. "How the Mocks Are Built Old" shows the first build and the audit. "How the Mocks Are Built New" shows a design of 2 October that is not the design of this folder. |
-| Diagram 01 | Corrected on 7 October 2026: step 6 sends no question back, and each popup shows the status of its step. Some box texts of the older form are a little too long for their boxes. |
-| Diagrams 02 to 06 | They have an older form: boxes of text with popups. The owner said that they do not have to be made again. Diagrams 07 to 10 have the form that the owner wants. On 7 October 2026 the text of each diagram was corrected to describe the built steps. |
+| The texts of decisions 0073 to 0078 | Not confirmed by the owner yet |
+| The format of the portal | Not known. Step 8 writes our own two files. A converter comes later (decision 0036). `docs/portal-notes.md` has the notes for it. |
+| The copy of the exam guide | `reference/exam-guide.md` is not compared with the original, character for character. |
+| A repeat with different words | Rule B9 is a judgment of a model. It can fail a good question or pass a close one (decision 0066). |
+| Rule A11 and words like "cannot" | Step 3 follows decision 0038, part 8. A change needs a new decision. |
+| The Agent SDK | Decision 0002 names it. No step uses it. A new decision must say so. |
+| The portal pages | "How the Mocks Are Built New" shows a design of 2 October. Rule 18 applies. |
 
 ## Where the old material is
 
-You do not need it for the design. It is here if the owner asks. Each folder is in OneDrive, in `C:\Users\shekh\OneDrive\Desktop\Learning\CPN Learning pathway\CCAR-F\`. After the move to WSL they are not next to this folder. Rule 27 applies: do not change them.
+You do not need it for the design. It is here if the owner asks. Each folder is in OneDrive, in `C:\Users\<the owner>\OneDrive\Desktop\Learning\CPN Learning pathway\CCAR-F\`. After the move to WSL they are not next to this folder. Rule 27 applies: do not change them.
 
 | Folder | Content |
 |---|---|

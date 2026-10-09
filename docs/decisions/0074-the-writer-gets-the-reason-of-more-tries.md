@@ -2,7 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
-- Diagram: none. Diagram 07 (step 5) shows the request of a new try.
+- Diagram: `docs/diagrams/07-step-5-try-again.html` (step 5) shows the reason of the owner in the request of a new try.
 
 ## Question
 

@@ -12,7 +12,7 @@ The owner read and marked the questions of mocks 1 to 3. For mocks 4 and 5, no p
 
 Code builds one Excel file for each round of marking. It has one row for each question: the question, the point that it must test, the options, the correct answer and the reasons. It shows no verdict of a checker. The owner fills two columns: "good" or "bad", and a reason for a bad mark. The sheet is protected, so that only those two columns can change and a mark cannot move to a different question. (Not checked in real Excel yet.)
 
-For mock 1 the owner marks all 60 questions. For each later mock the owner marks a random sample of 20, 5 from each scenario. A bad mark sends the question to step 5, with the reason of the owner as the finding. Too many bad marks stop the mock: more than 6 of 60 for mock 1, and 2 or more of 20 for a later mock.
+For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073). The owner marked mocks 1 to 3. For mocks 4 and 5 the second review in Cowork, a Claude model, marks the questions, and no person reads them (decision 0071). A bad mark sends the question to step 5, with the reason as the finding. Too many bad marks stop the mock: more than 6 of 60 for mocks 1 and 5, and 2 or more of 20 for mocks 2 to 4.
 
 Code saves the marks, and shows the bad marks for each scenario and each domain.
 

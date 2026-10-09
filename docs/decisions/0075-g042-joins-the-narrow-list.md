@@ -2,7 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
-- Diagram: none. Diagram 11 shows the narrow ideas.
+- Diagram: `docs/diagrams/11-repeats-across-mocks.html` shows the narrow list of 63 groups.
 
 ## Question
 

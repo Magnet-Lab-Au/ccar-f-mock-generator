@@ -108,7 +108,7 @@ D = {
    example=res('B8', 'The question has the scene of sample question 12: a self-review in the same session misses errors, and the answer is an independent review instance.'), examplehead=EH,
    why='In mock 1, two questions were close copies of sample questions 1 and 12. A participant who read the guide knows the answer already. A word count of code does not find a copy, because a copy keeps the scene and changes the words (decision 0055).'),
  'B9': dict(title='Rule B9: not a repeat of an earlier mock', who='One model call', cls='model',
-   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066). A narrow idea with almost only one problem (data/narrow-ideas.json, 62 groups, decisions 0066, 0068 and 0072) keeps the copy rule: only a copy fails.',
+   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066). A narrow idea with almost only one problem (data/narrow-ideas.json, 63 groups, decisions 0066, 0068, 0072 and 0075) keeps the copy rule: only a copy fails.',
          'Call 4b gets the questions of the built earlier mocks whose point is in the same group. With none, B9 passes (decision 0056, diagram 11).'],
    example=res('B9', 'The question has the scene of M1-S28: the loop stops too early, and the answer is to continue while stop_reason is "tool_use". Options A, B and D are the wrong options of M1-S28.'), examplehead=EH,
    why='In mock 2, 13 questions repeated mock 1 with the same scene, the same answer and the same wrong options. A participant who took mock 1 knew the answers.'),
@@ -218,7 +218,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061 and 0066 to 0068). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061, 0066 to 0068, 0072 and 0075). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

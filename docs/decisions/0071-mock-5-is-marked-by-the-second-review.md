@@ -1,7 +1,7 @@
 # 0071: Mock 5 is marked by the second review
 
 - Date: 9 October 2026
-- Status: accepted
+- Status: accepted. Decision 0078 corrects one line of this file.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: none. Step 7 does not change in code.
 

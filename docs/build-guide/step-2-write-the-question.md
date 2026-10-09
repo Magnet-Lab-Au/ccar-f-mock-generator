@@ -14,7 +14,9 @@ The model fills a form: the question, and each option with a mark ("correct" or 
 
 The slot also tells the writer two things (decisions 0053 and 0054). If the field `longest_may_be_correct` is false, a wrong option must be longer than each correct option (rule A12). For a slot with 2 answers, the two correct options must test two different parts of the point.
 
-When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different problem, also in another setting (the cause, the fix, or a choice between two rules), and not the same set of wrong options. At most one wrong option may repeat (decisions 0056 and 0066).
+When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different problem, also in another setting (the cause, the fix, or a choice between two rules), and not the same set of wrong options. At most one wrong option may repeat (decisions 0056 and 0066). For a narrow idea, with almost only one problem (63 of the 95 ideas), the writer gets the copy rule instead: the same problem may come back in a new setting, but not the same set of wrong options (decisions 0066, 0068, 0072 and 0075).
+
+The list of rules comes first in the request, as a cached block, so that a repeated list costs less (decision 0067).
 
 Code then mixes the options and gives them their letters. The model does not select the letters. From mock 5, the correct options take the letters that the plan sets, so the letters are balanced over the mock (decision 0070). In the 12 sample questions of the guide the correct answer is A 10 times, and a model that sees them can copy that (an assumption, not checked). Code saves one file for each try. No file is written over.
 

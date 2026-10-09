@@ -1,7 +1,7 @@
 # 0047: A file of point groups, and no two slots of one mock in one group
 
 - Date: 8 October 2026
-- Status: accepted. Item 3 is changed by decision 0048.
+- Status: accepted. Decision 0078 corrects one line of this file. Item 3 is changed by decision 0048.
 - Text confirmed by the owner: 8 October 2026
 - Diagram: none. Diagram 02 (step 1) changes when the rule is built.
 

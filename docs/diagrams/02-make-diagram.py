@@ -227,7 +227,7 @@ page = '''<!doctype html>
     </div>
   </div>
 
-  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) and on 8 October 2026 (decisions 0047, 0048, 0050, 0053, 0054, 0056, 0057 and 0070). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
+  <footer>Diagram 02. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0027 and 0037) on 8 October 2026 (decisions 0047, 0048, 0050, 0053, 0054, 0056 and 0057) and on 9 October 2026 (decision 0070). Status of the step: built. The example slot comes from the plan of mock 1. Each exam guide text is the exact text of the guide. A script took each text from the guide files.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

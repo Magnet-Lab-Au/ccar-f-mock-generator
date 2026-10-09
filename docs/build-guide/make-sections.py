@@ -79,7 +79,9 @@ The model fills a form: the question, and each option with a mark ("correct" or 
 
 The slot also tells the writer two things (decisions 0053 and 0054). If the field `longest_may_be_correct` is false, a wrong option must be longer than each correct option (rule A12). For a slot with 2 answers, the two correct options must test two different parts of the point.
 
-When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different problem, also in another setting (the cause, the fix, or a choice between two rules), and not the same set of wrong options. At most one wrong option may repeat (decisions 0056 and 0066).
+When the idea of the slot is in an earlier built mock, the writer also gets those earlier questions, with the rule: a different problem, also in another setting (the cause, the fix, or a choice between two rules), and not the same set of wrong options. At most one wrong option may repeat (decisions 0056 and 0066). For a narrow idea, with almost only one problem (63 of the 95 ideas), the writer gets the copy rule instead: the same problem may come back in a new setting, but not the same set of wrong options (decisions 0066, 0068, 0072 and 0075).
+
+The list of rules comes first in the request, as a cached block, so that a repeated list costs less (decision 0067).
 
 Code then mixes the options and gives them their letters. The model does not select the letters. From mock 5, the correct options take the letters that the plan sets, so the letters are balanced over the mock (decision 0070). In the 12 sample questions of the guide the correct answer is A 10 times, and a model that sees them can copy that (an assumption, not checked). Code saves one file for each try. No file is written over.
 
@@ -138,7 +140,7 @@ Some rules need judgment, so a model checks them. The step has two calls, and co
 
 **Call 4a, the blind answer.** A new call answers the question as a second expert does. It gets the question, the line "Select N.", the options and the text of the guide, but not the marks and not the reasons. Code compares its letters with the marks of the writer. Different letters fail rule B1. Two calls with code between them make sure that the blind answer always comes first.
 
-**Call 4b, the rule check.** A second call gets the complete question, with the marks and the reasons, and the text of the guide. It gives one result for each of the 9 rules B1 to B9: the marked options are correct, each wrong option is wrong for a reason that the guide gives, each reason is true, the question tests its point, the question is inside its story, no text depends on a feature that the guide does not name, each actor has one name and each sentence is clear, the question is not a close copy of a sample question of the guide, and the question does not have the same problem as a question of an earlier mock on the same idea, also in another setting, with at most one wrong option that repeats (decision 0066). An idea with almost only one problem, for example "find text, so use Grep", keeps the copy rule: only a copy fails. 62 of the 95 ideas are such narrow ideas (decision 0072). So mocks 4 and 5 often test the same problem as mocks 1 to 3, in a new setting, and only copies are blocked. For rule B8, the call also gets the 12 sample questions (decision 0055). For rule B9, it gets the questions of the built earlier mocks whose point is in the same group (decision 0056, diagram 11). In mock 2, before this rule, 13 questions repeated mock 1. In mock 1, before this rule, two questions were close copies of sample questions 1 and 12. The result is "pass", "fail" or "cannot decide".
+**Call 4b, the rule check.** A second call gets the complete question, with the marks and the reasons, and the text of the guide. It gives one result for each of the 9 rules B1 to B9: the marked options are correct, each wrong option is wrong for a reason that the guide gives, each reason is true, the question tests its point, the question is inside its story, no text depends on a feature that the guide does not name, each actor has one name and each sentence is clear, the question is not a close copy of a sample question of the guide, and the question does not have the same problem as a question of an earlier mock on the same idea, also in another setting, with at most one wrong option that repeats (decision 0066). An idea with almost only one problem, for example "find text, so use Grep", keeps the copy rule: only a copy fails. 63 of the 95 ideas are such narrow ideas (decisions 0072 and 0075). So mocks 4 and 5 often test the same problem as mocks 1 to 3, in a new setting, and only copies are blocked. For rule B8, the call also gets the 12 sample questions (decision 0055). For rule B9, it gets the questions of the built earlier mocks whose point is in the same group (decision 0056, diagram 11). In mock 2, before this rule, 13 questions repeated mock 1. In mock 1, before this rule, two questions were close copies of sample questions 1 and 12. The result is "pass", "fail" or "cannot decide".
 
 For rule B6, the model lists each feature name. Code searches each name in the records of the guide, as a complete word. A flag such as -p is searched with its hyphens (decision 0061). A name that the guide does not have fails the rule.
 
@@ -214,7 +216,7 @@ The owner read and marked the questions of mocks 1 to 3. For mocks 4 and 5, no p
 
 Code builds one Excel file for each round of marking. It has one row for each question: the question, the point that it must test, the options, the correct answer and the reasons. It shows no verdict of a checker. The owner fills two columns: "good" or "bad", and a reason for a bad mark. The sheet is protected, so that only those two columns can change and a mark cannot move to a different question. (Not checked in real Excel yet.)
 
-For mock 1 the owner marks all 60 questions. For each later mock the owner marks a random sample of 20, 5 from each scenario. A bad mark sends the question to step 5, with the reason of the owner as the finding. Too many bad marks stop the mock: more than 6 of 60 for mock 1, and 2 or more of 20 for a later mock.
+For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073). The owner marked mocks 1 to 3. For mocks 4 and 5 the second review in Cowork, a Claude model, marks the questions, and no person reads them (decision 0071). A bad mark sends the question to step 5, with the reason as the finding. Too many bad marks stop the mock: more than 6 of 60 for mocks 1 and 5, and 2 or more of 20 for mocks 2 to 4.
 
 Code saves the marks, and shows the bad marks for each scenario and each domain.
 
@@ -257,14 +259,14 @@ def fact_table(rows):
 
 
 section('step-5-try-again.md', 'Step 5: try again',
-        'built. It ran in mock 1 on 7 and 8 October 2026.', '07-step-5-try-again.html', '''
+        'built. It ran in mocks 1 to 5, from 7 to 9 October 2026.', '07-step-5-try-again.html', '''
 ## What the step does
 
 A question that fails step 3 or step 4 goes back to the writer. The writer gets the request of step 2, plus the failed question with the letters that the checker saw, and the exact findings. The writer does not see older tries, so the request stays short. The new try goes through steps 3 and 4 again, as a new question.
 
 A question also comes back when the owner sends it back: a bad mark, or a "rewrite". A rewrite can name a finding of step 6, or only a reason of the owner. The owner can also give the slot a new point of the same task statement. Code then checks that the point is in that task statement, that no other slot uses it, and that the slot did not have it before.
 
-Each start of a slot has at most 3 tries. Two results "cannot decide" also stop a slot. A slot that stops is open, and the owner decides: more tries, a new point, or a new plan. The limit is not the main way to stop. The main way to stop is a question that passes.
+Each start of a slot has at most 3 tries. Two results "cannot decide" also stop a slot. A slot that stops is open, and the owner decides: more tries, a new point, or a new plan. After "more tries", the writer also gets the reason of the owner as an instruction (decision 0074). In mocks 4 and 5, most open slots came from the stricter rule B9, and the owner gave new points or added the idea to the narrow list (decisions 0068 and 0075). The limit is not the main way to stop. The main way to stop is a question that passes.
 
 Each try is a new file. No file is written over, so the history of each question stays.
 
@@ -287,7 +289,7 @@ Each try is a new file. No file is written over, so the history of each question
 
 steps8 = '''# Step 8: build the files
 
-Status: built. It ran for mock 1 on 8 October 2026.
+Status: built. It built mocks 1 to 5, from 8 to 9 October 2026.
 
 Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-files.html)
 
@@ -304,6 +306,10 @@ The questions file has the 60 questions in 4 groups, one for each scenario. Each
 ## The run of mock 1
 
 The owner accepted mock 1 on 8 October 2026, with known limits. Code checked the six conditions and built the two files: `mocks/mock-01.questions.json`, with %d questions in %d groups (scenarios %s) and %d minutes, and `mocks/mock-01.answers.json`, with %d answers. The build saved %d fingerprints. Mock 1 cost $%.2f for %d model calls.
+
+## The later mocks
+
+Step 8 built mocks 2 to 5 in the same way, after the owner accepted each one: `mocks/mock-02` to `mocks/mock-05`, each with a questions file and an answers file of 60 questions in 4 groups. The cost of each mock is in the section of step 4.
 
 ## The exam guide texts that the step uses
 

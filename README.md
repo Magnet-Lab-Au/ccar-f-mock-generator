@@ -22,16 +22,22 @@ This folder is the third attempt. It starts clean. The first build (August 2026)
 | `docs/lessons.md` | Private history of the first build. Not a source for the design. |
 | `docs/decisions/` | The decisions, in sequence. `TEMPLATE.md` shows the form. |
 | `docs/diagrams/` | The diagrams, as HTML files |
-| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. The section of step 1 exists. |
+| `docs/build-guide/` | The build guide "How the Mocks Are Built": one file for each pipeline step. All 8 sections exist (steps 1 to 8). |
 | `docs/reviews/` | The reports of independent reviewers |
 | `docs/journal.md` | What we did in each work session |
+| `docs/portal-notes.md` | Notes for the people who put the mocks on the portal |
+| `docs/sources/` | Saved pages of the Anthropic documentation that decisions cite |
 | `docs/coverage/task-statement-decisions.xlsx` | The 240 points of the exam guide. It is the final check that the design missed nothing. |
 | `reference/exam-guide.md` | The exam guide, Version 1.0, July 2026 |
 | `reference/task-statements-and-points.md` | The 30 task statements and their 240 points, exact text. An independent reviewer confirmed it on 5 October 2026. |
 | `reference/practice-audit-first-build.md` and `.json` | The audit of the first build against the 240 points |
-| `src/` | The program. It has the code of each step, the control and the command line `src/run.py`. No real model call has run yet. |
-| `runs/` | The run records. Empty until the first run. |
+| `src/` | The program: the code of each step, the control, the command line `src/run.py`, the point groups (`point_groups.py`), the earlier questions across mocks (`earlier.py`), and two test scripts that call the API (`test_b9.py`, `test_cache.py`). |
+| `tests/` | The tests of the program. No test makes a model call. |
+| `data/` | Data that the owner confirmed: the point groups, the two-answer points, the narrow ideas and the scenarios of mocks 3 to 5 |
+| `marking/` | The Excel files of each marking round. A marked file is committed before anybody else reads it. |
+| `mocks/` | The built mocks: `mock-0N.questions.json` and `mock-0N.answers.json` for mocks 1 to 5 |
+| `runs/` | The run records of each mock and of each test: plans, questions, checks, marks, decisions of the owner and cost |
 
 ## Status
 
-7 October 2026: each of the 9 steps has a design decision and a diagram (decisions 0026 to 0036, diagrams 02 to 10). Decision 0038 makes the control simple for mock 1 and writes it as code with tests. The control exists: `src/control.py`, with its tests in `tests/` (decision 0039). Step 1 is built, and it made the plan of mock 1. The other real steps do not exist yet, only fakes in the tests. Decisions 0024 and 0027 to 0036 and diagrams 07 and 08 describe the control. The other diagrams do not show decisions 0038 and 0039 yet. Step 0 ran: the file `reference/guide-records.json` exists, and it is the one source of guide text for code. The next steps are in `HANDOFF.md`.
+9 October 2026: all 5 mocks are built, in `mocks/`. The program ran each of the 9 steps for each mock. Decisions 0001 to 0078 record the design and each change. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83 and mock 5 $11.68. The owner read and marked mocks 1 to 3. The second review in Cowork, a Claude model, marked mocks 4 and 5. The next steps are in `HANDOFF.md`.

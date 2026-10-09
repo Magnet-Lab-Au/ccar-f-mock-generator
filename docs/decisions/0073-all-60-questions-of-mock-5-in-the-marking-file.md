@@ -2,7 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
-- Diagram: none. Diagram 09 (step 7) shows the sample of a later mock.
+- Diagram: `docs/diagrams/09-step-7-the-owner-marks-the-questions.html` (step 7) shows it.
 
 ## Question
 
