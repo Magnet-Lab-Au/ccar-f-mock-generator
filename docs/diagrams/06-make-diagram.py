@@ -62,7 +62,7 @@ D = {
    sent=['The story of the scenario, all 30 task statements with their 240 points, and the lists of Section 17. That is about %d words.' % round(n_words, -2),
          'Both calls of this step get this text.',
          'The guide comes first, as a cached block in the system prompt. The story of the scenario comes after it, in the user text. Call 4b also has the 12 sample questions as a second cached block. A cached block costs 0.05 times the input price when it is read again (decision 0067).',
-         'Measured on 10 questions of mock 3: $0.58 with caching, $1.72 for the same tokens without caching.'],
+         'Measured on 10 questions of mock 3: $0.58 with caching, $1.72 for the same tokens without caching. Mock 4, with caching: $12.16 for the whole mock.'],
    why='A wrong option often comes from a different task statement than the one of the slot. And one rule asks what the guide names. So the checker needs the complete guide, not a slice.'),
  'c4b': dict(title='Call 4b: the rule check', who='One model call', cls='model',
    sent=['A new model call checks the 9 rules. It did not write the question.',
@@ -108,7 +108,7 @@ D = {
    example=res('B8', 'The question has the scene of sample question 12: a self-review in the same session misses errors, and the answer is an independent review instance.'), examplehead=EH,
    why='In mock 1, two questions were close copies of sample questions 1 and 12. A participant who read the guide knows the answer already. A word count of code does not find a copy, because a copy keeps the scene and changes the words (decision 0055).'),
  'B9': dict(title='Rule B9: not a repeat of an earlier mock', who='One model call', cls='model',
-   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066). A narrow idea with almost only one problem (data/narrow-ideas.json) keeps the copy rule: only a copy fails.',
+   sent=['The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data). Not the same set of wrong options. At most one wrong option may repeat (decision 0066). A narrow idea with almost only one problem (data/narrow-ideas.json, 24 groups, decisions 0066 and 0068) keeps the copy rule: only a copy fails.',
          'Call 4b gets the questions of the built earlier mocks whose point is in the same group. With none, B9 passes (decision 0056, diagram 11).'],
    example=res('B9', 'The question has the scene of M1-S28: the loop stops too early, and the answer is to continue while stop_reason is "tool_use". Options A, B and D are the wrong options of M1-S28.'), examplehead=EH,
    why='In mock 2, 13 questions repeated mock 1 with the same scene, the same answer and the same wrong options. A participant who took mock 1 knew the answers.'),
@@ -218,7 +218,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061, 0066 and 0067). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
+  <footer>Diagram 06. Design of 6 October 2026, corrected on 7 October 2026 (decisions 0040, 0041 and 0043) and on 8 and 9 October 2026 (decisions 0055, 0056, 0061 and 0066 to 0068). Status of the step: built. Each exam guide text is the exact text of the guide. A script took it from the records file. The examples of findings are invented, to show the form.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>

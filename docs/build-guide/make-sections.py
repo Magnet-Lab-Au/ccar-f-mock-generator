@@ -156,6 +156,12 @@ Each call of this step sends the full text of the guide. Until mock 3, each call
 
 From mock 4, the guide is the first block of the request, the same in each call, with a cache mark (decision 0067). A block that is read again from the cache costs 0.05 times the input price. A test on 10 questions of mock 3 measured the two calls of this step: $0.58 with caching, $1.72 for the same tokens without caching, about 66%% less. The checks gave the same verdict for 8 of the 10 questions. 2 borderline questions changed from pass to fail, and the cause is not known.
 
+| Mock | Cost, with caching |
+|---|---|
+| Mock 4 | $12.16 for 326 calls. 3.69 million input tokens came from the cache, and 0.77 million were at the full price. |
+
+Mock 4 also had the stricter rule B9 and more tries than mock 3, and it still cost about half of mock 3.
+
 ## The test run
 
 - Call 4a answered the 12 sample questions of the guide. %d of %d were right.

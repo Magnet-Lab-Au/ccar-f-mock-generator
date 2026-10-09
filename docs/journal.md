@@ -9,9 +9,16 @@ One entry for each work session. Newest entry first.
 - The program did not use prompt caching. The owner agreed to decision 0067: the guide text, the 12 sample questions and the writer rules come first in each request, as cached blocks. No Message Batches API. The minimum cacheable size for Claude Opus 5.5 is 512 tokens, from the page "Prompt caching".
 - A test on 10 questions of mock 3 measured the saving: $0.58 with caching against $1.72 without, about 66% on the check calls. 2 of 10 verdicts changed from pass to fail (M3-S31 on B9, M3-S49 on B8), both borderline. The causes are not separated. The owner named the stricter B9 as a third cause, but the test used the old text of B9, so the assistant recorded that it does not apply. Mock 3 stays accepted. 224 tests pass.
 
+- The owner confirmed decision 0067 and gave the go. Mock 4 ran with seed 445312, scenarios 1, 3, 4 and 6, the stricter B9 and prompt caching. Run 1: 55 of 60 passed, $10.39. 5 slots opened, 4 of them on B9.
+- Decision 0068: G074, G060, G059 and later G041 join the narrow list (24 groups), because their slots failed B9 three times on the same problem. M4-S23 got the new point 2.1-S1. After three runs, all 60 slots passed. Mock 4 cost $12.16 for 326 calls: 3.69 million input tokens came from the cache. The estimate with caching was $20 to $26.
+- An independent agent checked all 95 point groups: 38 more groups are narrow (sure) and 11 are a judgment call. The narrow list does not change until the owner decides, before mock 5.
+- An independent agent compared mock 4 with mocks 1 to 3: 1 copy (M4-S43 with M3-S19), 19 close, 40 same idea only, 0 new. 12 of the 40 are a cause question against an earlier fix question in nearly the same scene.
+
 **Open**
 
-- Mock 4 waits for the go of the owner.
+- The owner marks `marking/M4-round1.xlsx` (20 questions). M4-S43, the copy, is in the sample.
+- The owner decides the narrow list for mock 5.
+- The owner confirms the text of decision 0068.
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9
