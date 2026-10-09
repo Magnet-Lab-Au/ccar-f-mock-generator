@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S28-T4",
+  "slot_id": "M5-S28",
+  "try": 4,
+  "point": "5.6-K3",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team runs a custom slash command in Claude Code that reads benchmark reports from two performance teams and writes a performance section for the project documentation. Both reports are credible and were collected in the same week on the same hardware, but they state different p99 latency values for one endpoint. The generated section shows only one value, cites one report, and does not mention the other report. Which instruction in the command file most likely caused this?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "It tells Claude to give one definitive value per metric, so Claude picks one credible figure instead of listing both with sources and annotating the conflict.",
+      "correct": true,
+      "reason": "The guide says conflicting statistics from credible sources should be annotated with source attribution. An instruction that demands one value leads to arbitrarily selecting one figure and losing the other."
+    },
+    {
+      "letter": "B",
+      "text": "It does not ask for collection dates, so Claude treats a temporal difference between the reports as a contradiction and drops the older value.",
+      "correct": false,
+      "reason": "Both reports were collected in the same week, so the values do not differ because of time. This is a real conflict between credible sources, and the guide says to annotate it rather than select one value."
+    },
+    {
+      "letter": "C",
+      "text": "It asks Claude to keep a claim-source mapping for each figure, and that mapping allows only one source to support each claim.",
+      "correct": false,
+      "reason": "The guide presents claim-source mappings as the way to preserve attribution through synthesis. They make it possible to show both values with their sources, so they do not force one source per claim."
+    },
+    {
+      "letter": "D",
+      "text": "It asks Claude to present benchmark figures as a table, and a table cannot show two attributed values for the same metric.",
+      "correct": false,
+      "reason": "The guide recommends tables for numeric data. A table can hold both conflicting values with their sources, so the table format does not cause one value to be dropped."
+    }
+  ]
+}

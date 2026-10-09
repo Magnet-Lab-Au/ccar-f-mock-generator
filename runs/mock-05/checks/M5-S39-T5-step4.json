@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S39-T5",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B7",
+      "detail": "The question calls the reviewer 'Claude Code' in the first sentence and 'the review bot' in the third sentence. One actor gets two names, so a reader may wonder whether the review bot is a separate tool. Use one name, for example 'muted the Claude Code review entirely'.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "4189cef42311ffc67173ad91217d76ec376955545ede23db75a19ff367831c83",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Naming conventions has a 68% false-positive rate, and that category is eroding trust in the accurate ones (4.1-K3). The fix is to temporarily disable it, keep the low-FP security and null-handling categories active, and re-enable naming once its rewritten criteria pass testing (4.1-S2). A disables the most accurate category. C relies on 'be conservative', which does not improve precision (4.1-K2). D broadens a category that is already noisy.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "fail",
+      "finding": "The question calls the reviewer 'Claude Code' in the first sentence and 'the review bot' in the third sentence. One actor gets two names, so a reader may wonder whether the review bot is a separate tool. Use one name, for example 'muted the Claude Code review entirely'.",
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

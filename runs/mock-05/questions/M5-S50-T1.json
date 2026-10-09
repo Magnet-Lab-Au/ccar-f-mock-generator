@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S50-T1",
+  "slot_id": "M5-S50",
+  "try": 1,
+  "point": "1.7-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "While building your customer support resolution agent, you use Claude Code to trace why the agent calls escalate_to_human for simple refunds that process_refund could handle. You named that Claude Code session refund-escalation-trace. Two days later you return to the work, and nobody has changed the agent's code or prompts since then. How should you continue that specific investigation?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Run Claude Code with the -p flag and the prompt refund-escalation-trace so that it continues the earlier investigation non-interactively.",
+      "correct": false,
+      "reason": "The -p flag runs Claude Code in non-interactive mode with a new prompt; it does not resume a named session, so the earlier context is lost."
+    },
+    {
+      "letter": "B",
+      "text": "Run Claude Code with --resume refund-escalation-trace so that the named session continues with its earlier context.",
+      "correct": true,
+      "reason": "Named session resumption with --resume <session-name> continues a specific prior conversation, and the earlier context is still valid because nothing has changed."
+    },
+    {
+      "letter": "C",
+      "text": "Open a new Claude Code session and run /compact so that it rebuilds the context of the refund-escalation-trace conversation.",
+      "correct": false,
+      "reason": "/compact reduces context usage inside the current session; it does not bring back the conversation of an earlier named session."
+    },
+    {
+      "letter": "D",
+      "text": "Open a new Claude Code session and run /memory to load the refund-escalation-trace conversation from the project memory files.",
+      "correct": false,
+      "reason": "/memory deals with the CLAUDE.md memory files that are loaded; it does not load an earlier session's conversation, which only --resume continues."
+    }
+  ]
+}

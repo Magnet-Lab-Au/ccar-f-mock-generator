@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S49-T1",
+  "slot_id": "M5-S49",
+  "try": 1,
+  "point": "1.2-K1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support resolution agent now uses a coordinator agent with three subagents: one for account lookups, one for order lookups, and one for refunds. Currently the refund subagent asks the order subagent for order details directly. It also calls escalate_to_human on its own whenever process_refund returns an error. Support leads cannot see why some refund cases were escalated, and similar failures are handled differently across cases. Which design change best addresses these problems?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Route every subagent request, result, and error through the coordinator agent, which applies one error-handling policy and decides what information each subagent receives.",
+      "correct": true,
+      "reason": "In a hub-and-spoke architecture the coordinator manages all inter-subagent communication, error handling, and information routing, which gives observability and consistent error handling."
+    },
+    {
+      "letter": "B",
+      "text": "Give the refund subagent the coordinator agent's full conversation history so that it can make its own escalation decisions with complete customer context.",
+      "correct": false,
+      "reason": "Subagents do not inherit the coordinator's history automatically, and this change keeps escalation decisions inside the subagent, outside the coordinator's view and error handling."
+    },
+    {
+      "letter": "C",
+      "text": "Have each subagent record every direct call it makes to another subagent in a shared log file, while each subagent keeps its own rules for handling tool errors and escalations.",
+      "correct": false,
+      "reason": "Subagents still talk to each other directly and handle errors separately, so communication and error handling are not managed by the coordinator as the hub-and-spoke pattern requires."
+    },
+    {
+      "letter": "D",
+      "text": "Have the refund subagent retry process_refund several times with exponential backoff and call escalate_to_human only after every retry has failed.",
+      "correct": false,
+      "reason": "Error handling and escalation stay inside the subagent, so the coordinator still cannot observe failures or handle them consistently across cases."
+    }
+  ]
+}

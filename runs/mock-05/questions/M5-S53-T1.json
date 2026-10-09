@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S53-T1",
+  "slot_id": "M5-S53",
+  "try": 1,
+  "point": "2.1-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent calls the MCP tool lookup_order, whose description reads only \"Looks up an order.\" Logs show that many calls fail because the agent passes a customer's email address, or an order number copied with a leading \"#\" and spaces, while the backend accepts only IDs like ORD-48213. When a customer gives only an email, the agent still calls lookup_order instead of calling get_customer first. Which change most directly reduces these failed calls?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Rename lookup_order to lookup_order_by_id and leave its one-line description unchanged, so that the new tool name alone signals which input the tool expects.",
+      "correct": false,
+      "reason": "The guide names descriptions as the primary selection mechanism; a new name without the input format, an example or the email-only edge case leaves the minimal description unreliable."
+    },
+    {
+      "letter": "B",
+      "text": "Add a system prompt rule that tells the agent to call lookup_order whenever a customer message contains the word \"order,\" so that order requests always reach that tool.",
+      "correct": false,
+      "reason": "The guide warns that keyword-sensitive system prompt instructions create unintended tool associations, and this rule would send even email-only requests to lookup_order without fixing the input format."
+    },
+    {
+      "letter": "C",
+      "text": "Expand the lookup_order description to state the ORD-plus-digits input format with an example, and to say that an email-only request needs get_customer first.",
+      "correct": true,
+      "reason": "The guide says tool descriptions should include input formats, examples, edge cases and boundaries; this adds the expected format, an example and the email-only boundary."
+    },
+    {
+      "letter": "D",
+      "text": "Set tool_choice to force get_customer on every turn, so that the agent always identifies the customer before it is able to make any order lookup at all.",
+      "correct": false,
+      "reason": "Forced tool selection makes the model call that one tool, which blocks normal use of other tools and still gives the agent no description of the order ID format."
+    }
+  ]
+}

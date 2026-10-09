@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S52-T1",
+  "slot_id": "M5-S52",
+  "try": 1,
+  "point": "1.2-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent's coordinator sends every customer message through four subagents in a fixed order: account verification, order history analysis, refund policy evaluation, and billing review. Logs show that a simple question about the delivery status of an order takes as long as a complex billing dispute, and most subagent outputs for simple questions go unused. Complex billing disputes do need all four subagents. What change to the coordinator best reduces this waste while still handling complex cases fully?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Let the subagents pass their results directly to each other so that the coordinator no longer routes information between them.",
+      "correct": false,
+      "reason": "The guide says all subagent communication should go through the coordinator for observability and error handling, and this change still runs every subagent."
+    },
+    {
+      "letter": "B",
+      "text": "Send all customer messages through the Message Batches API so that the full sequence of subagents runs at half the cost.",
+      "correct": false,
+      "reason": "The guide says batches can take up to 24 hours and do not support multi-turn tool calling, so they do not suit live support, and the full pipeline still runs."
+    },
+    {
+      "letter": "C",
+      "text": "Have the coordinator analyze each message's requirements and invoke only the subagents it needs, using the full sequence only for complex cases.",
+      "correct": true,
+      "reason": "The guide says coordinators should analyze query requirements and dynamically select which subagents to invoke rather than always routing through the full pipeline."
+    },
+    {
+      "letter": "D",
+      "text": "Lower max_tokens for each of the four subagents so that the full sequence finishes faster and uses fewer tokens on every message.",
+      "correct": false,
+      "reason": "Every message still goes through the full pipeline, and truncating output can harm complex cases; the guide's fix is dynamic subagent selection."
+    }
+  ]
+}

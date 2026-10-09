@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S55-T1",
+  "slot_id": "M5-S55",
+  "try": 1,
+  "point": "1.2-K2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support coordinator spends several turns with a customer, who verifies their identity, gives an order number, and explains that a blender arrived with a cracked jar. The coordinator then spawns a returns subagent through the Task tool with the prompt \"Handle this customer's return request.\" The returns subagent replies by asking for the order number and a description of the damage. What is the most likely cause of this behavior?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The coordinator's conversation grew too long, so the earliest customer turns were trimmed from the conversation history that the returns subagent shares with the coordinator.",
+      "correct": false,
+      "reason": "The returns subagent shares no conversation history with the coordinator, because subagents have isolated context, so trimming is not the cause."
+    },
+    {
+      "letter": "B",
+      "text": "The returns subagent does not inherit the coordinator's conversation history, so the order number and damage details had to be written directly into its prompt.",
+      "correct": true,
+      "reason": "Subagents operate with isolated context and do not automatically inherit the coordinator's conversation history, so the coordinator must pass the needed details explicitly in the prompt."
+    },
+    {
+      "letter": "C",
+      "text": "The returns subagent was spawned before the coordinator's latest customer turns were synchronized into its context, so it worked from an outdated copy of the conversation.",
+      "correct": false,
+      "reason": "No copy of the coordinator's conversation is synchronized into a subagent at any time; the subagent receives only what the coordinator writes into its prompt."
+    },
+    {
+      "letter": "D",
+      "text": "The returns subagent's allowedTools configuration omits lookup_order, so it could not read the order number and damage details that the customer gave earlier in the conversation.",
+      "correct": false,
+      "reason": "The details came from the customer's turns with the coordinator, not from a backend tool, and tool access does not give a subagent the coordinator's conversation history."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S59-T1",
+  "slot_id": "M5-S59",
+  "try": 1,
+  "point": "1.5-S1",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your customer support agent checks return eligibility before it calls process_refund. The lookup_order tool returns delivery dates as Unix timestamps and order status as numeric codes, while the get_customer tool returns dates as ISO 8601 strings. The agent sometimes misreads the timestamps and approves returns outside the 30-day return window. Which change most reliably makes the agent work with one consistent data format?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Add few-shot examples to the system prompt that show the agent how to convert Unix timestamps and numeric status codes before it checks the return window.",
+      "correct": false,
+      "reason": "Prompt-based guidance gives only probabilistic compliance, so the agent can still misread a timestamp; a hook gives a deterministic transformation."
+    },
+    {
+      "letter": "B",
+      "text": "Implement a PostToolUse hook that converts the lookup_order timestamps and status codes into ISO 8601 dates and readable labels before the agent processes them.",
+      "correct": true,
+      "reason": "A PostToolUse hook intercepts tool results and normalizes heterogeneous formats before the model processes them, so the agent always sees one format."
+    },
+    {
+      "letter": "C",
+      "text": "Add a custom convert_formats MCP tool and instruct the agent in the system prompt to call it on every lookup_order result before it decides whether the order is still inside the return window.",
+      "correct": false,
+      "reason": "The conversion still depends on the agent choosing to follow a prompt instruction, which is probabilistic rather than a guaranteed normalization of tool results."
+    },
+    {
+      "letter": "D",
+      "text": "Route every return request to the escalate_to_human tool so that a human reviewer checks the order dates and status codes before any refund is processed.",
+      "correct": false,
+      "reason": "This avoids the format problem instead of normalizing the data, and escalating every return works against the 80%+ first-contact resolution target."
+    }
+  ]
+}

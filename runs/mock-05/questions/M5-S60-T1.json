@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S60-T1",
+  "slot_id": "M5-S60",
+  "try": 1,
+  "point": "2.2-S3",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator delegates order checks for a billing dispute to a verification subagent. The verification subagent retrieves the customer record with get_customer, then retries a timed-out lookup_order call three times without success, and returns only \"Operation failed\". The coordinator then reruns the verification subagent from the start, which calls get_customer again and repeats the same three lookup_order retries while the customer waits. Which changes should you make to the report that the verification subagent returns?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Report the timed-out lookup_order call as a successful query with no matching orders, so that the coordinator can close the dispute with the customer record.",
+      "correct": false,
+      "reason": "A failed lookup is an access failure, not a valid empty result. Reporting it as no matches hides the failure, and the coordinator then decides the dispute on false data."
+    },
+    {
+      "letter": "B",
+      "text": "Keep retrying lookup_order within the verification subagent until the call succeeds, so that the coordinator never receives an error from the verification subagent at all.",
+      "correct": false,
+      "reason": "Local recovery covers only failures that can be resolved locally. A timeout that persists must be propagated to the coordinator, and endless retries leave the customer waiting with no decision."
+    },
+    {
+      "letter": "C",
+      "text": "Include the customer record already retrieved with get_customer, so that the coordinator can continue from it instead of rerunning the whole verification.",
+      "correct": true,
+      "reason": "An unresolved error should go to the coordinator together with the partial results. The coordinator can then reuse the customer record instead of fetching it again."
+    },
+    {
+      "letter": "D",
+      "text": "Label the lookup_order timeout as a permission error that is not retryable, so that the coordinator escalates the dispute through escalate_to_human right away.",
+      "correct": false,
+      "reason": "A timeout is a transient error, not a permission error. Giving it the wrong error category misleads the coordinator's recovery decision, and the report still drops the partial results and the attempts."
+    },
+    {
+      "letter": "E",
+      "text": "Include the three lookup_order retries already made and their timeout results, so that the coordinator chooses a next step instead of repeating those retries.",
+      "correct": true,
+      "reason": "An unresolved error should go to the coordinator together with a record of what was attempted. The coordinator then knows that local recovery is exhausted and does not waste time repeating the same retries."
+    }
+  ]
+}

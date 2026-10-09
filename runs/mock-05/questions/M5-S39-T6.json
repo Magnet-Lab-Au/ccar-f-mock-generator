@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T6",
+  "slot_id": "M5-S39",
+  "try": 6,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S39-T5",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to review pull requests in three categories: security, null-handling bugs, and naming conventions. A spot check of last month's findings shows false-positive rates of 6% for security, 9% for null-handling, and 68% for naming conventions, while security produces the most findings overall. Developers on several teams now ignore every Claude Code finding, including accurate security findings. Which change should you make first?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Replace the naming-convention category with a broader code-style category that also covers formatting, comment wording, and file layout.",
+      "correct": false,
+      "reason": "A broader, vaguer category moves away from explicit criteria, keeps noisy findings reaching developers, and does nothing to restore their trust."
+    },
+    {
+      "letter": "B",
+      "text": "Temporarily disable the naming-convention category, keep security and null-handling active, and re-enable the naming-convention category after its rewritten criteria pass testing.",
+      "correct": true,
+      "reason": "Temporarily disabling the one high false-positive category restores developer trust in the accurate categories while you improve the prompt for that category."
+    },
+    {
+      "letter": "C",
+      "text": "Keep all three categories active, and add an instruction to the review prompt telling Claude Code to be conservative about naming-convention findings.",
+      "correct": false,
+      "reason": "The guide says general instructions like \"be conservative\" fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "D",
+      "text": "Temporarily disable the security category because it produces the most findings, and keep the null-handling and naming-convention categories active.",
+      "correct": false,
+      "reason": "Finding volume is not the cause of the lost trust, so the noisy naming-convention category keeps undermining trust and accurate security findings are lost."
+    }
+  ]
+}

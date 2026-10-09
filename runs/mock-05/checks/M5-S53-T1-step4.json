@@ -1,0 +1,101 @@
+{
+  "question_id": "M5-S53-T1",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B8",
+      "detail": "This is a close copy of sample question 2. Both use scenario 1 with the same tools: lookup_order has a minimal description and the agent confuses it with get_customer. Both have the same correct action in option C: expand the tool description with input formats, examples, edge cases and boundaries versus similar tools. The added input-format failure does not change the scene or the action enough.",
+      "letter": "C",
+      "point": "2.1-K2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "64f7a1345e81972e30f8365cf0ba84c9a9168b2889435a103032cf076a97b499",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "C"
+    ],
+    "reason": "Tool descriptions are the main way the model picks a tool and formats its input. Spelling out the ORD-##### format with an example, plus the rule that email-only requests go through get_customer first, fixes both the bad inputs and the wrong routing. Renaming alone (A) leaves the format unexplained. A keyword rule (B) makes the misrouting worse. Forcing get_customer on every turn (D) is too blunt and breaks the normal flow.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "fail",
+      "finding": "This is a close copy of sample question 2. Both use scenario 1 with the same tools: lookup_order has a minimal description and the agent confuses it with get_customer. Both have the same correct action in option C: expand the tool description with input formats, examples, edge cases and boundaries versus similar tools. The added input-format failure does not change the scene or the action enough.",
+      "letter": "C",
+      "point": "2.1-K2"
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "MCP",
+      "found": true
+    },
+    {
+      "name": "tool_choice",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

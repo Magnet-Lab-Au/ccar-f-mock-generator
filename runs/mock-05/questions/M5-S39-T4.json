@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T4",
+  "slot_id": "M5-S39",
+  "try": 4,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to post review findings on pull requests in four categories: security, logic bugs, missing tests, and performance. Most performance findings are false positives, and developers have started to resolve every review comment without reading it, including valid security findings. Rewriting the performance criteria with concrete examples will take about two weeks. What should you do with the review during those two weeks?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Stop posting all review findings to pull requests until the rewritten performance criteria are ready and have been tested.",
+      "correct": false,
+      "reason": "Only the high false-positive category needs to be disabled, so stopping all findings throws away the accurate security, logic-bug, and missing-test feedback."
+    },
+    {
+      "letter": "B",
+      "text": "Disable the performance category until its rewritten criteria pass testing, and keep the security, logic-bug, and missing-test categories posting findings.",
+      "correct": true,
+      "reason": "Temporarily disabling the high false-positive category restores developer trust in the accurate categories while the performance prompt is being improved."
+    },
+    {
+      "letter": "C",
+      "text": "Have Claude attach a confidence score to each performance finding, and post only the performance findings that score above a set threshold.",
+      "correct": false,
+      "reason": "The guide says that confidence-based filtering does not improve precision the way specific categorical criteria do, so the false positives are not reliably removed."
+    },
+    {
+      "letter": "D",
+      "text": "Keep the performance category active but label its findings as low severity, so developers can tell them apart from the other categories.",
+      "correct": false,
+      "reason": "The false performance findings still reach developers, and a high false-positive category keeps undermining confidence in the accurate categories."
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "question_id": "M5-S38-T4",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats the problems of both earlier questions and adds no new one. M1-S46-T1 is the same scene: a nightly batch generating tests per source file, a custom_id set from the file path, and attaching each suite to the right file. M3-S12-T1 has the same correct action: resubmit only the failed requests, identified by custom_id, after chunking files that exceeded the context limit. Correct options A and B use the same reasoning as those two correct answers. Wrong option E nearly copies M1's position-order wrong option, and wrong option C reuses M3's 'send through the synchronous API' distractor. The chunk-index custom_id is a small variation of the same custom_id correlation reasoning, not a different failure, cause or choice.",
+      "letter": null,
+      "point": "4.5-S3",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "e756c9d2d711d23ca03ea5f50018d8783f30ba8d7270152025701390a9881436",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A",
+      "B"
+    ],
+    "reason": "Batch results are correlated with requests by custom_id. Because each custom_id is the file path, reading it from the failed results identifies exactly which files to resubmit (A). Giving each chunk a custom_id that combines the file path with a chunk index lets the pipeline regroup the chunk results by file (B). C is wrong: the batch API has no rule against resubmitting a document that failed before. D is wrong: one merged request would exceed context limits again and lose per-file attribution. E is wrong: batch results are not guaranteed to come back in submission order.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats the problems of both earlier questions and adds no new one. M1-S46-T1 is the same scene: a nightly batch generating tests per source file, a custom_id set from the file path, and attaching each suite to the right file. M3-S12-T1 has the same correct action: resubmit only the failed requests, identified by custom_id, after chunking files that exceeded the context limit. Correct options A and B use the same reasoning as those two correct answers. Wrong option E nearly copies M1's position-order wrong option, and wrong option C reuses M3's 'send through the synchronous API' distractor. The chunk-index custom_id is a small variation of the same custom_id correlation reasoning, not a different failure, cause or choice.",
+      "letter": null,
+      "point": "4.5-S3"
+    }
+  ],
+  "features": [
+    {
+      "name": "Message Batches API",
+      "found": true
+    },
+    {
+      "name": "custom_id",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

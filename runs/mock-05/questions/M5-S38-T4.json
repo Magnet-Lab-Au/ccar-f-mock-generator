@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S38-T4",
+  "slot_id": "M5-S38",
+  "try": 4,
+  "point": "4.5-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S38-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a nightly Message Batches API job that generates test cases for 1,200 source files, and each request has a custom_id set to its file path. Thirty requests fail because their files exceed the context limit. The retry step will split each failed file into smaller chunks and submit the chunks in a new batch. Afterwards, the pipeline must attach each generated test suite to the correct source file. Which design choices make this retry step reliable?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Select the files to resubmit by reading the custom_id of each failed result, which maps directly to the source file path.",
+      "correct": true,
+      "reason": "The guide says failed documents are identified by custom_id and only those are resubmitted. Here each custom_id is the file path, so it names each failed file directly."
+    },
+    {
+      "letter": "B",
+      "text": "Give each chunk request a custom_id that combines its file's original custom_id with a chunk index, so the results can be regrouped by file.",
+      "correct": true,
+      "reason": "The guide names custom_id as the field that correlates batch requests with responses. A chunked resubmission has several requests per file, so each chunk needs its own custom_id that points back to its file."
+    },
+    {
+      "letter": "C",
+      "text": "Send the chunk requests through the synchronous API, because the batch API cannot accept a document that has already failed once.",
+      "correct": false,
+      "reason": "The guide says failed documents are resubmitted with modifications such as chunking, and it lists nightly test generation as a latency-tolerant batch workload. The guide gives no rule that blocks a failed document from a new batch."
+    },
+    {
+      "letter": "D",
+      "text": "Merge the 30 failed files into one resubmitted request so that a single custom_id covers every retried file and its tests.",
+      "correct": false,
+      "reason": "The guide's fix for documents that exceeded context limits is chunking them into smaller parts. A merged request is even larger, and one custom_id cannot match results to individual files."
+    },
+    {
+      "letter": "E",
+      "text": "Find the failed files by their positions in the returned result list, assuming that the results come back in the same order as the submitted requests.",
+      "correct": false,
+      "reason": "The guide names custom_id, not result position, as the way to correlate batch requests with responses and to identify failed documents."
+    }
+  ]
+}

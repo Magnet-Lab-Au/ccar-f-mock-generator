@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S38-T5",
+  "slot_id": "M5-S38",
+  "try": 5,
+  "point": "4.5-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S38-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs a nightly Message Batches API job that reviews 2,000 source files, and each request has a custom_id set to its file path. Each night, about 40 requests fail because their files exceed the context limit. The pipeline's retry step then resubmits all 2,000 requests unchanged in a second batch. Since then, nightly batch costs have nearly doubled, and the same 40 files fail again in every retry. Which causes explain these two results?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The retry step resubmits every request instead of only the failed ones identified by their custom_id, so successful reviews are paid for twice.",
+      "correct": true,
+      "reason": "The guide says to resubmit only the failed documents, identified by custom_id. Resubmitting all 2,000 requests reprocesses the 1,960 successful ones, which explains the doubled cost."
+    },
+    {
+      "letter": "B",
+      "text": "The retry step sends the oversized files without changes instead of first splitting each one into chunks that fit within the context limit.",
+      "correct": true,
+      "reason": "The guide says failed documents are resubmitted with appropriate modifications, such as chunking documents that exceeded context limits. Unchanged oversized files exceed the limit again, which explains the repeat failures."
+    },
+    {
+      "letter": "C",
+      "text": "The batch API does not support multi-turn tool calling, so Claude cannot fetch the remaining parts of each oversized file in the middle of a request.",
+      "correct": false,
+      "reason": "The guide does state this batch limitation, but the guide's fix for files that exceed context limits is chunking before resubmission. Tool calling is not the cause of these failures or of the doubled cost."
+    },
+    {
+      "letter": "D",
+      "text": "The retry step matches each result to its file by custom_id, which links the reviews of the retried files to the wrong source files.",
+      "correct": false,
+      "reason": "The guide names custom_id as the correct field for matching batch requests to responses. Also, mislinked reviews would explain neither the doubled cost nor the repeat context-limit failures."
+    },
+    {
+      "letter": "E",
+      "text": "The batch API has no guaranteed latency SLA, so the oversized files time out in the queue before the model can finish reviewing them.",
+      "correct": false,
+      "reason": "The missing latency SLA in the guide concerns when results arrive. These requests failed because they exceeded the context limit, and that limit is unrelated to waiting time."
+    }
+  ]
+}

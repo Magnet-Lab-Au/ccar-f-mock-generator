@@ -1,0 +1,51 @@
+{
+  "question_id": "M5-S60-T2",
+  "slot_id": "M5-S60",
+  "try": 2,
+  "point": "2.2-S3",
+  "select": 2,
+  "request": 5,
+  "shown_try": "M5-S60-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your coordinator delegates a return request to a refund subagent. During a service slowdown, the refund subagent retried two lookup_order timeouts and one get_customer timeout until each call succeeded, but its process_refund call still timed out after three attempts. The refund subagent reported all six timeouts to the coordinator as equal errors, so the coordinator told the customer that neither the order nor the account could be verified. Which changes should you make to this error handling?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Send the full raw error payload of each of the six timeouts, so that the coordinator can judge every failure from the original details.",
+      "correct": false,
+      "reason": "Five of the timeouts were already resolved locally, so they should not be propagated at all. More detail on them only adds noise and keeps the coordinator from seeing the one unresolved failure."
+    },
+    {
+      "letter": "B",
+      "text": "Report only the process_refund failure and leave out the retrieved order and customer data, so that the coordinator receives nothing except the one unresolved error.",
+      "correct": false,
+      "reason": "An unresolved error should go to the coordinator along with the partial results and the attempts made. Without the retrieved data, the coordinator cannot continue the return from what already succeeded."
+    },
+    {
+      "letter": "C",
+      "text": "Stop reporting the timeouts that the refund subagent resolved by retrying, because recovered transient failures need no recovery decision from the coordinator.",
+      "correct": true,
+      "reason": "Transient failures should be recovered locally within the subagent. Only errors that cannot be resolved locally go to the coordinator, so the five recovered timeouts no longer mislead it."
+    },
+    {
+      "letter": "D",
+      "text": "Label every timeout in the report as a non-retryable permission error, so that the coordinator stops treating the slowdown as a problem that more retries could fix.",
+      "correct": false,
+      "reason": "A timeout is a transient, retryable error, not a permission error. A wrong error category misleads the recovery decision, and the report still mixes resolved and unresolved failures."
+    },
+    {
+      "letter": "E",
+      "text": "Report the unresolved process_refund failure with the retrieved order and customer data and the three refund attempts already made.",
+      "correct": true,
+      "reason": "An error that cannot be resolved locally is propagated together with partial results and what was attempted. The coordinator then sees that the order and account are verified and only the refund failed."
+    },
+    {
+      "letter": "F",
+      "text": "Have the coordinator repeat every lookup_order and get_customer call after each report, so that it can confirm for itself which of the reported timeouts were real failures.",
+      "correct": false,
+      "reason": "Recovery from transient failures belongs in the subagent, and those calls already returned valid data. Repeating them in the coordinator wastes time and does not separate resolved from unresolved errors."
+    }
+  ]
+}

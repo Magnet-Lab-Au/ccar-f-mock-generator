@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S53-T2",
+  "slot_id": "M5-S53",
+  "try": 2,
+  "point": "2.1-K2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S53-T1",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent issues refunds through the MCP tool process_refund, whose description reads only \"Refunds a customer for an order.\" Logs show that the agent always picks the right tool, but the backend rejects many of its calls. The agent sends amounts such as \"$45.00\" while the backend accepts only whole cents such as 4500, and it omits the item ID when a customer returns one item from a multi-item order. Which change most directly reduces these rejected calls?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Set tool_choice to force process_refund on every turn, so that the agent always reaches the refund tool as soon as a customer mentions a return.",
+      "correct": false,
+      "reason": "Tool selection is already correct, and forced tool selection only controls which tool is called, so it adds no input format or edge case guidance."
+    },
+    {
+      "letter": "B",
+      "text": "Make the agent retry each rejected process_refund call up to three times with the same arguments before it tells the customer that the refund could not be processed.",
+      "correct": false,
+      "reason": "Repeating the same badly formatted arguments gets the same rejection, because the description still gives no input format and no item ID edge case."
+    },
+    {
+      "letter": "C",
+      "text": "Expand the process_refund description to state that amounts are whole cents, show an example call, and say that single-item returns need the item ID.",
+      "correct": true,
+      "reason": "The guide says tool descriptions should include input formats, examples and edge cases; this adds the cents format, an example and the single-item return case."
+    },
+    {
+      "letter": "D",
+      "text": "Rename process_refund to refund_in_cents and keep its one-line description, so that the new tool name alone signals the expected amount format.",
+      "correct": false,
+      "reason": "The guide names the description as the primary mechanism, and a new name keeps the minimal description with no example and no item ID edge case."
+    }
+  ]
+}

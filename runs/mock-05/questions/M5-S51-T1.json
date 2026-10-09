@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S51-T1",
+  "slot_id": "M5-S51",
+  "try": 1,
+  "point": "2.1-K4",
+  "select": 1,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your support agent's system prompt tells it to use process_refund whenever a customer mentions a refund. The lookup_order description clearly states that it returns order and refund status, and its example queries include checking whether a refund has been paid. Logs show that refund status questions, such as whether the refund for order 4471 has gone through, trigger process_refund calls instead of lookup_order calls. What is the most likely cause of this misrouting?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "The lookup_order description lacks input formats and example queries, so the model cannot tell that refund status questions belong to lookup_order instead of process_refund.",
+      "correct": false,
+      "reason": "The scenario says the lookup_order description already covers refund status and gives matching example queries, so a weak description is not the cause."
+    },
+    {
+      "letter": "B",
+      "text": "The tool_choice setting is \"auto\", which lets the model ignore tool descriptions, so the agent picks process_refund at random for refund messages.",
+      "correct": false,
+      "reason": "With \"auto\" the model still selects tools from their descriptions, so this setting does not explain why refund status questions consistently go to process_refund."
+    },
+    {
+      "letter": "C",
+      "text": "The process_refund tool returns failures without the isError flag, so the agent keeps calling it instead of switching to lookup_order for status questions.",
+      "correct": false,
+      "reason": "Error reporting affects recovery after a call, but the logs show the wrong tool is chosen in the first place, which points to the system prompt wording."
+    },
+    {
+      "letter": "D",
+      "text": "The keyword-sensitive refund instruction in the system prompt ties the word refund to process_refund and overrides the clear lookup_order description.",
+      "correct": true,
+      "reason": "The guide states that keyword-sensitive system prompt wording can create unintended tool associations that override well-written tool descriptions."
+    }
+  ]
+}

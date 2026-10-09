@@ -1,0 +1,45 @@
+{
+  "question_id": "M5-S56-T1",
+  "slot_id": "M5-S56",
+  "try": 1,
+  "point": "5.3-K4",
+  "select": 2,
+  "request": 2,
+  "shown_try": null,
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "A customer asks to return items from three separate orders. Your coordinator agent spawns one subagent per order, and each subagent calls lookup_order. When any subagent fails, the coordinator currently ends the whole case and sends the customer a generic apology, even when the other two checks succeeded. A teammate proposes that subagents catch every lookup_order failure and return an empty order record marked as success, so that cases never stop. Which changes should the team make?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Adopt the teammate's proposal, so that the coordinator always receives a successful response and completes every return without stopping the case for a lookup failure.",
+      "correct": false,
+      "reason": "Returning empty results as success silently suppresses errors, which is an anti-pattern. The coordinator would then treat a failed lookup as an order with no data."
+    },
+    {
+      "letter": "B",
+      "text": "Keep ending the whole case on any failure, but first rerun all three subagents from the start once so that a transient lookup error has a second chance.",
+      "correct": false,
+      "reason": "The workflow still ends completely because of a single failure, which is an anti-pattern. Rerunning the subagents that succeeded also wastes their valid results."
+    },
+    {
+      "letter": "C",
+      "text": "Have a failed subagent report the failure type, the lookup it attempted and any partial results instead of returning a success response.",
+      "correct": true,
+      "reason": "Silent suppression is an anti-pattern. Structured error context such as the failure type, the attempted query and the partial results lets the coordinator make a recovery decision."
+    },
+    {
+      "letter": "D",
+      "text": "Let the coordinator finish the two orders whose checks succeeded and handle only the failed order through a retry or a targeted escalation.",
+      "correct": true,
+      "reason": "Ending a whole workflow because of one failure is an anti-pattern. It discards valid partial results. The coordinator should continue and recover only the failed part."
+    },
+    {
+      "letter": "E",
+      "text": "Have a failed subagent return a short generic status such as 'order lookup unavailable' so that the coordinator can move on without extra detail about the failure.",
+      "correct": false,
+      "reason": "A generic error status hides the failure type, the attempted query and the partial results. The coordinator then cannot choose an appropriate recovery."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S39-T5",
+  "slot_id": "M5-S39",
+  "try": 5,
+  "point": "4.1-S2",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S39-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline uses Claude Code to review pull requests in three categories: security, null-handling bugs, and naming conventions. A spot check of last month's findings shows false-positive rates of 6% for security, 9% for null-handling, and 68% for naming conventions, while security produces the most findings overall. Developers on several teams have now muted the review bot entirely. Which change should you make first?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Temporarily disable the security category because it produces the most findings, and keep the null-handling and naming-convention categories active.",
+      "correct": false,
+      "reason": "Finding volume is not the cause; the noisy naming category stays active and keeps undermining trust, and accurate security findings are lost."
+    },
+    {
+      "letter": "B",
+      "text": "Temporarily disable the naming-convention category and keep security and null-handling active, then re-enable naming after its rewritten criteria pass testing.",
+      "correct": true,
+      "reason": "Temporarily disabling the one high false-positive category restores developer trust in the accurate categories while you improve the prompt for that category."
+    },
+    {
+      "letter": "C",
+      "text": "Keep all three categories active, and add an instruction telling Claude to be conservative and report only naming issues it is sure about.",
+      "correct": false,
+      "reason": "The guide says general instructions like \"be conservative\" fail to improve precision compared to specific categorical criteria."
+    },
+    {
+      "letter": "D",
+      "text": "Replace the naming-convention category with a broader code-style category that also covers formatting, comment wording, and file layout.",
+      "correct": false,
+      "reason": "A broader, vaguer category moves away from explicit criteria, keeps noisy findings reaching developers, and does nothing to restore their trust."
+    }
+  ]
+}

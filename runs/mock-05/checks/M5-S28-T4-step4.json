@@ -1,0 +1,101 @@
+{
+  "question_id": "M5-S28-T4",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B3",
+      "detail": "The reason for option D says that the guide recommends tables for numeric data. The guide only says to render financial data as tables. Benchmark latency figures are not financial data, so the reason overstates what the guide says.",
+      "letter": "D",
+      "point": "5.6-S5",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "f045a8a246b28af0043416ef4ec7dd500d46789355fb539a898453c8e8b298f5",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "A"
+    ],
+    "reason": "An instruction to give one definitive value per metric pushes Claude to pick one credible figure and drop the other, when it should report both with attribution and annotate the conflict. B fails because both reports come from the same week, so no temporal difference is involved. C fails because claim-source mappings preserve attribution rather than forcing a single source. D fails because a table can easily show two attributed values.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "fail",
+      "finding": "The reason for option D says that the guide recommends tables for numeric data. The guide only says to render financial data as tables. Benchmark latency figures are not financial data, so the reason overstates what the guide says.",
+      "letter": "D",
+      "point": "5.6-S5"
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    },
+    {
+      "name": "slash command",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

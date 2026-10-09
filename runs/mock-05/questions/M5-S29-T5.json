@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S29-T5",
+  "slot_id": "M5-S29",
+  "try": 5,
+  "point": "3.4-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S29-T4",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your team uses Claude Code for several different tasks during this sprint. The team lead wants the Explore subagent used only where it protects the main conversation from context exhaustion. All simpler work should stay in the main conversation. For which task is the Explore subagent most appropriate?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "A single-file bug fix where the stack trace already names the failing line and the needed change is clear.",
+      "correct": false,
+      "reason": "This is a well-understood change with clear scope. The guide gives it as a case for direct execution, and it has no verbose discovery phase to isolate."
+    },
+    {
+      "letter": "B",
+      "text": "The implementation phase of a migration, where the list of files and the edits were already decided earlier in plan mode.",
+      "correct": false,
+      "reason": "The Explore subagent is for verbose discovery phases. After planning, the guide pairs the planned implementation with direct execution, so the discovery work is already done."
+    },
+    {
+      "letter": "C",
+      "text": "A framework upgrade where Claude Code must first search hundreds of files for deprecated calls, before separate planning and implementation phases.",
+      "correct": true,
+      "reason": "This is a multi-phase task with a verbose discovery phase. The Explore subagent isolates that output and returns a summary, so the main context stays free for the later phases."
+    },
+    {
+      "letter": "D",
+      "text": "Adding one date validation conditional to a known function, where the scope of the change is clear from the start.",
+      "correct": false,
+      "reason": "The guide names a date validation conditional as a simple, well-scoped change for direct execution. It has no verbose discovery that could exhaust the context."
+    }
+  ]
+}

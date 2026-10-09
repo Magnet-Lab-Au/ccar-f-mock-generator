@@ -1,0 +1,97 @@
+{
+  "question_id": "M5-S39-T4",
+  "step": 4,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 4,
+      "rule": "B9",
+      "detail": "The question repeats the scene of M1-S56-T1. That scene is a CI review with several categories, one category with a high false-positive rate, and developers who ignore all findings, including security findings. The correct action is the same: disable only the noisy category and keep the others. More than one wrong option also repeats. Option A, stopping all findings, matches the earlier option that turns off the entire review. Option C, confidence-based filtering, matches the earlier high-confidence instruction. Option D, keeping the category active but marked differently, matches the earlier option of keeping all categories with a note to double-check. Only the category name, the number of categories and the two-week timeframe change.",
+      "letter": null,
+      "point": "4.1-S2",
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "f8c3cf7f1e0b25a6fdddc832dd03f1f1277d7a73ded9500beb58671d5cebd55a",
+  "date": "2026-10-09",
+  "blind_answer": {
+    "status": "answered",
+    "selected": [
+      "B"
+    ],
+    "reason": "Per 4.1-S2, temporarily disabling the high false-positive category restores developer trust while its prompt is improved. Meanwhile, the accurate security, logic-bug and missing-test categories keep delivering value. Option A throws away valid findings. Option C relies on self-reported confidence filtering, which is unreliable. Option D still floods developers with noise.",
+    "agrees": true
+  },
+  "results": [
+    {
+      "rule": "B1",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B2",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B3",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B4",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B5",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B6",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B7",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B8",
+      "result": "pass",
+      "finding": null,
+      "letter": null,
+      "point": null
+    },
+    {
+      "rule": "B9",
+      "result": "fail",
+      "finding": "The question repeats the scene of M1-S56-T1. That scene is a CI review with several categories, one category with a high false-positive rate, and developers who ignore all findings, including security findings. The correct action is the same: disable only the noisy category and keep the others. More than one wrong option also repeats. Option A, stopping all findings, matches the earlier option that turns off the entire review. Option C, confidence-based filtering, matches the earlier high-confidence instruction. Option D, keeping the category active but marked differently, matches the earlier option of keeping all categories with a note to double-check. Only the category name, the number of categories and the two-week timeframe change.",
+      "letter": null,
+      "point": "4.1-S2"
+    }
+  ],
+  "features": [
+    {
+      "name": "Claude Code",
+      "found": true
+    }
+  ],
+  "model": "claude-opus-5-5"
+}

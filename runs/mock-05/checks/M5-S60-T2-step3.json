@@ -1,0 +1,25 @@
+{
+  "question_id": "M5-S60-T2",
+  "step": 3,
+  "verdict": "fail",
+  "findings": [
+    {
+      "step": 3,
+      "rule": "A1",
+      "detail": "The options do not have the letters A to E in sequence.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    },
+    {
+      "step": 3,
+      "rule": "A2",
+      "detail": "The question has 6 options. The slot needs 5.",
+      "letter": null,
+      "point": null,
+      "other_questions": []
+    }
+  ],
+  "fingerprint": "73e33c7d38ffb6d5a73c79d87f26d2e52413f5ccbb0cf374f9e4b079bea70927",
+  "date": "2026-10-09"
+}
