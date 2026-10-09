@@ -20,13 +20,14 @@ Option 1.
 1. **The findings of the second review** (not marks of the owner):
    - M4-S43: a rewrite. It copied M3-S19 and repeated M4-S45 in the same scenario: one customer message with several concerns. The new question keeps point 1.2-K4 with a broad investigation (decision D007 in `runs/mock-04/owner-decisions.json`).
    - M4-S09: a new option C. The old option C was the second wrong option on the model's own confidence in scenario 6 (ruling 2). The program cannot change one option only, so the writer got the question with the instruction to keep everything and replace option C (D008). The new question has the same text and three of the same options.
-2. **Round 2 was not marked by the owner.** The second review in Cowork found M4-S09-T2 and M4-S43-T3 good. On the instruction of the owner, the assistant typed "good" for both in `marking/M4-round2.xlsx` and committed the file. The owner did not read them.
-3. **Known limits of mock 4:**
+2. **Round 1:** the owner states that they did not read the 20 questions of round 1. The marks in `marking/M4-round1.xlsx` (20 of 20 good) are recorded as they are.
+3. **Round 2 was not marked by the owner.** The second review in Cowork found M4-S09-T2 and M4-S43-T3 good. On the instruction of the owner, the assistant typed "good" for both in `marking/M4-round2.xlsx` and committed the file. The owner did not read them.
+4. **Known limits of mock 4:**
    - M4-S43 is close to sample question 7 of the guide: the same structure, but a new setting, and it asks for the fix instead of the cause.
    - The comparison with mocks 1 to 3 (an independent agent): 19 questions are close to an earlier question (the same idea and a similar scene), and 40 share only the idea. The one copy, M4-S43, was rewritten.
    - The findings of rules D2 and D3 of step 6 (D009 to D012, D014, D019 and D020): one wrong idea in too many questions, in scenarios 6, 3 and 1. Finding M4-SC6-R2-F4 (rule D3) still names M4-S03 and M4-S04 after the rewrite of M4-S09.
-4. **The findings of rule D4 are ignored** (D013, D015 to D018, D021 to D025), as for mocks 2 and 3.
-5. **The owner accepted mock 4.** Step 8 built `mocks/mock-04.questions.json` and `mocks/mock-04.answers.json`. Mock 4 cost $12.83.
+5. **The findings of rule D4 are ignored** (D013, D015 to D018, D021 to D025), as for mocks 2 and 3.
+6. **The owner accepted mock 4.** Step 8 built `mocks/mock-04.questions.json` and `mocks/mock-04.answers.json`. Mock 4 cost $12.83.
 
 ## Reason
 
