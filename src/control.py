@@ -267,12 +267,18 @@ class Control:
             request = self._step5(request, q, found + [owner])
             request["other_questions"] = [self._question(i) for i in others]
             return request
-        # more_tries: the last try before the decision.
+        # more_tries: the last try before the decision. Since decision 0074 the
+        # writer also gets the reason of the owner, as an instruction.
         tries = self.tries(slot["slot_id"])
         last = tries[-1]
+        owner = []
+        if event.get("decision", {}).get("reason"):
+            owner = [{"step": 7, "rule": "owner", "detail": event["decision"]["reason"],
+                      "letter": None, "point": None, "other_questions": []}]
         if last["status"] == "cannot_write":
+            request["findings"] = owner
             return request
-        return self._step5(request, last, self._check_findings(last))
+        return self._step5(request, last, self._check_findings(last) + owner)
 
     def _step5(self, request, question, findings):
         request.update({"step": 5, "shown_try": question["question_id"],

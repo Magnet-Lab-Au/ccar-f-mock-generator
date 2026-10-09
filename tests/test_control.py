@@ -111,6 +111,16 @@ class TestCaseA(Base):
         self.assertEqual(self.status(c, "M1-S05")["tries"], 5)
         self.assertEqual(report["state"], "ready_to_mark")
 
+    def test_more_tries_gives_the_reason_of_the_owner_to_the_writer(self):
+        # Decision 0074: the reason of the owner goes to the writer.
+        self.steps.model_script["M1-S05"] = ["fail", "fail", "fail", "pass"]
+        c = self.control()
+        c.run()
+        c.decide("more_tries", "M1-S05", "Use the second problem of the point.")
+        c.run()
+        req = c.request_for(c._slot("M1-S05"), dict(c.slot_state(c._slot("M1-S05")), in_round=[]))
+        self.assertIn("Use the second problem of the point.", [f["detail"] for f in req["findings"]])
+
     def test_a_decision_on_a_slot_that_is_not_open_is_refused(self):
         c = self.control()
         c.run()

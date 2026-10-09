@@ -1,0 +1,37 @@
+[
+  {
+    "id": "D001",
+    "action": "new_point",
+    "target": "M5-S28",
+    "reason": "B9 failed three times on the problem of an earlier question. The owner gives a new point.",
+    "date": "2026-10-09",
+    "after_try": 3,
+    "point": "5.6-K3"
+  },
+  {
+    "id": "D002",
+    "action": "new_point",
+    "target": "M5-S29",
+    "reason": "B9 failed three times on the problem of an earlier question. The owner gives a new point.",
+    "date": "2026-10-09",
+    "after_try": 3,
+    "point": "3.4-S3"
+  },
+  {
+    "id": "D003",
+    "action": "new_point",
+    "target": "M5-S39",
+    "reason": "B9 failed three times on the problem of an earlier question. The owner gives a new point.",
+    "date": "2026-10-09",
+    "after_try": 3,
+    "point": "4.1-S2"
+  },
+  {
+    "id": "D004",
+    "action": "more_tries",
+    "target": "M5-S38",
+    "reason": "B9 failed three times on the problem of resubmitting failed requests. Use the second problem of the point instead: custom_id to match each answer to its request, because batch results do not come back in the order of the requests.",
+    "date": "2026-10-09",
+    "after_try": 3
+  }
+]
