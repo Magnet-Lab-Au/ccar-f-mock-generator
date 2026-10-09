@@ -22,4 +22,9 @@ Sections:
 
 A script makes each section: `make-section-step-1.py` makes step 1, and `make-sections.py` makes steps 2 to 8. Step 0 has no section yet: it ran before the build guide existed.
 
+## What participants should know about the mocks
+
+- **Mocks 4 and 5 often test the same problem as mocks 1 to 3, in a new setting.** The guide has 95 ideas, and 5 mocks have 300 questions, so each idea comes back. For most ideas the guide gives almost only one problem and one answer. The program blocks only copies: a question with the same scene, the same answer and the same wrong options as an earlier one (decisions 0060, 0066 and 0072).
+- **No person reads the questions of mocks 4 and 5.** The writer, the checkers and the second review are all Claude models. The owner read and marked the questions of mocks 1 to 3 (decisions 0069 and 0071).
+
 A deviation from the exam guide is shown openly in its section: what the guide teaches, what the build does instead, and the source with its page, section and exact text. Decision 0040 is the first case: the model steps use structured outputs, not a forced tool call.

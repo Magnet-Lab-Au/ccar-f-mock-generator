@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. Diagram 11 shows the narrow ideas.
 
 ## Question
@@ -24,7 +25,7 @@ Option 1. The list `data/narrow-ideas.json` now has 24 groups. Added (G041 on th
 | G074 | A retry cannot help when the information is absent from the source |
 | G041 | Callers behind a wrapper module: list the exported names, then search for each |
 
-M4-S06, M4-S50 and M4-S54 get 3 more tries, with the copy rule. In the same round, the owner gave M4-S23 the new point 2.1-S1 (decision 0045), and M4-S27 3 more tries, because its last try failed on the form, not on B9.
+M4-S06, M4-S50 and M4-S54 get 3 more tries, with the copy rule. In the same round, the owner gave M4-S23 the new point 2.1-S1 (the action new_point of decision 0039, item 7, with a point that the owner gives; since 9 October 2026 the program checks such a point with the three conditions of decision 0045), and M4-S27 3 more tries, because its last try failed on the form, not on B9.
 
 **Addition, the same day.** M4-S27 then failed B9 three more times, each time on the problem of M2-S11 (a function changes behind a wrapper module, and the answer is to list the wrapper's exports and search for each). Its idea G041 has one point (2.5-S5) and almost only one problem. The owner added G041 to the list and gave M4-S27 3 more tries. The copy rule still holds: not the same scene, answer and wrong options as M2-S11.
 
@@ -38,7 +39,7 @@ Plain reason: each of the three slots failed B9 three times on the same problem 
 
 The assistant suggested to add the three ideas, the new point for M4-S23 and more tries for M4-S27. The owner agreed to all three. After the second failure of M4-S27, the assistant suggested G041 too, and the owner agreed. The owner also asked for a check of all point groups before mock 5: each group where one point gives both the scene and the answer, as for G041. The list waits for the owner.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. The second review in Cowork checked it. No independent reviewer of Claude Code checked this file.
 
 ## Exam guide points
 

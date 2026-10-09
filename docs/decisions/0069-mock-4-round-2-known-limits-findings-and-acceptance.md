@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 
 ## Question
@@ -24,14 +25,14 @@ Option 1.
 3. **Round 2 was not marked by the owner.** The second review in Cowork found M4-S09-T2 and M4-S43-T3 good. On the instruction of the owner, the assistant typed "good" for both in `marking/M4-round2.xlsx` and committed the file. The owner did not read them.
 4. **Known limits of mock 4:**
    - M4-S43 is close to sample question 7 of the guide: the same structure, but a new setting, and it asks for the fix instead of the cause.
-   - The comparison with mocks 1 to 3 (an independent agent): 19 questions are close to an earlier question (the same idea and a similar scene), and 40 share only the idea. The one copy, M4-S43, was rewritten.
+   - The comparison with mocks 1 to 3 (an independent agent): 19 questions are close to an earlier question (the same idea and a similar scene), and 40 share only the idea. 12 of the 40 keep nearly the same scene and only ask the cause instead of the fix, so 31 of the 60 questions are close. The one copy, M4-S43, was rewritten.
    - The findings of rules D2 and D3 of step 6 (D009 to D012, D014, D019 and D020): one wrong idea in too many questions, in scenarios 6, 3 and 1. Finding M4-SC6-R2-F4 (rule D3) still names M4-S03 and M4-S04 after the rewrite of M4-S09.
 5. **The findings of rule D4 are ignored** (D013, D015 to D018, D021 to D025), as for mocks 2 and 3.
 6. **The owner accepted mock 4.** Step 8 built `mocks/mock-04.questions.json` and `mocks/mock-04.answers.json`. Mock 4 cost $12.83.
 
 ## Reason
 
-Plain reason: the marking files and the second review found each marked question good. The rule for the findings is the rule of decisions 0059 and 0064.
+Plain reason: nobody read the 20 questions of round 1. The second review in Cowork found 2 questions to fix, and both were rewritten. It found the 2 new questions good. The rule for the findings is the rule of decisions 0059 and 0064.
 
 The correct letters of mock 4 are not balanced: in the 52 questions with one answer, D is correct 22 times and B 8 times (chance is 13). In the 20 questions that the owner marked, B was never correct. The letters stay, because a change after the checks breaks the fingerprints of the build. Decision 0070 balances the letters from mock 5.
 
@@ -39,7 +40,7 @@ The correct letters of mock 4 are not balanced: in the 52 questions with one ans
 
 The owner gave one instruction for all points: "Round 2: I do not mark. Use the second review in Cowork as the marks", the known limit of M4-S43, "the step 6 findings of mock 4 follow the rule of mocks 2 and 3", and "Accept and build mock 4, and push to GitHub."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. The second review in Cowork checked it. No independent reviewer of Claude Code checked this file.
 
 ## Exam guide points
 

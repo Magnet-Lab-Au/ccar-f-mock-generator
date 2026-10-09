@@ -1,6 +1,6 @@
 {
   "decision": "0066",
-  "status": "confirmed by the owner on 9 October 2026 (decision 0066), with 4 groups added on 9 October 2026 (decision 0068)",
+  "status": "decisions 0066, 0068 and 0072",
   "groups": [
     {
       "id": "G001",
@@ -9,6 +9,26 @@
     {
       "id": "G002",
       "problem": "The model repeats a step: the tool result is not sent back in the next request"
+    },
+    {
+      "id": "G004",
+      "problem": "Hub and spoke: all routing through the coordinator"
+    },
+    {
+      "id": "G005",
+      "problem": "Subagents get no parent context: pass it in the prompt"
+    },
+    {
+      "id": "G006",
+      "problem": "Coordinator selects subagents by the query"
+    },
+    {
+      "id": "G007",
+      "problem": "Too narrow decomposition leaves gaps in coverage"
+    },
+    {
+      "id": "G008",
+      "problem": "Partition the scope so subagents do not duplicate work"
     },
     {
       "id": "G010",
@@ -23,8 +43,32 @@
       "problem": "Subagents run one after another: emit several Task calls in one response"
     },
     {
+      "id": "G017",
+      "problem": "Structured handoff summary to a human"
+    },
+    {
+      "id": "G018",
+      "problem": "Split a multi-concern request into items"
+    },
+    {
+      "id": "G019",
+      "problem": "PostToolUse hook normalizes data formats"
+    },
+    {
+      "id": "G020",
+      "problem": "Per-file passes plus a cross-file integration pass"
+    },
+    {
       "id": "G021",
       "problem": "Continue a named earlier session: --resume with its name"
+    },
+    {
+      "id": "G022",
+      "problem": "Tell a resumed session which files changed"
+    },
+    {
+      "id": "G025",
+      "problem": "Keywords in the system prompt override tool descriptions"
     },
     {
       "id": "G027",
@@ -33,6 +77,10 @@
     {
       "id": "G034",
       "problem": "Which MCP tools the agent has: all servers' tools, found at connection"
+    },
+    {
+      "id": "G035",
+      "problem": "MCP resources expose content catalogs"
     },
     {
       "id": "G037",
@@ -47,12 +95,24 @@
       "problem": "Edit fails on text that is not unique: Read, then Write"
     },
     {
+      "id": "G040",
+      "problem": "Grep for entry points, then Read to follow the flow"
+    },
+    {
       "id": "G041",
       "problem": "Callers behind a wrapper module: list the exported names, then search for each"
     },
     {
+      "id": "G043",
+      "problem": "User-level CLAUDE.md is not shared with the team"
+    },
+    {
       "id": "G044",
       "problem": "Each package needs its own standards file: @import in its CLAUDE.md"
+    },
+    {
+      "id": "G045",
+      "problem": "Split a large CLAUDE.md into .claude/rules/ files"
     },
     {
       "id": "G046",
@@ -63,12 +123,24 @@
       "problem": "Share a command with the team: .claude/commands/ in the repository"
     },
     {
+      "id": "G050",
+      "problem": "Personal skill variants with other names"
+    },
+    {
       "id": "G051",
       "problem": "A skill must not use some tools: allowed-tools in its frontmatter"
     },
     {
       "id": "G052",
       "problem": "A skill runs with a missing argument: argument-hint"
+    },
+    {
+      "id": "G056",
+      "problem": "Plan mode first, then direct execution"
+    },
+    {
+      "id": "G058",
+      "problem": "Tests first, then share the failures"
     },
     {
       "id": "G059",
@@ -87,16 +159,96 @@
       "problem": "CI needs machine-readable output: --output-format json with --json-schema"
     },
     {
+      "id": "G063",
+      "problem": "CLAUDE.md gives CI the testing standards"
+    },
+    {
+      "id": "G064",
+      "problem": "Independent review instance, not self-review"
+    },
+    {
+      "id": "G065",
+      "problem": "Give prior findings, report only new issues"
+    },
+    {
+      "id": "G066",
+      "problem": "Give existing tests to avoid duplicate tests"
+    },
+    {
+      "id": "G068",
+      "problem": "False positives lose trust: disable the noisy category"
+    },
+    {
+      "id": "G069",
+      "problem": "Severity criteria with code examples"
+    },
+    {
+      "id": "G070",
+      "problem": "Tool use with a JSON schema for structured output"
+    },
+    {
+      "id": "G073",
+      "problem": "Format normalization rules in the prompt"
+    },
+    {
       "id": "G074",
       "problem": "A retry cannot help when the information is absent from the source"
+    },
+    {
+      "id": "G075",
+      "problem": "detected_pattern field to analyze dismissals"
     },
     {
       "id": "G077",
       "problem": "A batch request needs tool calls in the middle: the Batch API cannot do that"
     },
     {
+      "id": "G079",
+      "problem": "Batch frequency from the SLA"
+    },
+    {
+      "id": "G080",
+      "problem": "Refine the prompt on a sample before the batch"
+    },
+    {
+      "id": "G082",
+      "problem": "Case facts block outside the summarized history"
+    },
+    {
       "id": "G083",
       "problem": "Findings in the middle of a long input are missed: key findings first, with headers"
+    },
+    {
+      "id": "G087",
+      "problem": "Several matches: ask for more identifiers"
+    },
+    {
+      "id": "G088",
+      "problem": "Coverage annotations for gaps in the synthesis"
+    },
+    {
+      "id": "G089",
+      "problem": "Scratchpad files against context degradation"
+    },
+    {
+      "id": "G090",
+      "problem": "Crash recovery with state manifests"
+    },
+    {
+      "id": "G091",
+      "problem": "Summarize one phase before the next subagents"
+    },
+    {
+      "id": "G092",
+      "problem": "Aggregate accuracy hides weak segments"
+    },
+    {
+      "id": "G093",
+      "problem": "Stratified random sampling of high-confidence output"
+    },
+    {
+      "id": "G095",
+      "problem": "Each content type in its own format"
     }
   ]
 }

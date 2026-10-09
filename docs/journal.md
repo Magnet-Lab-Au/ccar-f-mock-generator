@@ -19,11 +19,12 @@ One entry for each work session. Newest entry first.
 - Decision 0069: the known limits of mock 4 (M4-S43 is close to sample question 7, 19 close repeats, and the D2 and D3 findings), the D4 findings ignored, and the acceptance. Step 8 built mock 4. Mock 4 cost $12.83.
 - Decision 0070: from mock 5 the plan sets balanced correct letters, and a note for the portal: show the options in a random order on each attempt. Decision 0071: the second review in Cowork marks mock 5, not the owner. 226 tests pass. Diagrams 02, 04 and 12 and the build guide sections of steps 1 and 2 show the changes.
 
+- Decision 0072: the 38 sure narrow groups join the list (62 of 95). The 11 judgment calls keep the stricter rule. The build guide tells participants plainly that mocks 4 and 5 often test the same problem as mocks 1 to 3 in a new setting, that only copies are blocked, and that no person reads the questions of mocks 4 and 5.
+- Fixes before the confirmation: 0069 (nobody read round 1, the second review found 2 questions to fix, 31 of 60 close), 0071 (no person reads mocks 4 and 5, the owner agreed to mark mocks 1 and 2 only), 0068 (the new point of an open slot is decision 0039, item 7, not 0045. The citation of 0045 in 0071 is right). The owner confirmed 0068 to 0072. The second review in Cowork checked them.
+
 **Open**
 
-- The owner decides the narrow list for mock 5 (an agent found 38 more narrow groups and 11 judgment calls).
-- The owner confirms the texts of decisions 0068 to 0071.
-- Mock 5 waits for the owner.
+- Mock 5 (scenarios 1, 2, 4 and 5): the second review marks it (decision 0071).
 - (Done: the owner confirmed decision 0067 and gave the go for mock 4.)
 
 ## 9 October 2026, the stricter rule B9

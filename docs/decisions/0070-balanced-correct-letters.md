@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1). Diagram 04 (step 2) shows how the writer's options get their letters.
 
 ## Question
@@ -30,7 +31,7 @@ Plain reason: in the exam, a participant must not gain from a letter. A balanced
 
 The assistant counted the letters of mock 4 on the request of the owner and suggested the rule for mock 5. The owner agreed, and added the note for the portal.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The owner confirmed the text of this file on 9 October 2026. The second review in Cowork checked it. No independent reviewer of Claude Code checked this file.
 
 ## Exam guide points
 
