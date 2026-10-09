@@ -58,7 +58,7 @@ Read these only when you need them:
 State on 9 October 2026.
 
 - **All 5 mocks are built** in `mocks/`: `mock-0N.questions.json` and `mock-0N.answers.json`. The cost of the runs: mock 1 $17.17, mock 2 $20.73, mock 3 $23.85, mock 4 $12.83, mock 5 $11.68 (plus under $1 of a stopped run, decision 0073).
-- **Decisions 0001 to 0078** record the design and each change. The owner confirmed the texts of 0001 to 0072. Decisions 0073 to 0078 wait for the confirmation of the owner. Decision 0078 corrects lines of the confirmed decisions 0045, 0046, 0047, 0049, 0051, 0058, 0059, 0061, 0064, 0068, 0069 and 0071.
+- **Decisions 0001 to 0078** record the design and each change. The owner confirmed the texts of 0001 to 0078. Decision 0078 corrects lines of the confirmed decisions 0045, 0046, 0047, 0049, 0051, 0058, 0059, 0061, 0064, 0068, 0069 and 0071.
 - **The marks.** The owner read and marked mocks 1 to 3. For mock 4 the owner did not read the questions. The second review in Cowork, a Claude model, marked mocks 4 and 5 (decisions 0069, 0071 and 0073). So no person read the questions of mocks 4 and 5.
 - **The rules across mocks.** Point groups (decisions 0047, 0048), the spread of ideas (0050), no repeat of an earlier question with rule B9 (0056, stricter in 0066), the narrow list of 63 of 95 ideas that keep the copy rule (0066, 0068, 0072, 0075), the fixed scenarios of mocks 3 to 5 (0057), and no copy across mocks (0060).
 - **Other rules since mock 1:** rule A12 on the longest option (0053), two-answer points (0054), rule B8 against copies of the sample questions (0055), rule C3 over the whole mock (0052), prompt caching (0067), balanced correct letters from mock 5 (0070), the reason of the owner after more tries (0074).
@@ -119,9 +119,8 @@ Not decided:
 
 ## The next steps
 
-1. The owner confirms the texts of decisions 0073 to 0078.
-2. A converter from the two files of each mock to the format of the portal, when that format is known (decision 0036). The notes for the portal are in `docs/portal-notes.md`.
-3. The workbook `docs/coverage/task-statement-decisions.xlsx`: its three yellow columns are still empty (decision 0018).
+1. A converter from the two files of each mock to the format of the portal, when that format is known (decision 0036). The notes for the portal are in `docs/portal-notes.md`.
+2. The workbook `docs/coverage/task-statement-decisions.xlsx`: its three yellow columns are still empty (decision 0018).
 
 ### History: the 10 serious items of the second review, after decision 0038
 
@@ -151,7 +150,6 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 
 | Open item | Note |
 |---|---|
-| The texts of decisions 0073 to 0078 | Not confirmed by the owner yet |
 | The format of the portal | Not known. Step 8 writes our own two files. A converter comes later (decision 0036). `docs/portal-notes.md` has the notes for it. |
 | The copy of the exam guide | `reference/exam-guide.md` is not compared with the original, character for character. |
 | A repeat with different words | Rule B9 is a judgment of a model. It can fail a good question or pass a close one (decision 0066). |

@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/07-step-5-try-again.html` (step 5) shows the reason of the owner in the request of a new try.
 
 ## Question
@@ -19,6 +20,8 @@ Option 1. After a decision `more_tries`, the request of step 5 has the findings 
 
 In the same round, the owner gave new points to three open slots of mock 5: M5-S28 the point 5.6-K3, M5-S29 the point 3.4-S3 and M5-S39 the point 4.1-S2. M5-S38 got 3 more tries with the instruction above.
 
+The result: the final M5-S38 still answers "resubmit only the failed requests" (option A, with option B). Matching answers to requests by custom_id appears only as a wrong option (option D). The instruction reached the writer, but the question did not follow it.
+
 ## Reason
 
 Plain reason: the owner's reason says what the next try must do differently. Without it, the writer repeats the same problem, as M5-S38 did three times.
@@ -27,7 +30,7 @@ Plain reason: the owner's reason says what the next try must do differently. Wit
 
 The owner agreed to the four slot decisions and gave the instruction for M5-S38. The assistant found that the program did not pass the reason, and made the change so that the instruction reaches the writer.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 

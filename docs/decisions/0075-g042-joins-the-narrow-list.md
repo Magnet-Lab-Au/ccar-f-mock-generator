@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/11-repeats-across-mocks.html` shows the narrow list of 63 groups.
 
 ## Question
@@ -32,7 +33,7 @@ Plain reason: task statement 3.3 has one idea with almost only one problem. The 
 
 The assistant suggested to move the slot to 3.2-S4 with an exception to decision 0027. The owner said no: "Keep M5-S37 on task statement 3.3, so decision 0027 holds and the program does not change. Add G042 to the narrow list in a new decision, and give M5-S37 3 more tries."
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 

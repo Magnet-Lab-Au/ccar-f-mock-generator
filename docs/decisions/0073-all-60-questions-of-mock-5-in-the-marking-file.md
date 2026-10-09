@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/09-step-7-the-owner-marks-the-questions.html` (step 7) shows it.
 
 ## Question
@@ -31,7 +32,7 @@ The stop limit for 60 marks is the limit of mock 1. The owner did not name a lim
 
 The owner said: "Put all 60 questions of mock 5 in the marking file." The assistant chose the stop limit of mock 1 for 60 marks.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 

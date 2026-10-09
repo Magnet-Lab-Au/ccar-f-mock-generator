@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html` shows mock 5 as built. Diagram 08 (step 6) shows the rule for the findings.
 
 ## Question
@@ -18,7 +19,7 @@ The second review marked round 2 of mock 5: M5-S33 and M5-S45 good. Step 6 had 1
 Option 1.
 
 1. **Round 2:** marks of the second review, not of the owner. On the instruction of the owner, the assistant typed them into `marking/M5-round2.xlsx` and committed the file.
-2. **The findings of rule D4 (9)** are ignored. The findings of rules D2 and D3 (4) are known limits. One of them, M5-SC5-R2-F5 (rule D3), names M5-S40: two wrong options of one question use the model's own confidence as a gate.
+2. **The findings of rule D4 (9)** are ignored. The findings of rules D2 and D3 (4) are known limits. One of them, M5-SC5-R2-F5 (rule D3), names M5-S40: two wrong options of one question use the model's own confidence as a gate. The second review counts option B of M5-S40 (be careful and conservative) as the general instruction "be conservative" of point 4.1-K2, not as a self-reported confidence option. So ruling 2 holds in scenario 5: only option A is on self-reported confidence.
 3. **The finding of rule D1, M5-SC4-R1-F1, is a known limit.** Option D of M5-S02 (spawn the subagents at the same time) is the answer of M5-S05 (emit all Task calls in one response). The point 1.4-S2 of M5-S02 names parallel investigation itself, and M5-S05 tests the Task tool mechanism.
 4. The decisions are D007 to D020 in `runs/mock-05/owner-decisions.json`.
 5. **The owner accepted mock 5.** Step 8 built `mocks/mock-05.questions.json` and `mocks/mock-05.answers.json`. Mock 5 cost $11.68 in its run records, plus under $1 of a stopped run (decision 0073).
@@ -33,7 +34,7 @@ Plain reason: the second review found each question good after the 2 rewrites, a
 
 The owner said: "use the same rule as mocks 2 to 4 ... If a finding is of another kind, show it to me first." The assistant showed the D1 finding and suggested a known limit. The owner said yes, and asked to accept and build mock 5.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 

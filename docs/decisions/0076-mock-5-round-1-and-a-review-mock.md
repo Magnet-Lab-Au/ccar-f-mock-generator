@@ -2,6 +2,7 @@
 
 - Date: 9 October 2026
 - Status: accepted
+- Text confirmed by the owner: 9 October 2026
 - Diagram: none. No step changes.
 
 ## Question
@@ -34,7 +35,7 @@ Plain reason: the copy breaks decision 0060, and the repeat inside the mock and 
 
 The owner gave the marks of the second review and the reasons, decided that M5-S41 stays, and asked for the known limit and the note on the review mock.
 
-The owner has not confirmed the text of this file. No independent reviewer checked this file.
+The second review in Cowork checked this file. The owner confirmed the text of this file on 9 October 2026.
 
 ## Exam guide points
 
