@@ -41,5 +41,14 @@
     "reason": "G042 joins the narrow list (decision 0075). The copy rule holds: no copy of sample question 6 of the guide, and no copy of a question of an earlier mock.",
     "date": "2026-10-09",
     "after_try": 3
+  },
+  {
+    "id": "D006",
+    "action": "new_point",
+    "target": "M5-S60",
+    "reason": "B9 failed twice on the problem of M3-S24 and M2-S07, and once the form failed. The owner gives a new point that no mock used.",
+    "date": "2026-10-09",
+    "after_try": 3,
+    "point": "2.2-S1"
   }
 ]

@@ -3,7 +3,6 @@
   "date": "2026-10-09",
   "state": "waits_for_owner",
   "waiting_for": [
-    "open slot M5-S37: three_tries",
     "open slot M5-S60: three_tries"
   ],
   "slots": [
@@ -261,12 +260,10 @@
     },
     {
       "slot_id": "M5-S37",
-      "status": "open",
-      "question_id": "M5-S37-T3",
-      "tries": 3,
-      "open_reasons": [
-        "three_tries"
-      ]
+      "status": "passed",
+      "question_id": "M5-S37-T4",
+      "tries": 4,
+      "open_reasons": []
     },
     {
       "slot_id": "M5-S38",

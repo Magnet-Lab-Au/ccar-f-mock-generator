@@ -1,0 +1,39 @@
+{
+  "question_id": "M5-S37-T4",
+  "slot_id": "M5-S37",
+  "try": 4,
+  "point": "3.3-S3",
+  "select": 1,
+  "request": 5,
+  "shown_try": "M5-S37-T3",
+  "status": "written",
+  "date": "2026-10-09",
+  "model": "claude-opus-5-5",
+  "question": "Your CI pipeline runs Claude Code to review pull requests and generate tests in a repository with forty service directories under services/. Data-retention conventions apply only to files inside services/payments. Input-validation conventions apply to every file named *.handler.ts, and such handler files sit in every service directory. You want each set of conventions to load automatically, and only when Claude Code works on matching files. Which configuration best meets this goal?",
+  "options": [
+    {
+      "letter": "A",
+      "text": "Put the data-retention conventions in a CLAUDE.md file inside services/payments, and put the input-validation conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.handler.ts\"].",
+      "correct": true,
+      "reason": "The data-retention conventions belong to one directory, so a directory-level CLAUDE.md fits them. The handler files are spread across the codebase, so a path-specific rule with a glob pattern covers every handler file in any directory."
+    },
+    {
+      "letter": "B",
+      "text": "Put the input-validation conventions in a CLAUDE.md file inside services/payments, and put the data-retention conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.ts\"].",
+      "correct": false,
+      "reason": "This swaps the mechanisms. A CLAUDE.md in services/payments never reaches the handler files in the other service directories, and the **/*.ts rule loads the data-retention conventions for every TypeScript file in the repository."
+    },
+    {
+      "letter": "C",
+      "text": "Put both sets of conventions in one .claude/rules/ file whose YAML frontmatter sets paths: [\"services/**/*\"], so that they load for any file in a service directory.",
+      "correct": false,
+      "reason": "This glob matches every file under services/, so both sets load for files they do not apply to. Path-specific rules only reduce irrelevant context when the glob matches just the files that need the conventions."
+    },
+    {
+      "letter": "D",
+      "text": "Put the data-retention conventions in the root CLAUDE.md under a payments heading, and put the input-validation conventions in a .claude/rules/ file whose YAML frontmatter sets paths: [\"**/*.handler.ts\"].",
+      "correct": false,
+      "reason": "The root CLAUDE.md loads in every session, so the data-retention conventions add irrelevant context for all other services. A heading does not make them load conditionally."
+    }
+  ]
+}

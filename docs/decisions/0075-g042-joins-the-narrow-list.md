@@ -22,6 +22,8 @@ Option 1.
 3. The copy rule still holds: no copy of sample question 6 of the guide (rule B8), and no copy of a question of an earlier mock (rule B9).
 4. Decision 0027 holds: each task statement gets at least 1 question. The program does not change.
 
+In the same round, the open slot M5-S60 (point 2.2-S3, idea G029, a judgment call that keeps the stricter rule) failed B9 twice, on the problems of M3-S24 and M2-S07, and once on the form. The owner gave it the new point 2.2-S1 (idea G028, structured error information), which no mock had used.
+
 ## Reason
 
 Plain reason: task statement 3.3 has one idea with almost only one problem. The stricter rule cannot pass a new question on it, and moving the slot breaks the rule that each mock covers each task statement.
