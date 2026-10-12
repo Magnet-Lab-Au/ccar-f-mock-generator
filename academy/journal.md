@@ -16,4 +16,5 @@ One entry for each work session. Newest entry first.
   - 0006: the label "Beyond the exam"
   - 0007: this separate folder
 - An independent agent checked the seven decisions. It found 10 items: a fourth place with the mock answers (the step 4 check files), three questions in diagram 11 and not two, 15 minutes and not one hour for the 30 overviews, and some passive sentences. The assistant checked the items and fixed them.
+- The owner confirmed the texts of 0001 to 0007. For 0002 the owner first corrected the reason: the build used only the task statements that it needed, and a good engineer knows what to use and what not to use. So an entry with no example says why the build did not need it.
 - The assistant first wrote the decisions into `docs/decisions/` of the mock generator. The owner corrected it: the portal work has its own folder.

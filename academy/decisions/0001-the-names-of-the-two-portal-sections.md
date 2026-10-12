@@ -2,6 +2,7 @@
 
 - Date: 12 October 2026
 - Status: accepted
+- Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
 ## Question
