@@ -424,7 +424,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
 </details>
 
 <details class="level">
-  <summary><span class="lname">Depth</span><span class="ltime">for the reader who wants more</span></summary>
+  <summary><span class="lname">Depth</span></summary>
   <div class="lbody">
     <p><b>The loop in code.</b> Put the pointer on <i>Your code sends the request</i> in the diagram, or tap it. The popup shows the
     loop in Python.</p>
@@ -497,7 +497,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
 </details>
 
 <details class="level">
-  <summary><span class="lname">Depth</span><span class="ltime">the code and the records</span></summary>
+  <summary><span class="lname">Depth</span></summary>
   <div class="lbody">
     <p><b>The code.</b> Put the pointer on <i>Try 3</i> or on <i>The guards</i> in the diagram. The popups show the lines of the control
     that make a pass stop the loop first, and the limit of tries.</p>
