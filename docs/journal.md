@@ -2,6 +2,11 @@
 
 One entry for each work session. Newest entry first.
 
+## 12 October 2026, a new chat can take over
+
+- The owner asked if a new chat can take over from the records. The assistant named the gaps: the check of the diagram popups was only in the temporary folder of the session, and the small practical lessons and the exact words of the discussions are not in the repository.
+- The check of the popups is now in the repository: `docs/diagrams/check-popups.py` and `check-popups.js`, with a note in the diagrams README. The browser libraries that it needs were copied out of the temporary folder to `~/.cache/ccar-chrome-libs` on this computer. All 12 diagrams pass.
+
 ## 9 October 2026, mocks 4 and 5, and the check of the documents
 
 - The owner decided: start mock 4 with scenarios 1, 3, 4 and 6 and the stricter rule B9 (decision 0066). No change to the difficulty of the questions.
