@@ -26,7 +26,7 @@ Against option 3: the portal work reads many files of the mock generator: the bu
 
 ## How we decided
 
-The assistant first wrote the six decisions of 12 and 13 October 2026 into `docs/decisions/` as 0080 to 0085, and the brief as `docs/academy-mvp-brief.md`. The owner said that those folders are for the mock generator. The assistant suggested the folder `academy/`, and the owner agreed. The six files were not committed and not confirmed, so they moved and became 0001 to 0006.
+The assistant first wrote the six decisions of 12 and 13 October 2026 into `docs/decisions/` as 0080 to 0085, and the brief as `docs/academy-mvp-brief.md`. The owner said that those folders are for the mock generator. The assistant suggested the folder `academy/`, and the owner agreed. Nobody had committed or confirmed the six files, so they moved and became 0001 to 0006.
 
 ## Exam guide points
 

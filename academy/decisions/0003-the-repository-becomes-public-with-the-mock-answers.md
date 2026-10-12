@@ -6,15 +6,16 @@
 
 ## Question
 
-The owner will make this repository public, and the portal will link to it. The repository has the answers of the 5 mocks in three places. Do the answers stay in the public repository?
+The owner will make this repository public, and the portal will link to it. The repository has the answers of the 5 mocks in four places. Do the answers stay in the public repository?
 
-The three places, checked on 12 October 2026:
+The four places, checked on 12 and 13 October 2026:
 
 - `mocks/`: 5 answers files, separate from the 5 questions files.
-- `runs/`: 488 question files, one for each try. Each option has its mark `"correct"` and its reason, next to the question.
-- `marking/`: 12 marking sheets with a column for the correct answer.
+- `runs/*/questions/`: 488 question files, one for each try. Each option has its mark `"correct"` and its reason, next to the question.
+- `runs/*/checks/`: 477 files of step 4. Each has the blind answer of the checker and if it agrees with the marks, so it also gives the key.
+- `marking/`: 11 marking sheets of the mocks and 1 test sheet, each with a column for the correct answer.
 
-Diagram 11 also shows two real questions of mocks 1 and 2 with the correct option marked.
+Diagram 11 also shows three real questions with the correct option marked: M1-S28-T2 and M2-S08-T2 of the built mocks, and M2-S08-T1, a try that failed.
 
 ## Options
 
@@ -23,13 +24,15 @@ Diagram 11 also shows two real questions of mocks 1 and 2 with the correct optio
 
 ## Decision
 
-Option 1, for now. The owner accepts the risk. The owner can decide again before the repository is made public.
+Option 1, for now. The owner accepts the risk. The owner can decide again before the repository becomes public.
 
 ## Reason
 
 The owner's reason: a person who wants to cheat can paste the questions into another AI chat anyway.
 
 The objection that we discussed: the concern is not cheating. It is an honest participant who explores the repository and sees answers before a mock. Then the first-attempt score means less, and the readiness view of the brief depends on first-attempt scores. The answers are easy to find: one run file has the question and its answer together.
+
+The brief (`academy/brief.md`) has three lines about mock content after the MVP: "No mock questions or answers in any downloadable file", links to mock questions "shown only after the person has sat that mock", and a public version that "stays separate from the portal". A public repository with the answers does not agree with the first two lines. This decision accepts that difference for now. The third line is about a public version of the portal, not about this repository.
 
 A limit: the choice can change only before the repository becomes public. After that, anybody can copy or fork it, and a private repository does not remove those copies.
 

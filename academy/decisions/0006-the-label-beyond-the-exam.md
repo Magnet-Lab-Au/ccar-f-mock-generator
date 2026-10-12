@@ -19,7 +19,7 @@ Option 2. Example: on the prompt caching story, the label "Beyond the exam" and 
 
 ## Reason
 
-Section 17 of the exam guide lists, under "Out-of-Scope Topics", "Prompt caching implementation details (beyond knowing it exists)" and "Rate limiting, quotas, or API pricing calculations". Without a label, a participant can study details that the exam does not ask about. These readers have little time.
+Section 17 (Appendix) of the exam guide lists, in its part "Out-of-Scope Topics", "Prompt caching implementation details (beyond knowing it exists)" and "Rate limiting, quotas, or API pricing calculations". Without a label, a participant can study details that the exam does not ask about. These readers have little time.
 
 ## How we decided
 
@@ -27,4 +27,4 @@ The owner said that prompt caching is part of the syllabus. The assistant checke
 
 ## Exam guide points
 
-none. The reason uses Section 17, "Out-of-Scope Topics".
+none. The reason uses Section 17 (Appendix), part "Out-of-Scope Topics".

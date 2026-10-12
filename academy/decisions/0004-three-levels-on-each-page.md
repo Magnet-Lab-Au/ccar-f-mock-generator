@@ -29,11 +29,11 @@ Each fact links to its source (decision 0005).
 
 ## Reason
 
-The owner's reasons: the readers must be hooked by things that interest them. The ideas must be simple, with many visuals, some of them animated. A reader who wants depth gets it step by step. A reader who does not gets an overview. The readers cannot be expected to read lines of code.
+The owner's reasons: the pages must hook the readers with things that interest them. The ideas must be simple, with many visuals, some of them animated. A reader who wants depth gets it step by step. A reader who does not gets an overview. Nobody can expect these readers to read lines of code.
 
 A second reason of the owner: the portal also shows these readers the technical competence of the owner, if they choose to go deep.
 
-The objection that we discussed: the brief makes the Exam guide breakdown required reading, 30 pages. That is too much for these readers if each page is long. With level 1, all 30 overviews take about one hour.
+The objection that we discussed: the brief makes the Exam guide breakdown required reading, 30 pages. That is too much for these readers if each page is long. With level 1, all 30 overviews take about 15 minutes. In the discussion the assistant said "about one hour". The independent review found that error.
 
 ## How we decided
 

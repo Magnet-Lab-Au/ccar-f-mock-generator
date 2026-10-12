@@ -6,7 +6,7 @@
 
 ## Question
 
-The build guide uses points of only 12 of the 30 task statements: 1.1, 1.3, 1.4, 1.6, 4.1, 4.2, 4.3, 4.4, 4.6, 5.3, 5.5 and 5.6. It uses no task statement of domain 2 or domain 3. Where do the "Behind the mocks" entries get their examples?
+The tables of guide points in the build guide use points of only 12 of the 30 task statements: 1.1, 1.3, 1.4, 1.6, 4.1, 4.2, 4.3, 4.4, 4.6, 5.3, 5.5 and 5.6. It uses no task statement of domain 2 or domain 3. Where do the "Behind the mocks" entries get their examples?
 
 ## Options
 
@@ -15,7 +15,7 @@ The build guide uses points of only 12 of the 30 task statements: 1.1, 1.3, 1.4,
 
 ## Decision
 
-Option 2. Each entry says which source it uses: the pipeline, or the build in Claude Code. If neither source has an example for a task statement, the entry says so. The pipeline and the project define no tools and use no MCP server, so most entries of domain 2 will say that there is no example.
+Option 2. Each entry says which source it uses: the pipeline, or the build in Claude Code. If neither source has an example for a task statement, the entry says so. The pipeline sends no tool definitions to the API. It sends its forms as structured outputs (mock decision 0040). The project uses no MCP server. So most entries of domain 2 will say that there is no example. A possible exception is task statement 2.5: the build in Claude Code uses the built-in tools of Claude Code.
 
 ## Reason
 
