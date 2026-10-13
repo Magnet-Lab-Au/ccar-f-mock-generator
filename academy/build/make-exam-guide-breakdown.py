@@ -2175,6 +2175,80 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
             + tab2_links("5.3") + "<p>%s</p>" % cf("ts-5-3-use", excerpt(step_file(3), "Written for errors between agents. Here: an error must never look like a pass.", "Build guide, step 3"),
                                                     "Steps 3 and 6 use 5.3-K4: an error must never look like a pass."), "ts-5-3"))
 
+
+# ----- part 5.4 (facts: academy/facts/ts-5-4.md) -----
+
+MEMT, CTXW, CMDS = "anthropic-docs-memory-tool", "claude-code-docs-context-window", "claude-code-docs-commands"
+D01 = glob.glob(os.path.join(ROOT, "docs/decisions/0001-*.md"))[0][len(ROOT) + 1:]
+SUM54 = "\n".join(read(SRC % LOOP).split("\n")[283:290])
+assert SUM54.strip().startswith("# Summary instructions") and SUM54.rstrip().endswith("reasoning behind them")
+FIG54 = figure("5.4-1", 890, 330,
+               "A main agent keeps the high-level view and sends specific questions, such as finding all test files, to subagents, which keep the verbose output and send back a summary. "
+               "The main agent writes key findings to a scratchpad file and reads it for later questions. Each agent exports its state, and on resume the coordinator loads a manifest. "
+               "When discovery output fills the context, /compact makes it smaller.",
+               "".join(['<path class="ve-e no-head" d="M330 80H300V280"/>', edge("M300 200H270"), edge("M300 280H270"),
+                        '<text class="ve-el" x="380" y="160">a question, then a summary back</text>',
+                        edge("M560 50H620", "write", 590, 41), edge("M620 75H560", "read", 590, 92, cls="is-async"),
+                        edge("M620 210H445V100", "load on resume", 532, 201, cls="is-hot"),
+                        '<text class="ve-lab" x="330" y="125">context fills: /compact</text>',
+                        box(330, 20, 230, 80, ["Main agent"], sub="high-level view", cls="who-model"),
+                        box(20, 170, 250, 60, ["Subagent: test files"], sub="verbose output stays", cls="who-model"),
+                        box(20, 250, 250, 60, ["Subagent: refund flow"], sub="verbose output stays", cls="who-model"),
+                        box(620, 20, 250, 80, ["Scratchpad file"], sub="key findings"),
+                        box(620, 170, 250, 80, ["Manifest"], sub="the state of each agent")]),
+               "%s %s" % (cf("ts-5-4-s1", gx("Spawning subagents to investigate specific questions (e.g., \"find all test files,\" \"trace refund flow dependencies\") while the main agent preserves high-level coordination", "Exam guide, 5.4-S1"),
+                             "Subagents investigate specific questions, while the main agent keeps the coordination (5.4-S1)."),
+                          cf("ts-5-4-s2", gx("Having agents maintain scratchpad files recording key findings, referencing them for subsequent questions to counteract context degradation", "Exam guide, 5.4-S2"),
+                             "Agents keep scratchpad files of key findings and read them for later questions (5.4-S2).")))
+
+PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in subagents",
+                        "A long exploration fills the context, and then the answers get worse. Send verbose searches to subagents that return summaries, "
+                        "write the key findings to files, and resume from those files, not from the old conversation.",
+                        FIG54)
+    + level("explanation",
+            "<p><b>Degradation.</b> %s %s</p>" % (
+                cf("ts-5-4-k1", gx("Context degradation in extended sessions: models start giving inconsistent answers and referencing \"typical patterns\" rather than specific classes discovered earlier", "Exam guide, 5.4-K1"),
+                   "In a long session, the guide says, the answers get inconsistent and name &ldquo;typical patterns&rdquo; in place of the specific classes found earlier (5.4-K1)."),
+                cf("ts-5-4-f2", D(BEST, "When the context window is getting full, Claude may start \"forgetting\" earlier instructions or making more mistakes.", "Claude Code, Best practices"),
+                   "The Claude Code documentation says that Claude then forgets earlier instructions or makes more mistakes."))
+            + "<p><b>Scratchpad files.</b> %s %s</p>" % (
+                cf("ts-5-4-k2", gx("The role of scratchpad files for persisting key findings across context boundaries", "Exam guide, 5.4-K2"),
+                   "A scratchpad file keeps key findings across the limits of the context (5.4-K2)."),
+                cf("ts-5-4-f4", D(MEMT, "Rather than loading all relevant information up front, an agent records what it learns in memory files and reads them back on demand.", "Memory tool"),
+                   "The memory tool of the Claude API works the same way, with memory files. The words scratchpad file and manifest are the guide's."))
+            + "<p><b>Subagents.</b> %s %s</p>" % (
+                cf("ts-5-4-k3", gx("Subagent delegation for isolating verbose exploration output while the main agent coordinates high-level understanding", "Exam guide, 5.4-K3"),
+                   "A subagent takes the verbose exploration, while the main agent keeps the high-level view (5.4-K3)."),
+                fact("ts-2-5-b2", "In Claude Code, the Explore subagent keeps such a search out of the main context."))
+            + "<p><b>Phases.</b> %s %s</p>" % (
+                cf("ts-5-4-s3", gx("Summarizing key findings from one exploration phase before spawning sub-agents for the next phase, injecting summaries into initial context", "Exam guide, 5.4-S3"),
+                   "The key findings of one phase go, as a summary, into the first context of the subagents of the next phase (5.4-S3),"),
+                fact("ts-1-3-f5", "because a subagent gets only the prompt of its call."))
+            + "<p><b>Crash recovery.</b> %s %s</p>" % (
+                cf("ts-5-4-s4", gx("Designing crash recovery using structured agent state exports (manifests) that the coordinator loads on resume and injects into agent prompts", "Exam guide, 5.4-S4"),
+                   "Each agent exports its state to a known place, and on resume the coordinator loads a manifest and puts it into the prompts (5.4-K4, 5.4-S4)."),
+                cf("ts-5-4-f14", D(SES, "Sessions persist the **conversation**, not the filesystem.", "Agent SDK, Sessions"),
+                   "A resumed session of the Agent SDK restores the conversation, not the files, so the manifest is a design of your own."))
+            + "<p><b>/compact.</b> %s %s</p>" % (
+                cf("ts-5-4-s5", gx("Using /compact to reduce context usage during extended exploration sessions when context fills with verbose discovery output", "Exam guide, 5.4-S5"),
+                   "When discovery output fills the context, /compact makes it smaller (5.4-S5)."),
+                cf("ts-5-4-f15", D(CMDS, "Free up context by summarizing the conversation so far.", "Claude Code, Commands"),
+                   "In Claude Code, /compact summarizes the conversation so far."))
+            + exam_tests("5.4", [("Subagent context management: explicit context passing, structured state persistence, crash recovery using manifests", "Among the topics, the guide names")])
+            + guide_text("5.4"), "ts-5-4")
+    + level("depth",
+            beyond([cf("ts-5-4-b1", D(CTXW, "so compaction summarizes them away with everything else.", "Claude Code, Explore the context window"),
+                       "In Claude Code, a compaction summarizes away rules and nested CLAUDE.md files that loaded late, so a finding only in the conversation is at risk."),
+                    cf("ts-5-4-b2", D(HOW, "To control what's preserved during compaction, add a \"Compact Instructions\" section to CLAUDE.md", "Claude Code, How Claude Code works"),
+                       "A section of CLAUDE.md can tell the compaction what to keep."),
+                    cf("ts-5-4-b3", D(MEMT, "For long-running agents, consider using both:", "Memory tool"),
+                       "For a long-running agent of the Claude API, the documentation uses both: compaction for a small context, and memory files for what must survive.")])
+            + code_pop_text("ts-5-4-code", "The code: what a summary must keep", "Summary instructions in CLAUDE.md", LOOP, SUM54, "Agent SDK, The agent loop",
+                            "The compaction keeps the task, the files, the test results and the decisions.")
+            + tab2_links("5.4", cf("ts-5-4-d01", excerpt(D01, "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001"),
+                                   "Mock decision 0001 links the decision files and the journal of the build to 5.4-K2 and 5.4-K4. Tab 2 shows them under 1.7.")
+                         + ' <a href="%s#cc-1-7">The build in Claude Code, 1.7 &rarr;</a>' % TAB2), "ts-5-4"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
