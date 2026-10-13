@@ -233,22 +233,54 @@ class Control:
                    "other_questions": []}
         in_round = state["in_round"]
         event = state["last_event"]
+        # The parts that the event of the owner adds: they go to each try of the
+        # new start, not only to the first one (decision 0080).
+        owner_findings, others = self._event_parts(event)
         if in_round:
             # A try of this start failed: step 5 shows that try (decision 0033, item 4).
             failed = in_round[-1]
-            return self._step5(request, failed, self._check_findings(failed))
+            request = self._step5(request, failed, self._check_findings(failed) + owner_findings)
+            request["other_questions"] = [self._question(i) for i in others]
+            return request
         if event is None:
             return request
         if event["kind"] == "new_point":
             return request
         if event["kind"] == "bad_mark":
             q = self._question(event["mark"]["question_id"])
-            finding = {"step": 7, "rule": "owner", "detail": event["mark"]["reason"],
-                       "letter": None, "point": None, "other_questions": []}
-            return self._step5(request, q, [finding])
+            return self._step5(request, q, owner_findings)
         if event["kind"] == "rewrite":
             d = event["decision"]
             q = self._question(d["question_id"])
+            if d.get("point"):
+                # Decision 0045: a rewrite with a new point is a request of step 2 on
+                # the new point. The writer sees the other questions, not to repeat them.
+                request.update({"findings": owner_findings,
+                                "other_questions": [self._question(i) for i in others]})
+                return request
+            request = self._step5(request, q, owner_findings)
+            request["other_questions"] = [self._question(i) for i in others]
+            return request
+        # more_tries: the last try before the decision. Since decision 0074 the
+        # writer also gets the reason of the owner, as an instruction.
+        tries = self.tries(slot["slot_id"])
+        last = tries[-1]
+        if last["status"] == "cannot_write":
+            request["findings"] = owner_findings
+            return request
+        return self._step5(request, last, self._check_findings(last) + owner_findings)
+
+    def _event_parts(self, event):
+        """The findings and the other questions that an event of the owner adds to
+        a request: the reason of the owner (rule "owner"), and after a rewrite of a
+        finding of step 6 also that finding and its other questions."""
+        if event is None or event["kind"] == "new_point":
+            return [], []
+        if event["kind"] == "bad_mark":
+            return [{"step": 7, "rule": "owner", "detail": event["mark"]["reason"],
+                     "letter": None, "point": None, "other_questions": []}], []
+        if event["kind"] == "rewrite":
+            d = event["decision"]
             f = self._step6_finding(d["target"])
             others = list(d.get("other_questions") or [])
             found = []
@@ -258,27 +290,12 @@ class Control:
                               "letter": None, "point": None, "other_questions": others})
             owner = {"step": 7, "rule": "owner", "detail": d["reason"],
                      "letter": None, "point": None, "other_questions": others}
-            if d.get("point"):
-                # Decision 0045: a rewrite with a new point is a request of step 2 on
-                # the new point. The writer sees the other questions, not to repeat them.
-                request.update({"findings": found + [owner],
-                                "other_questions": [self._question(i) for i in others]})
-                return request
-            request = self._step5(request, q, found + [owner])
-            request["other_questions"] = [self._question(i) for i in others]
-            return request
-        # more_tries: the last try before the decision. Since decision 0074 the
-        # writer also gets the reason of the owner, as an instruction.
-        tries = self.tries(slot["slot_id"])
-        last = tries[-1]
-        owner = []
+            return found + [owner], others
+        # more_tries
         if event.get("decision", {}).get("reason"):
-            owner = [{"step": 7, "rule": "owner", "detail": event["decision"]["reason"],
-                      "letter": None, "point": None, "other_questions": []}]
-        if last["status"] == "cannot_write":
-            request["findings"] = owner
-            return request
-        return self._step5(request, last, self._check_findings(last) + owner)
+            return [{"step": 7, "rule": "owner", "detail": event["decision"]["reason"],
+                     "letter": None, "point": None, "other_questions": []}], []
+        return [], []
 
     def _step5(self, request, question, findings):
         request.update({"step": 5, "shown_try": question["question_id"],

@@ -40,13 +40,13 @@ D = {
    example=js_(f4), examplehead=EF),
  'bad': dict(title='The owner marks the question bad', who='The owner', cls='owner',
    sent=['In step 7 the owner marks a question bad, with one reason. That reason is the finding, with the rule "owner".',
-         'The slot gets a new start: 3 new tries.'],
+         'The slot gets a new start: 3 new tries. From decision 0080, each try of the new start gets the reason.'],
    example=js_(f7), examplehead=EF),
  'rw': dict(title='The owner selects rewrite for a finding of step 6', who='The owner', cls='owner',
    sent=['Step 6 sends no question back. It finds a problem across questions, for example two questions with the same scene, and the owner decides.',
          'With "rewrite", the owner names one question of the finding and gives a reason. The writer also gets the text of the other question.',
          'A rewrite can also have only a reason of the owner, with no finding of step 6, and a new point of the same task statement (decision 0045).',
-         'The slot gets a new start: 3 new tries.'],
+         'The slot gets a new start: 3 new tries. From decision 0080, each try of the new start gets the reason, the finding of step 6 and the other questions.'],
    example=js_(f6), examplehead=EF),
  'req': dict(title='The request of step 2', who='The same as in step 2', cls='io',
    sent=['All parts of the request of step 2: the rules, the 3 sample questions, the story, the task statement, the 14 technologies, the slot and the form.',
@@ -101,7 +101,7 @@ D = {
  'mt': dict(title='more_tries', who='The owner', cls='owner',
    sent=['The same slot gets 3 new tries.',
          'After three_tries or cannot_decide_twice, the writer gets a request of step 5 with the last try and its findings.',
-         'The writer also gets the reason of the owner as an instruction, for example "use the second problem of the point" (decision 0074).',
+         'The writer also gets the reason of the owner as an instruction, for example "use the second problem of the point" (decision 0074). From decision 0080, each try of the new start gets it, not only the first. Mocks 1 to 5 were built before that fix.',
          'After cannot_write, the writer gets a request of step 2, because no question exists to show.']),
  'npl': dict(title='new_plan', who='The owner', cls='stop',
    sent=['The mock stops. A new seed makes a new plan.', 'Code refuses new_plan when no slot is open.', 'How the new plan starts is not built yet.']),
@@ -256,7 +256,7 @@ page = '''<!doctype html>
   </div>
   </div>
 
-  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039), the rewrite with a reason only or a new point of 8 October 2026 (decision 0045), the rule numbers of 8 October 2026 (decisions 0053 and 0055), and the reason of the owner after more_tries of 9 October 2026 (decision 0074). Status of the step: built, ran in mocks 1 to 5. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
+  <footer>Diagram 07. Design of 7 October 2026 (decisions 0033, 0038 and 0039), the rewrite with a reason only or a new point of 8 October 2026 (decision 0045), the rule numbers of 8 October 2026 (decisions 0053 and 0055), the reason of the owner after more_tries of 9 October 2026 (decision 0074), and the parts of the owner for each try of a new start of 14 October 2026 (decision 0080). Status of the step: built, ran in mocks 1 to 5. The control of the tries exists as code with tests. The cards and the files are drawings. The examples of findings are invented, to show the form. Each exam guide text in a popup is the exact text of the guide.</footer>
 </main>
 
 <script id="stepdata" type="application/json">''' + data + '''</script>
