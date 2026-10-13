@@ -1,6 +1,13 @@
 # Handoff: start here
 
-Date: 5 October 2026. Updated on 9 October 2026. This file gives a new session what it needs to continue.
+Date: 5 October 2026. Updated on 9 October 2026, and on 13 October 2026 for the academy work. This file gives a new session what it needs to continue.
+
+## The academy work (from 12 October 2026)
+
+From 12 October 2026 the sessions build the teaching pages of the portal: "Exam guide breakdown" and "Behind the mocks". This work has its own records in `academy/` (academy decision 0007): `academy/README.md`, `academy/brief.md`, `academy/journal.md` and `academy/decisions/`. For this work, the records of the checklist in `CLAUDE.md` are the files in `academy/`, not `docs/journal.md` and `docs/decisions/`.
+
+- State on 13 October 2026: the plan is decided in academy decisions 0001 to 0027. An independent review of the plan found 24 items. Items 1 to 12 are decided. The other items are still open, and `academy/journal.md` lists them.
+- Next step: finish the open items of the review, then build slice 1 (academy decision 0022): the top of tab 2 and step 5.
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
@@ -151,7 +158,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | Open item | Note |
 |---|---|
 | The format of the portal | Not known. Step 8 writes our own two files. A converter comes later (decision 0036). `docs/portal-notes.md` has the notes for it. |
-| The copy of the exam guide | `reference/exam-guide.md` is not compared with the original, character for character. |
+| The copy of the exam guide | Compared with the official PDF on 13 October 2026, word for word: 0 differences (academy decision 0027). |
 | A repeat with different words | Rule B9 is a judgment of a model. It can fail a good question or pass a close one (decision 0066). |
 | Rule A11 and words like "cannot" | Step 3 follows decision 0038, part 8. A change needs a new decision. |
 | The Agent SDK | Decision 0002 names it. No step uses it. A new decision must say so. |

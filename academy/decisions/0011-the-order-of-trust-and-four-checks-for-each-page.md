@@ -1,7 +1,7 @@
 # 0011: The order of trust, and four checks for each page
 
 - Date: 13 October 2026
-- Status: accepted. Decision 0014 adds the Anthropic documentation as the source for product facts.
+- Status: accepted. Decision 0014 adds the Anthropic documentation as the source for product facts. Decision 0028 corrects two counts.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
