@@ -578,13 +578,13 @@ PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request
 CSES, CLI, BEST, HOW = "claude-code-docs-sessions", "claude-code-docs-cli-reference", "claude-code-docs-best-practices", "claude-code-docs-how-claude-code-works"
 FIG17 = figure("1.7-1", 890, 320,
                "A named session A can continue three ways. To compare two approaches, fork it: a new ID with a copy of the history. "
-               "If its earlier context is still valid, resume it by name and tell it which files changed. If its tool results are stale, start a new session with a structured summary.",
+               "If its earlier context is mostly valid, resume it by name and tell it which files changed. If its tool results are stale, start a new session with a structured summary.",
                "".join([edge("M120 120V55H560", "compare two approaches", 340, 46),
                         edge("M220 165H280"), edge("M470 165H560", "yes", 515, 156),
                         edge("M375 210V265H560", "no: results stale", 467, 256, cls="is-hot"),
                         box(20, 120, 200, 90, ["Session A"], sub="name: auth-refactor", cls="who-model"),
-                        box(280, 120, 190, 90, ["Context", "still valid?"]),
-                        box(560, 20, 310, 70, ["--fork-session"], sub="new ID, copy of the history", cls="who-model"),
+                        box(280, 120, 190, 90, ["Context", "mostly valid?"]),
+                        box(560, 20, 310, 70, ["--resume … --fork-session"], sub="new ID, copy of the history", cls="who-model"),
                         box(560, 125, 310, 70, ["--resume auth-refactor"], sub="same ID + the changed files", cls="who-model"),
                         box(560, 230, 310, 70, ["New session"], sub="fresh context + summary", cls="who-model")]),
                "%s %s" % (cf("ts-1-7-f4", D(HOW, "Resuming a session with `claude --continue` or `claude --resume` reopens it under the same session ID and appends new messages to the existing conversation. Forking with `--fork-session` or `/branch` copies the history into a new session ID, leaving the original unchanged.", "Claude Code, How Claude Code works"),
@@ -593,30 +593,32 @@ FIG17 = figure("1.7-1", 890, 320,
                              "The guide gives the test: resume when the earlier context is mostly valid, start fresh with a summary when the tool results are stale (1.7-S3).")))
 
 PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart when stale",
-                        "Resume a named session when its earlier tool results are still true, and tell it which files changed. "
+                        "Resume a named session when its earlier context is mostly valid, and tell it which files changed. "
                         "Fork a session to try two approaches from one analysis. Start a new session with a structured summary when the old tool results are stale.",
                         FIG17)
     + level("explanation",
             "<p><b>Resume by name.</b> %s %s %s</p>" % (
                 cf("ts-1-7-k1", gx("Named session resumption using --resume \\<session-name\\> to continue a specific prior conversation", "Exam guide, 1.7-K1"),
-                   "The guide continues a named conversation with --resume and the name (1.7-K1, 1.7-S1)."),
+                   "The guide resumes a named conversation with --resume and the name of the session (1.7-K1, 1.7-S1)."),
                 cf("ts-1-7-f3", D(BEST, "Name sessions with `/rename` and treat them like branches: each workstream gets its own persistent context.", "Claude Code, Best practices"),
                    "The Claude Code documentation advises one named session for each workstream."),
                 cf("ts-1-7-c2", D(SES, "**Resume** takes a specific session ID. You track the ID.", "Agent SDK, Sessions"),
-                   "A name works in the Claude Code CLI. In the Agent SDK, a resume takes the session ID."))
+                   "In the Agent SDK, a resume takes the session ID.") + " " + cf("ts-1-7-f1", D(CSES, "| `claude --resume <name>` | Resumes the named session directly |", "Claude Code, Sessions"),
+                   "A name works in the Claude Code CLI. The exam uses the guide."))
             + "<p><b>Fork.</b> %s %s %s</p>" % (
-                cf("ts-1-7-k2", gx("fork_session for creating independent branches from a shared analysis baseline to explore divergent approaches", "Exam guide, 1.7-K2"),
+                cf("ts-1-7-s2", gx("Using fork_session to create parallel exploration branches (e.g., comparing two testing strategies or refactoring approaches from a shared codebase analysis)", "Exam guide, 1.7-S2"),
                    "fork_session makes branches from one shared analysis, for example to compare two refactoring approaches (1.7-K2, 1.7-S2)."),
                 fact("ts-1-3-f11", "In the Agent SDK, a fork starts with a copy of the history, and the original does not change."),
                 cf("ts-1-7-f6", D(CLI, "| `--fork-session` | When resuming, create a new session ID instead of reusing the original (use with `--resume` or `--continue`)", "Claude Code, CLI reference"),
-                   "fork_session is the option of the Python Agent SDK. In the CLI, the flag is --fork-session, together with --resume."))
+                   "In the CLI, the flag is --fork-session, together with --resume.") + " " + cf("ts-1-7-sdkf", D(SES, "resume=session_id,\n                  fork_session=True,", "Agent SDK, Sessions"),
+                   "fork_session is the option of the Python Agent SDK. The exam uses the name of the guide."))
             + "<p><b>Stale results.</b> %s %s %s</p>" % (
                 cf("ts-1-7-f8", D(CSES, "Conversation history: the full history, including tool calls and results.", "Claude Code, Sessions"),
                    "A resume brings back the full history, with the old tool calls and their results."),
                 cf("ts-1-7-k4", gx("Why starting a new session with a structured summary is more reliable than resuming with stale tool results", "Exam guide, 1.7-K4"),
-                   "When the files changed after those results, the guide prefers a new session with a structured summary (1.7-K4)."),
+                   "When those tool results are stale, the guide prefers a new session with a structured summary (1.7-K4)."),
                 cf("ts-1-7-f10", D(SES, "Capture the results you need (analysis output, decisions, file diffs) as application state and pass them into a fresh session", "Agent SDK, Sessions"),
-                   "The Agent SDK documentation also advises to capture the results and pass them into a fresh session."))
+                   "For a session on another machine, the Agent SDK documentation advises to capture the results and pass them into a fresh session."))
             + "<p><b>Changed files.</b> %s Only the guide asks for this.</p>" %
                 cf("ts-1-7-s4", gx("Informing a resumed session about specific file changes for targeted re-analysis rather than requiring full re-exploration", "Exam guide, 1.7-S4"),
                    "When the earlier context is still mostly valid, tell the resumed session which files changed, so it analyzes only those again (1.7-K3, 1.7-S4).")
@@ -624,17 +626,18 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
             + guide_text("1.7"), "ts-1-7")
     + level("depth",
             beyond([cf("ts-1-7-b1", D(SES, "Forking branches the conversation history, not the filesystem. If a forked agent edits files, those changes are real and visible to any session working in the same directory.", "Agent SDK, Sessions"),
-                       "A fork branches the conversation, not the files. Two forks in one folder change the same files. The guide says &ldquo;independent branches&rdquo;."),
-                    cf("ts-1-7-b2", D(HREF, "Claude Code replays the saved text rather than re-running the hook for past turns, so values like timestamps or commit SHAs become stale.", "Claude Code, Hooks reference"),
-                       "A resume replays the saved output of hooks, so values such as timestamps become stale."),
-                    cf("ts-1-7-b3", D(CSES, "Later requests carry the summary instead of the full history.", "Claude Code, Sessions"),
-                       "Claude Code also offers a third way: resume from a summary, which compacts the old history.")])
+                       "A fork branches the conversation, not the files. Two forks in one folder change the same files. The guide says &ldquo;independent branches&rdquo;, and the exam uses the guide."),
+                    cf("ts-1-7-b2", D(HREF, "For mid-session events like `PostToolUse` or `UserPromptSubmit`, when you resume with `--continue` or `--resume`, Claude Code replays the saved text rather than re-running the hook for past turns, so values like timestamps or commit SHAs become stale.", "Claude Code, Hooks reference"),
+                       "A resume replays the saved output of hooks in the middle of a session, so values such as timestamps become stale. Hooks at the start of a session run again."),
+                    cf("ts-1-7-b3", D(CSES, "* **Resume from summary**: runs [`/compact`](/docs/en/context-window#what-survives-compaction) immediately. Later requests carry the summary instead of the full history.", "Claude Code, Sessions"),
+                       "On a Pro or Max plan, when a session was inactive for about an hour and is over 100,000 tokens, Claude Code also offers a third way: resume from a summary of the old history.")])
             + code_pop("ts-1-7-code", "The code: a fork in the Agent SDK", "A fork of a session in Python", SES, "# Fork: branch from session_id into a new session", "print(message.result)", "Agent SDK, Sessions",
-                       "resume names the session, and fork_session=True makes a new one from its history.")
+                       "resume takes the session ID, and fork_session=True makes a new session from its history.")
             + tab2_links("1.7") + "<p>%s %s</p>" % (
                 fact("ts-1-3-d26", "The pipeline of the mock builder uses no session."),
-                cf("ts-1-7-cc", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session).", "Fact sheet of the build in Claude Code"),
-                   "The build in Claude Code shows only 1.7-K4: each new session started from the summary in HANDOFF.md. No record shows --resume or fork_session.")), "ts-1-7"))
+                cf("ts-1-7-cc", excerpt("HANDOFF.md", "This file gives a new session what it needs to continue.", "HANDOFF.md"),
+                   "The build in Claude Code shows only 1.7-K4: HANDOFF.md is a structured summary for the next session.") + " " + cf("ts-1-7-cc2", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session). 1.7-S3 holds only in part. The named resumption and fork points are not shown.", "Fact sheet of the build in Claude Code"),
+                   "No record shows --resume or fork_session.")), "ts-1-7"))
 
 
 # ----- part 1.6 (facts: academy/facts/ts-1-6.md) -----
@@ -678,7 +681,7 @@ PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open
                 cf("ts-1-6-s2", gx("Splitting large code reviews into per-file local analysis passes plus a separate cross-file integration pass to avoid attention dilution", "Exam guide, 1.6-S2"),
                    "A large code review becomes one local pass for each file, plus a separate pass across the files (1.6-K2, 1.6-S2)."),
                 cf("ts-1-6-f10", gx("Splitting reviews into focused passes directly addresses the root cause: attention dilution when processing many files at once.", "Exam guide, sample question 12"),
-                   "The guide gives the reason: attention dilution when the model processes many files at once."),
+                   "The guide gives the reason: attention dilution, a loss of attention when the model processes many files at once. The documentation does not use this term, and the exam uses the guide."),
                 cf("ts-1-6-f11", gx("Option C misunderstands that larger context windows don't solve attention quality issues.", "Exam guide, sample question 12"),
                    "A larger context window does not fix it."))
             + "<p><b>An adaptive plan.</b> %s %s %s</p>" % (
@@ -687,26 +690,30 @@ PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open
                 cf("ts-1-6-f5", D(HOW, "Claude decides what each step requires based on what it learned from the previous step, chaining dozens of actions together and course-correcting along the way.", "Claude Code, How Claude Code works"),
                    "This is how the loop of Claude Code works: each step depends on what the step before found."),
                 cf("ts-1-6-f12", D(BEST, "Planning is most useful when you're uncertain about the approach, when the change modifies multiple files, or when you're unfamiliar with the code being modified.", "Claude Code, Best practices"),
-                   "A first map of the code is most useful when the approach is not clear or the code is not familiar."))
-            + "<p><b>The choice.</b> %s Task statement 4.6 uses the same split of a review.</p>" %
+                   "Planning first is most useful when the approach is not clear or the code is not familiar."))
+            + "<p><b>The choice.</b> %s %s</p>" % (
                 cf("ts-1-6-s1", gx("Selecting task decomposition patterns appropriate to the workflow: prompt chaining for predictable multi-aspect reviews, dynamic decomposition for open-ended investigation tasks", "Exam guide, 1.6-S1"),
-                   "A chain for a predictable review with many aspects, a dynamic decomposition for an open investigation (1.6-S1).")
+                   "Use a chain for a predictable review with many aspects, and a dynamic decomposition for an open investigation (1.6-S1)."),
+                cf("ts-1-6-46", gx("Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "Exam guide, 4.6-S2"),
+                   "Task statement 4.6 uses the same split of a review (4.6-S2)."))
             + exam_tests("1.6", [("Prompt chaining — sequential task decomposition into focused passes", "Among the technologies, the guide names")])
             + "<p>%s</p>" % cf("ts-1-6-q12", gx("Split into focused passes: analyze each file individually for local issues, then run a separate integration-focused pass examining cross-file data flow.", "Exam guide, sample question 12, answer A"),
-                               "Sample question 12 of the guide tests 1.6-S2: its correct answer is a pass for each file, then an integration pass.")
+                               "Sample question 12 of the guide fits 1.6-S2: its correct answer is a pass for each file, then an integration pass.")
             + guide_text("1.6"), "ts-1-6")
     + level("depth",
             beyond([cf("ts-1-6-b1", D(WF, "use a workflow to review every file changed in this PR for correctness issues, then merge the per-file findings into one ranked summary", "Claude Code, Workflows"),
-                       "Claude Code can run the chain as a workflow: a script reviews each changed file, then merges the findings. Claude Code calls it a dynamic workflow, but the script holds the plan, so in the terms of the guide it is nearer to a fixed chain."),
-                    cf("ts-1-6-b2", D(BEST, "to have Claude split the change across 5 to 30 subagents. Each subagent works in its own worktree.", "Claude Code, Best practices"),
-                       "For a large change, the command /batch splits the work across 5 to 30 subagents, each in its own worktree."),
+                       "Claude Code can run the chain as a workflow: a script reviews each changed file, then merges the findings.") + " " + cf("ts-1-6-b1b", D(WF, "A workflow moves the plan into code.", "Claude Code, Workflows"),
+                       "In a workflow, the script holds the plan. With a fixed list of passes, it is nearer to the fixed chain of the guide than to its dynamic decomposition."),
+                    cf("ts-1-6-b2", D(BEST, "Run [`/batch <instruction>`](/docs/en/commands#all-commands) to have Claude split the change across 5 to 30 subagents. Each subagent works in its own worktree.", "Claude Code, Best practices"),
+                       "For a large change, the command /batch splits the work across 5 to 30 subagents, each in its own copy of the repository."),
                     cf("ts-1-6-b3", D(PBP, "With adaptive thinking and subagent orchestration, Claude handles most multistep reasoning internally.", "Prompting best practices"),
-                       "With adaptive thinking, the documentation says that Claude handles most reasoning in several steps by itself, so a chain is needed less often.")])
+                       "With adaptive thinking, in which Claude decides how much to think, the documentation says that Claude handles most reasoning in several steps by itself.")])
             + code_pop("ts-1-6-code", "The code: a workflow with one agent for each file", "A workflow that splits a review by file", WF, "export const meta = {", "return audits.filter(Boolean)", "Claude Code, Workflows",
                        "One agent lists the files. Then one agent audits each file. The example has no integration pass.")
-            + tab2_links("1.6") + "<p>%s</p>" %
+            + tab2_links("1.6") + "<p>%s %s</p>" % (
                 cf("ts-1-6-use", excerpt(step_file(1), "So these points support only one idea: the work of a mock is known before it starts, so the program can fix the plan before the writing starts.", "Build guide, step 1"),
-                   "Step 1 takes only one idea of 1.6: the work of a mock is known before it starts, so code fixes the plan first. It is not a prompt chain."), "ts-1-6"))
+                   "Step 1 takes only one idea of 1.6: the work of a mock is known before it starts, so code fixes the plan first."), cf("ts-1-6-rev", excerpt("docs/reviews/review-decisions-0003-to-0018.md", "A list of 60 slots made by code for a generation task is neither a review nor a prompt chain.", "Review of mock decisions 0003 to 0018"),
+                   "It is not a prompt chain.")), "ts-1-6"))
 
 # ----- the top: the map and how we broke it down -----
 
