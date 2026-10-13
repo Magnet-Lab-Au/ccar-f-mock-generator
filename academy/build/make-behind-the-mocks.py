@@ -596,7 +596,19 @@ PAGE_MARKS = len(re.findall(r"(?m)^<!-- Page \d+ \|.*-->$", read("reference/exam
 WORDS_PDF = re.search(r"([\d,]+) words in each, and (\d+) places that differ", read(A27))
 assert WORDS_PDF and WORDS_PDF.group(2) == "0"
 
+ALL_Q = [q for m in range(1, 6) for g in jread("mocks/mock-%02d.questions.json" % m)["groups"] for q in g["questions"]]
+PIDS = {p["id"] for t in REC["task_statements"] for p in t["points"]}
+KEPT, TOTAL_Q = sum(1 for q in ALL_Q if q["point"] in PIDS), len(ALL_Q)
+assert KEPT == TOTAL_Q
+_log = subprocess.run(["git", "-C", ROOT, "log", "--format=%h %ad %s", "--date=short", "--", "reference/guide-records.json"], capture_output=True, text=True).stdout.strip().split("\n")
+assert len(_log) == 1 and "2026-10-07" in _log[0], _log
 CARD.update({
+    "s0-has": excerpt(S0, "The file has the version of the guide, 5 domains with their weights, 6 scenarios with their stories and primary domains, 30 task statements with their 240 points, 12 sample questions, and the three lists of Section 17.", "Build guide, step 0"),
+    "s0-pages": excerpt("src/step0_prepare_guide_records.py", "# A page line is a mark of the PDF page. It is not guide text.", "The code of step 0", kind="code"),
+    "s0-keep": {"title": "The questions of the 5 mocks", "kind": "count", "text": "%d of %d questions of mocks/mock-01 to mock-05.questions.json have a point that is in the guide records. The script of this page counted them." % (KEPT, TOTAL_Q),
+                "src": "mocks/mock-01.questions.json to mock-05.questions.json", "href": "%s/tree/%s/mocks" % (REPO, TAG)},
+    "s0-same": {"title": "The history of the records file", "kind": "count", "text": "git log of reference/guide-records.json has one commit: %s. So the file has not changed since the first commit of the repository." % _log[0],
+                "src": "git log -- reference/guide-records.json", "href": link("reference/guide-records.json")},
     "s0-what": excerpt(S0, "Before the program plans a mock, a script copies the parts of the exam guide that the later steps need into one file, `reference/guide-records.json` (decision 0028). No model copies text.", "Build guide, step 0"),
     "s0-slice": excerpt(S0, "The file is the one source of guide text for the code. A later step takes a slice of it by ID.", "Build guide, step 0"),
     "s0-once": excerpt(D17, "It runs one time for each version of the guide, not one time for each mock.", "Mock decision 0017, Decision"),
@@ -616,7 +628,7 @@ CARD.update({
 FIG01 = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 0. A script reads the copy of the exam guide, leaves out the page marks, gives each point an ID and checks the counts and each text. If a check fails, it writes no file. Otherwise it writes one file of records. A second script, which does not use the code of step 0, checks the file. Later steps take slices of the records by ID.">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 0. A script reads the copy of the exam guide, leaves out the page headers, gives each point an ID and checks the counts and each text. If a check fails, it writes no file. Otherwise it writes one file of records. A second script, which does not use the code of step 0, checks the file. Later steps take the parts that they need, by ID.">
       %(edges)s
       %(nodes)s
     </svg>
@@ -627,49 +639,51 @@ FIG01 = """
         box(20, 40, 170, 90, ["exam guide"], sub="the copy, .md"),
         box(260, 40, 190, 90, ["script of step 0"], sub="code, no model", cls="is-key"),
         box(520, 40, 170, 90, ["guide records"], sub="one JSON file"),
-        box(760, 40, 110, 90, ["steps"], sub="1, 2, 4, 7, 8"),
+        box(740, 40, 130, 90, ["steps"], sub="1, 2, 4, 5, 7, 8"),
         box(260, 190, 190, 70, ["no file"], sub="and the cause", cls="try bad"),
         box(520, 190, 170, 70, ["second script"], sub="%d of %d checks" % (N_CHECKS, N_CHECKS), cls="try ok"),
     ]),
     "edges": "".join([
         edge("M190 85H260", "reads", 225, 76),
         edge("M450 85H520", "writes", 485, 76, cls="is-hot"),
-        edge("M690 85H760", "a slice", 725, 76),
+        edge("M690 85H740", "parts", 715, 76),
         edge("M355 130V190", "a check fails", 363, 165, anchor="r"),
         edge("M605 190V130", "checks", 613, 165, anchor="r"),
     ]),
     "cap": fact("s0-what", "A script copies the parts of the exam guide that later steps need into one file. No model copies text.")
-           + " " + fact("s0-slice", "A later step takes a slice of it by ID."),
+           + " " + fact("s0-slice", "A later step takes the parts that it needs, by ID."),
 }
 
 STEP0 = (level("overview",
                '<h4 class="takeaway">A script copies the exam guide into records, once</h4>'
-               '<p>%s %s The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide. %s</p>'
+               '<p>%s %s %s %s</p>'
                % (fact("s0-what", "Before the first mock, a script copies the parts of the exam guide that the later steps need into one file of records. No model copies text."),
                   fact("s0-once", "It runs once for each version of the guide, not once for each mock."),
-                  len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"]),
-                  fact("s0-slice", "Each later step takes a slice of the file by ID.")))
+                  fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"]))),
+                  fact("s0-slice", "A later step takes the parts that it needs from the file, by ID.")))
          + level("explanation",
                  FIG01
-                 + '<p><b>IDs.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. The guide has no such IDs, and every question of the mocks keeps the ID of its point.</p>'
-                   % fact("s0-ids", "Each point gets an ID that the guide does not have: the task statement, then K or S, then the number of the bullet.")
-                 + '<p><b>Checks.</b> The script leaves out the %d page marks of the PDF, so that no list is cut in two. %s and %s, or it writes no file. Then three checks:</p>'
+                 + '<p><b>IDs.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
+                   % (fact("s0-ids", "Each point gets an ID that the guide does not have: the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
+                      fact("s0-keep", "Every question of the 5 mocks keeps the ID of its point: %d of %d." % (KEPT, TOTAL_Q)))
+                 + '<p><b>Checks.</b> %s %s and %s, or it writes no file. Then three checks:</p>'
                    '<ol class="checks"><li>%s</li><li>%s</li><li>%s</li></ol>'
-                   % (PAGE_MARKS, fact("s0-fail", "It checks the counts"), fact("s0-exact", "that each text is exactly in the guide"),
+                   % (fact("s0-pages", "The script leaves out the %d page headers of the PDF, so that no list is cut in two." % PAGE_MARKS), fact("s0-fail", "It checks the counts"), fact("s0-exact", "that each text is exactly in the guide"),
                       fact("s0-check", "A second script, which does not use the code of step 0, checks the file: %d of %d checks pass." % (N_CHECKS, N_CHECKS)),
-                      fact("s0-review", "An independent reviewer wrote its own script and compared the files record by record."),
+                      fact("s0-review", "An independent reviewer wrote its own script, compared the records with the guide record by record, and found no errors."),
                       fact("s0-pdf", "On 13 October 2026, a script compared the copy of the guide with the official PDF, word for word: 0 differences."))
                  + ts_block(0))
          + level("depth",
                  '<h4 class="story">The design started at step 1, and a proposal had no source</h4>'
                  '<p>%s It had no source for the story and no fields. %s The fix: %s %s</p>'
                  '<p>One more correction came earlier. %s So step 0 has a number, a decision and a box in Fig. A.</p>'
-                 '<p>No source records a failure of the script or of the file. The file has not changed since the first commit.</p>'
+                 '<p>No source records a failure of the script or of the file. %s</p>'
                  % (fact("s0-a1", "Early in the design, a proposal for step 2 said &ldquo;the story of the scenario&rdquo; and &ldquo;a fixed form with fields&rdquo;."),
                     fact("s0-a2", "The cause: the plan of work started at step 1, but each step reads the records of step 0."),
                     fact("s0-a3", "step 0 was designed and run before step 2, and each design names the exact file format and fields."),
-                    fact("s0-rule", "This became a working rule of the build."),
-                    fact("s0-b", "The assistant suggested to call this work an input, not a step. The owner said that it must be documented, because a portal page will show it.")))
+                    fact("s0-rule", "Working rule 30 has the same words: each design proposal names the exact file format and the exact fields."),
+                    fact("s0-b", "The assistant suggested to call this work an input, not a step. The owner said that it must be documented, because a goal of the build is a record that a portal page can show."),
+                    fact("s0-same", "The file has not changed since the first commit of the repository, on 7 October 2026.")))
          ).replace("@N@", "0")
 PART_HTML[0] = with_sources(0, STEP0)
 
