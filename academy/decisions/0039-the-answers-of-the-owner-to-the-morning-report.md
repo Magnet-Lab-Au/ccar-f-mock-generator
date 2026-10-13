@@ -12,7 +12,7 @@ The morning report lists 3 decisions that the assistant chose at night, the merg
 
 ## Decision
 
-The assistant asked 27 questions, each with one recommendation. The owner accepted each recommendation. The words of the owner are in quotes.
+The assistant asked 27 questions, each with one recommendation. The owner accepted each recommendation. The words of the owner are in quotes. For items 16, 18, 21 and 23, the quote is in the decision that the item names. The items are in groups, so their numbers are not the numbers of the questions.
 
 **The decisions of the night**
 
@@ -33,9 +33,9 @@ The assistant asked 27 questions, each with one recommendation. The owner accept
 
 10. The label "Guide only" replaces the sentence "The exam uses the guide" and the six forms of "only the guide says this". The top of tab 1 explains the label once (item 9). "yes, use the Guide only label"
 11. Both tabs use three names (item 10): "the Claude API documentation", "the Claude Code documentation", and "the Anthropic documentation" when a sentence means both sets. "yes, use those three names"
-12. The points of the reader agent of slices 5 to 8 (item 11): the notes about the mock builder use plain words and leave the details to the link to tab 2; section 17 of the guide is called "the list of topics that the exam does not test"; Figs. 5.6-1, 2.1-1 and 5.2-1 are fixed in the figure redo. "yes, do all three"
+12. The points of the reader agent of slices 5 to 8 (item 11): the notes about the mock builder use plain words and leave the details to the link to tab 2. Section 17 of the guide is called "the list of topics that the exam does not test". Figs. 5.6-1, 2.1-1 and 5.2-1 are fixed in the figure redo. "yes, do all three"
 13. The Depth of part 5.3 gets one paragraph on the stop of step 6 when rule C2 fails. 5.3-K4 calls the end of a whole workflow on one failure an anti-pattern. The paragraph says why the build stops anyway: the stop names its cause, and no retry can repair counts that disagree with the plan (item 14). "yes, add the paragraph"
-14. Part 5.6: the assistant checked the Claude API documentation on 14 October 2026 (the pages "Citations" and "Structured outputs"). Neither page says whether citations work with a forced tool call or with `strict: true`. The page says this in place of "This academy did not check" (item 15). "yes, check the documentation"
+14. Part 5.6: the assistant checked the Claude API documentation on 14 October 2026 (the pages "Citations" and "Structured outputs"). The page "Citations" says that citations "cannot be used together with structured outputs", and names the 400 error only for `output_config.format`. The page "Structured outputs" counts strict tool use (`strict: true`) as one of the two features of structured outputs. Neither page names a forced tool call. Part 5.6 says these facts in place of "This academy did not check" (item 15). "yes, check the documentation"
 15. Part 1.2 gets a code popup of its own, from a code example of the documentation, in the figure redo (item 16). "yes, write a code popup for 1.2"
 16. A single name can appear in the running text (item 8, decision 0038).
 
@@ -43,7 +43,7 @@ The assistant asked 27 questions, each with one recommendation. The owner accept
 
 17. The build guide, step 2, line 45, names the four models that return a 400 error for `tool_choice` `any` and `tool` (item 5). "yes, correct the line"
 18. Ruling 2: the reading of M1-S49 is correct (item 5, mock decision 0081).
-19. The owner filled the 20 good marks of round 1 of mock 4 (item 5). Mock decision 0069 already says that the owner did not read those questions. `docs/journal.md` records this answer, and tab 2, step 7, says it. "yes, I filled them"
+19. The owner filled the 20 good marks of round 1 of mock 4 (item 5). Mock decision 0069 already says that the owner did not read those questions. `docs/journal.md` records this answer. Tab 2, step 7, gets a sentence that says it. "yes, I filled them"
 20. The absolute paths with the user name in 16 tracked files become paths from the root of the repository. The git history does not change (item 5). "yes, change the paths"
 21. The code has no path to build the files again (item 5, mock decision 0082).
 22. The commit message of f62b523 does not change. The journal and decision 0035 give the correct reason (item 6). "yes, change nothing"

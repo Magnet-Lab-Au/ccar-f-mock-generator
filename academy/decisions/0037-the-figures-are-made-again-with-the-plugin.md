@@ -10,7 +10,7 @@
 
 Decision 0013 says that each figure goes through four stages, and that in the plan stage the assistant "picks the type of the figure from the table of the plugin: for example a stepper for a process, small multiples for cases, and bars for numbers."
 
-At night, the assistant did not load the skill of the plugin visual-explainer. It drew the figures by hand in the build scripts, in the look of the fifth sample. The fact sheets name a mechanism for each figure, but no type from the table of the plugin. So 55 of the 56 figures of the two tabs are one static drawing. Only Fig. 1 of part 1.1, from the sample, is a stepper. The screenshots of tab 1 are in light mode at 1280 pixels only, but decision 0013 asks for both modes.
+At night, the assistant did not load the skill of the plugin visual-explainer. It drew the figures by hand in the build scripts, in the look of the fifth sample. The fact sheets name a mechanism for each figure, but no type from the table of the plugin. So 55 of the 56 figures of the two tabs are one static drawing. Only Fig. 1 of part 1.1, from the sample, is a stepper. The screenshots of the 30 figures of tab 1 (`academy/screenshots/tab-1/`) are in light mode at 1280 pixels only, but decision 0013 asks for both modes.
 
 How are the figures made right?
 
@@ -24,7 +24,7 @@ How are the figures made right?
 
 ## Reason
 
-The owner asked for the plugin, and decision 0013 asks for its table. The figures of the night follow the rules of the plugin but do not use its range of types. So many processes that can go step by step are one static drawing.
+The owner asked for the plugin, and decision 0013 asks for its table. The figures of the night follow the look of the fifth sample but do not use the range of types of the plugin. So many processes that can go step by step are one static drawing.
 
 ## How we decided
 

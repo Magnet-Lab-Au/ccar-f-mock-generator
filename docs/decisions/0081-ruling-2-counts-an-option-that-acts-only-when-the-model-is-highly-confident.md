@@ -12,7 +12,7 @@ Decision 0006 (ruling 2) says: "In one scenario of one mock, at most one wrong o
 
 Two almost identical options on point 4.1-S3 got opposite answers:
 
-- M1-S49-T1, option D: "Instruct Claude to be conservative and assign a higher severity level only when it is highly confident about the finding." Step 6 counted it as a confidence trigger (`runs/mock-01/checks/M1-scenario-5-step6-run1.json`). The owner rewrote the question (decision 0045, owner decision D008).
+- M1-S49-T1, option D: "Instruct Claude to be conservative and assign a higher severity level only when it is highly confident about the finding." Step 6 counted it as a confidence trigger (`runs/mock-01/checks/M1-scenario-5-step6-run1.json`). The owner chose a rewrite (decision 0045, owner decision D008).
 - M5-S40-T1, option B: "Tell Claude to be careful and conservative, and to assign the blocker level only when it is highly confident about the risk of the finding." Decision 0077 says that the second review counts it "as the general instruction "be conservative" of point 4.1-K2, not as a self-reported confidence option."
 
 Which reading is correct?
@@ -24,7 +24,7 @@ Which reading is correct?
 
 ## Decision
 
-Option 1. An option that lets the model act only when it is highly confident uses its own confidence as a trigger. It counts for ruling 2, also when it also says "be conservative".
+Option 1. An option that lets the model act only when it is highly confident uses its own confidence as a trigger. It counts for ruling 2, also when it says "be conservative".
 
 Mock 5 does not change. M5-S40 stays in mock 5 as a known limit: scenario 5 of mock 5 has two wrong options on self-reported confidence (options A and B of M5-S40). No question is written again, so this decision has no API cost.
 

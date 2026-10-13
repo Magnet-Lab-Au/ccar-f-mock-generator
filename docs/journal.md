@@ -176,7 +176,7 @@ This entry continues the second session of 7 October. The work went on after mid
 The first session in Claude Code.
 
 - The assistant listed the 30 working rules, and gave the state of the work in 5 lines.
-- The folder is in WSL at `/home/triggger/ccar-f-mock-generator`. It is a git repository with a private remote on GitHub. The assistant checked this with `git` and `gh`.
+- The folder is in WSL at `~/ccar-f-mock-generator`. It is a git repository with a private remote on GitHub. The assistant checked this with `git` and `gh`.
 - The new name of the folder is `ccar-f-mock-generator`. With the yes of the owner, the assistant changed the old name `mock-builder-v3` in `CLAUDE.md`, `README.md`, `HANDOFF.md`, the two scripts of step 0, and diagram scripts 02, 03 and 04. The three diagram scripts now find the folder from their own location. The assistant ran them, and diagrams 02, 03 and 04 did not change. Decision 0001 keeps the old name (rule 26).
 - The assistant showed a plan for the control before it read all files that `HANDOFF.md` names. The owner asked if it had read them. It had not. It read them, and changed six points of the plan. The owner said yes to the plan.
 - The plan said that the assistant stops at each of items 6 to 10. It wrote the code for all five in one pass, and told the owner.

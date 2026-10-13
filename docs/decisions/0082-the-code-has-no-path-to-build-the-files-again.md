@@ -11,7 +11,7 @@
 Decision 0016 says: "To change a question, change its record, and code builds the files again." The build guide, step 8, says the same. The code has no path for this:
 
 - `src/step8_build_files.py` stops with "The file exists already" when a mock file exists.
-- `src/control.py` refuses each command of the owner when the state of the mock is `built`.
+- `src/control.py` refuses the commands `decide` and `accept` of the owner when the state of the mock is `built`.
 
 No rebuild ever happened. Each file in `mocks/` has one commit. The academy fact agent of step 8 found this (`academy/facts/step-8.md`, conflict C1).
 

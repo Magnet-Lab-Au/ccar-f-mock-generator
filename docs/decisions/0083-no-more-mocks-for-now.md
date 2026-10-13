@@ -20,7 +20,7 @@ Option 2. The mock builder stays as it is. The work continues on the academy pag
 
 ## Reason
 
-The 5 mocks give 300 questions. The academy pages are the next need of the cohort.
+The reason of the assistant: the 5 mocks give 300 questions, and the academy pages are not finished. The owner accepted the recommendation.
 
 ## How we decided
 
