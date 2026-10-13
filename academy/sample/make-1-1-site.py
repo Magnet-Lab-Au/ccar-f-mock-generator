@@ -19,9 +19,7 @@ spec = importlib.util.spec_from_file_location("make_1_1_portal", os.path.join(HE
 portal = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(portal)
 
-OUT = os.path.join(HERE, "1-1-agentic-loops-site.html")
-changes = [c for c in portal.CHANGES if c[0] != '"1-1-agentic-loops-ve.html"']
-changes.insert(0, ('"1-1-agentic-loops-ve.html"', '"1-1-agentic-loops-site.html"'))
+PORTAL = [c for c in portal.CHANGES if c[0] != '"1-1-agentic-loops-ve.html"']
 
 # These changes apply to the text after the changes of the third sample.
 SITE = [
@@ -93,22 +91,27 @@ SITE = [
      "Fourth sample: the third sample in the look of www.magnetlab.com.au, by academy/sample/make-1-1-site.py."),
 ]
 
-portal.build(changes + SITE)
-
-# square corners in the drawings too: each rect of the figures has rx="0"
-with open(OUT, encoding="utf-8") as f:
-    page = f.read()
-page, n = re.subn(r' rx="[0-9.]+"', ' rx="0"', page)
-
-
 def color_labels(text):
     return re.sub(r"(\d\.\d-)([KS])(\d)", lambda m: '%s<span class="%s">%s</span>%s' % (
         m.group(1), "lk" if m.group(2) == "K" else "ls", m.group(2), m.group(3)), text)
 
 
-parts = re.split(r"(<script\b.*?</script>|<title>.*?</title>)", page, flags=re.S)
-page = "".join(x if x.startswith(("<script", "<title>")) else re.sub(r">([^<]*)<", lambda m: ">" + color_labels(m.group(1)) + "<", x)
-               for x in parts)
-with open(OUT, "w", encoding="utf-8") as f:
-    f.write(page)
-print("Squared %d corners in the figures. Colored %d label letters." % (n, page.count('class="lk"') + page.count('class="ls"')))
+def make(out_name, extra=()):
+    """Build the page with the changes of the third sample, then SITE, then extra, and write out_name."""
+    portal.build([('"1-1-agentic-loops-ve.html"', '"%s"' % out_name)] + PORTAL + SITE + list(extra))
+    out = os.path.join(HERE, out_name)
+    with open(out, encoding="utf-8") as f:
+        page = f.read()
+    # square corners in the drawings too: each rect of the figures has rx="0"
+    page, n = re.subn(r' rx="[0-9.]+"', ' rx="0"', page)
+    # the K or S of each label in the text of the page, outside scripts and the title
+    parts = re.split(r"(<script\b.*?</script>|<title>.*?</title>)", page, flags=re.S)
+    page = "".join(x if x.startswith(("<script", "<title>")) else re.sub(r">([^<]*)<", lambda m: ">" + color_labels(m.group(1)) + "<", x)
+                   for x in parts)
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(page)
+    print("Squared %d corners in the figures. Colored %d label letters." % (n, page.count('class="lk"') + page.count('class="ls"')))
+
+
+if __name__ == "__main__":
+    make("1-1-agentic-loops-site.html")
