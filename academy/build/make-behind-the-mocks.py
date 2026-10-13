@@ -162,7 +162,7 @@ DEVIATION = ("Claude Opus 5.5, the model of this build, and three other current 
              "reject a forced tool call, so the build sends its form as structured outputs.")
 EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several "
            "schemas exist and the document type is unknown (4.3-S2), and a forced tool when one extraction must run first (4.3-S3).")
-lines_of("docs/sources/2026-10-07-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
+lines_of("academy/sources/2026-10-14-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
 FIX_USE = {"4.3-K2": ("The current models accept only \"auto\" and \"none\".", "Claude Opus 5.5 and three other current models accept only \"auto\" and \"none\" (the Anthropic documentation, Define tools).")}
 lines_of(S5, "The reason: the newest Claude models reject it.")
 
@@ -182,7 +182,7 @@ POP = {
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-43": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
               "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3"),
-                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 7 October 2026 in docs/sources/).",
+                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 14 October 2026 in academy/sources/).",
                        EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
 }
@@ -1270,9 +1270,10 @@ for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/checks/M*-scenario-*-step6-r
         RULE6[x["rule"]] += 1
         N6 += 1
 RW6 = [d for m in range(1, 6) for d in jread("runs/mock-%02d/owner-decisions.json" % m) if d["action"] == "rewrite" and "-SC" in d["target"]]
-S49 = {t: jread("runs/mock-01/questions/M1-S49-T%d.json" % t) for t in (1, 2)}
+S41 = {t: jread("runs/mock-02/questions/M2-S41-T%d.json" % t) for t in (1, 2)}
+D2_014 = next(d for d in jread("runs/mock-02/owner-decisions.json") if d["id"] == "D014")
+assert D2_014["target"] == "M2-SC5-R1-F6" and D2_014["action"] == "rewrite"
 opt = lambda q, l: next(o["text"] for o in q["options"] if o["letter"] == l)
-D1_008 = next(d for d in jread("runs/mock-01/owner-decisions.json") if d["id"] == "D008")
 
 CARD.update({
     "s6-what": excerpt(S6, "Steps 3 and 4 look at one question. Some defects show only when many questions are read together.", "Build guide, step 6"),
@@ -1289,10 +1290,14 @@ CARD.update({
     "s6-r2": excerpt(D06, "In one scenario of one mock, at most one wrong option is the self-reported-confidence option. That option is: a model rates its own confidence, and the rating is used as a filter, a threshold or a trigger.", "Mock decision 0006, Decision"),
     "s6-r2why": excerpt(D06, "The plain reason for the limit of one: if the option appears many times, a participant can mark it wrong without thought.", "Mock decision 0006, Reason"),
     "s6-52k3": excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3)", "Mock decision 0006, Reason"),
-    "s6-b": jexcerpt("runs/mock-01/questions/M1-S49-T1.json", opt(S49[1], "B"), "M1-S49, try 1, option B"),
-    "s6-d": jexcerpt("runs/mock-01/questions/M1-S49-T1.json", opt(S49[1], "D"), "M1-S49, try 1, option D"),
-    "s6-t2": jexcerpt("runs/mock-01/questions/M1-S49-T2.json", opt(S49[2], "D"), "M1-S49, try 2, option D (in the built mock 1)"),
-    "s6-d008": jexcerpt("runs/mock-01/owner-decisions.json", D1_008["reason"], "The rewrite of the owner on M1-S49"),
+    "s6-b": jexcerpt("runs/mock-02/questions/M2-S41-T1.json", opt(S41[1], "B"), "M2-S41, try 1, option B"),
+    "s6-c": jexcerpt("runs/mock-02/questions/M2-S41-T1.json", opt(S41[1], "C"), "M2-S41, try 1, option C"),
+    "s6-f6": {"title": "The finding of call 6b, mock 2, scenario 5", "kind": "excerpt", "text": "Finding M2-SC5-R1-F6, rule D3, names M2-S41-T1.",
+              "src": "runs/mock-02/checks/M2-scenario-5-step6-run1.json, line %d" % lines_of("runs/mock-02/checks/M2-scenario-5-step6-run1.json", '"id": "M2-SC5-R1-F6"')[0],
+              "href": link("runs/mock-02/checks/M2-scenario-5-step6-run1.json", lines_of("runs/mock-02/checks/M2-scenario-5-step6-run1.json", '"id": "M2-SC5-R1-F6"')[0])},
+    "s6-t2": jexcerpt("runs/mock-02/questions/M2-S41-T2.json", opt(S41[2], "B"), "M2-S41, try 2, option B, the correct one (in the built mock 2)"),
+    "s6-d014": jexcerpt("runs/mock-02/owner-decisions.json", D2_014["reason"], "The rewrite of the owner on finding M2-SC5-R1-F6"),
+    "s6-date": excerpt(D06, "This is ruling 2 of the owner, of 29 September 2026.", "Mock decision 0006"),
     "s6-writer": excerpt(D10, "It cannot prevent two questions with the same scene, and it cannot count for ruling 2 (decision 0006).", "Mock decision 0010"),
 })
 assert sum(RUNS6.values()) == 33 and N6 == 108
@@ -1339,22 +1344,24 @@ STEP6 = (level("overview",
                   fact("s6-back", "Step 6 sends no question back: each finding goes to the owner.")))
          + level("explanation",
                  FIG61
-                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice and a question that gives away another answer. Call 6b reads only the wrong options, to find one wrong idea in too many questions."))
-                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding names two questions or more, so a person selects which one to write again, or none."), fact("s6-rule", "For mocks 2 to 5, the owner ignored a question that gives away another answer, and recorded one wrong idea in too many questions as a known limit of the mock."))
+                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong idea in too many questions."))
+                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored a question that gives away another answer, and recorded one wrong idea in too many questions as a known limit of the mock."))
                  + FIG62 + ts_block(6))
          + level("depth",
                  '<h4 class="story">Too many wrong options on the confidence of the model</h4>'
-                 '<p>From the first build, the owner had a ruling, ruling 2: %s The reason: %s %s</p>'
-                 '<p>%s Only call 6b checks it. In mock 1, one question had two such options in one scenario: %s and %s The owner sent it back: %s The new try has no confidence option: %s</p>'
+                 '<p>%s ruling 2: %s The reason: %s %s</p>'
+                 '<p>%s Only call 6b checks it. In mock 2, %s Its options B and C both used the confidence of the model: %s and %s The owner sent it back: %s The new try asks for the categories to report instead: %s</p>'
                  '<p>In mocks 2 to 4, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
-                 % (fact("s6-r2", "in one scenario of one mock, at most one wrong option is a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
+                 % (fact("s6-date", "Since 29 September 2026, the owner had a ruling,"),
+                    fact("s6-r2", "in one scenario of one mock, at most one wrong option is a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
                     fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
-                    fact("s6-r2why", "But if it appears many times, a participant can mark it wrong without thought."),
+                    fact("s6-r2why", "But if it appears many times, a participant can rule it out without thought."),
                     fact("s6-writer", "The writer of step 2 sees one slot, so it cannot count these options."),
-                    fact("s6-b", "&ldquo;output a confidence score with each finding and drop any finding whose score falls below a fixed threshold&rdquo;"),
-                    fact("s6-d", "&ldquo;be conservative and assign a higher severity level only when it is highly confident&rdquo;."),
-                    fact("s6-d008", "&ldquo;Ruling 2 of the owner: in one scenario of one mock, at most one wrong option uses the confidence that the model reports about itself&hellip;&rdquo;"),
-                    fact("s6-t2", "its options are about the criteria of the severity levels.")))
+                    fact("s6-f6", "call 6b found a finding of rule D3 on question M2-S41."),
+                    fact("s6-b", "&ldquo;assign a confidence score to each finding and post only the findings above a fixed threshold&rdquo;"),
+                    fact("s6-c", "&ldquo;be conservative and report only high-confidence findings&rdquo;."),
+                    fact("s6-d014", "&ldquo;Use at most one wrong option on model confidence, and only if this scenario has no other one.&rdquo;"),
+                    fact("s6-t2", "its correct option defines the issue categories to report and to skip.")))
          ).replace("@N@", "6")
 PART_HTML[6] = with_sources(6, STEP6)
 
