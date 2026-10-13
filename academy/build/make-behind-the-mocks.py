@@ -1257,6 +1257,107 @@ STEP4 = (level("overview",
          ).replace("@N@", "4")
 PART_HTML[4] = with_sources(4, STEP4)
 
+# ----- step 6: check the complete mock (facts: academy/facts/step-6.md) -----
+
+S6 = step_file(6)
+D06 = glob.glob(os.path.join(ROOT, "docs/decisions/0006-*.md"))[0][len(ROOT) + 1:]
+D34 = glob.glob(os.path.join(ROOT, "docs/decisions/0034-*.md"))[0][len(ROOT) + 1:]
+RUNS6, RULE6, N6 = Counter(), Counter(), 0
+for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/checks/M*-scenario-*-step6-run*.json")):
+    r = jread(os.path.relpath(f, ROOT))
+    RUNS6[r["mock"]] += 1
+    for x in r["findings"]:
+        RULE6[x["rule"]] += 1
+        N6 += 1
+RW6 = [d for m in range(1, 6) for d in jread("runs/mock-%02d/owner-decisions.json" % m) if d["action"] == "rewrite" and "-SC" in d["target"]]
+S49 = {t: jread("runs/mock-01/questions/M1-S49-T%d.json" % t) for t in (1, 2)}
+opt = lambda q, l: next(o["text"] for o in q["options"] if o["letter"] == l)
+D1_008 = next(d for d in jread("runs/mock-01/owner-decisions.json") if d["id"] == "D008")
+
+CARD.update({
+    "s6-what": excerpt(S6, "Steps 3 and 4 look at one question. Some defects show only when many questions are read together.", "Build guide, step 6"),
+    "s6-why": excerpt(S6, "Each writer call sees only its own slot, so two calls can write the same scene.", "Build guide, step 6"),
+    "s6-calls": excerpt("src/step6_check_scenario.py", "Then two model calls read the 15 questions together: call\n6a (rules D1 and D4) and call 6b (rules D2 and D3).", "The code of step 6", kind="code"),
+    "s6-back": excerpt("src/step6_check_scenario.py", "Step 6 sends no question\nback. Each finding goes to the owner (decision 0038, part 3).", "The code of step 6", kind="code"),
+    "s6-rules": code_block("src/step6_check_scenario.py", 'RULES_6A = """D1.', "D3. At most one wrong option of the scenario", "The rules of calls 6a and 6b"),
+    "s6-person": excerpt(D34, "A finding of this step names two questions or more, so a person selects which one to write again, or none.", "Mock decision 0034, Reason"),
+    "s6-rule": excerpt(S6, "A finding of rule D4, a question that gives away the answer of another, is ignored. A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock.", "Build guide, step 6"),
+    "s6-runs": {"title": "The step 6 records of mocks 1 to 5", "kind": "count",
+                "text": "%d runs of step 6 (%s for mocks 1 to 5) with %d findings: %s. The owner rewrote a question for %d findings. The script of this page counted the files."
+                        % (sum(RUNS6.values()), ", ".join(str(RUNS6[m]) for m in range(1, 6)), N6, ", ".join("%s %d" % kv for kv in sorted(RULE6.items())), len(RW6)),
+                "src": "runs/mock-0N/checks/*-step6-run*.json, runs/mock-0N/owner-decisions.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s6-r2": excerpt(D06, "In one scenario of one mock, at most one wrong option is the self-reported-confidence option. That option is: a model rates its own confidence, and the rating is used as a filter, a threshold or a trigger.", "Mock decision 0006, Decision"),
+    "s6-r2why": excerpt(D06, "The plain reason for the limit of one: if the option appears many times, a participant can mark it wrong without thought.", "Mock decision 0006, Reason"),
+    "s6-52k3": excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3)", "Mock decision 0006, Reason"),
+    "s6-b": jexcerpt("runs/mock-01/questions/M1-S49-T1.json", opt(S49[1], "B"), "M1-S49, try 1, option B"),
+    "s6-d": jexcerpt("runs/mock-01/questions/M1-S49-T1.json", opt(S49[1], "D"), "M1-S49, try 1, option D"),
+    "s6-t2": jexcerpt("runs/mock-01/questions/M1-S49-T2.json", opt(S49[2], "D"), "M1-S49, try 2, option D (in the built mock 1)"),
+    "s6-d008": jexcerpt("runs/mock-01/owner-decisions.json", D1_008["reason"], "The rewrite of the owner on M1-S49"),
+    "s6-writer": excerpt(D10, "It cannot prevent two questions with the same scene, and it cannot count for ruling 2 (decision 0006).", "Mock decision 0010"),
+})
+assert sum(RUNS6.values()) == 33 and N6 == 108
+
+FIG61 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 330" role="img" aria-label="Step 6 starts when all 60 slots passed. For each scenario, code checks the questions against the plan and looks for exact copies. Then call 6a reads the 15 questions with the answer key for rules D1 and D4, and call 6b reads only the wrong options for rules D2 and D3. Each finding goes to the owner, who ignores it or rewrites one question. A rewrite goes to step 5.">
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 6-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "nodes": "".join([box(20, 120, 150, 90, ["all 60", "passed"], sub="each scenario"),
+                      box(230, 120, 150, 90, ["code"], sub="C2, C3"),
+                      box(440, 30, 190, 100, ["call 6a"], sub="D1 scene, D4 answer", cls="who-model"),
+                      box(440, 200, 190, 100, ["call 6b"], sub="D2, D3: wrong options", cls="who-model"),
+                      box(700, 115, 170, 100, ["the owner"], sub="ignore or rewrite", cls="who-owner")]),
+    "edges": "".join([edge("M170 165H230"), edge("M380 165H410V80H440"), edge("M410 165V250H440"),
+                      edge("M630 80H665V145H700", "findings", 640, 72, anchor="r"), edge("M630 250H665V185H700"),
+                      edge("M785 215V300", "rewrite: to step 5", 777, 270, cls="is-async", anchor="l")]),
+    "cap": fact("s6-calls", "Two model calls read the 15 questions of a scenario together.") + " " + fact("s6-back", "Step 6 sends no question back. Each finding goes to the owner."),
+}
+R6 = [(k, RULE6.get(k, 0)) for k in ("D1", "D2", "D3", "D4")]
+MX6 = max(v for _, v in R6)
+FIG62 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Findings of step 6 in mocks 1 to 5: %(vals)s.">%(bars)s</svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 6-2</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": len(R6) * 30 + 6, "vals": ", ".join("%s %d" % kv for kv in R6),
+    "bars": "".join('<text x="0" y="%d">%s</text><rect class="%s" x="60" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
+                    % (i * 30 + 14, k, "hot" if k == "D3" else "", i * 30 + 4, v * 440 // MX6, 70 + v * 440 // MX6, i * 30 + 14, v) for i, (k, v) in enumerate(R6)),
+    "cap": fact("s6-runs", "Step 6 ran %d times over mocks 1 to 5 and made %d findings. The owner rewrote a question for %d of them." % (sum(RUNS6.values()), N6, len(RW6))),
+}
+
+STEP6 = (level("overview",
+               '<h4 class="takeaway">Two calls read each scenario as a whole, and the owner decides each finding</h4><p>%s %s %s</p>'
+               % (fact("s6-what", "Steps 3 and 4 look at one question. Some defects show only when many questions are read together."),
+                  fact("s6-calls", "When all 60 slots have passed, two model calls read the 15 questions of each scenario together."),
+                  fact("s6-back", "Step 6 sends no question back: each finding goes to the owner.")))
+         + level("explanation",
+                 FIG61
+                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice and a question that gives away another answer. Call 6b reads only the wrong options, to find one wrong idea in too many questions."))
+                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding names two questions or more, so a person selects which one to write again, or none."), fact("s6-rule", "For mocks 2 to 5, the owner ignored a question that gives away another answer, and recorded one wrong idea in too many questions as a known limit of the mock."))
+                 + FIG62 + ts_block(6))
+         + level("depth",
+                 '<h4 class="story">Too many wrong options on the confidence of the model</h4>'
+                 '<p>From the first build, the owner had a ruling, ruling 2: %s The reason: %s %s</p>'
+                 '<p>%s Only call 6b checks it. In mock 1, one question had two such options in one scenario: %s and %s The owner sent it back: %s The new try has no confidence option: %s</p>'
+                 '<p>In mocks 2 to 4, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
+                 % (fact("s6-r2", "in one scenario of one mock, at most one wrong option is a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
+                    fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
+                    fact("s6-r2why", "But if it appears many times, a participant can mark it wrong without thought."),
+                    fact("s6-writer", "The writer of step 2 sees one slot, so it cannot count these options."),
+                    fact("s6-b", "&ldquo;output a confidence score with each finding and drop any finding whose score falls below a fixed threshold&rdquo;"),
+                    fact("s6-d", "&ldquo;be conservative and assign a higher severity level only when it is highly confident&rdquo;."),
+                    fact("s6-d008", "&ldquo;Ruling 2 of the owner: in one scenario of one mock, at most one wrong option uses the confidence that the model reports about itself&hellip;&rdquo;"),
+                    fact("s6-t2", "its options are about the criteria of the severity levels.")))
+         ).replace("@N@", "6")
+PART_HTML[6] = with_sources(6, STEP6)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
