@@ -1466,6 +1466,85 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                             "Claude asks the questions with AskUserQuestion, then writes SPEC.md.")
             + tab2_links("3.5", "%s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."))), "ts-3-5"))
 
+
+# ----- part 3.6 (facts: academy/facts/ts-3-6.md) -----
+
+HLESS, GHA, CWF, SOUT = "claude-code-docs-headless", "claude-code-docs-github-actions", "claude-code-docs-common-workflows", "claude-code-docs-agent-sdk-structured-outputs"
+CLI36 = "\n".join(read(SRC % HLESS).split("\n")[163:166])
+assert CLI36.startswith('claude -p "Extract') and "--json-schema" in CLI36
+FIG36 = figure("3.6-1", 890, 320,
+               "A pull request or a new commit starts a CI job that runs claude -p. CLAUDE.md, the prior findings and the existing tests give the context. "
+               "With --output-format json and --json-schema, the findings come back as JSON that a script posts as inline comments on the pull request.",
+               "".join([edge("M170 75H225"), edge("M425 75H480"), edge("M670 75H720", "post", 695, 66),
+                        '<path class="ve-e no-head" d="M115 250V215H535V250M325 215V250"/>',
+                        edge("M325 215V110", "context", 333, 165, anchor="r"),
+                        box(20, 40, 150, 70, ["PR or", "new commit"]),
+                        box(225, 40, 200, 70, ["claude -p"], sub="in the CI job", cls="who-model"),
+                        box(480, 40, 190, 70, ["JSON"], sub="fits --json-schema"),
+                        box(720, 40, 150, 70, ["Inline PR", "comments"], cls="try ok"),
+                        box(20, 250, 190, 55, ["Prior findings"], sub="report only new"),
+                        box(230, 250, 190, 55, ["Existing tests"], sub="no duplicates"),
+                        box(440, 250, 190, 55, ["CLAUDE.md"], sub="standards, criteria")]),
+               "%s %s" % (cf("ts-3-6-f1", D(HLESS, "Add the `-p` (or `--print`) flag to any `claude` command to run it non-interactively.", "Claude Code, Run Claude Code programmatically"),
+                             "The -p flag runs Claude Code with no interaction."),
+                          cf("ts-3-6-s2", gx("Using --output-format json with --json-schema to produce machine-parseable structured findings for automated posting as inline PR comments", "Exam guide, 3.6-S2"),
+                             "In the guide, the structured findings become inline PR comments (3.6-S2).")))
+
+PART["3.6"] = (overview("3.6", "In CI, run claude -p with a schema and context",
+                        "In a pipeline, claude -p runs once and exits, and --output-format json with --json-schema gives findings that a script can post as PR comments. "
+                        "CLAUDE.md, the prior findings and the existing tests give the context.",
+                        FIG36)
+    + level("explanation",
+            "<p><b>Run once.</b> %s %s %s</p>" % (
+                cf("ts-3-6-k1", gx("The -p (or --print) flag for running Claude Code in non-interactive mode in automated pipelines", "Exam guide, 3.6-K1"),
+                   "The -p flag, or --print, runs Claude Code with no interaction in a pipeline (3.6-K1)."),
+                cf("ts-3-6-s1", gx("Running Claude Code in CI with the -p flag to prevent interactive input hangs", "Exam guide, 3.6-S1"),
+                   "The guide uses it so that the CI job does not hang on a wait for input (3.6-S1)."),
+                cf("ts-3-6-f2", D(HLESS, "Claude Code exits with code 0 on success and a non-zero code when the run fails, so your scripts can branch on the exit status.", "Claude Code, Run Claude Code programmatically"),
+                   "Claude Code exits with code 0 on success, so a script can branch on the result."))
+            + "<p><b>Structured findings.</b> %s %s %s</p>" % (
+                cf("ts-3-6-k2", gx("--output-format json and --json-schema CLI flags for enforcing structured output in CI contexts", "Exam guide, 3.6-K2"),
+                   "The guide uses --output-format json and --json-schema to enforce structured output (3.6-K2)."),
+                cf("ts-3-6-f4", D(HLESS, "The response includes metadata about the request (session ID, usage, etc.) with the structured output in the `structured_output` field.", "Claude Code, Run Claude Code programmatically"),
+                   "The answer has the structured output in the field structured_output."),
+                cf("ts-3-6-c2", D(CLI, "Get validated JSON output matching a JSON Schema after the agent completes its workflow (print mode only).", "Claude Code, CLI reference"),
+                   "The documentation validates the output after the run. It does not say &ldquo;enforce&rdquo;, and the exam uses the guide."))
+            + "<p><b>Context.</b> %s %s %s</p>" % (
+                cf("ts-3-6-k3", gx("CLAUDE.md as the mechanism for providing project context (testing standards, fixture conventions, review criteria) to CI-invoked Claude Code", "Exam guide, 3.6-K3"),
+                   "The guide puts the project context in CLAUDE.md: testing standards, fixtures and review criteria (3.6-K3, 3.6-S5)."),
+                cf("ts-3-6-f9", D(GHA, "Create a `CLAUDE.md` file in your repository root to define code style guidelines, review criteria, project-specific rules, and preferred patterns.", "Claude Code, GitHub Actions"),
+                   "The Claude Code GitHub Action also reads review criteria from CLAUDE.md."),
+                cf("ts-3-6-c1", D(HLESS, "Add `--bare` to reduce startup time by skipping auto-discovery of hooks, skills, custom commands, [subagents](/docs/en/sub-agents), installed plugins, MCP servers, auto memory, and CLAUDE.md.", "Claude Code, Run Claude Code programmatically"),
+                   "But the documentation recommends --bare for scripted calls, and --bare skips CLAUDE.md. The exam uses the guide."))
+            + "<p><b>Re-runs and tests.</b> %s %s %s</p>" % (
+                cf("ts-3-6-s3", gx("Including prior review findings in context when re-running reviews after new commits, instructing Claude to report only new or still-unaddressed issues to avoid duplicate comments", "Exam guide, 3.6-S3"),
+                   "On a new commit, the guide gives Claude the prior findings and asks only for new or open issues, so the comments do not repeat (3.6-S3)."),
+                cf("ts-3-6-s4", gx("Providing existing test files in context so test generation avoids suggesting duplicate scenarios already covered by the test suite", "Exam guide, 3.6-S4"),
+                   "It gives the existing test files, so that new tests do not repeat them (3.6-S4)."),
+                cf("ts-3-6-f15", D(CWF, "Claude examines your existing test files to match the style, frameworks, and assertion patterns already in use.", "Claude Code, Common workflows"),
+                   "The documentation says that Claude reads the existing tests to match their style."))
+            + "<p><b>An independent review.</b> %s %s Part 4.6 explains this.</p>" % (
+                cf("ts-3-6-k4", gx("Session context isolation: why the same Claude session that generated code is less effective at reviewing its own changes compared to an independent review instance", "Exam guide, 3.6-K4"),
+                   "The session that wrote the code reviews it less well than an independent one (3.6-K4)."),
+                cf("ts-3-6-f11", D(BEST, "A fresh context improves code review since Claude won't be biased toward code it just wrote.", "Claude Code, Best practices"),
+                   "The documentation agrees: a fresh context is not biased toward the code it just wrote."))
+            + exam_tests("3.6", [("Claude Code CLI — -p / --print flag for non-interactive mode, --output-format json, --json-schema for structured CI output", "Among the technologies, the guide names")])
+            + "<p>%s</p>" % cf("ts-3-6-q10", gx('**A.** Add the -p flag: claude -p "Analyze this pull request for security issues"', "Exam guide, sample question 10, answer A"),
+                               "Sample question 10 of the guide fits 3.6: a CI job hangs, and its correct answer adds the -p flag.")
+            + guide_text("3.6"), "ts-3-6")
+    + level("depth",
+            beyond([cf("ts-3-6-b1", D(HLESS, "`--bare` is the recommended mode for scripted and SDK calls, and will become the default for `-p` in a future release.", "Claude Code, Run Claude Code programmatically"),
+                       "--bare is the recommended mode for scripts, and it will become the default for -p."),
+                    cf("ts-3-6-b2", D(SOUT, "A result can also end with subtype `success` but no `structured_output` value", "Agent SDK, Structured outputs"),
+                       "In the Agent SDK, a run can end with success but no structured output, so check the output, not only the result."),
+                    cf("ts-3-6-b3", D(HLESS, "* **`dontAsk`**: Claude Code denies every call that would otherwise prompt, which is useful for locked-down CI runs.", "Claude Code, Run Claude Code programmatically"),
+                       "The permission mode dontAsk denies each call that would ask for approval, for a locked-down CI run.")])
+            + code_pop_text("ts-3-6-code", "The code: claude -p with a JSON schema", "A run of claude -p with a schema", HLESS, CLI36, "Claude Code, Run Claude Code programmatically",
+                            "The result is JSON, with the answer in structured_output.")
+            + tab2_links("3.6", "%s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."),
+                                           fact("ts-g1", "The mock builder calls the Claude API from its own code, not Claude Code in CI.")))
+            + '<p>The nearest idea is the independent check of step 4 (task statement 4.6): <a href="%s#step-4">Step 4, Check by a model &rarr;</a></p>' % TAB2, "ts-3-6"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
