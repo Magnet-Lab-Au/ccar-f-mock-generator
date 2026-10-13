@@ -1849,12 +1849,12 @@ FIG45 = figure("4.5-1", 890, 330,
 
 PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                         "The Message Batches API costs half, but a batch can take up to 24 hours with no promised time, so use it only for work that nobody waits for. "
-                        "Match each result to its request by custom_id, and send again only the requests that failed.",
+                        "Give each request a custom_id, match each result to its request by that ID, and send again only the requests that failed.",
                         FIG45)
     + level("explanation",
             "<p><b>Half the price, no promised time.</b> %s %s %s</p>" % (
                 cf("ts-4-5-k1", gx("The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA", "Exam guide, 4.5-K1"),
-                   "The Message Batches API saves 50%, takes up to 24 hours, and guarantees no latency (4.5-K1)."),
+                   "The Message Batches API saves 50%, takes up to 24 hours, and has no guaranteed latency in a service level agreement (4.5-K1)."),
                 cf("ts-4-5-f5", D(BATCH, "This approach is well-suited to tasks that do not require immediate responses, with most batches finishing in less than 1 hour while reducing costs by 50% and increasing throughput.", "Batch processing"),
                    "The documentation says that most batches finish in less than 1 hour,"),
                 cf("ts-4-5-f3", D(BATCH, "It is possible for a batch to expire and not complete within 24 hours.", "Batch processing"),
@@ -1867,16 +1867,18 @@ PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
             + "<p><b>Tool calls.</b> %s %s</p>" % (
                 cf("ts-4-5-k3", gx("The batch API does not support multi-turn tool calling within a single request (cannot execute tools mid-request and return results)", "Exam guide, 4.5-K3"),
                    "The guide says that a batch request cannot run tools in the middle and continue with their results (4.5-K3)."),
-                cf("ts-4-5-c1", D(BATCH, "The batch worker runs the same server-side agentic loop as the synchronous Messages API.", "Batch processing"),
+                cf("ts-4-5-c1", D(BATCH, "All [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools) (web search, web fetch, code execution, MCP connectors, advisor, and tool search) work in batch requests. The batch worker runs the same server-side agentic loop as the synchronous Messages API.", "Batch processing"),
                    "In the documentation, server tools do run their loop inside a batch request, so the point holds for your own client tools. The exam uses the guide."))
             + "<p><b>custom_id.</b> %s %s</p>" % (
                 cf("ts-4-5-k4", gx("custom_id fields for correlating batch request/response pairs", "Exam guide, 4.5-K4"),
                    "A custom_id links each response to its request (4.5-K4)."),
-                cf("ts-4-5-f11", D(BATCH, "To correctly match results with their corresponding requests, always use the `custom_id` field.", "Batch processing"),
+                cf("ts-4-5-f11", D(BATCH, "Batch results can be returned in any order, and may not match the ordering of requests when the batch was created. In the preceding example, the result for the second batch request is returned before the first. To correctly match results with their corresponding requests, always use the `custom_id` field.", "Batch processing"),
                    "The results come in any order, so the documentation always matches them by custom_id."))
-            + "<p><b>Plan the batch.</b> %s %s %s</p>" % (
+            + "<p><b>Plan the batch.</b> %s %s %s %s</p>" % (
                 cf("ts-4-5-s2", gx("Calculating batch submission frequency based on SLA constraints (e.g., 4-hour windows to guarantee 30-hour SLA with 24-hour batch processing)", "Exam guide, 4.5-S2"),
-                   "The guide plans the submissions for a service level: a batch every 4 hours, plus 24 hours of processing, meets 30 hours (4.5-S2)."),
+                   "The guide plans the submissions for a service level: a batch every 4 hours, plus 24 hours of processing, meets 30 hours (4.5-S2). The exam uses this arithmetic."),
+                cf("ts-4-5-f47", D(BATCH, "Additionally, processing may be slowed down based on current demand and your request volume. In that case, you may see more requests expiring after 24 hours.", "Batch processing"),
+                   "The documentation adds that under high demand more requests expire after 24 hours."),
                 cf("ts-4-5-s4", gx("Using prompt refinement on a sample set before batch-processing large volumes to maximize first-pass success rates and reduce iterative resubmission costs", "Exam guide, 4.5-S4"),
                    "It refines the prompt on a sample before a large batch (4.5-S4)."),
                 cf("ts-4-5-f16", D(BATCH, "* Dry run a single request shape with the Messages API to avoid validation errors.", "Batch processing"),
@@ -1886,10 +1888,12 @@ PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
     + level("depth",
             beyond([cf("ts-4-5-b1", D(BATCH, "validation errors are returned when processing of the entire batch has ended.", "Batch processing"),
                        "Validation errors come back only when the whole batch has ended, so a wrong request can cost a long wait."),
-                    cf("ts-4-5-b2", D(BATCH, "The pricing discounts from prompt caching and Message Batches can stack", "Batch processing"),
+                    cf("ts-4-5-b2", D(BATCH, "The pricing discounts from prompt caching and Message Batches can stack, providing even greater cost savings when both features are used together. However, because batch requests are processed asynchronously and concurrently, cache hits are provided on a best-effort basis.", "Batch processing"),
                        "The discounts of prompt caching and of batches can stack, but cache hits in a batch are not sure."),
-                    cf("ts-4-5-b3", D(BATCH, "Extended output is available on the Message Batches API only, not the synchronous Messages API.", "Batch processing"),
-                       "Extended output exists only on the Message Batches API, with a beta header and some models.")])
+                    cf("ts-4-5-b3h", D(BATCH, "The `output-300k-2026-03-24` beta header raises the `max_tokens` cap to 300,000 for batch requests using Claude Opus 5.5, Claude Opus 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 5.5, Claude Sonnet 5, Claude Sonnet 4.6, or Claude Haiku 5.5.", "Batch processing"),
+                       "A beta header raises the output of a batch request to 300,000 tokens, on some models only.")
+                    + " " + cf("ts-4-5-b3", D(BATCH, "Extended output is available on the Message Batches API only, not the synchronous Messages API. It is supported on the Claude API and Claude Platform on AWS, and is not currently available on Amazon Bedrock, Google Cloud, or Microsoft Foundry.", "Batch processing"),
+                       "This extended output exists only on the Message Batches API, on the Claude API and on Claude Platform on AWS.")])
             + code_pop_text("ts-4-5-code", "The code: results sorted by type and custom_id", "Handle the results of a batch", BATCH, RES45, "Batch processing",
                             "An invalid request must be fixed before it is sent again. A server error can be sent again as it is.")
             + tab2_links("4.5", cf("ts-4-5-d67", excerpt(D67, "2. The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067"),
@@ -1920,16 +1924,16 @@ FIG46 = figure("4.6-1", 890, 320,
                "%s %s" % (cf("ts-4-6-k1", gx("Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1"),
                              "A model keeps the reasoning of its own work, so it is less likely to question its decisions in the same session (4.6-K1)."),
                           cf("ts-4-6-k3", gx("Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "Exam guide, 4.6-K3"),
-                             "A large review splits into passes for each file plus passes across the files (4.6-K3).")))
+                             "A large review splits into passes for each file plus passes across the files (4.6-K3).") + " The order of the passes in the figure is the page&rsquo;s."))
 
 PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files together",
-                        "The session that wrote the work keeps its reasoning, so it seldom questions its own choices. Give the review to a new instance that sees only the work and the criteria, "
+                        "The session that wrote the work keeps its reasoning, so it is less likely to question its own choices. Give the review to a new instance that sees only the work and the criteria, "
                         "and split a large review into one pass for each file plus one pass across the files.",
                         FIG46)
     + level("explanation",
             "<p><b>The writer is biased.</b> %s</p>" %
                 cf("ts-4-6-f2", D(BEST, "A fresh context improves code review since Claude won't be biased toward code it just wrote.", "Claude Code, Best practices"),
-                   "The documentation agrees with 4.6-K1: a fresh context is not biased toward the code it just wrote.")
+                   "The Claude Code documentation agrees with 4.6-K1: Claude in a fresh context is not biased toward the code that it just wrote.")
             + "<p><b>A new instance.</b> %s %s %s %s</p>" % (
                 cf("ts-4-6-k2", gx("Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking", "Exam guide, 4.6-K2"),
                    "The guide says that an independent instance, with no prior reasoning, finds subtle issues better than an instruction to check itself or extended thinking (4.6-K2)."),
@@ -1937,34 +1941,43 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                    "So a second Claude instance reviews the code, without the reasoning of the writer (4.6-S1)."),
                 cf("ts-4-6-f3", D(BEST, "A reviewer running in a fresh [subagent](/docs/en/sub-agents) context sees only the diff and the criteria you give it, not the reasoning that produced the change, so it evaluates the result on its own terms.", "Claude Code, Best practices"),
                    "In Claude Code, a reviewer in a fresh subagent sees only the diff and the criteria."),
-                cf("ts-4-6-c2", D(ETH, "Extended thinking (`thinking.type: \"enabled\"` with `budget_tokens`) is deprecated on the Claude 4.6 models (requests using it still succeed).", "Extended thinking"),
-                   "The mode that the guide calls extended thinking is deprecated in the documentation. The exam uses the guide."))
-            + "<p><b>Passes.</b> %s %s Part 1.6 shows the same split.</p>" % (
+                cf("ts-4-6-c2", D(ETH, "Extended thinking (`thinking.type: \"enabled\"` with `budget_tokens`) is deprecated on the Claude 4.6 models (requests using it still succeed). Claude 4.7 and later models do not support it and reject requests that use it, returning a 400 error.", "Extended thinking"),
+                   "In the Claude API documentation, the mode that the guide calls extended thinking is deprecated on the Claude 4.6 models, and Claude 4.7 and later models reject it. The exam uses the guide."))
+            + "<p><b>Passes.</b> %s %s %s %s Part 1.6 shows the same split.</p>" % (
                 cf("ts-4-6-s2", gx("Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "Exam guide, 4.6-S2"),
                    "The passes for each file find local issues, and a separate integration pass follows the data flow across the files (4.6-S2)."),
-                cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "The documentation also runs a reviewer for each file, then one agent over all the findings."))
+                cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "The dynamic workflows of Claude Code also run a reviewer for each file, then one agent over all the findings."),
+                cf("ts-4-6-f9c", D(WF, "Dynamic workflows are available on all paid plans, with Anthropic API access", "Claude Code, Workflows"), "They need a paid plan or API access."),
+                cf("ts-4-6-q12", gx("Split into focused passes: analyze each file individually for local issues, then run a separate integration-focused pass examining cross-file data flow.", "Exam guide, sample question 12"),
+                   "Sample question 12 of the guide tests this split: one pass for each file, then an integration pass."))
             + "<p><b>Route by confidence.</b> %s %s %s</p>" % (
                 cf("ts-4-6-s3", gx("Running verification passes where the model self-reports confidence alongside each finding to enable calibrated review routing", "Exam guide, 4.6-S3"),
                    "A verification pass adds the confidence of the model to each finding, to route the review (4.6-S3)."),
                 cf("ts-4-6-f16", gx("Field-level confidence scores calibrated using labeled validation sets for routing review attention", "Exam guide, 5.5-K3"),
-                   "The guide calibrates that confidence on labeled examples (5.5-K3),"),
+                   "In 5.5-K3, which is about the extraction of data, the guide calibrates confidence on labeled validation sets."),
                 cf("ts-4-6-f17", gx("Option B fails because LLM self-reported confidence is poorly calibrated—the agent is already incorrectly confident on hard cases.", "Exam guide, sample question 3"),
-                   "because a raw self-reported confidence is poorly calibrated."))
+                   "In sample question 3, which is about escalation, it calls self-reported confidence poorly calibrated. 4.6-S3 itself says only that the routing is calibrated."))
             + exam_tests("4.6", [("Confidence scoring — field-level confidence, calibration with labeled validation sets, stratified sampling for error rate measurement", "Among the technologies, the guide names")])
             + guide_text("4.6"), "ts-4-6")
     + level("depth",
-            beyond([cf("ts-4-6-b1", D(CCS, "This drops the input isolation that subagents otherwise provide", "Claude Code, Subagents"),
-                       "In Claude Code, a fork sees the whole conversation, so it is not an independent reviewer."),
+            beyond([cf("ts-4-6-b1", D(CCS, "This drops the input isolation that subagents otherwise provide: a fork sees the same system prompt, tools, model, and message history as the main session", "Claude Code, Subagents"),
+                       "In Claude Code, a fork sees the same system prompt, tools, model and message history as the main session, so it is not an independent reviewer."),
                     cf("ts-4-6-b2", D(BEST, "A reviewer prompted to find gaps will usually report some, even when the work is sound, because that is what it was asked to do.", "Claude Code, Best practices"),
                        "A reviewer that is asked to find gaps usually reports some, also when the work is sound."),
                     cf("ts-4-6-b3", D(CREV, "Each agent looks for a different class of issue, then a verification step checks candidates against actual code behavior to filter out false positives.", "Claude Code, Code Review"),
-                       "Code Review of Claude Code, a research preview, runs several agents, each for one class of issue, then a verification step.")])
+                       "Code Review of Claude Code runs several agents, each for one class of issue, then a verification step.")
+                    + " " + cf("ts-4-6-b3c", D(CREV, "Code Review is in research preview, available for [Team and Enterprise](https://claude.ai/admin-settings/claude-code) subscriptions.", "Claude Code, Code Review"),
+                       "It is a research preview for Team and Enterprise subscriptions.")])
             + code_pop_text("ts-4-6-code", "The code: a prompt for an independent review", "A review by a subagent", BEST, REV46, "Claude Code, Best practices",
                             "The subagent checks the diff against the plan, with no reasoning of the writer.")
-            + tab2_links("4.6") + "<p>%s %s</p>" % (
+            + tab2_links("4.6") + "<p>%s %s %s %s</p>" % (
                 cf("ts-4-6-use", excerpt(step_file(4), "The same context. Here: a new call, with no reasoning of the writer, checks the question.", "Build guide, step 4"),
-                   "In step 4, a new call with no reasoning of the writer checks each question. The writer and the checker use the same model, so the independence comes from the context."),
-                cf("ts-4-6-d32", excerpt(D32, "For now, this design does the opposite of the point.", "Mock decision 0032"),
+                   "In step 4, a new call with no reasoning of the writer checks each question."),
+                cf("ts-4-6-lim", excerpt(D32, "A limit: only call 4a is blind. Call 4b is not completely \"without prior reasoning context\", because it gets the reason of each option from the writer.", "Mock decision 0032"),
+                   "But only call 4a is blind. Call 4b gets the reason that the writer gave for each option."),
+                cf("ts-4-6-mod", excerpt("src/model_call.py", "MODEL = \"claude-opus-5-5\"", "Mock builder code, src/model_call.py"),
+                   "The writer and the checker use the same model, so the independence comes from the context."),
+                cf("ts-4-6-d32", excerpt(D32, "For now, this design does the opposite of the point. The guide calibrates confidence with \"labeled validation sets\": \"Field-level confidence scores calibrated using labeled validation sets for routing review attention\" (5.5-K3). The guide wrote that point for the extraction of data. We have no such labels before the owner marks mock 1 (decision 0022).", "Mock decision 0032"),
                    "No step uses 4.6-S3: the build had no labeled data to calibrate a confidence.")), "ts-4-6"))
 
 
@@ -2248,6 +2261,87 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
             + tab2_links("5.4", cf("ts-5-4-d01", excerpt(D01, "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001"),
                                    "Mock decision 0001 links the decision files and the journal of the build to 5.4-K2 and 5.4-K4. Tab 2 shows them under 1.7.")
                          + ' <a href="%s#cc-1-7">The build in Claude Code, 1.7 &rarr;</a>' % TAB2), "ts-5-4"))
+
+# ----- part 5.5 (facts: academy/facts/ts-5-5.md) -----
+
+TRT, CMOD, DTST, RHAL = "anthropic-docs-ticket-routing", "anthropic-docs-content-moderation", "anthropic-docs-develop-tests", "anthropic-docs-reduce-hallucinations"
+SCH55 = "\n".join(read(SRC % SOUTA).split("\n")[1549:1564])
+assert SCH55.strip().startswith('"output_config": {') and '"confidence": {"type": "number"},' in SCH55 and SCH55.rstrip().endswith("}")
+FIG55 = figure("5.5-1", 890, 360,
+               "An extraction has a confidence score for each field. A review threshold, calibrated on a labeled validation set, routes it. "
+               "Low confidence or a contradictory source goes to human review by priority. High confidence goes to automation, and a stratified random sample of it goes back to human review. "
+               "Before review is cut, the accuracy is checked for each document type and field, because 97% overall can hide a weak segment.",
+               "".join([edge("M220 160H260"),
+                        edge("M350 120V40H640"), '<text class="ve-el" x="495" y="28">low confidence, or</text><text class="ve-el" x="495" y="58">a contradictory source</text>',
+                        edge("M440 160H640", "high confidence", 540, 151, cls="is-hot"),
+                        edge("M350 260V200", "calibrates", 358, 234, anchor="r"),
+                        edge("M670 130V70", "stratified random sample", 678, 104, cls="is-async", anchor="r"),
+                        edge("M670 250V190", "check each segment first", 678, 224, anchor="r"),
+                        '<text class="ve-lab" x="600" y="345">97% overall can hide a weak segment</text>',
+                        box(20, 120, 200, 80, ["Extraction"], sub="confidence per field", cls="who-model"),
+                        box(260, 120, 180, 80, ["Review threshold"], sub="for each field"),
+                        box(260, 260, 180, 60, ["Labeled set"], sub="validation"),
+                        box(640, 10, 230, 60, ["Human review"], sub="by priority", cls="who-owner"),
+                        box(640, 130, 230, 60, ["Automated"], sub="high confidence"),
+                        box(640, 250, 230, 70, ["Accuracy by segment"], sub="document type and field")]),
+               "%s %s" % (cf("ts-5-5-k3", gx("Field-level confidence scores calibrated using labeled validation sets for routing review attention", "Exam guide, 5.5-K3"),
+                             "Confidence scores for each field, calibrated on labeled validation sets, route the review (5.5-K3)."),
+                          cf("ts-5-5-k2", gx("Stratified random sampling for measuring error rates in high-confidence extractions and detecting novel error patterns", "Exam guide, 5.5-K2"),
+                             "A stratified random sample of the high-confidence extractions measures their error rate and finds new error patterns (5.5-K2).")))
+
+PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data calibrates them",
+                        "One total accuracy can hide a weak document type or field, so measure each segment before you cut human review. "
+                        "Route low-confidence or contradictory extractions to people, with thresholds set on labeled data, and keep a random sample of the confident ones under review.",
+                        FIG55)
+    + level("explanation",
+            "<p><b>One total hides a weak part.</b> %s %s %s %s %s</p>" % (
+                cf("ts-5-5-k1", gx("The risk that aggregate accuracy metrics (e.g., 97% overall) may mask poor performance on specific document types or fields", "Exam guide, 5.5-K1"),
+                   "A total accuracy, such as 97% overall, can hide poor results on some document types or fields (5.5-K1)."),
+                cf("ts-5-5-s2", gx("Analyzing accuracy by document type and field to verify consistent performance across all segments before reducing human review", "Exam guide, 5.5-S2"),
+                   "So check the accuracy for each document type and each field before you reduce human review (5.5-S2)."),
+                cf("ts-5-5-k4", gx("The importance of validating accuracy by document type and field segment before automating high-confidence extractions", "Exam guide, 5.5-K4"),
+                   "Do the same before you automate the high-confidence extractions (5.5-K4)."),
+                cf("ts-5-5-f1", D(TRT, "Measure the routing accuracy across different languages, aiming for no more than a 5–10% drop in accuracy for non-primary languages.", "Ticket routing"),
+                   "The ticket routing guide of the Claude API documentation measures the accuracy for each language,"),
+                cf("ts-5-5-f2", D(TRT, "Regularly audit routing decisions for potential biases, aiming for consistent routing accuracy (within 2–3%) across all customer groups.", "Ticket routing"),
+                   "and it aims for the same accuracy across all customer groups."))
+            + "<p><b>A sample of the confident ones.</b> %s %s %s The word stratified is the guide&rsquo;s.</p>" % (
+                cf("ts-5-5-s1", gx("Implementing stratified random sampling of high-confidence extractions for ongoing error rate measurement and novel pattern detection", "Exam guide, 5.5-S1"),
+                   "A stratified random sample of the high-confidence extractions stays under review, to measure the error rate over time and to find new patterns (5.5-S1)."),
+                cf("ts-5-5-f4", D(DTST, "Design evals that mirror your real-world task distribution.", "Define success criteria and build evaluations"),
+                   "The documentation asks for evaluations that mirror the real mix of tasks."),
+                cf("ts-5-5-f5", D(CMOD, "Keep track of the types of content being flagged by your moderation system to identify trends and potential areas for improvement.", "Content moderation"),
+                   "For content moderation, it tracks the types of content that the system flags, to find trends."))
+            + "<p><b>Calibrate the confidence.</b> %s %s %s No page in the copies of this academy describes the calibration of field-level confidence.</p>" % (
+                cf("ts-5-5-s3", gx("Having models output field-level confidence scores, then calibrating review thresholds using labeled validation sets", "Exam guide, 5.5-S3"),
+                   "The model outputs a confidence score for each field, and a labeled validation set calibrates the review thresholds (5.5-S3)."),
+                cf("ts-5-5-f8", gx("Option B fails because LLM self-reported confidence is poorly calibrated—the agent is already incorrectly confident on hard cases.", "Exam guide, sample question 3"),
+                   "In sample question 3, which is about escalation, the guide says that a self-reported confidence is poorly calibrated."),
+                cf("ts-5-5-f6", D(DTST, "1,000 tweets with human-labeled sentiments.", "Define success criteria and build evaluations"),
+                   "In the documentation, a labeled set is the base of an evaluation, for example 1,000 tweets with sentiments that people labeled."))
+            + "<p><b>People get the hard cases.</b> %s %s %s</p>" % (
+                cf("ts-5-5-s4", gx("Routing extractions with low model confidence or ambiguous/contradictory source documents to human review, prioritizing limited reviewer capacity", "Exam guide, 5.5-S4"),
+                   "Extractions with low confidence, or with ambiguous or contradictory sources, go to human review, which gives its limited time to the most important first (5.5-S4)."),
+                cf("ts-5-5-f10", D(CMOD, "For example, you might want to automatically block user queries that are deemed high risk, while users with many medium risk queries are flagged for human review.", "Content moderation"),
+                   "The content moderation guide routes by risk in the same way: it blocks high risk automatically and flags medium risk for human review."),
+                cf("ts-5-5-f12", D(RHAL, "Explicitly give Claude permission to admit uncertainty.", "Reduce hallucinations"),
+                   "The documentation also tells you to let Claude admit uncertainty."))
+            + exam_tests("5.5", [("Human review workflows: confidence calibration, stratified sampling, accuracy segmentation by document type and field", "Among the topics, the guide names")])
+            + guide_text("5.5"), "ts-5-5")
+    + level("depth",
+            beyond([cf("ts-5-5-b1", D(DTST, "Most flexible and high quality, but slow and expensive. Avoid if possible.", "Define success criteria and build evaluations"),
+                       "For evaluations, the documentation calls human grading slow and expensive. That is about tests before production. In production, the guide keeps people on the hard cases."),
+                    cf("ts-5-5-b2", D(TRT, "Measure this by periodically testing the model with a set of standardized inputs and aiming for a consistency rate of 95% or higher.", "Ticket routing"),
+                       "The ticket routing guide tests the model again from time to time with a fixed set of inputs."),
+                    cf("ts-5-5-b3", D(CMOD, "Regularly assess the performance of your content moderation system using metrics such as precision and recall tracking.", "Content moderation"),
+                       "The content moderation guide measures precision and recall, not only accuracy.")])
+            + code_pop_text("ts-5-5-code", "The code: a confidence score in a schema", "A confidence field in a structured output", SOUTA, SCH55, "Structured outputs",
+                            "This example has one score for the whole answer. For 5.5, put one score on each field. The model writes the number, so it is not calibrated until you compare it with a labeled set.")
+            + tab2_links("5.5") + "<p>%s %s</p>" % (
+                cf("ts-5-5-use", excerpt(step_file(7), "Written for the extraction of data. Here: the bad marks are shown for each scenario and each domain, because one total can hide a bad part.", "Build guide, step 7"),
+                   "Step 7 uses 5.5 outside its context: the reader marks questions, not extractions, and the marks are shown for each scenario and each domain (5.5-K1)."),
+                cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
+                   "In mocks 4 and 5, the reader is a Claude model, not a person.")), "ts-5-5"))
 
 # ----- the top: the map and how we broke it down -----
 
