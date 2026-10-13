@@ -1967,6 +1967,74 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                 cf("ts-4-6-d32", excerpt(D32, "For now, this design does the opposite of the point.", "Mock decision 0032"),
                    "No step uses 4.6-S3: the build had no labeled data to calibrate a confidence.")), "ts-4-6"))
 
+
+# ----- part 5.1 (facts: academy/facts/ts-5-1.md) -----
+
+COMP, CWIN, CEDIT, COMPD = "anthropic-docs-compaction", "anthropic-docs-context-windows", "anthropic-docs-context-editing", "anthropic-docs-compaction-on-demand"
+CMP51 = "\n".join(read(SRC % COMPD).split("\n")[784:790])
+assert CMP51.startswith("{") and '"type": "summarize"' in CMP51 and CMP51.endswith("}")
+FIG51 = figure("5.1-1", 890, 330,
+               "One request of a long support session carries, from top to bottom: the system prompt, a block of case facts that is never summarized, a summary of the older turns where numbers can blur, "
+               "the recent turns word for word, and tool results cut to the relevant fields. An order lookup with more than 40 fields is cut to the few that matter. The whole history goes to Claude on each turn.",
+               "".join([edge("M620 280H470", "keep a few", 545, 271), edge("M470 165H545V115H620", "each turn", 583, 106),
+                        box(20, 20, 450, 40, ["System prompt"]),
+                        box(20, 70, 450, 60, ["Case facts"], sub="amounts, dates, order numbers: kept as they are", cls="try ok"),
+                        box(20, 140, 450, 50, ["Summary of older turns"], sub="numbers can blur here"),
+                        box(20, 200, 450, 40, ["Recent turns, word for word"]),
+                        box(20, 250, 450, 60, ["Tool results"], sub="only the relevant fields"),
+                        box(620, 70, 250, 90, ["Claude"], cls="who-model"),
+                        box(620, 250, 250, 60, ["Order lookup"], sub="40+ fields")]),
+               "%s %s" % (cf("ts-5-1-s1", gx("Extracting transactional facts (amounts, dates, order numbers, statuses) into a persistent \"case facts\" block included in each prompt, outside summarized history", "Exam guide, 5.1-S1"),
+                             "The guide keeps amounts, dates, order numbers and statuses in a case facts block in each prompt, outside the summary (5.1-S1)."),
+                          cf("ts-5-1-s3", gx("Trimming verbose tool outputs to only relevant fields before they accumulate in context (e.g., keeping only return-relevant fields from order lookups)", "Exam guide, 5.1-S3"),
+                             "It cuts each tool output to the relevant fields before it enters the context (5.1-S3).")))
+
+PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim the rest",
+                        "A summary of a long conversation blurs numbers, dates and promises, so keep these facts in a separate block that each request carries word for word. "
+                        "Send the history each time, but cut tool results and agent outputs to what the next step needs.",
+                        FIG51)
+    + level("explanation",
+            "<p><b>Summaries blur facts.</b> %s %s %s</p>" % (
+                cf("ts-5-1-k1", gx("Progressive summarization risks: condensing numerical values, percentages, dates, and customer-stated expectations into vague summaries", "Exam guide, 5.1-K1"),
+                   "A summary that grows step by step turns numbers, dates and what the customer expects into vague words (5.1-K1)."),
+                cf("ts-5-1-f1", D(COMP, "Compaction replaces the older turns of a conversation with a summary that Claude writes on the server, so you need no summarization code of your own.", "Compaction"),
+                   "The API itself can replace older turns with a summary."),
+                cf("ts-5-1-s2", gx("Extracting and persisting structured issue data (order IDs, amounts, statuses) into a separate context layer for multi-issue sessions", "Exam guide, 5.1-S2"),
+                   "So the guide keeps the data of each issue in a separate layer (5.1-S2)."))
+            + "<p><b>Position.</b> %s %s %s</p>" % (
+                cf("ts-5-1-k2", gx("The \"lost in the middle\" effect: models reliably process information at the beginning and end of long inputs but may omit findings from middle sections", "Exam guide, 5.1-K2"),
+                   "The guide says that a model can miss findings in the middle of a long input (5.1-K2),"),
+                cf("ts-5-1-s4", gx("Placing key findings summaries at the beginning of aggregated inputs and organizing detailed results with explicit section headers to mitigate position effects", "Exam guide, 5.1-S4"),
+                   "so a summary of key findings goes first, with clear section headers (5.1-S4)."),
+                cf("ts-5-1-f7", D(CWIN, "As token count grows, accuracy and recall degrade, a phenomenon known as *context rot*.", "Context windows"),
+                   "The documentation names a related effect of length, context rot, not of position. The exam uses the guide."))
+            + "<p><b>Tool results.</b> %s %s</p>" % (
+                cf("ts-5-1-k3", gx("How tool results accumulate in context and consume tokens disproportionately to their relevance (e.g., 40+ fields per order lookup when only 5 are relevant)", "Exam guide, 5.1-K3"),
+                   "Tool results pile up, for example 40 fields for each order lookup when only 5 matter (5.1-K3)."),
+                cf("ts-5-1-f14", D(DEFT, "Return semantic, stable identifiers (for example, slugs or UUIDs) rather than opaque internal references, and include only the fields Claude needs to reason about its next step.", "Define tools"),
+                   "The documentation agrees: a tool returns only the fields that Claude needs for the next step."))
+            + "<p><b>The history.</b> %s %s</p>" % (
+                cf("ts-5-1-k4", gx("The importance of passing complete conversation history in subsequent API requests to maintain conversational coherence", "Exam guide, 5.1-K4"),
+                   "Each request carries the conversation history (5.1-K4),"),
+                fact("ts-1-3-f6", "because the API keeps no state and a subagent gets none of the history of its parent."))
+            + "<p><b>Agent outputs.</b> %s %s</p>" % (
+                cf("ts-5-1-s5", gx("Requiring subagents to include metadata (dates, source locations, methodological context) in structured outputs to support accurate downstream synthesis", "Exam guide, 5.1-S5"),
+                   "A subagent returns its findings with metadata, such as dates and source locations (5.1-S5),"),
+                cf("ts-5-1-s6", gx("Modifying upstream agents to return structured data (key facts, citations, relevance scores) instead of verbose content and reasoning chains when downstream agents have limited context budgets", "Exam guide, 5.1-S6"),
+                   "and as structured key facts, not long reasoning, when the next agent has little room (5.1-S6)."))
+            + exam_tests("5.1", [("Context window optimization: trimming verbose tool outputs, structured fact extraction, position-aware input ordering", "Among the topics, the guide names")])
+            + guide_text("5.1"), "ts-5-1")
+    + level("depth",
+            beyond([cf("ts-5-1-b1", D(COMPD, "A non-blank `instructions` string (up to 16,384 characters) replaces that prompt entirely.", "Compaction on demand"),
+                       "With compaction on demand, a beta, you can tell the summary what it must keep."),
+                    cf("ts-5-1-b2", D(CEDIT, "The `clear_tool_uses_20250919` strategy clears tool results when conversation context grows beyond your configured threshold.", "Context editing"),
+                       "With context editing, a beta, the API clears old tool results above a threshold. It removes whole results, while 5.1-S3 cuts fields."),
+                    cf("ts-5-1-b3", D(BEST, "Customize compaction behavior in CLAUDE.md with instructions like", "Claude Code, Best practices"),
+                       "In Claude Code, an instruction in CLAUDE.md can say what a compaction must keep.")])
+            + code_pop_text("ts-5-1-code", "The code: a summary that keeps named facts", "Compaction with instructions", COMPD, CMP51, "Compaction on demand",
+                            "A beta of the Claude API. The instructions say what the summary must keep.")
+            + tab2_links("5.1", cf("ts-5-1-d12", excerpt(D12, "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends", "Mock decision 0012"), "The mock builder has no long conversation: each call sees only what the program sends.")), "ts-5-1"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
@@ -2032,6 +2100,8 @@ CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
 
 DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles of its task statements (decision 0021)
+DOMAIN_SUMMARY[5] = ("Reliable systems over long work: context that keeps the facts, escalation and ambiguity, errors that travel between agents, "
+                     "context in large codebases, human review with calibrated confidence, and the provenance of each claim.")
 DOMAIN_SUMMARY[4] = ("Prompts that give reliable output: explicit criteria, few-shot examples, structured output with tool use and JSON schemas, "
                      "validation with retries, batch processing, and reviews by several instances or passes.")
 DOMAIN_SUMMARY[3] = ("Claude Code for a team: CLAUDE.md files and their levels, commands and skills, rules for some paths, "
