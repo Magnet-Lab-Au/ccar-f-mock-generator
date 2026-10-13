@@ -10,7 +10,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
-Status of this report: the final version. An independent agent checked it against the commits at 07:45 and found 8 problems. All are fixed (see the journal).
+Status of this report: the final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. All are fixed (see the journal).
 
 **In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed. Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
 
