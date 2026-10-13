@@ -688,7 +688,7 @@ STEP0 = (level("overview",
                  + ts_block(0))
          + level("depth",
                  '<h4 class="story">The design started at step 1, and a proposal had no source</h4>'
-                 '<p>%s It had no source for the story and no fields. %s The fix: %s %s</p>'
+                 '<p>%s It named no source for the story and no fields of the form. %s The fix: %s %s</p>'
                  '<p>One more correction came earlier. %s So step 0 has a number, a decision and a box in Fig. A.</p>'
                  '<p>No source records a failure of the script or of the file. %s</p>'
                  % (fact("s0-a1", "Early in the design, a proposal for step 2 said &ldquo;the story of the scenario&rdquo; and &ldquo;a fixed form with fields&rdquo;."),
@@ -1091,7 +1091,7 @@ STEP3 = (level("overview",
                   fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"]))))
          + level("explanation",
                  FIG31
-                 + '<p><b>Code or a model.</b> %s A model checks the rules that need judgment in step 4.</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
+                 + '<p><b>Code or a model.</b> %s</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
                  + '<p><b>Why the form does not count.</b> %s %s Later, %s</p>'
                    % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
@@ -1225,7 +1225,7 @@ FIG43 = """
 
 DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</p>' % fact("s4-exam", "The exam tests only that prompt caching exists.")
           + '<h4 class="story">Prompt caching was missed, and added before mock 4</h4>' + FIG43
-          + '<p>%s Before mock 4, %s The fix puts the guide first, the same in each call, and caches it. %s %s %s %s 2 of the 10 verdicts changed. %s The owner did not choose the Message Batches API: %s</p>'
+          + '<p>%s Before mock 4, %s The fix puts the guide first, the same in each call, and caches it. %s %s %s %s 2 of the 10 verdicts changed from pass to fail. %s The owner did not choose the Message Batches API: %s</p>'
           % (fact("s4-none", "The first design did not use prompt caching. Each check call sent the full text of the guide again, at the full input price."),
              fact("s4-asked", "the owner asked if the program uses prompt caching. The assistant said no."),
              fact("s4-write", "A 5-minute cache write costs 1.25 times the input price."),
@@ -1353,7 +1353,7 @@ STEP6 = (level("overview",
                  '<p>%s Only call 6b checks it. In mock 2, %s Its options B and C both used the confidence of the model: %s and %s The owner sent it back: %s The new try asks for the categories to report instead: %s</p>'
                  '<p>In mocks 2 to 4, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
                  % (fact("s6-date", "Since 29 September 2026, the owner had a ruling,"),
-                    fact("s6-r2", "in one scenario of one mock, at most one wrong option is a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
+                    fact("s6-r2", "in one scenario of one mock, at most one wrong option uses a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
                     fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
                     fact("s6-r2why", "But if it appears many times, a participant can rule it out without thought."),
                     fact("s6-writer", "The writer of step 2 sees one slot, so it cannot count these options."),
@@ -1569,8 +1569,8 @@ STEP8 = (level("overview",
                  + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw."),
                                                           fact("s8-fpdef", "Each check saves a fingerprint of the question: a code of 64 characters that code calculates from its text. Before the build, code calculates it again and compares."),
                                                           fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL))
-                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The facts of the exam form are: each question states how many answers to select, the questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
-                   % fact("s8-nopoint", "None. The step uses three facts of the exam form, not a point of a task statement."))
+                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The facts of the exam format are: each question states how many answers to select, the questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
+                   % fact("s8-nopoint", "None. The step uses three facts of the exam format, not a point of a task statement."))
          + level("depth",
                  ('<h4 class="story">The first conditions could never be met</h4>'
                   '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so the second design review (see step 5) found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, with tests (mock decisions 0038 and 0039).</p>'
@@ -1749,7 +1749,7 @@ PARAGRAPH = re.search(r"   > (The mock builder is itself.*?)\n", PARAGRAPH).grou
 TITLE = "Mocks Built with the Same Principles They Test"
 assert TITLE in read("academy/decisions/0010-two-tabs-each-one-page-with-an-exploded-view.md")
 
-WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">11 words</span></summary><div class="body"><dl class="glossary">
+WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">15 words</span></summary><div class="body"><dl class="glossary">
 <dt>Mock</dt><dd>A practice exam of %(n)d questions. The mock builder made %(m)d mocks.</dd>
 <dt>Slot</dt><dd>%(slot)s</dd>
 <dt>Try</dt><dd>One question that the writer writes for a slot. A slot can have more than one try. The last try that passes goes into the mock.</dd>
@@ -1757,6 +1757,10 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
 <dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. Tab 1 explains them.</dd>
 <dt>Mark</dt><dd>In step 7, a reader marks each question good or bad. A bad mark sends the question back.</dd>
 <dt>The owner</dt><dd>%(owner)s</dd>
+<dt>IDs</dt><dd>M4-S27-T3 is mock 4, slot 27, try 3. 1.4-K2 is a point of the exam guide.</dd>
+<dt>Rules</dt><dd>Rules A1 to A12 are checked by code in step 3. Rules B1 to B9 are checked by a model in step 4. Rules C and D are checked over a scenario in step 6.</dd>
+<dt>Seed</dt><dd>A number that controls the random choices of the plan in step 1.</dd>
+<dt>Rewrite</dt><dd>The owner sends a question back to the writer with a reason.</dd>
 <dt>Answer key</dt><dd>%(key)s</dd>
 <dt>Idea</dt><dd>%(idea)s</dd>
 <dt>Second review</dt><dd>%(sr)s</dd>
