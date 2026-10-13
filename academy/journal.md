@@ -54,3 +54,4 @@ One entry for each work session. Newest entry first.
 - The second item: the move into the portal. The owner accepted that the prototypes obey the security policy of the portal from the start. Decision 0017 (proposed) records it.
 - The third item: the old page "How the Mocks Are Built New" (rule 18). The owner accepted that tab 2 replaces it, and the assistant does not change it. Decision 0018 (proposed) records it.
 - The fourth item: what each level holds in both tabs. The owner accepted a table. Decision 0019 (proposed) records it.
+- The fifth item: where the figures of the 1.1 samples go in the new outline. The owner accepted a table. Decision 0020 (proposed) records it.
