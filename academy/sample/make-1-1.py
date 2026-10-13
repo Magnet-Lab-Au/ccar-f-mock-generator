@@ -142,10 +142,10 @@ while True:
     response = client.messages.create(
         model="claude-opus-5-5", max_tokens=16000,
         tools=tools, messages=messages)
+    messages.append({"role": "assistant", "content": response.content})
     if response.stop_reason != "tool_use":
         break                     # "end_turn", or another reason to handle
     # stop_reason is "tool_use": run each tool that Claude asked for
-    messages.append({"role": "assistant", "content": response.content})
     results = [{"type": "tool_result", "tool_use_id": block.id,
                 "content": run_tool(block.name, block.input)}
                for block in response.content if block.type == "tool_use"]
@@ -160,7 +160,7 @@ POP = {
     "send": {"who": "Your code", "cls": "code", "title": "Your code sends the request",
              "sent": ["The request carries the conversation history, with each tool result."],
              "examplehead": "The loop in Python", "example": LOOP_CODE,
-             "examplenote": "Simplified from the Anthropic documentation, page \"How tool use works\", section \"The agentic loop "
+             "examplenote": "Based on the Anthropic documentation, page \"How tool use works\", section \"The agentic loop "
                             "(client tools)\" (" + DOCS_TOOL_USE + "), read on 13 October 2026. The exam guide has no code.",
              "points": pts("1.1-K1")},
     "resp": {"who": "Claude", "cls": "model", "title": "Claude responds",
@@ -500,7 +500,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
     loops. The builder uses the same idea for a loop of retries.</p>
     <h3>What happened in mock 1</h3>
     <p>Mock 1 needed {tries_fact}. {rewrites} of the tries were rewrites that the owner asked for after the marks. {more} slots
-    needed more than one try: {failed} after a failed check, and {rwonly} only after a rewrite that the owner asked for. {stuck_fact}</p>
+    had more than one try: {failed} after a failed check, and {rwonly} only after a rewrite that the owner asked for. {stuck_fact}</p>
     <h3>What went wrong, and the fix</h3>
     <p>The first design had many automatic paths for repair. {reviews_fact} The owner said: &ldquo;{quote_fact}&rdquo;</p>
     <p>The fix: {oneloop_fact}, and {wait_fact}. The control became code, with {tests_fact}.</p>

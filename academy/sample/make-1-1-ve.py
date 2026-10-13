@@ -101,7 +101,7 @@ FIG1 = """
       <li data-n="5/9">Your code sends the history again. Claude asks for tool B, and your code adds the response.</li>
       <li data-n="6/9">Your code checks <code>stop_reason</code>: <code>"tool_use"</code>.</li>
       <li data-n="7/9">Your code runs tool B and adds the result to the conversation history.</li>
-      <li data-n="8/9">Your code sends the history again. Claude responds with the answer.</li>
+      <li data-n="8/9">Your code sends the history again. Claude responds with the answer, and your code adds it.</li>
       <li data-n="9/9">Your code checks <code>stop_reason</code>: <code>"end_turn"</code>. The loop stops.</li>
     </ol>
     <button data-go="-1" aria-label="Previous step">&larr;</button>
