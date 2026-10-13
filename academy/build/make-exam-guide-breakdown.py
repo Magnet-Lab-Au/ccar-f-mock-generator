@@ -19,7 +19,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import REPO, ROOT, TAG, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
+from lib import REPO, ROOT, TAG, code_block, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
 
 TAB2 = "behind-the-mocks.html"
 EG = "reference/exam-guide.md"
@@ -167,8 +167,76 @@ def overview(tsid, takeaway, answer, fig=""):
     TAKEAWAY[tsid] = takeaway
     key = "ts-%s-title" % tsid.replace(".", "-")
     CARD[key] = gx("### **Task Statement %s: %s**" % (tsid, TS[tsid]["title"]), "Exam guide, task statement %s" % tsid)
-    return level("overview", '<h4 class="takeaway">%s</h4><p class="gtitle">%s</p><p class="lead">%s</p>%s'
-                 % (e(takeaway), fact(key, "&ldquo;%s&rdquo;" % e(TS[tsid]["title"])), answer, fig), "ts-" + tsid.replace(".", "-"))
+    return level("overview", '<p class="gtitle">%s</p><p class="lead">%s</p>%s'
+                 % (fact(key, "&ldquo;%s&rdquo;" % e(TS[tsid]["title"])), answer, fig), "ts-" + tsid.replace(".", "-"))
+
+
+
+# ----- helpers for the parts -----
+
+SRC = "academy/sources/2026-10-14-%s.md"
+PAGE_NAME = {}   # copy -> the name of its page, for the card title
+
+
+def D(copy, text, page_name):
+    """An excerpt of a dated copy of the Anthropic documentation (decisions 0014 and 0030)."""
+    return excerpt(SRC % copy, text, "Anthropic documentation, %s (copy of 14 October 2026)" % page_name, kind="docs")
+
+
+def card(key, c):
+    CARD[key] = c
+    return key
+
+
+def cf(key, c, text):
+    """A fact with its card."""
+    CARD[key] = c
+    return fact(key, text)
+
+
+def box(x, y, w, h, lines, sub=None, cls="", step=None):
+    attrs = ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step if step else ""
+    out = '<g class="ve-n %s"%s transform="translate(%d %d)"><rect class="sh" width="%d" height="%d" rx="0"/>' % (cls, attrs, x, y, w, h)
+    n = len(lines) + (1 if sub else 0)
+    y0 = h / 2 - (n - 1) * 10
+    for i, t in enumerate(lines):
+        out += '<text x="%d" y="%d">%s</text>' % (w / 2, y0 + i * 20, e(t))
+    if sub:
+        out += '<text class="sub" x="%d" y="%d">%s</text>' % (w / 2, y0 + len(lines) * 20 + 2, e(sub))
+    return out + "</g>"
+
+
+def edge(d, label=None, lx=0, ly=0, cls="", anchor=""):
+    out = '<path class="ve-e %s" d="%s"/>' % (cls, d)
+    if label:
+        out += '<text class="ve-el %s" x="%d" y="%d">%s</text>' % (anchor, lx, ly, e(label))
+    return out
+
+
+def figure(num, svg_w, svg_h, aria, inner, cap):
+    return ('<figure><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
+            '<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (svg_w, svg_h, e(aria), inner, num, cap))
+
+
+def code_pop(key, label, title, copy, first, last, page_name, note=""):
+    """A button that opens the code of the documentation in a popup (decisions 0004 and 0032)."""
+    c = code_block(SRC % copy, first, last, title)
+    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the Anthropic documentation, %s" % page_name,
+                "example": c["text"], "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
+    return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
+
+
+def beyond(items):
+    return '<div class="callout"><span class="chip">Beyond the exam</span><ul class="beyond">%s</ul></div>' % "".join("<li>%s</li>" % i for i in items)
+
+
+def exam_tests(tsid, lines):
+    """The lines of section 17 of the guide for the task statement, and the questions of the 5 mocks."""
+    k = tsid.replace(".", "-")
+    out = []
+    for i, (text, what) in enumerate(lines):
+        out.append("%s %s" % (what, fact(card("ts-%s-x%d" % (k, i), gx(text, "Exam guide, section 17")), "&ldquo;%s&rdquo;." % e(text))))
+    return '<div><h4 class="gh2">The exam tests</h4><p>%s %s</p></div>' % (" ".join(out), mock_count(tsid))
 
 
 # ----- part 1.1: the checked content of the fifth sample -----
@@ -209,6 +277,85 @@ TESTS11 = TESTS11.replace("<div><h3>The exam tests</h3>", '<div><h4 class="gh2">
 PART["1.1"] = (overview("1.1", "The loop runs while Claude asks for tools", from_sample(LEAD11), from_sample(FIG11))
                + level("explanation", from_sample(WHO11 + CASES11 + TESTS11) + "<p>%s</p>" % mock_count("1.1") + guide_text("1.1"), "ts-1-1")
                + level("depth", from_sample(CODE11 + BEYOND11) + tab2_links("1.1"), "ts-1-1"))
+
+
+# ----- part 1.3 (facts: academy/facts/ts-1-3.md) -----
+
+SUB, SES, PERM = "claude-code-docs-agent-sdk-subagents", "claude-code-docs-agent-sdk-sessions", "claude-code-docs-agent-sdk-permissions"
+PAR, PBP, CCS = "anthropic-docs-parallel-tool-use", "anthropic-docs-claude-prompting-best-practices", "claude-code-docs-sub-agents"
+D26 = glob.glob(os.path.join(ROOT, "docs/decisions/0026-*.md"))[0][len(ROOT) + 1:]
+D12 = glob.glob(os.path.join(ROOT, "docs/decisions/0012-*.md"))[0][len(ROOT) + 1:]
+CARD.update({
+    "ts-1-3-f5": D(SUB, "The only content you pass from parent to subagent is the Agent tool's prompt string, so include any file paths, error messages, or decisions the subagent needs directly in that prompt.", "Agent SDK, Subagents"),
+    "ts-1-3-f7": D(SUB, "only its final message returns to the parent.", "Agent SDK, Subagents"),
+})
+FIG13 = figure("1.3-1", 890, 350,
+               "A coordinator sends three Task calls in one response. Each subagent gets only the prompt of its call, with the findings and their sources. "
+               "The conversation history of the coordinator is not passed. Only the final message of each subagent comes back.",
+               "".join([edge("M250 170H360"), edge("M360 170V70H540"), edge("M360 170H540"), edge("M360 170V270H540"),
+                        edge("M250 48H520", "not passed", 385, 39, cls="is-async"),
+                        edge("M705 310V340H135V220", "only the final message comes back", 410, 332, cls="is-async"),
+                        '<text class="ve-el" x="305" y="161">Task calls</text><text class="ve-el" x="450" y="261">findings + sources</text>',
+                        box(20, 20, 230, 56, ["conversation history"], sub="of the coordinator"),
+                        box(20, 120, 230, 100, ["Coordinator"], sub='allowedTools has "Task"', cls="who-model"),
+                        box(540, 30, 330, 80, ["Subagent A"], sub="description · prompt · tools", cls="who-model"),
+                        box(540, 130, 330, 80, ["Subagent B"], sub="description · prompt · tools", cls="who-model"),
+                        box(540, 230, 330, 80, ["Subagent C"], sub="description · prompt · tools", cls="who-model")]),
+               "Parallel subagents start from one response. %s %s" % (fact("ts-1-3-f5", "A subagent gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
+
+PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passes it",
+                        "A coordinator starts each subagent with a call of the Task tool. The subagent does not see the conversation of the coordinator, so the prompt of the call must hold the complete findings and their sources.",
+                        FIG13)
+    + level("explanation",
+            "<p><b>Spawn.</b> %s %s %s</p>" % (
+                cf("ts-1-3-k1", gx("The Task tool as the mechanism for spawning subagents, and the requirement that allowedTools must include \"Task\" for a coordinator to invoke subagents", "Exam guide, 1.3-K1"),
+                   "The guide: a coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;."),
+                cf("ts-1-3-c1", D(CCS, "In version 2.1.63, the Task tool was renamed to Agent. Existing `Task(...)` references in settings and agent definitions still work as aliases.", "Claude Code, Subagents"),
+                   "The product renamed the tool Agent in version 2.1.63."),
+                cf("ts-1-3-c2", D(PERM, "Any other tool not listed in `allowed_tools` is still available to Claude, and a call to it that needs approval falls through to the permission mode.", "Agent SDK, Permissions"),
+                   "In the current Agent SDK, allowed_tools only approves a tool in advance. The exam uses the guide.")
+            )
+            + "<p><b>Context.</b> %s %s %s So the coordinator puts the complete findings of earlier agents in the prompt (1.3-S1), %s</p>" % (
+                fact("ts-1-3-f5", "The only content that goes from the parent to a subagent is the prompt of the tool call."),
+                cf("ts-1-3-f6", D(SUB, "The parent's conversation history or tool results", "Agent SDK, Subagents"), "The subagent does not get the conversation history or the tool results of the parent."),
+                fact("ts-1-3-f7", "Only the final message of the subagent goes back."),
+                cf("ts-1-3-f16", D(PBP, "When using multiple documents, wrap each document in `<document>` tags with `<document_content>` and `<source>` (and other metadata) subtags for clarity.", "Prompting best practices"),
+                   "and it keeps each content apart from its source, such as the URL or the page number (1.3-S2)."))
+            + "<p><b>Definitions.</b> %s %s %s</p>" % (
+                cf("ts-1-3-f8", D(SUB, "| `description` | `string` | Yes | Natural language description of when to use this agent |\n| `prompt` | `string` | Yes | The agent's system prompt defining its role and behavior |", "Agent SDK, Subagents"),
+                   "An AgentDefinition gives each type of subagent a description, a system prompt and a list of tools (1.3-K3)."),
+                cf("ts-1-3-f9", D(SUB, "Claude automatically decides when to invoke subagents based on the task and each subagent's `description`.", "Agent SDK, Subagents"),
+                   "Claude chooses a subagent by its description."),
+                cf("ts-1-3-f10", D(SUB, "A tool you leave out isn't in the subagent's session at all: Claude works without it, with no permission prompt or error.", "Agent SDK, Subagents"),
+                   "A tool that the list leaves out is not in the session of the subagent at all."))
+            + "<p><b>Parallel.</b> %s So the coordinator starts parallel subagents with several Task calls in one response, not across separate turns (1.3-S3). %s</p>" % (
+                cf("ts-1-3-f14", D(PAR, "When Claude calls tools, the response has a `stop_reason` of `tool_use` and can contain several `tool_use` blocks in a single assistant turn.", "Parallel tool use"),
+                   "One response of Claude can hold several tool calls."),
+                cf("ts-1-3-f15", D(SUB, "multiple subagents can run concurrently, so independent subtasks finish in the time of the slowest one rather than the sum of all of them.", "Agent SDK, Subagents"),
+                   "Independent subagents then finish in the time of the slowest one."))
+            + "<p><b>Goals, not steps.</b> A coordinator prompt gives research goals and quality criteria, not step-by-step procedures, so that a subagent can adapt (1.3-S4). %s</p>" %
+                cf("ts-1-3-f17", D(PBP, "**Provide clear success criteria:** Define what constitutes a successful answer to your research question.", "Prompting best practices"),
+                   "The documentation also asks for clear success criteria for a research task.")
+            + "<p><b>Fork.</b> %s %s So two approaches can start from one shared analysis (1.3-K4). Task statement 1.7 has more on sessions.</p>" % (
+                cf("ts-1-3-f11", D(SES, "Forking creates a new session that starts with a copy of the original's history but diverges from that point. The fork gets its own session ID; the original's ID and history stay unchanged.", "Agent SDK, Sessions"),
+                   "A fork of a session starts with a copy of the history. The original does not change."),
+                cf("ts-1-3-f12", D(SES, "fork_session=True,", "Agent SDK, Sessions"), "The option is fork_session, together with resume."))
+            + exam_tests("1.3", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names"),
+                                 ("Subagent context management: explicit context passing, structured state persistence, crash recovery using manifests", "Among the topics:")])
+            + guide_text("1.3"), "ts-1-3")
+    + level("depth",
+            beyond([cf("ts-1-3-b1", D(SUB, "Project CLAUDE.md (loaded via [`settingSources`](/docs/en/agent-sdk/claude-code-features#control-filesystem-settings-with-settingsources)), unless the agent sets [`omitClaudeMd`](#agentdefinition-configuration)", "Agent SDK, Subagents"),
+                       "A subagent is not empty: it also loads the CLAUDE.md of the project, unless its definition turns that off. The guide says only that the context must be in the prompt."),
+                    cf("ts-1-3-b2", D(SUB, "Each subagent makes its own API requests, which count toward the query's `total_cost_usd`, and a subagent can spawn subagents of its own, so one prompt can grow into a tree of agents.", "Agent SDK, Subagents"),
+                       "A subagent can start subagents of its own, and each one makes its own API requests, so one prompt can grow into a tree of agents and costs."),
+                    cf("ts-1-3-b3", D(CCS, "A fork is a subagent that inherits the entire conversation so far instead of starting fresh.", "Claude Code, Subagents"),
+                       "Claude Code also has a fork subagent, which inherits the whole conversation. It is not the fork_session of the guide.")])
+            + code_pop("ts-1-3-code", "The code: two AgentDefinitions in Python", "Two subagents defined in code", SUB, "import asyncio", "asyncio.run(main())", "Agent SDK, Subagents",
+                       "The coordinator approves the Agent tool, and each AgentDefinition has a description, a prompt and its tools.")
+            + tab2_links("1.3")
+            + "<p>%s %s</p>" % (cf("ts-1-3-d26", excerpt(D26, "The pipeline uses no MCP, no subagent, no hook and no session.", "Mock decision 0026"), "The mock builder itself uses no subagent."),
+                                cf("ts-1-3-d12", excerpt(D12, "A subagent is necessary only for a step in which code cannot know before the call what the model must read.", "Mock decision 0012"),
+                                   "The reason: a subagent is necessary only when code cannot know before the call what the model must read.")), "ts-1-3"))
 
 # ----- the top: the map and how we broke it down -----
 
