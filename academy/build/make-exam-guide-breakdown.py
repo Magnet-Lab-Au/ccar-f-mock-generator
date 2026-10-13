@@ -157,7 +157,7 @@ def ts_part(tsid):
         head, body = TAKEAWAY[tsid], with_sources(PART[tsid])
     else:
         head = t["title"]
-        body = '<p class="pending">This task statement comes in slice %d.</p>' % SLICE_OF[t["domain"]]
+        body = '<p class="pending">This part is not written yet.</p>'
     return ('<details class="part" id="%s"><summary><span class="pn">%s</span><span><h3>%s</h3></span>'
             '<span class="mm"><span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
             % (pid, tsid, e(head), body))
@@ -180,7 +180,11 @@ PAGE_NAME = {}   # copy -> the name of its page, for the card title
 
 def D(copy, text, page_name):
     """An excerpt of a dated copy of the Anthropic documentation (decisions 0014 and 0030)."""
-    return excerpt(SRC % copy, text, "Anthropic documentation, %s (copy of 14 October 2026)" % page_name, kind="docs")
+    if copy.startswith("claude-code-docs"):
+        title = "Claude Code documentation, %s (copy of 14 October 2026)" % page_name.replace("Claude Code, ", "")
+    else:
+        title = "Anthropic documentation, %s (copy of 14 October 2026)" % page_name
+    return excerpt(SRC % copy, text, title, kind="docs")
 
 
 def card(key, c):
@@ -221,7 +225,7 @@ def figure(num, svg_w, svg_h, aria, inner, cap):
 def code_pop(key, label, title, copy, first, last, page_name, note=""):
     """A button that opens the code of the documentation in a popup (decisions 0004 and 0032)."""
     c = code_block(SRC % copy, first, last, title)
-    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the Anthropic documentation, %s" % page_name,
+    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the documentation, %s" % page_name,
                 "example": c["text"], "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
@@ -229,13 +233,14 @@ def code_pop(key, label, title, copy, first, last, page_name, note=""):
 def code_pop_text(key, label, title, copy, text, page_name, note=""):
     """A code popup from an exact block of a dated copy."""
     c = D(copy, text, page_name)
-    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the Anthropic documentation, %s" % page_name,
+    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the documentation, %s" % page_name,
                 "example": __import__("textwrap").dedent(text), "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
 
 def beyond(items):
-    return '<div class="callout"><span class="chip">Beyond the exam</span><ul class="beyond">%s</ul></div>' % "".join("<li>%s</li>" % i for i in items)
+    return ('<div class="callout"><span class="chip">Beyond the exam</span><p>The exam tests the points of the guide above. These facts of the documentation go further, for work in production.</p>'
+            '<ul class="beyond">%s</ul></div>' % "".join("<li>%s</li>" % i for i in items))
 
 
 def exam_tests(tsid, lines):
@@ -269,7 +274,12 @@ def from_sample(html):
     for k in set(re.findall(r'data-step="ts-1-1-([^"]+)"', html)):
         POP["ts-1-1-" + k] = S_POP[k]
     for k in set(re.findall(r'data-card="ts-1-1-([^"]+)"', html)):
-        CARD["ts-1-1-" + k] = S_CARD[k]
+        CARD["ts-1-1-" + k] = dict(S_CARD[k])
+        CARD["ts-1-1-" + k]["title"] = CARD["ts-1-1-" + k]["title"].replace("In-Scope Topics, Section 17 (Appendix)", "Exam guide, section 17").replace("Technologies and Concepts, Section 17 (Appendix)", "Exam guide, section 17")
+    if "ts-1-1-d-stop" in CARD:
+        table = "\n".join(read(SRC % "anthropic-docs-handling-stop-reasons").split("\n")[13:21])
+        assert table.count("| [`") == 7 and "model_context_window_exceeded" in table
+        CARD["ts-1-1-d-stop"] = D("anthropic-docs-handling-stop-reasons", table, "Stop reasons and fallback")
     return html
 
 
@@ -326,7 +336,7 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
                    "The Agent tool runs even when the list does not name it. The exam uses the guide.")
             )
             + "<p><b>Context.</b> %s %s %s %s %s</p>" % (
-                fact("ts-1-3-f5", "Only the prompt of the tool call goes from the parent to a subagent."),
+                fact("ts-1-3-f5", "Only the prompt of the tool call goes from the coordinator to a subagent."),
                 cf("ts-1-3-f6", D(SUB, "The parent's conversation history or tool results", "Agent SDK, Subagents"), "The subagent does not get the conversation history or the tool results of the parent."),
                 fact("ts-1-3-f7", "Only the final message of the subagent goes back."),
                 cf("ts-1-3-s1", gx("Including complete findings from prior agents directly in the subagent's prompt (e.g., passing web search results and document analysis outputs to the synthesis subagent)", "Exam guide, 1.3-S1"),
@@ -351,10 +361,9 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
                    "A coordinator prompt gives research goals and quality criteria, not step-by-step procedures, so that a subagent can adapt (1.3-S4)."),
                 cf("ts-1-3-f17", D(PBP, "**Provide clear success criteria:** Define what constitutes a successful answer to your research question.", "Prompting best practices"),
                    "The documentation also asks for clear success criteria."))
-            + "<p><b>Fork.</b> %s %s So two approaches can start from one shared analysis (1.3-K4, see 1.7).</p>" % (
+            + "<p><b>Fork.</b> %s So two approaches can start from one shared analysis (1.3-K4). Part 1.7 explains sessions.</p>" % (
                 cf("ts-1-3-f11", D(SES, "Forking creates a new session that starts with a copy of the original's history but diverges from that point. The fork gets its own session ID; the original's ID and history stay unchanged.", "Agent SDK, Sessions"),
-                   "A fork of a session starts with a copy of the history. The original does not change."),
-                cf("ts-1-3-f12", D(SES, "resume=session_id,\n                  fork_session=True,", "Agent SDK, Sessions"), "The option is fork_session, together with resume."))
+                   "A fork of a session starts with a copy of the history. The original does not change."))
             + exam_tests("1.3", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names"),
                                  ("Subagent context management: explicit context passing, structured state persistence, crash recovery using manifests", "Among the topics:")])
             + guide_text("1.3"), "ts-1-3")
@@ -397,7 +406,7 @@ FIG12 = figure("1.2-1", 890, 380,
 
 PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every result",
                         "A coordinator agent splits the task, calls only the subagents that the query needs, and is the only path between them. "
-                        "Each subagent starts with a fresh context, so a split that is too narrow leaves gaps that no subagent can see.",
+                        "Each subagent starts without the conversation of the coordinator, so a split that is too narrow leaves gaps that no subagent can see.",
                         FIG12)
     + level("explanation",
             "<p><b>The hub.</b> %s %s %s</p>" % (
@@ -408,10 +417,9 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
             + "<p><b>Isolated context.</b> %s Part 1.3 shows what the coordinator must pass.</p>" %
                 cf("ts-1-2-k2", gx("How subagents operate with isolated context—they do not inherit the coordinator's conversation history automatically", "Exam guide, 1.2-K2"),
                    "A subagent does not get the conversation history of the coordinator (1.2-K2).")
-            + "<p><b>Choose the subagents.</b> %s %s %s</p>" % (
+            + "<p><b>Choose the subagents.</b> %s %s</p>" % (
                 cf("ts-1-2-k3", gx("The role of the coordinator in task decomposition, delegation, result aggregation, and deciding which subagents to invoke based on query complexity", "Exam guide, 1.2-K3"),
                    "The coordinator splits the task, delegates, joins the results, and decides which subagents a query needs (1.2-K3)."),
-                fact("ts-1-3-f9", "Claude chooses a subagent by its description."),
                 cf("ts-1-2-f8", D(O5, "If one subagent can complete the task, use one rather than several, and keep spawn counts low.", "Prompting Claude Opus 5"),
                    "A sample prompt in the documentation also tells Claude to use one subagent, not several, when one is enough (1.2-S1)."))
             + "<p><b>Split the scope.</b> %s %s %s</p>" % (
@@ -433,8 +441,7 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
                        "A subagent can start subagents of its own, so the hub can grow into a tree. The guide shows one hub with one layer."),
                     cf("ts-1-2-b3", D(O5, "Delegation pays off on genuinely independent, sizeable tracks of work, but it multiplies cost and time when applied to small tasks.", "Prompting Claude Opus 5"),
                        "Delegation multiplies cost and time when the tasks are small.")])
-            + tab2_links("1.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no subagent."),
-                                           fact("ts-1-3-d12", "A subagent is necessary only when code cannot know before the call what the model must read."))), "ts-1-2"))
+            + tab2_links("1.2", "%s Part 1.3 gives the reason." % fact("ts-1-3-d26", "The mock builder uses no subagent.")), "ts-1-2"))
 
 
 # ----- part 1.4 (facts: academy/facts/ts-1-4.md) -----
@@ -539,8 +546,7 @@ PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request
                 cf("ts-1-5-f9", D(LOOP, "a `PreToolUse` hook that rejects a tool call prevents it from executing, and Claude receives the rejection message instead.", "Agent SDK, The agent loop"),
                    "In the Agent SDK, a PreToolUse hook that rejects a call stops it, and Claude gets the rejection message instead."),
                 cf("ts-1-5-s2", gx("Implementing tool call interception hooks that block policy-violating actions (e.g., refunds exceeding $500) and redirect to alternative workflows (e.g., human escalation)", "Exam guide, 1.5-S2"),
-                   "In the guide, the hook then redirects the case, for example to a human (1.5-S2).") + " " + cf("ts-1-5-f10", D(HOOKS, "`permissionDecisionReason` tells the model why, so it avoids retrying.", "Agent SDK, Hooks"),
-                   "The documentation has no redirect field: a deny gives Claude the reason, so it does not retry.") + " " + cf("ts-1-5-f8", D(HOOKS, "For `PreToolUse` hooks, this is where you set `permissionDecision` (`\"allow\"`, `\"deny\"`, `\"ask\"`, or `\"defer\"`)", "Agent SDK, Hooks"),
+                   "In the guide, the hook then redirects the case, for example to a human (1.5-S2). The documentation has no redirect field: a deny gives Claude its reason (see 1.4).") + " " + cf("ts-1-5-f8", D(HOOKS, "For `PreToolUse` hooks, this is where you set `permissionDecision` (`\"allow\"`, `\"deny\"`, `\"ask\"`, or `\"defer\"`)", "Agent SDK, Hooks"),
                    "A hook can also answer &ldquo;ask&rdquo;, to ask the user. The exam uses the guide."))
             + "<p><b>After the call.</b> %s %s %s</p>" % (
                 cf("ts-1-5-s1", gx("Implementing PostToolUse hooks to normalize heterogeneous data formats (Unix timestamps, ISO 8601, numeric status codes) from different MCP tools before the agent processes them", "Exam guide, 1.5-S1"),
@@ -605,10 +611,9 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                 cf("ts-1-7-c2", D(SES, "**Resume** takes a specific session ID. You track the ID.", "Agent SDK, Sessions"),
                    "In the Agent SDK, a resume takes the session ID.") + " " + cf("ts-1-7-f1", D(CSES, "| `claude --resume <name>` | Resumes the named session directly |", "Claude Code, Sessions"),
                    "A name works in the Claude Code CLI. The exam uses the guide."))
-            + "<p><b>Fork.</b> %s %s %s</p>" % (
+            + "<p><b>Fork.</b> %s %s</p>" % (
                 cf("ts-1-7-s2", gx("Using fork_session to create parallel exploration branches (e.g., comparing two testing strategies or refactoring approaches from a shared codebase analysis)", "Exam guide, 1.7-S2"),
                    "fork_session makes branches from one shared analysis, for example to compare two refactoring approaches (1.7-K2, 1.7-S2)."),
-                fact("ts-1-3-f11", "In the Agent SDK, a fork starts with a copy of the history, and the original does not change."),
                 cf("ts-1-7-f6", D(CLI, "| `--fork-session` | When resuming, create a new session ID instead of reusing the original (use with `--resume` or `--continue`)", "Claude Code, CLI reference"),
                    "In the CLI, the flag is --fork-session, together with --resume.") + " " + cf("ts-1-7-sdkf", D(SES, "resume=session_id,\n                  fork_session=True,", "Agent SDK, Sessions"),
                    "fork_session is the option of the Python Agent SDK. The exam uses the name of the guide."))
@@ -634,9 +639,9 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
             + code_pop("ts-1-7-code", "The code: a fork in the Agent SDK", "A fork of a session in Python", SES, "# Fork: branch from session_id into a new session", "print(message.result)", "Agent SDK, Sessions",
                        "resume takes the session ID, and fork_session=True makes a new session from its history.")
             + tab2_links("1.7") + "<p>%s %s</p>" % (
-                fact("ts-1-3-d26", "The pipeline of the mock builder uses no session."),
+                fact("ts-1-3-d26", "The mock builder uses no session."),
                 cf("ts-1-7-cc", excerpt("HANDOFF.md", "This file gives a new session what it needs to continue.", "HANDOFF.md"),
-                   "The build in Claude Code shows only 1.7-K4: HANDOFF.md is a structured summary for the next session.") + " " + cf("ts-1-7-cc2", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session). 1.7-S3 holds only in part. The named resumption and fork points are not shown.", "Fact sheet of the build in Claude Code"),
+                   "The build in Claude Code shows 1.7-K4, and 1.7-S3 only in part: HANDOFF.md is a structured summary for the next session.") + " " + cf("ts-1-7-cc2", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session). 1.7-S3 holds only in part. The named resumption and fork points are not shown.", "Fact sheet of the build in Claude Code"),
                    "No record shows --resume or fork_session.")), "ts-1-7"))
 
 
@@ -792,7 +797,7 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
             + code_pop_text("ts-2-1-code", "The code: a good tool description", "A tool definition with a detailed description", DEFT, GOOD21, "Define tools",
                             "The description says what the tool returns, when to use it, and what it does not provide.")
             + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "The fields `name` and `description` of the tool are not sent as a tool.", "Mock decision 0040"),
-                                   "The pipeline sends the model no tool: its forms go as structured outputs, so Claude never chooses a tool.")), "ts-2-1"))
+                                   "The mock builder sends the model no tool: its forms go as structured outputs, so Claude never chooses a tool.")), "ts-2-1"))
 
 
 # ----- part 2.2 (facts: academy/facts/ts-2-2.md) -----
@@ -951,7 +956,10 @@ CARD.update({
 for d in DOM.values():
     CARD["m-d%d" % d["id"]] = gx("| %d | %s | %d%% |" % (d["id"], d["name"], d["weight"]), "Exam guide, section 4, domain %d" % d["id"])
 for s in SCEN:
-    CARD["m-s%d" % s["id"]] = gx("### Scenario %d: %s" % (s["id"], s["name"]), "Exam guide, section 5, scenario %d" % s["id"])
+    _eg = read(EG)
+    _i = _eg.index("### Scenario %d: %s" % (s["id"], s["name"]))
+    _j = _eg.index("\n", _eg.index("Primary domains:", _i))
+    CARD["m-s%d" % s["id"]] = gx(_eg[_i:_j], "Exam guide, section 5, scenario %d" % s["id"])
 
 
 def map_col(d):
@@ -973,7 +981,7 @@ def map_html():
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
   <figure data-figure="map">
     <div class="tmap">%(cols)s</div>
-    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s Each task statement opens below.</figcaption>
+    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s A written part shows its takeaway heading, the others show the title of the guide. Each task statement opens below.</figcaption>
   </figure>
   <figure>
     <ol class="scen">%(scen)s</ol>
@@ -986,7 +994,7 @@ def map_html():
                  "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "nts": len(TS),
                  "weights": fact("m-weights", "A weight is the approximate share of the scored questions."),
                  "scen": "".join(scen_row(s) for s in SCEN),
-                 "scap": "The 6 scenarios of the guide, each with its primary domains. An exam draws 4 of them."}
+                 "scap": "The 6 scenarios of the guide, each with its primary domains."}
 
 
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">

@@ -676,8 +676,8 @@ STEP0 = (level("overview",
                   fact("s0-slice", "A later step takes the parts that it needs from the file, by ID.")))
          + level("explanation",
                  FIG01
-                 + '<p><b>IDs.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
-                   % (fact("s0-ids", "Each point gets an ID that the guide does not have: the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
+                 + '<p><b>Labels.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
+                   % (fact("s0-ids", "Each point gets a label that the guide does not have: the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
                       fact("s0-keep", "Every question of the 5 mocks keeps the ID of its point: %d of %d." % (KEPT, TOTAL_Q)))
                  + '<p><b>Checks.</b> %s %s and %s, or it writes no file. Then three checks:</p>'
                    '<ol class="checks"><li>%s</li><li>%s</li><li>%s</li></ol>'
@@ -1646,7 +1646,7 @@ FIGCC = """
       %(nodes)s
     </svg>
   </div>
-  <figcaption><span class="fig-n">Fig. 4.6-1</span>%(cap)s</figcaption>
+  <figcaption><span class="fig-n">Fig. C-4.6-1</span>%(cap)s</figcaption>
 </figure>""" % {"g2": GAPS2, "g3": GAPS3,
                 "nodes": "".join([box(20, 50, 170, 90, ["check 1"], sub="gaps, no count", cls="who-model"),
                                   box(260, 50, 170, 90, ["check 2"], sub="%d gaps, more files" % GAPS2, cls="who-model"),
@@ -1769,7 +1769,7 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
 <dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. Tab 1 explains them.</dd>
 <dt>Mark</dt><dd>In step 7, a reader marks each question good or bad. A bad mark sends the question back.</dd>
 <dt>The owner</dt><dd>%(owner)s</dd>
-<dt>IDs</dt><dd>M4-S27-T3 is mock 4, slot 27, try 3. 1.4-K2 is a point of the exam guide.</dd>
+<dt>IDs and labels</dt><dd>The ID M4-S27-T3 is mock 4, slot 27, try 3. The label 1.4-K2 is a point of the exam guide.</dd>
 <dt>Rules</dt><dd>Rules A1 to A12 are checked by code in step 3. Rules B1 to B9 are checked by a model in step 4. Rules C and D are checked over a scenario in step 6.</dd>
 <dt>Seed</dt><dd>A number that controls the random choices of the plan in step 1.</dd>
 <dt>Rewrite</dt><dd>The owner sends a question back to the writer with a reason.</dd>
