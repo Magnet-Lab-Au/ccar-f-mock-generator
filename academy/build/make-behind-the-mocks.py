@@ -61,16 +61,19 @@ for m in range(1, 6):
         r = jread(os.path.relpath(p, ROOT))
         verdicts[(r["question_id"], r["step"])] = r["verdict"]
     cannot = sum(1 for v in verdicts.values() if v == "cannot_decide")
+    first = sum(1 for sid in per if verdicts.get((sid + "-T1", 3)) == "pass" and verdicts.get((sid + "-T1", 4)) == "pass")
     decisions = jread(folder + "/owner-decisions.json")
     opened = sum(1 for d in decisions if d["action"] in ("more_tries", "new_point"))
     MOCKS.append({"mock": m, "tries": len(qs), "slots": len(per), "per": per, "more": sum(1 for v in per.values() if v > 1),
-                  "max": max(per.values()), "cannot": cannot, "cannot_write": sum(1 for q in qs if q["status"] == "cannot_write"),
+                  "max": max(per.values()), "first": first, "cannot": cannot, "cannot_write": sum(1 for q in qs if q["status"] == "cannot_write"),
                   "opened": opened})
 TOTAL_TRIES = sum(x["tries"] for x in MOCKS)
 TOTAL_OPENED = sum(x["opened"] for x in MOCKS)
 TOTAL_CANNOT = sum(x["cannot"] + x["cannot_write"] for x in MOCKS)
 assert all(x["slots"] == SLOTS for x in MOCKS)
-FIRST_PASS = [x["slots"] - x["more"] for x in MOCKS]
+assert TOTAL_CANNOT == 0   # the text says that the guards "cannot decide" and "cannot write" never stopped a slot
+REVIEW1 = number(D38, r"The first review found (\d+) serious items")
+REVIEW2 = number(D38, r"The second review found (\d+) new serious items")
 
 # M5-S38: the story of decision 0074, from the run files
 S38 = {t: jread("runs/mock-05/questions/M5-S38-T%d.json" % t) for t in range(1, 6)}
@@ -80,6 +83,8 @@ assert D004["target"] == "M5-S38" and D004["after_try"] == 3 and D004["action"] 
 assert [S38V[t] for t in range(1, 6)] == ["fail", "fail", "fail", "fail", "pass"]
 T4A = next(o["text"] for o in S38[4]["options"] if o["letter"] == "A")
 T5A = next(o["text"] for o in S38[5]["options"] if o["letter"] == "A")
+T4F = jread("runs/mock-05/checks/M5-S38-T4-step4.json")["findings"][0]["detail"]
+T2F = jread("runs/mock-05/checks/M5-S38-T2-step4.json")["findings"][0]["detail"]
 M1S46 = next(o["text"] for o in jread("runs/mock-01/questions/M1-S46-T1.json")["options"] if o["correct"])
 
 # ----- the preview cards -----
@@ -111,7 +116,7 @@ CARD = {
     "s5-guard": code_block(CONTROL, "TRIES = ", "CANNOT_DECIDE = ", "The two limits in the code"),
     "s5-counts": {"title": "The run records of mocks 1 to 5", "kind": "count",
                   "text": "Tries for %d slots, counted from the question files: %s. Slots with more than one try: %s. "
-                          "Slots that opened at the limit and waited for the owner: %s. Results \"cannot decide\" and answers "
+                          "Times that a slot opened at the limit and waited for the owner: %s. Results \"cannot decide\" and answers "
                           "\"cannot write\": %d in all. The script of this page counted the files."
                           % (SLOTS, ", ".join("mock %d %d" % (x["mock"], x["tries"]) for x in MOCKS),
                              ", ".join(str(x["more"]) for x in MOCKS), ", ".join(str(x["opened"]) for x in MOCKS), TOTAL_CANNOT),
@@ -126,7 +131,7 @@ CARD = {
     "a-tests": {"title": "The tests of the program", "kind": "count",
                 "text": "The folder tests/ has %d tests (each line that starts with \"def test\"). No test makes a model call. "
                         "The script of this page counted them." % TESTS,
-                "src": "tests/", "href": "%s/tree/%s/tests" % (REPO, "main")},
+                "src": "tests/", "href": "%s/tree/%s/tests" % (REPO, TAG)},
     # story (b)
     "b-q": excerpt(D74, "The program sent the writer the last failed try and its findings, but not the reason of the owner (decision 0039).", "Mock decision 0074, Question"),
     "b-reason": jexcerpt(OWNER5, D004["reason"], "The decision of the owner on M5-S38"),
@@ -134,7 +139,8 @@ CARD = {
     "b-first": code_block(CONTROL, "if in_round:", "return self._step5(request, failed, self._check_findings(failed))", "The branch that runs first: a failed try of this start"),
     "b-test": code_block("tests/test_control.py", "def test_more_tries_gives_the_reason_of_the_owner_to_the_writer", "def test_more_tries_gives_the_reason_of_the_owner_to_the_writer", "The test of decision 0074"),
     "b-t4": jexcerpt("runs/mock-05/questions/M5-S38-T4.json", T4A, "M5-S38, try 4, option A (correct)"),
-    "b-m1": jexcerpt("runs/mock-01/questions/M1-S46-T1.json", M1S46, "M1-S46, try 1, the correct option (mock 1)"),
+    "b-t4f": jexcerpt("runs/mock-05/checks/M5-S38-T4-step4.json", T4F, "M5-S38, try 4, the finding of rule B9"),
+    "b-t2f": jexcerpt("runs/mock-05/checks/M5-S38-T2-step4.json", T2F, "M5-S38, try 2, the finding of rule B9"),
     "b-t5": jexcerpt("runs/mock-05/questions/M5-S38-T5.json", T5A, "M5-S38, try 5, option A (correct), in the built mock 5"),
     "b-said": excerpt(D74, "The instruction reached the writer, but the question did not follow it.", "Mock decision 0074, Decision"),
 }
@@ -146,20 +152,25 @@ def pts(*ids):
     return [{"id": i, "text": POINTS[i][0], "ctx": "Task statement %s: %s" % (POINTS[i][1]["id"], POINTS[i][1]["title"])} for i in ids]
 
 
+DEVIATION = "The newest Claude models reject a forced tool call, so the build sends its form as structured outputs."
+lines_of(S5, "The reason: the newest Claude models reject it.")
+
+
 def table_use(point):
-    """How step 5 uses a point, from the table of guide points in the build guide (decision 0024)."""
+    """How step 5 uses a point, from the table of guide points in the build guide (decision 0024), with its point ID."""
     row = next(l for l in read(S5).split("\n") if l.startswith("| %s |" % point))
-    return row.split(" | ")[-1].rstrip(" |")
+    use = row.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")
+    return "%s: %s" % (point, use.replace("(see the deviation above)", "(" + DEVIATION + ")"))
 
 
 POP = {
     "ts-44": {"who": "Task statement 4.4", "cls": "model", "title": TS["4.4"]["title"],
-              "sent": ["How step 5 uses it: " + table_use("4.4-K1"), table_use("4.4-S1"), table_use("4.4-K2")],
+              "sent": ["How step 5 uses each point:", table_use("4.4-K1"), table_use("4.4-S1"), table_use("4.4-K2")],
               "points": pts("4.4-K1", "4.4-S1", "4.4-K2")},
     "ts-11": {"who": "Task statement 1.1", "cls": "model", "title": TS["1.1"]["title"],
-              "sent": ["How step 5 uses it: " + table_use("1.1-S3")], "points": pts("1.1-S3")},
+              "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-43": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
-              "sent": ["How step 5 uses it: " + table_use("4.3-K1"), table_use("4.3-S3")], "points": pts("4.3-K1", "4.3-S3")},
+              "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3")], "points": pts("4.3-K1", "4.3-S3")},
 }
 for k in POP:
     POP[k].setdefault("example", None)
@@ -320,16 +331,16 @@ def grid(x):
         cells.append('<g class="cell %s"><rect x="%d" y="%d" width="20" height="20" rx="0"/>%s<title>%s: %d %s</title></g>'
                      % (cls, cx, cy, txt, sid, n, "try" if n == 1 else "tries"))
     return ('<div class="case"><span class="ve-label">Mock %d</span><h3>%d tries</h3>'
-            '<svg class="ve-grid" viewBox="0 0 227 135" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed at the first try. %d slots needed more than one try. The most tries for one slot: %d.">%s</svg>'
-            '<p class="cap">%d of %d passed at the first try</p></div>'
-            % (x["mock"], x["tries"], x["mock"], x["tries"], SLOTS, x["slots"] - x["more"], x["more"], x["max"], "".join(cells),
-               x["slots"] - x["more"], SLOTS))
+            '<svg class="ve-grid" viewBox="0 0 227 135" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
+            '<p class="cap">%d of %d passed both checks at the first try</p></div>'
+            % (x["mock"], x["tries"], x["mock"], x["tries"], SLOTS, x["first"], x["more"], x["max"], "".join(cells),
+               x["first"], SLOTS))
 
 
 FIG52 = """
 <figure>
   <div class="cases">%s</div>
-  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A number is the tries of a slot that needed more than one. %s %s</figcaption>
+  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A number is the tries of a slot that had more than one. It also counts new tries after a rewrite or a bad mark of the owner. %s %s</figcaption>
 </figure>
 """ % ("".join(grid(x) for x in MOCKS),
        fact("s5-counts", "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)),
@@ -337,7 +348,7 @@ FIG52 = """
        % (TOTAL_OPENED, CANNOT))
 
 # Fig. 5-3: the review loop (story a)
-FIG53 = """
+FIG53_T = """
 <figure>
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first review found 14 serious items. The second review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the control is code with tests.">
@@ -353,7 +364,13 @@ FIG53 = """
   </div>
   <figcaption><span class="fig-n">Fig. 5-3</span>%s The owner said: &ldquo;%s&rdquo;</figcaption>
 </figure>
-""" % (fact("a-reviews", "A first review found 14 serious items. A second review found 10 new ones, and most of them came from the rules that answered the first."),
+"""
+FIG53_T = (FIG53_T.replace('found 14 serious items. The second review found 10 new', 'found @R1@ serious items. The second review found @R2@ new')
+           .replace('width="140" height="16" rx="0"/><text class="sub" x="210" y="70">14</text>', 'width="%d" height="16" rx="0"/><text class="sub" x="210" y="70">@R1@</text>' % (REVIEW1 * 10))
+           .replace('width="100" height="16" rx="0"/><text class="sub r" x="452" y="70">10 new</text>', 'width="%d" height="16" rx="0"/><text class="sub r" x="452" y="70">@R2@ new</text>' % (REVIEW2 * 10))
+           .replace("@R1@", str(REVIEW1)).replace("@R2@", str(REVIEW2)))
+assert "14" not in FIG53_T.split("<figcaption>")[0].replace("140", "") or REVIEW1 == 14
+FIG53 = FIG53_T % (fact("a-reviews", "A first review found %d serious items. A second review found %d new ones, and most of them came from the rules that answered the first." % (REVIEW1, REVIEW2)),
        fact("a-quote", "I suspect that if we fix these new 10 issues and review we will keep finding more and the cycle will continue."))
 
 # Fig. 5-4: M5-S38 (story b)
@@ -366,7 +383,7 @@ def tbox(t, x, lines, sub, cls):
 FIG54 = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 250" role="img" aria-label="Question M5-S38 of mock 5. Tries 1 to 3 fail rule B9. The owner gives more tries with a reason. Try 4 gets the reason, follows it and fails rule B9, because a question of mock 1 already had that problem. Try 5 does not get the reason, writes the old problem again and passes.">
+    <svg class="ve-svg" viewBox="0 0 890 250" role="img" aria-label="Question M5-S38 of mock 5. Tries 1 to 3 fail rule B9. The owner gives more tries with a reason. Try 4 gets the reason, puts a custom ID into its correct options and fails rule B9, because it repeats questions of mocks 1 and 3. Try 5 does not get the reason, writes the old problem again and passes.">
       %(edges)s
       %(nodes)s
       <g class="ve-n who-owner"><rect class="sh" x="500" y="2" width="200" height="36" rx="0"/><text x="600" y="20">owner: more tries</text></g>
@@ -379,7 +396,7 @@ FIG54 = """
 """ % {
     "nodes": "".join([tbox(1, 20, ["Try 1"], "fails B9", "bad"), tbox(2, 190, ["Try 2"], "fails B9", "bad"),
                       tbox(3, 360, ["Try 3"], "fails B9", "bad"),
-                      box(530, 60, 150, 80, ["Try 4"], sub="custom_id: fails B9", cls="try bad", card="b-t4"),
+                      box(530, 60, 150, 80, ["Try 4"], sub="custom ID: fails B9", cls="try bad", card="b-t4"),
                       box(720, 60, 150, 80, ["Try 5"], sub="no reason: passes", cls="try ok", card="b-t5")]),
     "edges": "".join([edge("M170 100H190"), edge("M340 100H360"), edge("M510 100H530"), edge("M680 100H720"),
                       edge("M600 38V60", "the reason", 608, 52, cls="is-hot", anchor="r"),
@@ -398,7 +415,7 @@ STEP5 = """
   <summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>
   <div class="body">
     %(fig51)s
-    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and the letter of the option. %(short)s The guide names the same three parts for a new try: %(three)s</p>
+    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and, where it fits, the letter of the option. %(short)s The guide names the same three parts for a new try: %(three)s</p>
     <p><b>The limits.</b> %(guard)s Code checks for a pass first, so the limits are only guards. A slot that reaches a limit waits for the owner. The other slots continue.</p>
     <p><b>The record.</b> %(file)s</p>
     %(fig52)s
@@ -411,11 +428,11 @@ STEP5 = """
   <div class="body">
     <h4 class="story">The review loop that ended when the control became code</h4>
     %(fig53)s
-    <p>The answer to each review added rules, and the new rules made new cases. The fix: %(auto)s Each other failure waits for the owner. %(code)s Code checks %(passfirst)s. Today the program has %(tests)s.</p>
+    <p>The answer to the first review added rules, and the new rules made new cases. The fix: %(auto)s Each other failure waits for the owner. %(code)s Code checks %(passfirst)s. Today the program has %(tests)s.</p>
     <h4 class="story">The reason of the owner reached only one try</h4>
     <p>Slot M5-S38 failed rule B9 three times. The owner gave more tries with a reason: &ldquo;%(reason)s&rdquo; %(q)s So mock decision 0074 added the reason to the next request, %(fix)s, and %(test)s checks it.</p>
     %(fig54)s
-    <p>The run files show more. Try 4 got the reason and followed it: %(t4)s It failed B9, because %(m1)s had the same problem. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The run files show that only one try got the instruction. %(limit)s</p>
+    <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. The code still works this way. %(limit)s</p>
     <section class="sources" aria-label="Sources of step 5">
       <p class="ve-label">Sources of step 5. Each underlined fact opens its card.</p>
       <ul>%(sources)s</ul>
@@ -440,7 +457,7 @@ def f(card, text):
 
 
 step5_html = STEP5 % {
-    "what": f("s5-what", "A question that fails step 3 or step 4 goes back to the writer, with the failed question and the exact findings."),
+    "what": f("s5-what", "A question that fails step 3 or step 4 goes back to the writer, with the failed try and its exact findings."),
     "again": f("s5-again", "The new try goes through steps 3 and 4 again."),
     "pass": f("s5-pass", "A question that passes stops the loop."),
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
@@ -457,12 +474,13 @@ step5_html = STEP5 % {
     "passfirst": f("a-passfirst", "for a pass before the limits"),
     "tests": f("a-tests", "%d tests" % TESTS),
     "reason": f("b-reason", e(D004["reason"])),
-    "q": f("b-q", "But the program sent the writer only the last failed try and its findings, not the reason."),
+    "q": f("b-q", "But the program, as it was built, sent the writer only the last failed try and its findings, not the reason."),
     "fix": f("b-fix", "in the code"),
     "test": f("b-test", "a test"),
     "fig54": FIG54,
-    "t4": f("b-t4", "its correct options use custom_id."),
-    "m1": f("b-m1", "question M1-S46 of mock 1"),
+    "t4": f("b-t4", "&ldquo;Select the files to resubmit by reading the custom_id of each failed result&hellip;&rdquo;"),
+    "t4f": f("b-t4f", "because it repeated questions of mock 1 (M1-S46) and mock 3 (M3-S12)"),
+    "t2f": f("b-t2f", "failed B9 on the same question of mock 1"),
     "first": f("b-first", "the branch for a failed try of the start"),
     "t5": f("b-t5", "&ldquo;resubmits every request instead of only the failed ones&rdquo;."),
     "said": f("b-said", "&ldquo;The instruction reached the writer, but the question did not follow it.&rdquo;"),
@@ -483,7 +501,7 @@ def sources(cards):
     return "".join(items)
 
 
-step5_html = step5_html.replace("<ul></ul>", "<ul>%s</ul>" % sources(STEP5_CARDS + ["b-t4", "b-t5"]))
+step5_html = step5_html.replace("<ul></ul>", "<ul>%s</ul>" % sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', step5_html)))))
 
 # ----- the parts -----
 
