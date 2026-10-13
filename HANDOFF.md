@@ -12,7 +12,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 Status of this report: the final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. A second agent checked the fixes and decision 0036 and found 7 problems. All 15 are fixed (see the journal).
 
-**In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed. Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
+**In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed (part 1.1 was reviewed before the night, see decision 0036). Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
 
 **Done on `main`, tab 2 "Behind the mocks"** (slices 2 and 3):
 
@@ -26,7 +26,7 @@ Status of this report: the final version. An independent agent checked it agains
 **Done on `main`, tab 1 "Exam guide breakdown"** (slices 4 to 8, the owner's words of 02:06: "Do as many slices as you can. Go all the way"):
 
 - The script `academy/build/make-exam-guide-breakdown.py` writes `academy/pages/exam-guide-breakdown.html`. The top has the map of the guide (Fig. A, the domains and their task statements, and Fig. B, the scenarios) and "How we broke it down". Each domain has a summary.
-- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam" and the links to tab 2. 28 parts have a code popup. Part 1.1 takes the checked content of the fifth sample, with its code in one popup of its figure. Part 1.2 has no code popup (item 16).
+- Each of the 30 parts has the three levels, one figure (part 1.1 has three), its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam" and the links to tab 2. 28 parts have a code popup. Part 1.1 takes the checked content of the fifth sample, with its code in one popup of its figure. Part 1.2 has no code popup (item 16).
 - A fact agent wrote a fact sheet for each part except 1.1, 29 in all (`academy/facts/ts-N-M.md`), with its conflicts and what it did not find. The night added 66 dated copies of documentation pages to `academy/sources/`.
 - Review agents checked the parts, in most cases two parts for each agent. They found 245 items, and all are fixed. Most were cards that held only a near claim, facts without their product or condition, and claims of the guide that the page did not mark as the guide's.
 - Whole-picture agents found 14 items (the top and domain 1, all fixed except one, which is item 8 below) and 17 items (domains 2 and 3, all fixed). A third one found 13 items (domains 4 and 5). Nine are fixed. Three are in items 9, 10 and 12. The assistant checked the last one (step 4 and its verdict) and found the two tabs consistent.
@@ -91,7 +91,7 @@ Status of this report: the final version. An independent agent checked it agains
 15. Part 5.6: the Claude API returns an error when citations and `output_config.format` are in one request. This academy did not check whether citations work with a forced tool call.
 16. Part 1.2 has no code popup. Its fact sheet proposed the same code that part 1.3 shows, or a text popup. The assistant used neither for 1.2.
 
-- Next step: the owner reads this report, decides items 1 to 16, decision 0036 and the merge of the fix, and accepts slices 4 to 8 or names what to change (decision 0022).
+- Next step: the owner reads this report, decides items 1 to 16, decisions 0035 and 0036 and the merge of the fix, and accepts slices 2 to 8 or names what to change (decision 0022).
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
