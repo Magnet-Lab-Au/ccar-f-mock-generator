@@ -198,6 +198,11 @@ for d in POP.values():
 
 # ----- the page -----
 
+import sys  # noqa: E402
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import theme  # noqa: E402
+
 e = html.escape
 
 
@@ -227,6 +232,7 @@ PAGE = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>1.1 Agentic loops: sample page</title>
+{theme_head}
 <style>
 :root {{
   --bg:#f6f7f9; --panel:#fff; --ink:#16202b; --muted:#556270; --line:#c5ccd4;
@@ -234,14 +240,12 @@ PAGE = """<!doctype html>
   --owner:#0f7a55; --owner-bg:#dff3ea; --open:#8a6100; --open-bg:#fbf0d2;
   --fail:#b3261e; --fail-bg:#fdecea; --shadow:0 10px 30px rgba(16,24,40,.22);
 }}
-@media (prefers-color-scheme: dark) {{ :root {{
-  --bg:#12171d; --panel:#1b222b; --ink:#e8edf2; --muted:#9eabb8; --line:#3b4654;
-  --code:#8bbcf5; --code-bg:#1c3350; --model:#cfa6f0; --model-bg:#38254a;
-  --owner:#7fd6b1; --owner-bg:#173a2d; --open:#f0cc6e; --open-bg:#40330f;
-  --fail:#ff8f86; --fail-bg:#4a1f1c; --shadow:0 10px 30px rgba(0,0,0,.6); }} }}
+{theme_css}
+.theme-btn {{ position:absolute; top:10px; right:10px; z-index:5; font:600 13px system-ui,sans-serif; border:1.5px solid var(--line);
+  background:var(--panel); color:var(--ink); border-radius:8px; padding:6px 10px; cursor:pointer; }}
 * {{ box-sizing:border-box; }}
 body {{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }}
-main {{ max-width:1000px; margin:0 auto; padding:24px 20px 60px; }}
+main {{ max-width:1000px; margin:0 auto; padding:56px 20px 60px; }}
 .crumbs {{ font-size:13px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; }}
 .crumbs a {{ color:var(--muted); }}
 .section-tag {{ font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--code); }}
@@ -356,6 +360,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
 </style>
 </head>
 <body>
+{theme_btn}
 <main>
 
 <!-- ======================= Exam guide breakdown: 1.1 ======================= -->
@@ -653,6 +658,7 @@ its file by the script.</footer>
   if (reduce) {{ btn.textContent = 'Play'; showAll(); }} else {{ reset(); step(); }}
 }})();
 </script>
+{theme_js}
 </body>
 </html>
 """
@@ -666,7 +672,12 @@ n_done = hot("done", "done", 360, 275, 200, 40, '<b>Done</b>')
 for i, n in [("n-send", "n_send"), ("n-resp", "n_resp"), ("n-check", "n_check"), ("n-run", "n_run"), ("n-done", "n_done")]:
     globals()[n] = globals()[n].replace('class="node', 'id="%s" class="node' % i, 1)
 
+DARK = ("--bg:#12171d; --panel:#1b222b; --ink:#e8edf2; --muted:#9eabb8; --line:#3b4654; "
+        "--code:#8bbcf5; --code-bg:#1c3350; --model:#cfa6f0; --model-bg:#38254a; "
+        "--owner:#7fd6b1; --owner-bg:#173a2d; --open:#f0cc6e; --open-bg:#40330f; "
+        "--fail:#ff8f86; --fail-bg:#4a1f1c; --shadow:0 10px 30px rgba(0,0,0,.6);")
 page = PAGE.format(
+    theme_css=theme.scheme_css(DARK), theme_head=theme.HEAD, theme_btn=theme.BUTTON, theme_js=theme.JS,
     domain_fact=fact("g-domain", "Domain 1: %s, about %d%%" % (domain["name"], domain["weight"])),
     ts_title=e(ts["title"]), n_send=n_send, n_resp=n_resp, n_check=n_check, n_run=n_run, n_done=n_done,
     guide_list=guide_list(),

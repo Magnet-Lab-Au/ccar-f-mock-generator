@@ -12,6 +12,10 @@ Run from the folder ccar-f-mock-generator:
 import html
 import json
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import theme  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "make-1-1.py")
@@ -283,12 +287,18 @@ sources = "".join('<li><a href="%s">%s</a> <span class="ve-label">%s</span></li>
                   for c in CARDS.values())
 
 
+DARK = ("--bg: #111316; --surface: #181b1f; --border: #262a30; --border-bright: #62676c; "
+        "--text: #e8e8e3; --text-dim: #9ba1a9; --accent: #93a6ff; --accent-dim: rgba(147,166,255,.14); "
+        "--ok: #6cc492; --warn: #e3b94d; --risk: #f0806b; --info: #6fb8dc; "
+        "--node-top: color-mix(in srgb, var(--text) 7%, var(--surface)); --lift: rgb(0 0 0 / .45); --halo: 32%;")
+
 PAGE = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1.1 Agentic loops: the loop runs while Claude asks for tools</title>
+@@THEMEHEAD@@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f7f4'/%3E%3Cpath d='M20 22h24v20H20z' fill='none' stroke='%232c4cd0' stroke-width='5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -309,14 +319,8 @@ PAGE = r"""<!DOCTYPE html>
     --r-1: 4px; --r-2: 10px;
     --ease: cubic-bezier(.16,1,.3,1); --fast: 150ms; --med: 300ms; --slow: 500ms;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #111316; --surface: #181b1f; --border: #262a30; --border-bright: #62676c;
-      --text: #e8e8e3; --text-dim: #9ba1a9; --accent: #93a6ff; --accent-dim: rgba(147,166,255,.14);
-      --ok: #6cc492; --warn: #e3b94d; --risk: #f0806b; --info: #6fb8dc;
-      --node-top: color-mix(in srgb, var(--text) 7%, var(--surface)); --lift: rgb(0 0 0 / .45); --halo: 32%;
-    }
-  }
+  @@SCHEME@@
+  .theme-btn { position: absolute; top: var(--s-3); right: var(--s-3); z-index: 5; }
   html { font-size: 17px; }
   * { box-sizing: border-box; margin: 0; }
   body { background: var(--bg); color: var(--text); font: 400 var(--t-body)/1.6 var(--font-body); text-wrap: pretty; font-kerning: normal; font-synthesis: none; -webkit-font-smoothing: antialiased; }
@@ -486,7 +490,7 @@ PAGE = r"""<!DOCTYPE html>
   .js-motion main > :not(.in) { opacity: 0; transform: translateY(1rem); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   @media print {
-    :root { --bg: #fff; --surface: #fff; --text: #17191c; --text-dim: #575c63; --accent: #2c4cd0; --border: #e3e3dc; --border-bright: #8e8e8a; }
+    :root, :root:not(.light), :root.dark { --bg: #fff; --surface: #fff; --text: #17191c; --text-dim: #575c63; --accent: #2c4cd0; --border: #e3e3dc; --border-bright: #8e8e8a; }
     .ve-player button, .ve-dots, #pop { display: none; }
     .frame { overflow: visible; background: #fff; } .ve-svg { min-width: 0; } svg * { filter: none !important; }
     .js-motion main > * { opacity: 1 !important; transform: none !important; }
@@ -495,6 +499,7 @@ PAGE = r"""<!DOCTYPE html>
 </style>
 </head>
 <body>
+@@THEMEBTN@@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <marker id="ve-ah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
   <linearGradient id="ve-node" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--node-top)"/><stop offset="1" style="stop-color:var(--surface)"/></linearGradient>
@@ -718,6 +723,8 @@ out = (PAGE.replace("@@TS_TITLE@@", e(ts["title"])).replace("@@FIG1@@", FIG1).re
        .replace("@@GLIST@@", glist).replace("@@GUARD@@", fact("b-guard", "limit of 3 tries"))
        .replace("@@TESTNAME@@", fact("b-testname", "“more tries after three tries”")).replace("@@TAG@@", TAG)
        .replace("@@SOURCES@@", sources)
+       .replace("@@SCHEME@@", theme.scheme_css(DARK)).replace("@@THEMEHEAD@@", theme.HEAD).replace("@@THEMEBTN@@", theme.BUTTON)
+       .replace("</body>", theme.JS + "\n</body>")
        .replace("@@POPDATA@@", json.dumps(POP, ensure_ascii=False).replace("</", "<\\/"))
        .replace("@@CARDDATA@@", json.dumps(CARDS, ensure_ascii=False).replace("</", "<\\/")))
 assert "@@" not in out, out[out.find("@@") - 40: out.find("@@") + 40]

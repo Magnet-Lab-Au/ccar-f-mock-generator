@@ -33,10 +33,10 @@ CHANGES = [
     ("--ok: #1d7443; --warn: #836000; --risk: #b3301d;", "--ok: #15803d; --warn: #92400e; --risk: #dc2626;"),
     ("--lift: rgb(18 22 20 / .12);", "--lift: rgb(17 41 61 / .12);"),
     # dark: the navy canvas of the portal; gold is the signal, as on its buttons
-    ("--bg: #111316; --surface: #181b1f; --border: #262a30; --border-bright: #62676c;",
-     "--bg: #11293d; --surface: #16344a; --border: #2c4c66; --border-bright: #6a88a2;"),
-    ("--text: #e8e8e3; --text-dim: #9ba1a9; --accent: #93a6ff; --accent-dim: rgba(147,166,255,.14);",
-     "--text: #f3f1ea; --text-dim: #9fb0c0; --accent: #f3a83c; --accent-dim: rgba(243,168,60,.16);"),
+    ("--bg: #111316; --surface: #181b1f; --border: #262a30; --border-bright: #62676c; ",
+     "--bg: #11293d; --surface: #16344a; --border: #2c4c66; --border-bright: #6a88a2; "),
+    ("--text: #e8e8e3; --text-dim: #9ba1a9; --accent: #93a6ff; --accent-dim: rgba(147,166,255,.14); ",
+     "--text: #f3f1ea; --text-dim: #9fb0c0; --accent: #f3a83c; --accent-dim: rgba(243,168,60,.16); "),
     ("--ok: #6cc492; --warn: #e3b94d; --risk: #f0806b;", "--ok: #4ade80; --warn: #fbbf24; --risk: #f87171;"),
     # headings: Sora semibold, as the page headings of the portal, with its gold line
     ("--t-h1: clamp(2.25rem, 5.5vw, 4rem);", "--t-h1: clamp(2rem, 4.6vw, 3.25rem);"),
