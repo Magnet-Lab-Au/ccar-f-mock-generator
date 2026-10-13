@@ -44,3 +44,4 @@ One entry for each work session. Newest entry first.
 - The owner confirmed the text of decision 0011.
 - The owner accepted two new agents for each part: a fact agent and a review agent, both Opus 5.5. Decision 0012 (proposed) records it.
 - The owner confirmed the text of decision 0012.
+- The owner asked how the figures will be the best that the plugin can make. The owner accepted four stages for each figure: plan, draw, check by script, check by review. Decision 0013 (proposed) records them.
