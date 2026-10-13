@@ -276,9 +276,9 @@ def from_sample(html):
     html = html.replace("The code of the loop is on <i>Your code sends the request</i>.", "The popup of <i>Your code sends the request</i> shows the code of the loop.")
     for a, b in (("Fig. 1<", "Fig. 1.1-1<"), ("Fig. 2<", "Fig. 1.1-2<"), ("Fig. 4<", "Fig. 1.1-3<"), ("in Fig. 1,", "in Fig. 1.1-1,")):
         html = html.replace(a, b)
-    for k in set(re.findall(r'data-step="ts-1-1-([^"]+)"', html)):
+    for k in sorted(set(re.findall(r'data-step="ts-1-1-([^"]+)"', html))):
         POP["ts-1-1-" + k] = S_POP[k]
-    for k in set(re.findall(r'data-card="ts-1-1-([^"]+)"', html)):
+    for k in sorted(set(re.findall(r'data-card="ts-1-1-([^"]+)"', html))):
         CARD["ts-1-1-" + k] = dict(S_CARD[k])
         CARD["ts-1-1-" + k]["title"] = CARD["ts-1-1-" + k]["title"].replace("In-Scope Topics, Section 17 (Appendix)", "Exam guide, section 17").replace("Technologies and Concepts, Section 17 (Appendix)", "Exam guide, section 17")
     if "ts-1-1-d-stop" in CARD:

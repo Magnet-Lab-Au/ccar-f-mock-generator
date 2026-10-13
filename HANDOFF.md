@@ -10,7 +10,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
-Status of this report: the final version of 07:30. An independent agent checked it against the commits (see the journal).
+Status of this report: the final version. An independent agent checked it against the commits at 07:45 and found 8 problems. All are fixed (see the journal).
 
 **In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed. Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
 
@@ -21,20 +21,20 @@ Status of this report: the final version of 07:30. An independent agent checked 
 - Slice 3: the build in Claude Code, with 4 parts: 3.1, 1.7, 4.6 (with Fig. C-4.6-1, the three document checks) and 3.4 (no example). One review, one whole-picture agent (18 items, all fixed) and one reader agent (summaries agree with the takeaways of all 4 parts).
 - The check `check-pages.js` prints "All checks passed." No part is over its word limit. The links to tab 1 now resolve, because tab 1 is built.
 - Dated copies of 6 documentation pages are in `academy/sources/` (decision 0030).
-- Screenshots to look at: `academy/screenshots/slice-2/` (steps 0 to 8) and `academy/screenshots/slice-3/`, in light and dark, at 1280 and 390 pixels.
+- Screenshots to look at: `academy/screenshots/slice-2/` (steps 0 to 4 and 6 to 8) and `academy/screenshots/slice-3/`, in light and dark, at 1280 and 390 pixels. They are from 02:03. Tab 2 changed after that, for example the name Fig. C-4.6-1.
 
 **Done on `main`, tab 1 "Exam guide breakdown"** (slices 4 to 8, the owner's words of 02:06: "Do as many slices as you can. Go all the way"):
 
 - The script `academy/build/make-exam-guide-breakdown.py` writes `academy/pages/exam-guide-breakdown.html`. The top has the map of the guide (Fig. A, the domains and their task statements, and Fig. B, the scenarios) and "How we broke it down". Each domain has a summary.
-- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam", a code popup and the links to tab 2. Part 1.1 takes the checked content of the fifth sample.
-- A fact agent wrote a fact sheet for each part (`academy/facts/ts-N-M.md`), with its conflicts and what it did not find. The night added 66 dated copies of documentation pages to `academy/sources/`.
-- Review agents checked the parts, two parts for each agent. They found 245 items, and all are fixed. Most were cards that held only a near claim, facts without their product or condition, and claims of the guide that the page did not mark as the guide's.
-- Whole-picture agents found 14 items (the top and domain 1, all fixed except item 8) and 17 items (domains 2 and 3, all fixed). A third one found 13 items (domains 4 and 5). Nine are fixed. Three are in items 9, 10 and 12. The assistant checked the last one (step 4 and its verdict) and found the two tabs consistent.
+- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam" and the links to tab 2. 28 parts have a code popup. Part 1.1 takes the checked content of the fifth sample, with its code in the popups of its figure. Part 1.2 has no code popup (item 16).
+- A fact agent wrote a fact sheet for each part except 1.1, 29 in all (`academy/facts/ts-N-M.md`), with its conflicts and what it did not find. The night added 66 dated copies of documentation pages to `academy/sources/`.
+- Review agents checked the parts, in most cases two parts for each agent. They found 245 items, and all are fixed. Most were cards that held only a near claim, facts without their product or condition, and claims of the guide that the page did not mark as the guide's.
+- Whole-picture agents found 14 items (the top and domain 1, all fixed except one, which is item 8 below) and 17 items (domains 2 and 3, all fixed). A third one found 13 items (domains 4 and 5). Nine are fixed. Three are in items 9, 10 and 12. The assistant checked the last one (step 4 and its verdict) and found the two tabs consistent.
 - Reader agents: their one-sentence summaries agree with the intended takeaways of all 30 parts (`academy/facts/takeaways-slice-4.md` and `takeaways-slices-5-to-8.md`). The unclear sentences that they found are fixed.
 - The check `check-pages.js` prints "All checks passed." for both tabs. No part is over its word limit.
 - Screenshots of the 30 figures: `academy/screenshots/tab-1/`.
 
-**Choices of the night for tab 1 (working rule 36):** one review agent checks two parts, not one. After the pause: one whole-picture agent for domains 4 and 5 together, and one reader agent for domains 2 to 5 together.
+**Choices of the night for tab 1 (working rule 36):** academy decision 0036 (proposed) records them. One review agent checks two parts. One whole-picture agent checks slices 5 and 6, and one checks slices 7 and 8. One reader agent reads slices 5 to 8, and it does not follow all of the method of decision 0026. The top of tab 1 has no fact agent and no review agent. These choices change how decisions 0012, 0015 and 0026 apply.
 
 **Done on the branch `fix-owner-reason`** (worktree `../ccar-f-fix-owner-reason`, commits 46ed3fd and bd63ff7, not merged):
 
@@ -52,6 +52,7 @@ Status of this report: the final version of 07:30. An independent agent checked 
 **Decisions that the assistant chose at night (working rule 36):**
 
 - Mock decision 0080: each try of a new start gets the parts of the owner (the fix above). The owner chooses whether to merge.
+- Academy decision 0036: the reviews of tab 1 at night (see above).
 - Academy decision 0035: tab 2 leaves out the entries of 3.2 (skills) and 2.5 (built-in tools), which decision 0023 named. For 2.5, no record says which tool did what. For 3.2, no record shows that the build used the two named skills, and they are outside the repository. The assistant recommends no 3.2 entry.
 
 **Waiting for the owner:**
@@ -61,8 +62,8 @@ Status of this report: the final version of 07:30. An independent agent checked 
 3. Slice 3 does not explain project words such as "the owner", "slice" and rule numbers inside the section.
 4. Whole-picture items of slice 2 that are not fixed: the "Beyond the exam" label on two small product facts, "today" on the rule counts, one cross-reference, and the scheme of the popup IDs.
 5. Found in the records of the mock builder, not changed at night:
-   - The build guide, step 2 line 45, says "The current models accept only auto and none". The documentation names four models: Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1. Tab 2 corrects it in a popup.
-   - Ruling 2 was applied two ways on point 4.1-S3: M1-S49-T1 option D counted (rewrite D008), M5-S40-T1 option B did not (mock decision 0077).
+   - The build guide, step 2 line 45, says "The current models accept only auto and none". The documentation says that four models return a 400 error for any and tool: Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1. Tab 2 corrects it in a popup.
+   - Two cases apply ruling 2 in two ways on point 4.1-S3: M1-S49-T1 option D counted (rewrite D008), M5-S40-T1 option B did not (mock decision 0077).
    - No record names who filled the 20 good marks of round 1 of mock 4.
    - `runs/mock-0N/build.json` holds absolute paths with the user name. The repository becomes public.
    - The build guide and mock decision 0016 say that code builds the files again after a change. The code has no such path.
@@ -78,18 +79,19 @@ Status of this report: the final version of 07:30. An independent agent checked 
     - Fig. 2.1-1 mixes the rename example and the split example.
     - Fig. 5.2-1 shows "Several matches?" in the chain of escalation checks, but it is not an escalation.
 12. Tab 2:
-    - Its chips list 4.3-S3 for steps 2, 4, 5 and 6, but the build guide rows say "This build does not use it". Tab 1 now says "names but does not use 4.3-S3".
+    - The chips of steps 2, 4, 5 and 6 show 4.3-S3 under the heading "How step N uses each point", but the text of 4.3-S3 says "This build does not use it". Tab 1 now says "names but does not use 4.3-S3".
     - Step 6 has no chip for 5.2, but rule D3 rests on 5.2-K3.
     - Three chip IDs of step 5 (`step-5-ts-44`, `step-5-ts-43`, `step-5-ts-11`) break the pattern `step-N-ts-X-Y`.
-13. The source links of the cards point to `blob/main/academy/sources/...` on GitHub. They fail until a push.
+13. The links of the cards to files in `academy/` (sources, facts, decisions) point to `blob/main/...` on GitHub. They fail until a push.
 14. Records of the mock builder, found by the fact agents of tab 1. None was changed at night:
     - Some diagrams and mock decisions name guide points that the tables of the build guide do not have. For example, diagram 08 cites 5.2-K3, and mock decision 0014 and diagram 01 cite 1.6-K2, but the step 6 table has neither. Also, mock decision 0040 (line 6) says that the diagrams of steps 2, 4 and 6 show the deviation, but diagram 08 does not. Tab 1 links only by the tables (academy decision 0024). The fact sheets in `academy/facts/` list each case under their conflicts.
     - Mock decision 0026 asks for a build guide section on why the mock builder uses no MCP, subagents, hooks or sessions. That section does not exist.
     - Mock decision 0001 links the decision files and the journal to 5.4. Academy decision 0023 links the same files to 1.7.
     - Step 6 stops the whole run when rule C2 fails. 5.3-K4 calls this an anti-pattern, but the stop names its cause and no retry can repair it. Should the Depth of 5.3 say so?
 15. Part 5.6: the Claude API returns an error when citations and `output_config.format` are in one request. This academy did not check whether citations work with a forced tool call.
+16. Part 1.2 has no code popup. Its fact sheet gave its code example to part 1.3.
 
-- Next step: the owner reads this report, decides items 1 to 15 and the merge of the fix, and accepts slices 4 to 8 or names what to change (decision 0022).
+- Next step: the owner reads this report, decides items 1 to 16, decision 0036 and the merge of the fix, and accepts slices 4 to 8 or names what to change (decision 0022).
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
