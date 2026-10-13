@@ -548,6 +548,70 @@ PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request
             + tab2_links("1.5", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no hook."),
                                            cf("ts-1-5-d29", excerpt(D29, "**The plain API, not the Agent SDK.**", "Mock decision 0029"), "It calls the plain API, not the Agent SDK, so it has no SDK hooks. Step 3 has the nearest idea: a rule with one exact answer is checked by code (task statement 1.4)."))), "ts-1-5"))
 
+
+# ----- part 1.7 (facts: academy/facts/ts-1-7.md) -----
+
+CSES, CLI, BEST, HOW = "claude-code-docs-sessions", "claude-code-docs-cli-reference", "claude-code-docs-best-practices", "claude-code-docs-how-claude-code-works"
+FIG17 = figure("1.7-1", 890, 320,
+               "A named session A can continue three ways. To compare two approaches, fork it: a new ID with a copy of the history. "
+               "If its earlier context is still valid, resume it by name and tell it which files changed. If its tool results are stale, start a new session with a structured summary.",
+               "".join([edge("M120 120V55H560", "compare two approaches", 340, 46),
+                        edge("M220 165H280"), edge("M470 165H560", "yes", 515, 156),
+                        edge("M375 210V265H560", "no: results stale", 467, 256, cls="is-hot"),
+                        box(20, 120, 200, 90, ["Session A"], sub="name: auth-refactor", cls="who-model"),
+                        box(280, 120, 190, 90, ["Context", "still valid?"]),
+                        box(560, 20, 310, 70, ["--fork-session"], sub="new ID, copy of the history", cls="who-model"),
+                        box(560, 125, 310, 70, ["--resume auth-refactor"], sub="same ID + the changed files", cls="who-model"),
+                        box(560, 230, 310, 70, ["New session"], sub="fresh context + summary", cls="who-model")]),
+               "%s %s" % (cf("ts-1-7-f4", D(HOW, "Resuming a session with `claude --continue` or `claude --resume` reopens it under the same session ID and appends new messages to the existing conversation. Forking with `--fork-session` or `/branch` copies the history into a new session ID, leaving the original unchanged.", "Claude Code, How Claude Code works"),
+                             "A resume keeps the session ID. A fork copies the history into a new ID and leaves the original unchanged."),
+                          cf("ts-1-7-s3", gx("Choosing between session resumption (when prior context is mostly valid) and starting fresh with injected summaries (when prior tool results are stale)", "Exam guide, 1.7-S3"),
+                             "The guide gives the test: resume when the earlier context is mostly valid, start fresh with a summary when the tool results are stale (1.7-S3).")))
+
+PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart when stale",
+                        "Resume a named session when its earlier tool results are still true, and tell it which files changed. "
+                        "Fork a session to try two approaches from one analysis. Start a new session with a structured summary when the old tool results are stale.",
+                        FIG17)
+    + level("explanation",
+            "<p><b>Resume by name.</b> %s %s %s</p>" % (
+                cf("ts-1-7-k1", gx("Named session resumption using --resume \\<session-name\\> to continue a specific prior conversation", "Exam guide, 1.7-K1"),
+                   "The guide continues a named conversation with --resume and the name (1.7-K1, 1.7-S1)."),
+                cf("ts-1-7-f3", D(BEST, "Name sessions with `/rename` and treat them like branches: each workstream gets its own persistent context.", "Claude Code, Best practices"),
+                   "The Claude Code documentation advises one named session for each workstream."),
+                cf("ts-1-7-c2", D(SES, "**Resume** takes a specific session ID. You track the ID.", "Agent SDK, Sessions"),
+                   "A name works in the Claude Code CLI. In the Agent SDK, a resume takes the session ID."))
+            + "<p><b>Fork.</b> %s %s %s</p>" % (
+                cf("ts-1-7-k2", gx("fork_session for creating independent branches from a shared analysis baseline to explore divergent approaches", "Exam guide, 1.7-K2"),
+                   "fork_session makes branches from one shared analysis, for example to compare two refactoring approaches (1.7-K2, 1.7-S2)."),
+                fact("ts-1-3-f11", "In the Agent SDK, a fork starts with a copy of the history, and the original does not change."),
+                cf("ts-1-7-f6", D(CLI, "| `--fork-session` | When resuming, create a new session ID instead of reusing the original (use with `--resume` or `--continue`)", "Claude Code, CLI reference"),
+                   "fork_session is the option of the Python Agent SDK. In the CLI, the flag is --fork-session, together with --resume."))
+            + "<p><b>Stale results.</b> %s %s %s</p>" % (
+                cf("ts-1-7-f8", D(CSES, "Conversation history: the full history, including tool calls and results.", "Claude Code, Sessions"),
+                   "A resume brings back the full history, with the old tool calls and their results."),
+                cf("ts-1-7-k4", gx("Why starting a new session with a structured summary is more reliable than resuming with stale tool results", "Exam guide, 1.7-K4"),
+                   "When the files changed after those results, the guide prefers a new session with a structured summary (1.7-K4)."),
+                cf("ts-1-7-f10", D(SES, "Capture the results you need (analysis output, decisions, file diffs) as application state and pass them into a fresh session", "Agent SDK, Sessions"),
+                   "The Agent SDK documentation also advises to capture the results and pass them into a fresh session."))
+            + "<p><b>Changed files.</b> %s Only the guide asks for this.</p>" %
+                cf("ts-1-7-s4", gx("Informing a resumed session about specific file changes for targeted re-analysis rather than requiring full re-exploration", "Exam guide, 1.7-S4"),
+                   "When the earlier context is still mostly valid, tell the resumed session which files changed, so it analyzes only those again (1.7-K3, 1.7-S4).")
+            + exam_tests("1.7", [("Session management — session resumption, fork_session, named sessions, session context isolation", "Among the technologies, the guide names")])
+            + guide_text("1.7"), "ts-1-7")
+    + level("depth",
+            beyond([cf("ts-1-7-b1", D(SES, "Forking branches the conversation history, not the filesystem. If a forked agent edits files, those changes are real and visible to any session working in the same directory.", "Agent SDK, Sessions"),
+                       "A fork branches the conversation, not the files. Two forks in one folder change the same files. The guide says &ldquo;independent branches&rdquo;."),
+                    cf("ts-1-7-b2", D(HREF, "Claude Code replays the saved text rather than re-running the hook for past turns, so values like timestamps or commit SHAs become stale.", "Claude Code, Hooks reference"),
+                       "A resume replays the saved output of hooks, so values such as timestamps become stale."),
+                    cf("ts-1-7-b3", D(CSES, "Later requests carry the summary instead of the full history.", "Claude Code, Sessions"),
+                       "Claude Code also offers a third way: resume from a summary, which compacts the old history.")])
+            + code_pop("ts-1-7-code", "The code: a fork in the Agent SDK", "A fork of a session in Python", SES, "# Fork: branch from session_id into a new session", "print(message.result)", "Agent SDK, Sessions",
+                       "resume names the session, and fork_session=True makes a new one from its history.")
+            + tab2_links("1.7") + "<p>%s %s</p>" % (
+                fact("ts-1-3-d26", "The pipeline of the mock builder uses no session."),
+                cf("ts-1-7-cc", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session).", "Fact sheet of the build in Claude Code"),
+                   "The build in Claude Code shows only 1.7-K4: each new session started from the summary in HANDOFF.md. No record shows --resume or fork_session.")), "ts-1-7"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
