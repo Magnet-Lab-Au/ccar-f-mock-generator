@@ -1,0 +1,26 @@
+# 0024: The build guide tables say which task statements a step uses
+
+- Date: 13 October 2026
+- Status: proposed
+- Text confirmed by the owner: not yet
+- Diagram: none
+
+## Question
+
+Two files say which task statements a step uses, and they differ. The tables of guide points in the build guide list 12 task statements. The popups of the diagrams also cite two more points: 3.6-K4 in diagram 01 and 5.2-K3 in diagram 08. Which file is the source for the links of a step?
+
+## Decision
+
+The tables of guide points in the build guide (`docs/build-guide/step-*.md`) are the source. If a point appears only in a diagram, the fact agent lists it as a conflict, and the owner decides.
+
+## Reason
+
+Each row of a build guide table says how the step uses the point. A popup of a diagram only names the point.
+
+## How we decided
+
+The independent review of the plan raised it. The assistant checked that diagrams 01 and 08 cite the two points. The assistant recommended the build guide tables. The owner accepted it.
+
+## Exam guide points
+
+none.

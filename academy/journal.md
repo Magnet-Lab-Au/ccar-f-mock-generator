@@ -58,3 +58,4 @@ One entry for each work session. Newest entry first.
 - The sixth item: the content of the map, "How we broke it down" and the 5 domains, and their agents. The owner accepted it. Decision 0021 (proposed) records it.
 - The seventh item: the order of the slices, and when a slice is done (at most 2 review rounds for each part, then the owner decides). The owner accepted it. Decision 0022 (proposed) records it.
 - The eighth item: the task statements of the build in Claude Code. The review agent was right on two: the independent review fits 4.6, not 1.3, and the build did not use plan mode (3.4). The owner accepted a new table with 2.5 added. Decision 0023 (proposed) records it.
+- The ninth item: the build guide tables, not the diagram popups, say which task statements a step uses. The owner accepted it. Decision 0024 (proposed) records it.
