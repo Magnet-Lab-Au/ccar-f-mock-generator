@@ -93,7 +93,7 @@ The writer made %d questions for 10 slots of the plan of mock 1, one call for ea
 ''' % (n_written, n_pass3, n_written, good, bad), [
     ('4.3-K1', 'Written for the extraction of data. Here: the writer fills a form, so code can read each answer. The method is structured outputs (see the deviation above).'),
     ('4.3-S3', 'Written for the extraction of data. The guide teaches a forced tool call. This build does not use it (see the deviation above).'),
-    ('4.3-K2', 'The same context. It names the three settings of a tool call. The current models accept only "auto" and "none".'),
+    ('4.3-K2', 'The same context. It names the three settings of a tool call. The Anthropic documentation (Define tools) says that Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1 return a 400 error for "any" and "tool". "auto" and "none" still work.'),
     ('4.3-S4', 'Written for the extraction of data. Here: the question can be empty when the answer is "cannot write", so the model does not invent a question for a slot that does not fit.'),
     ('4.3-S5', 'Written for a schema for the extraction of data. Here: the status "cannot_write" is an answer for a case that does not fit.'),
     ('4.3-K3', 'Written for the extraction of data. Here: a form stops format errors, but not content errors. So step 3 checks the content.'),
@@ -295,7 +295,7 @@ Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-file
 
 ## What the step does
 
-Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. To change a question, the record changes, and code builds the files again.
+Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. Code builds the files of a mock once. Decision 0016 says that code builds the files again after a change of a record, but the code has no path for this: step 8 stops when a file of the mock exists, and the control refuses each command when the mock is built (decision 0082).
 
 The build starts only after the owner accepts the mock (decision 0036). Then code checks six conditions (decision 0039): each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
 

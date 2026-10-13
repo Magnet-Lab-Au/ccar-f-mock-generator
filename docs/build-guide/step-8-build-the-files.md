@@ -6,7 +6,7 @@ Diagram: [`10-step-8-build-the-files.html`](../diagrams/10-step-8-build-the-file
 
 ## What the step does
 
-Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. To change a question, the record changes, and code builds the files again.
+Code builds the two files of a mock from the stored question records. Nobody edits the files by hand. Code builds the files of a mock once. Decision 0016 says that code builds the files again after a change of a record, but the code has no path for this: step 8 stops when a file of the mock exists, and the control refuses each command when the mock is built (decision 0082).
 
 The build starts only after the owner accepts the mock (decision 0036). Then code checks six conditions (decision 0039): each question passed steps 3 and 4 and did not change after its checks, step 6 checked the current questions of each scenario, each finding of step 6 has a decision, each question that needs a mark has one, the bad marks are below the stop limit, and no call failed in the last run. If one condition is false, code builds no file and lists the causes.
 
