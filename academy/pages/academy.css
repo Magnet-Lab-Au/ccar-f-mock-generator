@@ -313,3 +313,4 @@ ol.checks { display: grid; gap: var(--s-2); padding-left: 1.5rem; max-width: 65c
 section.parts[id^="domain-"] > p { margin-bottom: var(--s-4); }
 .beyond { padding-left: var(--s-5); display: grid; gap: var(--s-2); }
 .ve-e.no-head { marker-end: none; }
+p > .chip.info[data-step$="-code"] { white-space: normal; }

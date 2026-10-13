@@ -491,6 +491,63 @@ PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt
                 cf("ts-1-4-s2use", excerpt(step_file(2), "Here: an instruction to the writer can fail, so each rule that the writer gets is also checked, by code or by a model.", "Build guide, step 2"),
                    "It takes the general idea: an instruction to the writer can fail, so code or a model checks each rule.")), "ts-1-4"))
 
+
+# ----- part 1.5 (facts: academy/facts/ts-1-5.md) -----
+
+HREF, LOOP = "claude-code-docs-hooks", "claude-code-docs-agent-sdk-agent-loop"
+D29 = glob.glob(os.path.join(ROOT, "docs/decisions/0029-*.md"))[0][len(ROOT) + 1:]
+FIG15 = figure("1.5-1", 890, 270,
+               "Claude asks for a tool. A PreToolUse hook, your code, sees the call first. A deny sends a reason back to Claude. An allow lets the tool run. "
+               "Then a PostToolUse hook, your code, can replace the result, for example Unix time with ISO 8601, before Claude sees it.",
+               "".join([edge("M170 80H230", "call", 200, 71), edge("M400 80H460", "allow", 430, 71), edge("M610 80H670", "result", 640, 71),
+                        edge("M315 120V170H130V120", "deny + reason", 222, 162, cls="is-hot"),
+                        edge("M770 120V240H60V120", "updatedToolOutput: Unix time → ISO 8601", 415, 232),
+                        box(20, 40, 150, 80, ["Claude"], sub="asks for a tool", cls="who-model"),
+                        box(230, 40, 170, 80, ["PreToolUse"], sub="your code"),
+                        box(460, 40, 150, 80, ["The tool runs"], sub="e.g. an MCP tool"),
+                        box(670, 40, 200, 80, ["PostToolUse"], sub="your code")]),
+               "%s %s" % (cf("ts-1-5-f2", D(HOOKS, "a tool is about to be called (`PreToolUse`), a tool returned a result (`PostToolUse`)", "Agent SDK, Hooks"),
+                             "Two hook events surround each tool call: PreToolUse before it, PostToolUse after it."),
+                          fact("ts-1-4-f1", "A hook is code, so it always runs.")))
+
+PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request",
+                        "A PreToolUse hook checks each tool call before it runs and can block it. A PostToolUse hook can replace each tool result before Claude sees it. So code, not the model, enforces a business rule and cleans the data.",
+                        FIG15)
+    + level("explanation",
+            "<p><b>Before the call.</b> %s %s %s</p>" % (
+                cf("ts-1-5-k2", gx("Hook patterns that intercept outgoing tool calls to enforce compliance rules (e.g., blocking refunds above a threshold)", "Exam guide, 1.5-K2"),
+                   "A hook intercepts an outgoing tool call to enforce a rule, such as no refund above a threshold (1.5-K2)."),
+                cf("ts-1-5-f9", D(LOOP, "a `PreToolUse` hook that rejects a tool call prevents it from executing, and Claude receives the rejection message instead.", "Agent SDK, The agent loop"),
+                   "In the Agent SDK, a PreToolUse hook that rejects a call stops it, and Claude gets the rejection message instead."),
+                cf("ts-1-5-s2", gx("Implementing tool call interception hooks that block policy-violating actions (e.g., refunds exceeding $500) and redirect to alternative workflows (e.g., human escalation)", "Exam guide, 1.5-S2"),
+                   "The guide then redirects the case, for example to a human (1.5-S2). The documentation has no redirect field: the reason of the deny tells Claude what to do next."))
+            + "<p><b>After the call.</b> %s %s %s</p>" % (
+                cf("ts-1-5-s1", gx("Implementing PostToolUse hooks to normalize heterogeneous data formats (Unix timestamps, ISO 8601, numeric status codes) from different MCP tools before the agent processes them", "Exam guide, 1.5-S1"),
+                   "A PostToolUse hook makes the data of different MCP tools the same, such as Unix timestamps, ISO 8601 dates and numeric status codes, before the agent uses it (1.5-K1, 1.5-S1)."),
+                cf("ts-1-5-f4", D(HOOKS, "To replace the tool's output before Claude sees it, set `updatedToolOutput`, which works for any tool in both SDKs.", "Agent SDK, Hooks"),
+                   "The field updatedToolOutput replaces the output before Claude sees it, for any tool."),
+                cf("ts-1-5-f6", D(HOOKS, "A regex (`^mcp__`) triggers `mcp_audit_hook` for any MCP tool whose name starts with `mcp__`.", "Agent SDK, Hooks"),
+                   "A matcher selects the tools, for example each MCP tool."))
+            + "<p><b>A guarantee.</b> %s %s %s Part 1.4 shows the same idea for the order of the steps.</p>" % (
+                cf("ts-1-5-k3", gx("The distinction between using hooks for deterministic guarantees versus relying on prompt instructions for probabilistic compliance", "Exam guide, 1.5-K3"),
+                   "The guide contrasts the deterministic guarantee of a hook with the probable compliance of a prompt (1.5-K3, 1.5-S3)."),
+                fact("ts-1-4-f1", "The documentation says the same: a hook always runs, and the model does not choose."),
+                cf("ts-1-5-f12", D(PERM, "For checks that must run on every tool call, use a [`PreToolUse` hook](/docs/en/agent-sdk/hooks): hooks run before every other step, and a hook deny applies even in `bypassPermissions` mode.", "Agent SDK, Permissions"),
+                   "A deny of a hook holds in each permission mode."))
+            + exam_tests("1.5", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names")])
+            + guide_text("1.5"), "ts-1-5")
+    + level("depth",
+            beyond([cf("ts-1-5-b1", D(HREF, "`updatedToolOutput` only changes what Claude sees. The tool has already run by the time the hook fires", "Claude Code, Hooks reference"),
+                       "A PostToolUse hook cannot undo an action: the tool has already run. So a refund limit belongs in a PreToolUse hook."),
+                    cf("ts-1-5-b2", D(HREF, "Stripping error details that Claude needs can cause it to proceed on a false assumption.", "Claude Code, Hooks reference"),
+                       "MCP output that a hook replaces gets no schema check, and a hook that removes error details can mislead Claude."),
+                    cf("ts-1-5-b3", D(HG, "For decisions that require judgment rather than deterministic rules, use `type: \"prompt\"` hooks.", "Hooks guide"),
+                       "Claude Code also has prompt hooks, which ask a model. Only a hook that is code is deterministic.")])
+            + code_pop("ts-1-5-code", "The code: a hook that blocks and gives a reason", "A PreToolUse hook that denies with a reason", HOOKS, "async def block_etc_writes", "return {}", "Agent SDK, Hooks",
+                       "For a refund rule, the test of the path becomes a test of the amount.")
+            + tab2_links("1.5", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no hook."),
+                                           cf("ts-1-5-d29", excerpt(D29, "**The plain API, not the Agent SDK.**", "Mock decision 0029"), "It calls the plain API, not the Agent SDK, so it has no SDK hooks. Step 3 has the nearest idea: a rule with one exact answer is checked by code (task statement 1.4)."))), "ts-1-5"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
