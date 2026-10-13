@@ -842,6 +842,119 @@ STEP1 = (level("overview",
          ).replace("@N@", "1")
 PART_HTML[1] = with_sources(1, STEP1)
 
+# ----- step 2: write the question (facts: academy/facts/step-2.md) -----
+
+S2 = step_file(2)
+D10 = glob.glob(os.path.join(ROOT, "docs/decisions/0010-*.md"))[0][len(ROOT) + 1:]
+D29 = glob.glob(os.path.join(ROOT, "docs/decisions/0029-*.md"))[0][len(ROOT) + 1:]
+D40 = glob.glob(os.path.join(ROOT, "docs/decisions/0040-*.md"))[0][len(ROOT) + 1:]
+D41 = glob.glob(os.path.join(ROOT, "docs/decisions/0041-*.md"))[0][len(ROOT) + 1:]
+D43 = glob.glob(os.path.join(ROOT, "docs/decisions/0043-*.md"))[0][len(ROOT) + 1:]
+MODELS = Counter(jread(os.path.relpath(f, ROOT))["model"] for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/questions/M*-S*-T*.json")))
+assert len(MODELS) == 1
+MODEL = list(MODELS)[0]
+N_CW = sum(x["cannot_write"] for x in MOCKS)
+assert N_CW == 0
+N_TECH = len(REC["section_17"]["technologies"])
+SAMPLE_A = Counter(q["correct_answer"][0] for q in REC["sample_questions"])
+Q_M1 = jread("runs/mock-01/questions/M1-S28-T2.json")
+Q_M2A = jread("runs/mock-02/questions/M2-S08-T1.json")
+Q_M2B = jread("runs/mock-02/questions/M2-S08-T2.json")
+cor = lambda q: next(o["text"] for o in q["options"] if o["correct"])
+D2_001 = next(d for d in jread("runs/mock-02/owner-decisions.json") if d["id"] == "D001")
+
+CARD.update({
+    "s2-what": excerpt(S2, "For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock.", "Build guide, step 2"),
+    "s2-why": excerpt(D10, "One call makes one record with one ID, so each later verdict connects to exactly one question. If one question fails, the program writes that one again and the others do not change.", "Mock decision 0010, Reason"),
+    "s2-cost": excerpt(D10, "We accepted one disadvantage: a writer that sees one slot does not see the other questions of its scenario.", "Mock decision 0010, How we decided"),
+    "s2-model": {"title": "The model of each try", "kind": "count", "text": "All %d question files of mocks 1 to 5 have the model %s. None has the status cannot_write. The script of this page counted them." % (sum(MODELS.values()), MODEL),
+                 "src": "runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s2-cache": code_block("src/step2_write.py", "# Decision 0067: the rules come first as a cached block.", "cached=[rules_for(request)])", "The rules come first, as a cached block"),
+    "s2-letters": excerpt(D41, "Code mixes the options with the seed of the plan, the slot ID and the question text. So the same answer always gets the same letters.", "Mock decision 0041, Decision"),
+    "s2-samplea": excerpt(D29, "in the 12 sample questions of the guide, the correct answer is A 10 times and B 2 times. A model that sees those examples can copy that.", "Mock decision 0029, Reason"),
+    "s2-form": excerpt(D40, "Option 2. Steps 2, 4 and 6 (and step 5, which uses the request of step 2) send their form as a JSON schema in `output_config.format`.", "Mock decision 0040, Decision"),
+    "s2-forced": excerpt(D29, "The form is a JSON schema of a tool, and the request forces the model to call that tool.", "Mock decision 0029, Decision"),
+    "s2-test": code_block("tests/test_model_steps.py", "def test_the_form_is_sent_as_structured_outputs_with_no_tool", "def test_the_form_is_sent_as_structured_outputs_with_no_tool", "A test: no tool and no forced tool call"),
+    "s2-m1": jexcerpt("runs/mock-01/questions/M1-S28-T2.json", cor(Q_M1), "M1-S28, try 2, the correct option (mock 1)"),
+    "s2-m2a": jexcerpt("runs/mock-02/questions/M2-S08-T1.json", cor(Q_M2A), "M2-S08, try 1, the correct option (mock 2)"),
+    "s2-m2b": jexcerpt("runs/mock-02/questions/M2-S08-T2.json", cor(Q_M2B), "M2-S08, try 2, the correct option (mock 2)"),
+    "s2-d001": jexcerpt("runs/mock-02/owner-decisions.json", D2_001["reason"], "The rewrite of the owner, mock 2"),
+    "s2-did": excerpt(D56, "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options.", "Mock decision 0056, Reason"),
+    "s2-earlier": excerpt(D56, "When the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option", "Mock decision 0056, Decision"),
+    "s2-bad": excerpt(D43, "The question is confusing and needs calrification. I had to read the question more than one time. Use one name for the actor, not 'the subagent' and 'Claude'.", "Mock decision 0043, Question"),
+    "s2-enough": excerpt(D43, "The owner asked: \"but is that enough? Only in the prompt?\" An instruction alone fails sometimes, so a check comes after it.", "Mock decision 0043, Reason"),
+    "s2-b7": excerpt(D43, "1. **The instruction to the writer** (step 2, and so also step 5): \"Use one name for one actor. Write each sentence so that a reader understands it at the first reading.\"", "Mock decision 0043, Decision"),
+})
+
+REQ = [("cached", "the rules: A1 to A12 and B1 to B9"), ("", "the role and the form"),
+       ("", "3 sample questions of the guide"), ("", "the story of the scenario"),
+       ("", "the task statement, its point marked"), ("", "the %d technologies of the guide" % N_TECH),
+       ("", "the slot: type, options, answers"), ("if any", "earlier questions on the idea"),
+       ("step 5", "the failed try and its findings")]
+FIG21 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 %(h)d" role="img" aria-label="Step 2. Code builds one request for one slot: the rules first as a cached block, the role and the form, 3 sample questions of the guide, the story, the task statement with its point marked, the technologies, the slot, the earlier questions on the idea if any, and for step 5 the failed try with its findings. One Claude call answers in the form. Code then mixes the options and gives the letters, and saves one file for the try.">
+      <g class="ve-n is-key"><rect class="sh" x="20" y="10" width="380" height="%(rh)d" rx="0"/></g>
+      <text class="ve-lab" x="36" y="32">the request, built by code</text>
+      %(rows)s
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 2-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": 60 + len(REQ) * 34 + 20, "rh": 40 + len(REQ) * 34,
+    "rows": "".join('<g class="blk%s"><rect x="32" y="%d" width="360" height="28" rx="0"/><text x="42" y="%d">%s%s</text></g>'
+                    % (" a" if tag == "cached" else "", 44 + i * 34, 58 + i * 34, ('<tspan class="role">%s: </tspan>' % tag) if tag else "", e(t)) for i, (tag, t) in enumerate(REQ)),
+    "edges": "".join([edge("M400 170H480", "sends", 440, 161, cls="is-hot"), edge("M640 170H700", "answers", 670, 161)]),
+    "nodes": "".join([box(480, 120, 160, 100, ["Claude"], sub="one new call", cls="who-model"),
+                      box(700, 120, 170, 100, ["the form"], sub="question, options", cls=""),
+                      box(700, 250, 170, 70, ["code"], sub="mixes, gives letters")]) + edge("M785 220V250"),
+    "cap": fact("s2-what", "For each slot, one new Claude call writes one question. It does not know the other questions of the mock."),
+}
+
+STEP2 = (level("overview",
+               '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4><p>%s %s Code builds the request from the guide records and the plan, and %s</p>'
+               % (fact("s2-what", "For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock."),
+                  fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question, and a failed question is written again alone."),
+                  fact("s2-letters", "code, not the model, mixes the options and gives the letters.")))
+         + level("explanation",
+                 FIG21
+                 + '<p><b>The rules come first.</b> %s The writer gets the same rules that steps 3 and 4 check, so each instruction is also checked. %s</p>'
+                   % (fact("s2-cache", "The list of rules is the first block of each request, with a cache mark, so a repeated list costs less."), fact("s2-model", "Each of the %d tries of the 5 mocks used %s." % (sum(MODELS.values()), MODEL)))
+                 + '<p><b>The form.</b> %s The guide teaches a forced tool call for this. The newest Claude models reject a forced tool call, so the build sends a JSON schema as structured outputs. For the exam, answer with the forced tool call that the guide teaches.</p>'
+                   % fact("s2-form", "The writer answers in a fixed form: the question, and for each option its text, whether it is correct, and a short reason.")
+                 + '<p><b>The letters.</b> %s So %s</p>'
+                   % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times, and a model can copy that." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
+                      fact("s2-letters", "code mixes the options and gives the letters."))
+                 + '<p><b>The cost of one call per slot.</b> %s Step 6 checks the questions of a scenario together.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
+                 + ts_block(2))
+         + level("depth",
+                 '<h4 class="story">The writer did not know the earlier mocks</h4>'
+                 '<p>%s Example on one idea, the stop of an agentic loop:</p>'
+                 '<ol class="checks"><li>Mock 1, M1-S28: %s</li><li>Mock 2, M2-S08, try 1: %s</li></ol>'
+                 '<p>The owner sent it back: %s The new try asked for the cause instead: %s</p>'
+                 '<p>The fix for step 2: %s An instruction alone was not enough, so step 4 got rule B9 to check it.</p>'
+                 '<h4 class="story">The first bad mark became an instruction and a check</h4>'
+                 '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s Step 4 got rule B7 for the same thing.</p>'
+                 '<h4 class="story">The design forced a tool call</h4>'
+                 '<p>%s Before the code was written, the documentation showed that the newest models reject it. So %s The code never had a forced tool call, and %s</p>'
+                 % (fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options."),
+                    fact("s2-m1", "the correct answer checks stop_reason and continues while it is &ldquo;tool_use&rdquo;."),
+                    fact("s2-m2a", "the correct answer again continues while stop_reason is &ldquo;tool_use&rdquo;."),
+                    fact("s2-d001", "&ldquo;Use a different scene and a different angle: the cause, the fix, or a choice between rules.&rdquo;"),
+                    fact("s2-m2b", "a fixed cap of 12 iterations as the main stopping rule."),
+                    fact("s2-earlier", "when the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option."),
+                    fact("s2-bad", "The question is confusing and needs calrification. I had to read the question more than one time."),
+                    fact("s2-enough", "The assistant first suggested an instruction only. The owner asked: &ldquo;but is that enough? Only in the prompt?&rdquo;"),
+                    fact("s2-b7", "So the writer got the instruction &ldquo;Use one name for one actor&rdquo;."),
+                    fact("s2-forced", "The first design said that the request forces the model to call a tool."),
+                    fact("s2-form", "the build chose structured outputs: a JSON schema in each request."),
+                    fact("s2-test", "a test checks that no request has a tool.")))
+         ).replace("@N@", "2")
+PART_HTML[2] = with_sources(2, STEP2)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
