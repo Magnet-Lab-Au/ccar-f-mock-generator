@@ -88,3 +88,4 @@ One entry for each work session. Newest entry first.
 ### Progress of the night (updated after each part)
 
 - 00:30 Goal set. Slice 2 started: fact agents for steps 0 and 1.
+- 00:50 Closed headings name their task statements (commit 1cbae17). The fix is committed on `fix-owner-reason` in `../ccar-f-fix-owner-reason`: 232 tests OK, replay of M5-S38-T5 shows B9 and owner. Waiting: its independent review.
