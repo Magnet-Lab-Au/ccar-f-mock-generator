@@ -1,8 +1,8 @@
 # 0028: Corrections from the review of the plan
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0011 (two counts), decisions 0012, 0015 and 0026 (what each agent gets)
 

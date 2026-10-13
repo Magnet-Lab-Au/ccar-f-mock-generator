@@ -1,8 +1,8 @@
 # 0032: Code only in popups
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0004 (where code appears)
 

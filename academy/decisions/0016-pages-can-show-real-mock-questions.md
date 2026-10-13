@@ -1,8 +1,8 @@
 # 0016: The pages can show real mock questions
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 
 ## Question

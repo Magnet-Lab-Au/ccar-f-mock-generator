@@ -1,8 +1,8 @@
 # 0030: Numbers and excerpts come from files, by script
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0011 (check 2), decision 0005 (the excerpts of documentation pages), decision 0014 (a dated copy of each documentation page)
 

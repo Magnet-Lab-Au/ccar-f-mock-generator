@@ -1,8 +1,8 @@
 # 0019: What each level holds
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decisions 0004 and 0010, the content of each level
 

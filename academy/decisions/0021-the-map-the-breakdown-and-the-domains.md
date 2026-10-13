@@ -1,8 +1,8 @@
 # 0021: The map, "How we broke it down" and the domains
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0012, the count of parts
 

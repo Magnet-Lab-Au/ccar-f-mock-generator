@@ -1,8 +1,8 @@
 # 0031: The story of the three document checks
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decisions 0010 and 0023, the story "the 26 document gaps"
 
