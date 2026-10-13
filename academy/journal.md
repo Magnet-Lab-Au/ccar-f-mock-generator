@@ -9,6 +9,10 @@ One entry for each work session. Newest entry first.
 - The owner went through the open items of the night, one question at a time. The 27 answers are in decision 0039. Decisions 0035 and 0036 are accepted. Decision 0038: a single name can appear in the running text.
 - Mock decision 0080 is accepted and merged into `main` (bec0418). The merge broke two code excerpts of tab 2, step 5. They now show the code at the tag `mocks-v2`, and a new card shows the fix (b044081). `check-pages.js` prints "All checks passed."
 - The assistant checked the Claude API documentation on citations: it says nothing about citations with a forced tool call (decision 0039, item 14).
+- An independent agent checked the records and found 11 items, 3 medium (the citations pages count strict tool use as structured outputs, step 7 did not yet say who filled the marks of mock 4, and the line "Text confirmed" before the check). All are fixed (2a5b160).
+- An independent agent checked step 6 against 5.2-K3 and 1.6-K2: step 6 uses 1.6-K2 (a fixed chain: each question passes steps 3 and 4 before step 6) but not 5.2-K3 (only a reason about the content of the questions). The build guide table and diagram 08 got 1.6-K2 (c0472ca). Tab 2 shows no 5.2 chip on step 6.
+- The text fixes of decision 0039 are on both tabs (abf1e79). The page-wide IDs (`theme-btn`, `ve-ah`, `ve-node`, `pop*`, `steps`) stay as they are: they belong to no part, so decision 0033 does not apply to them.
+- The assistant found that its recommendation for the name of section 17 was wrong: section 17 is the appendix of the guide, not a list of topics that the exam does not test. Decision 0040 corrects it, and tab 1 uses the correct name.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 

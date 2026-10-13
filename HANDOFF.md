@@ -8,9 +8,18 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
+### State on 14 October 2026, morning: the answers to the morning report
+
+- The owner answered all items of the morning report below, one question at a time. The 27 answers are in academy decision 0039. Decision 0040 corrects its item 12: section 17 is the appendix of the guide.
+- Accepted: academy decisions 0035 and 0036, mock decision 0080 (merged into `main`, bec0418). New: academy decisions 0037 (the figures are made again with the plugin), 0038 (a single name can appear in the running text), and mock decisions 0081 (ruling 2), 0082 (no path to build the files again) and 0083 (no more mocks for now).
+- Done after the answers: the records, the paths without the user name, the build guide (step 2 line 45, step 6 table with 1.6-K2, step 8, the section of mock decision 0026), diagram 08, and the text fixes of both tabs. `check-pages.js` prints "All checks passed." The tests print "Ran 234 tests" and "OK".
+- An independent check found that step 6 uses 1.6-K2 but not 5.2-K3. So only 1.6-K2 is in the step 6 table, and tab 2 shows no 5.2 chip on step 6.
+- Waiting for the figure redo (decision 0037): the takeaway in each closed heading, the label "Guide only", the three names of the documentation, the code popup of part 1.2, and Figs. 5.6-1, 2.1-1 and 5.2-1. Then the missing reviews of decision 0036, and the acceptance of slices 2 to 8 (decision 0022).
+- Next step: the figure plan of decision 0037, for all 56 figures. Load the skill of the plugin visual-explainer first. The owner checks the plan before any figure is drawn.
+
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
-Status of this report: the final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. A second agent checked the fixes and decision 0036 and found 7 problems. A third agent checked the final version and found 5 problems, none high. All 20 are fixed. A fourth agent checked those last fixes and found no problems (see the journal).
+Status of this report: answered by the owner on 14 October 2026 (academy decision 0039). The final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. A second agent checked the fixes and decision 0036 and found 7 problems. A third agent checked the final version and found 5 problems, none high. All 20 are fixed. A fourth agent checked those last fixes and found no problems (see the journal).
 
 **In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed (part 1.1 was reviewed before the night, see decision 0036). Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
 

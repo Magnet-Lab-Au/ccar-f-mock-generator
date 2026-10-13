@@ -10,6 +10,9 @@ One entry for each work session. Newest entry first.
 - Decision 0082: the code has no path to build the files of a mock again. The build guide, step 8, is corrected.
 - Decision 0083: no more mocks for now.
 - The owner confirmed that the owner filled the 20 good marks of round 1 of mock 4. Decision 0069 already says that the owner did not read those 20 questions.
+- The paths in `runs/mock-0N/build.json` and `runs/test-0024/part1.json` start at the root of the repository, not at the folder of this computer. The code of step 8 still writes absolute paths if it builds a new mock (decision 0083: none for now).
+- The build guide: step 2 names the four models that return a 400 error for `tool_choice` `any` and `tool`. Step 6 has a row for 1.6-K2, after an independent check. Step 8 says that the code has no path to build the files again. `README.md` has the section of decision 0026, what the pipeline does not use.
+- Diagram 08 shows that calls 6a and 6b answer as structured outputs (decision 0040), and call 6a cites 1.6-K2.
 
 ## 14 October 2026, night: the parts of the owner for each try (branch fix-owner-reason)
 
