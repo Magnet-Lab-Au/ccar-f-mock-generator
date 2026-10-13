@@ -1358,6 +1358,109 @@ STEP6 = (level("overview",
          ).replace("@N@", "6")
 PART_HTML[6] = with_sources(6, STEP6)
 
+# ----- step 7: the questions are marked (facts: academy/facts/step-7.md) -----
+
+S7F = step_file(7)
+D45 = glob.glob(os.path.join(ROOT, "docs/decisions/0045-*.md"))[0][len(ROOT) + 1:]
+D73 = glob.glob(os.path.join(ROOT, "docs/decisions/0073-*.md"))[0][len(ROOT) + 1:]
+ROUND1, BAD = [], []
+for m in range(1, 6):
+    ROUND1.append(len(jread("runs/mock-%02d/marking-rounds/round-1.json" % m)["question_ids"]))
+    BAD.append(sum(1 for f in glob.glob(os.path.join(ROOT, "runs/mock-%02d/marks/round-*.json" % m))
+                   for r in jread(os.path.relpath(f, ROOT)) if r["mark"] == "bad"))
+MARKS_ALL = sum(len(jread(os.path.relpath(f, ROOT))) for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/marks/round-*.json")))
+BAD_IDS = [r["question_id"] for r in jread("runs/mock-05/marks/round-1.json") if r["mark"] == "bad"]
+sys.path.insert(0, os.path.join(ROOT, "src"))
+import control as _control  # noqa: E402
+_keep = _control.MARK_ALL
+_control.MARK_ALL = {1}      # the rule before mock decision 0073
+OLD_SAMPLE = _control.Control(os.path.join(ROOT, "runs/mock-05"), 5, jread("runs/mock-05/plan.json")["seed"], None, {}).sample()
+_control.MARK_ALL = _keep
+assert len(OLD_SAMPLE) == 20 and not any(q.split("-T")[0] in OLD_SAMPLE for q in BAD_IDS) and len(BAD_IDS) == 2
+RW_GOOD = 0
+for m in range(1, 6):
+    good = {r["question_id"] for r in jread("runs/mock-%02d/marks/round-1.json" % m) if r["mark"] == "good"}
+    RW_GOOD += sum(1 for d in jread("runs/mock-%02d/owner-decisions.json" % m) if d["action"] == "rewrite" and d.get("question_id") in good)
+N_RW = sum(1 for m in range(1, 6) for d in jread("runs/mock-%02d/owner-decisions.json" % m) if d["action"] == "rewrite")
+
+CARD.update({
+    "s7-what": excerpt(S7F, "This step shows if those checks are right: a reader marks the questions. For mocks 1 to 3 the reader is the owner. For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
+    "s7-file": excerpt(S7F, "It shows no verdict of a checker. The owner fills two columns: \"good\" or \"bad\", and a reason for a bad mark.", "Build guide, step 7"),
+    "s7-which": excerpt(S7F, "For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073).", "Build guide, step 7"),
+    "s7-bad": excerpt(S7F, "A bad mark sends the question to step 5, with the reason as the finding.", "Build guide, step 7"),
+    "s7-stop": code_block("src/control.py", "STOP_MOCK_1 = ", "MARK_ALL = ", "The limits of the marks in the code"),
+    "s7-tend": {"title": "Diagram 09 of the mock builder, the popup of the owner", "kind": "excerpt", "text": "A person who sees a verdict tends to agree with it.",
+                "src": "docs/diagrams/09-step-7-the-owner-marks-the-questions.html", "href": link("docs/diagrams/09-step-7-the-owner-marks-the-questions.html")},
+    "s7-runs": {"title": "The marks of mocks 1 to 5", "kind": "count",
+                "text": "Questions in round 1: %s for mocks 1 to 5. %d marks in all, %d bad: %s. %d of the %d rewrites of the owner changed a question with a good mark. The script of this page counted runs/mock-0N/marking-rounds/, marks/ and owner-decisions.json."
+                        % (", ".join(map(str, ROUND1)), MARKS_ALL, sum(BAD), " and ".join(BAD_IDS), RW_GOOD, N_RW),
+                "src": "runs/mock-0N/marking-rounds/, runs/mock-0N/marks/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s7-old": {"title": "The sample of 20 that the old rule gives for mock 5", "kind": "count",
+               "text": "The code of src/control.py, with MARK_ALL set to {1} as before mock decision 0073, and the seed of runs/mock-05/plan.json, selects: %s. Neither %s is in it. The script of this page ran Control.sample() with no model call."
+                       % (", ".join(OLD_SAMPLE), " nor ".join(q.split("-T")[0] for q in BAD_IDS)),
+               "src": "src/control.py, runs/mock-05/plan.json", "href": link("src/control.py")},
+    "s7-all": excerpt(D73, "The owner said: \"Put all 60 questions of mock 5 in the marking file.\"", "Mock decision 0073, How we decided"),
+    "s7-why60": excerpt(D73, "Plain reason: no person reads the questions of mock 5 (decision 0071). So the second review, as the only reader, reads all of them, not a sample.", "Mock decision 0073, Reason"),
+    "s7-m1": excerpt(D45, "The owner marked the 60 questions of mock 1 blind: 60 good. A second review by a Claude model after the blind marking found 7 problems of the mock as a set", "Mock decision 0045, Question"),
+    "s7-set": excerpt(D45, "Here the owner and the second review found each question good on its own, so steps 3 and 4 did not fail. The 7 are problems of the mock as a set.", "Mock decision 0045, Reason"),
+})
+lines_of("docs/diagrams/09-step-7-the-owner-marks-the-questions.html", "A person who sees a verdict tends to agree with it.")
+
+FIG71 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 7. Code writes a marking file with the questions, their points, the answer key and the reasons, but no verdict of a checker. A reader marks each question good or bad, with a reason for a bad mark. Code reads the file. A good mark ends the slot. A bad mark sends the question to step 5. Too many bad marks stop the mock.">
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 7-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "nodes": "".join([box(20, 100, 170, 100, ["marking file"], sub="no verdict shown"),
+                      box(260, 100, 170, 100, ["a reader"], sub="good or bad", cls="who-owner"),
+                      box(500, 100, 150, 100, ["code"], sub="reads the file"),
+                      box(720, 20, 150, 70, ["good"], sub="done", cls="try ok"),
+                      box(720, 115, 150, 70, ["bad"], sub="to step 5", cls="try bad"),
+                      box(720, 210, 150, 70, ["too many bad"], sub="the mock stops", cls="guard")]),
+    "edges": "".join([edge("M190 150H260", "rows", 225, 141), edge("M430 150H500", "marks", 465, 141),
+                      edge("M650 150H685V55H720"), edge("M650 150H720", cls="is-hot"), edge("M685 150V245H720")]),
+    "cap": fact("s7-file", "The file shows no verdict of a checker. The reader fills two columns: good or bad, and a reason for a bad mark.") + " " + fact("s7-tend", "A person who sees a verdict tends to agree with it."),
+}
+
+FIG72 = """
+<figure>
+  <div class="cases">%s</div>
+  <figcaption><span class="fig-n">Fig. 7-2</span>%s</figcaption>
+</figure>""" % ("".join(
+    '<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d marked</p><p class="cap">%s, round 1. Bad marks: %d. Reader: %s</p></div>'
+    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "not named in the records")
+    for m in range(5)),
+    fact("s7-runs", "Over the 5 mocks, %d marks were given, and %d were bad, both in mock 5." % (MARKS_ALL, sum(BAD))))
+
+STEP7 = (level("overview",
+               '<h4 class="takeaway">A reader marks each question good or bad, with no verdict in view</h4><p>%s %s %s</p>'
+               % (fact("s7-what", "The checks before this step are code or a model. Here a reader marks the questions, to show if those checks are right. For mocks 1 to 3 the reader was the owner. For mocks 4 and 5 it was a Claude model, the second review."),
+                  fact("s7-bad", "A bad mark sends the question to step 5, with the reason as the finding."),
+                  fact("s7-stop", "Too many bad marks stop the mock.")))
+         + level("explanation",
+                 FIG71
+                 + '<p><b>Which questions.</b> %s Code refuses a file with a missing mark, or a bad mark with no reason.</p>' % fact("s7-which", "Mock 1 and mock 5 put all 60 questions in the file. Mocks 2 to 4 put a random sample of 20, 5 from each scenario.")
+                 + FIG72 + ts_block(7))
+         + level("depth",
+                 '<h4 class="story">A sample would have missed both bad questions</h4>'
+                 '<p>For mock 5, no person read the questions. %s %s The second review then gave the only 2 bad marks of the 5 mocks: %s %s</p>'
+                 '<h4 class="story">Good on its own, wrong as a set</h4>'
+                 '<p>%s %s So the 7 became rewrites, not bad marks. %s</p>'
+                 % (fact("s7-all", "The owner said: &ldquo;Put all 60 questions of mock 5 in the marking file.&rdquo;"),
+                    fact("s7-why60", "The reason: the second review was the only reader, so it read all of them, not a sample."),
+                    " and ".join(q.split("-T")[0] for q in BAD_IDS) + ".",
+                    fact("s7-old", "The old rule, a sample of 20 with the same seed, holds neither of them."),
+                    fact("s7-m1", "The owner marked the 60 questions of mock 1 blind: 60 good. A second review by a Claude model then found 7 problems of the mock as a set."),
+                    fact("s7-set", "Each question was good on its own, so steps 3 and 4 had not failed."),
+                    fact("s7-runs", "Over the 5 mocks, %d of the %d rewrites of the owner changed a question that had a good mark." % (RW_GOOD, N_RW))))
+         ).replace("@N@", "7")
+PART_HTML[7] = with_sources(7, STEP7)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
