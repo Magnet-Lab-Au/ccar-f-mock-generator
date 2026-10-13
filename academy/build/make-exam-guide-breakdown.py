@@ -2110,6 +2110,71 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                                               "But 5.2-K3 gives the reason for rule D3 of step 6: a wrong option on self-reported confidence is fair.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
 
+
+# ----- part 5.3 (facts: academy/facts/ts-5-3.md) -----
+
+FIG53 = figure("5.3-1", 890, 330,
+               "A subagent runs a query. Results and a valid empty result are both successes. An access failure is first retried in the subagent. If it is not resolved, "
+               "the subagent returns structured error context: the failure type, the query, the partial results and the alternatives. The coordinator decides to retry, change the plan "
+               "or go on, and the synthesis marks the gaps.",
+               "".join([edge("M190 165H220", cls="no-head"), '<path class="ve-e no-head" d="M220 47V200"/>',
+                        edge("M220 47H250"), edge("M220 117H250"), edge("M220 200H250"),
+                        edge("M360 230V250", "not resolved", 368, 243, anchor="r"),
+                        '<path class="ve-e no-head" d="M470 47H510V285H470M470 117H510"/>',
+                        edge("M510 145H540"), edge("M710 145H750"),
+                        box(20, 130, 170, 70, ["Subagent", "runs a query"], cls="who-model"),
+                        box(250, 20, 220, 55, ["Results"], sub="success", cls="try ok"),
+                        box(250, 90, 220, 55, ["0 matches"], sub="success, not an error", cls="try ok"),
+                        box(250, 170, 220, 60, ["Access failure"], sub="retry it locally first"),
+                        box(250, 250, 220, 70, ["Error context"], sub="type, query, partial data"),
+                        box(540, 100, 170, 90, ["Coordinator"], sub="retry, change, go on", cls="who-model"),
+                        box(750, 100, 120, 90, ["Synthesis"], sub="gaps marked")]),
+               "%s %s" % (cf("ts-5-3-k1", gx("Structured error context (failure type, attempted query, partial results, alternative approaches) as enabling intelligent coordinator recovery decisions", "Exam guide, 5.3-K1"),
+                             "Structured error context lets the coordinator decide how to recover (5.3-K1)."),
+                          cf("ts-5-3-k2", gx("The distinction between access failures (timeouts needing retry decisions) and valid empty results (successful queries with no matches)", "Exam guide, 5.3-K2"),
+                             "An access failure needs a decision, but an empty result is a success (5.3-K2).")))
+
+PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a silent empty",
+                        "A subagent retries a transient failure itself. If it cannot fix it, it tells the coordinator the failure type, the query, the partial results and the alternatives, "
+                        "so that the coordinator can retry, change the plan or go on with a marked gap.",
+                        FIG53)
+    + level("explanation",
+            "<p><b>Error context.</b> %s %s %s</p>" % (
+                cf("ts-5-3-s1", gx("Returning structured error context including failure type, what was attempted, partial results, and potential alternatives to enable coordinator recovery", "Exam guide, 5.3-S1"),
+                   "The subagent returns the failure type, what it tried, its partial results and possible alternatives (5.3-S1)."),
+                fact("ts-2-2-f6", "For a tool error, the documentation also says to name what went wrong and what to try next."),
+                fact("ts-1-2-f4", "In the Agent SDK, only the final message of a subagent returns to its parent, so the error context must be in that message."))
+            + "<p><b>Empty is not failure.</b> %s Only the guide states this point, also in 2.2.</p>" %
+                cf("ts-5-3-s2", gx("Distinguishing access failures from valid empty results in error reporting so the coordinator can make appropriate decisions", "Exam guide, 5.3-S2"),
+                   "The report keeps an access failure apart from a valid empty result (5.3-S2).")
+            + "<p><b>Two anti-patterns.</b> %s %s %s</p>" % (
+                cf("ts-5-3-k3", gx("Why generic error statuses (\"search unavailable\") hide valuable context from the coordinator", "Exam guide, 5.3-K3"),
+                   "A generic status such as &ldquo;search unavailable&rdquo; hides the context (5.3-K3)."),
+                cf("ts-5-3-k4", gx("Why silently suppressing errors (returning empty results as success) or terminating entire workflows on single failures are both anti-patterns", "Exam guide, 5.3-K4"),
+                   "An error that looks like an empty success, and a whole workflow that stops on one failure, are both anti-patterns (5.3-K4)."),
+                cf("ts-5-3-f9", D(MAO, "* **What to do when an agent fails:** \"One agent failing must not fail the run. If an agent fails to read a contract, list that contract as not covered.\"", "Managed Agents, Multiagent orchestration"),
+                   "An example prompt of Managed Agents says the same: one failed agent must not fail the run."))
+            + "<p><b>Recover locally, then mark the gaps.</b> %s %s %s</p>" % (
+                cf("ts-5-3-s3", gx("Having subagents implement local recovery for transient failures and only propagate errors they cannot resolve, including what was attempted and partial results", "Exam guide, 5.3-S3"),
+                   "A subagent recovers from a transient failure itself and passes on only what it cannot fix (5.3-S3)."),
+                cf("ts-5-3-f11", D(CCS, "* **Foreground**: if a rate limit, overload, or server error cuts off a subagent that already produced text output, the Agent tool returns that partial output with a note that the subagent was cut off and didn't finish its task.", "Claude Code, Subagents"),
+                   "For API errors, Claude Code itself returns the partial output of a subagent that was cut off."),
+                cf("ts-5-3-s4", gx("Structuring synthesis output with coverage annotations indicating which findings are well-supported versus which topic areas have gaps due to unavailable sources", "Exam guide, 5.3-S4"),
+                   "The synthesis marks which findings are well supported and which topics have gaps (5.3-S4)."))
+            + exam_tests("5.3", [("Error handling and propagation: structured error responses, transient vs business vs permission errors, local recovery before escalation", "Among the topics, the guide names")])
+            + "<p>%s</p>" % cf("ts-5-3-q8", gx("Structured error context gives the coordinator the information it needs to make intelligent recovery decisions", "Exam guide, sample question 8"),
+                               "Sample question 8 of the guide fits 5.3: its correct answer returns structured error context to the coordinator.")
+            + guide_text("5.3"), "ts-5-3")
+    + level("depth",
+            beyond([cf("ts-5-3-b1", D(SUB, "An API error that ends the subagent early, such as a rate limit, is never delivered as its result.", "Agent SDK, Subagents"),
+                       "In the Agent SDK and Claude Code, an API error that ends a subagent is never delivered as its result, so it cannot look like an empty success."),
+                    cf("ts-5-3-b2", D(HANDLE, "When server tools encounter errors (for example, network issues with Web Search), Claude will transparently handle these errors and attempt to provide an alternative response or explanation to the user.", "Handle tool calls"),
+                       "Server tools of the Claude API, such as web search, handle their own errors.")])
+            + code_pop_text("ts-5-3-code", "The code: a tool result that reports an error", "An error result", HANDLE, ERR22, "Handle tool calls",
+                            "This example has the failure type only. A subagent of the guide puts the full error context in its final message.")
+            + tab2_links("5.3") + "<p>%s</p>" % cf("ts-5-3-use", excerpt(step_file(3), "Written for errors between agents. Here: an error must never look like a pass.", "Build guide, step 3"),
+                                                    "Steps 3 and 6 use 5.3-K4: an error must never look like a pass."), "ts-5-3"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
