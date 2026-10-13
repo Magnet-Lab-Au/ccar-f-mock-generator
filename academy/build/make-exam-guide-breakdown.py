@@ -2303,7 +2303,7 @@ FIG55 = figure("5.5-1", 890, 360,
                         edge("M670 250V190", "check each segment first", 678, 224, anchor="r"),
                         '<text class="ve-lab" x="600" y="345">97% overall can hide a weak segment</text>',
                         box(20, 120, 200, 80, ["Extraction"], sub="confidence per field", cls="who-model"),
-                        box(260, 120, 180, 80, ["Review threshold"], sub="for each field"),
+                        box(260, 120, 180, 80, ["Review thresholds"], sub="calibrated"),
                         box(260, 260, 180, 60, ["Labeled set"], sub="validation"),
                         box(640, 10, 230, 60, ["Human review"], sub="by priority", cls="who-owner"),
                         box(640, 130, 230, 60, ["Automated"], sub="high confidence"),
@@ -2315,7 +2315,7 @@ FIG55 = figure("5.5-1", 890, 360,
 
 PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data calibrates them",
                         "One total accuracy can hide a weak document type or field, so measure each segment before you cut human review. "
-                        "Route low-confidence or contradictory extractions to people, with thresholds set on labeled data, and keep a random sample of the confident ones under review.",
+                        "Route low-confidence extractions, and those from contradictory sources, to people, with thresholds set on labeled data, and keep a random sample of the confident ones under review.",
                         FIG55)
     + level("explanation",
             "<p><b>One total hides a weak part.</b> %s %s %s %s %s</p>" % (
@@ -2328,33 +2328,34 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                 cf("ts-5-5-f1", D(TRT, "Measure the routing accuracy across different languages, aiming for no more than a 5–10% drop in accuracy for non-primary languages.", "Ticket routing"),
                    "The ticket routing guide of the Claude API documentation measures the accuracy for each language,"),
                 cf("ts-5-5-f2", D(TRT, "Regularly audit routing decisions for potential biases, aiming for consistent routing accuracy (within 2–3%) across all customer groups.", "Ticket routing"),
-                   "and it aims for the same accuracy across all customer groups."))
+                   "and it aims for routing accuracy within 2 to 3% across all customer groups."))
             + "<p><b>A sample of the confident ones.</b> %s %s %s The word stratified is the guide&rsquo;s.</p>" % (
                 cf("ts-5-5-s1", gx("Implementing stratified random sampling of high-confidence extractions for ongoing error rate measurement and novel pattern detection", "Exam guide, 5.5-S1"),
                    "A stratified random sample of the high-confidence extractions stays under review, to measure the error rate over time and to find new patterns (5.5-S1)."),
                 cf("ts-5-5-f4", D(DTST, "Design evals that mirror your real-world task distribution.", "Define success criteria and build evaluations"),
-                   "The documentation asks for evaluations that mirror the real mix of tasks."),
+                   "For tests, the evaluation page of the Claude API documentation asks for evaluations that mirror the real mix of tasks."),
                 cf("ts-5-5-f5", D(CMOD, "Keep track of the types of content being flagged by your moderation system to identify trends and potential areas for improvement.", "Content moderation"),
-                   "For content moderation, it tracks the types of content that the system flags, to find trends."))
+                   "The content moderation guide of the Claude API tracks the types of content that the system flags, to find trends."))
             + "<p><b>Calibrate the confidence.</b> %s %s %s No page in the copies of this academy describes the calibration of field-level confidence.</p>" % (
                 cf("ts-5-5-s3", gx("Having models output field-level confidence scores, then calibrating review thresholds using labeled validation sets", "Exam guide, 5.5-S3"),
                    "The model outputs a confidence score for each field, and a labeled validation set calibrates the review thresholds (5.5-S3)."),
                 cf("ts-5-5-f8", gx("Option B fails because LLM self-reported confidence is poorly calibrated—the agent is already incorrectly confident on hard cases.", "Exam guide, sample question 3"),
                    "In sample question 3, which is about escalation, the guide says that a self-reported confidence is poorly calibrated."),
-                cf("ts-5-5-f6", D(DTST, "1,000 tweets with human-labeled sentiments.", "Define success criteria and build evaluations"),
-                   "In the documentation, a labeled set is the base of an evaluation, for example 1,000 tweets with sentiments that people labeled."))
+                cf("ts-5-5-f6", D(DTST, "**Example eval test cases:** 1,000 tweets with human-labeled sentiments.", "Define success criteria and build evaluations"),
+                   "The evaluation page of the Claude API documentation gives an example test set: 1,000 tweets with sentiments that people labeled."))
             + "<p><b>People get the hard cases.</b> %s %s %s</p>" % (
                 cf("ts-5-5-s4", gx("Routing extractions with low model confidence or ambiguous/contradictory source documents to human review, prioritizing limited reviewer capacity", "Exam guide, 5.5-S4"),
                    "Extractions with low confidence, or with ambiguous or contradictory sources, go to human review, which gives its limited time to the most important first (5.5-S4)."),
                 cf("ts-5-5-f10", D(CMOD, "For example, you might want to automatically block user queries that are deemed high risk, while users with many medium risk queries are flagged for human review.", "Content moderation"),
-                   "The content moderation guide routes by risk in the same way: it blocks high risk automatically and flags medium risk for human review."),
+                   "The content moderation guide of the Claude API gives an example: block high-risk queries automatically, and flag users with many medium-risk queries for human review."),
                 cf("ts-5-5-f12", D(RHAL, "Explicitly give Claude permission to admit uncertainty.", "Reduce hallucinations"),
-                   "The documentation also tells you to let Claude admit uncertainty."))
+                   "The Reduce hallucinations page of the Claude API documentation also tells you to let Claude admit uncertainty."))
             + exam_tests("5.5", [("Human review workflows: confidence calibration, stratified sampling, accuracy segmentation by document type and field", "Among the topics, the guide names")])
             + guide_text("5.5"), "ts-5-5")
     + level("depth",
-            beyond([cf("ts-5-5-b1", D(DTST, "Most flexible and high quality, but slow and expensive. Avoid if possible.", "Define success criteria and build evaluations"),
-                       "For evaluations, the documentation calls human grading slow and expensive. That is about tests before production. In production, the guide keeps people on the hard cases."),
+            beyond([cf("ts-5-5-b1", D(DTST, "**Human grading:** Most flexible and high quality, but slow and expensive. Avoid if possible.", "Define success criteria and build evaluations"),
+                       "For evaluations, the Claude API documentation calls human grading slow and expensive. That is about tests before production.")
+                    + " " + fact("ts-5-5-s4", "In production, the guide keeps people on the hard cases (5.5-S4)."),
                     cf("ts-5-5-b2", D(TRT, "Measure this by periodically testing the model with a set of standardized inputs and aiming for a consistency rate of 95% or higher.", "Ticket routing"),
                        "The ticket routing guide tests the model again from time to time with a fixed set of inputs."),
                     cf("ts-5-5-b3", D(CMOD, "Regularly assess the performance of your content moderation system using metrics such as precision and recall tracking.", "Content moderation"),
@@ -2363,7 +2364,7 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                             "This example has one score for the whole answer. For 5.5, put one score on each field. The model writes the number, so it is not calibrated until you compare it with a labeled set.")
             + tab2_links("5.5") + "<p>%s %s</p>" % (
                 cf("ts-5-5-use", excerpt(step_file(7), "Written for the extraction of data. Here: the bad marks are shown for each scenario and each domain, because one total can hide a bad part.", "Build guide, step 7"),
-                   "Step 7 uses 5.5 outside its context: the reader marks questions, not extractions, and the marks are shown for each scenario and each domain (5.5-K1)."),
+                   "Step 7 uses 5.5 outside its context. The bad marks are shown for each scenario and each domain, because one total can hide a bad part (5.5-K1)."),
                 cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
                    "In mocks 4 and 5, the reader is a Claude model, not a person.")), "ts-5-5"))
 
@@ -2373,7 +2374,7 @@ CIT, SRES = "anthropic-docs-citations", "anthropic-docs-search-results"
 SR56 = "\n".join(read(SRC % SRES).split("\n")[28:44])
 assert SR56.startswith("{") and SR56.rstrip().endswith("}") and '"type": "search_result",' in SR56
 FIG56 = figure("5.6-1", 890, 380,
-               "Subagents return each finding as a record with a claim, an evidence excerpt, a source and a publication date. The coordinator keeps conflicting values and annotates them, "
+               "Subagents return each finding as a record with a claim, an evidence excerpt, a source and a publication date, with conflicting values annotated. The coordinator decides how to reconcile them, "
                "and the synthesis agent merges the records. The report has sections for well-established findings, contested findings with both values, and coverage gaps. "
                "A summary without sources loses the attribution. Picking one value, or a finding with no date, is wrong. Each content type keeps its own format.",
                "".join(['<text class="ve-lab" x="240" y="12">one finding</text>',
@@ -2386,8 +2387,9 @@ FIG56 = figure("5.6-1", 890, 380,
                         '<text class="ve-lab" x="20" y="342">financial data as tables, news as</text>',
                         '<text class="ve-lab" x="20" y="362">prose, technical findings as lists</text>',
                         box(20, 30, 180, 90, ["Subagents"], sub="search, analysis", cls="who-model"),
-                        box(240, 20, 230, 110, ["claim", "evidence excerpt", "source URL or name", "publication date"]),
-                        box(520, 20, 160, 110, ["Coordinator"], sub="annotates conflicts", cls="who-model"),
+                        box(240, 20, 230, 110, ["claim", "evidence excerpt", "source URL or name", "publication date"], sub="conflicts annotated"),
+                        box(520, 20, 160, 110, ["Coordinator"], cls="who-model"),
+                        '<text class="ve-lab" x="520" y="150">decides how to reconcile</text>',
                         box(720, 20, 150, 110, ["Synthesis"], sub="merges records", cls="who-model"),
                         box(20, 200, 200, 60, ["Summary only"], sub="sources lost", cls="try bad"),
                         '<text class="ve-lab" x="520" y="174">Report</text>',
@@ -2408,7 +2410,7 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                 cf("ts-5-6-k1", gx("How source attribution is lost during summarization steps when findings are compressed without preserving claim-source mappings", "Exam guide, 5.6-K1"),
                    "When a summary compresses findings and drops the claim-source mappings, the attribution is lost (5.6-K1)."),
                 cf("ts-5-6-f1", D(SUB, "Either way, intermediate tool calls and results stay inside the subagent; only its final message returns to the parent. A `research-assistant` subagent can explore dozens of files without any of that content accumulating in the main conversation. The parent receives a concise summary, not every file the subagent read.", "Agent SDK, Subagents"),
-                   "In the Agent SDK, only the final message of a subagent returns to its parent, as a concise summary. A source that is not in that message does not reach the parent."))
+                   "In the Agent SDK, only the final message of a subagent returns to its parent, as a concise summary. A source outside that message is lost."))
             + "<p><b>Keep the mapping.</b> %s %s</p>" % (
                 cf("ts-5-6-k2", gx("The importance of structured claim-source mappings that the synthesis agent must preserve and merge when combining findings", "Exam guide, 5.6-K2"),
                    "The synthesis agent must keep and merge structured claim-source mappings (5.6-K2)."),
@@ -2418,9 +2420,9 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                 cf("ts-5-6-f4", D(CIT, "Responses may now include multiple text blocks where each text block can contain a claim that Claude is making and a list of citations that support the claim.", "Citations"),
                    "With citations on, each text block of a Claude API response can hold a claim and its citations."),
                 cf("ts-5-6-f6", D(SRES, "Search result content blocks let Claude cite your own content the same way it cites web search results: each citation carries the source and title you provided.", "Search results"),
-                   "Search result blocks of the Claude API carry the source and the title that you give into each citation."),
+                   "Search result blocks of the Claude API, on all active models except Claude Haiku 3, carry your source and title into citations."),
                 cf("ts-5-6-f8", D(RHAL, "Make Claude's response auditable by having it cite quotes and sources for each of its claims. You can also have Claude verify each claim by finding a supporting quote after it generates a response. If it can't find a quote, it must retract the claim.", "Reduce hallucinations"),
-                   "In a prompt, have Claude cite a quote and a source for each claim, and retract a claim with no quote."))
+                   "Prompt advice of the Claude API documentation: have Claude cite a quote and a source for each claim, and retract a claim with no quote."))
             + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the documentation covers conflicting values or dates. These rules are the guide&rsquo;s.</p>" % (
                 cf("ts-5-6-k3", gx("How to handle conflicting statistics from credible sources: annotating conflicts with source attribution rather than arbitrarily selecting one value", "Exam guide, 5.6-K3"),
                    "When credible sources give different statistics, annotate the conflict with the sources, and do not select one value arbitrarily (5.6-K3)."),
@@ -2432,18 +2434,21 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                    "A publication or collection date in the structured output stops a difference in time from looking like a contradiction (5.6-K4)."),
                 cf("ts-5-6-s4", gx("Requiring subagents to include publication or data collection dates in structured outputs to enable correct temporal interpretation", "Exam guide, 5.6-S4"),
                    "So the subagents must include these dates (5.6-S4)."))
-            + "<p><b>The report.</b> %s</p>" % 
+            + "<p><b>The report.</b> %s %s</p>" % (fact("ts-5-6-s2", "The report keeps the original characterizations and methods of the sources (5.6-S2),"), 
                 cf("ts-5-6-s5", gx("Rendering different content types appropriately in synthesis outputs—financial data as tables, news as prose, technical findings as structured lists—rather than converting everything to a uniform format", "Exam guide, 5.6-S5"),
-                   "The report keeps the original characterizations and methods of the sources (5.6-S2), and formats each content type in its own way: financial data as tables, news as prose, technical findings as lists (5.6-S5).")
+                   "and it gives each content type its format: financial data as tables, news as prose, technical findings as lists (5.6-S5)."))
             + exam_tests("5.6", [("Information provenance: claim-source mappings, temporal data handling, conflict annotation, coverage gap reporting", "Among the topics, the guide names")])
             + guide_text("5.6"), "ts-5-6")
     + level("depth",
             beyond([cf("ts-5-6-b1", D(CIT, "If you enable citations on any user-provided document (`document` blocks or `search_result` blocks) and also include the `output_config.format` parameter (or the deprecated `output_format` parameter), the API returns a 400 error.", "Citations"),
-                       "In the Claude API, citations and the structured outputs of output_config.format do not work in one request: the API returns a 400 error. The guide asks for the mappings in structured outputs. The exam uses the guide."),
+                       "In the Claude API, citations and the structured outputs of output_config.format do not work in one request: the API returns a 400 error.")
+                    + " " + fact("ts-5-6-s4", "The guide asks for dates in structured outputs (5.6-S4),") + " "
+                    + cf("ts-5-6-g1036", gx("Structured output via tool_use: schema design, tool_choice configuration, nullable fields to prevent hallucination", "Exam guide, section 17"),
+                         "and it names structured output through tool_use.") + " This academy did not check whether citations work with a forced tool call.",
                     cf("ts-5-6-b2", D(CIT, "As image citations are not yet supported, PDFs that are scans of documents and do not contain extractable text are not citable.", "Citations"),
                        "Citations of the Claude API do not work for a scanned PDF with no extractable text."),
                     cf("ts-5-6-b3", D(SRES, "The text block is the minimal citable unit: Claude cites whole blocks, not substrings within a block.", "Search results"),
-                       "Claude cites a whole text block of a search result, not a part of a block.")])
+                       "In search result blocks of the Claude API, Claude cites a whole text block, not a part of a block.")])
             + code_pop_text("ts-5-6-code", "The code: a search result that carries its source", "A search result block", SRES, SR56, "Search results",
                             "In the Claude API, the source and the title come back in each citation. All active models except Claude Haiku 3 support it. The example has no date field, and 5.6-S4 asks for one.")
             + tab2_links("5.6") + "<p>%s %s</p>" % (
