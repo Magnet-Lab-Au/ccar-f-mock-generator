@@ -113,16 +113,18 @@
   .ve-e.is-lit { stroke: var(--accent); } .ve-n.is-lit .sh { stroke: var(--accent); }
 
   /* stepper */
-  .ve-steps [data-s] { transition: opacity var(--slow) var(--ease), stroke-dashoffset var(--slow) var(--ease); }
-  .ve-steps [data-s]:not(.on) { opacity: .15; }
-  .ve-steps g[data-s]:not(.on) text, .ve-steps text[data-s]:not(.on) { opacity: 0; }
-  .ve-steps path[pathLength][data-s] { stroke-dasharray: 1; stroke-dashoffset: 1; }
-  .ve-steps path[pathLength][data-s].on { stroke-dashoffset: 0; }
-  .ve-steps .ve-n.now .sh { stroke: var(--accent); }
-  .ve-player { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-4); }
+  .ve-steps [data-a], .ve-steps [data-s] { transition: opacity var(--med) var(--ease); }
+  .ve-steps.is-step [data-a]:not(.now) { opacity: .35; }
+  .ve-steps.is-step [data-s]:not(.on) { opacity: 0; }
+  .ve-steps .ve-n.now .sh { stroke: var(--accent); stroke-width: 2.25; }
+  .ve-steps .ve-e.now { stroke: var(--accent); stroke-width: 2.75; }
+  .ve-steps .ve-el.now { fill: var(--accent); }
+  .ve-steps .blk.now rect { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 2; }
+  .js-motion .ve-steps.is-step .ve-e.now { stroke-dasharray: 1; animation: ve-draw var(--slow) var(--ease); }
+  @keyframes ve-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  .ve-player { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-4); }
   .ve-cap { grid-column: 1 / -1; list-style: none; padding: 0; min-height: 3.2em; }
   .ve-cap li::before { content: attr(data-n); font: 600 var(--t-label) var(--font-mono); color: var(--accent); margin-right: var(--s-3); font-variant-numeric: tabular-nums; }
-  .ve-player input { accent-color: var(--accent); min-width: 0; }
   button { font: 500 var(--t-small) var(--font-mono); color: var(--text); background: var(--surface); border: 1px solid var(--border-bright); border-radius: var(--r-1); padding: var(--s-2) var(--s-3); cursor: pointer; }
   button:hover, button:focus-visible { border-color: var(--accent); }
 
@@ -200,11 +202,9 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   @media print {
     :root { --bg: #fff; --surface: #fff; --text: #17191c; --text-dim: #575c63; --accent: #2c4cd0; --border: #e3e3dc; --border-bright: #8e8e8a; }
-    .ve-player button, .ve-player input, .ve-dots, #pop { display: none; }
+    .ve-player button, .ve-dots, #pop { display: none; }
     .frame { overflow: visible; background: #fff; } .ve-svg { min-width: 0; } svg * { filter: none !important; }
     .js-motion main > * { opacity: 1 !important; transform: none !important; }
-    .ve-steps [data-s]:not(.on), .ve-steps g[data-s]:not(.on) text, .ve-steps text[data-s]:not(.on) { opacity: 1; }
-    .ve-steps path[pathLength][data-s] { stroke-dashoffset: 0; }
     figure, .case { break-inside: avoid; }
   }
 </style>
@@ -228,38 +228,41 @@
 <figure class="ve-steps" id="fig1">
   <div class="frame">
     <svg class="ve-svg" viewBox="0 20 900 350" role="img" aria-label="Your code sends a request to Claude. Claude responds. Your code checks stop_reason. On tool_use it runs the tool, adds the result to the conversation history and sends the next request. On end_turn the loop stops. The history on the right grows by one tool call and one result per iteration.">
-      <path class="ve-e" data-s="1" pathLength="1" d="M210 76H328"/>
-      <text class="ve-el" data-s="1" x="269" y="67">sends</text>
-      <path class="ve-e" data-s="2" pathLength="1" d="M425 112V188"/>
-      <text class="ve-el r" data-s="2" x="435" y="154">responds</text>
-      <path class="ve-e is-hot" data-s="3" data-ref="tool" pathLength="1" d="M330 235H212"/>
-      <text class="ve-el" data-s="3" data-ref="tool" x="271" y="226">"tool_use"</text>
-      <path class="ve-e is-hot" data-s="3" data-ref="tool" pathLength="1" d="M115 199V114"/>
-      <text class="ve-el r" data-s="3" data-ref="tool" x="125" y="160">adds the result</text>
-      <path class="ve-e" data-s="5" data-ref="end" pathLength="1" d="M425 280V308"/>
-      <text class="ve-el r" data-s="5" data-ref="end" x="435" y="299">"end_turn"</text>
+      <path class="ve-e" data-a="1 5 8" pathLength="1" d="M210 76H328"/>
+      <text class="ve-el" data-a="1 5 8" x="269" y="67">sends</text>
+      <path class="ve-e" data-a="2 5 8" pathLength="1" d="M425 112V188"/>
+      <text class="ve-el r" data-a="2 5 8" x="435" y="154">responds</text>
+      <path class="ve-e is-hot" data-a="3 6" data-ref="tool" pathLength="1" d="M330 235H212"/>
+      <text class="ve-el" data-a="3 6" data-ref="tool" x="271" y="226">"tool_use"</text>
+      <path class="ve-e is-hot" data-a="4 7" data-ref="tool" pathLength="1" d="M115 199V114"/>
+      <text class="ve-el r" data-a="4 7" data-ref="tool" x="125" y="160">adds the result</text>
+      <path class="ve-e" data-a="9" data-ref="end" pathLength="1" d="M425 280V308"/>
+      <text class="ve-el r" data-a="9" data-ref="end" x="435" y="299">"end_turn"</text>
       <path data-flow="loop" data-every="2600" d="M115 76H425V235H115V76"/>
       <g class="ve-dots" aria-hidden="true"></g>
-      <g class="ve-n" data-step="send" tabindex="0" role="button" aria-expanded="false" data-s="1" transform="translate(20 40)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M5 2L0 8l5 6M11 2l5 6-5 6"/><text x="95" y="25">Your code</text><text class="sub" x="95" y="49">sends the request</text></g> <g class="ve-n" data-step="resp" tabindex="0" role="button" aria-expanded="false" data-s="2" transform="translate(330 40)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M8 0v16M0 8h16M2.5 2.5l11 11M13.5 2.5l-11 11"/><text x="95" y="25">Claude</text><text class="sub" x="95" y="49">responds</text></g>
-      <g class="ve-n is-key" data-step="check" tabindex="0" role="button" aria-expanded="false" data-s="2" data-ref="tool end">
+      <g class="ve-n" data-step="send" tabindex="0" role="button" aria-expanded="false" data-a="1 5 8" transform="translate(20 40)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M5 2L0 8l5 6M11 2l5 6-5 6"/><text x="95" y="25">Your code</text><text class="sub" x="95" y="49">sends the request</text></g> <g class="ve-n" data-step="resp" tabindex="0" role="button" aria-expanded="false" data-a="2 5 8" transform="translate(330 40)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M8 0v16M0 8h16M2.5 2.5l11 11M13.5 2.5l-11 11"/><text x="95" y="25">Claude</text><text class="sub" x="95" y="49">responds</text></g>
+      <g class="ve-n is-key" data-step="check" tabindex="0" role="button" aria-expanded="false" data-a="3 6 9" data-ref="tool end">
         <path class="sh" d="M425 190L520 235L425 280L330 235Z"/><text x="425" y="226">stop_reason</text><text class="sub" x="425" y="249">checked</text></g>
-      <g class="ve-n" data-step="run" tabindex="0" role="button" aria-expanded="false" data-s="3" data-ref="tool" transform="translate(20 199)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M5 2L0 8l5 6M11 2l5 6-5 6"/><text x="95" y="25">Your code</text><text class="sub" x="95" y="49">runs the tool</text></g> <g class="ve-n" data-step="done" tabindex="0" role="button" aria-expanded="false" data-s="5" data-ref="end" transform="translate(330 310)"><rect class="sh" width="190" height="44" rx="6"/><text x="95" y="22">Done</text></g>
+      <g class="ve-n" data-step="run" tabindex="0" role="button" aria-expanded="false" data-a="4 7" data-ref="tool" transform="translate(20 199)"><rect class="sh" width="190" height="72" rx="6"/><path class="gl" transform="translate(12 12)" d="M5 2L0 8l5 6M11 2l5 6-5 6"/><text x="95" y="25">Your code</text><text class="sub" x="95" y="49">runs the tool</text></g> <g class="ve-n" data-step="done" tabindex="0" role="button" aria-expanded="false" data-a="9" data-ref="end" transform="translate(330 310)"><rect class="sh" width="190" height="44" rx="6"/><text x="95" y="22">Done</text></g>
       <text class="ve-lab" x="600" y="52">conversation history</text>
       <g class="ve-n" data-step="convo" tabindex="0" role="button" aria-expanded="false"><rect class="hit" x="592" y="40" width="296" height="300" rx="8"/></g>
-      <g class="blk" data-s="1" transform="translate(600 70)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> the task</text></g><g class="blk a" data-s="2" transform="translate(600 112)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> tool_use: tool A</text></g><g class="blk" data-s="3" transform="translate(600 154)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> tool_result: A</text></g><g class="blk a" data-s="4" transform="translate(600 196)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> tool_use: tool B</text></g><g class="blk" data-s="4" transform="translate(600 238)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> tool_result: B</text></g><g class="blk a" data-s="5" transform="translate(600 280)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> text: the answer</text></g>
+      <g class="blk" data-s="1" transform="translate(600 70)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> the task</text></g><g class="blk a" data-s="2" transform="translate(600 112)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> tool_use: tool A</text></g><g class="blk" data-s="4" transform="translate(600 154)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> tool_result: A</text></g><g class="blk a" data-s="5" transform="translate(600 196)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> tool_use: tool B</text></g><g class="blk" data-s="7" transform="translate(600 238)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">user</tspan> tool_result: B</text></g><g class="blk a" data-s="8" transform="translate(600 280)"><rect width="280" height="32" rx="4"/><text x="12" y="16"><tspan class="role">assistant</tspan> text: the answer</text></g>
     </svg>
   </div>
   <div class="ve-player">
-    <ol class="ve-cap">
-      <li data-n="1/5">Your code sends the task to Claude.</li>
-      <li data-n="2/5">Claude responds. Your code checks <code>stop_reason</code>.</li>
-      <li data-n="3/5"><code>"tool_use"</code>: your code runs the tool and adds the result to the conversation history.</li>
-      <li data-n="4/5">The loop runs again: one more tool call, one more result.</li>
-      <li data-n="5/5"><code>"end_turn"</code>: your code stops the loop.</li>
+    <ol class="ve-cap" aria-live="polite">
+      <li data-n="9 steps">The full loop. Use the arrow buttons to go through it one step at a time.</li>
+      <li data-n="1/9">Your code sends the task to Claude.</li>
+      <li data-n="2/9">Claude responds: tool A.</li>
+      <li data-n="3/9">Your code checks <code>stop_reason</code>: <code>"tool_use"</code>.</li>
+      <li data-n="4/9">Your code runs tool A and adds the result to the conversation history.</li>
+      <li data-n="5/9">Your code sends again. Claude responds: tool B.</li>
+      <li data-n="6/9">Your code checks <code>stop_reason</code>: <code>"tool_use"</code>.</li>
+      <li data-n="7/9">Your code runs tool B and adds the result to the conversation history.</li>
+      <li data-n="8/9">Your code sends again. Claude responds: the answer.</li>
+      <li data-n="9/9">Your code checks <code>stop_reason</code>: <code>"end_turn"</code>. The loop stops.</li>
     </ol>
     <button data-go="-1" aria-label="Previous step">&larr;</button>
-    <button data-play>Play</button>
-    <input type="range" min="0" value="0" aria-label="Step">
     <button data-go="1" aria-label="Next step">&rarr;</button>
   </div>
   <figcaption><span class="fig-n">Fig. 1</span>The loop continues on <code>"tool_use"</code> and stops on <code>"end_turn"</code>. Each part opens its detail. The code of the loop is on <i>Your code sends the request</i>.</figcaption>
@@ -490,30 +493,21 @@
     x.addEventListener('focus', () => { focused = x; paint(); }); x.addEventListener('blur', () => { focused = null; paint(); });
   }
 
-  /* stepper: opens on the full picture; Play replays from step 1; never autoplays */
+  /* stepper: opens on the full picture (k = 0); the arrows go one step at a time; nothing plays by itself */
   for (const root of document.querySelectorAll('.ve-steps')) {
-    const parts = [...root.querySelectorAll('[data-s]')], caps = [...root.querySelectorAll('.ve-cap li')];
-    const range = root.querySelector('input[type=range]'), play = root.querySelector('[data-play]');
-    const n = caps.length; let i = 0, timer = null;
-    if (range) range.max = n - 1;
+    const parts = [...root.querySelectorAll('[data-a]')], lines = [...root.querySelectorAll('[data-s]')], caps = [...root.querySelectorAll('.ve-cap li')];
+    const n = caps.length; let i = 0;
     const show = (k) => {
       i = Math.max(0, Math.min(n - 1, k));
-      for (const p of parts) { p.classList.toggle('on', +p.dataset.s <= i + 1); p.classList.toggle('now', +p.dataset.s === i + 1); }
+      const full = i === 0;
+      for (const p of parts) p.classList.toggle('now', !full && p.dataset.a.split(' ').includes(String(i)));
+      for (const l of lines) { l.classList.toggle('on', full || +l.dataset.s <= i); l.classList.toggle('now', !full && +l.dataset.s === i); }
       caps.forEach((c, j) => c.hidden = j !== i);
-      root.classList.toggle('is-full', i === n - 1);
+      root.classList.toggle('is-full', full); root.classList.toggle('is-step', !full);
       root.dispatchEvent(new Event('ve:step'));
-      if (range) range.value = i;
     };
-    const stop = () => { clearInterval(timer); timer = null; if (play) play.textContent = 'Play'; };
-    root.addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) { stop(); show(i + +b.dataset.go); } });
-    range?.addEventListener('input', () => { stop(); show(+range.value); });
-    play?.addEventListener('click', () => {
-      if (timer) return stop();
-      if (i === n - 1) show(0);
-      play.textContent = 'Pause';
-      timer = setInterval(() => (i < n - 1 ? show(i + 1) : stop()), 2600);
-    });
-    show(n - 1);
+    root.addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) show(i + +b.dataset.go); });
+    show(0);
   }
 
   if (!still) {
