@@ -6,8 +6,8 @@ Date: 5 October 2026. Updated on 9 October 2026, and on 13 October 2026 for the 
 
 From 12 October 2026 the sessions build the teaching pages of the portal: "Exam guide breakdown" and "Behind the mocks". This work has its own records in `academy/` (academy decision 0007): `academy/README.md`, `academy/brief.md`, `academy/journal.md` and `academy/decisions/`. For this work, the records of the checklist in `CLAUDE.md` are the files in `academy/`, not `docs/journal.md` and `docs/decisions/`.
 
-- State on 13 October 2026: the plan is decided in academy decisions 0001 to 0027. An independent review of the plan found 24 items. Items 1 to 12 are decided. The other items are still open, and `academy/journal.md` lists them.
-- Next step: finish the open items of the review, then build slice 1 (academy decision 0022): the top of tab 2 and step 5.
+- State on 13 October 2026: the plan is decided in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. The texts of decisions 0016 to 0033 wait for the confirmation of the owner.
+- Next step: the owner confirms the texts of decisions 0016 to 0033. Then build slice 1 (academy decision 0022): the top of tab 2 and step 5.
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
