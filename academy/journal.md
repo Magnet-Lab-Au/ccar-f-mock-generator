@@ -61,3 +61,4 @@ One entry for each work session. Newest entry first.
 - The ninth item: the build guide tables, not the diagram popups, say which task statements a step uses. The owner accepted it. Decision 0024 (proposed) records it.
 - The tenth item: the links of the source cards to the private repository. The owner accepted that the repository becomes public before the pages go live. Decision 0025 (proposed) records it.
 - The eleventh item: a check for the audience. The owner accepted word limits that a script counts, and asked for a separate reader agent after each slice. Decision 0026 (proposed) records it.
+- The owner stopped the assistant: item 11 was not finished, because nothing said how the reader agent checks. The owner accepted six requirements, each with a quote from the page, and an intended takeaway for each part that the reader agent does not see. Decision 0026 (proposed) now has them.
