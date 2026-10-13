@@ -2138,7 +2138,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
 
 # ----- part 5.3 (facts: academy/facts/ts-5-3.md) -----
 
-FIG53 = figure("5.3-1", 890, 330,
+FIG53 = figure("5.3-1", 890, 350,
                "A subagent runs a query. Results and a valid empty result are both successes. An access failure is first retried in the subagent. If it is not resolved, "
                "the subagent returns structured error context: the failure type, the query, the partial results and the alternatives. The coordinator decides to retry, change the plan "
                "or go on, and the synthesis marks the gaps.",
@@ -2151,7 +2151,8 @@ FIG53 = figure("5.3-1", 890, 330,
                         box(250, 20, 220, 55, ["Results"], sub="success", cls="try ok"),
                         box(250, 90, 220, 55, ["0 matches"], sub="success, not an error", cls="try ok"),
                         box(250, 170, 220, 60, ["Access failure"], sub="retry it locally first"),
-                        box(250, 250, 220, 70, ["Error context"], sub="type, query, partial data"),
+                        box(250, 250, 220, 70, ["Error context"]),
+                        '<text class="ve-lab" x="250" y="340">type, query, partial results, alternatives</text>',
                         box(540, 100, 170, 90, ["Coordinator"], sub="retry, change, go on", cls="who-model"),
                         box(750, 100, 120, 90, ["Synthesis"], sub="gaps marked")]),
                "%s %s" % (cf("ts-5-3-k1", gx("Structured error context (failure type, attempted query, partial results, alternative approaches) as enabling intelligent coordinator recovery decisions", "Exam guide, 5.3-K1"),
@@ -2167,8 +2168,9 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
             "<p><b>Error context.</b> %s %s %s</p>" % (
                 cf("ts-5-3-s1", gx("Returning structured error context including failure type, what was attempted, partial results, and potential alternatives to enable coordinator recovery", "Exam guide, 5.3-S1"),
                    "The subagent returns the failure type, what it tried, its partial results and possible alternatives (5.3-S1)."),
-                fact("ts-2-2-f6", "For a tool error, the documentation also says to name what went wrong and what to try next."),
-                fact("ts-1-2-f4", "In the Agent SDK, only the final message of a subagent returns to its parent, so the error context must be in that message."))
+                fact("ts-2-2-f6", "For an error of a client tool, the Claude API documentation also says to name what went wrong and what Claude should try next."),
+                cf("ts-5-3-f4", D(SUB, "Either way, intermediate tool calls and results stay inside the subagent; only its final message returns to the parent.", "Agent SDK, Subagents"),
+                   "In the Agent SDK, only the final message of a subagent returns to its parent, so put the error context in that message."))
             + "<p><b>Empty is not failure.</b> %s Only the guide states this point, also in 2.2.</p>" %
                 cf("ts-5-3-s2", gx("Distinguishing access failures from valid empty results in error reporting so the coordinator can make appropriate decisions", "Exam guide, 5.3-S2"),
                    "The report keeps an access failure apart from a valid empty result (5.3-S2).")
@@ -2182,23 +2184,27 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
             + "<p><b>Recover locally, then mark the gaps.</b> %s %s %s</p>" % (
                 cf("ts-5-3-s3", gx("Having subagents implement local recovery for transient failures and only propagate errors they cannot resolve, including what was attempted and partial results", "Exam guide, 5.3-S3"),
                    "A subagent recovers from a transient failure itself and passes on only what it cannot fix (5.3-S3)."),
-                cf("ts-5-3-f11", D(CCS, "* **Foreground**: if a rate limit, overload, or server error cuts off a subagent that already produced text output, the Agent tool returns that partial output with a note that the subagent was cut off and didn't finish its task.", "Claude Code, Subagents"),
-                   "For API errors, Claude Code itself returns the partial output of a subagent that was cut off."),
+                cf("ts-5-3-f11", D(CCS, "* **Foreground**: if a rate limit, overload, or server error cuts off a subagent that already produced text output, the Agent tool returns that partial output with a note that the subagent was cut off and didn't finish its task. A subagent that produced nothing, or whose only output was tool calls, fails with", "Claude Code, Subagents"),
+                   "In Claude Code, when an API error cuts off a foreground subagent that already wrote text, the Agent tool returns that partial output with a note. A subagent with no text fails with an error."),
                 cf("ts-5-3-s4", gx("Structuring synthesis output with coverage annotations indicating which findings are well-supported versus which topic areas have gaps due to unavailable sources", "Exam guide, 5.3-S4"),
                    "The synthesis marks which findings are well supported and which topics have gaps (5.3-S4)."))
             + exam_tests("5.3", [("Error handling and propagation: structured error responses, transient vs business vs permission errors, local recovery before escalation", "Among the topics, the guide names")])
-            + "<p>%s</p>" % cf("ts-5-3-q8", gx("Structured error context gives the coordinator the information it needs to make intelligent recovery decisions", "Exam guide, sample question 8"),
-                               "Sample question 8 of the guide fits 5.3: its correct answer returns structured error context to the coordinator.")
+            + "<p>%s %s</p>" % (cf("ts-5-3-q8", gx("Return structured error context to the coordinator including the failure type, the attempted query, any partial results, and potential alternative approaches.", "Exam guide, sample question 8"),
+                               "Sample question 8 of the guide fits 5.3: its correct answer returns structured error context to the coordinator."),
+                                cf("ts-5-3-q8b", gx("Option B's generic status hides valuable context from the coordinator, preventing informed decisions.", "Exam guide, sample question 8"),
+                               "Option B retries, as 5.3-S3 teaches, but it is wrong because it ends with a generic status."))
             + guide_text("5.3"), "ts-5-3")
     + level("depth",
             beyond([cf("ts-5-3-b1", D(SUB, "An API error that ends the subagent early, such as a rate limit, is never delivered as its result.", "Agent SDK, Subagents"),
-                       "In the Agent SDK and Claude Code, an API error that ends a subagent is never delivered as its result, so it cannot look like an empty success."),
+                       "In the Agent SDK, an API error that ends a subagent early is never delivered as its result, so it cannot look like an empty success."),
                     cf("ts-5-3-b2", D(HANDLE, "When server tools encounter errors (for example, network issues with Web Search), Claude will transparently handle these errors and attempt to provide an alternative response or explanation to the user.", "Handle tool calls"),
                        "Server tools of the Claude API, such as web search, handle their own errors.")])
             + code_pop_text("ts-5-3-code", "The code: a tool result that reports an error", "An error result", HANDLE, ERR22, "Handle tool calls",
                             "This example has the failure type only. A subagent of the guide puts the full error context in its final message.")
-            + tab2_links("5.3") + "<p>%s</p>" % cf("ts-5-3-use", excerpt(step_file(3), "Written for errors between agents. Here: an error must never look like a pass.", "Build guide, step 3"),
-                                                    "Steps 3 and 6 use 5.3-K4: an error must never look like a pass."), "ts-5-3"))
+            + tab2_links("5.3") + "<p>%s %s</p>" % (cf("ts-5-3-use", excerpt(step_file(3), "Written for errors between agents. Here: an error must never look like a pass.", "Build guide, step 3"),
+                                                    "Step 3 uses 5.3-K4: an error must never look like a pass."),
+                                                 cf("ts-5-3-use6", excerpt(step_file(6), "Written for errors between agents. Here: a call that fails, or an answer that is not valid, never counts as a pass.", "Build guide, step 6"),
+                                                    "Step 6 uses it too: a call that fails, or an answer that is not valid, never counts as a pass.")), "ts-5-3"))
 
 
 # ----- part 5.4 (facts: academy/facts/ts-5-4.md) -----
@@ -2215,6 +2221,7 @@ FIG54 = figure("5.4-1", 890, 330,
                         '<text class="ve-el" x="380" y="160">a question, then a summary back</text>',
                         edge("M560 50H620", "write", 590, 41), edge("M620 75H560", "read", 590, 92, cls="is-async"),
                         edge("M620 210H445V100", "load on resume", 532, 201, cls="is-hot"),
+                        edge("M270 295H745V250", "agents export their state", 520, 287),
                         '<text class="ve-lab" x="330" y="125">context fills: /compact</text>',
                         box(330, 20, 230, 80, ["Main agent"], sub="high-level view", cls="who-model"),
                         box(20, 170, 250, 60, ["Subagent: test files"], sub="verbose output stays", cls="who-model"),
@@ -2235,7 +2242,7 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
                 cf("ts-5-4-k1", gx("Context degradation in extended sessions: models start giving inconsistent answers and referencing \"typical patterns\" rather than specific classes discovered earlier", "Exam guide, 5.4-K1"),
                    "In a long session, the guide says, the answers get inconsistent and name &ldquo;typical patterns&rdquo; in place of the specific classes found earlier (5.4-K1)."),
                 cf("ts-5-4-f2", D(BEST, "When the context window is getting full, Claude may start \"forgetting\" earlier instructions or making more mistakes.", "Claude Code, Best practices"),
-                   "The Claude Code documentation says that Claude then forgets earlier instructions or makes more mistakes."))
+                   "The Claude Code documentation says that, when the context window gets full, Claude may forget earlier instructions or make more mistakes."))
             + "<p><b>Scratchpad files.</b> %s %s</p>" % (
                 cf("ts-5-4-k2", gx("The role of scratchpad files for persisting key findings across context boundaries", "Exam guide, 5.4-K2"),
                    "A scratchpad file keeps key findings across the limits of the context (5.4-K2)."),
@@ -2248,10 +2255,13 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
             + "<p><b>Phases.</b> %s %s</p>" % (
                 cf("ts-5-4-s3", gx("Summarizing key findings from one exploration phase before spawning sub-agents for the next phase, injecting summaries into initial context", "Exam guide, 5.4-S3"),
                    "The key findings of one phase go, as a summary, into the first context of the subagents of the next phase (5.4-S3),"),
-                fact("ts-1-3-f5", "because a subagent gets only the prompt of its call."))
-            + "<p><b>Crash recovery.</b> %s %s</p>" % (
+                cf("ts-5-4-f5", D(SUB, "Unless the subagent is a [fork](/docs/en/sub-agents#fork-the-current-conversation), its context window starts fresh, with no parent conversation, but isn't empty. The only content you pass from parent to subagent is the Agent tool's prompt string", "Agent SDK, Subagents"),
+                   "because, in the Agent SDK, the only content that a parent passes to a subagent that is not a fork is the prompt of the Agent tool."))
+            + "<p><b>Crash recovery.</b> %s %s %s</p>" % (
+                cf("ts-5-4-k4", gx("Structured state persistence for crash recovery: each agent exports state to a known location, and the coordinator loads a manifest on resume", "Exam guide, 5.4-K4"),
+                   "Each agent exports its state to a known place, and on resume the coordinator loads a manifest (5.4-K4)."),
                 cf("ts-5-4-s4", gx("Designing crash recovery using structured agent state exports (manifests) that the coordinator loads on resume and injects into agent prompts", "Exam guide, 5.4-S4"),
-                   "Each agent exports its state to a known place, and on resume the coordinator loads a manifest and puts it into the prompts (5.4-K4, 5.4-S4)."),
+                   "The coordinator puts the manifest into the prompts of the agents (5.4-S4)."),
                 cf("ts-5-4-f14", D(SES, "Sessions persist the **conversation**, not the filesystem.", "Agent SDK, Sessions"),
                    "A resumed session of the Agent SDK restores the conversation, not the files, so the manifest is a design of your own."))
             + "<p><b>/compact.</b> %s %s</p>" % (
@@ -2262,16 +2272,18 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
             + exam_tests("5.4", [("Subagent context management: explicit context passing, structured state persistence, crash recovery using manifests", "Among the topics, the guide names")])
             + guide_text("5.4"), "ts-5-4")
     + level("depth",
-            beyond([cf("ts-5-4-b1", D(CTXW, "so compaction summarizes them away with everything else.", "Claude Code, Explore the context window"),
-                       "In Claude Code, a compaction summarizes away rules and nested CLAUDE.md files that loaded late, so a finding only in the conversation is at risk."),
+            beyond([cf("ts-5-4-b1", D(CTXW, "Path-scoped rules and nested CLAUDE.md files load into message history when Claude reads, writes, or edits their trigger file, so compaction summarizes them away with everything else.", "Claude Code, Explore the context window"),
+                       "In Claude Code, path-scoped rules and nested CLAUDE.md files load when Claude reads, writes or edits their trigger file, so a compaction summarizes them away with everything else."),
                     cf("ts-5-4-b2", D(HOW, "To control what's preserved during compaction, add a \"Compact Instructions\" section to CLAUDE.md", "Claude Code, How Claude Code works"),
-                       "A section of CLAUDE.md can tell the compaction what to keep."),
-                    cf("ts-5-4-b3", D(MEMT, "For long-running agents, consider using both:", "Memory tool"),
-                       "For a long-running agent of the Claude API, the documentation uses both: compaction for a small context, and memory files for what must survive.")])
+                       "In Claude Code, a &ldquo;Compact Instructions&rdquo; section of CLAUDE.md can tell the compaction what to keep."),
+                    cf("ts-5-4-b3", D(MEMT, "For long-running agents, consider using both: compaction keeps the active context small without client-side bookkeeping, and memory preserves the information that must survive summarization.", "Memory tool"),
+                       "For a long-running agent, the Claude API documentation suggests both: compaction keeps the context small, and memory keeps what must survive the summary.")])
             + code_pop_text("ts-5-4-code", "The code: what a summary must keep", "Summary instructions in CLAUDE.md", LOOP, SUM54, "Agent SDK, The agent loop",
-                            "The compaction keeps the task, the files, the test results and the decisions.")
-            + tab2_links("5.4", cf("ts-5-4-d01", excerpt(D01, "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001"),
-                                   "Mock decision 0001 links the decision files and the journal of the build to 5.4-K2 and 5.4-K4. Tab 2 shows them under 1.7.")
+                            "In the Agent SDK, this section of CLAUDE.md asks the compactor to keep the task, the files, the test results and the decisions.")
+            + tab2_links("5.4", cf("ts-5-4-d01b", excerpt(D01, "Keep one file for each decision, one HTML file for each diagram and a journal.", "Mock decision 0001"),
+                                   "Mock decision 0001 keeps one file for each decision, and a journal.") + " "
+                         + cf("ts-5-4-d01", excerpt(D01, "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001"),
+                                   "It links them to 5.4-K2 and 5.4-K4. Tab 2 shows them under 1.7.")
                          + ' <a href="%s#cc-1-7">The build in Claude Code, 1.7 &rarr;</a>' % TAB2), "ts-5-4"))
 
 # ----- part 5.5 (facts: academy/facts/ts-5-5.md) -----
