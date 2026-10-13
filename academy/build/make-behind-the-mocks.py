@@ -528,8 +528,17 @@ MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Ste
 SLICE = {0: 2, 1: 2, 2: 2, 3: 2, 4: 2, 6: 2, 7: 2, 8: 2}
 
 
+def ts_of(s):
+    """The task statements of a step, in the order of its table of guide points (decision 0024)."""
+    f = glob.glob(os.path.join(ROOT, "docs/build-guide/step-%d-*.md" % s))[0]
+    ids = re.findall(r"(?m)^\| ([1-5]\.[0-9])-[KS][0-9]+ \|", read(os.path.relpath(f, ROOT)))
+    return list(dict.fromkeys(ids))
+
+
 def part(s):
     who = WHO_LONG[s]
+    ts = ts_of(s)
+    who += " · task statements " + ", ".join(ts) if ts else " · no task statement of the exam guide"
     body = step5_html if s == 5 else '<p class="pending">This step comes in slice %d.</p>' % SLICE[s]
     return ('<details class="part" id="step-%d"><summary><span class="pn">%d</span><span><h3>%s</h3><span class="who">%s</span></span>'
             '<span class="mm">%s<span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
