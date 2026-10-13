@@ -1,8 +1,8 @@
 # 0010: Two tabs, each one page with an exploded view
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: decision 0002 (one entry for each task statement), decision 0004 (the levels of "Behind the mocks", and one visual in each Overview)
 

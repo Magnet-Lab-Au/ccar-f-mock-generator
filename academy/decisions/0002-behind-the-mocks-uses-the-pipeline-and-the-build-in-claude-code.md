@@ -1,7 +1,7 @@
 # 0002: "Behind the mocks" uses the pipeline and how the project was built in Claude Code
 
 - Date: 12 October 2026
-- Status: accepted
+- Status: accepted. Decision 0010 changes one rule: "Behind the mocks" has one entry for each step, not for each task statement.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
