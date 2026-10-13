@@ -1,7 +1,7 @@
 # 0008: The pages follow the fifth sample
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0009 changes two of its rules (the K and S letters).
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
