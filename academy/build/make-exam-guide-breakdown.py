@@ -729,7 +729,7 @@ D40 = glob.glob(os.path.join(ROOT, "docs/decisions/0040-*.md"))[0][len(ROOT) + 1
 GOOD21 = "\n".join(read(SRC % DEFT).split("\n")[92:106])
 assert GOOD21.strip().startswith("{") and '"name": "get_stock_price"' in GOOD21 and GOOD21.rstrip().endswith("}")
 FIG21 = figure("2.1-1", 890, 270,
-               "Before: a request to summarize a web page can go to analyze_content or to analyze_document, because both say only that they analyze content. "
+               "Before: a request for the results of a web page can go to analyze_content or to analyze_document, because both say only that they analyze content. "
                "After: analyze_content is renamed extract_web_results with a web-specific description, and analyze_document is split into tools with contracts, so the request has one clear tool.",
                "".join(['<text class="ve-lab" x="20" y="24">Before: near-identical descriptions</text>',
                         '<text class="ve-lab" x="480" y="24">After: renamed and split</text>',
@@ -737,10 +737,10 @@ FIG21 = figure("2.1-1", 890, 270,
                         edge("M190 130H220V90H250", cls="is-async"), edge("M190 150H220V190H250", cls="is-async"),
                         '<text class="ve-el" x="130" y="215">which one?</text>',
                         edge("M620 140H635V70H650", cls="is-hot"),
-                        box(20, 110, 170, 60, ["Summarize", "this web page"], cls="who-model"),
+                        box(20, 110, 170, 60, ["Get the results", "of this web page"], cls="who-model"),
                         box(250, 60, 190, 60, ["analyze_content"], sub="analyzes content"),
                         box(250, 160, 190, 60, ["analyze_document"], sub="analyzes content"),
-                        box(480, 110, 140, 60, ["Summarize", "this web page"], cls="who-model"),
+                        box(470, 110, 150, 60, ["Get the results", "of this web page"], cls="who-model"),
                         box(650, 40, 230, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
                         box(650, 140, 230, 90, ["analyze_document"], sub="3 tools with contracts")]),
                "%s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
@@ -753,52 +753,55 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
                         "Rename or split tools that overlap, and check the system prompt for words that pull Claude to the wrong tool.",
                         FIG21)
     + level("explanation",
-            "<p><b>The description chooses.</b> %s %s %s</p>" % (
+            "<p><b>The description chooses.</b> %s %s</p>" % (
                 cf("ts-2-1-k1", gx("Tool descriptions as the primary mechanism LLMs use for tool selection; minimal descriptions lead to unreliable selection among similar tools", "Exam guide, 2.1-K1"),
                    "The guide calls the description the primary mechanism of tool selection, and a minimal description makes the choice among similar tools unreliable (2.1-K1)."),
                 cf("ts-2-1-f2", D(DEFT, "**Provide extremely detailed descriptions.** This is by far the most important factor in tool performance.", "Define tools"),
                    "The documentation calls a detailed description by far the most important factor in tool performance."),
-                cf("ts-2-1-f3", D(DEFT, "The poor description is too brief and leaves Claude with many open questions about the tool's behavior and usage.", "Define tools"),
-                   "A short description leaves Claude with open questions."))
-            + "<p><b>What it holds.</b> %s %s %s</p>" % (
+                )
+            + "<p><b>What it holds.</b> %s %s %s %s</p>" % (
                 cf("ts-2-1-k2", gx("The importance of including input formats, example queries, edge cases, and boundary explanations in tool descriptions", "Exam guide, 2.1-K2"),
-                   "The guide puts input formats, example queries, edge cases and boundaries in the description (2.1-K2, 2.1-S1)."),
+                   "The guide puts input formats, example queries, edge cases and boundaries in the description (2.1-K2)."),
+                cf("ts-2-1-s1", gx("Writing tool descriptions that clearly differentiate each tool's purpose, expected inputs, outputs, and when to use it versus similar alternatives", "Exam guide, 2.1-S1"),
+                   "Each description says the purpose, the inputs, the outputs, and when to use the tool instead of a similar one (2.1-S1). A tool definition has no output field, so the output goes into the description."),
                 cf("ts-2-1-f5", D(DEFT, "Aim for at least 3–4 sentences for each tool description, more if the tool is complex.", "Define tools"),
-                   "The documentation asks for at least 3 or 4 sentences for each tool."),
-                cf("ts-2-1-c3", D(DEFT, "you can use the `input_examples` field to provide schema-validated examples.", "Define tools"),
-                   "It gives example inputs their own field, input_examples. The exam uses the guide."))
+                   "The documentation asks for at least 3 or 4 sentences."),
+                cf("ts-2-1-c3", D(DEFT, "for tools with complex inputs, nested objects, or format-sensitive parameters, you can use the `input_examples` field to provide schema-validated examples.", "Define tools"),
+                   "For complex tools, the documentation adds a field input_examples, with example inputs, which are not the example queries of the guide."))
             + "<p><b>Overlap.</b> %s %s %s</p>" % (
                 cf("ts-2-1-k3", gx("How ambiguous or overlapping tool descriptions cause misrouting (e.g., analyze_content vs analyze_document with near-identical descriptions)", "Exam guide, 2.1-K3"),
-                   "Two tools with near-identical descriptions cause misrouting (2.1-K3)."),
+                   "Near-identical descriptions cause misrouting (2.1-K3)."),
                 cf("ts-2-1-f7", D(TRB, "Sharpen descriptions. Differentiate tools by WHEN to use them, not only WHAT they do.", "Troubleshooting tool use"),
-                   "The documentation says to separate tools by when to use them, not only by what they do."),
-                cf("ts-2-1-f9", D(DEFT, "This makes tool selection unambiguous as your library grows", "Define tools"),
-                   "Names with a prefix for each service also make the choice unambiguous."))
+                   "The documentation separates tools by when to use them, not only by what they do."),
+                cf("ts-2-1-f9", D(DEFT, "When your tools span multiple services or resources, prefix names with the service (for example, `github_list_prs`, `slack_send_message`). This makes tool selection unambiguous as your library grows", "Define tools"),
+                   "When tools span several services, a prefix of the service in each name also makes the choice unambiguous."))
             + "<p><b>Split or join.</b> %s %s</p>" % (
                 cf("ts-2-1-s3", gx("Splitting generic tools into purpose-specific tools with defined input/output contracts (e.g., splitting a generic analyze_document into extract_data_points, summarize_content, and verify_claim_against_source)", "Exam guide, 2.1-S3"),
-                   "The guide splits a generic tool into tools with one purpose and a defined input and output each, for example analyze_document into extract_data_points, summarize_content and verify_claim_against_source (2.1-S3)."),
-                cf("ts-2-1-c1", D(DEFT, "**Consolidate related operations into fewer tools.**", "Define tools"),
-                   "The documentation also advises to join related actions into fewer tools. Both can hold: split a tool that does different jobs, join the actions on one resource. The guide names both, and the exam uses the guide."))
-            + "<p><b>The system prompt.</b> %s %s %s</p>" % (
+                   "The guide splits a generic tool, such as analyze_document, into tools with one purpose and a defined input and output each (2.1-S3)."),
+                cf("ts-2-1-c1", D(DEFT, "**Consolidate related operations into fewer tools.** Rather than creating a separate tool for every action (`create_pr`, `review_pr`, `merge_pr`), group them into a single tool with an `action` parameter.", "Define tools"),
+                   "The documentation also advises to join related actions into one tool with an action parameter. The guide names both splitting and joining, and the exam uses the guide."))
+            + "<p><b>The system prompt.</b> %s %s %s %s</p>" % (
                 cf("ts-2-1-f11", D(DEFT, "the API constructs a special system prompt from the tool definitions, tool configuration, and any user-specified system prompt.", "Define tools"),
                    "Claude reads the tool definitions and your system prompt in one prompt."),
                 cf("ts-2-1-k4", gx("The impact of system prompt wording on tool selection: keyword-sensitive instructions can create unintended tool associations", "Exam guide, 2.1-K4"),
-                   "So the wording of the system prompt can tie a keyword to the wrong tool, and you review the prompt for such words (2.1-K4, 2.1-S4)."),
-                cf("ts-2-1-f13", D(PBP, "The fix is to dial back any aggressive language.", "Prompting best practices"),
-                   "The documentation warns that aggressive words in a prompt make current models call a tool too often."))
+                   "The guide says that a keyword in the system prompt can tie a request to the wrong tool (2.1-K4). The documentation has no such statement, and the exam uses the guide."),
+                cf("ts-2-1-s4", gx("Reviewing system prompts for keyword-sensitive instructions that might override well-written tool descriptions", "Exam guide, 2.1-S4"),
+                   "So you review the system prompt for words that might override good tool descriptions (2.1-S4)."),
+                cf("ts-2-1-f13", D(PBP, "If your prompts were designed to reduce undertriggering on tools or skills, these models may now overtrigger. The fix is to dial back any aggressive language.", "Prompting best practices"),
+                   "The documentation warns that Claude Opus 4.5 and 4.6 follow the system prompt more closely, so aggressive words can make them call a tool too often."))
             + exam_tests("2.1", [("Tool interface design: writing effective tool descriptions, splitting vs consolidating tools, tool naming to reduce ambiguity", "Among the topics, the guide names")])
             + "<p>%s</p>" % cf("ts-2-1-q2", gx("Expand each tool's description to include input formats it handles, example queries, edge cases, and boundaries explaining when to use it versus similar tools.", "Exam guide, sample question 2, answer B"),
-                               "Sample question 2 of the guide tests 2.1: its correct answer expands each description.")
+                               "Sample question 2 of the guide fits 2.1: its correct answer expands each description.")
             + guide_text("2.1"), "ts-2-1")
     + level("depth",
             beyond([cf("ts-2-1-b1", D(CCMCP, "Claude Code truncates each tool description and each server's instructions at 2,048 characters by default.", "Claude Code, MCP"),
                        "Claude Code cuts each MCP tool description at 2,048 characters by default, so the important details go first."),
                     cf("ts-2-1-b2", D(TSR, "Claude's ability to pick the right tool degrades once you exceed 30–50 available tools.", "Tool search tool"),
-                       "Above 30 to 50 tools, the choice degrades, also with good descriptions.")])
+                       "Above 30 to 50 tools, the choice of the right tool degrades.")])
             + code_pop_text("ts-2-1-code", "The code: a good tool description", "A tool definition with a detailed description", DEFT, GOOD21, "Define tools",
                             "The description says what the tool returns, when to use it, and what it does not provide.")
-            + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "The fields `name` and `description` of the tool are not sent as a tool.", "Mock decision 0040"),
-                                   "The mock builder sends the model no tool: its forms go as structured outputs, so Claude never chooses a tool.")), "ts-2-1"))
+            + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "2. Structured outputs: the request carries the JSON schema in `output_config.format`, and the API makes the answer agree with it. No tool.", "Mock decision 0040"),
+                                   "The mock builder sends the model no tool: each answer must fit a JSON schema that the request carries, so Claude never chooses a tool.")), "ts-2-1"))
 
 
 # ----- part 2.2 (facts: academy/facts/ts-2-2.md) -----
@@ -818,7 +821,7 @@ FIG22 = figure("2.2-1", 890, 380,
                         box(260, 20, 230, 50, ["data"], sub="success", cls="try ok"),
                         box(260, 90, 230, 50, ["no matches"], sub="success, not an error", cls="try ok"),
                         box(260, 170, 230, 90, ["isError: true"], sub="category · retry? · text"),
-                        box(540, 150, 330, 50, ["transient"], sub="retry in the subagent, then pass up"),
+                        box(540, 150, 330, 50, ["transient"], sub="retry; pass up if it still fails"),
                         box(540, 207, 330, 50, ["validation"], sub="fix the input, call again"),
                         box(540, 264, 330, 50, ["business"], sub="retriable: false, explain it"),
                         box(540, 321, 330, 50, ["permission"], sub="the guide names no action")]),
@@ -836,7 +839,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                 cf("ts-2-2-k1", gx("The MCP isError flag pattern for communicating tool failures back to the agent", "Exam guide, 2.2-K1"),
                    "A tool reports a failure to the agent with the isError flag of MCP (2.2-K1)."),
                 cf("ts-2-2-f3", D(SDKT, "`isError` (optional): set to `true` to signal a tool failure so Claude can react to it.", "Agent SDK, Custom tools"),
-                   "A tool of the Agent SDK sets isError to true, so Claude can react to the failure."),
+                   "A TypeScript tool of the Agent SDK sets isError to true, so Claude can react to the failure."),
                 cf("ts-2-2-f1", D(HANDLE, "`is_error` (optional): Set to `true` if the tool execution resulted in an error.", "Handle tool calls"),
                    "In the Claude API, the same flag is is_error on the tool result."))
             + "<p><b>Say what failed.</b> %s %s %s</p>" % (
@@ -845,10 +848,10 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                 cf("ts-2-2-f6", D(HANDLE, "Instead of generic errors like `\"failed\"`, include what went wrong and what Claude should try next", "Handle tool calls"),
                    "The documentation agrees: say what went wrong and what Claude should try next."),
                 cf("ts-2-2-f7", D(SDKT, "In both cases Claude can retry, try a different tool, or explain the failure.", "Agent SDK, Custom tools"),
-                   "Then Claude can retry, try a different tool, or explain the failure."))
+                   "With an error result, Claude can retry, try a different tool, or explain the failure."))
             + "<p><b>The metadata.</b> %s %s</p>" % (
                 cf("ts-2-2-s1", gx("Returning structured error metadata including errorCategory (transient/validation/permission), isRetryable boolean, and human-readable descriptions", "Exam guide, 2.2-S1"),
-                   "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1)."),
+                   "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1). Its list of categories has three, without business errors, which 2.2-S2 handles with retriable: false."),
                 cf("ts-2-2-f2", D(HANDLE, "you can return the error message in the `content` along with `\"is_error\": true`:", "Handle tool calls"),
                    "These field names are the guide's: the documentation shows the flag and an error message in the content. The exam uses the guide."))
             + "<p><b>Retry or not.</b> %s %s %s</p>" % (
@@ -858,18 +861,20 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                    "For invalid input, Claude tries again 2 or 3 times with corrections."),
                 cf("ts-2-2-s2", gx("Including retriable: false flags and customer-friendly explanations for business rule violations so the agent can communicate appropriately", "Exam guide, 2.2-S2"),
                    "A business rule violation gets retriable: false and an explanation for the customer, so the agent can tell the customer (2.2-S2)."))
-            + "<p><b>Recover locally.</b> %s Task statement 5.3 has the same points.</p>" %
+            + "<p><b>Recover locally.</b> %s %s</p>" % (
                 cf("ts-2-2-s3", gx("Implementing local error recovery within subagents for transient failures, propagating to the coordinator only errors that cannot be resolved locally along with partial results and what was attempted", "Exam guide, 2.2-S3"),
-                   "A subagent recovers from a transient failure itself, and passes to the coordinator only what it cannot fix, with its partial results and what it tried (2.2-S3).")
+                   "A subagent recovers from a transient failure itself, and passes to the coordinator only what it cannot fix, with its partial results and what it tried (2.2-S3)."),
+                cf("ts-2-2-53", gx("Having subagents implement local recovery for transient failures and only propagate errors they cannot resolve, including what was attempted and partial results", "Exam guide, 5.3-S3"),
+                   "Task statement 5.3 has the same point (5.3-S3)."))
             + exam_tests("2.2", [("Error handling and propagation: structured error responses, transient vs business vs permission errors, local recovery before escalation", "Among the topics, the guide names")])
             + guide_text("2.2"), "ts-2-2")
     + level("depth",
             beyond([cf("ts-2-2-b1", D(CCMCP, "Error text longer than about 11,000 characters keeps only its first 5,000 and last 5,000 characters", "Claude Code, MCP"),
-                       "When Claude Code is the MCP client, it cuts an error text longer than about 11,000 characters, so the category and the retry advice go first."),
-                    cf("ts-2-2-b2", D(SDKT, "The Python `@tool` decorator forwards only `content` and `is_error` from the handler", "Agent SDK, Custom tools"),
-                       "A Python tool of the Agent SDK forwards only the content and the flag, so the metadata must go into the text."),
-                    cf("ts-2-2-b3", D(SDKT, "A handler error doesn't stop the agent loop.", "Agent SDK, Custom tools"),
-                       "An exception in a tool does not stop the loop, but Claude then sees only the raw message, which is close to a generic error.")])
+                       "When Claude Code is the MCP client, it cuts an error text longer than about 11,000 characters, for a call that completes in the foreground. So the category and the retry advice go first."),
+                    cf("ts-2-2-b2", D(SDKT, "The Python `@tool` decorator forwards only `content` and `is_error` from the handler's return dict. To return `structuredContent` from Python, run a [standalone MCP server](/docs/en/agent-sdk/mcp) instead of an in-process SDK server.", "Agent SDK, Custom tools"),
+                       "The Python @tool decorator of an in-process SDK server forwards only the content and the flag, so there the metadata goes into the text. A standalone MCP server can return structured content."),
+                    cf("ts-2-2-b3", D(SDKT, "| Handler throws an uncaught exception | The MCP server converts it to an error result carrying the raw exception message. Claude sees that message, and the agent loop continues. |", "Agent SDK, Custom tools"),
+                       "In the in-process MCP server of the Agent SDK, an uncaught exception does not stop the loop, but Claude then sees only the raw message, which is close to a generic error.")])
             + code_pop_text("ts-2-2-code", "The code: an error result in the Claude API", "A tool result with is_error", HANDLE, ERR22, "Handle tool calls",
                             "The example has the flag and a message, and no errorCategory or isRetryable field.")
             + tab2_links("2.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no MCP."),
