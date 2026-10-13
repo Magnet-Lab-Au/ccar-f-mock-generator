@@ -232,12 +232,13 @@ WHO_LONG = {0: "code", 1: "code", 2: "a Claude model", 3: "code", 4: "two Claude
             5: "a Claude model: the writer of step 2 again, with the failed try and its findings", 6: "code and two Claude model calls for each scenario",
             7: "the owner (mocks 1 to 3), or a Claude model (mocks 4 and 5)", 8: "code, after the owner accepts the mock"}
 NAMES = {0: ["Prepare the", "guide records"], 1: ["Plan the mock"], 2: ["Write the", "question"], 3: ["Check by code"],
-         4: ["Check by", "a model"], 5: ["Try again"], 6: ["Check the", "complete mock"], 7: ["The owner marks", "the questions"],
+         4: ["Check by", "a model"], 5: ["Try again"], 6: ["Check the", "complete mock"], 7: ["The questions", "are marked"],
          8: ["Build the files"]}
 FULL = {0: "Prepare the guide records", 1: "Plan the mock", 2: "Write the question", 3: "Check by code", 4: "Check by a model",
         5: "Try again", 6: "Check the complete mock", 7: "The owner marks the questions", 8: "Build the files"}
 for s_, name in FULL.items():   # the names of the build guide (one name for one thing)
     assert ("| %d. %s |" % (s_, name)) in read("docs/build-guide/README.md"), name
+FULL[7] = "The questions are marked"   # tab 2 only: a Claude model marked mocks 4 and 5 (academy decision 0034)
 POS = {0: (20, 20), 1: (20, 160), 2: (250, 160), 3: (480, 160), 4: (710, 160), 5: (480, 310), 6: (710, 460), 7: (480, 460), 8: (250, 460)}
 
 
