@@ -30,3 +30,9 @@ A script makes each section: `make-section-step-0.py` makes step 0, `make-sectio
 - **No person reads the questions of mocks 4 and 5.** The writer, the checkers and the second review are all Claude models. The owner read and marked the questions of mocks 1 to 3 (decisions 0069 and 0071).
 
 A deviation from the exam guide is shown openly in its section: what the guide teaches, what the build does instead, and the source with its page, section and exact text. Decision 0040 is the first case: the model steps use structured outputs, not a forced tool call.
+
+## What the pipeline does not use
+
+The pipeline uses no MCP server, no subagent, no hook and no session (decision 0026). Each model step is one call of the Messages API, with a system prompt, one user message and a fixed form for the answer (`src/model_call.py`). Code moves the work from step to step, and the files in `runs/` keep the state. So the build guide does not show these features at work.
+
+The reason is plain, and no exam guide point gives it: a step that exists only to show a feature makes the program worse. The questions of each mock still cover all five domains, so the mocks still test these features.
