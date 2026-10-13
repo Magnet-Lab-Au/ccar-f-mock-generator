@@ -1210,7 +1210,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
     + level("explanation",
             "<p><b>The paths field.</b> %s %s %s</p>" % (
                 cf("ts-3-3-k1", gx(".claude/rules/ files with YAML frontmatter paths fields containing glob patterns for conditional rule activation", "Exam guide, 3.3-K1"),
-                   "A file in .claude/rules/ has a paths field in its YAML frontmatter, with glob patterns that decide when the rule applies (3.3-K1)."),
+                   "A file in .claude/rules/ can have a paths field in its YAML frontmatter (the header of the file), with glob patterns (patterns of file names) that decide when the rule applies (3.3-K1)."),
                 cf("ts-3-3-s1", gx("Creating .claude/rules/ files with YAML frontmatter path scoping (e.g., paths: [\"terraform/\\*\\*/\\*\"]) so rules load only when editing matching files", "Exam guide, 3.3-S1"),
                    "An example of the guide is paths: [\"terraform/**/*\"] (3.3-S1)."),
                 cf("ts-3-3-f4", D(MEMD, "Use glob patterns in the `paths` field to match files by extension, directory, or any combination:", "Claude Code, Memory"),
@@ -1219,7 +1219,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                 cf("ts-3-3-k2", gx("How path-scoped rules load only when editing matching files, reducing irrelevant context and token usage", "Exam guide, 3.3-K2"),
                    "The guide says that a path rule loads only when Claude edits a matching file, so the context and the tokens stay small (3.3-K2)."),
                 cf("ts-3-3-f6", D(MEMD, "A path-scoped rule loads when Claude uses the Read, Write, or Edit tool on a matching file. It also loads when Claude views a matching file with a Bash command that [counts as a read](/docs/en/tools-reference#edit-tool-behavior), such as `cat` or `head` on a single file.", "Claude Code, Memory"),
-                   "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads the file. The exam uses the guide."),
+                   "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads that single file. The exam uses the guide."),
                 fact("ts-3-1-f13", "A rule with no paths loads at launch like CLAUDE.md."))
             + "<p><b>Across folders.</b> %s %s %s</p>" % (
                 cf("ts-3-3-s2", gx("Using glob patterns in path-specific rules to apply conventions to files by type regardless of directory location (e.g., \\*\\*/\\*.test.tsx for all test files)", "Exam guide, 3.3-S2"),
@@ -1230,20 +1230,20 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                    "So for files spread across the codebase, a path rule is the better choice (3.3-K3, 3.3-S3)."))
             + exam_tests("3.3", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
             + "<p>%s</p>" % cf("ts-3-3-q6", gx("Create rule files in .claude/rules/ with YAML frontmatter specifying glob patterns to conditionally apply conventions based on file paths", "Exam guide, sample question 6, answer A"),
-                               "Sample question 6 of the guide fits 3.3: its correct answer is a rule file with glob patterns.")
+                               "Sample question 6 of the guide fits 3.3: its option A, a rule file with glob patterns, is the correct answer.")
             + guide_text("3.3"), "ts-3-3")
     + level("depth",
             beyond([cf("ts-3-3-b1", D(MEMD, "If the YAML between the markers doesn't parse, Claude Code ignores the frontmatter and loads the rule as if it had no `paths`.", "Claude Code, Memory"),
                        "If the YAML of the frontmatter does not parse, Claude Code loads the rule in every session, as if it had no paths."),
-                    cf("ts-3-3-b2", D(HREF, "when conditional rules with `paths:` frontmatter match.", "Claude Code, Hooks reference"),
-                       "In Claude Code, the InstructionsLoaded hook fires when a path rule matches, which helps to find out why a rule loaded."),
-                    cf("ts-3-3-b3", D(MEMD, "or is a path-scoped rule that hasn't matched a file since.", "Claude Code, Memory"),
-                       "After /compact, a path rule is gone from the context until a matching file comes up again.")])
+                    cf("ts-3-3-b2", D(MEMD, "Use the [`InstructionsLoaded` hook](/docs/en/hooks#instructionsloaded) to log which `CLAUDE.md` and rules files are loaded, when they load, and why. This is useful for debugging path-specific rules or lazy-loaded files in subdirectories.", "Claude Code, Memory"),
+                       "In Claude Code, the InstructionsLoaded hook logs which rule files load, when and why, which helps to debug path rules."),
+                    cf("ts-3-3-b3", D(MEMD, "Nested CLAUDE.md files in subdirectories and rules with [`paths:` frontmatter](#path-specific-rules) load again on demand.", "Claude Code, Memory"),
+                       "After /compact, a path rule loads again only on demand, when a matching file comes up.")])
             + code_pop_text("ts-3-3-code", "The code: a rule with a paths field", "A path-scoped rule", MEMD, RULE33, "Claude Code, Memory",
-                            "This rule loads only when Claude works with a TypeScript file under src/api/.")
-            + tab2_links("3.3", "%s %s" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.3: it loads no rule files."),
+                            "This rule loads only when Claude works with a .ts file under src/api/.")
+            + tab2_links("3.3", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
-                                              "For the plan of a mock, 3.3 is one idea, because its 6 points have one correct answer, so each mock has about one question on it."))), "ts-3-3"))
+                                              "For the plan of a mock, 3.3 is one group of points, because its 6 points have one correct answer."))), "ts-3-3"))
 
 
 # ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----
@@ -1262,8 +1262,8 @@ FIG32 = figure("3.2-1", 890, 300,
                         box(20, 225, 300, 60, ["Without context: fork"], sub="the body enters the main context")]),
                "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
                              "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
-                          cf("ts-3-2-f10", D(FOV, "The subagent might read dozens of files or run extensive searches, but your main conversation only receives a summary.", "Claude Code, Features overview"),
-                             "The main conversation receives only a summary.")))
+                          cf("ts-3-2-f10", D(SKL, "4. The subagent summarizes its results and returns them to your main conversation when it finishes", "Claude Code, Skills"),
+                             "The subagent returns a summary of its results to the main conversation.")))
 
 PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how they run",
                         "A command or a skill in the .claude/ folder of the project reaches the team through git. One in ~/.claude/ stays personal. "
@@ -1275,18 +1275,19 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                    "A command in .claude/commands/ of the project reaches the team through git. One in ~/.claude/commands/ is personal (3.2-K1, 3.2-S1)."),
                 cf("ts-3-2-f3", D(CDIR, "Files here apply to every project you work in and are never committed to any repository.", "Claude Code, The .claude directory"),
                    "Files in ~/.claude/ are never committed."),
-                cf("ts-3-2-c3", D(SKL, "**Custom commands have been merged into skills.** A file at `.claude/commands/deploy.md` and a skill at `.claude/skills/deploy/SKILL.md` both create `/deploy` and work the same way.", "Claude Code, Skills"),
+                cf("ts-3-2-c3", D(SKL, "**Custom commands have been merged into skills.** A file at `.claude/commands/deploy.md` and a skill at `.claude/skills/deploy/SKILL.md` both create `/deploy` and work the same way. Your existing `.claude/commands/` files keep working.", "Claude Code, Skills"),
                    "Claude Code has merged commands into skills: a command file still works, and a skill in .claude/skills/ makes the same command. The exam uses the guide."))
             + "<p><b>The frontmatter.</b> %s %s</p>" % (
                 cf("ts-3-2-k2", gx("Skills in .claude/skills/ with SKILL.md files that support frontmatter configuration including context: fork, allowed-tools, and argument-hint", "Exam guide, 3.2-K2"),
-                   "A skill is a SKILL.md file in .claude/skills/, with frontmatter such as context: fork, allowed-tools and argument-hint (3.2-K2)."),
+                   "A skill is a SKILL.md file in .claude/skills/. Its frontmatter, a header of settings, can hold context: fork, allowed-tools and argument-hint (3.2-K2)."),
                 cf("ts-3-2-s2", gx("Using context: fork to isolate skills that produce verbose output (e.g., codebase analysis) or exploratory context (e.g., brainstorming alternatives) from the main session", "Exam guide, 3.2-S2"),
                    "context: fork suits a skill with long output, such as an analysis of the codebase (3.2-S2)."))
             + "<p><b>Two fields that differ.</b> %s %s %s %s</p>" % (
                 cf("ts-3-2-s3", gx("Configuring allowed-tools in skill frontmatter to restrict tool access during skill execution (e.g., limiting to file write operations to prevent destructive actions)", "Exam guide, 3.2-S3"),
                    "The guide uses allowed-tools to restrict the tools of a skill (3.2-S3)."),
-                cf("ts-3-2-c1", D(SKL, "It does not restrict which tools are available", "Claude Code, Skills"),
-                   "In the documentation, allowed-tools only approves tools in advance, and it does not restrict which tools are available."),
+                cf("ts-3-2-c1", D(SKL, "The `allowed-tools` field grants permission for the listed tools during the turn that invokes the skill, so Claude can use them without prompting you for approval.", "Claude Code, Skills"),
+                   "In the documentation, allowed-tools only approves the listed tools for the turn that invokes the skill.") + " " + cf("ts-3-2-c1b", D(SKL, "It does not restrict which tools are available", "Claude Code, Skills"),
+                   "It does not restrict which tools are available."),
                 cf("ts-3-2-s4", gx("Using argument-hint frontmatter to prompt developers for required parameters when they invoke the skill without arguments", "Exam guide, 3.2-S4"),
                    "The guide uses argument-hint to ask for missing parameters (3.2-S4)."),
                 cf("ts-3-2-c2", D(SKL, "Hint shown during autocomplete to indicate expected arguments.", "Claude Code, Skills"),
@@ -1294,27 +1295,28 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
             + "<p><b>Personal variants.</b> %s %s</p>" % (
                 cf("ts-3-2-k4", gx("Personal skill customization: creating personal variants in ~/.claude/skills/ with different names to avoid affecting teammates", "Exam guide, 3.2-K4"),
                    "The guide puts a personal variant in ~/.claude/skills/ with another name (3.2-K4)."),
-                cf("ts-3-2-f16", D(SKL, "Enterprise over personal, and personal over project.", "Claude Code, Skills"),
-                   "With the same name, a personal skill wins over the project skill, but only for its owner."))
+                cf("ts-3-2-f16", D(SKL, "Enterprise over personal, and personal over project. With `deploy` in both `~/.claude/skills/` and the project's `.claude/skills/`, `/deploy` runs the personal one", "Claude Code, Skills"),
+                   "With the same name, the personal skill wins over the project skill. It lives only on the machine of its owner, so it does not affect teammates."))
             + "<p><b>Skill or CLAUDE.md.</b> %s %s</p>" % (
                 cf("ts-3-2-s5", gx("Choosing between skills (on-demand invocation for task-specific workflows) and CLAUDE.md (always-loaded universal standards)", "Exam guide, 3.2-S5"),
                    "A skill is for a workflow that runs on demand, and CLAUDE.md is for standards that always load (3.2-S5)."),
                 cf("ts-3-2-f23", D(SKL, "In a regular session, skill descriptions are loaded into context so Claude knows what's available, but full skill content only loads when invoked.", "Claude Code, Skills"),
-                   "Only the description of a skill is always in context. Its body loads when it is used."))
+                   "In a regular session, only the description of a skill is in context, and its body loads when it is used.") + " " + cf("ts-3-2-f23b", D(SKL, "| `disable-model-invocation: true` | Yes | Not on its own | Description not in context, full skill loads when invoked |", "Claude Code, Skills"),
+                   "With disable-model-invocation, not even the description is in context."))
             + exam_tests("3.2", [("Custom commands and skills: project vs user scope, context: fork, allowed-tools, argument-hint frontmatter", "Among the topics, the guide names")])
             + guide_text("3.2"), "ts-3-2")
     + level("depth",
-            beyond([cf("ts-3-2-b1", D(SKL, "Workspace trust doesn't gate this field.", "Claude Code, Skills"),
-                       "allowed-tools of a project skill applies even in a folder that you have never trusted, so a repository can grant itself tools."),
-                    cf("ts-3-2-b2", D(SKL, "**`disable-model-invocation: true`**: Claude can't invoke the skill on its own.", "Claude Code, Skills"),
+            beyond([cf("ts-3-2-b1", D(SKL, "Workspace trust doesn't gate this field. Claude Code applies a project skill's `allowed-tools` even in a `-p` run in a folder you've never trusted. A skill can grant itself broad tool access, so review the `allowed-tools` of skills checked into a repository before you run Claude Code there.", "Claude Code, Skills"),
+                       "allowed-tools of a project skill applies even in a -p run in a folder that you have never trusted, so a repository can grant itself tools, unless managed settings of the organization withhold the field (Claude Code 2.1.282 or later)."),
+                    cf("ts-3-2-b2", D(SKL, "**`disable-model-invocation: true`**: Claude can't invoke the skill on its own. Use this for workflows with side effects or that you want to control timing, like `/commit`, `/deploy`, or `/send-slack-message`.", "Claude Code, Skills"),
                        "The field disable-model-invocation keeps Claude from starting a skill with side effects, such as a deploy."),
-                    cf("ts-3-2-b3", D(SKL, "Unexpected key(s) in SKILL.md frontmatter: argument-hint.", "Claude Code, Skills"),
+                    cf("ts-3-2-b3", D(SKL, "If you include any field the spec doesn't allow, packaging or upload fails with a hard error instead of ignoring the field:", "Claude Code, Skills"),
                        "Outside Claude Code, on a claude.ai upload or in the Skills API, argument-hint is an error.")])
             + code_pop_text("ts-3-2-code", "The code: a skill with context: fork", "A research skill that runs in a forked subagent", SKL, SKILL32, "Claude Code, Skills",
                             "The Explore agent runs the task, and $ARGUMENTS takes the words after the command.")
-            + tab2_links("3.2", "%s %s" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.2: it calls the Claude API and is not Claude Code."),
+            + tab2_links("3.2", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035 (proposed)"),
-                                              "The build in Claude Code has no part for 3.2, because the link to the records is weak."))), "ts-3-2"))
+                                              "Proposed decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
 
 
 # ----- part 3.4 (facts: academy/facts/ts-3-4.md) -----
@@ -1388,9 +1390,78 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
                        "The model alias opusplan uses Opus to plan and Sonnet to execute, with some providers as exceptions.")])
             + code_pop_text("ts-3-4-code", "The code: start Claude Code in plan mode", "Start a session in plan mode", PMODE, "claude --permission-mode plan", "Claude Code, Permission modes",
                             "Or press Shift+Tab in a session, or start one prompt with /plan.")
-            + tab2_links("3.4") + "<p>%s %s</p>" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.4: it calls the Claude API and has no plan mode."),
+            + tab2_links("3.4") + "<p>No step of the mock builder uses 3.4. %s %s</p>" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice.") + " " + cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                                      cf("ts-3-4-a23", excerpt(A23, "The build did not use plan mode, so 3.4 has no example.", "Academy decision 0023"),
                                                         "The build in Claude Code used a rule to discuss first, not plan mode.")), "ts-3-4"))
+
+
+# ----- part 3.5 (facts: academy/facts/ts-3-5.md) -----
+
+PLIB = "claude-code-docs-prompt-library"
+INT35 = "\n".join(read(SRC % BEST).split("\n")[345:350])
+assert INT35.startswith("I want to build [brief description].") and INT35.endswith("SPEC.md.")
+FIG35 = figure("3.5-1", 890, 320,
+               "An interview comes first, where Claude asks questions. Then the tests are written first. Claude implements and runs the tests. "
+               "If all pass, the work is done. If not, the failures go back to Claude: interacting issues in one message, independent issues one at a time.",
+               "".join([edge("M210 65H260"), edge("M430 65H480"), edge("M650 65H700"),
+                        edge("M785 100V180", "all pass", 793, 145, anchor="r"),
+                        edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot"),
+                        '<path class="ve-e no-head is-async" d="M565 140V190"/>',
+                        '<text class="ve-lab" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
+                        box(20, 30, 190, 70, ["Interview"], sub="Claude asks first", cls="who-model"),
+                        box(260, 30, 170, 70, ["Write tests"], sub="before the code"),
+                        box(480, 30, 170, 70, ["Claude", "implements"], cls="who-model"),
+                        box(700, 30, 170, 70, ["Run the tests"]),
+                        box(700, 180, 170, 60, ["Done"], cls="try ok"),
+                        box(330, 190, 320, 80, ["interacting: one message", "independent: one at a time"])]),
+               "%s %s" % (cf("ts-3-5-k2", gx("Test-driven iteration: writing test suites first, then iterating by sharing test failures to guide progressive improvement", "Exam guide, 3.5-K2"),
+                             "The guide writes the tests first, then iterates on the failures (3.5-K2)."),
+                          cf("ts-3-5-s5", gx("Addressing multiple interacting issues in a single detailed message when fixes interact, versus sequential iteration for independent issues", "Exam guide, 3.5-S5"),
+                             "Issues that interact go in one detailed message, independent issues one at a time (3.5-S5).")))
+
+PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an interview",
+                        "When prose gives mixed results, show Claude 2 or 3 input and output examples, or write the tests first and let the failures drive the next try. "
+                        "Before work in an unfamiliar domain, let Claude interview you.",
+                        FIG35)
+    + level("explanation",
+            "<p><b>Examples.</b> %s %s %s %s</p>" % (
+                cf("ts-3-5-k1", gx("Concrete input/output examples as the most effective way to communicate expected transformations when prose descriptions are interpreted inconsistently", "Exam guide, 3.5-K1"),
+                   "The guide calls concrete input and output examples the most effective way to show a transformation when prose gives mixed results (3.5-K1)."),
+                cf("ts-3-5-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
+                   "The documentation calls them one of the most reliable ways to steer the format, the tone and the structure."),
+                cf("ts-3-5-s1", gx("Providing 2-3 concrete input/output examples to clarify transformation requirements when natural language descriptions produce inconsistent results", "Exam guide, 3.5-S1"),
+                   "The guide gives 2 or 3 examples (3.5-S1)."),
+                cf("ts-3-5-f3", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
+                   "The documentation gives 3 to 5 for prompts in general. The exam uses the guide."))
+            + "<p><b>Tests first.</b> %s %s %s</p>" % (
+                cf("ts-3-5-s2", gx("Writing test suites covering expected behavior, edge cases, and performance requirements before implementation, then iterating by sharing test failures", "Exam guide, 3.5-S2"),
+                   "The tests cover the expected behavior, the edge cases and the performance, before the code (3.5-S2). A specific test case, such as null values in a migration, fixes an edge case (3.5-S4)."),
+                cf("ts-3-5-f5", D(PLIB, "Test-driven development: the tests define when the work is complete, and Claude iterates on the implementation until they pass.", "Claude Code, Prompt library"),
+                   "In Claude Code, the tests define when the work is complete."),
+                cf("ts-3-5-f6", D(BEST, "Give Claude something that produces a pass or fail, and the loop closes on its own. Claude does the work, runs the check, reads the result, and iterates until the check passes.", "Claude Code, Best practices"),
+                   "Claude runs the tests and reads the failures itself. The guide says that the developer shares them."))
+            + "<p><b>The interview.</b> %s %s %s</p>" % (
+                cf("ts-3-5-k3", gx("The interview pattern: having Claude ask questions to surface considerations the developer may not have anticipated before implementing", "Exam guide, 3.5-K3"),
+                   "Claude asks questions before the work, to find what the developer did not consider (3.5-K3). The guide uses it in an unfamiliar domain (3.5-S3)."),
+                cf("ts-3-5-f10", D(BEST, "For larger features, have Claude interview you first. Start with a minimal prompt and ask Claude to interview you using the `AskUserQuestion` tool.", "Claude Code, Best practices"),
+                   "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion."),
+                cf("ts-3-5-f11", D(BEST, "Claude asks about things you might not have considered yet, including technical implementation, UI/UX, edge cases, and tradeoffs.", "Claude Code, Best practices"),
+                   "Claude asks about the implementation, edge cases and tradeoffs."))
+            + "<p><b>One message or a sequence.</b> %s Only the guide states this point.</p>" %
+                cf("ts-3-5-k4", gx("When to provide all issues in a single message (interacting problems) versus fixing them sequentially (independent problems)", "Exam guide, 3.5-K4"),
+                   "Problems that interact go in one message, so that one fix does not break another. Independent problems go one at a time (3.5-K4).")
+            + exam_tests("3.5", [("Iterative refinement: input/output examples, test-driven iteration, interview pattern, sequential vs parallel issue resolution", "Among the topics, the guide names")])
+            + guide_text("3.5"), "ts-3-5")
+    + level("depth",
+            beyond([cf("ts-3-5-b1", D(BEST, "Once the spec is complete, start a fresh session to execute it.", "Claude Code, Best practices"),
+                       "In Claude Code, the interview ends in a spec, and a fresh session implements it."),
+                    cf("ts-3-5-b2", D(BEST, "If you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches.", "Claude Code, Best practices"),
+                       "After more than two corrections on one issue, the context is cluttered: start again with a better prompt."),
+                    cf("ts-3-5-b3", D(BEST, "runs your check as a script and blocks the turn from ending until it passes.", "Claude Code, Best practices"),
+                       "A Stop hook can run the tests and keep the turn from ending until they pass.")])
+            + code_pop_text("ts-3-5-code", "The code: an interview prompt", "A prompt for the interview pattern", BEST, INT35, "Claude Code, Best practices",
+                            "Claude asks the questions with AskUserQuestion, then writes SPEC.md.")
+            + tab2_links("3.5", "%s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."))), "ts-3-5"))
 
 # ----- the top: the map and how we broke it down -----
 
