@@ -129,7 +129,7 @@ def mock_count(tsid):
                  "text": "Questions whose point starts with %s, in mocks/mock-01.questions.json to mock-05.questions.json: %d of %d. The script of this page counted them."
                          % (tsid, ON_TS[tsid], len(QUESTIONS)),
                  "src": "mocks/mock-01.questions.json to mocks/mock-05.questions.json", "href": "%s/tree/%s/mocks" % (REPO, TAG)}
-    return fact(key, "The 5 mocks of this academy have %d questions on its points, of %d." % (ON_TS[tsid], len(QUESTIONS)))
+    return fact(key, "Of the %d questions in the 5 mocks of this academy, %d test its points." % (len(QUESTIONS), ON_TS[tsid]))
 
 
 def tab2_links(tsid, why=""):
@@ -269,6 +269,7 @@ def from_sample(html):
     html = re.sub(r'data-step="([^"]+)"', lambda m: 'data-step="ts-1-1-%s"' % m.group(1), html)
     html = re.sub(r'data-card="([^"]+)"', lambda m: 'data-card="ts-1-1-%s"' % m.group(1), html)
     html = html.replace('id="fig1"', 'id="ts-1-1-fig1"')
+    html = html.replace("The code of the loop is on <i>Your code sends the request</i>.", "The popup of <i>Your code sends the request</i> shows the code of the loop.")
     for a, b in (("Fig. 1<", "Fig. 1.1-1<"), ("Fig. 2<", "Fig. 1.1-2<"), ("Fig. 4<", "Fig. 1.1-3<"), ("in Fig. 1,", "in Fig. 1.1-1,")):
         html = html.replace(a, b)
     for k in set(re.findall(r'data-step="ts-1-1-([^"]+)"', html)):
@@ -332,7 +333,7 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
                 cf("ts-1-3-c1", D(CCS, "In version 2.1.63, the Task tool was renamed to Agent. Existing `Task(...)` references in settings and agent definitions still work as aliases.", "Claude Code, Subagents"),
                    "The product renamed the tool Agent in version 2.1.63."),
                 cf("ts-1-3-c2", D(PERM, "Any other tool not listed in `allowed_tools` is still available to Claude, and a call to it that needs approval falls through to the permission mode.", "Agent SDK, Permissions"),
-                   "In the current Agent SDK, allowed_tools only approves a tool in advance.") + " " + cf("ts-1-3-c2b", D(PERM, "Calls that need no approval in `default` mode run whether or not you list them, such as [read-only Bash commands](/docs/en/permissions#read-only-commands), tools like `Agent` that don't ask before running", "Agent SDK, Permissions"),
+                   "In the current Agent SDK, allowed_tools (allowedTools in the guide) only approves a tool in advance.") + " " + cf("ts-1-3-c2b", D(PERM, "Calls that need no approval in `default` mode run whether or not you list them, such as [read-only Bash commands](/docs/en/permissions#read-only-commands), tools like `Agent` that don't ask before running", "Agent SDK, Permissions"),
                    "The Agent tool runs even when the list does not name it. The exam uses the guide.")
             )
             + "<p><b>Context.</b> %s %s %s %s %s</p>" % (
@@ -536,7 +537,7 @@ FIG15 = figure("1.5-1", 890, 270,
                              "Two hook events surround each tool call: PreToolUse before it, PostToolUse after it."),
                           fact("ts-1-5-k3", "The guide calls this control deterministic.")))
 
-PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request",
+PART["1.5"] = (overview("1.5", "Hooks block a tool call or clean its result",
                         "A hook is your code at a fixed point of each tool call. Before the call, it can block it. After the call, it can replace the result before Claude sees it. So code, not the model, enforces a rule and cleans the data.",
                         FIG15)
     + level("explanation",
@@ -550,7 +551,7 @@ PART["1.5"] = (overview("1.5", "A hook guarantees what a prompt can only request
                    "A hook can also answer &ldquo;ask&rdquo;, to ask the user. The exam uses the guide."))
             + "<p><b>After the call.</b> %s %s %s</p>" % (
                 cf("ts-1-5-s1", gx("Implementing PostToolUse hooks to normalize heterogeneous data formats (Unix timestamps, ISO 8601, numeric status codes) from different MCP tools before the agent processes them", "Exam guide, 1.5-S1"),
-                   "A PostToolUse hook makes the data of different MCP tools the same, such as Unix timestamps, ISO 8601 dates and numeric status codes, before the agent uses it (1.5-K1, 1.5-S1)."),
+                   "A PostToolUse hook makes the data of different MCP (Model Context Protocol) tools the same, such as Unix timestamps, ISO 8601 dates and numeric status codes, before the agent uses it (1.5-K1, 1.5-S1)."),
                 cf("ts-1-5-f4", D(HOOKS, "To replace the tool's output before Claude sees it, set `updatedToolOutput`, which works for any tool in both SDKs.", "Agent SDK, Hooks"),
                    "The field updatedToolOutput replaces the output before Claude sees it, for any tool, not only MCP tools. The exam uses the guide."),
                 cf("ts-1-5-f6", D(HOOKS, "A regex (`^mcp__`) triggers `mcp_audit_hook` for any MCP tool whose name starts with `mcp__`.", "Agent SDK, Hooks"),
@@ -943,6 +944,79 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                                    "No step gives an agent a set of tools. Step 2 of tab 2 tells why the build sends no forced tool call: the current models do not accept one.")
                          + ' <a href="%s#step-2">Step 2, Write the question &rarr;</a>' % TAB2), "ts-2-3"))
 
+
+# ----- part 2.4 (facts: academy/facts/ts-2-4.md) -----
+
+SDKM = "claude-code-docs-agent-sdk-mcp"
+A02 = glob.glob(os.path.join(ROOT, "academy/decisions/0002-*.md"))[0][len(ROOT) + 1:]
+MCP24 = "\n".join(read(SRC % CCMCP).split("\n")[650:661])
+assert MCP24.startswith("{") and "${API_KEY}" in MCP24 and MCP24.rstrip().endswith("}")
+FIG24 = figure("2.4-1", 890, 320,
+               "An environment variable expands into .mcp.json, the project file that the team commits. ~/.claude.json holds the personal servers of a user. "
+               "Claude Code or the Agent SDK connects to the servers of both files, and the agent gets the tools of all servers together. Resources show the agent what data exists.",
+               "".join([edge("M145 80V110", "${VAR} expands", 153, 99, anchor="r"),
+                        edge("M270 150H305V180H340"), edge("M270 260H305V180H340"),
+                        edge("M540 180H580V80H620"), edge("M745 220V120", "what data exists", 753, 175, anchor="r"),
+                        box(20, 20, 250, 60, ["environment"], sub="the secret, not in git"),
+                        box(20, 110, 250, 80, [".mcp.json"], sub="project: team, committed"),
+                        box(20, 220, 250, 80, ["~/.claude.json"], sub="user: personal servers"),
+                        box(340, 140, 200, 80, ["Claude Code", "or Agent SDK"], sub="connects"),
+                        box(620, 40, 250, 80, ["The agent"], sub="tools of all servers", cls="who-model"),
+                        box(620, 220, 250, 80, ["Resources"], sub="issues, schemas, docs")]),
+               "%s %s" % (cf("ts-2-4-k1", gx("MCP server scoping: project-level (.mcp.json) for shared team tooling vs user-level (~/.claude.json) for personal/experimental servers", "Exam guide, 2.4-K1"),
+                             "The guide puts shared team servers in the project file .mcp.json, and personal servers in ~/.claude.json (2.4-K1)."),
+                          cf("ts-2-4-k3", gx("That tools from all configured MCP servers are discovered at connection time and available simultaneously to the agent", "Exam guide, 2.4-K3"),
+                             "The tools of all configured servers are available to the agent at the same time (2.4-K3).")))
+
+PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in variables",
+                        "A team commits its shared MCP servers in .mcp.json and writes each token as an environment variable. A person keeps private servers in ~/.claude.json. "
+                        "The agent gets the tools of all servers together, and resources show it what data exists before it searches.",
+                        FIG24)
+    + level("explanation",
+            "<p><b>Two files.</b> %s %s %s</p>" % (
+                cf("ts-2-4-f2", D(CCMCP, "Check `.mcp.json` into version control so everyone on your team gets the same MCP tools and services.", "Claude Code, MCP"),
+                   "The team commits .mcp.json, so that each member gets the same MCP servers (2.4-S1)."),
+                cf("ts-2-4-f3", D(CCMCP, "User-scoped servers are stored in `~/.claude.json` and provide cross-project accessibility", "Claude Code, MCP"),
+                   "User scope is in ~/.claude.json, for all the projects of one person (2.4-S2)."),
+                cf("ts-2-4-c1", D(CCMCP, "Use local scope for personal development servers, experimental configurations, or servers with credentials you don't want in version control.", "Claude Code, MCP"),
+                   "The documentation has a third scope: local, the default, also in ~/.claude.json, which it names for experimental servers. The exam uses the guide."))
+            + "<p><b>Secrets.</b> %s %s</p>" % (
+                cf("ts-2-4-k2", gx("Environment variable expansion in .mcp.json (e.g., ${GITHUB_TOKEN}) for credential management without committing secrets", "Exam guide, 2.4-K2"),
+                   "In .mcp.json, a token is a variable such as ${GITHUB_TOKEN}, so the secret is never committed (2.4-K2)."),
+                cf("ts-2-4-f6", D(CCMCP, "allowing teams to share configurations while maintaining flexibility for machine-specific paths and sensitive values like API keys", "Claude Code, MCP"),
+                   "Claude Code expands the variable when it loads the file, so a team shares the file and each person keeps the key."))
+            + "<p><b>All tools at once.</b> %s %s</p>" % (
+                cf("ts-2-4-f9", D(SDKM, "MCP tools follow the naming pattern `mcp__<server-name>__<tool-name>`.", "Agent SDK, MCP"),
+                   "Each tool name carries the name of its server, so the tools of many servers can sit side by side."),
+                cf("ts-2-4-c3", D(CCMCP, "Only tool names and server instructions load at session start", "Claude Code, MCP"),
+                   "The guide says that the tools are discovered at connection time. In Claude Code, by default, only the tool names load at the start, and the full definitions load on demand. The exam uses the guide."))
+            + "<p><b>Resources.</b> %s %s</p>" % (
+                cf("ts-2-4-s5", gx("Exposing content catalogs as MCP resources to give agents visibility into available data without requiring exploratory tool calls", "Exam guide, 2.4-S5"),
+                   "A server can expose a catalog, such as issue summaries or database schemas, as resources, so the agent sees what data exists without exploratory tool calls (2.4-K4, 2.4-S5)."),
+                cf("ts-2-4-f13", D(CCMCP, "Claude Code automatically provides tools to list and read MCP resources when servers support them", "Claude Code, MCP"),
+                   "Claude Code gives Claude tools to list and read them."))
+            + "<p><b>Good servers.</b> %s Part 2.1 shows how. %s %s</p>" % (
+                cf("ts-2-4-s3", gx("Enhancing MCP tool descriptions to explain capabilities and outputs in detail, preventing the agent from preferring built-in tools (like Grep) over more capable MCP tools", "Exam guide, 2.4-S3"),
+                   "A detailed description of an MCP tool keeps the agent from using a built-in tool such as Grep in its place (2.4-S3)."),
+                cf("ts-2-4-s4", gx("Choosing existing community MCP servers over custom implementations for standard integrations (e.g., Jira), reserving custom servers for team-specific workflows", "Exam guide, 2.4-S4"),
+                   "For a standard integration such as Jira, the guide uses an existing community server, and a custom server only for a workflow of the team (2.4-S4)."),
+                cf("ts-2-4-c6", D(CCMCP, "Verify you trust each server before connecting it.", "Claude Code, MCP"),
+                   "The documentation warns: check that you trust each server before you connect it."))
+            + exam_tests("2.4", [("MCP server configuration: project vs user scope, environment variable expansion, multi-server simultaneous access", "Among the topics, the guide names"),
+                                 ("MCP tool and resource design: resources for content catalogs, tools for actions, description quality for adoption", "and")])
+            + guide_text("2.4"), "ts-2-4")
+    + level("depth",
+            beyond([cf("ts-2-4-b1", D(CCMCP, "For security reasons, Claude Code prompts for approval in interactive sessions before using project-scoped servers from `.mcp.json` files.", "Claude Code, MCP"),
+                       "In an interactive session, Claude Code asks for approval before it uses a server of a committed .mcp.json. In a non-interactive run it cannot ask, and it loads the server without a prompt."),
+                    cf("ts-2-4-b2", D(CCMCP, "In a remote server's `url` and `headers`, Claude Code reads credential variables from your environment as empty rather than expanding them.", "Claude Code, MCP"),
+                       "For a remote server, some credential variables in the URL and the headers are read as empty, not expanded."),
+                    cf("ts-2-4-b3", D(SDKM, "MCP tools require explicit permission before Claude can use them.", "Agent SDK, MCP"),
+                       "In the Agent SDK, an MCP tool also needs a permission before Claude can call it.")])
+            + code_pop_text("ts-2-4-code", "The code: a shared .mcp.json with variables", "An .mcp.json with variable expansion", CCMCP, MCP24, "Claude Code, MCP",
+                            "${API_KEY} comes from the environment. ${API_BASE_URL:-...} has a default value.")
+            + tab2_links("2.4", cf("ts-2-4-a02", excerpt(A02, "the pipeline uses no MCP server, because it calls only the Claude API and reads local files.", "Academy decision 0002"),
+                                   "The mock builder uses no MCP server: it calls only the Claude API and reads local files.")), "ts-2-4"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
@@ -981,7 +1055,7 @@ def map_html():
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
   <figure data-figure="map">
     <div class="tmap">%(cols)s</div>
-    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s A written part shows its takeaway heading, the others show the title of the guide. Each task statement opens below.</figcaption>
+    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s A task statement that this page has written shows its takeaway heading. The others show the title of the guide. Each task statement opens below.</figcaption>
   </figure>
   <figure>
     <ol class="scen">%(scen)s</ol>
@@ -1001,7 +1075,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <h2>How we broke it down</h2>
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
-  <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder that use the task statement.</p>
+  <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) that use the task statement.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
@@ -1028,7 +1102,7 @@ BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><span aria-current="page">Exam guide breakdown</span><a href="%(tab2)s">Behind the mocks</a></nav>
   <h1>%(title)s</h1>
-  <p class="lead">The CCAR-F exam guide, broken down into its 5 domains and %(nts)d task statements. Each task statement opens from a short answer to the guide&rsquo;s own text and beyond.</p>
+  <p class="lead">The CCAR-F exam guide, broken down into its 5 domains and %(nts)d task statements. Each task statement opens in three levels: a short answer, an explanation with the guide&rsquo;s own text, and facts beyond the exam.</p>
 </header>
 %(map)s
 %(breakdown)s
