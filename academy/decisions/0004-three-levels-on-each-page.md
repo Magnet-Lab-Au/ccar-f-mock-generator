@@ -1,7 +1,7 @@
 # 0004: Three levels on each page
 
 - Date: 12 October 2026
-- Status: accepted. Decision 0010 changes the levels of "Behind the mocks" and the one visual in each Overview.
+- Status: accepted. Decision 0010 changes the levels of "Behind the mocks" and the one visual in each Overview. Decision 0032 says where code appears.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
