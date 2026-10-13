@@ -92,7 +92,7 @@ function inPage() {
     const fg = rgb(svgText ? s.fill : s.color); if (!fg) continue;
     let bg = bgOf(svgText ? n.closest('figure, .frame, .case, main, body') : n);
     if (svgText) {   // a text drawn on a filled shape: the shape is its background
-      const kids = n.parentElement ? [...n.parentElement.children].filter((c) => /^(rect|path|circle)$/.test(c.tagName)) : [];
+      const kids = n.parentElement && n.parentElement.tagName.toLowerCase() === 'g' ? [...n.parentElement.children].filter((c) => /^(rect|path|circle)$/.test(c.tagName)) : [];
       const main = kids.find((c) => c.classList.contains('sh')) || kids[0];
       const shape = main && rgb(getComputedStyle(main).fill) ? main : null;
       if (shape) { const c = rgb(getComputedStyle(shape).fill); bg = c[3] < 1 ? over(c, bg) : c; }

@@ -673,6 +673,151 @@ STEP0 = (level("overview",
          ).replace("@N@", "0")
 PART_HTML[0] = with_sources(0, STEP0)
 
+# ----- step 1: plan the mock (facts: academy/facts/step-1.md) -----
+
+S1 = step_file(1)
+D09 = glob.glob(os.path.join(ROOT, "docs/decisions/0009-*.md"))[0][len(ROOT) + 1:]
+D47 = glob.glob(os.path.join(ROOT, "docs/decisions/0047-*.md"))[0][len(ROOT) + 1:]
+D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1:]
+D50 = glob.glob(os.path.join(ROOT, "docs/decisions/0050-*.md"))[0][len(ROOT) + 1:]
+D56 = glob.glob(os.path.join(ROOT, "docs/decisions/0056-*.md"))[0][len(ROOT) + 1:]
+PG = jread("data/point-groups.json")["groups"]
+GROUP_OF = {pt: g["id"] for g in PG for pt in g["points"]}
+assert len(GROUP_OF) == N_PTS
+DOMAIN_COUNTS = re.search(r"(?m)^DOMAIN_COUNTS = \{(.*?)\}", read("src/step1_plan.py")).group(1)
+DC = [int(x.split(":")[1]) for x in DOMAIN_COUNTS.split(",")]
+SCEN_IN_MOCK = number("src/step1_plan.py", r"(?m)^SCENARIOS_IN_MOCK = (\d+)")
+PER_SCEN = number("src/step1_plan.py", r"(?m)^PER_SCENARIO = (\d+)")
+MR_PER = number("src/step1_plan.py", r"(?m)^MULTIPLE_RESPONSE_PER_SCENARIO = (\d+)")
+assert sum(DC) == SLOTS and SCEN_IN_MOCK * PER_SCEN == SLOTS
+SHARED = []          # ideas (groups) with two or more slots in the plan of each mock
+for m in range(1, 6):
+    c = Counter(GROUP_OF[sl["point"]] for sl in jread("runs/mock-%02d/plan.json" % m)["slots"])
+    SHARED.append(sum(1 for v in c.values() if v > 1))
+BUILT = {m: [q["point"] for g in jread("mocks/mock-%02d.questions.json" % m)["groups"] for q in g["questions"]] for m in range(1, 6)}
+SPREAD = Counter(sum(1 for m in range(1, 6) if any(GROUP_OF[pt] == g["id"] for pt in BUILT[m])) for g in PG)
+assert sum(SPREAD.values()) == len(PG)
+REPEAT2 = re.search(r"(\d+) questions of mock 2 repeat mock 1", read(D56))
+SAME7 = re.search(r"(\d+) slots of mock 2 even had the same point as mock 1", read(D56))
+
+CARD.update({
+    "s1-what": excerpt(S1, "Before a model writes a question, code makes the plan of the mock: a list of 60 slots. Each slot says what one question must be: the scenario, the task statement, one point of that task statement, the question type, and the number of answers to select. No model works in this step.", "Build guide, step 1"),
+    "s1-why": excerpt(S1, "The counts of a mock must hold each time. A model that makes the plan can make an error in a count.", "Build guide, step 1"),
+    "s1-known": excerpt(S1, "the work of a mock is known before it starts, so the program can fix the plan before the writing starts", "Build guide, step 1"),
+    "s1-counts": code_block("src/step1_plan.py", "SCENARIOS_IN_MOCK = ", "DOMAIN_COUNTS = ", "The counts of the plan in the code"),
+    "s1-twins": excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0046-*.md"))[0][len(ROOT) + 1:], "1. Twin points: two points of one task statement often describe one idea, and the plan selects them at random.", "Mock decision 0046"),
+    "s1-groups": excerpt(D47, "1. A file that groups the 240 points by idea, and a rule of step 1: no two slots of one mock get points of the same group.", "Mock decision 0047, Options"),
+    "s1-least": excerpt(D50, "Then code moves the points of the least-used groups to the front.", "Mock decision 0050, Decision"),
+    "s1-shared": {"title": "The plans of mocks 1 to 5", "kind": "count",
+                  "text": "Ideas (groups of points) with two or more slots in the plan: %s for mocks 1 to 5. The script of this page read runs/mock-0N/plan.json and data/point-groups.json." % ", ".join(map(str, SHARED)),
+                  "src": "runs/mock-01/plan.json to runs/mock-05/plan.json, data/point-groups.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s1-spread": {"title": "The ideas over the 5 built mocks", "kind": "count",
+                  "text": "Of the %d ideas of the guide, %s. The script of this page read mocks/mock-0N.questions.json and data/point-groups.json."
+                          % (len(PG), ", ".join("%d are in %d %s" % (SPREAD[k], k, "mock" if k == 1 else "mocks") for k in sorted(SPREAD))),
+                  "src": "mocks/mock-01.questions.json to mock-05.questions.json, data/point-groups.json", "href": "%s/tree/%s/mocks" % (REPO, TAG)},
+    "s1-review": excerpt(D47, "The plan is code, so code can prevent this before any question is written. A check after the writing (step 6) costs a rewrite, and it compares only one scenario.", "Mock decision 0047, Reason"),
+    "s1-never": excerpt(D48, "A script ran the rule over 2000 seeds: each seed failed.", "Mock decision 0048, Question"),
+    "s1-cap": excerpt(D48, "So the count must follow the groups, not the groups the count.", "Mock decision 0048, Reason"),
+    "s1-bug": excerpt(D48, "The main fix: code gave the extra questions one domain at a time and never went back, so it could stop although a plan existed.", "Mock decision 0048, How we decided"),
+    "s1-rep": excerpt(D56, "%s questions of mock 2 repeat mock 1" % REPEAT2.group(1), "Mock decision 0056, Question"),
+    "s1-same": excerpt(D56, "%s slots of mock 2 even had the same point as mock 1, although their group had a point that mock 1 did not use." % SAME7.group(1), "Mock decision 0056, Reason"),
+    "s1-owner": excerpt(D50, "Is there no simple way to ensure that similar questions are spread out between mocks?", "Mock decision 0050, How we decided"),
+})
+
+FIG11 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 330" role="img" aria-label="Step 1. Code reads the guide records, the groups of points, the built earlier mocks and a seed. It applies the rules in order: %(dc)s questions for domains 1 to 5, %(sc)d scenarios of %(ps)d questions, each of the 30 task statements at least once, no two slots of one idea, the least-used ideas first, and %(mr)d two-answer slots for each scenario. It writes one plan of %(n)d slots. No model works in this step.">
+      %(edges)s
+      %(nodes)s
+      <g class="ve-n is-key"><rect class="sh" x="260" y="20" width="370" height="290" rx="0"/></g>
+      <text class="ve-lab" x="276" y="44">code applies, in this order:</text>
+      %(rules)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 1-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "dc": ", ".join(map(str, DC)), "sc": SCEN_IN_MOCK, "ps": PER_SCEN, "mr": MR_PER, "n": SLOTS,
+    "nodes": "".join([
+        box(20, 30, 170, 56, ["guide records"]), box(20, 100, 170, 56, ["groups of points"], sub="%d ideas" % len(PG)),
+        box(20, 170, 170, 56, ["earlier mocks"], sub="built only"), box(20, 240, 170, 56, ["a seed"], sub="a number"),
+        box(700, 125, 170, 80, ["the plan"], sub="%d slots" % SLOTS),
+    ]),
+    "edges": "".join([edge("M190 58H260"), edge("M190 128H260"), edge("M190 198H260"), edge("M190 268H260"),
+                      edge("M630 165H700", "writes", 665, 156, cls="is-hot")]),
+    "rules": "".join('<text class="ve-lab" x="276" y="%d"><tspan class="pid">%d</tspan> %s</text>' % (76 + i * 38, i + 1, e(t)) for i, t in enumerate([
+        "domains 1 to 5: %s questions" % ", ".join(map(str, DC)),
+        "%d scenarios, %d questions each" % (SCEN_IN_MOCK, PER_SCEN),
+        "each of the 30 task statements: 1 or more",
+        "no two slots on one idea (group)",
+        "the least-used ideas of earlier mocks first",
+        "%d two-answer slots in each scenario" % MR_PER,
+    ])),
+    "cap": fact("s1-what", "Code makes a plan of %d slots before a model writes any question. Each slot says what one question must be. No model works in this step." % SLOTS),
+}
+
+FIG12 = """
+<figure>
+  <div class="cases two">
+    <div class="case"><span class="chip info">Dynamic decomposition</span><h3 class="kpi-n">An agent decides the next step</h3>
+      <svg class="ve-mini" viewBox="0 0 300 110" role="img" aria-label="In a dynamic decomposition, a model decides the next step from what the work finds.">
+        <path class="ve-e" d="M100 55H170"/><text class="ve-el" x="135" y="44">decides</text>
+        <g class="ve-n is-st"><rect class="sh" x="2" y="25" width="98" height="60" rx="0"/><text x="51" y="55">Claude</text></g>
+        <g class="ve-n"><rect class="sh" x="172" y="25" width="126" height="60" rx="0"/><text x="235" y="47">next step</text><text class="sub" x="235" y="69">from results</text></g></svg></div>
+    <div class="case"><span class="chip info">Fixed sequence</span><h3 class="kpi-n">The mock builder</h3>
+      <svg class="ve-mini" viewBox="0 0 300 110" role="img" aria-label="In the mock builder, code fixes the plan before the writing starts.">
+        <path class="ve-e is-st" d="M100 55H170"/><text class="ve-el" x="135" y="44">fixes</text>
+        <g class="ve-n is-st"><rect class="sh" x="2" y="25" width="98" height="60" rx="0"/><text x="51" y="55">code</text></g>
+        <g class="ve-n"><rect class="sh" x="172" y="25" width="126" height="60" rx="0"/><text x="235" y="47">the plan</text><text class="sub" x="235" y="69">before writing</text></g></svg></div>
+  </div>
+  <figcaption><span class="fig-n">Fig. 1-2</span>The guide contrasts a fixed sequence with a decomposition that changes with what the work finds (1.6-K1). The mock builder uses the fixed side, because %s.</figcaption>
+</figure>""" % fact("s1-known", "the work of a mock is known before it starts")
+
+MAXS = max(SHARED)
+FIG13 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Ideas with two or more slots in the plan: %(vals)s for mocks 1 to 5.">%(bars)s</svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 1-3</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": 5 * 34 + 10, "vals": ", ".join(map(str, SHARED)),
+    "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">%d</text>'
+                    % (i * 34 + 16, i + 1, "hot" if v else "", i * 34 + 5, max(2, v * 400 // max(MAXS, 1)), 88 + max(2, v * 400 // max(MAXS, 1)), i * 34 + 16, v)
+                    for i, v in enumerate(SHARED)),
+    "cap": fact("s1-shared", "Ideas with two or more slots in one plan: %d in mock 1, then %s." % (SHARED[0], " and ".join(sorted(set(map(str, SHARED[1:])))) if len(set(SHARED[1:])) == 1 else ", ".join(map(str, SHARED[1:])))),
+}
+assert SHARED[1:] == [0, 0, 0, 0]
+
+STEP1 = (level("overview",
+               '<h4 class="takeaway">Code plans all %d questions before a model writes one</h4><p>%s %s</p>'
+               % (SLOTS, fact("s1-what", "Before a model writes a question, code makes the plan of the mock: a list of %d slots. Each slot says what one question must be: the scenario, the task statement, one point, the question type and the number of answers." % SLOTS),
+                  fact("s1-why", "The counts of a mock must hold each time, and a model that makes the plan can make an error in a count.")))
+         + level("explanation",
+                 FIG11
+                 + '<p><b>The counts.</b> %s The weights of the guide give the domain counts. Each slot gets one point of its task statement, and %s</p>'
+                   % (fact("s1-counts", "A mock has %d scenarios of %d questions, and %s questions for domains 1 to 5." % (SCEN_IN_MOCK, PER_SCEN, ", ".join(map(str, DC)))),
+                      fact("s1-groups", "no two slots of one mock get points of the same idea.") )
+                 + FIG12
+                 + ts_block(1))
+         + level("depth",
+                 '<h4 class="story">Mock 1 repeated itself, so the plan learned the ideas</h4>'
+                 + FIG13
+                 + '<p>Mock 1 had questions that repeated each other. %s So the build grouped the %d points into %d ideas. %s %s</p>'
+                   % (fact("s1-twins", "Many came from two points of the guide on one idea, which the plan selected at random."), N_PTS, len(PG), fact("s1-groups", "Now no two slots of one mock get points of the same group."), fact("s1-review", "The plan is code, so code can prevent this before any question is written."))
+                 + '<p>The first version of the rule could never make a plan: %s The fix gave a task statement no more questions than its number of ideas. %s An independent review of that code then found a bug: %s</p>'
+                   % (fact("s1-never", "a script ran it over 2000 seeds, and each seed failed."), fact("s1-cap", "&ldquo;So the count must follow the groups, not the groups the count.&rdquo;"),
+                      fact("s1-bug", "the code could stop although a plan existed."))
+                 + '<h4 class="story">Mock 2 repeated mock 1</h4>'
+                 + '<p>%s The owner asked: &ldquo;%s&rdquo; So step 1 now reads the built earlier mocks, and %s Part of the cause was in step 1: %s Steps 2 and 4 got the rest of the fix (rule B9). %s</p>'
+                   % (fact("s1-rep", "A second review found that %s questions of mock 2 repeat mock 1." % REPEAT2.group(1)),
+                      fact("s1-owner", "Is there no simple way to ensure that similar questions are spread out between mocks?"),
+                      fact("s1-least", "it puts the least-used ideas first."),
+                      fact("s1-same", "%s slots of mock 2 had the same point as mock 1, although their idea had a point that mock 1 did not use." % SAME7.group(1)),
+                      fact("s1-spread", "Over the 5 built mocks, %d of the %d ideas are in 2 to 4 mocks." % (sum(SPREAD[k] for k in (2, 3, 4)), len(PG)))))
+         ).replace("@N@", "1")
+PART_HTML[1] = with_sources(1, STEP1)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
@@ -735,7 +880,7 @@ BODY = """<main>
              "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": WORDS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
-BODY = re.sub(r'<svg class="ve-svg" viewBox="0 0 (\d+) ', lambda m: '<svg class="ve-svg" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(1)), BODY)
+BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
 TOP = BODY.split('<section class="parts" id="steps"')[0]
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
