@@ -1233,7 +1233,7 @@ DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</
              fact("s4-test", "A test on 10 questions cost $%.2f with caching." % TC_WITH),
              fact("s4-cache", "The same tokens would cost $%.2f with no cache, at the prices in the code." % TC_WITHOUT),
              fact("s4-changed", "A check of those 2 with no cache passed both, and the cause was not separated."),
-             fact("s4-batch", "the rounds of the pipeline would wait for each batch."))
+             fact("s4-batch", "the rounds of the mock builder would wait for each batch."))
           + '</div><p>In the exam: the guide teaches the Message Batches API to save cost (%s), and says that batch processing is %s.</p>' % (fact("s4-batches", "4.5-K1"), fact("s4-blocking", "inappropriate for blocking workflows"))
           + '<h4 class="story">The blind answer never caught a question</h4>'
           + '<p>%s %s %s</p>'
@@ -1617,7 +1617,7 @@ CARD.update({
     "cc-r25": excerpt("WORKING-RULES.md", "25. Write one entry at the top of `docs/journal.md` for each session.", "Working rule 25"),
     "cc-six": excerpt(JR, "It read them, and changed six points of the plan.", "Journal of the mock builder, 7 October 2026"),
     "cc-doc-start": excerpt(DOCS_CC % "memory", "Claude Code has two complementary memory systems. Both are loaded at the start of every conversation.", "Claude Code documentation, Memory (copy of 14 October 2026)", kind="docs"),
-    "cc-d23": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0023-*.md"))[0][len(ROOT) + 1:], "The build did not use plan mode, so 3.4 has no example.", "Academy decision 0023, Reason"),
+    "cc-d23": excerpt("academy/facts/claude-code.md", "Verdict: decision 0023 holds. There is no example of 3.4: no record in the repository of plan mode or of the Explore subagent.", "Fact sheet of the build in Claude Code"),
     "cc-d78": excerpt(D78, "The owner asked for an independent check of all documents before the push, by an agent that did not write them.", "Mock decision 0078, How we decided"),
     "cc-a12": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0012-*.md"))[0][len(ROOT) + 1:], "Two new agents for each part.", "Academy decision 0012"),
     "cc-a15": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0015-*.md"))[0][len(ROOT) + 1:], "A whole-picture review after each slice. A slice is a group of parts that the assistant builds and shows to the owner together", "Academy decision 0015"),
@@ -1719,16 +1719,16 @@ CC_HTML = "".join([
     cc_part("cc-3-4", "3.4", "Discuss first, not plan mode", "task statement 3.4 · no example in the build", cc_body("cc-3-4",
         '<h4 class="takeaway">The build used a rule to discuss first, not plan mode</h4><p>%s %s</p>'
         % (fact("cc-r8", "Working rule 8: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
-           fact("cc-d23", "No record shows that the build used plan mode.")),
+           fact("cc-d23", "No record shows that the build used plan mode or the Explore subagent.")),
         '<p>%s %s The build had a different method: %s %s</p>'
         % (fact("cc-34k1", "The guide teaches plan mode for complex tasks with large changes and architectural decisions (3.4-K1)."),
            fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
-           fact("cc-r30", "for the design of a pipeline step, the assistant showed one proposal with all details, and the owner accepted it or named a change (working rule 30, see step 0)."),
+           fact("cc-r30", "for the design of a step of the mock builder, the assistant showed one proposal with all details, and the owner accepted it or named a change (working rule 30, see step 0)."),
            fact("cc-r12", "Each decision of the owner became a file on the same day (working rule 12).") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
         + cc_ts("3.4", "cc-3-4-ts"),
         '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'
         % (fact("cc-soon", "During the plan of the two tabs of this academy, the assistant moved to the build too soon, and the owner stopped it."),
-           fact("cc-doc-context", "As part 3.1 says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")))),
+           fact("cc-doc-context", "As the part on CLAUDE.md above says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")))),
 ])
 
 # ----- the parts -----

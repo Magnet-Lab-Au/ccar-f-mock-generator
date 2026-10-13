@@ -141,8 +141,8 @@ def tab2_links(tsid, why=""):
     if tsid in CC_PART:
         rows.append('<li><a href="%s#%s">The build in Claude Code, %s &rarr;</a></li>' % (TAB2, CC_PART[tsid], tsid))
     if rows:
-        return '<h4 class="gh2">In the mock builder</h4><ul class="tolinks">%s</ul>' % "".join(rows)
-    return '<h4 class="gh2">In the mock builder</h4><p>No step of the mock builder uses a point of %s. %s</p>' % (tsid, why)
+        return '<h4 class="gh2">In the mock builder and its build</h4><ul class="tolinks">%s</ul>' % "".join(rows)
+    return '<h4 class="gh2">In the mock builder and its build</h4><p>No step of the mock builder uses a point of %s. %s</p>' % (tsid, why)
 
 
 TAKEAWAY = {}   # task statement -> its takeaway heading, from its fact sheet
@@ -577,7 +577,7 @@ PART["1.5"] = (overview("1.5", "Hooks block a tool call or clean its result",
                             "Claude Code, Hooks reference", "The hook returns updatedToolOutput, and Claude sees it in place of the real output. A normalizer returns the same data in one format.")
             + tab2_links("1.5", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no hook."),
                                            cf("ts-1-5-d29", excerpt(D29, "**The plain API, not the Agent SDK.**", "Mock decision 0029"), "It calls the plain API, not the Agent SDK, so it has no SDK hooks.") + " " + cf("ts-1-5-s3use", excerpt(step_file(3), "Here: a rule with one exact answer is checked by code, not by a model.", "Build guide, step 3"),
-                   "Step 3 has the nearest idea: a rule with one exact answer is checked by code (task statement 1.4)."))), "ts-1-5"))
+                   "Step 3 has the nearest example: a rule with one exact answer is checked by code (task statement 1.4)."))), "ts-1-5"))
 
 
 # ----- part 1.7 (facts: academy/facts/ts-1-7.md) -----
@@ -718,7 +718,7 @@ PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open
                        "One agent lists the files. Then one agent audits each file. The example has no integration pass.")
             + tab2_links("1.6") + "<p>%s %s</p>" % (
                 cf("ts-1-6-use", excerpt(step_file(1), "So these points support only one idea: the work of a mock is known before it starts, so the program can fix the plan before the writing starts.", "Build guide, step 1"),
-                   "Step 1 takes only one idea of 1.6: the work of a mock is known before it starts, so code fixes the plan first."), cf("ts-1-6-rev", excerpt("docs/reviews/review-decisions-0003-to-0018.md", "A list of 60 slots made by code for a generation task is neither a review nor a prompt chain.", "Review of mock decisions 0003 to 0018"),
+                   "Step 1 takes only one part of 1.6: the work of a mock is known before it starts, so code fixes the plan first."), cf("ts-1-6-rev", excerpt("docs/reviews/review-decisions-0003-to-0018.md", "A list of 60 slots made by code for a generation task is neither a review nor a prompt chain.", "Review of mock decisions 0003 to 0018"),
                    "It is not a prompt chain.")), "ts-1-6"))
 
 
@@ -796,8 +796,7 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
     + level("depth",
             beyond([cf("ts-2-1-b1", D(CCMCP, "Claude Code truncates each tool description and each server's instructions at 2,048 characters by default.", "Claude Code, MCP"),
                        "Claude Code cuts each MCP tool description at 2,048 characters by default, so the important details go first."),
-                    cf("ts-2-1-b2", D(TSR, "Claude's ability to pick the right tool degrades once you exceed 30–50 available tools.", "Tool search tool"),
-                       "Above 30 to 50 tools, the choice of the right tool degrades.")])
+                    ])
             + code_pop_text("ts-2-1-code", "The code: a good tool description", "A tool definition with a detailed description", DEFT, GOOD21, "Define tools",
                             "The description says what the tool returns, when to use it, and what it does not provide.")
             + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "2. Structured outputs: the request carries the JSON schema in `output_config.format`, and the API makes the answer agree with it. No tool.", "Mock decision 0040"),
@@ -877,7 +876,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                        "In the in-process MCP server of the Agent SDK, an uncaught exception does not stop the loop, but Claude then sees only the raw message, which is close to a generic error.")])
             + code_pop_text("ts-2-2-code", "The code: an error result in the Claude API", "A tool result with is_error", HANDLE, ERR22, "Handle tool calls",
                             "The example has the flag and a message, and no errorCategory or isRetryable field.")
-            + tab2_links("2.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no MCP."),
+            + tab2_links("2.2", "%s %s" % (fact("ts-2-4-a02", "The mock builder uses no MCP server: it calls only the Claude API and reads local files."),
                                            cf("ts-2-2-near", excerpt("src/model_call.py", "# 429, 5xx and network errors. Each other error stops the run.", "The code of the model calls"),
                                               "It has a near case for errors of the Claude API, not of tools: a new call repairs a rate limit, a server error or a network error, and each other error stops the run."))), "ts-2-2"))
 
@@ -905,7 +904,7 @@ FIG23 = figure("2.3-1", 890, 350,
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
                         "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
-                        "tool_choice sets whether Claude can, must, or must use one named tool, but Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 reject the forced settings.",
+                        "tool_choice sets whether Claude can, must, or must use one named tool, but Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 reject any and a forced tool.",
                         FIG23)
     + level("explanation",
             "<p><b>Few tools.</b> %s %s</p>" % (
@@ -936,7 +935,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "The documentation names four: it adds none, which blocks all tools."),
                 cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
                    "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
-                "The exam uses the guide. The mock builder follows the documentation (step 2 of tab 2).")
+                "The exam uses the guide.")
             + exam_tests("2.3", [("Claude API — tool_use with JSON schemas, tool_choice options (\"auto\", \"any\", forced tool selection), stop_reason values (\"tool_use\", \"end_turn\"), max_tokens, system prompts", "Among the technologies, the guide names")])
             + "<p>%s</p>" % cf("ts-2-3-q9", gx("Give the synthesis agent a scoped verify_fact tool for simple lookups, while complex verifications continue delegating to the web search agent through the coordinator.", "Exam guide, sample question 9, answer A"),
                                "Sample question 9 of the guide tests 2.3-S3: its correct answer is a scoped verify_fact tool.")
@@ -1074,7 +1073,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                    "Write replaces the whole file."),
                 cf("ts-2-5-c2", D(TREF, "**Uniqueness**: `old_string` must appear exactly once. When it appears more than once, Claude either supplies a longer string with enough surrounding context to pin down one occurrence, or sets `replace_all: true` to replace them all.", "Claude Code, Tools reference"),
                    "In the documentation, when the text occurs twice, Claude uses a longer text that occurs once, or replaces all occurrences. The guide reads and writes the whole file instead (2.5-K4, see Fig. 2.5-1). The exam uses the guide."))
-            + "<p><b>Search first.</b> %s %s</p>" % (
+            + "<p><b>Search first.</b> %s %s Part 3.4 shows the Explore subagent, which keeps a search out of the main context.</p>" % (
                 cf("ts-2-5-f14", D(BEST, "Claude reads hundreds of files, filling the context.", "Claude Code, Best practices"),
                    "The documentation names the failure that 2.5-S4 prevents: Claude reads hundreds of files, and the context fills."),
                 cf("ts-2-5-s5", gx("Tracing function usage across wrapper modules by first identifying all exported names, then searching for each name across the codebase", "Exam guide, 2.5-S5"),
@@ -1087,15 +1086,13 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
     + level("depth",
             beyond([cf("ts-2-5-b1", D(TREF, "By default one call returns at most 25,000 tokens, or the value you set in [`CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS`](/docs/en/env-vars), and refuses a whole file over 256 KB, so Claude reads a larger file in pages with `offset` and `limit`.", "Claude Code, Tools reference"),
                        "In Claude Code, by default, Read returns at most 25,000 tokens in one call and refuses a whole file over 256 KB, so a large file comes in pages. The guide says &ldquo;full file&rdquo; with no limit."),
-                    cf("ts-2-5-b2", D(CCS, "Claude delegates to Explore when it needs to search or understand a codebase without making changes. This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
-                       "Claude Code can also give the search to the read-only Explore subagent, which keeps the results out of the main context."),
                     cf("ts-2-5-b3", D(TREF, "Claude Code keeps the tool inactive until you install a [code intelligence plugin](/docs/en/plugins/code-intelligence) for your language. In [cloud sessions](/docs/en/claude-code-on-the-web), Claude Code doesn't start plugin language servers, so the LSP tool stays inactive there.", "Claude Code, Tools reference"),
                        "In Claude Code, with a code intelligence plugin for the language, the LSP tool can find all references to a symbol, in place of a text search. It stays inactive in cloud sessions.")])
             + code_pop_text("ts-2-5-code", "The code: a subagent with only Read, Glob and Grep", "A review subagent with search tools only", CCS, YAML25, "Claude Code, Subagents",
                             "This subagent can search and read, but not change a file.")
             + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
-                                              "The build in Claude Code used its built-in tools, on WSL without Grep and Glob by default, but no record says which tool did what, so tab 2 has no part for 2.5."))), "ts-2-5"))
+                                              "The build in Claude Code used its built-in tools, on WSL, where the documentation of today leaves Grep and Glob out by default. No record says which tool did what, so proposed decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1152,8 +1149,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                    "A large CLAUDE.md becomes topic files in .claude/rules/, such as testing.md and deployment.md (3.1-K4, 3.1-S3)."),
                 cf("ts-3-1-f14", D(MEMD, "target under 200 lines per CLAUDE.md file. Longer files consume more context and reduce adherence.", "Claude Code, Memory"),
                    "The documentation targets less than 200 lines for each CLAUDE.md."),
-                cf("ts-3-1-f13", D(MEMD, "Rules without [`paths` frontmatter](#path-specific-rules) are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
-                   "A rule file with no paths loads at launch like CLAUDE.md. Part 3.3 shows rules that load only for some paths."))
+                "Part 3.3 shows rules that load only for some paths.")
             + "<p><b>Check.</b> %s %s %s</p>" % (
                 cf("ts-3-1-s4", gx("Using the /memory command to verify which memory files are loaded and diagnose inconsistent behavior across sessions", "Exam guide, 3.1-S4"),
                    "The guide uses /memory to check which memory files are loaded (3.1-S4)."),
@@ -1176,7 +1172,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
             + tab2_links("3.1") + "<p>%s %s</p>" % (cf("ts-3-1-a02", excerpt(A02, "The tables of guide points in the build guide use points of only 12 of the 30 task statements: 1.1, 1.3, 1.4, 1.6, 4.1, 4.2, 4.3, 4.4, 4.6, 5.3, 5.5 and 5.6. It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
                                                     "No step of the mock builder uses 3.1, and this is a deliberate choice."),
                                                  cf("ts-3-1-cc", excerpt("CLAUDE.md", "@WORKING-RULES.md", "CLAUDE.md of the project"),
-                                                    "The build of the mock builder in Claude Code used a project CLAUDE.md with one import.")), "ts-3-1"))
+                                                    "The build in Claude Code used a project CLAUDE.md with one import, which shows 3.1-K3.")), "ts-3-1"))
 
 
 # ----- part 3.3 (facts: academy/facts/ts-3-3.md) -----
@@ -1186,7 +1182,7 @@ D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1
 RULE33 = "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n\n# API Development Rules\n\n- All API endpoints must include input validation\n- Use the standard error response format\n- Include OpenAPI documentation comments"
 FIG33 = figure("3.3-1", 890, 330,
                "A rule file in .claude/rules/ with paths **/*.test.tsx matches test files in several folders, such as src/ui/Button.test.tsx, src/api/users.test.tsx and lib/date.test.tsx, "
-               "but not src/ui/Button.tsx. When Claude reads or edits a matching file, the rule loads into the context. A CLAUDE.md in src/ui/ covers that one folder only.",
+               "but not src/ui/Button.tsx. When Claude edits a matching file, the rule loads into the context (in Claude Code, a read is enough too). A CLAUDE.md in src/ui/ covers that one folder only.",
                "".join(['<path class="ve-e no-head" d="M280 80H320M320 42V150"/>',
                         edge("M320 42H360"), edge("M320 96H360"), edge("M320 150H360"),
                         edge("M620 96H700"),
@@ -1196,7 +1192,7 @@ FIG33 = figure("3.3-1", 890, 330,
                         box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok"),
                         box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok"),
                         box(360, 182, 260, 44, ["src/ui/Button.tsx"], sub="no match"),
-                        box(700, 50, 170, 90, ["Context"], sub="on a read or edit", cls="who-model"),
+                        box(700, 50, 170, 90, ["Context"], sub="on an edit (guide)", cls="who-model"),
                         box(20, 250, 260, 60, ["src/ui/CLAUDE.md"], sub="only files in src/ui/")]),
                "%s %s" % (cf("ts-3-3-f1", D(MEMD, "Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.", "Claude Code, Memory"),
                              "A paths field in the frontmatter scopes a rule to the files that match its patterns."),
@@ -1204,7 +1200,7 @@ FIG33 = figure("3.3-1", 890, 330,
                              "This is the answer of the guide for test files spread through the codebase.")))
 
 PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files",
-                        "A file in .claude/rules/ with a paths list of glob patterns loads into the context only when Claude works with a file that matches. "
+                        "A file in .claude/rules/ with a paths list of glob patterns loads into the context only when Claude edits a file that matches (the guide). "
                         "A glob such as **/*.test.tsx finds files by type in every folder, which a CLAUDE.md in one directory cannot do.",
                         FIG33)
     + level("explanation",
@@ -1212,7 +1208,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                 cf("ts-3-3-k1", gx(".claude/rules/ files with YAML frontmatter paths fields containing glob patterns for conditional rule activation", "Exam guide, 3.3-K1"),
                    "A file in .claude/rules/ can have a paths field in its YAML frontmatter (the header of the file), with glob patterns (patterns of file names) that decide when the rule applies (3.3-K1)."),
                 cf("ts-3-3-s1", gx("Creating .claude/rules/ files with YAML frontmatter path scoping (e.g., paths: [\"terraform/\\*\\*/\\*\"]) so rules load only when editing matching files", "Exam guide, 3.3-S1"),
-                   "An example of the guide is paths: [\"terraform/**/*\"] (3.3-S1)."),
+                   "An example of the guide is a rule for all the files under a folder terraform/ (3.3-S1)."),
                 cf("ts-3-3-f4", D(MEMD, "Use glob patterns in the `paths` field to match files by extension, directory, or any combination:", "Claude Code, Memory"),
                    "A glob matches files by extension, by directory, or both."))
             + "<p><b>When it loads.</b> %s %s %s</p>" % (
@@ -1220,7 +1216,8 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                    "The guide says that a path rule loads only when Claude edits a matching file, so the context and the tokens stay small (3.3-K2)."),
                 cf("ts-3-3-f6", D(MEMD, "A path-scoped rule loads when Claude uses the Read, Write, or Edit tool on a matching file. It also loads when Claude views a matching file with a Bash command that [counts as a read](/docs/en/tools-reference#edit-tool-behavior), such as `cat` or `head` on a single file.", "Claude Code, Memory"),
                    "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads that single file. The exam uses the guide."),
-                fact("ts-3-1-f13", "A rule with no paths loads at launch like CLAUDE.md."))
+                cf("ts-3-1-f13", D(MEMD, "Rules without [`paths` frontmatter](#path-specific-rules) are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
+                   "A rule with no paths loads at launch like CLAUDE.md."))
             + "<p><b>Across folders.</b> %s %s %s</p>" % (
                 cf("ts-3-3-s2", gx("Using glob patterns in path-specific rules to apply conventions to files by type regardless of directory location (e.g., \\*\\*/\\*.test.tsx for all test files)", "Exam guide, 3.3-S2"),
                    "A glob applies a convention to files by type in every folder, for example **/*.test.tsx for all test files (3.3-S2)."),
@@ -1243,7 +1240,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                             "This rule loads only when Claude works with a .ts file under src/api/.")
             + tab2_links("3.3", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
-                                              "For the plan of a mock, 3.3 is one group of points, because its 6 points have one correct answer."))), "ts-3-3"))
+                                              "For the plan of a mock, 3.3 is one idea, because its 6 points have one correct answer."))), "ts-3-3"))
 
 
 # ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----
@@ -1267,7 +1264,7 @@ FIG32 = figure("3.2-1", 890, 300,
 
 PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how they run",
                         "A command or a skill in the .claude/ folder of the project reaches the team through git. One in ~/.claude/ stays personal. "
-                        "The frontmatter of a skill sets how it runs, and unlike CLAUDE.md, a skill loads only when it is used.",
+                        "The frontmatter of a skill sets how it runs, and unlike CLAUDE.md, the body of a skill loads only when it is used.",
                         FIG32)
     + level("explanation",
             "<p><b>Team or personal.</b> %s %s %s</p>" % (
@@ -1375,7 +1372,8 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
                 cf("ts-3-4-s3", gx("Using the Explore subagent for verbose discovery phases to prevent context window exhaustion during multi-phase tasks", "Exam guide, 3.4-S3"),
                    "The Explore subagent takes the verbose discovery, so the main context does not fill up (3.4-S3).") + " " + cf("ts-3-4-k4", gx("The Explore subagent for isolating verbose discovery output and returning summaries to preserve main conversation context", "Exam guide, 3.4-K4"),
                    "It returns a summary (3.4-K4)."),
-                fact("ts-2-5-b2", "Claude delegates to Explore when it searches without making changes."),
+                cf("ts-2-5-b2", D(CCS, "Claude delegates to Explore when it needs to search or understand a codebase without making changes. This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
+                   "Claude delegates to Explore when it searches without making changes."),
                 cf("ts-3-4-c3", D(CCS, "When you're in plan mode and Claude needs to understand your codebase, it delegates research to the Plan subagent so that exploration output stays in a separate context window while the main conversation remains read-only.", "Claude Code, Subagents"),
                    "In plan mode, Claude Code gives the research to a different built-in subagent, Plan. The exam uses the guide."))
             + exam_tests("3.4", [("Plan mode vs direct execution: complexity assessment, architectural decisions, single-file changes", "Among the topics, the guide names")])
@@ -1516,7 +1514,7 @@ PART["3.6"] = (overview("3.6", "In CI, run claude -p with a schema and context",
                 cf("ts-3-6-f9", D(GHA, "Create a `CLAUDE.md` file in your repository root to define code style guidelines, review criteria, project-specific rules, and preferred patterns. Claude follows these guidelines when creating PRs and responding to requests.", "Claude Code, GitHub Actions"),
                    "The Claude Code GitHub Action also reads review criteria from CLAUDE.md."),
                 cf("ts-3-6-c1", D(HLESS, "Add `--bare` to reduce startup time by skipping auto-discovery of hooks, skills, custom commands, [subagents](/docs/en/sub-agents), installed plugins, MCP servers, auto memory, and CLAUDE.md.", "Claude Code, Run Claude Code programmatically"),
-                   "But --bare skips CLAUDE.md,") + " " + fact("ts-3-6-b1", "and the documentation recommends --bare for scripted calls. The exam uses the guide."))
+                   "But --bare, the mode that the documentation recommends for scripts, skips CLAUDE.md. The exam uses the guide."))
             + "<p><b>Re-runs and tests.</b> %s %s %s</p>" % (
                 cf("ts-3-6-s3", gx("Including prior review findings in context when re-running reviews after new commits, instructing Claude to report only new or still-unaddressed issues to avoid duplicate comments", "Exam guide, 3.6-S3"),
                    "On a new commit, the guide gives Claude the prior findings and asks only for new or open issues, so the comments do not repeat (3.6-S3)."),
@@ -1544,7 +1542,7 @@ PART["3.6"] = (overview("3.6", "In CI, run claude -p with a schema and context",
                             "The result is JSON, with the answer in structured_output.")
             + tab2_links("3.6", "%s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."),
                                            fact("ts-g1", "The mock builder calls the Claude API from its own code, not Claude Code in CI.")))
-            + '<p>The nearest idea is the independent check of step 4 (task statement 4.6): <a href="%s#step-4">Step 4, Check by a model &rarr;</a></p>' % TAB2, "ts-3-6"))
+            + '<p>The nearest example is the independent check of step 4 (task statement 4.6): <a href="%s#step-4">Step 4, Check by a model &rarr;</a></p>' % TAB2, "ts-3-6"))
 
 
 # ----- part 4.2 (facts: academy/facts/ts-4-2.md) -----
@@ -1881,7 +1879,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <h2>How we broke it down</h2>
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
-  <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) that use the task statement.</p>
+  <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
