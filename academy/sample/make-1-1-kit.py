@@ -7,9 +7,10 @@ The layout, the fonts, the square corners and the content stay the same.
 The rules of this version, from the proposal to the owner:
 - Each color is a brand kit color. Thin lines and soft fills use a kit color made fainter.
 - K uses the light blue #8BC4D9 that the kit shows (the owner said yes to it). S uses gold.
-- Gold is never a text color. It marks lines only: the active path, the rule over each
-  section, the underline of links and the focus ring. So gold on a letter means S only.
-- The K or S of each label has a small solid fill with a navy letter, the same as its tag.
+- Gold is never a text color, except the S of a label. It marks lines only: the active path,
+  the rule over each section, the underline of links and the focus ring.
+- The K or S of each label is the letter in its color, with no fill, in both modes
+  (decision 0009). The legend tags keep their solid fills.
 - The status colors (success, error, warning, info) mark borders. The words stay navy or cream.
 
 Run from the folder ccar-f-mock-generator:
@@ -67,8 +68,8 @@ KIT_CSS = (
     " #pop .t-fail { border-color: var(--risk); } #pop .t-open { border-color: var(--warn); }\n"
     # the slot with the most tries: gold fill, navy number
     "  .cell.t4 rect { fill: var(--gold); stroke: var(--gold); } .cell.t4 text { fill: " + NAVY + "; }\n"
-    # the K or S of a label: a small solid fill, the same as its tag
-    "  .lk, .ls { padding: 0 .12em; } .lk { background: var(--k); color: var(--on-k); } .ls { background: var(--s); color: var(--on-s); }\n"
+    # the K or S of a label: the letter in its color, with no fill, in both modes (decision 0009)
+    "  .lk { color: var(--k); } .ls { color: var(--s); }\n"
     "</style>")
 
 KIT = [
