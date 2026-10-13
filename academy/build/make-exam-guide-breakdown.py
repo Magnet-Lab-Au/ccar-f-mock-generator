@@ -2035,6 +2035,81 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                             "A beta of the Claude API. The instructions say what the summary must keep.")
             + tab2_links("5.1", cf("ts-5-1-d12", excerpt(D12, "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends", "Mock decision 0012"), "The mock builder has no long conversation: each call sees only what the program sends.")), "ts-5-1"))
 
+
+# ----- part 5.2 (facts: academy/facts/ts-5-2.md) -----
+
+CSUP, UINP = "anthropic-docs-customer-support-chat", "claude-code-docs-agent-sdk-user-input"
+D06 = glob.glob(os.path.join(ROOT, "docs/decisions/0006-*.md"))[0][len(ROOT) + 1:]
+RULES52 = "\n".join(read(SRC % ICON).split("\n")[339:353])
+assert RULES52.strip().startswith("Here is the user query") and RULES52.rstrip().endswith('section 3.2..."')
+FIG52 = figure("5.2-1", 890, 330,
+               "A customer message passes four checks: does the customer ask for a human, do several customers match, is the policy silent or unclear, can the agent make no progress. "
+               "A request for a human, a policy gap and no progress lead to escalate_to_human. Several matches lead to a question for one more identifier. Sentiment and self-reported confidence are not triggers.",
+               "".join([edge("M170 165H200", cls="no-head"), '<path class="ve-e no-head" d="M200 47V272"/>',
+                        edge("M200 47H230"), edge("M200 122H230"), edge("M200 197H230"), edge("M200 272H230"),
+                        '<path class="ve-e no-head is-hot" d="M480 47H560V272M480 197H560M480 272H560"/>',
+                        edge("M560 145H620", "yes", 590, 136, cls="is-hot"),
+                        '<text class="ve-lab" x="20" y="322">otherwise: resolve, and acknowledge any frustration</text>',
+                        box(20, 130, 150, 70, ["Customer", "message"]),
+                        box(230, 20, 250, 55, ["Asks for a human?"], sub="yes: escalate at once"),
+                        box(230, 95, 250, 55, ["Several matches?"], sub="yes: ask for one more ID"),
+                        box(230, 170, 250, 55, ["Policy silent?"], sub="yes: escalate"),
+                        box(230, 245, 250, 55, ["No progress?"], sub="yes: escalate"),
+                        box(620, 110, 250, 70, ["escalate_to_human"], cls="who-model"),
+                        box(620, 220, 250, 70, ["Not triggers"], sub="sentiment, own confidence")]),
+               "%s %s" % (cf("ts-5-2-k1", gx("Appropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just complex cases), and inability to make meaningful progress", "Exam guide, 5.2-K1"),
+                             "The three triggers of the guide are a request for a human, a gap or exception in the policy, and no meaningful progress (5.2-K1)."),
+                          cf("ts-5-2-k3", gx("Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "Exam guide, 5.2-K3"),
+                             "Sentiment and self-reported confidence do not show how complex a case is (5.2-K3). The guide gives no order for the checks.")))
+
+PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or confidence",
+                        "Write the escalation criteria and a few examples into the system prompt: a request for a human, a gap in the policy, and no progress. "
+                        "Do not escalate on sentiment or on a confidence that the model gives itself, and ask for one more identifier when a lookup finds several customers.",
+                        FIG52)
+    + level("explanation",
+            "<p><b>Measure it.</b> %s</p>" %
+                cf("ts-5-2-f2", D(CSUP, "Aim for an escalation accuracy of 95% or higher.", "Customer support agent"),
+                   "The documentation for a support agent aims at an escalation accuracy of 95% or more.")
+            + "<p><b>A request for a human.</b> %s %s %s Only the guide states these rules.</p>" % (
+                cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
+                   "When a customer demands a human, the agent escalates at once. When the issue is simple, it offers to resolve it (5.2-K2)."),
+                cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
+                   "It does not investigate first (5.2-S2)."),
+                cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
+                   "A frustrated customer hears that the agent understands, gets the fix, and is escalated only on a second request (5.2-S3)."))
+            + "<p><b>Not mood or confidence.</b> %s</p>" %
+                cf("ts-5-2-f11", gx("Option D solves a different problem entirely; sentiment doesn't correlate with case complexity, which is the actual issue.", "Exam guide, sample question 3"),
+                   "Sample question 3 of the guide says that sentiment does not follow the complexity of a case.")
+            + "<p><b>Criteria in the prompt.</b> %s %s %s</p>" % (
+                cf("ts-5-2-s1", gx("Adding explicit escalation criteria with few-shot examples to the system prompt demonstrating when to escalate versus resolve autonomously", "Exam guide, 5.2-S1"),
+                   "Explicit criteria and few-shot examples in the system prompt show when to escalate and when to resolve (5.2-S1)."),
+                cf("ts-5-2-f7", D(CSUP, "* Ensure that you are making the most out of your prompts and optimizing through prompt engineering.", "Customer support agent"),
+                   "The documentation also improves the prompt before it adds a new layer, such as a classifier."),
+                cf("ts-5-2-s4", gx("Escalating when policy is ambiguous or silent on the customer's specific request (e.g., competitor price matching when policy only addresses own-site adjustments)", "Exam guide, 5.2-S4"),
+                   "When the policy is silent, such as on a price match with a competitor, the agent escalates (5.2-S4)."))
+            + "<p><b>Several matches.</b> %s %s</p>" % (
+                cf("ts-5-2-s5", gx("Instructing the agent to ask for additional identifiers when tool results return multiple matches, rather than selecting based on heuristics", "Exam guide, 5.2-S5"),
+                   "When a lookup returns several customers, the agent asks for another identifier, and does not guess (5.2-K4, 5.2-S5)."),
+                cf("ts-5-2-f14", D(OVT, "If the user's prompt doesn't include enough information to fill all the required parameters for a tool, Claude Opus is much more likely to recognize that a parameter is missing and ask for it.", "Tool use overview"),
+                   "The documentation says that Claude Opus is much more likely than Claude Sonnet to ask for missing information, so an instruction helps."))
+            + exam_tests("5.2", [("Escalation decision-making: explicit criteria, honoring customer preferences, policy gap identification", "Among the topics, the guide names")])
+            + "<p>%s</p>" % cf("ts-5-2-q3", gx("Adding explicit escalation criteria with few-shot examples directly addresses the root cause: unclear decision boundaries.", "Exam guide, sample question 3"),
+                               "Sample question 3 of the guide fits 5.2: its correct answer adds explicit criteria with few-shot examples.")
+            + guide_text("5.2"), "ts-5-2")
+    + level("depth",
+            beyond([cf("ts-5-2-b1", D(CSUP, "Typically aim for 70-80% deflection rate, depending on the complexity of inquiries.", "Customer support agent"),
+                       "The documentation aims at a deflection rate of 70% to 80%, a different measure from the 80% first-contact resolution of the guide."),
+                    cf("ts-5-2-b2", D(UINP, "Claude requests user input in two situations:", "Agent SDK, Handle approvals and user input"),
+                       "In the Agent SDK, a clarifying question to the user is a call of the tool AskUserQuestion."),
+                    cf("ts-5-2-b3", D(UINP, "* **Subagents**: `AskUserQuestion` is not currently available in subagents spawned via the Agent tool", "Agent SDK, Handle approvals and user input"),
+                       "A subagent cannot use AskUserQuestion, so the coordinator asks.")])
+            + code_pop_text("ts-5-2-code", "The code: rules and answers in a prompt", "A prompt with explicit rules", ICON, RULES52, "Increase output consistency",
+                            "A document assistant, not a support agent: no page shows a prompt with escalation criteria.")
+            + tab2_links("5.2", "%s %s" % ("The mock builder is not a support agent, so it has no customer to escalate.",
+                                           cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3)", "Mock decision 0006"),
+                                              "But 5.2-K3 gives the reason for rule D3 of step 6: a wrong option on self-reported confidence is fair.")))
+            + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
