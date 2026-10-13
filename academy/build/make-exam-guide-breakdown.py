@@ -58,11 +58,13 @@ def step_file(n):
 STEP_NAME = {0: "Prepare the guide records", 1: "Plan the mock", 2: "Write the question", 3: "Check by code", 4: "Check by a model",
              5: "Try again", 6: "Check the complete mock", 7: "The questions are marked", 8: "Build the files"}
 USES = {}      # task statement -> [(step, [points])], from the tables of guide points (decision 0024)
+NOT_USED = {}  # the same, for the rows that say "This build does not use it"
 for n in range(9):
     for l in read(step_file(n)).split("\n"):
         m = re.match(r"^\| ([1-5]\.[0-9])-([KS][0-9]+) \|", l)
         if m:
-            USES.setdefault(m.group(1), {}).setdefault(n, []).append(m.group(1) + "-" + m.group(2))
+            into = NOT_USED if "This build does not use it" in l else USES
+            into.setdefault(m.group(1), {}).setdefault(n, []).append(m.group(1) + "-" + m.group(2))
 CC_PART = {"3.1": "cc-3-1", "1.7": "cc-1-7", "4.6": "cc-4-6", "3.4": "cc-3-4"}
 TAB2_HTML = read("academy/pages/behind-the-mocks.html")
 for t, pid in CC_PART.items():
@@ -135,9 +137,11 @@ def mock_count(tsid):
 def tab2_links(tsid, why=""):
     """The links to each step of tab 2 that uses a point of the task statement (decisions 0010 and 0024)."""
     rows = []
-    for n, pts in sorted(USES.get(tsid, {}).items()):
-        rows.append('<li><a href="%s#step-%d">Step %d, %s &rarr;</a> <span class="ve-label">uses %s</span></li>'
-                    % (TAB2, n, n, e(STEP_NAME[n]), ", ".join(pts)))
+    used, unused = USES.get(tsid, {}), NOT_USED.get(tsid, {})
+    for n in sorted(set(used) | set(unused)):
+        what = (["uses " + ", ".join(used[n])] if n in used else []) + (["names but does not use " + ", ".join(unused[n])] if n in unused else [])
+        rows.append('<li><a href="%s#step-%d">Step %d, %s &rarr;</a> <span class="ve-label">%s</span></li>'
+                    % (TAB2, n, n, e(STEP_NAME[n]), "; ".join(what)))
     if tsid in CC_PART:
         rows.append('<li><a href="%s#%s">The build in Claude Code, %s &rarr;</a></li>' % (TAB2, CC_PART[tsid], tsid))
     if rows:
@@ -305,7 +309,7 @@ PAR, PBP, CCS = "anthropic-docs-parallel-tool-use", "anthropic-docs-claude-promp
 D26 = glob.glob(os.path.join(ROOT, "docs/decisions/0026-*.md"))[0][len(ROOT) + 1:]
 D12 = glob.glob(os.path.join(ROOT, "docs/decisions/0012-*.md"))[0][len(ROOT) + 1:]
 CARD.update({
-    "ts-1-3-f5": D(SUB, "The only content you pass from parent to subagent is the Agent tool's prompt string, so include any file paths, error messages, or decisions the subagent needs directly in that prompt.", "Agent SDK, Subagents"),
+    "ts-1-3-f5": D(SUB, "Unless the subagent is a [fork](/docs/en/sub-agents#fork-the-current-conversation), its context window starts fresh, with no parent conversation, but isn't empty. The only content you pass from parent to subagent is the Agent tool's prompt string, so include any file paths, error messages, or decisions the subagent needs directly in that prompt.", "Agent SDK, Subagents"),
     "ts-1-3-f7": D(SUB, "only its final message returns to the parent.", "Agent SDK, Subagents"),
 })
 FIG13 = figure("1.3-1", 890, 350,
@@ -321,7 +325,7 @@ FIG13 = figure("1.3-1", 890, 350,
                         box(540, 30, 330, 80, ["Subagent A"], sub="description · prompt · tools", cls="who-model"),
                         box(540, 130, 330, 80, ["Subagent B"], sub="description · prompt · tools", cls="who-model"),
                         box(540, 230, 330, 80, ["Subagent C"], sub="description · prompt · tools", cls="who-model")]),
-               "Parallel subagents start from one response. %s %s The names and the allowedTools rule are those of the guide. The product today calls the tool Agent." % (fact("ts-1-3-f5", "A subagent gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
+               "Parallel subagents start from one response. %s %s The names and the allowedTools rule are those of the guide. The product today calls the tool Agent." % (fact("ts-1-3-f5", "A subagent that is not a fork gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
 
 PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conversation",
                         "A coordinator starts each subagent with a call of the Task tool. The subagent does not see the conversation of the coordinator, so the prompt of the call must hold the complete findings and their sources.",
@@ -337,7 +341,7 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
                    "The Agent tool runs even when the list does not name it. The exam uses the guide.")
             )
             + "<p><b>Context.</b> %s %s %s %s %s</p>" % (
-                fact("ts-1-3-f5", "Only the prompt of the tool call goes from the coordinator to a subagent."),
+                fact("ts-1-3-f5", "Only the prompt of the call reaches a subagent that is not a fork."),
                 cf("ts-1-3-f6", D(SUB, "The parent's conversation history or tool results", "Agent SDK, Subagents"), "The subagent does not get the conversation history or the tool results of the parent."),
                 fact("ts-1-3-f7", "Only the final message of the subagent goes back."),
                 cf("ts-1-3-s1", gx("Including complete findings from prior agents directly in the subagent's prompt (e.g., passing web search results and document analysis outputs to the synthesis subagent)", "Exam guide, 1.3-S1"),
@@ -2097,14 +2101,14 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                    "It does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
                    "When the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates only if the customer asks again for a human (5.2-S3)."))
-            + "<p><b>Not mood or confidence.</b> %s This rule is about a confidence that the model gives itself and that no labeled data has calibrated. Task statements 4.6 and 5.5 route by a confidence that labeled data calibrates.</p>" %
+            + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated: 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
                 cf("ts-5-2-f11", gx("Option D solves a different problem entirely; sentiment doesn't correlate with case complexity, which is the actual issue.", "Exam guide, sample question 3"),
                    "Sample question 3 of the guide says that sentiment does not follow the complexity of a case.")
             + "<p><b>Criteria in the prompt.</b> %s %s %s</p>" % (
                 cf("ts-5-2-s1", gx("Adding explicit escalation criteria with few-shot examples to the system prompt demonstrating when to escalate versus resolve autonomously", "Exam guide, 5.2-S1"),
                    "Explicit criteria and few-shot examples in the system prompt show when to escalate and when to resolve (5.2-S1)."),
                 cf("ts-5-2-f7", D(CSUP, "Before you add further layers to your architecture, consider the following less exhaustive options:", "Customer support agent"),
-                   "The guide for a support agent in the Claude API documentation also says: before you add further layers,")
+                   "The support agent page of the Claude API documentation also says: before you add further layers,")
                 + " " + cf("ts-5-2-f7b", D(CSUP, "* Ensure that you are making the most out of your prompts and optimizing through prompt engineering.", "Customer support agent"),
                    "get the most out of the prompt."),
                 cf("ts-5-2-s4", gx("Escalating when policy is ambiguous or silent on the customer's specific request (e.g., competitor price matching when policy only addresses own-site adjustments)", "Exam guide, 5.2-S4"),
@@ -2121,7 +2125,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
             + guide_text("5.2"), "ts-5-2")
     + level("depth",
             beyond([cf("ts-5-2-b1", D(CSUP, "Typically aim for 70-80% deflection rate, depending on the complexity of inquiries.", "Customer support agent"),
-                       "The guide for a support agent aims at a deflection rate of 70% to 80%, depending on the complexity of the inquiries.")
+                       "The support agent page of the Claude API documentation aims at a deflection rate of 70% to 80%, depending on the complexity of the inquiries.")
                     + " " + cf("ts-5-2-g71", gx("Your target is 80%+ first-contact resolution while knowing when to escalate.", "Exam guide, scenario 1"),
                        "That is a different measure from the 80%+ first-contact resolution of scenario 1 of the guide."),
                     cf("ts-5-2-b2", D(UINP, "Claude requests user input in two situations: when it needs **permission to use a tool** (like deleting files or running commands), and when it has **clarifying questions** (via the `AskUserQuestion` tool).", "Agent SDK, Handle approvals and user input"),
@@ -2132,7 +2136,9 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                             "A document assistant, not a support agent: no page that we read shows a prompt with escalation criteria. This block is the user turn, after a system prompt.")
             + tab2_links("5.2", "%s %s" % ("The mock builder is not a support agent, so it has no customer to escalate.",
                                            cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3), and sample question 3 in Section 9 uses such an option as a wrong option. So it is a fair wrong option.", "Mock decision 0006"),
-                                              "But rule D3 of step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")))
+                                              "But rule D3 of step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")
+                                           + " " + cf("ts-5-2-d3lim", excerpt(step_file(6), "A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock.", "Build guide, step 6"),
+                                              "In mocks 2 to 5, a finding of rule D3 was recorded as a known limit of the mock, not fixed.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
 
 
@@ -2196,7 +2202,7 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
             + guide_text("5.3"), "ts-5-3")
     + level("depth",
             beyond([cf("ts-5-3-b1", D(SUB, "An API error that ends the subagent early, such as a rate limit, is never delivered as its result.", "Agent SDK, Subagents"),
-                       "In the Agent SDK, an API error that ends a subagent early is never delivered as its result, so it cannot look like an empty success."),
+                       "The Agent SDK is different: an API error that ends a subagent early is never delivered as its result, so it cannot look like an empty success."),
                     cf("ts-5-3-b2", D(HANDLE, "When server tools encounter errors (for example, network issues with Web Search), Claude will transparently handle these errors and attempt to provide an alternative response or explanation to the user.", "Handle tool calls"),
                        "Server tools of the Claude API, such as web search, handle their own errors.")])
             + code_pop_text("ts-5-3-code", "The code: a tool result that reports an error", "An error result", HANDLE, ERR22, "Handle tool calls",
@@ -2277,7 +2283,7 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
                     cf("ts-5-4-b2", D(HOW, "To control what's preserved during compaction, add a \"Compact Instructions\" section to CLAUDE.md", "Claude Code, How Claude Code works"),
                        "In Claude Code, a &ldquo;Compact Instructions&rdquo; section of CLAUDE.md can tell the compaction what to keep."),
                     cf("ts-5-4-b3", D(MEMT, "For long-running agents, consider using both: compaction keeps the active context small without client-side bookkeeping, and memory preserves the information that must survive summarization.", "Memory tool"),
-                       "For a long-running agent, the Claude API documentation suggests both: compaction keeps the context small, and memory keeps what must survive the summary.")])
+                       "For a long-running agent, the Claude API documentation suggests both: compaction (a beta, see 5.1) keeps the context small, and memory keeps what must survive the summary.")])
             + code_pop_text("ts-5-4-code", "The code: what a summary must keep", "Summary instructions in CLAUDE.md", LOOP, SUM54, "Agent SDK, The agent loop",
                             "In the Agent SDK, this section of CLAUDE.md asks the compactor to keep the task, the files, the test results and the decisions.")
             + tab2_links("5.4", cf("ts-5-4-d01b", excerpt(D01, "Keep one file for each decision, one HTML file for each diagram and a journal.", "Mock decision 0001"),
@@ -2326,7 +2332,7 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                 cf("ts-5-5-k4", gx("The importance of validating accuracy by document type and field segment before automating high-confidence extractions", "Exam guide, 5.5-K4"),
                    "Do the same before you automate the high-confidence extractions (5.5-K4)."),
                 cf("ts-5-5-f1", D(TRT, "Measure the routing accuracy across different languages, aiming for no more than a 5–10% drop in accuracy for non-primary languages.", "Ticket routing"),
-                   "The ticket routing guide of the Claude API documentation measures the accuracy for each language,"),
+                   "The ticket routing page of the Claude API documentation measures the accuracy for each language,"),
                 cf("ts-5-5-f2", D(TRT, "Regularly audit routing decisions for potential biases, aiming for consistent routing accuracy (within 2–3%) across all customer groups.", "Ticket routing"),
                    "and it aims for routing accuracy within 2 to 3% across all customer groups."))
             + "<p><b>A sample of the confident ones.</b> %s %s %s The word stratified is the guide&rsquo;s.</p>" % (
@@ -2335,7 +2341,7 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                 cf("ts-5-5-f4", D(DTST, "Design evals that mirror your real-world task distribution.", "Define success criteria and build evaluations"),
                    "For tests, the evaluation page of the Claude API documentation asks for evaluations that mirror the real mix of tasks."),
                 cf("ts-5-5-f5", D(CMOD, "Keep track of the types of content being flagged by your moderation system to identify trends and potential areas for improvement.", "Content moderation"),
-                   "The content moderation guide of the Claude API tracks the types of content that the system flags, to find trends."))
+                   "The content moderation page tracks the types of content that the system flags, to find trends."))
             + "<p><b>Calibrate the confidence.</b> %s %s %s No page in the copies of this academy describes the calibration of field-level confidence.</p>" % (
                 cf("ts-5-5-s3", gx("Having models output field-level confidence scores, then calibrating review thresholds using labeled validation sets", "Exam guide, 5.5-S3"),
                    "The model outputs a confidence score for each field, and a labeled validation set calibrates the review thresholds (5.5-S3)."),
@@ -2347,7 +2353,7 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                 cf("ts-5-5-s4", gx("Routing extractions with low model confidence or ambiguous/contradictory source documents to human review, prioritizing limited reviewer capacity", "Exam guide, 5.5-S4"),
                    "Extractions with low confidence, or with ambiguous or contradictory sources, go to human review, which gives its limited time to the most important first (5.5-S4)."),
                 cf("ts-5-5-f10", D(CMOD, "For example, you might want to automatically block user queries that are deemed high risk, while users with many medium risk queries are flagged for human review.", "Content moderation"),
-                   "The content moderation guide of the Claude API gives an example: block high-risk queries automatically, and flag users with many medium-risk queries for human review."),
+                   "The content moderation page of the Claude API documentation gives an example: block high-risk queries automatically, and flag users with many medium-risk queries for human review."),
                 cf("ts-5-5-f12", D(RHAL, "Explicitly give Claude permission to admit uncertainty.", "Reduce hallucinations"),
                    "The Reduce hallucinations page of the Claude API documentation also tells you to let Claude admit uncertainty."))
             + exam_tests("5.5", [("Human review workflows: confidence calibration, stratified sampling, accuracy segmentation by document type and field", "Among the topics, the guide names")])
@@ -2357,16 +2363,18 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                        "For evaluations, the Claude API documentation calls human grading slow and expensive. That is about tests before production.")
                     + " " + fact("ts-5-5-s4", "In production, the guide keeps people on the hard cases (5.5-S4)."),
                     cf("ts-5-5-b2", D(TRT, "Measure this by periodically testing the model with a set of standardized inputs and aiming for a consistency rate of 95% or higher.", "Ticket routing"),
-                       "The ticket routing guide tests the model again from time to time with a fixed set of inputs."),
+                       "The ticket routing page tests the model again from time to time with a fixed set of inputs."),
                     cf("ts-5-5-b3", D(CMOD, "Regularly assess the performance of your content moderation system using metrics such as precision and recall tracking.", "Content moderation"),
-                       "The content moderation guide measures precision and recall, not only accuracy.")])
+                       "The content moderation page measures precision and recall, not only accuracy.")])
             + code_pop_text("ts-5-5-code", "The code: a confidence score in a schema", "A confidence field in a structured output", SOUTA, SCH55, "Structured outputs",
                             "This example has one score for the whole answer. For 5.5, put one score on each field. The model writes the number, so it is not calibrated until you compare it with a labeled set.")
-            + tab2_links("5.5") + "<p>%s %s</p>" % (
+            + tab2_links("5.5") + "<p>%s %s %s</p>" % (
                 cf("ts-5-5-use", excerpt(step_file(7), "Written for the extraction of data. Here: the bad marks are shown for each scenario and each domain, because one total can hide a bad part.", "Build guide, step 7"),
                    "Step 7 uses 5.5 outside its context. The bad marks are shown for each scenario and each domain, because one total can hide a bad part (5.5-K1)."),
                 cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
-                   "In mocks 4 and 5, the reader is a Claude model, not a person.")), "ts-5-5"))
+                   "In mocks 4 and 5, the reader is a Claude model, not a person."),
+                cf("ts-5-5-m1", excerpt(step_file(7), "For mock 1 the owner reads all 60, so that is not a sample.", "Build guide, step 7"),
+                   "For mock 1 the owner read all 60 questions, so that was not a sample.")), "ts-5-5"))
 
 # ----- part 5.6 (facts: academy/facts/ts-5-6.md) -----
 
@@ -2451,11 +2459,13 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                        "In search result blocks of the Claude API, Claude cites a whole text block, not a part of a block.")])
             + code_pop_text("ts-5-6-code", "The code: a search result that carries its source", "A search result block", SRES, SR56, "Search results",
                             "In the Claude API, the source and the title come back in each citation. All active models except Claude Haiku 3 support it. The example has no date field, and 5.6-S4 asks for one.")
-            + tab2_links("5.6") + "<p>%s %s</p>" % (
+            + tab2_links("5.6") + "<p>%s %s %s</p>" % (
                 cf("ts-5-6-use", excerpt(step_file(0), "Written for the synthesis of findings. Here: the records keep the exact guide text, so no summary loses the source.", "Build guide, step 0"),
                    "Step 0 uses 5.6-K1 outside its context: each guide record keeps the exact text of the guide, so no summary loses the source."),
                 cf("ts-5-6-code0", excerpt("src/step0_prepare_guide_records.py", "need(text and text in raw, \"text is not exactly in the guide: \" + text[:60])", "Mock builder code, src/step0_prepare_guide_records.py"),
-                   "The code stops when the text of a record is not exactly in the guide.")), "ts-5-6"))
+                   "The code stops when the text of a record is not exactly in the guide."),
+                cf("ts-5-6-use2", excerpt(step_file(0), "The same context. Here: the IDs of the points are the mapping between a question and the text of the guide.", "Build guide, step 0"),
+                   "Step 0 uses 5.6-K2 in the same way: the IDs of the points map each question to the text of the guide.")), "ts-5-6"))
 
 # ----- the top: the map and how we broke it down -----
 
@@ -2495,7 +2505,7 @@ def map_html():
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
   <figure data-figure="map">
     <div class="tmap">%(cols)s</div>
-    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s A task statement that this page has written shows its takeaway heading. The others show the title of the guide. Each task statement opens below.</figcaption>
+    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s Each task statement shows its takeaway heading and opens below.</figcaption>
   </figure>
   <figure>
     <ol class="scen">%(scen)s</ol>
