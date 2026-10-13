@@ -1,8 +1,8 @@
 # 0035: Tab 2 leaves out the entries of 3.2 and 2.5
 
 - Date: 14 October 2026
-- Status: proposed, chosen by the assistant at night (working rule 36)
-- Text confirmed by the owner: not yet
+- Status: accepted (decision 0039, item 2)
+- Text confirmed by the owner: 14 October 2026, in the discussion (working rule 35)
 - Diagram: none
 - Changes: decision 0023, the rows of 3.2 and 2.5
 

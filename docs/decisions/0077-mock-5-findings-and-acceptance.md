@@ -1,7 +1,7 @@
 # 0077: Mock 5: the findings of step 6, and acceptance
 
 - Date: 9 October 2026
-- Status: accepted
+- Status: accepted. Decision 0081 says that option B of M5-S40 counts for ruling 2. M5-S40 stays in mock 5 as a known limit.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/12-scenarios-of-the-mocks.html` shows mock 5 as built. Diagram 08 (step 6) shows the rule for the findings.
 

@@ -1,7 +1,7 @@
 # 0026: A reader agent and word limits
 
 - Date: 13 October 2026
-- Status: accepted. Decision 0036 (proposed) records how the night of 14 October applied it to tab 1.
+- Status: accepted. Decision 0036 records how the night of 14 October applied it to tab 1.
 - Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: adds a fourth agent to decisions 0012 and 0015, for each slice

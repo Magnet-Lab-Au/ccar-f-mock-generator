@@ -1,7 +1,7 @@
 # 0012: Two agents for each part
 
 - Date: 13 October 2026
-- Status: accepted. Decision 0015 adds a whole-picture review after each slice. Decision 0028 gives rules 19 and 28 to each agent. Decision 0021 adds 6 parts. Decision 0026 adds a reader agent for each slice. Decision 0036 (proposed) records how the night of 14 October applied it to tab 1.
+- Status: accepted. Decision 0015 adds a whole-picture review after each slice. Decision 0028 gives rules 19 and 28 to each agent. Decision 0021 adds 6 parts. Decision 0026 adds a reader agent for each slice. Decision 0036 records how the night of 14 October applied it to tab 1.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 

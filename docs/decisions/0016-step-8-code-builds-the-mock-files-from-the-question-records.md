@@ -1,7 +1,7 @@
 # 0016: Step 8 of the pipeline: code builds the mock files from the question records
 
 - Date: 6 October 2026
-- Status: accepted
+- Status: accepted. Decision 0082 records that the code has no path to build the files again.
 - Text confirmed by the owner: 6 October 2026
 - Diagram: `docs/diagrams/01-pipeline-overview.html`
 

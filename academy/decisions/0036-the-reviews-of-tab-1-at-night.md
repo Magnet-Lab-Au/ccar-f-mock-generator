@@ -1,8 +1,8 @@
 # 0036: The reviews of tab 1 at night
 
 - Date: 14 October 2026
-- Status: proposed, chosen by the assistant at night (working rule 36)
-- Text confirmed by the owner: not yet
+- Status: accepted, with the second option of "Options for the owner": the missing reviews run after the figure redo (decision 0039, item 1)
+- Text confirmed by the owner: 14 October 2026, in the discussion (working rule 35)
 - Diagram: none
 - Changes: decision 0012 (a review agent for each part), decision 0015 (a whole-picture agent after each slice), decision 0026 (a reader agent after each slice, and how it reads)
 

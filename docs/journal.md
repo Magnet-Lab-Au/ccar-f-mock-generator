@@ -2,6 +2,15 @@
 
 One entry for each work session. Newest entry first.
 
+## 14 October 2026, morning: the answers of the owner to the morning report
+
+- The owner went through the open items of the night, one question at a time (academy decision 0039).
+- The owner accepted decision 0080. The branch `fix-owner-reason` is merged into `main` (commit bec0418). All 234 tests pass.
+- Decision 0081: ruling 2 counts an option that acts only when the model is highly confident (the reading of M1-S49). M5-S40 stays in mock 5 as a known limit, with no rewrite and no API cost.
+- Decision 0082: the code has no path to build the files of a mock again. The build guide, step 8, is corrected.
+- Decision 0083: no more mocks for now.
+- The owner confirmed that the owner filled the 20 good marks of round 1 of mock 4. Decision 0069 already says that the owner did not read those 20 questions.
+
 ## 14 October 2026, night: the parts of the owner for each try (branch fix-owner-reason)
 
 - The academy fact agent of step 5 found that the reason of the owner reaches only the first try of a new start (`request_for` in `src/control.py`). An independent agent confirmed it. The same gap applies after a bad mark and a rewrite.

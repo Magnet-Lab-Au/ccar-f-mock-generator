@@ -2,6 +2,14 @@
 
 One entry for each work session. Newest entry first.
 
+## 14 October 2026, morning: the answers to the morning report
+
+- The owner asked for a short version of the morning report and for the number of figures with an animation. Only 1 of the 56 figures has one: the stepper of Fig. 1 of part 1.1, from the sample.
+- The owner asked if the figures were made with the plugin visual-explainer. They were not: the assistant did not load its skill at night, and the fact sheets name no figure type from its table. The morning report did not say this. Decision 0037: the figures are made again with the plugin, after a figure plan that the owner checks.
+- The owner went through the open items of the night, one question at a time. The 27 answers are in decision 0039. Decisions 0035 and 0036 are accepted. Decision 0038: a single name can appear in the running text.
+- Mock decision 0080 is accepted and merged into `main` (bec0418). The merge broke two code excerpts of tab 2, step 5. They now show the code at the tag `mocks-v2`, and a new card shows the fix (b044081). `check-pages.js` prints "All checks passed."
+- The assistant checked the Claude API documentation on citations: it says nothing about citations with a forced tool call (decision 0039, item 14).
+
 ## 12 and 13 October 2026, the start of the MVP discussion
 
 - The owner gave the MVP brief from the Cowork discussion. It is `brief.md`.

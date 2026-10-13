@@ -1,8 +1,8 @@
 # 0080: Each try of a new start gets the parts of the owner
 
 - Date: 14 October 2026
-- Status: proposed, chosen by the assistant at night (working rule 36). On the branch `fix-owner-reason`, not merged.
-- Text confirmed by the owner: not yet
+- Status: accepted. Merged into `main` on 14 October 2026 (commit bec0418).
+- Text confirmed by the owner: 14 October 2026, in the discussion (academy decision 0039, item 3)
 - Diagram: `docs/diagrams/07-step-5-try-again.html` (step 5)
 - Names: decision 0074. Decision 0074 does not change (working rule 26).
 

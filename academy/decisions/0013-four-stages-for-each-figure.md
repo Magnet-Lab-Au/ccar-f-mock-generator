@@ -1,7 +1,7 @@
 # 0013: Four stages for each figure
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0037 makes the figures again with the plugin, because the night of 14 October did not do the plan stage fully.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 

@@ -1,7 +1,7 @@
 # 0006: At most one wrong option on self-reported confidence in each scenario
 
 - Date: 6 October 2026
-- Status: accepted
+- Status: accepted. Decision 0081 says how ruling 2 reads an option that acts only when the model is highly confident.
 - Text confirmed by the owner: 6 October 2026
 - Diagram: none
 

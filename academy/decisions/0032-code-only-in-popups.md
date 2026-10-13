@@ -1,7 +1,7 @@
 # 0032: Code only in popups
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0038 says that a single name can appear in the running text.
 - Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0004 (where code appears)

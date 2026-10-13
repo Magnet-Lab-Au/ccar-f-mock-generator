@@ -1,7 +1,7 @@
 # 0023: The task statements of the build in Claude Code
 
 - Date: 13 October 2026
-- Status: accepted. Decision 0035 (proposed) leaves out the entries of 3.2 and 2.5.
+- Status: accepted. Decision 0035 leaves out the entries of 3.2 and 2.5.
 - Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 - Changes: decision 0010, the table of the build in Claude Code
