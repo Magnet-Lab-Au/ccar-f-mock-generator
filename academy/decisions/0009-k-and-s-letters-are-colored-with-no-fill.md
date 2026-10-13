@@ -1,8 +1,8 @@
 # 0009: K and S letters are colored, with no fill
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: decision 0008, two of its rules
 
