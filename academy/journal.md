@@ -42,3 +42,4 @@ One entry for each work session. Newest entry first.
 - The owner confirmed the text of decision 0010. The status lines of decisions 0002 and 0004 now name it.
 - The owner asked which documents the pages must use, because documents can conflict. The assistant listed them in five groups. The owner accepted an order of trust and four checks for each page: a fact sheet with each conflict for the owner, numbers from a script, a source card for each fact, and an independent review. Decision 0011 (proposed) records them.
 - The owner confirmed the text of decision 0011.
+- The owner accepted two new agents for each part: a fact agent and a review agent, both Opus 5.5. Decision 0012 records it. The owner accepted it in the discussion, so its text was written as accepted.
