@@ -164,7 +164,7 @@ DEVIATION = ("Claude Opus 5.5, the model of this build, and three other current 
 EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several "
            "schemas exist and the document type is unknown (4.3-S2), and a forced tool when one extraction must run first (4.3-S3).")
 lines_of("academy/sources/2026-10-14-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
-FIX_USE = {"5.5-K2": ("For mock 1 the owner reads all 60, so that is not a sample.", "Mocks 1 and 5 put all 60 questions in the file, so that is not a sample. The reader was the owner for mocks 1 to 3 and a Claude model for mocks 4 and 5."), "4.3-K2": ("The current models accept only \"auto\" and \"none\".", "Claude Opus 5.5 and three other current models accept only \"auto\" and \"none\" (the Anthropic documentation, Define tools).")}
+FIX_USE = {"5.5-K2": ("For mock 1 the owner reads all 60, so that is not a sample.", "Mocks 1 and 5 put all 60 questions in the file, so that is not a sample. The reader was the owner for mocks 1 to 3 and a Claude model for mocks 4 and 5.")}
 lines_of(S5, "The reason: the newest Claude models reject it.")
 
 

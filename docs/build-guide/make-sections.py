@@ -202,6 +202,7 @@ The test put two questions with the same scene into a set of 15 questions of one
 ''' % ('Call 6a found them.' if found else 'Call 6a did not find them.'), [
     ('4.6-K3', 'Written for the review of code in many files. Here: steps 3 and 4 are the pass for each question, and this step is the pass across the questions.'),
     ('4.6-S2', 'The same context and the same use.'),
+    ('1.6-K2', 'Written for the review of code in many files. Here: the checks are a fixed chain. Steps 3 and 4 check each question, and this step starts only after all 60 questions passed them.'),
     ('4.1-K1', 'Written for the review of code. Here: "the same scene" has an exact definition: the same problem and the same correct action.'),
     ('5.3-K4', 'Written for errors between agents. Here: a call that fails, or an answer that is not valid, never counts as a pass.'),
     ('4.3-K1', 'Written for the extraction of data. Each call answers in a fixed form, sent as structured outputs (see the deviation above).'),
