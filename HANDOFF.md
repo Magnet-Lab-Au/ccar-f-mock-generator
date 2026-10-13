@@ -1,13 +1,62 @@
 # Handoff: start here
 
-Date: 5 October 2026. Updated on 9 October 2026, and on 13 October 2026 for the academy work. This file gives a new session what it needs to continue.
+Date: 5 October 2026. Updated on 9 October 2026, and on 13 and 14 October 2026 for the academy work. This file gives a new session what it needs to continue.
 
 ## The academy work (from 12 October 2026)
 
 From 12 October 2026 the sessions build the teaching pages of the portal: "Exam guide breakdown" and "Behind the mocks". This work has its own records in `academy/` (academy decision 0007): `academy/README.md`, `academy/brief.md`, `academy/journal.md` and `academy/decisions/`. For this work, the records of the checklist in `CLAUDE.md` are the files in `academy/`, not `docs/journal.md` and `docs/decisions/`.
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
-- Next step: build slice 1 (academy decision 0022): the top of tab 2 and step 5.
+
+### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
+
+Status of this report: a first version of 02:07. An independent agent checks the final version before 08:45.
+
+**Done on `main`** (commits from 1cbae17 to caeb175, all local, no push):
+
+- Slice 2: steps 0 to 4 and 6 to 8 of tab 2 are written. Each step had a fact agent, a review agent and one round of fixes. Then a whole-picture agent (30 items, 26 fixed) and a reader agent. The reader's summaries agree with the intended takeaways of all 8 steps.
+- Each closed heading of a step names its task statements (night plan choice, 1cbae17).
+- Slice 3: the build in Claude Code, with 4 parts: 3.1, 1.7, 4.6 (with Fig. 4.6-1, the three document checks) and 3.4 (no example). One review, one whole-picture agent (18 items, all fixed) and one reader agent (summaries agree with the takeaways of all 4 parts).
+- The check `check-pages.js` prints "All checks passed." No part is over its word limit. The links to tab 1 are "pending", because tab 1 is not built.
+- Dated copies of 6 documentation pages are in `academy/sources/` (decision 0030).
+- Screenshots to look at: `academy/screenshots/slice-2/` (steps 0 to 8) and `academy/screenshots/slice-3/`, in light and dark, at 1280 and 390 pixels.
+
+**Done on the branch `fix-owner-reason`** (worktree `../ccar-f-fix-owner-reason`, commits 46ed3fd and bd63ff7, not merged):
+
+- In `src/control.py`, each try of a new start now gets the parts of the owner: the owner's reason, and after a rewrite also the step 6 finding and the other questions. Before, only the first try got them.
+- 6 new tests. The test run prints "Ran 234 tests" and "OK". No test makes a model call. A replay with no model call shows that M5-S38-T5 now gets the rules B9 and owner. Before, it got only B9.
+- The build guide step 5, diagram 07 and `docs/journal.md` are updated on the branch. An independent review found no bug.
+- Mock decision number 0080 is used on the branch only.
+- A known limit: the owner's reason now sits next to the latest failed try, not next to the question that the owner judged. A letter in the reason can point to the wrong option.
+- If the owner merges: tab 2 step 5 says "The code still works this way." That sentence must change.
+
+**Decisions of the night:**
+
+- Academy decision 0034 (step 7 is named "The questions are marked" on tab 2) is now accepted. The owner accepted it before the night, and an agent checked its text (working rule 35).
+
+**Decisions that the assistant chose at night (working rule 36):**
+
+- Mock decision 0080: each try of a new start gets the parts of the owner (the fix above). The owner chooses whether to merge.
+- Academy decision 0035: tab 2 leaves out the entries of 3.2 (skills) and 2.5 (built-in tools), which decision 0023 named. For 2.5, no record says which tool did what. For 3.2, no record shows that the build used the two named skills, and they are outside the repository. The assistant recommends no 3.2 entry.
+
+**Waiting for the owner:**
+
+1. The reader agent of slice 2 proposes the takeaway in each closed heading. This is a new design.
+2. The Depth label "what went wrong, and the fix" does not fit parts 1.7, 4.6 and 3.4 of slice 3, which show no fix of the process.
+3. Slice 3 does not explain project words such as "the owner", "slice" and rule numbers inside the section.
+4. Whole-picture items of slice 2 that are not fixed: the "Beyond the exam" label on two small product facts, "today" on the rule counts, one cross-reference, and the scheme of the popup IDs.
+5. Found in the records of the mock builder, not changed at night:
+   - The build guide, step 2 line 45, says "The current models accept only auto and none". The documentation names four models: Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1. Tab 2 corrects it in a popup.
+   - Ruling 2 was applied two ways on point 4.1-S3: M1-S49-T1 option D counted (rewrite D008), M5-S40-T1 option B did not (mock decision 0077).
+   - No record names who filled the 20 good marks of round 1 of mock 4.
+   - `runs/mock-0N/build.json` holds absolute paths with the user name. The repository becomes public.
+   - The build guide and mock decision 0016 say that code builds the files again after a change. The code has no such path.
+6. The commit message of f62b523 says that the links of 3.2 and 2.5 "do not hold". For 3.2 that is too strong. The journal and decision 0035 have the correct reason.
+7. The open question from before: will more mocks be built?
+
+- Slices 4 to 8 (tab 1): in progress. The owner said at 02:06: "Do as many slices as you can. Go all the way". This report gets their state before 08:45.
+
+- Next step: the owner reads this report, decides items 1 to 7 and the merge of the fix. Then the next slice of decision 0022.
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
