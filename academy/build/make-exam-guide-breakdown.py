@@ -1579,42 +1579,45 @@ PART["4.2"] = (overview("4.2", "Few-shot examples fix what instructions alone le
                 cf("ts-4-2-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
                    "The documentation calls them one of the most reliable ways. The exam uses the guide."),
                 cf("ts-4-2-f2", D(ICON, "Provide examples of your desired output. This is more effective than abstract instructions.", "Increase output consistency"),
-                   "An example of the output is more effective than abstract instructions."))
+                   "The documentation also says that an example of the output is more effective than abstract instructions."))
             + "<p><b>The format.</b> %s</p>" %
                 cf("ts-4-2-s2", gx("Including few-shot examples that demonstrate specific desired output format (location, issue, severity, suggested fix) to achieve consistency", "Exam guide, 4.2-S2"),
                    "The examples show the exact format, such as location, issue, severity and suggested fix (4.2-S2).")
             + "<p><b>Hard cases.</b> %s %s %s</p>" % (
                 cf("ts-4-2-k2", gx("The role of few-shot examples in demonstrating ambiguous-case handling (e.g., tool selection for ambiguous requests, branch-level test coverage gaps)", "Exam guide, 4.2-K2"),
-                   "Examples show how to handle ambiguous cases, such as the choice of a tool for an unclear request (4.2-K2). Part 2.1 shows that a good tool description comes first."),
+                   "Examples show how to handle ambiguous cases, such as the choice of a tool for an unclear request (4.2-K2).") + " " + cf("ts-4-2-c3", gx("Few-shot examples (A) add token overhead without fixing the underlying issue.", "Exam guide, sample question 2"),
+                   "For the choice of a tool, the guide itself puts a good tool description first (part 2.1)."),
                 cf("ts-4-2-f7", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
                    "The documentation gives 3 to 5 examples, not 2 to 4. The exam uses the guide."),
                 cf("ts-4-2-f4", D(PBP, "* **Diverse:** Cover edge cases and vary enough that Claude doesn't pick up unintended patterns.", "Prompting best practices"),
-                   "The examples cover edge cases and vary, so that Claude does not copy a pattern by accident."))
+                   "The documentation advises examples that cover edge cases and vary, so that Claude does not copy a pattern by accident."))
             + "<p><b>New patterns.</b> %s %s</p>" % (
                 cf("ts-4-2-k3", gx("How few-shot examples enable the model to generalize judgment to novel patterns rather than matching only pre-specified cases", "Exam guide, 4.2-K3"),
                    "The guide says that examples let Claude carry its judgment to new patterns, not only match the cases shown (4.2-K3)."),
                 cf("ts-4-2-f8", D(PBP, "Claude is smart enough to generalize from the explanation.", "Prompting best practices"),
-                   "The documentation ties this to the reason that you explain."))
-            + "<p><b>False positives and extraction.</b> %s %s %s</p>" % (
+                   "The documentation says this about an instruction with its reason, not about examples: Claude generalizes from the explanation."))
+            + "<p><b>False positives and extraction.</b> %s %s %s %s</p>" % (
                 cf("ts-4-2-s3", gx("Providing few-shot examples distinguishing acceptable code patterns from genuine issues to reduce false positives while enabling generalization", "Exam guide, 4.2-S3"),
                    "Examples that separate acceptable code from real issues reduce false positives (4.2-S3)."),
                 cf("ts-4-2-k4", gx("The effectiveness of few-shot examples for reducing hallucination in extraction tasks (e.g., handling informal measurements, varied document structures)", "Exam guide, 4.2-K4"),
                    "In extraction, examples reduce hallucination (4.2-K4)."),
                 cf("ts-4-2-s5", gx("Adding few-shot examples showing correct extraction from documents with varied formats to address empty/null extraction of required fields", "Exam guide, 4.2-S5"),
-                   "Examples of documents with varied formats fix required fields that come back empty (4.2-S4, 4.2-S5). Only the guide states these three points."))
+                   "Examples of documents with varied formats fix required fields that come back empty (4.2-S5)."),
+                cf("ts-4-2-s4", gx("Using few-shot examples to demonstrate correct handling of varied document structures (inline citations vs bibliographies, methodology sections vs embedded details)", "Exam guide, 4.2-S4"),
+                   "Examples also show how to handle varied structures, such as inline citations against a bibliography (4.2-S4). Only the guide states these four points."))
             + exam_tests("4.2", [("Few-shot prompting: ambiguous scenario targeting, format consistency, false positive reduction", "Among the topics, the guide names")])
             + guide_text("4.2"), "ts-4-2")
     + level("depth",
             beyond([cf("ts-4-2-b1", D(ICON, "If you need Claude to always output valid JSON that conforms to a specific schema, use [Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) instead of the prompt engineering techniques below.", "Increase output consistency"),
                        "For JSON that must always fit a schema, the documentation uses structured outputs, not examples (part 4.3)."),
-                    cf("ts-4-2-b2", D(DEFT, "Examples are included in the prompt alongside your tool schema, showing Claude concrete patterns for well-formed tool calls.", "Define tools"),
-                       "A tool definition can carry its own examples of well-formed calls. They show how to fill a call, not which tool to choose."),
+                    cf("ts-4-2-b2", D(DEFT, "Examples are included in the prompt alongside your tool schema, showing Claude concrete patterns for well-formed tool calls. This helps Claude understand when to include optional parameters, what formats to use, and how to structure complex inputs.", "Define tools"),
+                       "A client tool can carry its own examples of well-formed calls, which show how to fill a call. In our reading, they do not help with the choice of a tool."),
                     cf("ts-4-2-b3", D(PBP, "You can also ask Claude to evaluate your examples for relevance and diversity, or to generate additional ones based on your initial set.", "Prompting best practices"),
                        "Claude can check your examples for relevance and diversity, or write more of them.")])
             + code_pop_text("ts-4-2-code", "The code: an example with its reason", "A few-shot example with a rationale", FB51, EX42, "Prompting Claude Fable 5.1",
-                            "Written for Claude Fable 5.1: the example has the request, the response, and a rationale that says why it is correct.")
-            + tab2_links("4.2") + "<p>%s</p>" % cf("ts-4-2-s2use", excerpt(step_file(2), "A limit: the examples have no reason for each option, so they do not show the complete form.", "Build guide, step 2"),
-                                                    "Step 2 gives the writer 3 sample questions of the guide as examples of the form. They have no reason for each option, so they do not show the complete form."), "ts-4-2"))
+                            "Written for Claude Fable 5.1, to stop it from copying source text without quotation marks: the example has the request, the response, and a rationale that says why it is correct.")
+            + tab2_links("4.2") + "<p>%s %s</p>" % (cf("ts-4-2-s2use11", excerpt(step_file(2), "3 sample questions of the guide as examples of the form", "Build guide, step 2"), "Step 2 gives the writer 3 sample questions of the guide as examples of the form."), cf("ts-4-2-s2use", excerpt(step_file(2), "A limit: the examples have no reason for each option, so they do not show the complete form.", "Build guide, step 2"),
+                                                    "They have no reason for each option, so they do not show the complete form.")), "ts-4-2"))
 
 
 # ----- part 4.1 (facts: academy/facts/ts-4-1.md) -----
@@ -1630,7 +1633,7 @@ FIG41 = figure("4.1-1", 890, 320,
                         edge("M540 225H355V120", "disable, fix the prompt", 445, 216, cls="is-hot"),
                         '<text class="ve-lab" x="20" y="300">not: &#8220;be conservative&#8221; or &#8220;only high-confidence&#8221;</text>',
                         box(20, 40, 170, 70, ["Candidate", "findings"]),
-                        box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style", cls="who-model"),
+                        box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style"),
                         box(520, 30, 160, 90, ["Severity"], sub="code examples"),
                         box(730, 30, 140, 90, ["Posted", "findings"], cls="try ok"),
                         box(540, 190, 250, 70, ["A noisy category?"], sub="false positives lose trust")]),
@@ -1646,28 +1649,28 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
     + level("explanation",
             "<p><b>Explicit criteria.</b> %s %s %s</p>" % (
                 cf("ts-4-1-k1", gx("The importance of explicit criteria over vague instructions (e.g., \"flag comments only when claimed behavior contradicts actual code behavior\" vs \"check that comments are accurate\")", "Exam guide, 4.1-K1"),
-                   "An explicit criterion, such as &ldquo;flag a comment only when its claim contradicts the code&rdquo;, works better than &ldquo;check that comments are accurate&rdquo; (4.1-K1)."),
+                   "An explicit criterion, such as &ldquo;flag comments only when claimed behavior contradicts actual code behavior&rdquo;, works better than &ldquo;check that comments are accurate&rdquo; (4.1-K1)."),
                 cf("ts-4-1-f1", D(PBP, "Claude responds well to clear, explicit instructions. Being specific about your desired output can help enhance results.", "Prompting best practices"),
                    "The documentation agrees: Claude responds well to clear, explicit instructions."),
                 cf("ts-4-1-f3", D(CREV, "**Verification bar**: require evidence before a class of finding is posted.", "Claude Code, Code Review"),
-                   "The Code Review of Claude Code can require evidence before a class of finding is posted."))
+                   "Code Review of Claude Code, a research preview for Team and Enterprise plans, can require evidence before a class of finding is posted."))
             + "<p><b>Vague words fail.</b> %s %s</p>" % (
                 cf("ts-4-1-k2", gx("How general instructions like \"be conservative\" or \"only report high-confidence findings\" fail to improve precision compared to specific categorical criteria", "Exam guide, 4.1-K2"),
                    "The guide says that &ldquo;be conservative&rdquo; or &ldquo;only report high-confidence findings&rdquo; does not improve precision (4.1-K2)."),
                 cf("ts-4-1-f5", D(O5, "If your review prompt says \"only report high-severity issues\" or \"be conservative,\" the model may follow that instruction literally and report less; ask it to report everything and filter in a separate pass instead.", "Prompting Claude Opus 5"),
-                   "The documentation for Claude Opus 5 gives another reason: the model may report less. It advises to report everything and to filter in a separate pass."))
-            + "<p><b>Report and skip.</b> %s</p>" %
+                   "The documentation for Claude Opus 5 gives another reason: the model may report less. It advises to report everything and to filter in a separate pass. The exam uses the guide."))
+            + "<p><b>Report and skip.</b> %s %s</p>" % (cf("ts-4-1-f9", D(CREV, "* **`REVIEW.md`**: review-only instructions, given to the agents that find and verify findings and consulted by the agents that rank and report them. Use it to say what your team wants flagged, at what severity, and how findings are reported.", "Claude Code, Code Review"), "In Code Review, a file REVIEW.md says what the team wants flagged, and at what severity."),
                 cf("ts-4-1-f10", D(CREV, "**Skip rules**: list paths, branch patterns, and finding categories where Claude should post no findings.", "Claude Code, Code Review"),
-                   "In Code Review, skip rules name the paths and categories with no findings.")
+                   "Its skip rules name the paths and categories with no findings."))
             + "<p><b>Trust.</b> %s Only the guide states this point and 4.1-S2.</p>" %
                 cf("ts-4-1-k3", gx("The impact of false positive rates on developer trust: high false positive categories undermine confidence in accurate categories", "Exam guide, 4.1-K3"),
                    "A category with many false positives makes developers doubt the accurate categories too (4.1-K3).")
             + "<p><b>Severity.</b> %s %s</p>" % (
                 cf("ts-4-1-s3", gx("Defining explicit severity criteria with concrete code examples for each severity level to achieve consistent classification", "Exam guide, 4.1-S3"),
-                   "Explicit severity criteria, with a code example for each level, make the classification consistent (4.1-S3)."),
+                   "The guide says that explicit severity criteria, with a code example for each level, make the classification consistent (4.1-S3)."),
                 cf("ts-4-1-f12", D(CREV, "State explicitly which classes of finding are Important and which are Nit at most.", "Claude Code, Code Review"),
-                   "Code Review defines its levels by classes of finding, in prose with no code. The exam uses the guide."))
-            + '<div><h4 class="gh2">The exam tests</h4><p>No line of section 17 names 4.1. %s %s</p></div>' % (
+                   "The documentation says to state in REVIEW.md which classes are Important and which are Nit, and its example uses prose, with no code (see the popup). The exam uses the guide."))
+            + '<div><h4 class="gh2">The exam tests</h4><p>No line of section 17 is for 4.1 alone. %s %s</p></div>' % (
                 cf("ts-4-1-x0", gx("You need to design prompts that provide actionable feedback and minimize false positives.", "Exam guide, scenario 5"),
                    "Scenario 5, Claude Code for continuous integration, asks for prompts that give actionable feedback and few false positives."),
                 mock_count("4.1"))
@@ -1676,13 +1679,13 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
             beyond([cf("ts-4-1-b1", D(CREV, "At `low`, the review reports the findings it's most confident in, so you see fewer false positives.", "Claude Code, Code Review"),
                        "The command /code-review at low effort reports only the findings that it is most confident in: a filter by confidence, which the guide rejects."),
                     cf("ts-4-1-b2", D(CREV, "Length has a cost: a long `REVIEW.md` dilutes the rules that matter most.", "Claude Code, Code Review"),
-                       "A long REVIEW.md weakens the rules that matter most."),
+                       "In Code Review, a long REVIEW.md weakens the rules that matter most."),
                     cf("ts-4-1-b3", D(CREV, "The review follows your `CLAUDE.md` like any Claude Code session, but it doesn't read [`REVIEW.md`](#review-md).", "Claude Code, Code Review"),
                        "The local /code-review follows CLAUDE.md, but it does not read REVIEW.md.")])
             + code_pop_text("ts-4-1-code", "The code: severity criteria in a REVIEW.md", "Severity criteria for a code review", CREV, REV41, "Claude Code, Code Review",
                             "Code Review is in research preview for Team and Enterprise plans.")
             + tab2_links("4.1") + "<p>%s</p>" % cf("ts-4-1-use", excerpt(step_file(4), "Written for the review of code. Here: one result for each exact rule, not one total verdict.", "Build guide, step 4"),
-                                                    "Steps 2, 4 and 6 use only 4.1-K1, for exact rules of a question, not for a review of code."), "ts-4-1"))
+                                                    "The steps use 4.1-K1 for exact rules of a question, not for a review of code: for example, step 4 gives one result for each exact rule, not one total verdict."), "ts-4-1"))
 
 
 # ----- part 4.3 (facts: academy/facts/ts-4-3.md) -----
