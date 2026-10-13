@@ -1173,7 +1173,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                        "The Agent SDK reads the same CLAUDE.md files as the CLI, unless the option settingSources (setting_sources in Python) turns that off.")])
             + code_pop_text("ts-3-1-code", "The code: imports in a CLAUDE.md", "Imports with @ and a path", MEMD, IMP31, "Claude Code, Memory",
                             "Each @ and a path imports a file into the context at launch.")
-            + tab2_links("3.1") + "<p>%s %s</p>" % (cf("ts-3-1-a02", excerpt(A02, "It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
+            + tab2_links("3.1") + "<p>%s %s</p>" % (cf("ts-3-1-a02", excerpt(A02, "The tables of guide points in the build guide use points of only 12 of the 30 task statements: 1.1, 1.3, 1.4, 1.6, 4.1, 4.2, 4.3, 4.4, 4.6, 5.3, 5.5 and 5.6. It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
                                                     "No step of the mock builder uses 3.1, and this is a deliberate choice."),
                                                  cf("ts-3-1-cc", excerpt("CLAUDE.md", "@WORKING-RULES.md", "CLAUDE.md of the project"),
                                                     "The build of the mock builder in Claude Code used a project CLAUDE.md with one import.")), "ts-3-1"))
@@ -1325,19 +1325,19 @@ PMODE, MCONF = "claude-code-docs-permission-modes", "claude-code-docs-model-conf
 A23 = glob.glob(os.path.join(ROOT, "academy/decisions/0023-*.md"))[0][len(ROOT) + 1:]
 FIG34 = figure("3.4-1", 890, 320,
                "A change that is big or unclear goes through plan mode: Claude explores and reads with no edits, writes a plan, and you approve it. Then Claude implements the plan. "
-               "A small and clear change goes to direct execution. The Explore subagent can do the verbose discovery and return only a summary.",
-               "".join(['<text class="ve-lab" x="460" y="20">plan mode: edits wait for your approval</text>',
+               "A small and clear change goes to direct execution. Outside plan mode, the Explore subagent can do a verbose discovery and return only a summary.",
+               "".join(['<text class="ve-lab" x="460" y="20">plan mode: edits wait for approval (usually)</text>',
                         edge("M170 165H220"), edge("M410 140H435V60H460", "yes", 446, 100, anchor="r"),
                         edge("M590 60H605"), edge("M720 60H735"),
                         edge("M802 90V230", "implement the plan", 718, 165),
                         edge("M315 210V265H700", "no: small and clear", 505, 256),
-                        edge("M520 90V130", cls="is-async"),
+
                         box(20, 130, 150, 70, ["A change"]),
                         box(220, 120, 190, 90, ["Big or", "unclear?"]),
                         box(460, 30, 130, 60, ["Explore"], sub="read, no edits", cls="who-model"),
                         box(605, 30, 115, 60, ["Plan"], sub="Claude writes", cls="who-model"),
                         box(735, 30, 135, 60, ["Approve"], sub="you decide"),
-                        box(440, 130, 190, 60, ["Explore subagent"], sub="returns a summary", cls="who-model"),
+                        box(440, 130, 190, 60, ["Explore subagent"], sub="outside plan mode", cls="who-model"),
                         box(700, 230, 170, 70, ["Direct", "execution"], cls="try ok")]),
                "%s %s" % (cf("ts-3-4-k1", gx("Plan mode is designed for complex tasks involving large-scale changes, multiple valid approaches, architectural decisions, and multi-file modifications", "Exam guide, 3.4-K1"),
                              "Plan mode is for complex tasks: large changes, several valid approaches, architectural decisions, many files (3.4-K1)."),
@@ -1345,27 +1345,27 @@ FIG34 = figure("3.4-1", 890, 320,
                              "In plan mode, Claude reads and proposes, but does not edit the source.")))
 
 PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
-                        "In plan mode, Claude reads the code and proposes a plan, and the edits wait until you approve it. "
+                        "In plan mode, Claude reads the code and proposes a plan, and in most sessions the edits wait until you approve it. "
                         "Use it for large, multi-file or architectural changes, and execute a small, clear change directly.",
                         FIG34)
     + level("explanation",
             "<p><b>When to plan.</b> %s %s</p>" % (
                 cf("ts-3-4-s1", gx("Selecting plan mode for tasks with architectural implications (e.g., microservice restructuring, library migrations affecting 45+ files, choosing between integration approaches with different infrastructure requirements)", "Exam guide, 3.4-S1"),
-                   "The guide plans first for tasks with architectural implications, such as a library migration that touches more than 45 files (3.4-S1)."),
+                   "The guide plans first for tasks with architectural implications, such as a library migration that touches 45 or more files (3.4-S1)."),
                 cf("ts-3-4-f1", D(BEST, "Planning is most useful when you're uncertain about the approach, when the change modifies multiple files, or when you're unfamiliar with the code being modified.", "Claude Code, Best practices"),
                    "The documentation plans first when the approach is uncertain, the change touches many files, or the code is not familiar."))
             + "<p><b>When to go direct.</b> %s %s %s</p>" % (
                 cf("ts-3-4-k2", gx("Direct execution is appropriate for simple, well-scoped changes (e.g., adding a single validation check to one function)", "Exam guide, 3.4-K2"),
-                   "Direct execution suits a simple change with a clear scope, such as one validation check in one function (3.4-K2, 3.4-S2)."),
+                   "Direct execution suits a simple change with a clear scope, such as one validation check in one function (3.4-K2)."),
                 cf("ts-3-4-f2", D(BEST, "If you could describe the diff in one sentence, skip the plan.", "Claude Code, Best practices"),
                    "The documentation gives a test: if you can describe the diff in one sentence, skip the plan."),
                 cf("ts-3-4-f3", D(BEST, "For tasks where the scope is clear and the fix is small (like fixing a typo, adding a log line, or renaming a variable) ask Claude to do it directly.", "Claude Code, Best practices"),
-                   "It does not use the term &ldquo;direct execution&rdquo;: it says to ask Claude to do it directly."))
+                   "It does not use the term &ldquo;direct execution&rdquo;: it says to ask Claude to do it directly. The exam uses the term of the guide."))
             + "<p><b>Safe exploration.</b> %s %s</p>" % (
                 cf("ts-3-4-k3", gx("Plan mode enables safe codebase exploration and design before committing to changes, preventing costly rework", "Exam guide, 3.4-K3"),
                    "The guide says that plan mode makes the exploration safe before any change, and so prevents costly rework (3.4-K3)."),
                 cf("ts-3-4-f5", D(PMODE, "Except in interactive terminal sessions with [bypass permissions available](#skip-all-checks-with-bypasspermissions-mode), edits stay blocked until you approve the plan.", "Claude Code, Permission modes"),
-                   "In Claude Code, the edits stay blocked until you approve the plan, except in an interactive terminal session with bypass permissions available. The exam uses the guide."))
+                   "In Claude Code, the edits stay blocked until you approve the plan, except in an interactive terminal session where the mode that skips all checks is available. The exam uses the guide."))
             + "<p><b>Plan, then execute.</b> %s %s</p>" % (
                 cf("ts-3-4-s4", gx("Combining plan mode for investigation with direct execution for implementation (e.g., planning a library migration, then executing the planned approach)", "Exam guide, 3.4-S4"),
                    "Plan mode investigates, and direct execution implements, for example a planned library migration (3.4-S4)."),
@@ -1373,25 +1373,26 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
                    "In Claude Code, you approve the plan, and Claude codes against it."))
             + "<p><b>The Explore subagent.</b> %s %s %s</p>" % (
                 cf("ts-3-4-s3", gx("Using the Explore subagent for verbose discovery phases to prevent context window exhaustion during multi-phase tasks", "Exam guide, 3.4-S3"),
-                   "The Explore subagent takes the verbose discovery, so the main context does not fill up, and returns a summary (3.4-K4, 3.4-S3)."),
+                   "The Explore subagent takes the verbose discovery, so the main context does not fill up (3.4-S3).") + " " + cf("ts-3-4-k4", gx("The Explore subagent for isolating verbose discovery output and returning summaries to preserve main conversation context", "Exam guide, 3.4-K4"),
+                   "It returns a summary (3.4-K4)."),
                 fact("ts-2-5-b2", "Claude delegates to Explore when it searches without making changes."),
-                cf("ts-3-4-c3", D(CCS, "it delegates research to the Plan subagent so that exploration output stays in a separate context window while the main conversation remains read-only.", "Claude Code, Subagents"),
+                cf("ts-3-4-c3", D(CCS, "When you're in plan mode and Claude needs to understand your codebase, it delegates research to the Plan subagent so that exploration output stays in a separate context window while the main conversation remains read-only.", "Claude Code, Subagents"),
                    "In plan mode, Claude Code gives the research to a different built-in subagent, Plan. The exam uses the guide."))
             + exam_tests("3.4", [("Plan mode vs direct execution: complexity assessment, architectural decisions, single-file changes", "Among the topics, the guide names")])
             + "<p>%s</p>" % cf("ts-3-4-q5", gx("Enter plan mode to explore the codebase, understand dependencies, and design an implementation approach before making changes.", "Exam guide, sample question 5, answer A"),
-                               "Sample question 5 of the guide fits 3.4: for a move from a monolith to microservices, its correct answer enters plan mode.")
+                               "Sample question 5 of the guide fits 3.4: its correct answer enters plan mode.")
             + guide_text("3.4"), "ts-3-4")
     + level("depth",
             beyond([cf("ts-3-4-b1", D(LCB, "Claude Code re-injects the plan file after each compaction, so the plan survives where conversation history may not", "Claude Code, Large codebases"),
-                       "In Claude Code, the plan survives a compaction: Claude Code puts the plan file back after each one."),
+                       "In Claude Code, the plan survives a compaction, the summary of a long session: Claude Code puts the plan file back after each one."),
                     cf("ts-3-4-b2", D(PMODE, "Press `Ctrl+G` to open the proposed plan in your default text editor and edit it directly before Claude proceeds.", "Claude Code, Permission modes"),
-                       "You can edit the proposed plan in your editor before Claude starts."),
+                       "In Claude Code, you can edit the proposed plan in your editor before Claude starts."),
                     cf("ts-3-4-b3", D(MCONF, "Special mode that uses `opus` during plan mode, then switches to `sonnet` for execution", "Claude Code, Model configuration"),
-                       "The model alias opusplan uses Opus to plan and Sonnet to execute, with some providers as exceptions.")])
+                       "In Claude Code, the model alias opusplan uses Opus to plan and Sonnet to execute.")])
             + code_pop_text("ts-3-4-code", "The code: start Claude Code in plan mode", "Start a session in plan mode", PMODE, "claude --permission-mode plan", "Claude Code, Permission modes",
                             "Or press Shift+Tab in a session, or start one prompt with /plan.")
             + tab2_links("3.4") + "<p>No step of the mock builder uses 3.4. %s %s</p>" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice.") + " " + cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
-                                                     cf("ts-3-4-a23", excerpt(A23, "The build did not use plan mode, so 3.4 has no example.", "Academy decision 0023"),
+                                                     cf("ts-3-4-a23", excerpt(A23, "3.4: no example. The entry says that the build used a \"discuss first\" rule, not plan mode.", "Academy decision 0023"),
                                                         "The build in Claude Code used a rule to discuss first, not plan mode.")), "ts-3-4"))
 
 
@@ -1401,14 +1402,14 @@ PLIB = "claude-code-docs-prompt-library"
 INT35 = "\n".join(read(SRC % BEST).split("\n")[345:350])
 assert INT35.startswith("I want to build [brief description].") and INT35.endswith("SPEC.md.")
 FIG35 = figure("3.5-1", 890, 320,
-               "An interview comes first, where Claude asks questions. Then the tests are written first. Claude implements and runs the tests. "
+               "In an unfamiliar domain, an interview can come first, where Claude asks questions. Then the tests are written first. Claude implements and runs the tests. "
                "If all pass, the work is done. If not, the failures go back to Claude: interacting issues in one message, independent issues one at a time.",
-               "".join([edge("M210 65H260"), edge("M430 65H480"), edge("M650 65H700"),
+               "".join([edge("M210 65H260", cls="is-async"), edge("M430 65H480"), edge("M650 65H700"),
                         edge("M785 100V180", "all pass", 793, 145, anchor="r"),
                         edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot"),
                         '<path class="ve-e no-head is-async" d="M565 140V190"/>',
                         '<text class="ve-lab" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
-                        box(20, 30, 190, 70, ["Interview"], sub="Claude asks first", cls="who-model"),
+                        box(20, 30, 190, 70, ["Interview"], sub="if the domain is new", cls="who-model"),
                         box(260, 30, 170, 70, ["Write tests"], sub="before the code"),
                         box(480, 30, 170, 70, ["Claude", "implements"], cls="who-model"),
                         box(700, 30, 170, 70, ["Run the tests"]),
@@ -1428,37 +1429,39 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                 cf("ts-3-5-k1", gx("Concrete input/output examples as the most effective way to communicate expected transformations when prose descriptions are interpreted inconsistently", "Exam guide, 3.5-K1"),
                    "The guide calls concrete input and output examples the most effective way to show a transformation when prose gives mixed results (3.5-K1)."),
                 cf("ts-3-5-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
-                   "The documentation calls them one of the most reliable ways to steer the format, the tone and the structure."),
+                   "The prompting documentation of the Claude API calls them one of the most reliable ways to steer the format, the tone and the structure. The exam uses the guide."),
                 cf("ts-3-5-s1", gx("Providing 2-3 concrete input/output examples to clarify transformation requirements when natural language descriptions produce inconsistent results", "Exam guide, 3.5-S1"),
                    "The guide gives 2 or 3 examples (3.5-S1)."),
                 cf("ts-3-5-f3", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
                    "The documentation gives 3 to 5 for prompts in general. The exam uses the guide."))
             + "<p><b>Tests first.</b> %s %s %s</p>" % (
                 cf("ts-3-5-s2", gx("Writing test suites covering expected behavior, edge cases, and performance requirements before implementation, then iterating by sharing test failures", "Exam guide, 3.5-S2"),
-                   "The tests cover the expected behavior, the edge cases and the performance, before the code (3.5-S2). A specific test case, such as null values in a migration, fixes an edge case (3.5-S4)."),
+                   "The tests cover the expected behavior, the edge cases and the performance, before the code (3.5-S2).") + " " + cf("ts-3-5-s4", gx("Providing specific test cases with example input and expected output to fix edge case handling (e.g., null values in migration scripts)", "Exam guide, 3.5-S4"),
+                   "A specific test case with an example input and the expected output fixes an edge case, such as null values in a migration (3.5-S4)."),
                 cf("ts-3-5-f5", D(PLIB, "Test-driven development: the tests define when the work is complete, and Claude iterates on the implementation until they pass.", "Claude Code, Prompt library"),
                    "In Claude Code, the tests define when the work is complete."),
                 cf("ts-3-5-f6", D(BEST, "Give Claude something that produces a pass or fail, and the loop closes on its own. Claude does the work, runs the check, reads the result, and iterates until the check passes.", "Claude Code, Best practices"),
-                   "Claude runs the tests and reads the failures itself. The guide says that the developer shares them."))
+                   "In Claude Code, Claude runs the tests and reads the failures itself. The guide says only &ldquo;sharing test failures&rdquo;, and the exam uses the guide."))
             + "<p><b>The interview.</b> %s %s %s</p>" % (
                 cf("ts-3-5-k3", gx("The interview pattern: having Claude ask questions to surface considerations the developer may not have anticipated before implementing", "Exam guide, 3.5-K3"),
-                   "Claude asks questions before the work, to find what the developer did not consider (3.5-K3). The guide uses it in an unfamiliar domain (3.5-S3)."),
+                   "Claude asks questions before the work, to find what the developer did not consider (3.5-K3).") + " " + cf("ts-3-5-s3", gx("Using the interview pattern to surface design considerations (e.g., cache invalidation strategies, failure modes) before implementing solutions in unfamiliar domains", "Exam guide, 3.5-S3"),
+                   "The guide uses it in an unfamiliar domain (3.5-S3)."),
                 cf("ts-3-5-f10", D(BEST, "For larger features, have Claude interview you first. Start with a minimal prompt and ask Claude to interview you using the `AskUserQuestion` tool.", "Claude Code, Best practices"),
-                   "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion."),
+                   "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion. The exam uses the guide."),
                 cf("ts-3-5-f11", D(BEST, "Claude asks about things you might not have considered yet, including technical implementation, UI/UX, edge cases, and tradeoffs.", "Claude Code, Best practices"),
                    "Claude asks about the implementation, edge cases and tradeoffs."))
             + "<p><b>One message or a sequence.</b> %s Only the guide states this point.</p>" %
                 cf("ts-3-5-k4", gx("When to provide all issues in a single message (interacting problems) versus fixing them sequentially (independent problems)", "Exam guide, 3.5-K4"),
-                   "Problems that interact go in one message, so that one fix does not break another. Independent problems go one at a time (3.5-K4).")
+                   "Problems that interact go in one message, and independent problems go one at a time (3.5-K4, 3.5-S5).")
             + exam_tests("3.5", [("Iterative refinement: input/output examples, test-driven iteration, interview pattern, sequential vs parallel issue resolution", "Among the topics, the guide names")])
             + guide_text("3.5"), "ts-3-5")
     + level("depth",
-            beyond([cf("ts-3-5-b1", D(BEST, "Once the spec is complete, start a fresh session to execute it.", "Claude Code, Best practices"),
-                       "In Claude Code, the interview ends in a spec, and a fresh session implements it."),
-                    cf("ts-3-5-b2", D(BEST, "If you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches.", "Claude Code, Best practices"),
-                       "After more than two corrections on one issue, the context is cluttered: start again with a better prompt."),
-                    cf("ts-3-5-b3", D(BEST, "runs your check as a script and blocks the turn from ending until it passes.", "Claude Code, Best practices"),
-                       "A Stop hook can run the tests and keep the turn from ending until they pass.")])
+            beyond([cf("ts-3-5-b1", D(BEST, "Ask Claude the questions you'd ask another engineer, and for larger features have Claude interview you and write a spec before you start implementing.", "Claude Code, Best practices"),
+                       "In Claude Code, the interview ends in a spec, and the documentation then starts a fresh session to implement it."),
+                    cf("ts-3-5-b2", D(BEST, "If you've corrected Claude more than twice on the same issue in one session, the context is cluttered with failed approaches. Run `/clear` and start fresh with a more specific prompt that incorporates what you learned.", "Claude Code, Best practices"),
+                       "In Claude Code, after more than two corrections on one issue, the context is cluttered: clear it and start again with a better prompt."),
+                    cf("ts-3-5-b3", D(BEST, "* **As a deterministic gate**: a [Stop hook](/docs/en/hooks#stop) runs your check as a script and blocks the turn from ending until it passes.", "Claude Code, Best practices"),
+                       "In Claude Code, a Stop hook, a script that runs when Claude wants to end its turn, can run the tests and keep the turn going until they pass.")])
             + code_pop_text("ts-3-5-code", "The code: an interview prompt", "A prompt for the interview pattern", BEST, INT35, "Claude Code, Best practices",
                             "Claude asks the questions with AskUserQuestion, then writes SPEC.md.")
             + tab2_links("3.5", "%s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."))), "ts-3-5"))
