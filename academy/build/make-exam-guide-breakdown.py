@@ -1686,6 +1686,143 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
             + tab2_links("4.1") + "<p>%s</p>" % cf("ts-4-1-use", excerpt(step_file(4), "Written for the review of code. Here: one result for each exact rule, not one total verdict.", "Build guide, step 4"),
                                                     "Steps 2, 4 and 6 use only 4.1-K1, for exact rules of a question, not for a review of code."), "ts-4-1"))
 
+
+# ----- part 4.3 (facts: academy/facts/ts-4-3.md) -----
+
+SOUTA, STRICT = "anthropic-docs-structured-outputs", "anthropic-docs-strict-tool-use"
+FIG43 = figure("4.3-1", 890, 320,
+               "A request carries the document and extraction tools, each with a schema. With tool_choice auto, Claude can call a tool or answer in text. With any, it must call one tool and picks which. "
+               "With a forced tool, it calls that tool, for example extract_metadata first. The input of the tool_use block is the data, with no syntax errors, and code still checks the values.",
+               "".join(['<path class="ve-e no-head" d="M220 155H270M270 50V230"/>',
+                        edge("M270 50H320"), edge("M270 140H320"), edge("M270 230H320"),
+                        edge("M580 140H610V105H640"), edge("M580 230H610V105H640"),
+                        edge("M755 140V200"),
+                        '<text class="ve-lab" x="320" y="305">Claude Opus 5.5 and three other current models reject any and tool</text>',
+                        box(20, 110, 200, 90, ["Request"], sub="tools with schemas"),
+                        box(320, 20, 260, 60, ["auto"], sub="a tool call or text"),
+                        box(320, 110, 260, 60, ["any"], sub="one tool, Claude picks"),
+                        box(320, 200, 260, 60, ["tool: extract_metadata"], sub="that tool first"),
+                        box(640, 70, 230, 70, ["tool_use input"], sub="no syntax errors", cls="who-model"),
+                        box(640, 200, 230, 70, ["Code checks"], sub="the values", cls="try ok")]),
+               "%s %s" % (cf("ts-4-3-k2", gx("The distinction between tool_choice: \"auto\" (model may return text instead of calling a tool), \"any\" (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)", "Exam guide, 4.3-K2"),
+                             "The three settings of tool_choice are those of the guide (4.3-K2)."),
+                          cf("ts-4-3-k3", gx("That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "Exam guide, 4.3-K3"),
+                             "A schema stops syntax errors, but not errors of meaning, such as line items that do not sum to the total (4.3-K3).")))
+
+PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
+                        "Give Claude a JSON schema, and the output always parses. Code must still check the values, and a field that a source can lack must be nullable, so that Claude does not invent a value.",
+                        FIG43)
+    + level("explanation",
+            "<p><b>The guarantee.</b> %s %s %s</p>" % (
+                cf("ts-4-3-k1", gx("Tool use (tool_use) with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, eliminating JSON syntax errors", "Exam guide, 4.3-K1"),
+                   "The guide calls tool use with a JSON schema the most reliable way to get output that fits the schema, with no syntax errors (4.3-K1)."),
+                cf("ts-4-3-f3", D(STRICT, "Setting `strict: true` on a tool definition guarantees Claude's tool inputs match your JSON Schema by constraining the model's token sampling to schema-valid outputs (a technique called grammar-constrained sampling).", "Strict tool use"),
+                   "In the documentation, a tool gives this guarantee only with strict: true,"),
+                cf("ts-4-3-f1", D(SOUTA, "Structured outputs guarantee schema-compliant responses through constrained decoding:", "Structured outputs"),
+                   "and structured outputs give it with no tool. The exam uses the guide."))
+            + "<p><b>The data.</b> %s %s</p>" % (
+                cf("ts-4-3-s1", gx("Defining extraction tools with JSON schemas as input parameters and extracting structured data from the tool_use response", "Exam guide, 4.3-S1"),
+                   "An extraction tool has the schema as its input, and the data comes from the tool_use response (4.3-S1)."),
+                cf("ts-4-3-f5", D(HANDLE, "1. Extract the `name`, `id`, and `input` from the `tool_use` block.", "Handle tool calls"),
+                   "The data is the input of the tool_use block."))
+            + "<p><b>tool_choice.</b> %s %s %s</p>" % (
+                cf("ts-4-3-s2", gx("Setting tool_choice: \"any\" to guarantee structured output when multiple extraction schemas exist and the document type is unknown", "Exam guide, 4.3-S2"),
+                   "With several schemas and an unknown document type, any makes Claude call one of them (4.3-S2)."),
+                cf("ts-4-3-s3", gx("Forcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a particular extraction runs before enrichment steps", "Exam guide, 4.3-S3"),
+                   "A forced tool makes one extraction run first (4.3-S3)."),
+                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool. The exam uses the guide."))
+            + "<p><b>Schema design.</b> %s %s %s %s</p>" % (
+                cf("ts-4-3-k4", gx("Schema design considerations: required vs optional fields, enum fields with \"other\" + detail string patterns for extensible categories", "Exam guide, 4.3-K4"),
+                   "A schema chooses between required and optional fields, and an enum can have &ldquo;other&rdquo; with a detail string (4.3-K4)."),
+                cf("ts-4-3-s4", gx("Designing schema fields as optional (nullable) when source documents may not contain the information, preventing the model from fabricating values to satisfy required fields", "Exam guide, 4.3-S4"),
+                   "A field that a document can lack is nullable, so Claude does not invent a value (4.3-S4)."),
+                cf("ts-4-3-s5", gx("Adding enum values like \"unclear\" for ambiguous cases and \"other\" + detail fields for extensible categorization", "Exam guide, 4.3-S5"),
+                   "An enum value &ldquo;unclear&rdquo; covers ambiguous cases (4.3-S5)."),
+                cf("ts-4-3-s6", gx("Including format normalization rules in prompts alongside strict output schemas to handle inconsistent source formatting", "Exam guide, 4.3-S6"),
+                   "The prompt also gives rules to normalize formats (4.3-S6). Only the guide names these patterns."))
+            + exam_tests("4.3", [("Structured output via tool_use: schema design, tool_choice configuration, nullable fields to prevent hallucination", "Among the topics, the guide names")])
+            + guide_text("4.3"), "ts-4-3")
+    + level("depth",
+            beyond([cf("ts-4-3-b1", D(DEFT, "Forcing a tool also skips thinking on every model that accepts forced tool use: the response starts with the `tool_use` block and has no `thinking` block.", "Define tools"),
+                       "On the models that accept a forced tool, the forced call skips thinking."),
+                    cf("ts-4-3-b2", D(SOUTA, "While structured outputs guarantee schema compliance in most cases, there are scenarios where the output may not match your schema:", "Structured outputs"),
+                       "Structured outputs fit the schema in most cases, not all: a refusal or the limit of max_tokens can break it."),
+                    cf("ts-4-3-b3", D(SOUTA, "Each optional parameter roughly doubles a portion of the grammar's state space.", "Structured outputs"),
+                       "Each optional field makes the schema harder to compile, so the documentation advises required fields where possible.")])
+            + code_pop("ts-4-3-code", "The code: a request with structured outputs", "A request with a JSON schema in output_config", SOUTA, "curl https://api.anthropic.com/v1/messages", "}'", "Structured outputs",
+                       "The schema goes in output_config.format, with no tool. This is the method of the mock builder.")
+            + tab2_links("4.3") + "<p>%s %s</p>" % (
+                cf("ts-4-3-d40", excerpt(D40, "The current Claude models do not accept a forced tool call.", "Mock decision 0040"),
+                   "The mock builder keeps the purpose of 4.3 and changes the method: its forms go as structured outputs, because Claude Opus 5.5, its model, does not accept a forced tool call."),
+                cf("ts-4-3-d40b", excerpt(D40, "A schema does not check meaning.", "Mock decision 0040"),
+                   "A schema does not check meaning, so code checks the content in step 3.")), "ts-4-3"))
+
+
+# ----- part 4.4 (facts: academy/facts/ts-4-4.md) -----
+
+RETRY44 = "\n".join(read(SRC % HANDLE).split("\n")[233:244])
+assert RETRY44.strip().startswith("{") and "Missing required 'location' parameter" in RETRY44
+FIG44 = figure("4.4-1", 890, 320,
+               "Claude extracts data from the source document. Code checks the values. If the check passes, the result is used. If it fails, and a retry can fix it, "
+               "a follow-up request sends the document, the failed result and the exact errors back to Claude. If the information is absent from the source, the loop stops.",
+               "".join([edge("M170 75H220"), edge("M390 75H440"), edge("M630 75H690", "pass", 660, 66),
+                        edge("M535 110V170", "fail", 543, 145, anchor="r"),
+                        edge("M440 205H305V110", "yes: format", 372, 196, cls="is-hot"),
+                        edge("M630 205H690", "no", 660, 196),
+                        '<text class="ve-lab" x="20" y="300">a retry sends the document, the failed result and the exact errors</text>',
+                        box(20, 40, 150, 70, ["Source", "document"]),
+                        box(220, 40, 170, 70, ["Claude", "extracts"], cls="who-model"),
+                        box(440, 40, 190, 70, ["Checks in code"], sub="sums, fields"),
+                        box(690, 40, 180, 70, ["Use the result"], cls="try ok"),
+                        box(440, 170, 190, 70, ["Can a retry", "fix it?"]),
+                        box(690, 170, 180, 70, ["Stop"], sub="information absent")]),
+               "%s %s" % (cf("ts-4-4-s1", gx("Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction", "Exam guide, 4.4-S1"),
+                             "The follow-up request has the original document, the failed extraction and the specific errors (4.4-S1)."),
+                          cf("ts-4-4-k2", gx("The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "Exam guide, 4.4-K2"),
+                             "A retry does not help when the information is absent from the source (4.4-K2).")))
+
+PART["4.4"] = (overview("4.4", "Retry with the exact errors, but not for missing facts",
+                        "When an extraction fails a check, send the document, the failed result and the specific errors back, so that the model can correct it. "
+                        "A retry fixes format and structure, not information that the source does not have.",
+                        FIG44)
+    + level("explanation",
+            "<p><b>Retry with the errors.</b> %s %s</p>" % (
+                cf("ts-4-4-k1", gx("Retry-with-error-feedback: appending specific validation errors to the prompt on retry to guide the model toward correction", "Exam guide, 4.4-K1"),
+                   "On a retry, the prompt gets the specific validation errors, which guide the correction (4.4-K1)."),
+                cf("ts-4-4-f1", D(PBP, "The most common chaining pattern is **self-correction:** generate a draft → have Claude review it against criteria → have Claude refine based on the review.", "Prompting best practices"),
+                   "The documentation names the same pattern: a draft, a review against criteria, then a refinement."))
+            + "<p><b>When a retry does not help.</b> %s %s %s</p>" % (
+                cf("ts-4-4-s2", gx("Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)", "Exam guide, 4.4-S2"),
+                   "A retry succeeds for a format or a structure error, and fails when the information is only in a document that Claude did not get (4.4-S2)."),
+                cf("ts-4-4-f4", D(HANDLE, "If Claude's attempted use of a tool is invalid (for example, missing required parameters), it usually means that there wasn't enough information for Claude to use the tool correctly.", "Handle tool calls"),
+                   "For tool calls, the documentation says that an invalid call usually means that Claude had not enough information."),
+                cf("ts-4-4-f5", D(SOUTA, "* Retry with a higher `max_tokens` value to get the complete structured output", "Structured outputs"),
+                   "A structural error that a retry fixes: output cut off at max_tokens, sent again with a higher limit."))
+            + "<p><b>Meaning, not syntax.</b> %s %s</p>" % (
+                cf("ts-4-4-k4", gx("The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)", "Exam guide, 4.4-K4"),
+                   "A schema stops syntax errors, but values that do not sum or a value in the wrong field are errors of meaning (4.4-K4)."),
+                fact("ts-4-3-f3", "The documentation gives the guarantee for a tool only with strict: true (part 4.3)."))
+            + "<p><b>Checks and feedback.</b> %s %s %s</p>" % (
+                cf("ts-4-4-s4", gx("Designing self-correction validation flows: extracting \"calculated_total\" alongside \"stated_total\" to flag discrepancies, adding \"conflict_detected\" booleans for inconsistent source data", "Exam guide, 4.4-S4"),
+                   "The output can carry its own checks: a calculated_total next to the stated_total, and a conflict_detected flag (4.4-S4)."),
+                cf("ts-4-4-k3", gx("Feedback loop design: tracking which code constructs trigger findings (detected_pattern field) to enable systematic analysis of dismissal patterns", "Exam guide, 4.4-K3"),
+                   "A detected_pattern field records which code construct caused a finding (4.4-K3),"),
+                cf("ts-4-4-s3", gx("Adding detected_pattern fields to structured findings to enable analysis of false positive patterns when developers dismiss findings", "Exam guide, 4.4-S3"),
+                   "so that the findings that developers dismiss show patterns of false positives (4.4-S3). Only the guide names these fields."))
+            + exam_tests("4.4", [("Pydantic — schema validation, semantic validation errors, validation-retry loops", "Among the technologies, the guide names")])
+            + guide_text("4.4"), "ts-4-4")
+    + level("depth",
+            beyond([cf("ts-4-4-b1", D(SOUTA, "Compare enum values case-insensitively, and avoid enum values that differ only in capitalization.", "Structured outputs"),
+                       "A schema does not guarantee the case of an enum value, so compare enum values without case."),
+                    cf("ts-4-4-b2", D(SOUT, "or the agent hits its retry limit trying to fix validation errors.", "Agent SDK, Structured outputs"),
+                       "The Agent SDK retries a failed validation itself, up to a limit, and then returns an error."),
+                    cf("ts-4-4-b3", D(HANDLE, "If a tool request is invalid or missing parameters, Claude will retry 2-3 times with corrections before apologizing to the user.", "Handle tool calls"),
+                       "For an invalid tool call with an error result, Claude retries 2 or 3 times with corrections. The guide gives no number of retries.")])
+            + code_pop_text("ts-4-4-code", "The code: an error result that asks for a retry", "A tool result with the error", HANDLE, RETRY44, "Handle tool calls",
+                            "Claude reads the error and tries the call again with the missing information.")
+            + tab2_links("4.4") + "<p>%s</p>" % cf("ts-4-4-use", excerpt(step_file(5), "Here: the \"document\" is the request of step 2, the \"failed extraction\" is the failed question, and the \"validation errors\" are the findings.", "Build guide, step 5"),
+                                                    "Step 5 is a retry with error feedback: the writer gets the request, the failed question and its exact findings, the three parts of 4.4-S1."), "ts-4-4"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
