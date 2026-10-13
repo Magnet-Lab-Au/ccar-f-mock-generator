@@ -141,8 +141,9 @@ CARD = {
     # story (b)
     "b-q": excerpt(D74, "The program sent the writer the last failed try and its findings, but not the reason of the owner (decision 0039).", "Mock decision 0074, Question"),
     "b-reason": jexcerpt(OWNER5, D004["reason"], "The decision of the owner on M5-S38"),
-    "b-fix": code_block(CONTROL, "# more_tries: the last try before the decision.", "return self._step5(request, last, self._check_findings(last) + owner)", "The fix of decision 0074"),
-    "b-first": code_block(CONTROL, "if in_round:", "return self._step5(request, failed, self._check_findings(failed))", "The branch that runs first: a failed try of this start"),
+    "b-fix": code_block(CONTROL, "# more_tries: the last try before the decision.", "return self._step5(request, last, self._check_findings(last) + owner)", "The fix of decision 0074, in the code that built the 5 mocks", ref=TAG),
+    "b-first": code_block(CONTROL, "if in_round:", "return self._step5(request, failed, self._check_findings(failed))", "The branch that runs first: a failed try of this start, in the code that built the 5 mocks", ref=TAG),
+    "b-0080": code_block(CONTROL, "# The parts that the event of the owner adds", "self._check_findings(failed) + owner_findings)", "The fix of mock decision 0080: each try of the new start gets the reason"),
     "b-test": code_block("tests/test_control.py", "def test_more_tries_gives_the_reason_of_the_owner_to_the_writer", "def test_more_tries_gives_the_reason_of_the_owner_to_the_writer", "The test of decision 0074"),
     "b-t4": jexcerpt("runs/mock-05/questions/M5-S38-T4.json", T4A, "M5-S38, try 4, option A (correct)"),
     "b-t4f": jexcerpt("runs/mock-05/checks/M5-S38-T4-step4.json", T4F, "M5-S38, try 4, the finding of rule B9"),
@@ -449,7 +450,7 @@ STEP5 = """
     <h4 class="story">The reason of the owner reached only one try</h4>
     <p>Slot M5-S38 failed %(b9)s three times. The owner gave more tries with a reason: &ldquo;%(reason)s&rdquo; %(q)s So mock decision 0074 (a decision record of the build) added the reason to the next request, %(fix)s, and %(test)s checks it.</p>
     %(fig54)s
-    <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. The code still works this way. %(limit)s</p>
+    <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. Mock decision 0080 later changed %(fix80)s: now each try of the new start gets the reason. %(limit)s</p>
     <section class="sources" aria-label="Sources of step 5">
       <p class="ve-label">Sources of step 5. Each underlined fact opens its card.</p>
       <ul>%(sources)s</ul>
@@ -500,6 +501,7 @@ step5_html = STEP5 % {
     "t4f": f("b-t4f", "because it repeated questions of mock 1 (M1-S46) and mock 3 (M3-S12)"),
     "t2f": f("b-t2f", "failed B9 on the same question of mock 1"),
     "first": f("b-first", "the branch for a failed try of the start"),
+    "fix80": f("b-0080", "the code"),
     "t5": f("b-t5", "&ldquo;resubmits every request instead of only the failed ones&rdquo;."),
     "said": f("b-said", "&ldquo;The instruction reached the writer, but the question did not follow it.&rdquo;"),
     "limit": f("a-limit", "A test shows that a case has a path. It does not show that the path is good."),

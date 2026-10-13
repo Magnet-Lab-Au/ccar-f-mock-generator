@@ -61,16 +61,21 @@ def excerpt(path, text, title, kind="excerpt"):
             "src": "%s, %s" % (path, "line %d" % a if a == b else "lines %d to %d" % (a, b)), "href": link(path, a, b)}
 
 
-def code_block(path, first, last, title):
-    """The lines from the line with first to the line with last, as they are in the file."""
-    lines = read(path).split("\n")
+def code_block(path, first, last, title, ref=None):
+    """The lines from the line with first to the line with last, as they are in the file.
+    With ref (a tag or a commit), the lines as they were at that ref, and the link goes to that ref."""
+    if ref:
+        import subprocess
+        lines = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (ref, path)], capture_output=True, check=True).stdout.decode("utf-8").split("\n")
+    else:
+        lines = read(path).split("\n")
     a = next(i for i, l in enumerate(lines) if first in l)
     b = next(i for i, l in enumerate(lines) if i >= a and last in l)
     indent = min(len(l) - len(l.lstrip()) for l in lines[a:b + 1] if l.strip())
     text = "\n".join(l[indent:] for l in lines[a:b + 1])
     return {"title": title, "kind": "code", "text": text,
             "src": "%s, %s" % (path, "line %d" % (a + 1) if a == b else "lines %d to %d" % (a + 1, b + 1)),
-            "href": link(path, a + 1, b + 1)}
+            "href": link(path, a + 1, b + 1) if not ref else "%s/blob/%s/%s#L%d-L%d" % (REPO, ref, path, a + 1, b + 1)}
 
 
 def number(path, pattern, group=1):
