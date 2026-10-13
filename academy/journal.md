@@ -84,3 +84,7 @@ One entry for each work session. Newest entry first.
 - The owner wants the assistant to work alone overnight. The assistant first suggested `/loop`, without checking the documentation. The owner asked it to check. The documentation shows that `/loop` re-runs a prompt on an interval, and that `/goal` keeps a session working toward a condition. `/goal` fits the night.
 - The assistant wrote `academy/night-plan.md`. An independent agent checked it and found 20 items, 2 high: the fix must live in a separate worktree, and the `/goal` condition must be visible in the conversation (the evaluator reads no files and has no clock). Other items: rule 32 needs a one-night exception (rule 36), slice 1 is not closed, word limits go to the owner, rules for hung agents and long context, an independent check of the morning report, the CLAUDE.md checklist for the fix, the parts that later tries get after a rewrite, the full check command, the agent count, rule 18 and the portal folders, and the check of decision 0034. The assistant fixed the plan for all 20.
 - The owner accepted the night plan. Working rule 36 is added for this night only.
+
+### Progress of the night (updated after each part)
+
+- 00:30 Goal set. Slice 2 started: fact agents for steps 0 and 1.
