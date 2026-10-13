@@ -534,11 +534,15 @@ def step_file(n):
 
 def table_rows(n):
     """The rows of the table of guide points of a step: (point, how the step uses it) (decision 0024)."""
-    out = []
+    out, ctx = [], ""
     for l in read(step_file(n)).split("\n"):
         m = re.match(r"^\| ([1-5]\.[0-9]-[KS][0-9]+) \|", l)
         if m:
-            use = l.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")
+            use = l.split(" | ")[-1].rstrip(" |")
+            w = re.match(r"(Written for [^.]*\.)", use)
+            if w:
+                ctx = w.group(1)
+            use = use.replace("The same context.", ctx).strip()
             if m.group(1) in FIX_USE:
                 use = use.replace(*FIX_USE[m.group(1)])
             out.append((m.group(1), use.replace(" (see the deviation above)", "")))
@@ -1004,7 +1008,7 @@ D30 = glob.glob(os.path.join(ROOT, "docs/decisions/0030-*.md"))[0][len(ROOT) + 1
 T6 = jread("runs/mock-04/questions/M4-S27-T3.json")
 CARD.update({
     "s3-what": excerpt("src/step3_check_code.py", "Code checks the rules A1 to A12, which have an exact answer. No model works in\nthis step.", "The code of step 3", kind="code"),
-    "s3-cheap": excerpt(S3, "The check is cheap and fast, so a question with a simple defect does not use a model call.", "Build guide, step 3"),
+    "s3-cheap": excerpt(D11, "the code check comes before the model check, to save model calls", "Mock decision 0011"),
     "s3-split": excerpt(D30, "code checks a rule that has one correct answer, and a model checks a rule that needs judgment.", "Mock decision 0030"),
     "s3-count": excerpt(D29, "So the design does not rely on the form for a count. The code check of step 3 checks the number of options and the number of correct answers.", "Mock decision 0029, Reason"),
     "s3-docs": excerpt(DOC_SO, "Array constraints beyond `minItems` of 0 or 1", "Anthropic documentation, Structured outputs, JSON Schema limitations, not supported (copy of 7 October 2026, the live page agreed on 14 October 2026)", kind="docs"),
@@ -1026,9 +1030,9 @@ CARD.update({
 })
 assert LONG[0] == 37
 
-RULES_A = [("A1", "complete form"), ("A2", "options: 4 or 5"), ("A3", "correct: 1 or 2"), ("A4", "no two the same"),
-           ("A5", "no “Option B”"), ("A6", "word limits"), ("A7", "not longer"), ("A8", "ends with ?"),
-           ("A9", "2 to 5 sentences"), ("A10", "one sentence"), ("A11", "not negative"), ("A12", "longest option")]
+RULES_A = [("A1", "complete form"), ("A2", "options = slot"), ("A3", "correct = slot"), ("A4", "no two the same"),
+           ("A5", "no “Option B”"), ("A6", "word limits"), ("A7", "not much longer"), ("A8", "ends with ?"),
+           ("A9", "2 to 5 sentences"), ("A10", "1 sentence each"), ("A11", "not negative"), ("A12", "longest option")]
 FIG31 = """
 <figure>
   <div class="frame">
@@ -1049,7 +1053,7 @@ FIG31 = """
     "edges": "".join([edge("M620 100H700", "%d pass" % V3["pass"], 660, 91, cls=""), edge("M620 220H700", "%d fail" % V3["fail"], 660, 211, cls="is-hot")]),
     "nodes": "".join([box(700, 60, 170, 80, ["step 4"], sub="check by a model", cls="who-model"),
                       box(700, 180, 170, 80, ["step 5"], sub="with the findings", cls="try bad")]),
-    "cap": fact("s3-what", "Code checks the 12 rules that have one exact answer. No model works in this step.") + " " + fact("s3-cheap", "A question with a simple defect does not use a model call."),
+    "cap": fact("s3-what", "Code checks the 12 rules that have one exact answer. No model works in this step.") + " " + fact("s3-cheap", "A try with a simple defect does not use a step 4 model call.") + " Rule A12 came after mock 1.",
 }
 
 MAXL = max(LONG)
@@ -1068,29 +1072,29 @@ FIG32 = """
 }
 
 DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
-          '<p>Twice the writer was told to write 5 options and wrote 6: %s %s The form could not stop it. %s The owner noted it: %s</p>'
+          '<p>Twice the writer was told to write 5 options and wrote 6: %s %s The form could not stop it. %s For M5-S60 the writer tried again by itself. M4-S27 had reached its third try, so the slot waited for the owner, who gave more tries: %s</p>'
           % (" and ".join(SIX) + ".", fact("s3-six", "In M4-S27, try 3, the sixth option was F."),
-             fact("s3-a2", "Rule A2 failed both tries, and the writer tried again."),
+             fact("s3-a2", "Rule A2 failed both tries."),
              fact("s3-d005", "&ldquo;The last try failed on the form (rules A1 and A2), not on B9.&rdquo;"))
           + '<h4 class="story">The longest option was too often correct</h4>' + FIG32
-          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest: %s Instead, %s So step 1 marks 13 of the 52 one-answer slots where the longest option may be correct, and %s</p>'
+          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest: %s Instead, %s So from mock 2, step 1 lets the longest option be correct on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots, and %s</p>'
           % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
              fact("s3-never", "then a participant learns that the longest option is always wrong."),
              fact("s3-gain", "a participant who always selects the longest option must not gain from it."),
-             fact("s3-a12", "rule A12 fails a question where a correct option is the longest on any other slot.")))
+             fact("s3-a12", "on each other slot, rule A12 fails a question where a correct option is as long as or longer than each wrong option.")))
 
 STEP3 = (level("overview",
-               '<h4 class="takeaway">Code checks 12 exact rules before a model sees the question</h4><p>%s %s %s</p>'
+               '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4><p>%s %s %s</p>'
                % (fact("s3-what", "Code checks each try against 12 rules that have one exact answer, such as the number of options and the length of the text."),
-                  fact("s3-cheap", "The check is cheap and fast, so a question with a simple defect does not use a model call."),
+                  fact("s3-cheap", "Code runs before step 4, so a try with a simple defect does not use a step 4 model call."),
                   fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"]))))
          + level("explanation",
                  FIG31
                  + '<p><b>Code or a model.</b> %s A model checks the rules that need judgment in step 4.</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
-                 + '<p><b>Why the form does not count.</b> The writer answers in a fixed form, but %s %s So %s</p>'
-                   % (fact("s3-docs", "a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."),
+                 + '<p><b>Why the form does not count.</b> %s %s Later, %s</p>'
+                   % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
-                      fact("s3-count", "the design does not rely on the form for a count: step 3 counts the options and the correct answers."))
+                      fact("s3-docs", "the documentation showed that a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
                  + ts_block(3))
          + level("depth", DEPTH3)
          ).replace("@N@", "3")

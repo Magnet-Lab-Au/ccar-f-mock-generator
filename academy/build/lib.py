@@ -53,7 +53,7 @@ def lines_of(path, text):
 def excerpt(path, text, title, kind="excerpt"):
     a, b = lines_of(path, text)
     return {"title": title, "kind": kind, "text": text,
-            "src": "%s, line %s" % (path, a if a == b else "%d to %d" % (a, b)), "href": link(path, a, b)}
+            "src": "%s, %s" % (path, "line %d" % a if a == b else "lines %d to %d" % (a, b)), "href": link(path, a, b)}
 
 
 def code_block(path, first, last, title):
