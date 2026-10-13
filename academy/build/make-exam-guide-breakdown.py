@@ -870,6 +870,74 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                                            cf("ts-2-2-near", excerpt("src/model_call.py", "# 429, 5xx and network errors. Each other error stops the run.", "The code of the model calls"),
                                               "It has a near case for errors of the Claude API, not of tools: a new call repairs a rate limit, a server error or a network error, and each other error stops the run."))), "ts-2-2"))
 
+
+# ----- part 2.3 (facts: academy/facts/ts-2-3.md) -----
+
+YAML23 = "---\nname: safe-researcher\ndescription: Research agent with restricted capabilities\ntools: Read, Grep, Glob, Bash\n---"
+FIG23 = figure("2.3-1", 890, 350,
+               "A coordinator delegates to four agents of the research system, and each agent has only the tools of its role: web search tools, load_document, "
+               "verify_fact, and the tools of the report. The synthesis agent checks a simple fact with its own verify_fact tool, and sends a complex check through the coordinator.",
+               "".join(['<path class="ve-e no-head" d="M445 90V120M120 120H780"/>',
+                        edge("M120 120V150"), edge("M340 120V150"), edge("M560 120V150"), edge("M780 120V150"),
+                        edge("M560 240V280", "simple check", 568, 265, anchor="r"),
+                        edge("M640 150V55H560", "complex check, through the coordinator", 735, 46, cls="is-hot"),
+                        box(330, 20, 230, 70, ["Coordinator"], sub="delegates", cls="who-model"),
+                        box(20, 150, 200, 90, ["Web search"], sub="web search tools", cls="who-model"),
+                        box(240, 150, 200, 90, ["Document", "analysis"], sub="load_document", cls="who-model"),
+                        box(460, 150, 200, 90, ["Synthesis"], sub="verify_fact only", cls="who-model"),
+                        box(680, 150, 190, 90, ["Report"], sub="its own tools", cls="who-model"),
+                        box(460, 280, 200, 50, ["verify_fact"], sub="a narrow shared tool", cls="try ok")]),
+               "%s %s" % (cf("ts-2-3-k3", gx("Scoped tool access: giving agents only the tools needed for their role, with limited cross-role tools for specific high-frequency needs", "Exam guide, 2.3-K3"),
+                             "Each agent gets only the tools of its role, plus a narrow tool for a frequent need (2.3-K3)."),
+                          cf("ts-2-3-f14", gx("Option A applies the principle of least privilege by giving the synthesis agent only what it needs for the 85% common case (simple fact verification) while preserving the existing coordination pattern for complex cases.", "Exam guide, sample question 9"),
+                             "In sample question 9 of the guide, verify_fact serves the 85% of simple checks, and complex checks keep the route through the coordinator.")))
+
+PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
+                        "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
+                        "tool_choice sets whether Claude can, must, or must use one named tool, but the newest models reject the forced settings.",
+                        FIG23)
+    + level("explanation",
+            "<p><b>Few tools.</b> %s %s</p>" % (
+                cf("ts-2-3-k1", gx("The principle that giving an agent access to too many tools (e.g., 18 instead of 4-5) degrades tool selection reliability by increasing decision complexity", "Exam guide, 2.3-K1"),
+                   "Too many tools, such as 18 instead of 4 or 5, make the choice of tool less reliable (2.3-K1)."),
+                cf("ts-2-3-f1", D(TSR, "Claude's ability to pick the right tool degrades once you exceed 30–50 available tools.", "Tool search tool"),
+                   "The documentation puts the drop higher, above 30 to 50 tools. The exam uses the guide."))
+            + "<p><b>Scope by role.</b> %s %s %s</p>" % (
+                cf("ts-2-3-s1", gx("Restricting each subagent's tool set to those relevant to its role, preventing cross-specialization misuse", "Exam guide, 2.3-S1"),
+                   "Each subagent gets only the tools of its role, so that it does not misuse tools of another role, such as a synthesis agent that searches the web (2.3-K2, 2.3-S1)."),
+                cf("ts-2-3-f5", D(SUB, "subagents can be limited to specific tools, reducing the risk of unintended actions", "Agent SDK, Subagents"),
+                   "The documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
+                fact("ts-1-3-f10", "A tool that the list of a subagent leaves out is not in its session."))
+            + "<p><b>Narrow tools.</b> %s %s</p>" % (
+                cf("ts-2-3-s2", gx("Replacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document that validates document URLs)", "Exam guide, 2.3-S2"),
+                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2)."),
+                cf("ts-2-3-s3", gx("Providing scoped cross-role tools for high-frequency needs (e.g., a verify_fact tool for the synthesis agent) while routing complex cases through the coordinator", "Exam guide, 2.3-S3"),
+                   "A narrow tool of another role serves a frequent need, and complex cases still go through the coordinator (2.3-S3). Only the guide describes these two points."))
+            + "<p><b>tool_choice.</b> %s %s %s %s</p>" % (
+                cf("ts-2-3-k4", gx("tool_choice configuration options: \"auto\", \"any\", and forced tool selection ({\"type\": \"tool\", \"name\": \"...\"})", "Exam guide, 2.3-K4"),
+                   "The guide names three options: auto, any, and a forced tool (2.3-K4). With any, Claude must call a tool and gives no text (2.3-S5). A forced tool makes one tool run first, and the next steps follow in later turns (2.3-S4)."),
+                cf("ts-2-3-f9", D(DEFT, "When working with the `tool_choice` parameter, there are four possible options:", "Define tools"),
+                   "The documentation names four: it adds none, which blocks all tools."),
+                cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
+                   "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
+                "The exam uses the guide. The mock builder follows the documentation (step 2 of tab 2).")
+            + exam_tests("2.3", [("Claude API — tool_use with JSON schemas, tool_choice options (\"auto\", \"any\", forced tool selection), stop_reason values (\"tool_use\", \"end_turn\"), max_tokens, system prompts", "Among the technologies, the guide names")])
+            + "<p>%s</p>" % cf("ts-2-3-q9", gx("Give the synthesis agent a scoped verify_fact tool for simple lookups, while complex verifications continue delegating to the web search agent through the coordinator.", "Exam guide, sample question 9, answer A"),
+                               "Sample question 9 of the guide tests 2.3-S3: its correct answer is a scoped verify_fact tool.")
+            + guide_text("2.3"), "ts-2-3")
+    + level("depth",
+            beyond([cf("ts-2-3-b1", D(SDKT, "`tools` and bare-name `disallowedTools` entries change availability. `allowedTools` and scoped `disallowedTools` rules change permission.", "Agent SDK, Custom tools"),
+                       "In the Agent SDK, the list tools removes a tool, but allowedTools only changes its permission. The guide does not separate the two."),
+                    cf("ts-2-3-b2", D(DEFT, "changes to the `tool_choice` parameter will invalidate cached message blocks.", "Define tools"),
+                       "A change of tool_choice between turns, as in 2.3-S4, invalidates part of the prompt cache."),
+                    cf("ts-2-3-b3", D(TSR, "Because tool search loads only a focused set of relevant tools on demand, selection accuracy stays high even across thousands of tools.", "Tool search tool"),
+                       "With very many tools, tool search loads only the relevant ones, on the models that support it.")])
+            + code_pop_text("ts-2-3-code", "The code: a subagent with a list of tools", "A Claude Code subagent with an allowlist", CCS, YAML23, "Claude Code, Subagents",
+                            "The field tools lists the only tools of the subagent.")
+            + tab2_links("2.3", cf("ts-2-3-d40", excerpt(D40, "The current Claude models do not accept a forced tool call.", "Mock decision 0040"),
+                                   "No step gives an agent a set of tools. Step 2 of tab 2 tells why the build sends no forced tool call: the current models do not accept one.")
+                         + ' <a href="%s#step-2">Step 2, Write the question &rarr;</a>' % TAB2), "ts-2-3"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
