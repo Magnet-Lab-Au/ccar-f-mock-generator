@@ -1984,6 +1984,7 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
 # ----- part 5.1 (facts: academy/facts/ts-5-1.md) -----
 
 COMP, CWIN, CEDIT, COMPD = "anthropic-docs-compaction", "anthropic-docs-context-windows", "anthropic-docs-context-editing", "anthropic-docs-compaction-on-demand"
+WWM = "anthropic-docs-working-with-messages"
 CMP51 = "\n".join(read(SRC % COMPD).split("\n")[784:790])
 assert CMP51.startswith("{") and '"type": "summarize"' in CMP51 and CMP51.endswith("}")
 FIG51 = figure("5.1-1", 890, 330,
@@ -2007,13 +2008,15 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                         "Send the history each time, but cut tool results and agent outputs to what the next step needs.",
                         FIG51)
     + level("explanation",
-            "<p><b>Summaries blur facts.</b> %s %s %s</p>" % (
+            "<p><b>Summaries blur facts.</b> %s %s %s %s</p>" % (
                 cf("ts-5-1-k1", gx("Progressive summarization risks: condensing numerical values, percentages, dates, and customer-stated expectations into vague summaries", "Exam guide, 5.1-K1"),
                    "A summary that grows step by step turns numbers, dates and what the customer expects into vague words (5.1-K1)."),
                 cf("ts-5-1-f1", D(COMP, "Compaction replaces the older turns of a conversation with a summary that Claude writes on the server, so you need no summarization code of your own.", "Compaction"),
-                   "The API itself can replace older turns with a summary."),
+                   "With compaction, the Claude API itself can replace older turns with a summary."),
+                cf("ts-5-1-f1b", D(COMP, "While both it and [Compaction at a token threshold](https://platform.claude.com/docs/en/build-with-claude/compaction-threshold) are in beta", "Compaction overview"),
+                   "Both kinds of compaction are in beta."),
                 cf("ts-5-1-s2", gx("Extracting and persisting structured issue data (order IDs, amounts, statuses) into a separate context layer for multi-issue sessions", "Exam guide, 5.1-S2"),
-                   "So the guide keeps the data of each issue in a separate layer (5.1-S2)."))
+                   "The guide keeps the data of each issue in a separate layer (5.1-S2)."))
             + "<p><b>Position.</b> %s %s %s</p>" % (
                 cf("ts-5-1-k2", gx("The \"lost in the middle\" effect: models reliably process information at the beginning and end of long inputs but may omit findings from middle sections", "Exam guide, 5.1-K2"),
                    "The guide says that a model can miss findings in the middle of a long input (5.1-K2),"),
@@ -2023,13 +2026,14 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                    "The documentation names a related effect of length, context rot, not of position. The exam uses the guide."))
             + "<p><b>Tool results.</b> %s %s</p>" % (
                 cf("ts-5-1-k3", gx("How tool results accumulate in context and consume tokens disproportionately to their relevance (e.g., 40+ fields per order lookup when only 5 are relevant)", "Exam guide, 5.1-K3"),
-                   "Tool results pile up, for example 40 fields for each order lookup when only 5 matter (5.1-K3)."),
+                   "Tool results pile up, for example more than 40 fields for each order lookup when only 5 matter (5.1-K3)."),
                 cf("ts-5-1-f14", D(DEFT, "Return semantic, stable identifiers (for example, slugs or UUIDs) rather than opaque internal references, and include only the fields Claude needs to reason about its next step.", "Define tools"),
-                   "The documentation agrees: a tool returns only the fields that Claude needs for the next step."))
+                   "The Claude API documentation agrees: design a tool to return only the fields that Claude needs for its next step."))
             + "<p><b>The history.</b> %s %s</p>" % (
                 cf("ts-5-1-k4", gx("The importance of passing complete conversation history in subsequent API requests to maintain conversational coherence", "Exam guide, 5.1-K4"),
-                   "Each request carries the conversation history (5.1-K4),"),
-                fact("ts-1-3-f6", "because the API keeps no state and a subagent gets none of the history of its parent."))
+                   "Each request carries the complete conversation history (5.1-K4),"),
+                cf("ts-5-1-f6", D(WWM, "The Messages API is stateless, which means that you always send the full conversational history to the API.", "Using the Messages API"),
+                   "because the Messages API of Claude is stateless."))
             + "<p><b>Agent outputs.</b> %s %s</p>" % (
                 cf("ts-5-1-s5", gx("Requiring subagents to include metadata (dates, source locations, methodological context) in structured outputs to support accurate downstream synthesis", "Exam guide, 5.1-S5"),
                    "A subagent returns its findings with metadata, such as dates and source locations (5.1-S5),"),
@@ -2038,11 +2042,13 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
             + exam_tests("5.1", [("Context window optimization: trimming verbose tool outputs, structured fact extraction, position-aware input ordering", "Among the topics, the guide names")])
             + guide_text("5.1"), "ts-5-1")
     + level("depth",
-            beyond([cf("ts-5-1-b1", D(COMPD, "A non-blank `instructions` string (up to 16,384 characters) replaces that prompt entirely.", "Compaction on demand"),
-                       "With compaction on demand, a beta, you can tell the summary what it must keep."),
+            beyond([cf("ts-5-1-b1", D(COMPD, "In your `instructions`, say what the summary must retain and tell the model not to call tools.", "Compaction on demand"),
+                       "With compaction on demand, a beta of the Claude API with the header compact-2026-09-04, your instructions say what the summary must keep.")
+                    + " " + cf("ts-5-1-b1h", D(COMPD, "betaHeader: compact-2026-09-04", "Compaction on demand"), "Only the models in its list support it."),
                     cf("ts-5-1-b2", D(CEDIT, "The `clear_tool_uses_20250919` strategy clears tool results when conversation context grows beyond your configured threshold.", "Context editing"),
-                       "With context editing, a beta, the API clears old tool results above a threshold. It removes whole results, while 5.1-S3 cuts fields."),
-                    cf("ts-5-1-b3", D(BEST, "Customize compaction behavior in CLAUDE.md with instructions like", "Claude Code, Best practices"),
+                       "With context editing, the Claude API clears old tool results above a threshold. It removes whole results, while 5.1-S3 cuts fields.")
+                    + " " + cf("ts-5-1-b2b", D(CEDIT, "Context editing is in beta with support for tool result clearing and thinking block clearing.", "Context editing"), "Context editing is in beta."),
+                    cf("ts-5-1-b3", D(BEST, "Customize compaction behavior in CLAUDE.md with instructions like `\"When compacting, always preserve the full list of modified files and any test commands\"` to ensure critical context survives summarization", "Claude Code, Best practices"),
                        "In Claude Code, an instruction in CLAUDE.md can say what a compaction must keep.")])
             + code_pop_text("ts-5-1-code", "The code: a summary that keeps named facts", "Compaction with instructions", COMPD, CMP51, "Compaction on demand",
                             "A beta of the Claude API. The instructions say what the summary must keep.")
@@ -2073,7 +2079,8 @@ FIG52 = figure("5.2-1", 890, 330,
                "%s %s" % (cf("ts-5-2-k1", gx("Appropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just complex cases), and inability to make meaningful progress", "Exam guide, 5.2-K1"),
                              "The three triggers of the guide are a request for a human, a gap or exception in the policy, and no meaningful progress (5.2-K1)."),
                           cf("ts-5-2-k3", gx("Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "Exam guide, 5.2-K3"),
-                             "Sentiment and self-reported confidence do not show how complex a case is (5.2-K3). The guide gives no order for the checks.")))
+                             "Sentiment and self-reported confidence do not show how complex a case is (5.2-K3).") + " The order of the checks is the page&rsquo;s. "
+                          + cf("ts-5-2-g71f", gx("(get_customer, lookup_order, process_refund, escalate_to_human)", "Exam guide, scenario 1"), "The tool escalate_to_human is from scenario 1 of the guide.")))
 
 PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or confidence",
                         "Write the escalation criteria and a few examples into the system prompt: a request for a human, a gap in the policy, and no progress. "
@@ -2089,38 +2096,43 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
                    "It does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
-                   "A frustrated customer hears that the agent understands, gets the fix, and is escalated only on a second request (5.2-S3)."))
-            + "<p><b>Not mood or confidence.</b> %s</p>" %
+                   "When the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates only if the customer asks again for a human (5.2-S3)."))
+            + "<p><b>Not mood or confidence.</b> %s The limit is on a confidence that nobody calibrated. Task statements 4.6 and 5.5 use a confidence that labeled data calibrates.</p>" %
                 cf("ts-5-2-f11", gx("Option D solves a different problem entirely; sentiment doesn't correlate with case complexity, which is the actual issue.", "Exam guide, sample question 3"),
                    "Sample question 3 of the guide says that sentiment does not follow the complexity of a case.")
             + "<p><b>Criteria in the prompt.</b> %s %s %s</p>" % (
                 cf("ts-5-2-s1", gx("Adding explicit escalation criteria with few-shot examples to the system prompt demonstrating when to escalate versus resolve autonomously", "Exam guide, 5.2-S1"),
                    "Explicit criteria and few-shot examples in the system prompt show when to escalate and when to resolve (5.2-S1)."),
-                cf("ts-5-2-f7", D(CSUP, "* Ensure that you are making the most out of your prompts and optimizing through prompt engineering.", "Customer support agent"),
-                   "The documentation also improves the prompt before it adds a new layer, such as a classifier."),
+                cf("ts-5-2-f7", D(CSUP, "Before you add further layers to your architecture, consider the following less exhaustive options:", "Customer support agent"),
+                   "The guide for a support agent in the Claude API documentation also says: before you add further layers,")
+                + " " + cf("ts-5-2-f7b", D(CSUP, "* Ensure that you are making the most out of your prompts and optimizing through prompt engineering.", "Customer support agent"),
+                   "get the most out of the prompt."),
                 cf("ts-5-2-s4", gx("Escalating when policy is ambiguous or silent on the customer's specific request (e.g., competitor price matching when policy only addresses own-site adjustments)", "Exam guide, 5.2-S4"),
                    "When the policy is silent, such as on a price match with a competitor, the agent escalates (5.2-S4)."))
             + "<p><b>Several matches.</b> %s %s</p>" % (
                 cf("ts-5-2-s5", gx("Instructing the agent to ask for additional identifiers when tool results return multiple matches, rather than selecting based on heuristics", "Exam guide, 5.2-S5"),
-                   "When a lookup returns several customers, the agent asks for another identifier, and does not guess (5.2-K4, 5.2-S5)."),
-                cf("ts-5-2-f14", D(OVT, "If the user's prompt doesn't include enough information to fill all the required parameters for a tool, Claude Opus is much more likely to recognize that a parameter is missing and ask for it.", "Tool use overview"),
-                   "The documentation says that Claude Opus is much more likely than Claude Sonnet to ask for missing information, so an instruction helps."))
+                   "When a lookup returns several customers, the agent asks for another identifier, and does not guess (5.2-S5).")
+                + " " + cf("ts-5-2-k4", gx("How multiple customer matches require clarification (requesting additional identifiers) rather than heuristic selection", "Exam guide, 5.2-K4"), "The guide also names this case in 5.2-K4."),
+                cf("ts-5-2-f14", D(OVT, "If the user's prompt doesn't include enough information to fill all the required parameters for a tool, Claude Opus is much more likely to recognize that a parameter is missing and ask for it. Claude Sonnet might ask, especially when prompted to think before outputting a tool request. But it might also infer a reasonable value.", "Tool use overview"),
+                   "A near case in the Claude API documentation: when a required parameter of a tool is missing, Claude Opus is much more likely to ask for it, and Claude Sonnet might infer a value."))
             + exam_tests("5.2", [("Escalation decision-making: explicit criteria, honoring customer preferences, policy gap identification", "Among the topics, the guide names")])
             + "<p>%s</p>" % cf("ts-5-2-q3", gx("Adding explicit escalation criteria with few-shot examples directly addresses the root cause: unclear decision boundaries.", "Exam guide, sample question 3"),
                                "Sample question 3 of the guide fits 5.2: its correct answer adds explicit criteria with few-shot examples.")
             + guide_text("5.2"), "ts-5-2")
     + level("depth",
             beyond([cf("ts-5-2-b1", D(CSUP, "Typically aim for 70-80% deflection rate, depending on the complexity of inquiries.", "Customer support agent"),
-                       "The documentation aims at a deflection rate of 70% to 80%, a different measure from the 80% first-contact resolution of the guide."),
-                    cf("ts-5-2-b2", D(UINP, "Claude requests user input in two situations:", "Agent SDK, Handle approvals and user input"),
+                       "The guide for a support agent aims at a deflection rate of 70% to 80%, depending on the complexity of the inquiries.")
+                    + " " + cf("ts-5-2-g71", gx("Your target is 80%+ first-contact resolution while knowing when to escalate.", "Exam guide, scenario 1"),
+                       "That is a different measure from the 80%+ first-contact resolution of scenario 1 of the guide."),
+                    cf("ts-5-2-b2", D(UINP, "Claude requests user input in two situations: when it needs **permission to use a tool** (like deleting files or running commands), and when it has **clarifying questions** (via the `AskUserQuestion` tool).", "Agent SDK, Handle approvals and user input"),
                        "In the Agent SDK, a clarifying question to the user is a call of the tool AskUserQuestion."),
                     cf("ts-5-2-b3", D(UINP, "* **Subagents**: `AskUserQuestion` is not currently available in subagents spawned via the Agent tool", "Agent SDK, Handle approvals and user input"),
-                       "A subagent cannot use AskUserQuestion, so the coordinator asks.")])
+                       "AskUserQuestion is not available at present in a subagent that the Agent tool starts.")])
             + code_pop_text("ts-5-2-code", "The code: rules and answers in a prompt", "A prompt with explicit rules", ICON, RULES52, "Increase output consistency",
-                            "A document assistant, not a support agent: no page shows a prompt with escalation criteria.")
+                            "A document assistant, not a support agent: no page that we read shows a prompt with escalation criteria. This block is the user turn, after a system prompt.")
             + tab2_links("5.2", "%s %s" % ("The mock builder is not a support agent, so it has no customer to escalate.",
-                                           cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3)", "Mock decision 0006"),
-                                              "But 5.2-K3 gives the reason for rule D3 of step 6: a wrong option on self-reported confidence is fair.")))
+                                           cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3), and sample question 3 in Section 9 uses such an option as a wrong option. So it is a fair wrong option.", "Mock decision 0006"),
+                                              "But rule D3 of step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
 
 
