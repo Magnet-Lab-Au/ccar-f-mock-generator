@@ -1468,6 +1468,103 @@ STEP7 = (level("overview",
          ).replace("@N@", "7")
 PART_HTML[7] = with_sources(7, STEP7)
 
+# ----- step 8: build the files (facts: academy/facts/step-8.md) -----
+
+S8 = step_file(8)
+D16 = glob.glob(os.path.join(ROOT, "docs/decisions/0016-*.md"))[0][len(ROOT) + 1:]
+D70 = glob.glob(os.path.join(ROOT, "docs/decisions/0070-*.md"))[0][len(ROOT) + 1:]
+REV2 = "docs/reviews/review-decisions-0024-to-0037.md"
+FP_OK, FP_ALL, NO_KEY = 0, 0, True
+for m in range(1, 6):
+    b = jread("runs/mock-%02d/build.json" % m)["fingerprints"]
+    for qid, fp in b.items():
+        FP_ALL += 1
+        FP_OK += _control.fingerprint(jread("runs/mock-%02d/questions/%s.json" % (m, qid))) == fp
+    NO_KEY = NO_KEY and '"correct"' not in read("mocks/mock-%02d.questions.json" % m) and '"reason"' not in read("mocks/mock-%02d.questions.json" % m)
+assert FP_OK == FP_ALL == 300 and NO_KEY
+LETTERS = []
+for m in range(1, 6):
+    c = Counter(a["correct"][0] for a in jread("mocks/mock-%02d.answers.json" % m)["answers"] if len(a["correct"]) == 1)
+    LETTERS.append([c.get(x, 0) for x in "ABCD"])
+
+CARD.update({
+    "s8-what": excerpt(S8, "Code builds the two files of a mock from the stored question records. Nobody edits the files by hand.", "Build guide, step 8"),
+    "s8-two": excerpt("src/step8_build_files.py", "the 60 questions, with no answers and no reasons", "The code of step 8", kind="code"),
+    "s8-accept": code_block("src/control.py", "def accept(self", '"""Command of the owner: accept the mock.', "The command accept of the owner"),
+    "s8-cond": code_block("src/control.py", 'raise Refused("Step 8 cannot start: "', 'raise Refused("Step 8 cannot start: "', "The code lists each cause and builds no file"),
+    "s8-one": excerpt(D16, "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw.", "Mock decision 0016, Reason"),
+    "s8-nopoint": excerpt(S8, "The step uses no point of a task statement. It uses three facts of the exam form.", "Build guide, step 8"),
+    "s8-fp": {"title": "The fingerprints of the 5 built mocks", "kind": "count",
+              "text": "%d of %d fingerprints in runs/mock-0N/build.json equal the fingerprint of the question record today (fingerprint() of src/control.py). No questions file has the key \"correct\" or \"reason\". The script of this page checked them." % (FP_OK, FP_ALL),
+              "src": "runs/mock-0N/build.json, runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s8-never": excerpt(REV2, "So the mock can never be built.", "The second review of the design"),
+    "s8-cmd": excerpt(D38, "5. **Step 8 starts when the owner accepts the mock.** Code checks the conditions before it builds.", "Mock decision 0038, Decision"),
+    "s8-letters": excerpt(D70, "In mock 4, D is the correct answer of 22 of the 52 questions with one answer, and B of 8. Chance is 13.", "Mock decision 0070, Question"),
+    "s8-portal": excerpt(D70, "4. **A note for the portal:** the portal shows the options in a random order on each attempt, because the letters in mocks 1 to 4 are not balanced.", "Mock decision 0070, Decision"),
+    "s8-count": {"title": "The correct letters of the 5 built mocks", "kind": "count",
+                 "text": "One-answer questions with the correct answer A, B, C, D: %s. The script of this page counted mocks/mock-0N.answers.json." % "; ".join("mock %d: %s" % (i + 1, ", ".join(map(str, l))) for i, l in enumerate(LETTERS)),
+                 "src": "mocks/mock-01.answers.json to mock-05.answers.json", "href": "%s/tree/%s/mocks" % (REPO, TAG)},
+})
+
+CONDS = ["passed steps 3 and 4, unchanged", "step 6 checked each scenario", "each finding has a decision",
+         "each question that needs a mark has one", "the bad marks are below the limit", "no call failed in the last run"]
+lines_of("docs/decisions/0039-the-control-in-code-the-states-and-the-records.md" if os.path.exists(os.path.join(ROOT, "docs/decisions/0039-the-control-in-code-the-states-and-the-records.md")) else glob.glob(os.path.join(ROOT, "docs/decisions/0039-*.md"))[0][len(ROOT) + 1:], "6. No call failed in the last run.")
+FIG81 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 330" role="img" aria-label="Step 8. The owner accepts the mock with a command. Code checks six conditions. If one is false, code builds no file and lists the causes. If all hold, code builds the questions file with no answers, the answers file, and a record of the fingerprints.">
+      <g class="ve-n is-key"><rect class="sh" x="230" y="20" width="330" height="290" rx="0"/></g>
+      <text class="ve-lab" x="246" y="44">code checks 6 conditions</text>
+      %(conds)s
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 8-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "conds": "".join('<text class="ve-lab" x="246" y="%d"><tspan class="pid">%d</tspan> %s</text>' % (80 + i * 38, i + 1, e(t)) for i, t in enumerate(CONDS)),
+    "nodes": "".join([box(20, 125, 150, 80, ["the owner"], sub="accept", cls="who-owner"),
+                      box(640, 20, 230, 70, ["questions file"], sub="no answers"),
+                      box(640, 110, 230, 70, ["answers file"], sub="letters, reasons"),
+                      box(640, 200, 230, 50, ["fingerprints"]),
+                      box(640, 265, 230, 50, ["no file, causes"], cls="try bad")]),
+    "edges": "".join([edge("M170 165H230"), edge("M560 140H600V55H640", cls="is-hot"), edge("M600 140V145H640"), edge("M600 140V225H640"),
+                      edge("M560 290H640", "one false", 600, 281)]),
+    "cap": fact("s8-what", "Code builds the two files of a mock from the stored records. Nobody edits the files by hand.") + " " + fact("s8-cond", "If a condition is false, code builds no file and lists the causes."),
+}
+
+FIG82 = """
+<figure>
+  <div class="cases">%s</div>
+  <figcaption><span class="fig-n">Fig. 8-2</span>%s</figcaption>
+</figure>""" % ("".join(
+    '<div class="case"><span class="ve-label">Mock %d</span><svg class="ve-mini" viewBox="0 0 200 110" role="img" aria-label="Mock %d, correct letters of the 52 one-answer questions: A %d, B %d, C %d, D %d.">%s<path class="chance" d="M0 %d H200"/></svg></div>'
+    % (m + 1, m + 1, *LETTERS[m], "".join('<rect class="bar" x="%d" y="%d" width="34" height="%d"/><text class="ve-lab" x="%d" y="106">%s %d</text>'
+                                            % (8 + i * 48, 86 - v * 3, v * 3, 8 + i * 48, "ABCD"[i], v) for i, v in enumerate(LETTERS[m])), 86 - 13 * 3)
+    for m in range(5)),
+    fact("s8-count", "The correct letters of the 52 one-answer questions in each built mock. The dashed line is 13, the chance number.") + " " + fact("s8-letters", "In mock 4, D was the answer 22 times."))
+
+STEP8 = (level("overview",
+               '<h4 class="takeaway">Code builds the mock files from the records, only after the owner accepts</h4><p>%s %s %s</p>'
+               % (fact("s8-what", "Code builds the two files of a mock from the stored question records. Nobody edits the files by hand."),
+                  fact("s8-two", "One file has the 60 questions with no answers and no reasons. The other has the answers."),
+                  fact("s8-accept", "The step starts only when the owner accepts the mock with a command, and code checks the conditions first.")))
+         + level("explanation",
+                 FIG81
+                 + '<p><b>One true copy.</b> %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw."),
+                                                          fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL))
+                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The build did not need one: the reason for one true copy is plain engineering. The facts of the exam form are &ldquo;Select N.&rdquo;, the groups by scenario, and a result for each domain.</p>'
+                   % fact("s8-nopoint", "None. The step uses three facts of the exam form, not a point of a task statement."))
+         + level("depth",
+                 ('<h4 class="story">The first conditions could never be met</h4>'
+                  '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so a review found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, each with a test.</p>'
+                  % (fact("s8-never", "So the mock can never be built."), fact("s8-cmd", "step 8 starts when the owner accepts the mock, and code checks the conditions before it builds.")))
+                 + '<h4 class="story">The letters were not balanced</h4>' + FIG82
+                 + '<p>Mocks 1 to 4 kept their files, so their letters stay unbalanced. %s</p>'
+                 % fact("s8-portal", "Instead, a note asks the portal to show the options in a random order on each attempt."))
+         ).replace("@N@", "8")
+PART_HTML[8] = with_sources(8, STEP8)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
