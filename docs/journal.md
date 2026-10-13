@@ -7,6 +7,7 @@ One entry for each work session. Newest entry first.
 - The academy fact agent of step 5 found that the reason of the owner reaches only the first try of a new start (`request_for` in `src/control.py`). An independent agent confirmed it. The same gap applies after a bad mark and a rewrite.
 - On the branch `fix-owner-reason`, in a separate worktree, the assistant moved the parts of each event into `_event_parts`, so that each try of the new start gets them. Four new tests: three fail without the fix. All 232 tests pass. A replay on a copy of `runs/mock-05/` shows the request of M5-S38-T5 with `['B9', 'owner']`, against `['B9']` before. No model call, no API key, no change to `runs/` or the 5 mocks.
 - Decision 0080 (proposed, chosen by the assistant at night under working rule 36). Build guide step 5 and diagram 07 name it, and keep the history that mocks 1 to 5 were built before the fix. The owner decides in the morning whether to merge.
+- An independent agent reviewed the change: no bug, and the first try of each start gets the same request as before. The assistant fixed its low items: the new test class moved above the main guard, two more tests (234 in all), the cards of diagram 07, and decision 0080 got its known limits and its "How we decided".
 
 ## 12 October 2026, a new chat can take over
 

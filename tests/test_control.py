@@ -798,10 +798,6 @@ class TestNewPlan(Base):
         self.assertEqual(report["state"], "stopped")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestOwnerPartsReachEachTryOfTheStart(Base):
     """Decision 0080: the parts that an event of the owner adds go to each try of the
     new start, not only to the first try. Before the fix, try 2 and try 3 of the start
@@ -857,3 +853,32 @@ class TestOwnerPartsReachEachTryOfTheStart(Base):
         for r in self.requests_of("M1-S05"):
             self.assertNotIn("owner", [f["rule"] for f in r["findings"]])
             self.assertEqual(r["other_questions"], [])
+
+    def test_rewrite_with_a_new_point_keeps_the_reason_and_the_other_questions_on_try_2(self):
+        self.steps.model_script["M1-S11"] = ["pass", "fail", "pass"]
+        c = self.control()
+        self.run_to_marks(c)
+        c.read_marks()
+        c.decide("rewrite", "M1-S11-T1", "Repeat of S07.", new_point="2.4-K3", other_questions=["M1-S10-T1"])
+        c.run()
+        after = self.requests_of("M1-S11")[1:]
+        self.assertEqual([(r["step"], r["shown_try"]) for r in after], [(2, None), (5, "M1-S11-T2")])
+        self.assertEqual([f["rule"] for f in after[1]["findings"]], ["B1", "owner"])
+        self.assertEqual([q["question_id"] for q in after[1]["other_questions"]], ["M1-S10-T1"])
+        self.assertEqual(after[1]["point"], "2.4-K3")
+
+    def test_more_tries_after_cannot_write_keeps_the_reason_on_try_2(self):
+        self.steps.write_script["M1-S07"] = ["cannot_write", "ok", "ok"]
+        self.steps.model_script["M1-S07"] = ["fail", "pass"]
+        c = self.control()
+        c.run()
+        c.decide("more_tries", "M1-S07", "Use a team with two repositories.")
+        c.run()
+        after = self.requests_of("M1-S07")[1:]
+        self.assertEqual([(r["step"], r["shown_try"]) for r in after], [(2, None), (5, "M1-S07-T2")])
+        self.assertEqual([f["rule"] for f in after[0]["findings"]], ["owner"])
+        self.assertEqual([f["rule"] for f in after[1]["findings"]], ["B1", "owner"])
+
+
+if __name__ == "__main__":
+    unittest.main()

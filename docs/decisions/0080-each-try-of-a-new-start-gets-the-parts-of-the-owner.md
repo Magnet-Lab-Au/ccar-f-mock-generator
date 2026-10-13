@@ -24,9 +24,14 @@ The academy fact agent of step 5 found the gap (`academy/facts/step-5.md`, confl
 
 Option 3. A new method `_event_parts` returns the findings and the other questions that an event of the owner adds. `request_for` adds them to the request of each try of the new start. The first try of a start gets the same request as before.
 
-Four new tests (class `TestOwnerPartsReachEachTryOfTheStart`) check try 2 and try 3 after `more_tries`, try 2 after a bad mark, try 2 after a rewrite of a finding of step 6, and a slot with no event. Three of them fail without the fix. No test makes a model call (decision 0038). All 232 tests pass.
+Six new tests (class `TestOwnerPartsReachEachTryOfTheStart`) check try 2 and try 3 after `more_tries`, try 2 after a bad mark, try 2 after a rewrite of a finding of step 6, try 2 after a rewrite with a new point, try 2 after `more_tries` that followed `cannot_write`, and a slot with no event. No test makes a model call (decision 0038). All 234 tests pass.
 
 The choice between options 2 and 3 is a choice for the owner. The assistant chose option 3 at night: a later try that does not see the other questions of a rewrite can write the same scene again.
+
+## Known limits
+
+- On try 2 and try 3 of a new start, the reason of the owner and the finding of step 6 appear next to the latest failed try of the start, not next to the question that the owner judged. A reason that names a letter, such as "C is also correct.", names an option of the judged question. The writer then sees a different option C. The independent review of the change found this. A fix would add the ID of the judged question to each of these findings. It is a choice for the owner.
+- The result of decision 0074, "The instruction reached the writer, but the question did not follow it", is true only for try 4 of M5-S38. Try 5, the question in mock 5, did not get the instruction.
 
 ## Reason
 
@@ -36,6 +41,10 @@ The reason of the owner says what the next try must do differently (decision 007
 
 - The 5 built mocks and the files in `runs/`. The program did not run, and no run file stores the text of a request.
 - Mocks 1 to 5 were built without this fix. The build guide and diagram 07 keep that history.
+
+## How we decided
+
+The academy fact agent of step 5 found the gap while it read the code for tab 2 of the portal (`academy/facts/step-5.md`, conflict C2). An independent agent confirmed it in the code, the test and a replay. The owner accepted a night plan with this fix on a separate branch (`academy/night-plan.md`). The owner had not yet chosen between options 2 and 3, so the assistant chose option 3 at night under working rule 36. An independent agent reviewed the change: the first try of each start gets the same request as before, in 10 cases. It found the known limit above, a test class below the main guard of the test file, and paths with no test. The assistant moved the class and added two tests: a rewrite with a new point, and "more tries" after "cannot write". All 234 tests pass.
 
 ## Exam guide points
 
