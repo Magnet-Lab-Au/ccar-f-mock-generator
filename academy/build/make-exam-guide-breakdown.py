@@ -612,6 +612,78 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                 cf("ts-1-7-cc", excerpt("academy/facts/claude-code.md", "Verdict: the link holds on 1.7-K4 (the structured summary for a new session).", "Fact sheet of the build in Claude Code"),
                    "The build in Claude Code shows only 1.7-K4: each new session started from the summary in HANDOFF.md. No record shows --resume or fork_session.")), "ts-1-7"))
 
+
+# ----- part 1.6 (facts: academy/facts/ts-1-6.md) -----
+
+WF, CW = "claude-code-docs-workflows", "claude-code-docs-common-workflows"
+FIG16 = figure("1.6-1", 890, 330,
+               "Left, prompt chaining for a review whose steps are known: each file gets a local pass, then one integration pass looks across the files. "
+               "Right, dynamic decomposition for an open task: map the structure, find the high-impact areas, make a prioritized plan, run the next subtask, "
+               "and a dependency that the subtask finds changes the plan.",
+               "".join(['<text class="ve-lab" x="20" y="30">Prompt chaining: the steps are known</text>',
+                        '<text class="ve-lab" x="480" y="30">Dynamic: the steps come from findings</text>',
+                        '<path class="ve-e no-head is-async" d="M455 15V320"/>',
+                        edge("M200 75H230V155H260"), edge("M200 155H260"), edge("M200 235H230V155H260"),
+                        '<text class="ve-el" x="215" y="300">avoids attention dilution</text>',
+                        edge("M575 100V130"), edge("M575 180V210"), edge("M670 235H700"),
+                        edge("M785 260V290H575V260", "a dependency found: the plan changes", 680, 310, cls="is-hot"),
+                        box(20, 50, 180, 50, ["File 1"], sub="local pass", cls="who-model"),
+                        box(20, 130, 180, 50, ["File 2"], sub="local pass", cls="who-model"),
+                        box(20, 210, 180, 50, ["File N"], sub="local pass", cls="who-model"),
+                        box(260, 120, 170, 70, ["Integration pass"], sub="across the files", cls="who-model"),
+                        box(480, 50, 190, 50, ["Map the structure"]),
+                        box(480, 130, 190, 50, ["High-impact areas"]),
+                        box(480, 210, 190, 50, ["Prioritized plan"]),
+                        box(700, 210, 170, 50, ["Next subtask"], cls="who-model")]),
+               "%s %s" % (cf("ts-1-6-k1", gx("When to use fixed sequential pipelines (prompt chaining) versus dynamic adaptive decomposition based on intermediate findings", "Exam guide, 1.6-K1"),
+                             "The guide contrasts a fixed sequence of steps with a decomposition that adapts to what each step finds (1.6-K1)."),
+                          cf("ts-1-6-s3", gx("Decomposing open-ended tasks (e.g., \"add comprehensive tests to a legacy codebase\") by first mapping structure, identifying high-impact areas, then creating a prioritized plan that adapts as dependencies are discovered", "Exam guide, 1.6-S3"),
+                             "The right panel follows the example of the guide: tests for a legacy codebase (1.6-S3).")))
+
+PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open work",
+                        "When the steps of a task are known before it starts, such as a review of many files, use a fixed chain: one pass for each file, then one pass across the files. "
+                        "When the task is open, map the structure first and let each finding change the plan.",
+                        FIG16)
+    + level("explanation",
+            "<p><b>A chain.</b> %s %s</p>" % (
+                cf("ts-1-6-f1", D(PBP, "Explicit prompt chaining (breaking a task into sequential API calls) is still useful when you need to inspect intermediate outputs or enforce a specific pipeline structure.", "Prompting best practices"),
+                   "Prompt chaining splits a task into a sequence of separate calls. The documentation uses it when you must see each output or enforce a fixed structure."),
+                cf("ts-1-6-f2", D(PBP, "Each step is a separate API call so you can log, evaluate, or branch at any point.", "Prompting best practices"),
+                   "Each step is a separate call, so you can log it, check it or branch at any point."))
+            + "<p><b>A review in passes.</b> %s %s %s</p>" % (
+                cf("ts-1-6-s2", gx("Splitting large code reviews into per-file local analysis passes plus a separate cross-file integration pass to avoid attention dilution", "Exam guide, 1.6-S2"),
+                   "A large code review becomes one local pass for each file, plus a separate pass across the files (1.6-K2, 1.6-S2)."),
+                cf("ts-1-6-f10", gx("Splitting reviews into focused passes directly addresses the root cause: attention dilution when processing many files at once.", "Exam guide, sample question 12"),
+                   "The guide gives the reason: attention dilution when the model processes many files at once."),
+                cf("ts-1-6-f11", gx("Option C misunderstands that larger context windows don't solve attention quality issues.", "Exam guide, sample question 12"),
+                   "A larger context window does not fix it."))
+            + "<p><b>An adaptive plan.</b> %s %s %s</p>" % (
+                cf("ts-1-6-k3", gx("The value of adaptive investigation plans that generate subtasks based on what is discovered at each step", "Exam guide, 1.6-K3"),
+                   "For an open investigation, the plan makes its next subtasks from what each step finds (1.6-K3)."),
+                cf("ts-1-6-f5", D(HOW, "Claude decides what each step requires based on what it learned from the previous step, chaining dozens of actions together and course-correcting along the way.", "Claude Code, How Claude Code works"),
+                   "This is how the loop of Claude Code works: each step depends on what the step before found."),
+                cf("ts-1-6-f12", D(BEST, "Planning is most useful when you're uncertain about the approach, when the change modifies multiple files, or when you're unfamiliar with the code being modified.", "Claude Code, Best practices"),
+                   "A first map of the code is most useful when the approach is not clear or the code is not familiar."))
+            + "<p><b>The choice.</b> %s Task statement 4.6 uses the same split of a review.</p>" %
+                cf("ts-1-6-s1", gx("Selecting task decomposition patterns appropriate to the workflow: prompt chaining for predictable multi-aspect reviews, dynamic decomposition for open-ended investigation tasks", "Exam guide, 1.6-S1"),
+                   "A chain for a predictable review with many aspects, a dynamic decomposition for an open investigation (1.6-S1).")
+            + exam_tests("1.6", [("Prompt chaining — sequential task decomposition into focused passes", "Among the technologies, the guide names")])
+            + "<p>%s</p>" % cf("ts-1-6-q12", gx("Split into focused passes: analyze each file individually for local issues, then run a separate integration-focused pass examining cross-file data flow.", "Exam guide, sample question 12, answer A"),
+                               "Sample question 12 of the guide tests 1.6-S2: its correct answer is a pass for each file, then an integration pass.")
+            + guide_text("1.6"), "ts-1-6")
+    + level("depth",
+            beyond([cf("ts-1-6-b1", D(WF, "use a workflow to review every file changed in this PR for correctness issues, then merge the per-file findings into one ranked summary", "Claude Code, Workflows"),
+                       "Claude Code can run the chain as a workflow: a script reviews each changed file, then merges the findings. Claude Code calls it a dynamic workflow, but the script holds the plan, so in the terms of the guide it is nearer to a fixed chain."),
+                    cf("ts-1-6-b2", D(BEST, "to have Claude split the change across 5 to 30 subagents. Each subagent works in its own worktree.", "Claude Code, Best practices"),
+                       "For a large change, the command /batch splits the work across 5 to 30 subagents, each in its own worktree."),
+                    cf("ts-1-6-b3", D(PBP, "With adaptive thinking and subagent orchestration, Claude handles most multistep reasoning internally.", "Prompting best practices"),
+                       "With adaptive thinking, the documentation says that Claude handles most reasoning in several steps by itself, so a chain is needed less often.")])
+            + code_pop("ts-1-6-code", "The code: a workflow with one agent for each file", "A workflow that splits a review by file", WF, "export const meta = {", "return audits.filter(Boolean)", "Claude Code, Workflows",
+                       "One agent lists the files. Then one agent audits each file. The example has no integration pass.")
+            + tab2_links("1.6") + "<p>%s</p>" %
+                cf("ts-1-6-use", excerpt(step_file(1), "So these points support only one idea: the work of a mock is known before it starts, so the program can fix the plan before the writing starts.", "Build guide, step 1"),
+                   "Step 1 takes only one idea of 1.6: the work of a mock is known before it starts, so code fixes the plan first. It is not a prompt chain."), "ts-1-6"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
@@ -674,6 +746,8 @@ CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
 
 DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles of its task statements (decision 0021)
+DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents and what each subagent gets, "
+                     "workflows with enforced steps and handoffs, hooks of the Agent SDK, how to split a task, and sessions that resume or fork.")
 
 
 def domain_html(d):
