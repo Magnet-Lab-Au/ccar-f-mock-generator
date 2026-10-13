@@ -48,3 +48,4 @@ One entry for each work session. Newest entry first.
 - The owner confirmed the text of decision 0013.
 - The assistant found that the order of trust did not name the Anthropic documentation, which the "Beyond the exam" parts use. The owner accepted it as the source for product facts. Decision 0014 (proposed) records it, and the status line of 0011 names it.
 - The owner confirmed the text of decision 0014.
+- The owner asked for a review of the whole picture as the slices are built. The owner accepted a script and a new agent after each slice. Decision 0015 (proposed) records it, and the status line of 0012 names it.

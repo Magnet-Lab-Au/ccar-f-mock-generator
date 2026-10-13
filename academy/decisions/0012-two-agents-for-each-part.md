@@ -1,7 +1,7 @@
 # 0012: Two agents for each part
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0015 adds a whole-picture review after each slice.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
