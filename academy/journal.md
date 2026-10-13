@@ -56,3 +56,4 @@ One entry for each work session. Newest entry first.
 - The fourth item: what each level holds in both tabs. The owner accepted a table. Decision 0019 (proposed) records it.
 - The fifth item: where the figures of the 1.1 samples go in the new outline. The owner accepted a table. Decision 0020 (proposed) records it.
 - The sixth item: the content of the map, "How we broke it down" and the 5 domains, and their agents. The owner accepted it. Decision 0021 (proposed) records it.
+- The seventh item: the order of the slices, and when a slice is done (at most 2 review rounds for each part, then the owner decides). The owner accepted it. Decision 0022 (proposed) records it.
