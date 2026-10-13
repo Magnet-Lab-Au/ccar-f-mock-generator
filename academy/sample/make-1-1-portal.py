@@ -52,8 +52,16 @@ CHANGES = [
     ("fill='%23f7f7f4'/%3E%3Cpath d='M20 22h24v20H20z' fill='none' stroke='%232c4cd0'",
      "fill='%2311293d'/%3E%3Cpath d='M20 22h24v20H20z' fill='none' stroke='%23f3a83c'"),
 ]
-for old, new in CHANGES:
-    assert code.count(old) == 1, "not found once: " + old
-    code = code.replace(old, new)
 
-exec(compile(code, SRC, "exec"), {"__file__": SRC, "__name__": "make_1_1_portal"})
+
+def build(changes):
+    """Run make-1-1-ve.py with each change made exactly once."""
+    out = code
+    for old, new in changes:
+        assert out.count(old) == 1, "not found once: " + old
+        out = out.replace(old, new)
+    exec(compile(out, SRC, "exec"), {"__file__": SRC, "__name__": "make_1_1_built"})
+
+
+if __name__ == "__main__":
+    build(CHANGES)
