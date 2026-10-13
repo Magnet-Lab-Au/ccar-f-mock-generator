@@ -294,16 +294,17 @@ FIG13 = figure("1.3-1", 890, 350,
                "The conversation history of the coordinator is not passed. Only the final message of each subagent comes back.",
                "".join([edge("M250 170H360"), edge("M360 170V70H540"), edge("M360 170H540"), edge("M360 170V270H540"),
                         edge("M250 48H520", "not passed", 385, 39, cls="is-async"),
-                        edge("M705 310V340H135V220", "only the final message comes back", 410, 332, cls="is-async"),
+                        edge("M870 70H880V340H135V220", cls="is-async"), '<path class="ve-e no-head is-async" d="M870 170H880M870 270H880"/>',
+                        '<text class="ve-el" x="510" y="332">only the final message of each comes back</text>',
                         '<text class="ve-el" x="305" y="161">Task calls</text><text class="ve-el" x="450" y="261">findings + sources</text>',
                         box(20, 20, 230, 56, ["conversation history"], sub="of the coordinator"),
                         box(20, 120, 230, 100, ["Coordinator"], sub='allowedTools has "Task"', cls="who-model"),
                         box(540, 30, 330, 80, ["Subagent A"], sub="description · prompt · tools", cls="who-model"),
                         box(540, 130, 330, 80, ["Subagent B"], sub="description · prompt · tools", cls="who-model"),
                         box(540, 230, 330, 80, ["Subagent C"], sub="description · prompt · tools", cls="who-model")]),
-               "Parallel subagents start from one response. %s %s" % (fact("ts-1-3-f5", "A subagent gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
+               "Parallel subagents start from one response. %s %s The names and the allowedTools rule are those of the guide. The product today calls the tool Agent." % (fact("ts-1-3-f5", "A subagent gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
 
-PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passes it",
+PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conversation",
                         "A coordinator starts each subagent with a call of the Task tool. The subagent does not see the conversation of the coordinator, so the prompt of the call must hold the complete findings and their sources.",
                         FIG13)
     + level("explanation",
@@ -313,39 +314,45 @@ PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passe
                 cf("ts-1-3-c1", D(CCS, "In version 2.1.63, the Task tool was renamed to Agent. Existing `Task(...)` references in settings and agent definitions still work as aliases.", "Claude Code, Subagents"),
                    "The product renamed the tool Agent in version 2.1.63."),
                 cf("ts-1-3-c2", D(PERM, "Any other tool not listed in `allowed_tools` is still available to Claude, and a call to it that needs approval falls through to the permission mode.", "Agent SDK, Permissions"),
-                   "In the current Agent SDK, allowed_tools only approves a tool in advance. The exam uses the guide.")
+                   "In the current Agent SDK, allowed_tools only approves a tool in advance.") + " " + cf("ts-1-3-c2b", D(PERM, "Calls that need no approval in `default` mode run whether or not you list them, such as [read-only Bash commands](/docs/en/permissions#read-only-commands), tools like `Agent` that don't ask before running", "Agent SDK, Permissions"),
+                   "The Agent tool runs even when the list does not name it. The exam uses the guide.")
             )
-            + "<p><b>Context.</b> %s %s %s So the coordinator puts the complete findings of earlier agents in the prompt (1.3-S1), %s</p>" % (
-                fact("ts-1-3-f5", "The only content that goes from the parent to a subagent is the prompt of the tool call."),
+            + "<p><b>Context.</b> %s %s %s %s %s</p>" % (
+                fact("ts-1-3-f5", "Only the prompt of the tool call goes from the parent to a subagent."),
                 cf("ts-1-3-f6", D(SUB, "The parent's conversation history or tool results", "Agent SDK, Subagents"), "The subagent does not get the conversation history or the tool results of the parent."),
                 fact("ts-1-3-f7", "Only the final message of the subagent goes back."),
+                cf("ts-1-3-s1", gx("Including complete findings from prior agents directly in the subagent's prompt (e.g., passing web search results and document analysis outputs to the synthesis subagent)", "Exam guide, 1.3-S1"),
+                   "So the coordinator puts the complete findings of earlier agents in the prompt (1.3-S1),"),
                 cf("ts-1-3-f16", D(PBP, "When using multiple documents, wrap each document in `<document>` tags with `<document_content>` and `<source>` (and other metadata) subtags for clarity.", "Prompting best practices"),
-                   "and it keeps each content apart from its source, such as the URL or the page number (1.3-S2)."))
+                   "and keeps the content apart from its metadata, such as the source URL, to keep the attribution (1.3-S2). The documentation also separates the content and the source of a document."))
             + "<p><b>Definitions.</b> %s %s %s</p>" % (
-                cf("ts-1-3-f8", D(SUB, "| `description` | `string` | Yes | Natural language description of when to use this agent |\n| `prompt` | `string` | Yes | The agent's system prompt defining its role and behavior |", "Agent SDK, Subagents"),
+                cf("ts-1-3-f8", D(SUB, "| `description` | `string` | Yes | Natural language description of when to use this agent |\n| `prompt` | `string` | Yes | The agent's system prompt defining its role and behavior |\n| `tools` | `string[]` | No | Array of allowed tool names.", "Agent SDK, Subagents"),
                    "An AgentDefinition gives each type of subagent a description, a system prompt and a list of tools (1.3-K3)."),
                 cf("ts-1-3-f9", D(SUB, "Claude automatically decides when to invoke subagents based on the task and each subagent's `description`.", "Agent SDK, Subagents"),
                    "Claude chooses a subagent by its description."),
                 cf("ts-1-3-f10", D(SUB, "A tool you leave out isn't in the subagent's session at all: Claude works without it, with no permission prompt or error.", "Agent SDK, Subagents"),
-                   "A tool that the list leaves out is not in the session of the subagent at all."))
-            + "<p><b>Parallel.</b> %s So the coordinator starts parallel subagents with several Task calls in one response, not across separate turns (1.3-S3). %s</p>" % (
+                   "A tool that the list leaves out is not in its session."))
+            + "<p><b>Parallel.</b> %s %s %s</p>" % (
                 cf("ts-1-3-f14", D(PAR, "When Claude calls tools, the response has a `stop_reason` of `tool_use` and can contain several `tool_use` blocks in a single assistant turn.", "Parallel tool use"),
                    "One response of Claude can hold several tool calls."),
+                cf("ts-1-3-s3", gx("Spawning parallel subagents by emitting multiple Task tool calls in a single coordinator response rather than across separate turns", "Exam guide, 1.3-S3"),
+                   "So the coordinator starts parallel subagents with several Task calls in one response, not across separate turns (1.3-S3)."),
                 cf("ts-1-3-f15", D(SUB, "multiple subagents can run concurrently, so independent subtasks finish in the time of the slowest one rather than the sum of all of them.", "Agent SDK, Subagents"),
-                   "Independent subagents then finish in the time of the slowest one."))
-            + "<p><b>Goals, not steps.</b> A coordinator prompt gives research goals and quality criteria, not step-by-step procedures, so that a subagent can adapt (1.3-S4). %s</p>" %
+                   "Subagents can run at the same time."))
+            + "<p><b>Goals, not steps.</b> %s %s</p>" % (cf("ts-1-3-s4", gx("Designing coordinator prompts that specify research goals and quality criteria rather than step-by-step procedural instructions, to enable subagent adaptability", "Exam guide, 1.3-S4"),
+                   "A coordinator prompt gives research goals and quality criteria, not step-by-step procedures, so that a subagent can adapt (1.3-S4)."),
                 cf("ts-1-3-f17", D(PBP, "**Provide clear success criteria:** Define what constitutes a successful answer to your research question.", "Prompting best practices"),
-                   "The documentation also asks for clear success criteria for a research task.")
-            + "<p><b>Fork.</b> %s %s So two approaches can start from one shared analysis (1.3-K4). Task statement 1.7 has more on sessions.</p>" % (
+                   "The documentation also asks for clear success criteria."))
+            + "<p><b>Fork.</b> %s %s So two approaches can start from one shared analysis (1.3-K4, see 1.7).</p>" % (
                 cf("ts-1-3-f11", D(SES, "Forking creates a new session that starts with a copy of the original's history but diverges from that point. The fork gets its own session ID; the original's ID and history stay unchanged.", "Agent SDK, Sessions"),
                    "A fork of a session starts with a copy of the history. The original does not change."),
-                cf("ts-1-3-f12", D(SES, "fork_session=True,", "Agent SDK, Sessions"), "The option is fork_session, together with resume."))
+                cf("ts-1-3-f12", D(SES, "resume=session_id,\n                  fork_session=True,", "Agent SDK, Sessions"), "The option is fork_session, together with resume."))
             + exam_tests("1.3", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names"),
                                  ("Subagent context management: explicit context passing, structured state persistence, crash recovery using manifests", "Among the topics:")])
             + guide_text("1.3"), "ts-1-3")
     + level("depth",
             beyond([cf("ts-1-3-b1", D(SUB, "Project CLAUDE.md (loaded via [`settingSources`](/docs/en/agent-sdk/claude-code-features#control-filesystem-settings-with-settingsources)), unless the agent sets [`omitClaudeMd`](#agentdefinition-configuration)", "Agent SDK, Subagents"),
-                       "A subagent is not empty: it also loads the CLAUDE.md of the project, unless its definition turns that off. The guide says only that the context must be in the prompt."),
+                       "A subagent is not empty: by default it also loads the CLAUDE.md of the project, unless its definition turns that off. The guide says only that the context must be in the prompt."),
                     cf("ts-1-3-b2", D(SUB, "Each subagent makes its own API requests, which count toward the query's `total_cost_usd`, and a subagent can spawn subagents of its own, so one prompt can grow into a tree of agents.", "Agent SDK, Subagents"),
                        "A subagent can start subagents of its own, and each one makes its own API requests, so one prompt can grow into a tree of agents and costs."),
                     cf("ts-1-3-b3", D(CCS, "A fork is a subagent that inherits the entire conversation so far instead of starting fresh.", "Claude Code, Subagents"),
@@ -355,7 +362,7 @@ PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passe
             + tab2_links("1.3")
             + "<p>%s %s</p>" % (cf("ts-1-3-d26", excerpt(D26, "The pipeline uses no MCP, no subagent, no hook and no session.", "Mock decision 0026"), "The mock builder itself uses no subagent."),
                                 cf("ts-1-3-d12", excerpt(D12, "A subagent is necessary only for a step in which code cannot know before the call what the model must read.", "Mock decision 0012"),
-                                   "The reason: a subagent is necessary only when code cannot know before the call what the model must read.")), "ts-1-3"))
+                                   "No step needs one: a subagent is necessary only when code cannot know before the call what the model must read.")), "ts-1-3"))
 
 
 # ----- part 1.2 (facts: academy/facts/ts-1-2.md) -----
@@ -363,11 +370,13 @@ PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passe
 AT, O5 = "claude-code-docs-agent-teams", "anthropic-docs-prompting-claude-opus-5"
 FIG12 = figure("1.2-1", 890, 380,
                "A coordinator in the middle sends a task prompt to four subagents: web search, document analysis, synthesis and report. "
-               "Each subagent has its own context. No arrow joins two subagents. When the synthesis has gaps, the coordinator delegates again.",
+               "Each subagent has its own context and sends only its final result back. No arrow joins two subagents. When the synthesis has gaps, the coordinator sends targeted queries again.",
                "".join([edge("M380 140V55H240"), edge("M510 140V55H650"), edge("M380 250V325H240"), edge("M510 250V325H650"),
+                        edge("M240 75H410V140", cls="is-async"), edge("M650 75H480V140", cls="is-async"), edge("M240 310H410V250", cls="is-async"),
+                        '<text class="ve-el" x="325" y="94">result</text><text class="ve-el" x="565" y="94">result</text>',
                         edge("M240 30H650", "no direct path", 445, 16, cls="is-async no-head"), '<path class="ve-e no-head" d="M437 22l16 16M453 22l-16 16"/>',
-                        edge("M760 290V195H560", "gaps? delegate again", 690, 186, cls="is-hot"),
-                        '<text class="ve-el" x="310" y="72">task prompt</text>',
+                        edge("M760 290V195H560", "gaps? targeted queries again", 690, 186, cls="is-hot"),
+                        '<text class="ve-el" x="310" y="48">task prompt</text>',
                         box(330, 140, 230, 110, ["Coordinator"], sub="split · select · join", cls="who-model"),
                         box(20, 20, 220, 70, ["Web search"], sub="own context", cls="who-model"),
                         box(650, 20, 220, 70, ["Document analysis"], sub="own context", cls="who-model"),
@@ -376,7 +385,7 @@ FIG12 = figure("1.2-1", 890, 380,
                "%s %s" % (cf("ts-1-2-k1", gx("Hub-and-spoke architecture where a coordinator agent manages all inter-subagent communication, error handling, and information routing", "Exam guide, 1.2-K1"),
                              "The coordinator manages all communication between the subagents, the errors and the routing of information."),
                           cf("ts-1-2-f1", gx("A coordinator agent delegates to specialized subagents: one searches the web, one analyzes documents, one synthesizes findings, and one generates reports.", "Exam guide, scenario 3"),
-                             "The four subagents are those of scenario 3 of the guide.")))
+                             "The four subagents are those of scenario 3 of the guide, a multi-agent research system.")))
 
 PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every result",
                         "A coordinator agent splits the task, calls only the subagents that the query needs, and is the only path between them. "
@@ -396,8 +405,10 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
                    "The coordinator splits the task, delegates, joins the results, and decides which subagents a query needs (1.2-K3)."),
                 fact("ts-1-3-f9", "Claude chooses a subagent by its description."),
                 cf("ts-1-2-f8", D(O5, "If one subagent can complete the task, use one rather than several, and keep spawn counts low.", "Prompting Claude Opus 5"),
-                   "The documentation agrees with the guide: if one subagent can do the task, use one, not the full pipeline (1.2-S1)."))
-            + "<p><b>Split the scope.</b> The guide gives each subagent a distinct subtopic or source type, so that the work does not repeat (1.2-S2). %s %s</p>" % (
+                   "A sample prompt in the documentation also tells Claude to use one subagent, not several, when one is enough (1.2-S1)."))
+            + "<p><b>Split the scope.</b> %s %s %s</p>" % (
+                cf("ts-1-2-s2", gx("Partitioning research scope across subagents to minimize duplication (e.g., assigning distinct subtopics or source types to each agent)", "Exam guide, 1.2-S2"),
+                   "The guide gives each subagent a distinct subtopic or source type, so that the work does not repeat (1.2-S2)."),
                 cf("ts-1-2-k4", gx("Risks of overly narrow task decomposition by the coordinator, leading to incomplete coverage of broad research topics", "Exam guide, 1.2-K4"),
                    "A split that is too narrow leaves parts of a broad topic with no coverage (1.2-K4)."),
                 cf("ts-1-2-f14", gx("The subagents executed their assigned tasks correctly—the problem is what they were assigned.", "Exam guide, sample question 7"),
