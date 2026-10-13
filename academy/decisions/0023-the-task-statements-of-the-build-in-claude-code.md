@@ -16,7 +16,7 @@ Decision 0010 links each entry of "the build in Claude Code" to a task statement
 |---|---|
 | CLAUDE.md, which imports WORKING-RULES.md | 3.1 |
 | HANDOFF.md, the journal and the decision files carry the work from one session to the next | 1.7 |
-| A new agent reviews each file. Story: the 26 document gaps | 4.6 (not 1.3) |
+| A new agent reviews each file. Story: the three document checks (decision 0031) | 4.6 (not 1.3) |
 | Skills, such as ste-writing and discussion-and-brainstorming | 3.2. The source card says that the skills are outside the repository. |
 | The built-in tools of Claude Code | 2.5 (new) |
 | "Discuss first", before any code | 3.4: no example. The entry says that the build used a "discuss first" rule, not plan mode. |
