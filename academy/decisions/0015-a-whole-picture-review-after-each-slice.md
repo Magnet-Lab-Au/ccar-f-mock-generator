@@ -1,8 +1,8 @@
 # 0015: A whole-picture review after each slice
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: adds a third agent to decision 0012, for each slice
 
