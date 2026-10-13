@@ -520,6 +520,159 @@ EXTRA5 = ('<li><a href="%s">Build guide, step 5, the table of guide points</a> <
              e(link("reference/guide-records.json"))))
 step5_html = step5_html.replace("<ul></ul>", "<ul>%s%s</ul>" % (sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', step5_html)))), EXTRA5))
 
+# ----- shared helpers for each step -----
+
+
+def step_file(n):
+    return os.path.relpath(glob.glob(os.path.join(ROOT, "docs/build-guide/step-%d-*.md" % n))[0], ROOT)
+
+
+def table_rows(n):
+    """The rows of the table of guide points of a step: (point, how the step uses it) (decision 0024)."""
+    out = []
+    for l in read(step_file(n)).split("\n"):
+        m = re.match(r"^\| ([1-5]\.[0-9]-[KS][0-9]+) \|", l)
+        if m:
+            out.append((m.group(1), l.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")))
+    return out
+
+
+def ts_block(n, extra=None):
+    """A chip for each task statement of a step, each with its popup, and the links to tab 1."""
+    rows, chips = table_rows(n), []
+    for tsid in dict.fromkeys(p.split("-")[0] for p, _ in rows):
+        key = "step-%d-ts-%s" % (n, tsid.replace(".", "-"))
+        mine = [(p, u) for p, u in rows if p.startswith(tsid + "-")]
+        POP[key] = {"who": "Task statement " + tsid, "cls": "model", "title": TS[tsid]["title"], "example": None,
+                    "sent": ["How step %d uses %s:" % (n, "each point" if len(mine) > 1 else "the point")]
+                            + ["%s: %s" % (p, u) for p, u in mine] + ((extra or {}).get(tsid) or []),
+                    "points": pts(*[p for p, _ in mine])}
+        chips.append('<div class="tsrow"><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
+                     '<span>%s</span> <a href="%s#ts-%s">Exam guide breakdown %s &rarr;</a></div>'
+                     % (key, tsid, e(TS[tsid]["title"]), TAB1, tsid.replace(".", "-"), tsid))
+    return '<p class="gh">The task statements that step %d uses</p><div class="tslist">%s</div>' % (n, "".join(chips))
+
+
+def with_sources(n, html, extra=""):
+    cards = list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', html)))
+    tab = step_file(n)
+    rows = [l for l in read(tab).split("\n") if re.match(r"^\| [1-5]\.[0-9]-[KS][0-9]+ \|", l)]
+    if rows:
+        a, b = lines_of(tab, rows[0])[0], lines_of(tab, rows[-1])[0]
+        extra += ('<li><a href="%s">Build guide, step %d, the table of guide points</a> <span class="ve-label">%s, lines %d to %d</span></li>'
+                  % (e(link(tab, a, b)), n, tab, a, b))
+    return html.replace("@SOURCES@", sources(cards) + extra)
+
+
+def level(kind, body):
+    if kind == "overview":
+        return '<section data-level="overview" aria-label="Overview"><p class="lvl1">Overview &middot; 30 seconds</p>%s</section>' % body
+    if kind == "explanation":
+        return ('<details class="level" data-level="explanation"><summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>'
+                '<div class="body">%s</div></details>' % body)
+    return ('<details class="level" data-level="depth"><summary><h4>Depth</h4><span class="ve-label">what went wrong, and the fix</span></summary>'
+            '<div class="body">%s<section class="sources" aria-label="Sources of step @N@"><p class="ve-label">Sources of step @N@. '
+            'Each underlined fact opens its card.</p><ul>@SOURCES@</ul></section></div></details>' % body)
+
+
+PART_HTML = {}
+
+# ----- step 0: prepare the guide records (facts: academy/facts/step-0.md) -----
+
+S0 = step_file(0)
+D17 = glob.glob(os.path.join(ROOT, "docs/decisions/0017-*.md"))[0][len(ROOT) + 1:]
+D28 = glob.glob(os.path.join(ROOT, "docs/decisions/0028-*.md"))[0][len(ROOT) + 1:]
+A27 = glob.glob(os.path.join(ROOT, "academy/decisions/0027-*.md"))[0][len(ROOT) + 1:]
+REC = GUIDE
+N_PTS = sum(len(t["points"]) for t in REC["task_statements"])
+N_S17 = sum(len(v) for v in REC["section_17"].values())
+assert (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"])) == (5, 6, 30, 240, 12)
+import subprocess  # noqa: E402
+_chk = subprocess.run([sys.executable, "-B", os.path.join(ROOT, "src/check_guide_records.py")], capture_output=True, text=True, cwd=ROOT)
+CHECKS = re.search(r"(\d+) of (\d+) checks passed", _chk.stdout)
+assert CHECKS and CHECKS.group(1) == CHECKS.group(2), _chk.stdout[-300:]
+N_CHECKS = int(CHECKS.group(1))
+PAGE_MARKS = len(re.findall(r"(?m)^<!-- Page \d+ \|.*-->$", read("reference/exam-guide.md")))
+WORDS_PDF = re.search(r"([\d,]+) words in each, and (\d+) places that differ", read(A27))
+assert WORDS_PDF and WORDS_PDF.group(2) == "0"
+
+CARD.update({
+    "s0-what": excerpt(S0, "Before the program plans a mock, a script copies the parts of the exam guide that the later steps need into one file, `reference/guide-records.json` (decision 0028). No model copies text.", "Build guide, step 0"),
+    "s0-slice": excerpt(S0, "The file is the one source of guide text for the code. A later step takes a slice of it by ID.", "Build guide, step 0"),
+    "s0-once": excerpt(D17, "It runs one time for each version of the guide, not one time for each mock.", "Mock decision 0017, Decision"),
+    "s0-ids": excerpt(S0, "Each point gets an ID that the guide does not have: the task statement, then K (knowledge) or S (skill), then the number of the bullet.", "Build guide, step 0"),
+    "s0-fail": code_block("src/step0_prepare_guide_records.py", "EXPECTED = ", "EXPECTED = ", "The counts that step 0 expects"),
+    "s0-exact": code_block("src/step0_prepare_guide_records.py", 'need(text and text in raw,', 'need(text and text in raw,', "Each text must be exactly in the guide"),
+    "s0-check": excerpt("src/check_guide_records.py", "It does not use the code of\nstep 0.", "The second script that checks the file", kind="code"),
+    "s0-review": excerpt("docs/reviews/review-guide-records.md", "The reviewer wrote its own script and compared the two files record by record and character by character, in both directions.", "The independent review of the records"),
+    "s0-pdf": excerpt(A27, "The result on 13 October 2026: %s words in each, and 0 places that differ." % WORDS_PDF.group(1), "Academy decision 0027"),
+    "s0-a1": excerpt(D28, "The assistant showed a proposal for step 2 that said \"the story of the scenario\" and \"a fixed form with fields\".", "Mock decision 0028, How we decided"),
+    "s0-a2": excerpt(D28, "The cause: `HANDOFF.md` said to start with step 1, and each step reads the records of step 0.", "Mock decision 0028, How we decided"),
+    "s0-a3": excerpt(D28, "Step 0 is designed before step 2. Each design names the exact file format and the exact fields.", "Mock decision 0028, How we decided"),
+    "s0-rule": excerpt("WORKING-RULES.md", "for the design of a pipeline step, the assistant shows one proposal with all details of the step. The proposal names the exact file format and the exact fields.", "Working rule 30"),
+    "s0-b": excerpt(D17, "The assistant then suggested to call the work an input and not a step. The owner said that it must be documented in each case, because a goal of the build is a record that a portal page can show.", "Mock decision 0017, How we decided"),
+})
+
+FIG01 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 0. A script reads the copy of the exam guide, leaves out the page marks, gives each point an ID and checks the counts and each text. If a check fails, it writes no file. Otherwise it writes one file of records. A second script, which does not use the code of step 0, checks the file. Later steps take slices of the records by ID.">
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 0-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "nodes": "".join([
+        box(20, 40, 170, 90, ["exam guide"], sub="the copy, .md"),
+        box(260, 40, 190, 90, ["script of step 0"], sub="code, no model", cls="is-key"),
+        box(520, 40, 170, 90, ["guide records"], sub="one JSON file"),
+        box(760, 40, 110, 90, ["steps"], sub="1, 2, 4, 7, 8"),
+        box(260, 190, 190, 70, ["no file"], sub="and the cause", cls="try bad"),
+        box(520, 190, 170, 70, ["second script"], sub="%d of %d checks" % (N_CHECKS, N_CHECKS), cls="try ok"),
+    ]),
+    "edges": "".join([
+        edge("M190 85H260", "reads", 225, 76),
+        edge("M450 85H520", "writes", 485, 76, cls="is-hot"),
+        edge("M690 85H760", "a slice", 725, 76),
+        edge("M355 130V190", "a check fails", 363, 165, anchor="r"),
+        edge("M605 190V130", "checks", 613, 165, anchor="r"),
+    ]),
+    "cap": fact("s0-what", "A script copies the parts of the exam guide that later steps need into one file. No model copies text.")
+           + " " + fact("s0-slice", "A later step takes a slice of it by ID."),
+}
+
+STEP0 = (level("overview",
+               '<h4 class="takeaway">A script copies the exam guide into records, once</h4>'
+               '<p>%s %s The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide. %s</p>'
+               % (fact("s0-what", "Before the first mock, a script copies the parts of the exam guide that the later steps need into one file of records. No model copies text."),
+                  fact("s0-once", "It runs once for each version of the guide, not once for each mock."),
+                  len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"]),
+                  fact("s0-slice", "Each later step takes a slice of the file by ID.")))
+         + level("explanation",
+                 FIG01
+                 + '<p><b>IDs.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. The guide has no such IDs, and every question of the mocks keeps the ID of its point.</p>'
+                   % fact("s0-ids", "Each point gets an ID that the guide does not have: the task statement, then K or S, then the number of the bullet.")
+                 + '<p><b>Checks.</b> The script leaves out the %d page marks of the PDF, so that no list is cut in two. %s and %s, or it writes no file. Then three checks:</p>'
+                   '<ol class="checks"><li>%s</li><li>%s</li><li>%s</li></ol>'
+                   % (PAGE_MARKS, fact("s0-fail", "It checks the counts"), fact("s0-exact", "that each text is exactly in the guide"),
+                      fact("s0-check", "A second script, which does not use the code of step 0, checks the file: %d of %d checks pass." % (N_CHECKS, N_CHECKS)),
+                      fact("s0-review", "An independent reviewer wrote its own script and compared the files record by record."),
+                      fact("s0-pdf", "On 13 October 2026, a script compared the copy of the guide with the official PDF, word for word: 0 differences."))
+                 + ts_block(0))
+         + level("depth",
+                 '<h4 class="story">The design started at step 1, and a proposal had no source</h4>'
+                 '<p>%s It had no source for the story and no fields. %s The fix: %s %s</p>'
+                 '<p>One more correction came earlier. %s So step 0 has a number, a decision and a box in Fig. A.</p>'
+                 '<p>No source records a failure of the script or of the file. The file has not changed since the first commit.</p>'
+                 % (fact("s0-a1", "Early in the design, a proposal for step 2 said &ldquo;the story of the scenario&rdquo; and &ldquo;a fixed form with fields&rdquo;."),
+                    fact("s0-a2", "The cause: the plan of work started at step 1, but each step reads the records of step 0."),
+                    fact("s0-a3", "step 0 was designed and run before step 2, and each design names the exact file format and fields."),
+                    fact("s0-rule", "This became a working rule of the build."),
+                    fact("s0-b", "The assistant suggested to call this work an input, not a step. The owner said that it must be documented, because a portal page will show it.")))
+         ).replace("@N@", "0")
+PART_HTML[0] = with_sources(0, STEP0)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
@@ -539,7 +692,7 @@ def part(s):
     who = WHO_LONG[s]
     ts = ts_of(s)
     who += " · task statements " + ", ".join(ts) if ts else " · no task statement of the exam guide"
-    body = step5_html if s == 5 else '<p class="pending">This step comes in slice %d.</p>' % SLICE[s]
+    body = step5_html if s == 5 else PART_HTML.get(s, '<p class="pending">This step comes in slice %d.</p>' % SLICE.get(s, 2))
     return ('<details class="part" id="step-%d"><summary><span class="pn">%d</span><span><h3>%s</h3><span class="who">%s</span></span>'
             '<span class="mm">%s<span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
             % (s, s, e(FULL[s]), e(who), MINI[s], body))
