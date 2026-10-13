@@ -2343,6 +2343,91 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                 cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
                    "In mocks 4 and 5, the reader is a Claude model, not a person.")), "ts-5-5"))
 
+# ----- part 5.6 (facts: academy/facts/ts-5-6.md) -----
+
+CIT, SRES = "anthropic-docs-citations", "anthropic-docs-search-results"
+SR56 = "\n".join(read(SRC % SRES).split("\n")[28:44])
+assert SR56.startswith("{") and SR56.rstrip().endswith("}") and '"type": "search_result",' in SR56
+FIG56 = figure("5.6-1", 890, 380,
+               "Subagents return each finding as a record with a claim, an evidence excerpt, a source and a publication date. The coordinator keeps conflicting values and annotates them, "
+               "and the synthesis agent merges the records. The report has sections for well-established findings, contested findings with both values, and coverage gaps. "
+               "A summary without sources loses the attribution. Picking one value, or a finding with no date, is wrong. Each content type keeps its own format.",
+               "".join(['<text class="ve-lab" x="240" y="12">one finding</text>',
+                        edge("M200 75H240"), edge("M470 75H520"), edge("M680 75H720"), edge("M795 130V180"),
+                        edge("M110 120V200", "compressed", 118, 165, anchor="r"),
+                        '<text class="ve-lab" x="250" y="215">Wrong: pick one value</text>',
+                        '<text class="ve-lab" x="250" y="245">Wrong: no date, so an older</text>',
+                        '<text class="ve-lab" x="250" y="265">figure looks like a contradiction</text>',
+                        '<text class="ve-lab" x="20" y="320">Format by content type:</text>',
+                        '<text class="ve-lab" x="20" y="342">financial data as tables, news as</text>',
+                        '<text class="ve-lab" x="20" y="362">prose, technical findings as lists</text>',
+                        box(20, 30, 180, 90, ["Subagents"], sub="search, analysis", cls="who-model"),
+                        box(240, 20, 230, 110, ["claim", "evidence excerpt", "source URL or name", "publication date"]),
+                        box(520, 20, 160, 110, ["Coordinator"], sub="annotates conflicts", cls="who-model"),
+                        box(720, 20, 150, 110, ["Synthesis"], sub="merges records", cls="who-model"),
+                        box(20, 200, 200, 60, ["Summary only"], sub="sources lost", cls="try bad"),
+                        '<text class="ve-lab" x="520" y="174">Report</text>',
+                        box(520, 180, 350, 45, ["Well-established"]),
+                        box(520, 235, 350, 55, ["Contested"], sub="both values, each with its source", cls="try ok"),
+                        box(520, 300, 350, 45, ["Coverage gaps"], sub="a point of 5.3-S4")]),
+               "%s %s" % (cf("ts-5-6-s1", gx("Requiring subagents to output structured claim-source mappings (source URLs, document names, relevant excerpts) that downstream agents preserve through synthesis", "Exam guide, 5.6-S1"),
+                             "Subagents output structured claim-source mappings, and the agents after them keep the mappings through the synthesis (5.6-S1)."),
+                          cf("ts-5-6-s2", gx("Structuring reports with explicit sections distinguishing well-established findings from contested ones, preserving original source characterizations and methodological context", "Exam guide, 5.6-S2"),
+                             "The report has separate sections for well-established and for contested findings (5.6-S2).")))
+
+PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts",
+                        "Each subagent returns its findings as structured records: the claim, the excerpt, the source and the date. "
+                        "The synthesis keeps these records, shows both values when credible sources disagree, and separates settled findings from contested ones.",
+                        FIG56)
+    + level("explanation",
+            "<p><b>A summary loses sources.</b> %s %s</p>" % (
+                cf("ts-5-6-k1", gx("How source attribution is lost during summarization steps when findings are compressed without preserving claim-source mappings", "Exam guide, 5.6-K1"),
+                   "When a summary compresses findings and drops the claim-source mappings, the attribution is lost (5.6-K1)."),
+                cf("ts-5-6-f1", D(SUB, "Either way, intermediate tool calls and results stay inside the subagent; only its final message returns to the parent. A `research-assistant` subagent can explore dozens of files without any of that content accumulating in the main conversation. The parent receives a concise summary, not every file the subagent read.", "Agent SDK, Subagents"),
+                   "In the Agent SDK, only the final message of a subagent returns to its parent, as a concise summary. A source that is not in that message does not reach the parent."))
+            + "<p><b>Keep the mapping.</b> %s %s</p>" % (
+                cf("ts-5-6-k2", gx("The importance of structured claim-source mappings that the synthesis agent must preserve and merge when combining findings", "Exam guide, 5.6-K2"),
+                   "The synthesis agent must keep and merge structured claim-source mappings (5.6-K2)."),
+                cf("ts-5-6-f2", gx("Design structured output for subagents that separates content from metadata: each finding should include a claim, evidence excerpt, source URL/document name, and publication date.", "Exam guide, exercise 4"),
+                   "An exercise of the guide names the fields of one finding: a claim, an evidence excerpt, a source URL or document name, and a publication date."))
+            + "<p><b>The API can carry the source.</b> %s %s %s</p>" % (
+                cf("ts-5-6-f4", D(CIT, "Responses may now include multiple text blocks where each text block can contain a claim that Claude is making and a list of citations that support the claim.", "Citations"),
+                   "With citations on, each text block of a Claude API response can hold a claim and its citations."),
+                cf("ts-5-6-f6", D(SRES, "Search result content blocks let Claude cite your own content the same way it cites web search results: each citation carries the source and title you provided.", "Search results"),
+                   "Search result blocks of the Claude API carry the source and the title that you give into each citation."),
+                cf("ts-5-6-f8", D(RHAL, "Make Claude's response auditable by having it cite quotes and sources for each of its claims. You can also have Claude verify each claim by finding a supporting quote after it generates a response. If it can't find a quote, it must retract the claim.", "Reduce hallucinations"),
+                   "In a prompt, have Claude cite a quote and a source for each claim, and retract a claim with no quote."))
+            + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the documentation covers conflicting values or dates. These rules are the guide&rsquo;s.</p>" % (
+                cf("ts-5-6-k3", gx("How to handle conflicting statistics from credible sources: annotating conflicts with source attribution rather than arbitrarily selecting one value", "Exam guide, 5.6-K3"),
+                   "When credible sources give different statistics, annotate the conflict with the sources, and do not select one value arbitrarily (5.6-K3)."),
+                cf("ts-5-6-s3", gx("Completing document analysis with conflicting values included and explicitly annotated, letting the coordinator decide how to reconcile before passing to synthesis", "Exam guide, 5.6-S3"),
+                   "The document analysis ends with both values, annotated, and the coordinator decides how to reconcile them before the synthesis (5.6-S3)."),
+                cf("ts-5-6-f9", gx("Test with conflicting source data (e.g., two credible sources with different statistics) and verify the synthesis output preserves both values with source attribution rather than arbitrarily selecting one, and structures the report to distinguish well-established from contested findings.", "Exam guide, exercise 4"),
+                   "The guide&rsquo;s exercise checks that the synthesis keeps both values with their sources."),
+                cf("ts-5-6-k4", gx("Temporal data: requiring publication/collection dates in structured outputs to prevent temporal differences from being misinterpreted as contradictions", "Exam guide, 5.6-K4"),
+                   "A publication or collection date in the structured output stops a difference in time from looking like a contradiction (5.6-K4)."),
+                cf("ts-5-6-s4", gx("Requiring subagents to include publication or data collection dates in structured outputs to enable correct temporal interpretation", "Exam guide, 5.6-S4"),
+                   "So the subagents must include these dates (5.6-S4)."))
+            + "<p><b>The report.</b> %s</p>" % 
+                cf("ts-5-6-s5", gx("Rendering different content types appropriately in synthesis outputs—financial data as tables, news as prose, technical findings as structured lists—rather than converting everything to a uniform format", "Exam guide, 5.6-S5"),
+                   "The report keeps the original characterizations and methods of the sources (5.6-S2), and formats each content type in its own way: financial data as tables, news as prose, technical findings as lists (5.6-S5).")
+            + exam_tests("5.6", [("Information provenance: claim-source mappings, temporal data handling, conflict annotation, coverage gap reporting", "Among the topics, the guide names")])
+            + guide_text("5.6"), "ts-5-6")
+    + level("depth",
+            beyond([cf("ts-5-6-b1", D(CIT, "If you enable citations on any user-provided document (`document` blocks or `search_result` blocks) and also include the `output_config.format` parameter (or the deprecated `output_format` parameter), the API returns a 400 error.", "Citations"),
+                       "In the Claude API, citations and the structured outputs of output_config.format do not work in one request: the API returns a 400 error. The guide asks for the mappings in structured outputs. The exam uses the guide."),
+                    cf("ts-5-6-b2", D(CIT, "As image citations are not yet supported, PDFs that are scans of documents and do not contain extractable text are not citable.", "Citations"),
+                       "Citations of the Claude API do not work for a scanned PDF with no extractable text."),
+                    cf("ts-5-6-b3", D(SRES, "The text block is the minimal citable unit: Claude cites whole blocks, not substrings within a block.", "Search results"),
+                       "Claude cites a whole text block of a search result, not a part of a block.")])
+            + code_pop_text("ts-5-6-code", "The code: a search result that carries its source", "A search result block", SRES, SR56, "Search results",
+                            "In the Claude API, the source and the title come back in each citation. All active models except Claude Haiku 3 support it. The example has no date field, and 5.6-S4 asks for one.")
+            + tab2_links("5.6") + "<p>%s %s</p>" % (
+                cf("ts-5-6-use", excerpt(step_file(0), "Written for the synthesis of findings. Here: the records keep the exact guide text, so no summary loses the source.", "Build guide, step 0"),
+                   "Step 0 uses 5.6-K1 outside its context: each guide record keeps the exact text of the guide, so no summary loses the source."),
+                cf("ts-5-6-code0", excerpt("src/step0_prepare_guide_records.py", "need(text and text in raw, \"text is not exactly in the guide: \" + text[:60])", "Mock builder code, src/step0_prepare_guide_records.py"),
+                   "The code stops when the text of a record is not exactly in the guide.")), "ts-5-6"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
