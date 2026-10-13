@@ -53,6 +53,10 @@ All work of this step happens in `../ccar-f-fix-owner-reason`. The owner decides
 
 The 6 entries of decision 0023 and the story of the three document checks (decision 0031), with the process of step 2. The fact agent checks each task statement link against the K and S points first (decision 0023). 3.4 has no example unless the fact agent finds that the build used the Explore subagent (decision 0023). For entry 3.2, the agents read only the two skills ste-writing and discussion-and-brainstorming in the owner's settings folder, and no other skill (working rules 19 and 28).
 
+## Step 5. Slice 4: the top of tab 1 and domain 1 (added at 02:05)
+
+At 02:05 the owner said: "We can do more while I sleep." So the limit "No change to tab 1" ends for slice 4 of decision 0022: the top of tab 1 (the map and "How we broke it down"), plus domain 1 and its task statements 1.1 to 1.7. The process is the process of step 2. The morning report (written first at about 02:30) gets slice 4 before 08:45, and a new agent checks it again.
+
 ## When things go wrong
 
 - An agent with no result after 45 minutes: stop it and run it again once. A second failure: skip the part and name it in the report.
@@ -66,7 +70,7 @@ The 6 entries of decision 0023 and the story of the three document checks (decis
 - No push to GitHub. No merge of the branch. No deletion of work.
 - No model call through the API and no API cost. Only the agents of Claude Code.
 - No change to the mock builder's code on `main`, to `reference/`, to the old folders or to the study packs (working rules 16 and 27). No change to the page "How the Mocks Are Built New" (working rule 18). No change in the portal folders `~/magnetlab-academy` and `~/magnetlab-portal`.
-- No change to tab 1. No new design beyond the two choices above: a part follows slice 1. If a part needs a new kind of figure, the assistant draws it with the rules of decision 0013 and names it in the report.
+- No change to tab 1, except slice 4 (step 5). No new design beyond the two choices above: a part follows slice 1. If a part needs a new kind of figure, the assistant draws it with the rules of decision 0013 and names it in the report.
 - No file of the owner's personal material, and no conversation transcript (working rules 19 and 28).
 - At most 2 agents at the same time. About 45 agents in all, all Opus 5.5 (decision 0012): 2 or 3 for each of about 15 parts, 4 for the two slices, 2 for the fix and 1 for the report.
 - Text in Simplified Technical English. No semicolons, no em dashes.
