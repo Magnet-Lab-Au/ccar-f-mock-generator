@@ -111,7 +111,7 @@ The code (`src/control.py`, 733-763, `build_conditions`, L1), each cause text ex
 | P6 | Why a fingerprint: a rule alone does not make sure that nobody edits a record. | `docs/decisions/0036-...md`, 61 | "Decision 0016 says that nobody edits a file by hand. A rule alone does not make sure of that. The plain reason for the fingerprint: code can prove that the question in the mock is the question that the checks saw." | 2 |
 | P7 | The comparison is in the control (`build_conditions`), before step 8 runs; `step8_build_files.py` does not calculate a fingerprint. | `src/control.py`, 741-746; `src/step8_build_files.py`, 25-26 | `fp = fingerprint(q)` / "The control already checked steps 3 and 4 and the fingerprints." | 1 |
 | P8 | The fingerprint does not cover the `point`, `slot_id` or `status` of a record. The files take `point` from the record (F5). So a change of only the point after the checks would not change the fingerprint. (Reading of the code; no source discusses it.) | `src/control.py`, 58-63; `src/step8_build_files.py`, 78 | `data = {"question_id": ..., "question": ..., "select": ..., "options": [...]}` | 1 |
-| P9 | `build.json` stores absolute paths of this computer. | `runs/mock-01/build.json`, 2-5 (same in mocks 2 to 5) | `"/home/triggger/ccar-f-mock-generator/mocks/mock-01.questions.json"` | 1 |
+| P9 | `build.json` stores absolute paths of this computer. | `runs/mock-01/build.json`, 2-5 (same in mocks 2 to 5) | `"mocks/mock-01.questions.json"` | 1 |
 
 ## 3. Task statements and points of the step
 
@@ -144,7 +144,7 @@ Other facts for section 3:
 
 ### 4.1 Method
 
-Script `count8.py` (in the scratchpad of this agent, not in the repository). Run: `env -u ANTHROPIC_API_KEY python3 -I count8.py /home/triggger/ccar-f-mock-generator`. It reads `runs/mock-0N/plan.json`, `build.json`, `questions/*.json`, `checks/*.json`, `marks/round-*.json`, `mocks/mock-0N.*.json` and `reference/guide-records.json`. It imports `fingerprint` from `src/control.py` and `build` from `src/step8_build_files.py`. It makes no model call. The only thing it writes is a rebuild of each mock into a temporary folder in the scratchpad (deleted after the run), to compare with `mocks/` byte for byte.
+Script `count8.py` (in the scratchpad of this agent, not in the repository). Run: `env -u ANTHROPIC_API_KEY python3 -I count8.py ~/ccar-f-mock-generator`. It reads `runs/mock-0N/plan.json`, `build.json`, `questions/*.json`, `checks/*.json`, `marks/round-*.json`, `mocks/mock-0N.*.json` and `reference/guide-records.json`. It imports `fingerprint` from `src/control.py` and `build` from `src/step8_build_files.py`. It makes no model call. The only thing it writes is a rebuild of each mock into a temporary folder in the scratchpad (deleted after the run), to compare with `mocks/` byte for byte.
 
 ```python
 records = rd(ROOT + "/reference/guide-records.json")

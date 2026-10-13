@@ -130,7 +130,7 @@ Facts that support each use:
 
 ### 4.1 Method
 
-Script 1 reads only the run files. It makes no model call. Run: `python3 -I count7.py /home/triggger/ccar-f-mock-generator` (copy in the scratchpad of this agent, not in the repository). It ran on 14 October 2026.
+Script 1 reads only the run files. It makes no model call. Run: `python3 -I count7.py ~/ccar-f-mock-generator` (copy in the scratchpad of this agent, not in the repository). It ran on 14 October 2026.
 
 ```python
 import glob, json, os, sys

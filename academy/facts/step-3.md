@@ -136,7 +136,7 @@ Facts from the runs that support the uses:
 
 ### 4.1 Method
 
-The script reads only the run files and the code of step 3. It makes no model call. Run: `python3 -I count3.py /home/triggger/ccar-f-mock-generator`. It ran on 14 October 2026 (a copy was in the scratchpad of this agent, not in the repository).
+The script reads only the run files and the code of step 3. It makes no model call. Run: `python3 -I count3.py ~/ccar-f-mock-generator`. It ran on 14 October 2026 (a copy was in the scratchpad of this agent, not in the repository).
 
 ```python
 import glob, json, os, sys

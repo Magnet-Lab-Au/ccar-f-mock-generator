@@ -1,7 +1,7 @@
 {
   "files": [
-    "/home/triggger/ccar-f-mock-generator/mocks/mock-05.questions.json",
-    "/home/triggger/ccar-f-mock-generator/mocks/mock-05.answers.json"
+    "mocks/mock-05.questions.json",
+    "mocks/mock-05.answers.json"
   ],
   "fingerprints": {
     "M5-S01-T1": "66066f24fb3bc8bcd03443c6fc5c01ea705234a549994c3b00c8d71183b2e3d6",

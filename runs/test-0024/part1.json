@@ -543,7 +543,7 @@
       }
     }
   ],
-  "marking_file": "/home/triggger/ccar-f-mock-generator/marking/test-0024-round1.xlsx",
+  "marking_file": "marking/test-0024-round1.xlsx",
   "cost": {
     "calls": 10,
     "input_tokens": 37854,

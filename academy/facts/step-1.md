@@ -111,7 +111,7 @@ Checks of the points in other files:
 
 ### 4.1 Method
 
-Script 1 (plans and built mocks), run on 14 October 2026 with `python3 -I count1.py /home/triggger/ccar-f-mock-generator`. It reads `runs/mock-0N/plan.json`, `mocks/mock-0N.questions.json`, `mocks/mock-0N.answers.json`, `data/point-groups.json`, `data/two-answer-points.json` and `reference/guide-records.json` with `json`. No model call.
+Script 1 (plans and built mocks), run on 14 October 2026 with `python3 -I count1.py ~/ccar-f-mock-generator`. It reads `runs/mock-0N/plan.json`, `mocks/mock-0N.questions.json`, `mocks/mock-0N.answers.json`, `data/point-groups.json`, `data/two-answer-points.json` and `reference/guide-records.json` with `json`. No model call.
 
 ```python
 P = rd("runs/mock-%02d/plan.json" % m); S = P["slots"]

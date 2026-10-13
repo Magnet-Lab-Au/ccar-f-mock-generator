@@ -118,7 +118,7 @@ Facts that support the uses:
 
 ### 4.1 Method
 
-Script (run on 14 October 2026 from the scratchpad of this agent, not in the repository). Run: `python3 -I s6.py /home/triggger/ccar-f-mock-generator`. It reads only run files and makes no model call.
+Script (run on 14 October 2026 from the scratchpad of this agent, not in the repository). Run: `python3 -I s6.py ~/ccar-f-mock-generator`. It reads only run files and makes no model call.
 
 ```python
 import json, glob, os, collections, sys

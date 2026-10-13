@@ -131,7 +131,7 @@ Product facts (academy decision 0014):
 
 ### 4.1 Method
 
-Script `count2.py` (scratchpad), run on 14 October 2026 with `python3 -I count2.py /home/triggger/ccar-f-mock-generator`. It reads with `json`: `runs/mock-0N/plan.json`, `runs/mock-0N/questions/*.json`, `runs/mock-0N/checks/<id>-step3.json` and `-step4.json`, `data/narrow-ideas.json`, and it calls `earlier.Earlier(mocks, N).on_idea(point)` of `src/earlier.py` (reads `mocks/mock-0K.*.json`, K < N). No model call.
+Script `count2.py` (scratchpad), run on 14 October 2026 with `python3 -I count2.py ~/ccar-f-mock-generator`. It reads with `json`: `runs/mock-0N/plan.json`, `runs/mock-0N/questions/*.json`, `runs/mock-0N/checks/<id>-step3.json` and `-step4.json`, `data/narrow-ideas.json`, and it calls `earlier.Earlier(mocks, N).on_idea(point)` of `src/earlier.py` (reads `mocks/mock-0K.*.json`, K < N). No model call.
 
 ```python
 Q = [json of each runs/mock-0N/questions/*.json]
