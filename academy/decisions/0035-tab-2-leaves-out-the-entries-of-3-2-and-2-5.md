@@ -23,11 +23,11 @@ Neither entry has an example in the records that shows its points. A weak exampl
 
 ## Options for the owner
 
-The repository records one other skill with a real effect: the Claude API skill, before the code of the model steps (mock decision 0040, line 72). Step 2 of tab 2 already shows the result of that check: the build sends its form as structured outputs. It does not name the skill. The assistant recommends no 3.2 entry. If the owner wants a 3.2 entry, the entry can use that skill instead of the two skills that decision 0023 names.
+The repository records two other uses with a real effect: the Claude API skill, before the code of the model steps (mock decision 0040, line 72), and the plugin visual-explainer, for the figures of the academy (academy decision 0013). Step 2 of tab 2 already shows the result of the check that the Claude API skill caused: the build sends its form as structured outputs. It does not name the skill. The assistant recommends no 3.2 entry. If the owner wants a 3.2 entry, the entry can use one of these instead of the two skills that decision 0023 names.
 
 ## How we decided
 
-The fact agent of slice 3 found the two weak links (conflict C4.1 and the verdict of entry 5). The review agent of slice 3 asked for a decision file. The owner was asleep, so the assistant chose under working rule 36.
+The fact agent of slice 3 found the two weak links (conflict C4.1 and the verdict of entry 5). The review agent of slice 3 found that the reason in the journal was too strong for 3.2. The owner was asleep, so the assistant chose under working rule 36.
 
 ## Exam guide points
 

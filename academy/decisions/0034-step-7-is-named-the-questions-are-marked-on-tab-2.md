@@ -1,18 +1,18 @@
 # 0034: Step 7 is named "The questions are marked" on tab 2
 
 - Date: 14 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 14 October 2026 (working rule 35)
 - Diagram: none
 
 ## Question
 
-The build guide names step 7 "The owner marks the questions", and diagram 01 labels it "The owner". But for mocks 4 and 5, a Claude model, the second review in Cowork, gave the marks (mock decision 0071, build guide step 7, line 9). The reader agent of slice 1 found that the name and the label "owner or Claude" contradict each other. This is conflict X1 of the fact sheet `academy/facts/top-of-tab-2.md`. How does tab 2 name step 7?
+The build guide names step 7 "The owner marks the questions", and diagram 01 labels it "The owner". But for mocks 4 and 5, a Claude model, the second review in Cowork, gave the marks (mock decision 0071, build guide step 7, line 9). No record names who filled the 20 marks of round 1 of mock 4 (mock decision 0069). The first page used the name "The owner marks the questions" with the label "owner or Claude", and the two contradict each other. This is conflict X1 of the fact sheet `academy/facts/top-of-tab-2.md`. How does tab 2 name step 7?
 
 ## Options
 
 1. Keep the name of the build guide, and label the box "owner or Claude".
-2. Rename step 7 on tab 2 to "The questions are marked". The box and the closed part say who marked: the owner for mocks 1 to 3, a Claude model for mocks 4 and 5.
+2. Rename step 7 on tab 2 to "The questions are marked". The box and the closed heading say who marked: the owner for mocks 1 to 3, a Claude model for mocks 4 and 5.
 
 ## Decision
 
@@ -24,7 +24,7 @@ The name and the label agree, and the page stays true to the sources. It also sh
 
 ## How we decided
 
-The fact agent of the top of tab 2 found the conflict. The assistant first recommended option 1, and the page used it. The reader agent then found the contradiction. The assistant recommended option 2. The owner accepted it.
+The fact agent of the top of tab 2 found the conflict. The first page used option 1 (commit ecf24f5). The name and the label then contradicted each other. The assistant recommended option 2. The owner accepted it.
 
 ## Exam guide points
 
