@@ -1598,12 +1598,12 @@ assert "@WORKING-RULES.md" in read("CLAUDE.md").splitlines()
 CARD.update({
     "cc-import": excerpt("CLAUDE.md", "@WORKING-RULES.md", "CLAUDE.md of the project"),
     "cc-first": excerpt("CLAUDE.md", "Read `HANDOFF.md` first. It says where the work stopped and what the next step is.", "CLAUDE.md of the project"),
-    "cc-check": excerpt("CLAUDE.md", "Before a session stops, check the record and show the owner the result:", "CLAUDE.md of the project"),
+    "cc-check": excerpt("CLAUDE.md", "Before a session stops, check the record and show the owner the result:\n\n1. `docs/journal.md` has an entry for this session.\n2. Each decision that the owner made in this session has its file in `docs/decisions/`.\n3. `HANDOFF.md` has the new state and the next step.", "CLAUDE.md of the project"),
     "cc-doc-import": excerpt(DOCS_CC % "memory", "CLAUDE.md files can import additional files using `@path/to/import` syntax. Imported files are expanded and loaded into context at launch alongside the CLAUDE.md that references them.", "Claude Code documentation, Memory (copy of 14 October 2026)", kind="docs"),
     "cc-doc-context": excerpt(DOCS_CC % "memory", "Claude treats them as context, not enforced configuration.", "Claude Code documentation, Memory (copy of 14 October 2026)", kind="docs"),
     "cc-31k3": excerpt("reference/exam-guide.md", "The @import syntax for referencing external files to keep CLAUDE.md modular", "Exam guide, 3.1-K3", kind="guide"),
     "cc-blind": excerpt(JR, "The blind file was not in git: only the empty file of the program was committed. The owner had sent the blind file to the Cowork session before the second review, and it came back from there unchanged", "Journal of the mock builder, 8 October 2026"),
-    "cc-line": excerpt(JR, "A new line in the check at the end of a session in `CLAUDE.md`: a marking file that the owner filled is committed before anybody else reads it.", "Journal of the mock builder, 8 October 2026"),
+    "cc-line": excerpt("CLAUDE.md", "5. A marking file that the owner filled is committed before anybody else reads it.", "CLAUDE.md of the project"),
     "cc-handoff": excerpt("HANDOFF.md", "This file gives a new session what it needs to continue.", "HANDOFF.md"),
     "cc-17k4": excerpt("reference/exam-guide.md", "Why starting a new session with a structured summary is more reliable than resuming with stale tool results", "Exam guide, 1.7-K4", kind="guide"),
     "cc-doc-session": excerpt(DOCS_CC % "how-claude-code-works", "Each new session starts with a fresh context window, without the conversation history from previous sessions.", "Claude Code documentation, How Claude Code works (copy of 14 October 2026)", kind="docs"),
@@ -1613,25 +1613,28 @@ CARD.update({
     "cc-r15": excerpt("WORKING-RULES.md", "15. An independent reviewer checks each file that a new session or a participant will rely on, before the assistant says that the file is correct. The reviewer is a new agent that did not make the file.", "Working rule 15"),
     "cc-r14": excerpt("WORKING-RULES.md", "14. The owner does not trust the assistant to find everything. A check must not depend on the memory or the judgment of the assistant alone.", "Working rule 14"),
     "cc-r12": excerpt("WORKING-RULES.md", "12. Record each decision on the day the owner makes it, as one file in `docs/decisions/`.", "Working rule 12"),
-    "cc-r30": excerpt("WORKING-RULES.md", "for the design of a pipeline step, the assistant shows one proposal with all details of the step.", "Working rule 30"),
-    "cc-doc-start": excerpt(DOCS_CC % "memory", "Both are loaded at the start of every conversation.", "Claude Code documentation, Memory (copy of 14 October 2026)", kind="docs"),
+    "cc-r30": excerpt("WORKING-RULES.md", "for the design of a pipeline step, the assistant shows one proposal with all details of the step. The proposal names the exact file format and the exact fields. The owner accepts it or names what to change.", "Working rule 30"),
+    "cc-r25": excerpt("WORKING-RULES.md", "25. Write one entry at the top of `docs/journal.md` for each session.", "Working rule 25"),
+    "cc-six": excerpt(JR, "It read them, and changed six points of the plan.", "Journal of the mock builder, 7 October 2026"),
+    "cc-doc-start": excerpt(DOCS_CC % "memory", "Claude Code has two complementary memory systems. Both are loaded at the start of every conversation.", "Claude Code documentation, Memory (copy of 14 October 2026)", kind="docs"),
     "cc-d23": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0023-*.md"))[0][len(ROOT) + 1:], "The build did not use plan mode, so 3.4 has no example.", "Academy decision 0023, Reason"),
     "cc-d78": excerpt(D78, "The owner asked for an independent check of all documents before the push, by an agent that did not write them.", "Mock decision 0078, How we decided"),
     "cc-a12": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0012-*.md"))[0][len(ROOT) + 1:], "Two new agents for each part.", "Academy decision 0012"),
     "cc-a15": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0015-*.md"))[0][len(ROOT) + 1:], "A whole-picture review after each slice. A slice is a group of parts that the assistant builds and shows to the owner together", "Academy decision 0015"),
     "cc-46s1": excerpt("reference/exam-guide.md", "Using a second independent Claude instance to review generated code without the generator's reasoning context", "Exam guide, 4.6-S1", kind="guide"),
+    "cc-46k1": excerpt("reference/exam-guide.md", "Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1", kind="guide"),
     "cc-46k3": excerpt("reference/exam-guide.md", "Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes", "Exam guide, 4.6-K3", kind="guide"),
     "cc-code": excerpt(JR, "Two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs. The second found 1 serious and 3 minor bugs in the fixes.", "Journal of the mock builder, 7 October 2026"),
-    "cc-doc-fresh": excerpt(DOCS_CC % "sub-agents", "The exception is a [fork](#fork-the-current-conversation), which inherits the parent conversation instead of starting fresh.", "Claude Code documentation, Subagents (copy of 14 October 2026)", kind="docs"),
+    "cc-doc-fresh": excerpt(DOCS_CC % "sub-agents", "Each subagent starts with a fresh, isolated context window. It doesn't see your conversation history, the skills you've already invoked, or the files Claude has already read. Claude composes a delegation message that summarizes the task, and the subagent works from there. The exception is a [fork](#fork-the-current-conversation), which inherits the parent conversation instead of starting fresh.", "Claude Code documentation, Subagents (copy of 14 October 2026)", kind="docs"),
     "cc-c1": excerpt(JR, "an independent agent checked all documents before the push.", "Journal of the mock builder, 9 October 2026"),
-    "cc-c2": excerpt(JR, "The assistant then fixed the %d gaps of the check" % GAPS2, "Journal of the mock builder, 9 October 2026"),
+    "cc-c2": excerpt(JR, "a second independent check of all documents, also diagrams 03, 05, 08 and 10 and the build guide sections of steps 0, 1, 3 and 6. Commit 5244bf6 added the rule for the step 6 findings to diagram 08 and to step 6 (D4 ignored, D2 and D3 recorded as known limits, any other kind to the owner), and the build guide section of step 0. The assistant then fixed the %d gaps of the check" % GAPS2, "Journal of the mock builder, 9 October 2026"),
     "cc-c3": excerpt(JR, "a third independent check after these fixes found %d smaller gaps." % GAPS3, "Journal of the mock builder, 9 October 2026"),
     "cc-stop": excerpt(JR, "No reviewer checked the 20 fixes after the third check. The owner stopped the document checks there.", "Journal of the mock builder, 9 October 2026"),
     "cc-r8": excerpt("WORKING-RULES.md", "8. Discuss first. Do not write a document, a diagram or code before the owner asks for it.", "Working rule 8"),
     "cc-34k1": excerpt("reference/exam-guide.md", "Plan mode is designed for complex tasks involving large-scale changes, multiple valid approaches, architectural decisions, and multi-file modifications", "Exam guide, 3.4-K1", kind="guide"),
     "cc-doc-plan": excerpt(DOCS_CC % "permission-modes", "Plan mode tells Claude to research and propose changes without making them.", "Claude Code documentation, Permission modes (copy of 14 October 2026)", kind="docs"),
     "cc-nomode": excerpt(JR, "3.4-K1 is not in the list of exam guide points, because the decision does not use plan mode.", "Journal of the mock builder, 6 October 2026"),
-    "cc-soon": excerpt(AJ, "The assistant moved to the build too soon once, and the owner stopped it.", "Journal of the portal work, 13 October 2026"),
+    "cc-soon": excerpt(glob.glob(os.path.join(ROOT, "academy/decisions/0010-*.md"))[0][len(ROOT) + 1:], "The assistant moved to the build too soon. The owner stopped it: the outline was not finished.", "Academy decision 0010, How we decided"),
 })
 assert GAPS2 == 26 and GAPS3 == 20
 
@@ -1643,14 +1646,14 @@ FIGCC = """
       %(nodes)s
     </svg>
   </div>
-  <figcaption><span class="fig-n">Fig. C-1</span>%(cap)s</figcaption>
+  <figcaption><span class="fig-n">Fig. 4.6-1</span>%(cap)s</figcaption>
 </figure>""" % {"g2": GAPS2, "g3": GAPS3,
                 "nodes": "".join([box(20, 50, 170, 90, ["check 1"], sub="gaps, no count", cls="who-model"),
-                                  box(260, 50, 170, 90, ["check 2"], sub="%d gaps, wider" % GAPS2, cls="who-model"),
+                                  box(260, 50, 170, 90, ["check 2"], sub="%d gaps, more files" % GAPS2, cls="who-model"),
                                   box(500, 50, 170, 90, ["check 3"], sub="%d smaller gaps" % GAPS3, cls="who-model"),
                                   box(740, 50, 130, 90, ["stopped"], sub="by the owner", cls="who-owner")]),
                 "edges": "".join([edge("M190 95H260", "fixes", 225, 86), edge("M430 95H500", "fixes", 465, 86), edge("M670 95H740", "fixes", 705, 86)]),
-                "cap": fact("cc-d78", "Each check was a new agent that had not written the documents.") + " " + fact("cc-stop", "After the fixes of check 3, the owner stopped the checks.")}
+                "cap": fact("cc-d78", "The owner asked for a check by an agent that had not written the documents.") + " " + fact("cc-c2", "Check 2, also independent, found %d gaps," % GAPS2) + " " + fact("cc-c3", "and check 3 found %d." % GAPS3) + " " + fact("cc-stop", "After the fixes of check 3, the owner stopped the checks.")}
 
 
 def cc_part(pid, num, title, who, body):
@@ -1666,7 +1669,7 @@ def cc_ts(tsid, key):
             '<span>%s</span> <a href="%s#ts-%s">Exam guide breakdown %s &rarr;</a></div></div>' % (key, tsid, e(TS[tsid]["title"]), TAB1, tsid.replace(".", "-"), tsid))
 
 
-CC_POINTS = {"3.1": ["3.1-K3"], "1.7": ["1.7-K4"], "4.6": ["4.6-K1", "4.6-K2", "4.6-S1", "4.6-K3"], "3.4": ["3.4-K1", "3.4-K3"]}
+CC_POINTS = {"3.1": ["3.1-K3"], "1.7": ["1.7-K4"], "4.6": ["4.6-K1", "4.6-S1", "4.6-K3"], "3.4": ["3.4-K1", "3.4-K3"]}
 
 
 def cc_body(pid, overview, explanation, depth):
@@ -1677,55 +1680,55 @@ def cc_body(pid, overview, explanation, depth):
 
 CC_HTML = "".join([
     cc_part("cc-3-1", "3.1", "CLAUDE.md imports the working rules", "task statement 3.1", cc_body("cc-3-1",
-        '<h4 class="takeaway">One short file loads the rules of the project into each session</h4><p>%s %s %s</p>'
+        '<h4 class="takeaway">One short file loads the working rules into each session</h4><p>%s %s %s</p>'
         % (fact("cc-doc-start", "Claude Code loads the CLAUDE.md of the project at the start of each session.") + " " + fact("cc-first", "Its first instruction sends the session to HANDOFF.md."),
-           fact("cc-import", "A line with @WORKING-RULES.md imports the rules of the owner."),
-           fact("cc-records", "CLAUDE.md has %d lines, and the rules file has %d rules." % (CC_LINES, N_RULES))),
-        '<p>%s This keeps CLAUDE.md short and the rules in one file that the owner can change. %s</p>' % (fact("cc-doc-import", "An import is expanded and loaded at the start of the session."), fact("cc-31k3", "The guide names this: the @import syntax keeps CLAUDE.md modular (3.1-K3)."))
+           fact("cc-import", "A line with @WORKING-RULES.md imports the working rules of the owner."),
+           fact("cc-records", "CLAUDE.md has %d lines, and WORKING-RULES.md has %d rules." % (CC_LINES, N_RULES))),
+        '<p>%s This keeps CLAUDE.md short and the working rules in one file that the owner can change. %s</p>' % (fact("cc-doc-import", "An import is expanded and loaded at the start of the session."), fact("cc-31k3", "The guide names this: the @import syntax keeps CLAUDE.md modular (3.1-K3)."))
         + '<p><b>A limit.</b> %s A rule in CLAUDE.md guides the assistant. It does not block an action.</p>' % fact("cc-doc-context", "Claude Code treats CLAUDE.md as context, not as enforced configuration.")
         + cc_ts("3.1", "cc-3-1-ts"),
-        '<h4 class="story">A file that was not in git</h4><p>%s The owner had sent it to the second review in Cowork, and its fingerprint showed that it came back unchanged. %s</p>'
-        % (fact("cc-blind", "The owner's blind marking file of mock 1 was not in git: only the empty file of the program was committed."),
+        '<h4 class="story">A file that was not in git</h4><p>%s %s</p>'
+        % (fact("cc-blind", "The owner's blind marking file of mock 1 was not in git: only the empty file of the mock builder was committed. The owner had sent it to the chat of the second review before that review, and it came back unchanged."),
            fact("cc-line", "So CLAUDE.md got a new line in its end-of-session check: a marking file that the owner filled is committed before anybody else reads it.")))),
     cc_part("cc-1-7", "1.7", "A summary for each new session", "task statement 1.7", cc_body("cc-1-7",
         '<h4 class="takeaway">A new session starts fresh, from a summary that an earlier session wrote</h4><p>%s %s</p>'
         % (fact("cc-doc-session", "Each new session of Claude Code starts with a fresh context window, without the history of earlier sessions."),
            fact("cc-handoff", "So HANDOFF.md gives a new session what it needs to continue.")),
-        '<p>%s The journal has one entry for each session, and each decision of the owner is a file. %s</p>'
-        % (fact("cc-check", "The end-of-session check of CLAUDE.md asks for a journal entry, the decision files and an update of HANDOFF.md."),
+        '<p>%s %s %s</p>'
+        % (fact("cc-r25", "The journal has one entry for each session (working rule 25),") + " " + fact("cc-r12", "and each decision of the owner is a file (working rule 12)."), fact("cc-check", "The end-of-session check of CLAUDE.md asks for a journal entry, the decision files and an update of HANDOFF.md."),
            fact("cc-17k4", "The guide says that a new session with a structured summary is more reliable than one that resumes with stale tool results (1.7-K4)."))
         + cc_ts("1.7", "cc-1-7-ts"),
-        '<h4 class="story">The summary was not read</h4><p>%s It read them, and changed six points of the plan.</p>'
-        % fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not."))),
+        '<h4 class="story">The summary was not read</h4><p>%s</p>'
+        % (fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not.") + " " + fact("cc-six", "It read them, and changed six points of the plan.")))),
     cc_part("cc-4-6", "4.6", "A new agent reviews each file", "task statement 4.6", cc_body("cc-4-6",
         '<h4 class="takeaway">A file is checked by an agent that did not write it</h4><p>%s %s</p>'
-        % (fact("cc-r15", "A rule of the owner: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
-           fact("cc-r14", "A related rule: a check must not depend on the memory or the judgment of the assistant alone.")),
+        % (fact("cc-r15", "Working rule 15: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
+           fact("cc-r14", "Working rule 14: a check must not depend on the memory or the judgment of the assistant alone.")),
         '<p>%s %s %s</p>'
-        % (fact("cc-46s1", "The guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
+        % (fact("cc-46k1", "The exam guide gives the reason: a model that keeps the reasoning of its own work is less likely to question its decisions (4.6-K1).") + " " + fact("cc-46s1", "So the guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
            fact("cc-doc-fresh", "In Claude Code, a subagent that is not a fork starts with a fresh context, so it does not see the conversation that made the file."),
-           fact("cc-code", "On the first day of the code, two independent reviewers checked the control (the code that runs the steps) and its tests: the first found 4 serious and 6 minor bugs, the second 1 serious and 3 minor bugs in the fixes."))
-        + '<p>This tab was built the same way: %s %s %s</p>' % (fact("cc-a12", "a review agent for each part (academy decision 0012),"), fact("cc-a15", "then a whole-picture agent after each slice (academy decision 0015)."), fact("cc-46k3", "The guide calls this a multi-pass review (4.6-K3)."))
+           fact("cc-code", "On 7 October 2026, two independent reviewers checked the first code that moves each try, and its tests: the first found 4 serious and 6 minor bugs, the second found 1 serious and 3 minor bugs in the fixes."))
+        + '<p>This tab was built the same way: %s %s %s</p>' % (fact("cc-a12", "a fact agent and a review agent for each part (academy decision 0012),"), fact("cc-a15", "then a whole-picture agent after each slice (academy decision 0015)."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
         + cc_ts("4.6", "cc-4-6-ts"),
         '<h4 class="story">Three checks of all documents</h4>' + FIGCC
         + '<p>Before a push on 9 October 2026, %s %s %s %s</p>'
         % (fact("cc-c1", "an independent agent checked all documents, and the assistant fixed the gaps."),
-           fact("cc-c2", "A second check, over more files, found %d gaps." % GAPS2),
+           fact("cc-c2", "A second independent check, over more files, found %d gaps." % GAPS2),
            fact("cc-c3", "A third check found %d smaller gaps." % GAPS3),
            fact("cc-stop", "No reviewer checked the last 20 fixes. The owner stopped the checks there.")))),
     cc_part("cc-3-4", "3.4", "Discuss first, not plan mode", "task statement 3.4 · no example in the build", cc_body("cc-3-4",
         '<h4 class="takeaway">The build used a rule to discuss first, not plan mode</h4><p>%s %s</p>'
-        % (fact("cc-r8", "A rule of the owner: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
+        % (fact("cc-r8", "Working rule 8: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
            fact("cc-d23", "No record shows that the build used plan mode.")),
         '<p>%s %s The build had a different method: %s %s</p>'
         % (fact("cc-34k1", "The guide teaches plan mode for complex tasks with large changes and architectural decisions (3.4-K1)."),
            fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
-           fact("cc-r30", "for the design of a pipeline step, the assistant showed one proposal with all details, and the owner accepted it or named a change (rule 30)."),
-           fact("cc-r12", "Each decision of the owner became a file on the same day (rule 12)."))
+           fact("cc-r30", "for the design of a pipeline step, the assistant showed one proposal with all details, and the owner accepted it or named a change (working rule 30, see step 0)."),
+           fact("cc-r12", "Each decision of the owner became a file on the same day (working rule 12).") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
         + cc_ts("3.4", "cc-3-4-ts"),
-        '<h4 class="story">A rule in context is not a block</h4><p>%s %s Plan mode lets Claude propose but not make changes. The rule only asked the assistant to wait.</p>'
-        % (fact("cc-soon", "During the plan of the two tabs, the assistant moved to the build too soon once, and the owner stopped it."),
-           fact("cc-doc-context", "A rule in CLAUDE.md is context, not enforced configuration.")))),
+        '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'
+        % (fact("cc-soon", "During the plan of the two tabs of this academy, the assistant moved to the build too soon, and the owner stopped it."),
+           fact("cc-doc-context", "As part 3.1 says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")))),
 ])
 
 # ----- the parts -----
