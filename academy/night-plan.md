@@ -16,7 +16,7 @@ An independent agent checked the first version of this plan and found 20 items. 
 ## Step 1. Before the work (done before the owner sleeps)
 
 1. An independent agent checked the first version of this plan. The assistant fixed it. Done.
-2. Rule 36 is in `WORKING-RULES.md`.
+2. Rule 36 is in `WORKING-RULES.md`. Done.
 
 ## Step 2. Slice 2: steps 0 to 4 and 6 to 8 of tab 2 (in the main folder, on `main`)
 
