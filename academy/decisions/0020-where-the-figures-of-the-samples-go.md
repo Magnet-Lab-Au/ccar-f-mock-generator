@@ -7,7 +7,7 @@
 
 ## Question
 
-The two 1.1 samples (`sample/1-1-split-exam-guide.html` and `sample/1-1-split-behind-the-mocks.html`) were built for one task statement. In the outline of decision 0010, some of their figures belong in other places. Where does each figure go?
+The two 1.1 samples (`sample/1-1-split-exam-guide.html` and `sample/1-1-split-behind-the-mocks.html`) show one task statement. In the outline of decision 0010, some of their figures belong in other places. Where does each figure go?
 
 ## Decision
 

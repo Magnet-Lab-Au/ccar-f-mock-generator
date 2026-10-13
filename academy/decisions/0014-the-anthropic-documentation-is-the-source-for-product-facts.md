@@ -1,7 +1,7 @@
 # 0014: The Anthropic documentation is the source for product facts
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0030 adds a dated copy of each documentation page.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: decision 0011, adds one source to the order of trust

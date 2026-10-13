@@ -7,7 +7,7 @@
 
 ## Question
 
-Two files say which task statements a step uses, and they differ. The tables of guide points in the build guide list 12 task statements. The popups of the diagrams also cite two more points: 3.6-K4 in diagram 01 and 5.2-K3 in diagram 08. Which file is the source for the links of a step?
+Two files say which task statements a step uses, and they differ. The tables of guide points in the build guide list 12 task statements. The popups of the diagrams also cite two more task statements, 3.6 (point 3.6-K4 in diagram 01) and 5.2 (point 5.2-K3 in diagram 08). Diagram 01 also cites three points that no table has: 1.6-K2, 4.4-S2 and 4.6-S1. Which file is the source for the links of a step?
 
 ## Decision
 
@@ -19,7 +19,7 @@ Each row of a build guide table says how the step uses the point. A popup of a d
 
 ## How we decided
 
-The independent review of the plan raised it. The assistant checked that diagrams 01 and 08 cite the two points. The assistant recommended the build guide tables. The owner accepted it.
+The independent review of the plan raised it. The assistant checked that diagrams 01 and 08 cite these points. The assistant recommended the build guide tables. The owner accepted it.
 
 ## Exam guide points
 

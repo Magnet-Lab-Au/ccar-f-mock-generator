@@ -17,7 +17,7 @@ The rule of `HANDOFF.md` stays for the build guide only.
 
 ## Reason
 
-The build guide describes how the builder works today, so it leaves out the history. Tab 2 tells the history, and it is written only in these two places. Example: the review loop story of the 1.1 sample ("A first review found 14 serious items. A second review found 10 new ones", and the quote of the owner) comes from the "How we decided" section of mock decision 0038.
+The build guide describes how the builder works today, so it leaves out the history. Tab 2 tells the history, and it is written only in these two places. Example: the review loop story of the 1.1 sample quotes the owner: "I suspect that if we fix these new 10 issues and review we will keep finding more and the cycle will continue." The quote is in the "How we decided" section of mock decision 0038. Its counts, 14 serious items and then 10 new ones, are in the Question section of the same decision, a higher source.
 
 ## How we decided
 

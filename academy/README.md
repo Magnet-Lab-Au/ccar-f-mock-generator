@@ -21,6 +21,7 @@ Later decisions changed these points of `brief.md`. The brief stays as it is, be
 | 21 | "Use the visual form of diagrams 09 and 10" | The look of the fifth sample, and four stages for each figure. | 0008, 0009, 0013 |
 | 23, 24 | "Case study", one entry per task statement | "Behind the mocks", one entry per step and per part of the build in Claude Code. | 0001, 0010 |
 | 26 | "the 26 document gaps" | The story of the three document checks. | 0031 |
+| 30 | Claude writes each explanation only from the text of the exam guide. | The Explanation still comes only from the guide. "Beyond the exam" in the Depth can also use the Anthropic documentation. | 0006, 0014, 0019 |
 | 29 | "written in the portal's code" | HTML prototypes in this folder that obey the security policy of the portal. The owner moves them. | 0010, 0017 |
 | 31, 32 | An agent checks each page. The owner reads the flagged pages, plus 3 or 4 at random. | A fact agent and a review agent for each part, a whole-picture agent and a reader agent for each slice. The owner reads the flagged sentences, plus 3 or 4 at random. | 0011, 0012, 0015, 0026 |
 | 36, 37 | No mock questions in downloads. Links to mock questions only after the mock. | Still post-MVP. The pages themselves can show a real mock question. | 0016 |

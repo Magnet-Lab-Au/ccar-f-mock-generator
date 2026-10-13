@@ -7,7 +7,7 @@
 
 ## Question
 
-Some stories and diagrams hold real questions of mocks 1 to 5 with the correct answer. Examples: mock decision 0074 gives the answer of question M5-S38, and diagram 11 shows three real questions with the correct option marked. The brief says that a participant sees the link to a mock question only after they sit that mock. Can a page show a real mock question with its answer?
+Some stories and diagrams hold real questions of mocks 1 to 5 with the correct answer. Examples: mock decision 0074 gives the answer of question M5-S38, and diagram 11 shows two real questions and one failed try that never went into a mock, each with the correct option marked. The brief says that a participant sees the link to a mock question only after they sit that mock. Can a page show a real mock question with its answer?
 
 ## Options
 

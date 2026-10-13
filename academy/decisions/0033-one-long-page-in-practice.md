@@ -25,7 +25,7 @@ The independent review of the plan found that the long page was not planned. The
 
 ## Known limits
 
-- The anchors work in the prototypes. How they work under React Router in the portal is not checked.
+- The anchors work in the prototypes. Nobody has checked how they work under React Router in the portal.
 
 ## Exam guide points
 

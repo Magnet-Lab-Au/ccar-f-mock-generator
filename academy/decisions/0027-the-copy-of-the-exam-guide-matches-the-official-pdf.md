@@ -29,7 +29,7 @@ The independent review of the plan raised it. The assistant recommended a script
 
 - The script compares words, not spaces, line breaks, the order of table cells or the layout.
 - It depends on the text that the library pypdf takes from the PDF.
-- `reference/` is not changed (working rule 27).
+- The script does not change `reference/` (working rule 27).
 
 ## Exam guide points
 

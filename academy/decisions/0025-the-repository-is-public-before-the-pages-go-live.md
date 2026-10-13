@@ -7,11 +7,11 @@
 
 ## Question
 
-The source cards (decision 0005) link to the repository on GitHub. The two 1.1 samples have 45 such links. The repository is still private. Decision 0003 makes it public "for now", so the owner can still decide again. What happens to the links?
+The preview cards (decision 0005) link to the repository on GitHub. The two 1.1 samples link to 15 different files of the repository. The repository is still private. Decision 0003 makes it public with the mock answers, and keeps the answers there "for now", so the owner can still decide again. What happens to the links?
 
 ## Decision
 
-The repository becomes public before the pages go live. Until then, the links stay as they are. If the owner later keeps the repository private, the cards show their excerpt with no link.
+The repository becomes public before the pages go live. Until then, the links stay as they are. If the owner later keeps the repository private, the preview cards show their excerpt with no link.
 
 ## Reason
 

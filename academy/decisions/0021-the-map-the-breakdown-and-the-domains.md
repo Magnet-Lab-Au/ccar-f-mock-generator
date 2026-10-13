@@ -16,9 +16,9 @@ Decision 0010 names three parts of tab 1: the map, "How we broke it down" and th
 |---|---|
 | The map | what the exam guide is, the 5 domains with their weights, the 6 scenarios, and the 30 task statements as one grid |
 | How we broke it down | the labels such as 1.1-K2, the K and S legend, and the three levels |
-| Each domain | its name, its weight, a short summary from the guide, and its task statements, closed |
+| Each domain | its name, its weight, a short summary of its task statements, written from their titles in the guide, and its task statements, closed |
 
-Each of these parts gets a fact agent and a review agent (decision 0012). "How we broke it down" and the 5 domains add 6 parts. The total is about 52 parts and 104 agent runs, plus the whole-picture reviews of decision 0015.
+Each of these parts gets a fact agent and a review agent (decision 0012). "How we broke it down" and the 5 domains add 6 parts. Decision 0023 adds one entry to the build in Claude Code. The total is about 53 parts and 106 agent runs, plus the whole-picture reviews of decision 0015.
 
 ## Reason
 

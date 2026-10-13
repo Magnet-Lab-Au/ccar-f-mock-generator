@@ -8,7 +8,7 @@
 
 ## Question
 
-Decisions 0010 and 0023 name the story "the 26 document gaps that an independent agent found". Its only source is `docs/journal.md`, line 38, which is the lowest level of the order of trust (decision 0011). Other files have other counts of 26. How do we tell this story?
+Decision 0010 (and decision 0023 before this decision) names the story "the 26 document gaps that an independent agent found". Its only source is `docs/journal.md`, line 38, which is the lowest level of the order of trust (decision 0011). How do we tell this story?
 
 ## Decision
 

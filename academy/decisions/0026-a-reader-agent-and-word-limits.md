@@ -27,7 +27,7 @@ All checks of decisions 0011, 0013 and 0015 test accuracy, agreement and layout.
    3. lists each term that the part uses before it explains it.
    4. lists each sentence that it had to read twice.
    5. says whether each closed heading tells it if the part is worth opening.
-   6. lists any code that is in the text and not in a popup (decision 0004).
+   6. lists any code that is in the text and not in a popup (decisions 0004 and 0032).
 
    Each item gives a quote from the page, so the agent cannot give only an opinion.
 

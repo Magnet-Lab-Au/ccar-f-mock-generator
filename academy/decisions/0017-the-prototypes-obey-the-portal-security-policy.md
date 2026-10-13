@@ -7,7 +7,7 @@
 
 ## Question
 
-The security policy of the portal (`magnetlab-academy/frontend/public/_headers`) has `script-src 'self'` and `font-src 'self' data:`. So the portal blocks inline scripts and fonts from other sites. Each sample has 5 inline script blocks and loads Sora and IBM Plex Mono from Google Fonts. The portal has Sora and Norwester, not IBM Plex Mono. How do the prototypes move into the portal?
+The security policy of the portal (`magnetlab-academy/frontend/public/_headers`) has `script-src 'self'` and `font-src 'self' data:`. So the portal blocks inline scripts and fonts from other sites. The fifth sample and the two split pages each have 3 inline scripts (and 2 blocks of JSON data), and they load Sora and IBM Plex Mono from Google Fonts. The portal has Sora and Norwester, not IBM Plex Mono. How do the prototypes move into the portal?
 
 ## Decision
 

@@ -15,8 +15,8 @@ Decision 0010 did not say where the decision text and the code go in tab 2. A te
 | Level | Tab 1: task statement | Tab 2: step |
 |---|---|---|
 | Overview | the takeaway heading, the guide quote, a short answer, and a figure if there is a mechanism | what the step does |
-| Explanation | a short text, the K and S points of the guide, and "The exam tests" | how the step works, its diagram, and the task statements that it uses |
-| Depth | "Beyond the exam", the code in popups (only if there is a figure), and the links to tab 2 | what went wrong and the fix, with the decision text and the code in popups |
+| Explanation | a short text, figures that support the text, the K and S points of the guide, and "The exam tests" | how the step works, its diagram, and the task statements that it uses |
+| Depth | "Beyond the exam", the code, only in popups (decision 0032), and the links to tab 2 | what went wrong and the fix, with the decision text and the code in popups |
 
 ## Reason
 

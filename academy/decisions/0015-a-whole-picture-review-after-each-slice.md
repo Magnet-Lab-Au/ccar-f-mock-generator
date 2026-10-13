@@ -1,7 +1,7 @@
 # 0015: A whole-picture review after each slice
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0026 adds a reader agent for each slice. Decision 0028 gives rules 19 and 28 to each agent.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: adds a third agent to decision 0012, for each slice

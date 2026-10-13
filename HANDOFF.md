@@ -162,7 +162,7 @@ In the workbook, the owner completes the three yellow columns. The assistant can
 | A repeat with different words | Rule B9 is a judgment of a model. It can fail a good question or pass a close one (decision 0066). |
 | Rule A11 and words like "cannot" | Step 3 follows decision 0038, part 8. A change needs a new decision. |
 | The Agent SDK | Decision 0002 names it. No step uses it. A new decision must say so. |
-| The portal pages | "How the Mocks Are Built New" shows a design of 2 October. Rule 18 applies. |
+| The portal pages | "How the Mocks Are Built New" shows a design of 2 October. Rule 18 applies. Tab 2 of the academy work will replace it (academy decision 0018). |
 
 ## Where the old material is
 

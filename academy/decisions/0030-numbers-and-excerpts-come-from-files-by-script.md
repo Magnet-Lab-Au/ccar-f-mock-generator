@@ -4,7 +4,7 @@
 - Status: proposed
 - Text confirmed by the owner: not yet
 - Diagram: none
-- Changes: decision 0011 (check 2), decision 0005 (the excerpts of documentation pages)
+- Changes: decision 0011 (check 2), decision 0005 (the excerpts of documentation pages), decision 0014 (a dated copy of each documentation page)
 
 ## Question
 
