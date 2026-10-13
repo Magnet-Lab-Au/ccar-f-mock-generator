@@ -30,6 +30,7 @@ P, CARDS, POP = data["P"], data["CARDS"], data["POP"]
 guide, domain, scen, ts = data["guide"], data["domain"], data["scen"], data["ts"]
 per_slot = data["per_slot"]
 TRIES_M1, SLOTS_M1, MORE_M1, MAX_M1, REWRITES_M1 = (data[k] for k in ("TRIES_M1", "SLOTS_M1", "MORE_M1", "MAX_M1", "REWRITES_M1"))
+FAILED_M1, RWONLY_M1 = data["FAILED_M1"], data["RWONLY_M1"]
 in_scope, TAG = data["in_scope"], data["TAG"]
 e = html.escape
 
@@ -94,13 +95,13 @@ FIG1 = """
     <ol class="ve-cap" aria-live="polite">
       <li data-n="9 steps">The full loop. Use the arrow buttons to go through it one step at a time.</li>
       <li data-n="1/9">Your code sends the task to Claude.</li>
-      <li data-n="2/9">Claude responds: tool A.</li>
+      <li data-n="2/9">Claude asks for tool A. Your code adds the response to the conversation history.</li>
       <li data-n="3/9">Your code checks <code>stop_reason</code>: <code>"tool_use"</code>.</li>
       <li data-n="4/9">Your code runs tool A and adds the result to the conversation history.</li>
-      <li data-n="5/9">Your code sends again. Claude responds: tool B.</li>
+      <li data-n="5/9">Your code sends the history again. Claude asks for tool B, and your code adds the response.</li>
       <li data-n="6/9">Your code checks <code>stop_reason</code>: <code>"tool_use"</code>.</li>
       <li data-n="7/9">Your code runs tool B and adds the result to the conversation history.</li>
-      <li data-n="8/9">Your code sends again. Claude responds: the answer.</li>
+      <li data-n="8/9">Your code sends the history again. Claude responds with the answer.</li>
       <li data-n="9/9">Your code checks <code>stop_reason</code>: <code>"end_turn"</code>. The loop stops.</li>
     </ol>
     <button data-go="-1" aria-label="Previous step">&larr;</button>
@@ -129,12 +130,12 @@ def mini(signal, sub, st):
 
 CASES = [("risk", "Anti-pattern", "Reads the words", mini("the words", "“I am done”", "risk"),
           "Parse natural language signals to decide when the loop ends."),
-         ("risk", "Anti-pattern", "Counts to a limit", mini("a counter", "10 of 10", "risk"),
+         ("risk", "Anti-pattern", "Stops only at a count", mini("a counter", "10 of 10", "risk"),
           "Make an arbitrary limit of iterations the main way to stop."),
          ("risk", "Anti-pattern", "Looks for text", mini("any text", "text block", "risk"),
           "Treat text from the assistant as the sign that the work is complete."),
-         ("ok", "Correct", "Checks the field", mini("stop_reason", "“end_turn”", "ok"),
-          "Continue on “tool_use”. Stop on “end_turn”.")]
+         ("ok", "Correct", "Checks the field", mini("stop_reason", '"end_turn"', "ok"),
+          'Continue on "tool_use". Stop on "end_turn".')]
 FIG2 = ('<figure><div class="cases">' + "".join(
     '<div class="case" data-st="%s"><span class="chip %s">%s</span><h3>%s</h3>%s<p class="cap">%s</p></div>' % (st, st, chip, t, m, e(c))
     for st, chip, t, m, c in CASES) +
@@ -159,7 +160,7 @@ FIG3 = """
   <div class="frame split">
     <div><p class="ve-label">Approximate weight of each domain</p>
       <svg class="ve-bars wide" viewBox="0 0 520 176" role="img" aria-label="Domain weights: @@ARIA@@. Domain 1 is the largest.">@@BARS@@</svg></div>
-    <div><p class="ve-label">Scenarios with domain 1 as a primary domain</p><ul class="scen">@@CHIPS@@</ul></div>
+    <div><p class="ve-label">The 6 scenarios. In bold: domain 1 is a primary domain</p><ul class="scen">@@CHIPS@@</ul></div>
   </div>
   <figcaption><span class="fig-n">Fig. 3</span>Domain 1 is about @@W@@% of the scored items, the largest share (@@DFACT@@). Scenarios 1, 3 and 4 have it as a primary domain.</figcaption>
 </figure>
@@ -176,7 +177,7 @@ FIG4 = ('<figure><div class="frame"><p class="ve-label">stop_reason values of th
                                                              '<span class="in">in the exam guide</span>' if s in ("end_turn", "tool_use") else "")
                 for s in stops) +
         '</ul></div><figcaption><span class="fig-n">Fig. 4</span>The exam guide names two values. The API has %s. '
-        'A loop in production must handle them too.</figcaption></figure>' % fact("d-stop", "seven"))
+        'A loop in production should handle them too.</figcaption></figure>' % fact("d-stop", "seven"))
 
 # ----- Fig. 5: Behind the mocks: tries, a pass, and the guards -----
 
@@ -216,12 +217,12 @@ FIG6 = """
         <path class="ve-e" d="M100 55H178"/><text class="ve-el" x="140" y="44">decides</text>
         <g class="ve-n is-st"><rect class="sh" x="2" y="25" width="98" height="60" rx="5"/><text x="51" y="55">Claude</text></g>
         <g class="ve-n"><rect class="sh" x="180" y="25" width="116" height="60" rx="5"/><text x="238" y="47">next step</text><text class="sub" x="238" y="69">which tool</text></g></svg></div>
-    <div class="case" data-st="ok"><span class="chip ok">The mock builder</span><h3>Fixed sequence of steps</h3>
+    <div class="case"><span class="chip info">The mock builder</span><h3>Fixed sequence of steps</h3>
       <svg class="ve-mini" viewBox="0 0 300 110" role="img" aria-label="In the mock builder, code and the owner decide the next step. No model decides it.">
         <path class="ve-e is-st" d="M100 55H178"/><text class="ve-el" x="140" y="44">decide</text>
         <g class="ve-n is-st"><rect class="sh" x="2" y="10" width="98" height="40" rx="5"/><text x="51" y="30">code</text></g>
         <g class="ve-n is-st"><rect class="sh" x="2" y="60" width="98" height="40" rx="5"/><text x="51" y="80">the owner</text></g>
-        <g class="ve-n"><rect class="sh" x="180" y="25" width="116" height="60" rx="5"/><text x="238" y="47">next step</text><text class="sub" x="238" y="69">from the plan</text></g></svg></div>
+        <g class="ve-n"><rect class="sh" x="180" y="25" width="116" height="60" rx="5"/><text x="238" y="47">next step</text><text class="sub" x="238" y="69">set in advance</text></g></svg></div>
   </div>
   <figcaption><span class="fig-n">Fig. 6</span>The work of a mock is @@KNOWN@@: code makes @@SLOTS@@ before a model writes any question. So the builder uses the other side of the distinction in 1.1-K3.</figcaption>
 </figure>
@@ -240,9 +241,10 @@ FIG7 = """
 <figure>
   <div class="frame split">
     <div><p class="ve-label">Mock 1: one square per slot, the number is the tries</p>
-      <svg class="ve-grid" viewBox="0 0 510 136" role="img" aria-label="60 slots. @@MORE@@ slots needed more than one try. The most tries for one slot: @@MAX@@.">@@CELLS@@</svg></div>
+      <svg class="ve-grid" viewBox="0 0 510 136" role="img" aria-label="60 slots. @@MORE@@ slots had more than one try: @@FAILED@@ after a failed check, @@RWONLY@@ only after a rewrite of the owner. The most tries for one slot: @@MAX@@.">@@CELLS@@</svg></div>
     <div class="kpi"><span class="ve-label">Tries for 60 slots</span><span class="val">@@TRIES@@</span>
-      <span class="ve-label">@@MORE@@ of 60 slots needed more than one try</span>
+      <span class="ve-label">@@MORE@@ of 60 slots had more than one try:</span>
+      <span class="ve-label">@@FAILED@@ after a failed check, @@RWONLY@@ only after a rewrite</span>
       <span class="ve-label">@@RW@@ tries were rewrites that the owner asked for</span></div>
   </div>
   <figcaption><span class="fig-n">Fig. 7</span>Mock 1 needed @@TFACT@@. @@STUCK@@</figcaption>
@@ -250,6 +252,7 @@ FIG7 = """
 """
 FIG7 = (FIG7.replace("@@CELLS@@", "".join(cells)).replace("@@MORE@@", str(MORE_M1)).replace("@@MAX@@", str(MAX_M1))
         .replace("@@TRIES@@", str(TRIES_M1)).replace("@@RW@@", str(REWRITES_M1))
+        .replace("@@FAILED@@", str(FAILED_M1)).replace("@@RWONLY@@", str(RWONLY_M1))
         .replace("@@TFACT@@", fact("b-tries", "%d tries for %d slots" % (TRIES_M1, SLOTS_M1)))
         .replace("@@STUCK@@", fact("b-stuck", "One slot stopped at the guard, and the owner gave it more tries.")))
 
@@ -519,7 +522,7 @@ PAGE = r"""<!DOCTYPE html>
 <details class="level">
   <summary><h2>Explanation</h2><span class="ve-label">3 minutes</span></summary>
   <div class="body">
-    <p><b>Who decides.</b> The guide makes a distinction. In model-driven decision-making, Claude reasons about which tool to call next, from the context. The other side is a decision tree or a sequence of tools that somebody sets up in advance. <b>The memory of the loop:</b> your code adds each tool result to the conversation history, so that Claude can use the new information when it decides the next action.</p>
+    <p><b>Who decides.</b> The guide makes a distinction. In model-driven decision-making, Claude reasons about which tool to call next, from the context. The other side is a decision tree or a sequence of tools that somebody sets up in advance. <b>The memory of the loop:</b> your code adds each tool result to the conversation history. That is how Claude can use the new information when it decides the next action.</p>
     @@FIG2@@
     @@FIG3@@
     <div><h3>The exam tests</h3><p>@@SCOPE@@</p></div>
@@ -542,7 +545,7 @@ PAGE = r"""<!DOCTYPE html>
 <header id="behind">
   <p class="eyebrow">Behind the mocks &middot; 1.1 Agentic loops <span class="src">Source: the pipeline</span> <a href="#ts">Task statement 1.1 &uarr;</a></p>
   <h1>A pass stops the loop. The limits are only guards.</h1>
-  <p class="lead">The mock builder is not an agentic loop. <b>Code and the owner decide each next step.</b> No model decides it. The builder has one small loop: a question that fails a check goes back to the writer.</p>
+  <p class="lead">The mock builder is not an agentic loop. <b>Code and the owner decide each next step.</b> No model decides it. The builder has one automatic loop for questions: a question that fails a check goes back to the writer.</p>
   <p class="lvl1">Overview &middot; 30 seconds</p>
 </header>
 @@FIG5@@
@@ -551,7 +554,7 @@ PAGE = r"""<!DOCTYPE html>
   <summary><h2>The story</h2><span class="ve-label">3 minutes</span></summary>
   <div class="body">
     @@FIG6@@
-    <p>A question that fails the check by code or the check by a model goes back to the writer with the exact findings. A @@GUARD@@ and a limit of two results &ldquo;cannot decide&rdquo; are only guards. This follows 1.1-S3: an arbitrary limit of iterations must not be the main way to stop. The guide wrote that point for agent loops. The builder uses the same idea for a loop of retries.</p>
+    <p>A question that fails the check by code or the check by a model goes back to the writer with the exact findings. A @@GUARD@@ and a limit of two results &ldquo;cannot decide&rdquo; are only guards. This matches 1.1-S3: an arbitrary limit of iterations must not be the main way to stop. The guide wrote that point for agentic loops. The builder uses the same idea for a loop of retries.</p>
     @@FIG7@@
     @@FIG8@@
   </div>

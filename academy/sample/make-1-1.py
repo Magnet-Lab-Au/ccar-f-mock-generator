@@ -23,7 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 OUT = os.path.join(ROOT, "academy", "sample", "1-1-agentic-loops.html")
 REPO = "https://github.com/Magnet-Lab-Au/ccar-f-mock-generator"
 TAG = "mocks-v2"
-DOCS_TOOL_USE = "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+DOCS_TOOL_USE = "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works"
 DOCS_STOP = "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
 
 
@@ -63,7 +63,7 @@ def code_block(path, first, last, title):
     text = "\n".join(lines[a:b + 1])
     indent = min(len(l) - len(l.lstrip()) for l in lines[a:b + 1] if l.strip())
     text = "\n".join(l[indent:] for l in lines[a:b + 1])
-    return {"title": title, "kind": "code", "text": text, "src": "%s, lines %d to %d" % (path, a + 1, b + 1),
+    return {"title": title, "kind": "code", "text": text, "src": "%s, %s" % (path, "line %d" % (a + 1) if a == b else "lines %d to %d" % (a + 1, b + 1)),
             "href": link(path, a + 1, b + 1)}
 
 
@@ -86,6 +86,11 @@ per_slot = Counter(re.match(r"(M1-S\d+)-T\d+", n).group(1) for n in names)
 TRIES_M1, SLOTS_M1 = len(names), len(per_slot)
 MORE_M1, MAX_M1 = sum(1 for v in per_slot.values() if v > 1), max(per_slot.values())
 REWRITES_M1 = sum(1 for d in json.loads(read("runs/mock-01/owner-decisions.json")) if d.get("action") == "rewrite")
+failed_slots = {re.match(r"(M1-S\d+)-T\d+", os.path.basename(f)).group(1)
+                for f in glob.glob(os.path.join(ROOT, "runs/mock-01/checks/M1-S*-T*-step[34].json"))
+                if json.loads(read(os.path.relpath(f, ROOT)))["verdict"] != "pass"}
+FAILED_M1 = sum(1 for s, v in per_slot.items() if v > 1 and s in failed_slots)   # more than one try, after a failed check
+RWONLY_M1 = MORE_M1 - FAILED_M1                                                   # more than one try, only after a rewrite
 
 # ----- the preview cards -----
 
@@ -96,7 +101,7 @@ CARDS = {
     "g-domain": excerpt("reference/exam-guide.md", "The percentages indicate the approximate proportion of scored items drawn from each domain.",
                         "Section 4, the exam blueprint", kind="guide"),
     "g-scope": excerpt("reference/exam-guide.md", in_scope, "In-Scope Topics, Section 17 (Appendix)", kind="guide"),
-    "g-tech": excerpt("reference/exam-guide.md", api_tech, "Technologies, Section 17 (Appendix)", kind="guide"),
+    "g-tech": excerpt("reference/exam-guide.md", api_tech, "Technologies and Concepts, Section 17 (Appendix)", kind="guide"),
     "d-stop": {"title": "Anthropic documentation: Handling stop reasons", "kind": "docs",
                "text": "The page names seven stop_reason values: end_turn, max_tokens, stop_sequence, tool_use, pause_turn, "
                        "refusal and model_context_window_exceeded. For tool_use it says: \"Claude is calling a tool and "
@@ -111,9 +116,10 @@ CARDS = {
                               "The code: a pass stops the loop first"),
     "b-tries": {"title": "The run records of mock 1", "kind": "count",
                 "text": "The folder runs/mock-01/questions/ has %d question files, one for each try, for %d slots. "
-                        "%d slots have more than one try. The most tries for one slot: %d. The file runs/mock-01/owner-decisions.json "
+                        "%d slots have more than one try: %d after a failed check in runs/mock-01/checks/, and %d only after a "
+                        "rewrite that the owner asked for. The most tries for one slot: %d. The file runs/mock-01/owner-decisions.json "
                         "has %d rewrites that the owner asked for. The script of this page counted the files."
-                        % (TRIES_M1, SLOTS_M1, MORE_M1, MAX_M1, REWRITES_M1),
+                        % (TRIES_M1, SLOTS_M1, MORE_M1, FAILED_M1, RWONLY_M1, MAX_M1, REWRITES_M1),
                 "src": "runs/mock-01/questions/", "href": "%s/tree/%s/runs/mock-01/questions" % (REPO, TAG)},
     "b-stuck": excerpt(S5, "One slot stopped after 3 tries. Each try had corrected the last finding, and a new small finding came. "
                            "The owner gave it more tries.", "Build guide, step 5, the run of mock 1"),
@@ -136,8 +142,8 @@ while True:
     response = client.messages.create(
         model="claude-opus-5-5", max_tokens=16000,
         tools=tools, messages=messages)
-    if response.stop_reason == "end_turn":
-        break                                  # Claude has finished
+    if response.stop_reason != "tool_use":
+        break                     # "end_turn", or another reason to handle
     # stop_reason is "tool_use": run each tool that Claude asked for
     messages.append({"role": "assistant", "content": response.content})
     results = [{"type": "tool_result", "tool_use_id": block.id,
@@ -154,8 +160,8 @@ POP = {
     "send": {"who": "Your code", "cls": "code", "title": "Your code sends the request",
              "sent": ["The request carries the conversation history, with each tool result."],
              "examplehead": "The loop in Python", "example": LOOP_CODE,
-             "examplenote": "Simplified from the Anthropic documentation, page \"Tool use with Claude\", section \"How tool use "
-                            "works\" (" + DOCS_TOOL_USE + "), read on 13 October 2026. The exam guide has no code.",
+             "examplenote": "Simplified from the Anthropic documentation, page \"How tool use works\", section \"The agentic loop "
+                            "(client tools)\" (" + DOCS_TOOL_USE + "), read on 13 October 2026. The exam guide has no code.",
              "points": pts("1.1-K1")},
     "resp": {"who": "Claude", "cls": "model", "title": "Claude responds",
              "sent": ["Claude reasons about which tool to call next, from the context."],
@@ -436,7 +442,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
     <div class="beyond"><span class="btag">Beyond the exam</span>
       <p>The exam guide names two values of <code>stop_reason</code>: <code>"tool_use"</code> and <code>"end_turn"</code>. The Claude API
       has {stop_fact}, for example <code>"max_tokens"</code>, <code>"pause_turn"</code> and <code>"refusal"</code>. A loop in
-      production must handle them too.</p></div>
+      production should handle them too.</p></div>
     <p><b>On a real system.</b> The mock builder made a deliberate choice about loops. <a class="xlink" href="#behind">Behind the mocks 1.1 &darr;</a></p>
   </div>
 </details>
@@ -455,7 +461,7 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
   <div class="lhead"><span class="lname">Overview</span><span class="ltime">30 seconds</span></div>
   <div class="lbody">
     <p class="lead">The mock builder is not an agentic loop. Code and the owner decide each next step. No model decides it. The
-    builder has one small loop: a question that fails a check goes back to the writer. The main way to stop is a pass. The limits
+    builder has one automatic loop for questions: a question that fails a check goes back to the writer. The main way to stop is a pass. The limits
     are only guards.</p>
     <div class="scroll"><div class="stage" style="width:900px;height:200px">
       <svg width="900" height="200" aria-hidden="true">
@@ -490,11 +496,11 @@ footer {{ margin-top:30px; color:var(--muted); font-size:13px; }}
     <p>A question that fails the check by code or the check by a model goes back to the writer with the exact findings, and the
     writer tries again. The loop stops when a question passes both checks. A {guard_fact} and a limit of two results "cannot
     decide" are only guards. After a guard, the slot waits for the owner.</p>
-    <p>This follows 1.1-S3: an arbitrary limit of iterations must not be the main way to stop. The guide wrote that point for agent
+    <p>This matches 1.1-S3: an arbitrary limit of iterations must not be the main way to stop. The guide wrote that point for agentic
     loops. The builder uses the same idea for a loop of retries.</p>
     <h3>What happened in mock 1</h3>
     <p>Mock 1 needed {tries_fact}. {rewrites} of the tries were rewrites that the owner asked for after the marks. {more} slots
-    needed more than one try. {stuck_fact}</p>
+    needed more than one try: {failed} after a failed check, and {rwonly} only after a rewrite that the owner asked for. {stuck_fact}</p>
     <h3>What went wrong, and the fix</h3>
     <p>The first design had many automatic paths for repair. {reviews_fact} The owner said: &ldquo;{quote_fact}&rdquo;</p>
     <p>The fix: {oneloop_fact}, and {wait_fact}. The control became code, with {tests_fact}.</p>
@@ -689,7 +695,7 @@ page = PAGE.format(
     slots_fact=fact("b-slots", "a plan of 60 slots"),
     guard_fact=fact("b-guard", "limit of 3 tries"),
     tries_fact=fact("b-tries", "%d tries for %d slots" % (TRIES_M1, SLOTS_M1)), rewrites=REWRITES_M1,
-    more=MORE_M1,
+    more=MORE_M1, failed=FAILED_M1, rwonly=RWONLY_M1,
     stuck_fact=fact("b-stuck", "One slot stopped at the guard, and the owner gave it more tries."),
     reviews_fact=fact("b-reviews", "A first review found 14 serious items. A second review found 10 new ones, and most of them came from the answers to the first."),
     quote_fact=fact("b-quote", "I suspect that if we fix these new 10 issues and review we will keep finding more and the cycle will continue."),

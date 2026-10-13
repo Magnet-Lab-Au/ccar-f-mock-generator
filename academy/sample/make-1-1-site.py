@@ -76,7 +76,7 @@ SITE = [
     # the legend on the page replaces the note about the labels
     ("<p class=\"ve-label\">The labels 1.1-K1 to 1.1-S3 are ours. The guide has no labels.</p>",
      "<p class=\"key\"><span class=\"tag-k\">K = Knowledge of</span><span class=\"tag-s\">S = Skills in</span>"
-     "<span>1.1-K2 = domain 1 &middot; task statement 1 &middot; point 2. The labels are ours. The guide has no labels.</span></p>"),
+     "<span>1.1-K2 = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>"),
     # the popups: a legend of the kinds in the list, and the colored letter in each label
     ("s.appendChild(el('h3', null, 'The exam guide says')); const ul = el('ul');",
      "s.appendChild(el('h3', null, 'The exam guide says')); const key = el('p', 'key');"
