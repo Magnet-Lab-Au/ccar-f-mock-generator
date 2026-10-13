@@ -357,6 +357,66 @@ PART["1.3"] = (overview("1.3", "A subagent knows only what the coordinator passe
                                 cf("ts-1-3-d12", excerpt(D12, "A subagent is necessary only for a step in which code cannot know before the call what the model must read.", "Mock decision 0012"),
                                    "The reason: a subagent is necessary only when code cannot know before the call what the model must read.")), "ts-1-3"))
 
+
+# ----- part 1.2 (facts: academy/facts/ts-1-2.md) -----
+
+AT, O5 = "claude-code-docs-agent-teams", "anthropic-docs-prompting-claude-opus-5"
+FIG12 = figure("1.2-1", 890, 380,
+               "A coordinator in the middle sends a task prompt to four subagents: web search, document analysis, synthesis and report. "
+               "Each subagent has its own context. No arrow joins two subagents. When the synthesis has gaps, the coordinator delegates again.",
+               "".join([edge("M380 140V55H240"), edge("M510 140V55H650"), edge("M380 250V325H240"), edge("M510 250V325H650"),
+                        edge("M240 30H650", "no direct path", 445, 16, cls="is-async no-head"), '<path class="ve-e no-head" d="M437 22l16 16M453 22l-16 16"/>',
+                        edge("M760 290V195H560", "gaps? delegate again", 690, 186, cls="is-hot"),
+                        '<text class="ve-el" x="310" y="72">task prompt</text>',
+                        box(330, 140, 230, 110, ["Coordinator"], sub="split · select · join", cls="who-model"),
+                        box(20, 20, 220, 70, ["Web search"], sub="own context", cls="who-model"),
+                        box(650, 20, 220, 70, ["Document analysis"], sub="own context", cls="who-model"),
+                        box(20, 290, 220, 70, ["Report"], sub="own context", cls="who-model"),
+                        box(650, 290, 220, 70, ["Synthesis"], sub="own context", cls="who-model")]),
+               "%s %s" % (cf("ts-1-2-k1", gx("Hub-and-spoke architecture where a coordinator agent manages all inter-subagent communication, error handling, and information routing", "Exam guide, 1.2-K1"),
+                             "The coordinator manages all communication between the subagents, the errors and the routing of information."),
+                          cf("ts-1-2-f1", gx("A coordinator agent delegates to specialized subagents: one searches the web, one analyzes documents, one synthesizes findings, and one generates reports.", "Exam guide, scenario 3"),
+                             "The four subagents are those of scenario 3 of the guide.")))
+
+PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every result",
+                        "A coordinator agent splits the task, calls only the subagents that the query needs, and is the only path between them. "
+                        "Each subagent starts with a fresh context, so a split that is too narrow leaves gaps that no subagent can see.",
+                        FIG12)
+    + level("explanation",
+            "<p><b>The hub.</b> %s %s %s</p>" % (
+                cf("ts-1-2-s4", gx("Routing all subagent communication through the coordinator for observability, consistent error handling, and controlled information flow", "Exam guide, 1.2-S4"),
+                   "The guide routes all communication of the subagents through the coordinator, for observability, one way to handle errors, and control of the information (1.2-S4)."),
+                cf("ts-1-2-f3", D(AT, "| **Coordination** | Main agent manages all work |", "Claude Code, Agent teams"), "In the documentation too, the main agent manages all work of its subagents,"),
+                cf("ts-1-2-f4", D(SUB, "only its final message returns to the parent.", "Agent SDK, Subagents"), "and only the final message of a subagent returns to it."))
+            + "<p><b>Isolated context.</b> %s Part 1.3 shows what the coordinator must pass.</p>" %
+                cf("ts-1-2-k2", gx("How subagents operate with isolated context—they do not inherit the coordinator's conversation history automatically", "Exam guide, 1.2-K2"),
+                   "A subagent does not get the conversation history of the coordinator (1.2-K2).")
+            + "<p><b>Choose the subagents.</b> %s %s %s</p>" % (
+                cf("ts-1-2-k3", gx("The role of the coordinator in task decomposition, delegation, result aggregation, and deciding which subagents to invoke based on query complexity", "Exam guide, 1.2-K3"),
+                   "The coordinator splits the task, delegates, joins the results, and decides which subagents a query needs (1.2-K3)."),
+                fact("ts-1-3-f9", "Claude chooses a subagent by its description."),
+                cf("ts-1-2-f8", D(O5, "If one subagent can complete the task, use one rather than several, and keep spawn counts low.", "Prompting Claude Opus 5"),
+                   "The documentation agrees with the guide: if one subagent can do the task, use one, not the full pipeline (1.2-S1)."))
+            + "<p><b>Split the scope.</b> The guide gives each subagent a distinct subtopic or source type, so that the work does not repeat (1.2-S2). %s %s</p>" % (
+                cf("ts-1-2-k4", gx("Risks of overly narrow task decomposition by the coordinator, leading to incomplete coverage of broad research topics", "Exam guide, 1.2-K4"),
+                   "A split that is too narrow leaves parts of a broad topic with no coverage (1.2-K4)."),
+                cf("ts-1-2-f14", gx("The subagents executed their assigned tasks correctly—the problem is what they were assigned.", "Exam guide, sample question 7"),
+                   "In sample question 7 of the guide, each subagent did its task correctly. The problem was what they were given."))
+            + "<p><b>Refine.</b> %s</p>" %
+                cf("ts-1-2-s3", gx("Implementing iterative refinement loops where the coordinator evaluates synthesis output for gaps, re-delegates to search and analysis subagents with targeted queries, and re-invokes synthesis until coverage is sufficient", "Exam guide, 1.2-S3"),
+                   "The coordinator checks the synthesis for gaps, sends targeted queries to the search and analysis subagents, and runs the synthesis again, until the coverage is sufficient (1.2-S3). Only the guide describes this loop.")
+            + exam_tests("1.2", [("Multi-agent orchestration: coordinator-subagent patterns, task decomposition, parallel subagent execution, iterative refinement loops", "Among the topics, the guide names")])
+            + guide_text("1.2"), "ts-1-2")
+    + level("depth",
+            beyond([cf("ts-1-2-b1", D(AT, "Subagents that Claude named when it spawned them can also [message each other](/docs/en/sub-agents#what-loads-at-startup)", "Claude Code, Agent teams"),
+                       "In Claude Code, subagents that Claude named can also message each other. The guide routes all communication through the coordinator, and the exam uses the guide."),
+                    cf("ts-1-2-b2", D(SUB, "a subagent can spawn subagents of its own, so one prompt can grow into a tree of agents.", "Agent SDK, Subagents"),
+                       "A subagent can start subagents of its own, so the hub can grow into a tree. The guide shows one hub with one layer."),
+                    cf("ts-1-2-b3", D(O5, "Delegation pays off on genuinely independent, sizeable tracks of work, but it multiplies cost and time when applied to small tasks.", "Prompting Claude Opus 5"),
+                       "Delegation multiplies cost and time when the tasks are small.")])
+            + tab2_links("1.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no subagent."),
+                                           fact("ts-1-3-d12", "A subagent is necessary only when code cannot know before the call what the model must read."))), "ts-1-2"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
