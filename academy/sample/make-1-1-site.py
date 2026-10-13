@@ -31,7 +31,8 @@ SITE = [
     ("--font-mono: ui-monospace, 'Cascadia Mono', Consolas, monospace;", "--font-mono: 'IBM Plex Mono', ui-monospace, monospace;"),
     # light: the "band-light" colors of the website
     ("--bg: #fcfbf5; --surface: #ffffff; --border: #e4e4e7; --border-bright: #7f8a9c; --gold: #f3a83c;",
-     "--bg: #fbfaf8; --surface: #f5f3ef; --border: #d9d4cb; --border-bright: #b9b2a6; --gold: #ffb84d;"),
+     "--bg: #fbfaf8; --surface: #f5f3ef; --border: #d9d4cb; --border-bright: #b9b2a6; --gold: #ffb84d; "
+     "--k: #245780; --s: #8a4b08; --on-k: #ffffff; --on-s: #ffffff;"),
     ("--text: #11293d; --text-dim: #64748b; --accent: #2b6087; --accent-dim: rgba(43,96,135,.12);",
      "--text: #11293d; --text-dim: #5a6874; --accent: #8a4b08; --accent-dim: rgba(255,184,77,.22);"),
     ("--lift: rgb(17 41 61 / .12); --halo: 22%;", "--lift: transparent; --halo: 0%;"),
@@ -41,7 +42,8 @@ SITE = [
     ("--text: #f3f1ea; --text-dim: #9fb0c0; --accent: #f3a83c; --accent-dim: rgba(243,168,60,.16); ",
      "--text: #f4f2ef; --text-dim: #8b9caa; --accent: #ffb84d; --accent-dim: rgba(255,184,77,.16); "),
     ("--node-top: color-mix(in srgb, var(--text) 7%, var(--surface)); --lift: rgb(0 0 0 / .45); --halo: 32%;",
-     "--node-top: var(--surface); --lift: transparent; --halo: 0%;"),
+     "--node-top: var(--surface); --lift: transparent; --halo: 0%; "
+     "--k: #8cc0ea; --s: #ffb84d; --on-k: #0b1725; --on-s: #0b1725;"),
     # square corners
     ("--r-1: 4px; --r-2: 10px;", "--r-1: 0; --r-2: 0;"),
     # headings: the section headings of the website, with no line under the main heading
@@ -65,9 +67,28 @@ SITE = [
      "  header { border-top: 1px solid var(--gold); padding-top: var(--s-5); }\n"
      "  .eyebrow { max-width: none; }\n"
      "  a { color: var(--accent); }\n"
+     "  .key { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); max-width: none; margin: var(--s-2) 0; font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); }\n"
+     "  .tag-k, .tag-s { font: 600 var(--t-label) var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 1px var(--s-2); }\n"
+     "  .tag-k { background: var(--k); color: var(--on-k); } .tag-s { background: var(--s); color: var(--on-s); }\n"
+     "  .lk { color: var(--k); } .ls { color: var(--s); }\n"
+     "  @media print { :root, :root:not(.light), :root.dark { --k: #245780; --s: #8a4b08; --on-k: #fff; --on-s: #fff; } }\n"
      "  button { font: 500 var(--t-small) var(--font-body); }\n"
      "  button:hover, button:focus-visible { border-color: var(--gold); }\n"
      "</style>"),
+    # the legend on the page replaces the note about the labels
+    ("<p class=\"ve-label\">The labels 1.1-K1 to 1.1-S3 are ours. The guide has no labels.</p>",
+     "<p class=\"key\"><span class=\"tag-k\">K = Knowledge of</span><span class=\"tag-s\">S = Skills in</span>"
+     "<span>1.1-K2 = domain 1 &middot; task statement 1 &middot; point 2. The labels are ours. The guide has no labels.</span></p>"),
+    # the popups: a legend of the kinds in the list, and the colored letter in each label
+    ("s.appendChild(el('h3', null, 'The exam guide says')); const ul = el('ul');",
+     "s.appendChild(el('h3', null, 'The exam guide says')); const key = el('p', 'key');"
+     " if (d.points.some((p) => p.id.includes('-K'))) key.appendChild(el('span', 'tag-k', 'K = Knowledge of'));"
+     " if (d.points.some((p) => p.id.includes('-S'))) key.appendChild(el('span', 'tag-s', 'S = Skills in'));"
+     " s.appendChild(key); const ul = el('ul');"),
+    ("li.appendChild(el('b', null, p.id + ' '));",
+     "const b = el('b'), m = p.id.match(/^(.*-)([KS])(.*)$/);"
+     " if (m) b.append(m[1], el('span', m[2] === 'K' ? 'lk' : 'ls', m[2]), m[3] + ' '); else b.textContent = p.id + ' ';"
+     " li.appendChild(b);"),
     ("Third sample: the second sample in the colors and fonts of the academy portal, by academy/sample/make-1-1-portal.py.",
      "Fourth sample: the third sample in the look of www.magnetlab.com.au, by academy/sample/make-1-1-site.py."),
 ]
@@ -78,6 +99,16 @@ portal.build(changes + SITE)
 with open(OUT, encoding="utf-8") as f:
     page = f.read()
 page, n = re.subn(r' rx="[0-9.]+"', ' rx="0"', page)
+
+
+def color_labels(text):
+    return re.sub(r"(\d\.\d-)([KS])(\d)", lambda m: '%s<span class="%s">%s</span>%s' % (
+        m.group(1), "lk" if m.group(2) == "K" else "ls", m.group(2), m.group(3)), text)
+
+
+parts = re.split(r"(<script\b.*?</script>|<title>.*?</title>)", page, flags=re.S)
+page = "".join(x if x.startswith(("<script", "<title>")) else re.sub(r">([^<]*)<", lambda m: ">" + color_labels(m.group(1)) + "<", x)
+               for x in parts)
 with open(OUT, "w", encoding="utf-8") as f:
     f.write(page)
-print("Squared %d corners in the figures." % n)
+print("Squared %d corners in the figures. Colored %d label letters." % (n, page.count('class="lk"') + page.count('class="ls"')))
