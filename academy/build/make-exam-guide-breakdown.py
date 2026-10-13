@@ -1096,6 +1096,82 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
                                               "The build in Claude Code used these tools, but no record says which tool did what, so tab 2 has no part for 2.5."))), "ts-2-5"))
 
+
+# ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
+
+SDKF = "claude-code-docs-agent-sdk-claude-code-features"
+IMP31 = "See @README for project overview and @package.json for available npm commands for this project.\n\n# Additional Instructions\n- git workflow @docs/git-instructions.md"
+FIG31 = figure("3.1-1", 890, 340,
+               "Four kinds of file, from broad to specific: the user CLAUDE.md, only for you and not in git. The project CLAUDE.md, shared with the team through git. "
+               "Rule files in .claude/rules/, one topic each. A CLAUDE.md in a subdirectory, loaded when Claude works there. All are joined in the context of the session, "
+               "and none overrides another. /memory and /context show the files.",
+               "".join(['<path class="ve-e no-head" d="M330 20H345V320H330"/>',
+                        edge("M345 165H600", "joined, none overrides", 478, 156),
+                        box(20, 20, 300, 60, ["~/.claude/CLAUDE.md"], sub="user: only you, not in git"),
+                        box(20, 100, 300, 60, ["./CLAUDE.md"], sub="project: the team, in git", cls="try ok"),
+                        box(20, 180, 300, 60, [".claude/rules/*.md"], sub="one topic for each file"),
+                        box(20, 260, 300, 60, ["sub/CLAUDE.md"], sub="when Claude works there"),
+                        box(600, 110, 270, 110, ["Context of", "the session"], cls="who-model"),
+                        box(600, 260, 270, 60, ["/memory, /context"], sub="list and check the files")]),
+               "%s %s" % (cf("ts-3-1-f5", D(MEMD, "All discovered files are concatenated into context rather than overriding each other.", "Claude Code, Memory"),
+                             "Claude Code joins all the files that it finds, and no file overrides another."),
+                          cf("ts-3-1-k2", gx("That user-level settings apply only to that user—instructions in ~/.claude/CLAUDE.md are not shared with teammates via version control", "Exam guide, 3.1-K2"),
+                             "Only the project files reach a teammate through git (3.1-K2).")))
+
+PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md, split into files",
+                        "Claude Code joins the CLAUDE.md files of the user, the project and its subdirectories, and only the project files reach teammates through git. "
+                        "Imports and .claude/rules/ split a long file into topic files.",
+                        FIG31)
+    + level("explanation",
+            "<p><b>The levels.</b> %s %s %s</p>" % (
+                cf("ts-3-1-k1", gx("The CLAUDE.md configuration hierarchy: user-level (~/.claude/CLAUDE.md), project-level (.claude/CLAUDE.md or root CLAUDE.md), and directory-level (subdirectory CLAUDE.md files)", "Exam guide, 3.1-K1"),
+                   "The guide names three levels: the user (~/.claude/CLAUDE.md), the project (CLAUDE.md or .claude/CLAUDE.md), and the directory (a CLAUDE.md in a subdirectory) (3.1-K1)."),
+                cf("ts-3-1-f1", D(MEMD, "The table below lists them in load order, from broadest scope to most specific, so a project instruction appears in context after a user instruction.", "Claude Code, Memory"),
+                   "They load from broad to specific."),
+                cf("ts-3-1-f4", D(MEMD, "Files in subdirectories load on demand.", "Claude Code, Memory"),
+                   "A file in a subdirectory loads only when Claude works with a file there."))
+            + "<p><b>Who gets which file.</b> %s %s</p>" % (
+                cf("ts-3-1-f6", D(MEMD, "These instructions are shared with your team through version control, so focus on project-level standards rather than personal preferences.", "Claude Code, Memory"),
+                   "The project file reaches the team through version control."),
+                cf("ts-3-1-s1", gx("Diagnosing configuration hierarchy issues (e.g., a new team member not receiving instructions because they're in user-level rather than project-level configuration)", "Exam guide, 3.1-S1"),
+                   "So when a new team member does not get an instruction, check whether it is in the user file, not the project file (3.1-S1)."))
+            + "<p><b>Imports.</b> %s %s %s %s</p>" % (
+                cf("ts-3-1-k3", gx("The @import syntax for referencing external files to keep CLAUDE.md modular (e.g., importing specific standards files relevant to each package)", "Exam guide, 3.1-K3"),
+                   "A line with @ and a path imports another file, which keeps CLAUDE.md modular (3.1-K3)."),
+                cf("ts-3-1-f8", D(MEMD, "Relative paths resolve relative to the file containing the import, not the working directory.", "Claude Code, Memory"),
+                   "A relative path starts at the file that imports."),
+                cf("ts-3-1-s2", gx("Using @import to selectively include relevant standards files in each package's CLAUDE.md based on maintainer domain knowledge", "Exam guide, 3.1-S2"),
+                   "The CLAUDE.md of each package imports only the standards that it needs (3.1-S2)."),
+                cf("ts-3-1-f9", D(MEMD, "Splitting into [`@path` imports](#import-additional-files) helps organization but doesn't reduce context, since imported files load at launch.", "Claude Code, Memory"),
+                   "An import organizes, but it does not save context: the imported file loads at launch."))
+            + "<p><b>Rules.</b> %s %s %s</p>" % (
+                cf("ts-3-1-s3", gx("Splitting large CLAUDE.md files into focused topic-specific files in .claude/rules/ (e.g., testing.md, api-conventions.md, deployment.md)", "Exam guide, 3.1-S3"),
+                   "A large CLAUDE.md becomes topic files in .claude/rules/, such as testing.md and deployment.md (3.1-K4, 3.1-S3)."),
+                cf("ts-3-1-f14", D(MEMD, "target under 200 lines per CLAUDE.md file. Longer files consume more context and reduce adherence.", "Claude Code, Memory"),
+                   "The documentation targets less than 200 lines for each CLAUDE.md."),
+                cf("ts-3-1-f13", D(MEMD, "are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
+                   "A rule file with no paths loads at launch like CLAUDE.md. Part 3.3 shows rules that load only for some paths."))
+            + "<p><b>Check.</b> %s %s %s</p>" % (
+                cf("ts-3-1-s4", gx("Using the /memory command to verify which memory files are loaded and diagnose inconsistent behavior across sessions", "Exam guide, 3.1-S4"),
+                   "The guide uses /memory to check which memory files are loaded (3.1-S4)."),
+                cf("ts-3-1-f16", D(MEMD, "The `/memory` command lists your CLAUDE.md, CLAUDE.local.md, and other memory file locations across user and project scopes, including user and project CLAUDE.md entries for files that don't exist yet.", "Claude Code, Memory"),
+                   "In the documentation, /memory lists the locations of the files, also of files that do not exist yet."),
+                cf("ts-3-1-f17", D(MEMD, "To check which `CLAUDE.md` and rules files loaded at launch, run `/context`.", "Claude Code, Memory"),
+                   "For the files that loaded, it names /context. The exam uses the guide."))
+            + exam_tests("3.1", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
+            + guide_text("3.1"), "ts-3-1")
+    + level("depth",
+            beyond([cf("ts-3-1-b1", D(MEMD, "CLAUDE.md instructions shape Claude's behavior but are not a hard enforcement layer.", "Claude Code, Memory"),
+                       "CLAUDE.md guides Claude, but it does not enforce. To block an action, use a hook (part 1.4)."),
+                    cf("ts-3-1-b2", D(MEMD, "Personal project-specific preferences; add to `.gitignore`", "Claude Code, Memory"),
+                       "The documentation has more levels than the guide: a managed policy file for an organization, and CLAUDE.local.md for personal preferences in one project, kept out of git."),
+                    cf("ts-3-1-b3", D(SDKF, "When you omit `settingSources`, `query()` reads the same filesystem settings as the Claude Code CLI", "Agent SDK, Claude Code features"),
+                       "The Agent SDK reads the same CLAUDE.md files as the CLI, unless the option settingSources turns that off.")])
+            + code_pop_text("ts-3-1-code", "The code: imports in a CLAUDE.md", "Imports with @ and a path", MEMD, IMP31, "Claude Code, Memory",
+                            "Each @ and a path imports a file into the context at launch.")
+            + tab2_links("3.1") + "<p>%s</p>" % cf("ts-3-1-a02", excerpt(A02, "It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
+                                                    "No step of the mock builder uses 3.1: it calls the Claude API and loads no CLAUDE.md. The build of the mock builder in Claude Code used a project CLAUDE.md with one import."), "ts-3-1"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
@@ -1161,6 +1237,8 @@ CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
 
 DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles of its task statements (decision 0021)
+DOMAIN_SUMMARY[3] = ("Claude Code for a team: CLAUDE.md files and their levels, commands and skills, rules for some paths, "
+                     "plan mode against direct work, refinement step by step, and Claude Code in a CI/CD pipeline.")
 DOMAIN_SUMMARY[2] = ("Tools that Claude can use well: descriptions that make the choice clear, errors that say what went wrong, "
                      "the right tools for each agent and the choice of tool_choice, MCP servers, and the built-in tools of Claude Code.")
 DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents and what each subagent gets, "
