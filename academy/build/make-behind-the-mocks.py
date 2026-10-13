@@ -163,7 +163,7 @@ DEVIATION = ("Claude Opus 5.5, the model of this build, and three other current 
 EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several "
            "schemas exist and the document type is unknown (4.3-S2), and a forced tool when one extraction must run first (4.3-S3).")
 lines_of("academy/sources/2026-10-14-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
-FIX_USE = {"4.3-K2": ("The current models accept only \"auto\" and \"none\".", "Claude Opus 5.5 and three other current models accept only \"auto\" and \"none\" (the Anthropic documentation, Define tools).")}
+FIX_USE = {"5.5-K2": ("For mock 1 the owner reads all 60, so that is not a sample.", "Mocks 1 and 5 put all 60 questions in the file, so that is not a sample. The reader was the owner for mocks 1 to 3 and a Claude model for mocks 4 and 5."), "4.3-K2": ("The current models accept only \"auto\" and \"none\".", "Claude Opus 5.5 and three other current models accept only \"auto\" and \"none\" (the Anthropic documentation, Define tools).")}
 lines_of(S5, "The reason: the newest Claude models reject it.")
 
 
@@ -232,7 +232,7 @@ def edge(d, label=None, lx=0, ly=0, cls="", anchor=""):
 W, H = 150, 92
 # who does the step: the form of the box says it (thin = code, thick = a Claude model, dotted = the owner)
 WHO = {0: ("code", ""), 1: ("code", ""), 2: ("Claude", "who-model"), 3: ("code", ""), 4: ("Claude + code", "who-model"),
-       5: ("Claude", "who-model"), 6: ("code + Claude", "who-model"), 7: ("owner or Claude", "who-owner"), 8: ("code", "")}
+       5: ("Claude", "who-model"), 6: ("code + Claude", "who-model"), 7: ("owner or Claude", ""), 8: ("code", "")}
 WHO_LONG = {0: "code", 1: "code", 2: "a Claude model", 3: "code", 4: "two Claude model calls, then code makes the verdict",
             5: "a Claude model: the writer of step 2 again, with the failed try and its findings", 6: "code and two Claude model calls for each scenario",
             7: "the owner (mocks 1 to 3), or a Claude model (mocks 4 and 5)", 8: "code, after the owner accepts the mock"}
@@ -250,7 +250,7 @@ POS = {0: (20, 20), 1: (20, 160), 2: (250, 160), 3: (480, 160), 4: (710, 160), 5
 def step_node(s):
     x, y = POS[s]
     who, cls = WHO[s]
-    return box(x, y, W, H, NAMES[s], sub=who, cls=cls + (" is-key" if s == 5 else ""), href="#step-%d" % s, num=s)
+    return box(x, y, W, H, NAMES[s], sub=who, cls=cls, href="#step-%d" % s, num=s)
 
 
 LEGEND = ('<g transform="translate(250 22)">'
@@ -273,7 +273,7 @@ FIG1 = """
     </svg>
   </div>
   <figcaption><span class="fig-n">Fig. A</span>Code moves each try through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, and a call that fails 3 times. Since mock decision 0045, %(rw)s also waits for the owner. %(rwp)s The owner %(acc)s before step 8.</figcaption>
-  <section class="sources" aria-label="Sources of Fig. A"><p class="ve-label">Sources of Fig. A</p><ul>@SOURCES_TOP@</ul></section>
+  <section class="sources" aria-label="Sources of the top"><p class="ve-label">Sources of the top of this tab</p><ul>@SOURCES_TOP@</ul></section>
 </figure>
 """ % {
     "nodes": "".join(step_node(s) for s in range(9)),
@@ -299,7 +299,7 @@ FIG1 = """
     "wait": fact("c-wait", "Each other way back waits for a decision of the owner"),
     "rw": fact("c-rw", "a rewrite after the marks"),
     "acc": fact("c-acc", "accepts the mock"),
-    "rwp": fact("c-rwp", "A rewrite with a new point starts again at step 2. The figure does not draw this arrow, or the choice of a new plan."),
+    "rwp": fact("c-rwp", "The figure draws the new point of an open slot. It does not draw a rewrite with a new point, which also starts again at step 2, or the choice of a new plan."),
 }
 
 # Fig. 5-1: the loop of step 5 (facts: step-5.md, sections 2.1 to 2.3)
@@ -357,7 +357,7 @@ def grid(x):
 FIG52 = """
 <figure>
   <div class="cases">%s</div>
-  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A darker square had more tries, and its number is the tries. The number also counts new tries after a rewrite or a bad mark of the owner. So a slot can pass both checks at the first try and still have a number. %s %s</figcaption>
+  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A darker square had more tries, and its number is the tries. The number also counts new tries after a rewrite or a bad mark. So a slot can pass both checks at the first try and still have a number. %s %s</figcaption>
 </figure>
 """ % ("".join(grid(x) for x in MOCKS),
        fact("s5-counts", "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)),
@@ -370,10 +370,10 @@ FIG53_T = """
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first review found 14 serious items. The second review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the rules of the next action are code with tests.">
       <path class="ve-e" d="M250 60H318"/><text class="ve-el" x="284" y="51">answers</text>
-      <path class="ve-e is-hot" d="M560 60H628"/><text class="ve-el" x="594" y="51">fix</text>
-      <g class="ve-n"><rect class="sh" x="20" y="20" width="230" height="80" rx="0"/><text x="135" y="44">first review</text>
+      <path class="ve-e" d="M560 60H628"/><text class="ve-el" x="594" y="51">fix</text>
+      <g class="ve-n"><rect class="sh" x="20" y="20" width="230" height="80" rx="0"/><text x="135" y="44">first design review</text>
         <rect class="bar" x="40" y="62" width="140" height="16" rx="0"/><text class="sub" x="210" y="70">14</text></g>
-      <g class="ve-n"><rect class="sh" x="320" y="20" width="240" height="80" rx="0"/><text x="440" y="44">second review</text>
+      <g class="ve-n"><rect class="sh" x="320" y="20" width="240" height="80" rx="0"/><text x="440" y="44">second design review</text>
         <rect class="bar" x="340" y="62" width="100" height="16" rx="0"/><text class="sub r" x="452" y="70">10 new</text></g>
       <g class="ve-n is-key"><rect class="sh" x="630" y="20" width="240" height="80" rx="0"/><text x="750" y="44">the rules are code</text><text class="sub" x="750" y="70">with tests</text></g>
       <text class="ve-lab" x="20" y="130">bar length = number of serious items</text>
@@ -387,7 +387,7 @@ FIG53_T = (FIG53_T.replace('found 14 serious items. The second review found 10 n
            .replace('width="100" height="16" rx="0"/><text class="sub r" x="452" y="70">10 new</text>', 'width="%d" height="16" rx="0"/><text class="sub r" x="452" y="70">@R2@ new</text>' % (REVIEW2 * 10))
            .replace("@R1@", str(REVIEW1)).replace("@R2@", str(REVIEW2)))
 assert "14" not in FIG53_T.split("<figcaption>")[0].replace("140", "") or REVIEW1 == 14
-FIG53 = FIG53_T % (fact("a-reviews", "A first review found %d serious items. A second review found %d new ones, and most of them came from the rules that answered the first." % (REVIEW1, REVIEW2)),
+FIG53 = FIG53_T % (fact("a-reviews", "A first design review found %d serious items. A second design review found %d new ones, and most of them came from the rules that answered the first." % (REVIEW1, REVIEW2)),
        fact("a-quote", "I suspect that if we fix these new 10 issues and review we will keep finding more and the cycle will continue."))
 
 # Fig. 5-4: M5-S38 (story b)
@@ -416,8 +416,8 @@ FIG54 = """
                       box(530, 60, 150, 80, ["Try 4"], sub="custom ID: fails B9", cls="try bad", card="b-t4"),
                       box(720, 60, 150, 80, ["Try 5"], sub="no reason: passes", cls="try ok", card="b-t5")]),
     "edges": "".join([edge("M170 100H190"), edge("M340 100H360"), edge("M510 100H530"), edge("M680 100H720"),
-                      edge("M600 38V60", "the reason", 608, 52, cls="is-hot", anchor="r"),
-                      '<path class="ve-e is-async" d="M700 30H795V60"/><text class="ve-el r" x="803" y="44">not sent</text>']),
+                      edge("M600 38V60", "the reason", 608, 52, anchor="r"),
+                      '<path class="chance" d="M700 30H795V60"/><text class="ve-el r" x="803" y="44">not sent</text>']),
 }
 
 # ----- the text of step 5 -----
@@ -474,9 +474,9 @@ def f(card, text):
 
 
 step5_html = STEP5 % {
-    "what": f("s5-what", "A question that fails step 3 or step 4 goes back to the writer, with the failed try and its exact findings."),
+    "what": f("s5-what", "A try that fails step 3 or step 4 goes back to the writer, with its exact findings."),
     "again": f("s5-again", "The new try goes through steps 3 and 4 again."),
-    "pass": f("s5-pass", "A question that passes stops the loop."),
+    "pass": f("s5-pass", "A try that passes stops the loop."),
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
     "fig51": FIG51,
     "short": f("s5-short", "The writer does not see older tries, so the request stays short."),
@@ -558,7 +558,7 @@ def ts_block(n, extra=None):
         POP[key] = {"who": "Task statement " + tsid, "cls": "model", "title": TS[tsid]["title"], "example": None,
                     "sent": ["How step %d uses %s:" % (n, "each point" if len(mine) > 1 else "the point")]
                             + ["%s: %s" % (p, u) for p, u in mine] + ((extra or {}).get(tsid) or [])
-                            + (["Why: " + DEVIATION, EXAM_43] if tsid == "4.3" else []),
+                            + (["Why: " + DEVIATION, EXAM_43] if any(p in ("4.3-K1", "4.3-S3") for p, _ in mine) else []),
                     "points": pts(*[p for p, _ in mine])}
         chips.append('<div class="tsrow"><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
                      '<span>%s</span> <a href="%s#ts-%s">Exam guide breakdown %s &rarr;</a></div>'
@@ -658,7 +658,7 @@ FIG01 = """
     ]),
     "edges": "".join([
         edge("M190 85H260", "reads", 225, 76),
-        edge("M450 85H520", "writes", 485, 76, cls="is-hot"),
+        edge("M450 85H520", "writes", 485, 76),
         edge("M690 85H740", "parts", 715, 76),
         edge("M355 130V190", "a check fails", 363, 165, anchor="r"),
         edge("M605 190V130", "checks", 613, 165, anchor="r"),
@@ -765,7 +765,7 @@ FIG11 = """
       %(edges)s
       %(nodes)s
       <g class="ve-n is-key"><rect class="sh" x="260" y="20" width="370" height="290" rx="0"/></g>
-      <text class="ve-lab" x="276" y="44">code applies, in this order:</text>
+      <text class="ve-lab" x="276" y="44">code applies the main rules, in this order:</text>
       %(rules)s
     </svg>
   </div>
@@ -778,7 +778,7 @@ FIG11 = """
         box(700, 125, 170, 80, ["the plan"], sub="%d slots" % SLOTS),
     ]),
     "edges": "".join([edge("M190 58H260"), edge("M190 128H260"), edge("M190 198H260"), edge("M190 268H260"),
-                      edge("M630 165H700", "writes", 665, 156, cls="is-hot")]),
+                      edge("M630 165H700", "writes", 665, 156)]),
     "rules": "".join('<text class="ve-lab" x="276" y="%d"><tspan class="pid">%d</tspan> %s</text>' % (76 + i * 38, i + 1, e(t)) for i, t in enumerate([
         "domains 1 to 5: %s questions" % ", ".join(map(str, DC)),
         "%d scenarios, %d questions each" % (SCEN_IN_MOCK, PER_SCEN),
@@ -804,7 +804,7 @@ FIG12 = """
         <g class="ve-n is-st"><rect class="sh" x="2" y="25" width="98" height="60" rx="0"/><text x="51" y="55">code</text></g>
         <g class="ve-n"><rect class="sh" x="172" y="25" width="126" height="60" rx="0"/><text x="235" y="47">the plan</text><text class="sub" x="235" y="69">before writing</text></g></svg></div>
   </div>
-  <figcaption><span class="fig-n">Fig. 1-2</span>The guide contrasts a fixed sequence with a decomposition that changes with what the work finds (1.6-K1). Step 1 uses one idea of the fixed side: %s.</figcaption>
+  <figcaption><span class="fig-n">Fig. 1-2</span>The guide contrasts a fixed sequence with a decomposition that changes with what the work finds (1.6-K1). Step 1 uses one reason of the fixed side: %s.</figcaption>
 </figure>""" % fact("s1-known", "the work of a mock is known before it starts")
 
 MAXS = max(SHARED)
@@ -904,7 +904,7 @@ CARD.update({
 
 REQ = [("cached", "the rules: A1 to A12 and B1 to B9"), ("", "the role and the form"),
        ("", "3 sample questions of the guide"), ("", "the story of the scenario"),
-       ("", "the task statement, its point marked"), ("", "the %d technologies of the guide" % N_TECH),
+       ("", "the task statement, its point flagged"), ("", "the %d technologies of the guide" % N_TECH),
        ("", "the slot: type, options, answers"), ("if any", "earlier questions on the idea"),
        ("step 5", "the failed try and its findings")]
 FIG21 = """
@@ -923,7 +923,7 @@ FIG21 = """
     "h": 60 + len(REQ) * 34 + 20, "rh": 40 + len(REQ) * 34,
     "rows": "".join('<g class="blk%s"><rect x="32" y="%d" width="360" height="28" rx="0"/><text x="42" y="%d">%s%s</text></g>'
                     % (" a" if tag == "cached" else "", 44 + i * 34, 58 + i * 34, ('<tspan class="role">%s: </tspan>' % tag) if tag else "", e(t)) for i, (tag, t) in enumerate(REQ)),
-    "edges": "".join([edge("M400 170H480", "sends", 440, 161, cls="is-hot"), edge("M640 170H700", "answers", 670, 161)]),
+    "edges": "".join([edge("M400 170H480", "sends", 440, 161), edge("M640 170H700", "answers", 670, 161)]),
     "nodes": "".join([box(480, 120, 160, 100, ["Claude"], sub="one new call", cls="who-model"),
                       box(700, 120, 170, 100, ["the form"], sub="question, options", cls=""),
                       box(700, 250, 170, 70, ["code"], sub="mixes, gives letters")]) + edge("M785 220V250"),
@@ -933,18 +933,18 @@ FIG21 = """
 STEP2 = (level("overview",
                '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4><p>%s %s Code builds the request from the guide records and the plan, and %s</p>'
                % (fact("s2-what", "For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock."),
-                  fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question, and a failed question is written again alone."),
+                  fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question, and a failed try is written again alone."),
                   fact("s2-letters", "code, not the model, mixes the options and gives the letters.")))
          + level("explanation",
                  FIG21
                  + '<p><b>The rules come first.</b> %s The writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
-                   % (fact("s2-cache", "From mock 4, the list of rules is a separate first block with a cache mark, so a repeated list costs less (mock decision 0067)."), fact("s2-model", "Each of the %d tries of the 5 mocks used %s." % (sum(MODELS.values()), MODEL)))
+                   % (fact("s2-cache", "From mock 4, the list of rules is a separate first block, cached, so a repeated list costs less (mock decision 0067)."), fact("s2-model", "Each of the %d tries of the 5 mocks used Claude Opus 5.5." % sum(MODELS.values())))
                  + '<p><b>The form.</b> %s %s %s</p>'
-                   % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option with a mark (correct or wrong) and a reason. It can also answer &ldquo;cannot write&rdquo;."),
+                   % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option as correct or wrong, with a reason. It can also answer &ldquo;cannot write&rdquo;."),
                       fact("s2-form", DEVIATION), e(EXAM_43))
                  + '<p><b>The letters.</b> %s So %s</p>'
                    % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times, and a model can copy that (an assumption, not checked)." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
-                      fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "From mock 5, the correct options take the letters that the plan sets."))
+                      fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "The mix alone did not balance the letters (see step 8). From mock 5, the correct options take the letters that the plan sets."))
                  + '<p><b>The cost of one call per slot.</b> %s Step 6 checks the questions of a scenario together.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
                  + ts_block(2))
          + level("depth",
@@ -953,16 +953,16 @@ STEP2 = (level("overview",
                  '<ol class="checks"><li>Mock 1, M1-S28: %s</li><li>Mock 2, M2-S08, try 1: %s</li></ol>'
                  '<p>The owner sent it back: %s The new try asked for the cause instead: %s</p>'
                  '<p>The fix for step 2: %s In the same mock decision, step 4 got rule B9 to check it.</p>'
-                 '<h4 class="story">The first bad mark became an instruction and a check</h4>'
+                 '<h4 class="story">In a test, a bad mark became an instruction and a check</h4>'
                  '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s %s because of that question, step 4 got rule B7 to check it.</p>'
                  '<h4 class="story">The design forced a tool call</h4>'
                  '<p>%s Before the code was written, the documentation showed that the newest models reject it. So %s The code never had a forced tool call, and %s</p>'
                  % (fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options."),
-                    fact("s2-m1", "the correct answer checks stop_reason and continues while it is &ldquo;tool_use&rdquo;."),
-                    fact("s2-m2a", "the correct answer again continues while stop_reason is &ldquo;tool_use&rdquo;."),
+                    fact("s2-m1", "the correct answer checks the stop reason and continues while Claude asks for a tool."),
+                    fact("s2-m2a", "the correct answer again continues while Claude asks for a tool."),
                     fact("s2-d001", "&ldquo;Use a different scene and a different angle: the cause, the fix, or a choice between rules.&rdquo;"),
                     fact("s2-m2b", "a fixed cap of 12 iterations as the main stopping rule."),
-                    fact("s2-earlier", "when the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option."),
+                    fact("s2-earlier", "when the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the answer key of each."),
                     fact("s2-bad", "The question is confusing and needs calrification. I had to read the question more than one time."),
                     fact("s2-first", "The assistant first suggested an instruction only."),
                     fact("s2-enough", "The owner asked: &ldquo;but is that enough? Only in the prompt?&rdquo;"),
@@ -1188,7 +1188,7 @@ FIG41 = """
                       box(730, 190, 140, 80, ["fail or", "cannot decide"], sub="to step 5", cls="try bad")]),
     "edges": "".join([edge("M170 150H205V75H240"), edge("M330 120V180", "then", 338, 155, anchor="r"),
                       edge("M420 75H460V135H500", "letters", 470, 66, anchor="r"), edge("M420 225H460V165H500", "results", 470, 250, anchor="r"),
-                      edge("M660 135H695V70H730"), edge("M660 165H695V230H730", cls="is-hot")]),
+                      edge("M660 135H695V70H730"), edge("M660 165H695V230H730")]),
     "cap": fact("s4-what", "Some rules need judgment, so a model checks them, in two calls.") + " " + fact("s4-verdict", "Code checks the answer of each call and makes the verdict. A model does not make the verdict."),
 }
 
@@ -1225,7 +1225,7 @@ FIG43 = """
 
 DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</p>' % fact("s4-exam", "The exam tests only that prompt caching exists.")
           + '<h4 class="story">Prompt caching was missed, and added before mock 4</h4>' + FIG43
-          + '<p>%s Before mock 4, %s The fix puts the guide first, the same in each call, with a cache mark. %s %s %s %s 2 of the 10 verdicts changed. %s The owner did not choose the Message Batches API: %s</p>'
+          + '<p>%s Before mock 4, %s The fix puts the guide first, the same in each call, and caches it. %s %s %s %s 2 of the 10 verdicts changed. %s The owner did not choose the Message Batches API: %s</p>'
           % (fact("s4-none", "The first design did not use prompt caching. Each check call sent the full text of the guide again, at the full input price."),
              fact("s4-asked", "the owner asked if the program uses prompt caching. The assistant said no."),
              fact("s4-write", "A 5-minute cache write costs 1.25 times the input price."),
@@ -1234,7 +1234,7 @@ DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</
              fact("s4-cache", "The same tokens would cost $%.2f with no cache, at the prices in the code." % TC_WITHOUT),
              fact("s4-changed", "A check of those 2 with no cache passed both, and the cause was not separated."),
              fact("s4-batch", "the rounds of the pipeline would wait for each batch."))
-          + '<p>The guide teaches the Message Batches API to save cost (%s), and says that batch processing is %s.</p></div>' % (fact("s4-batches", "4.5-K1"), fact("s4-blocking", "inappropriate for blocking workflows"))
+          + '</div><p>In the exam: the guide teaches the Message Batches API to save cost (%s), and says that batch processing is %s.</p>' % (fact("s4-batches", "4.5-K1"), fact("s4-blocking", "inappropriate for blocking workflows"))
           + '<h4 class="story">The blind answer never caught a question</h4>'
           + '<p>%s %s %s</p>'
           % (fact("s4-runs", "In the %d checks of mocks 1 to 5, call 4a never selected other letters than the answer key, and never said &ldquo;cannot decide&rdquo;. Both B1 findings came from call 4b." % sum(V4.values())),
@@ -1313,7 +1313,7 @@ FIG61 = """
   <figcaption><span class="fig-n">Fig. 6-1</span>%(cap)s</figcaption>
 </figure>""" % {
     "nodes": "".join([box(20, 120, 150, 90, ["all 60", "passed"], sub="each scenario"),
-                      box(230, 120, 150, 90, ["code"], sub="C2, C3"),
+                      box(230, 120, 150, 90, ["code"], sub="plan, copies"),
                       box(440, 30, 190, 100, ["call 6a"], sub="D1 scene, D4 answer", cls="who-model"),
                       box(440, 200, 190, 100, ["call 6b"], sub="D2, D3: wrong options", cls="who-model"),
                       box(700, 115, 170, 100, ["the owner"], sub="ignore or rewrite", cls="who-owner")]),
@@ -1344,8 +1344,8 @@ STEP6 = (level("overview",
                   fact("s6-back", "Step 6 sends no question back: each finding goes to the owner.")))
          + level("explanation",
                  FIG61
-                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong idea in too many questions."))
-                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored a question that gives away another answer, and recorded one wrong idea in too many questions as a known limit of the mock."))
+                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong option in too many questions."))
+                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored the findings of a question that gives away another answer, and recorded one wrong option in too many questions as a known limit of the mock."))
                  + FIG62 + ts_block(6))
          + level("depth",
                  '<h4 class="story">Too many wrong options on the confidence of the model</h4>'
@@ -1437,7 +1437,7 @@ FIG71 = """
                       box(720, 115, 150, 70, ["bad"], sub="to step 5", cls="try bad"),
                       box(720, 210, 150, 70, ["too many bad"], sub="the mock stops", cls="guard")]),
     "edges": "".join([edge("M190 150H260", "rows", 225, 141), edge("M430 150H500", "marks", 465, 141),
-                      edge("M650 150H685V55H720"), edge("M650 150H720", cls="is-hot"), edge("M685 150V245H720")]),
+                      edge("M650 150H685V55H720"), edge("M650 150H720", cls="is-async"), edge("M685 150V245H720")]),
     "cap": fact("s7-file", "The file shows no verdict of a checker. The reader fills two columns: good or bad, and a reason for a bad mark.") + " " + fact("s7-tend", "A person who sees a verdict tends to agree with it."),
 }
 
@@ -1452,7 +1452,7 @@ FIG72 = """
     fact("s7-runs", "Over the 5 mocks, %d marks were given: %d in round 1 and %d in round 2, after a send-back. %d were bad, both in mock 5." % (MARKS_ALL, sum(ROUND1), MARKS_ALL - sum(ROUND1), sum(BAD))))
 
 STEP7 = (level("overview",
-               '<h4 class="takeaway">A reader marks each question good or bad, from a file with no verdict</h4><p>%s %s %s</p>'
+               '<h4 class="takeaway">A reader marks the questions in a file good or bad, and the file shows no verdict</h4><p>%s %s %s</p>'
                % (fact("s7-what", "The checks before this step are code or a model. Here a reader marks the questions, to show if those checks are right. For mocks 1 to 3 the reader was the owner. For mocks 4 and 5 it was a Claude model, the second review."),
                   fact("s7-bad", "A bad mark sends the question to step 5, with the reason as the finding."),
                   fact("s7-stop", "Too many bad marks stop the mock.")))
@@ -1462,7 +1462,7 @@ STEP7 = (level("overview",
                  + FIG72 + ts_block(7))
          + level("depth",
                  '<h4 class="story">A sample of 20 would have marked neither bad question</h4>'
-                 '<p>For mock 5, no person read the questions. %s %s The second review then gave the only 2 bad marks in the records of the 5 mocks: %s %s %s Only M5-S33, a copy of a question of mock 2, had no other check that found it.</p>'
+                 '<p>For mock 5, no person read the questions. %s %s The second review then gave the only 2 bad marks in the records of the 5 mocks: %s %s %s Only M5-S33, a copy of a question of mock 2, had no other check that found it, although it had passed step 4 with rule B9.</p>'
                  '<h4 class="story">Good on its own, wrong as a set</h4>'
                  '<p>%s %s So the 7 became rewrites, not bad marks. %s</p>'
                  % (fact("s7-all", "The owner said: &ldquo;Put all 60 questions of mock 5 in the marking file.&rdquo;"),
@@ -1511,7 +1511,7 @@ CARD.update({
     "s8-fp": {"title": "The fingerprints of the 5 built mocks", "kind": "count",
               "text": "%d of %d fingerprints in runs/mock-0N/build.json equal the fingerprint of the question record today (fingerprint() of src/control.py). No questions file has the key \"correct\" or \"reason\". The script of this page checked them." % (FP_OK, FP_ALL),
               "src": "runs/mock-0N/build.json, runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
-    "s8-never": excerpt(REV2, "So the mock can never be built.", "The second review of the design"),
+    "s8-never": excerpt(REV2, "So the mock can never be built.", "The second design review"),
     "s8-cmd": excerpt(D38, "5. **Step 8 starts when the owner accepts the mock.** Code checks the conditions before it builds.", "Mock decision 0038, Decision"),
     "s8-letters": excerpt(D70, "In mock 4, D is the correct answer of 22 of the 52 questions with one answer, and B of 8. Chance is 13.", "Mock decision 0070, Question"),
     "s8-portal": excerpt(D70, "4. **A note for the portal:** the portal shows the options in a random order on each attempt, because the letters in mocks 1 to 4 are not balanced.", "Mock decision 0070, Decision"),
@@ -1543,7 +1543,7 @@ FIG81 = """
                       box(640, 110, 230, 70, ["answers file"], sub="letters, reasons"),
                       box(640, 200, 230, 50, ["fingerprints"]),
                       box(640, 265, 230, 50, ["no file, causes"], cls="try bad")]),
-    "edges": "".join([edge("M170 165H230"), edge("M560 140H600V55H640", cls="is-hot"), edge("M600 140V145H640"), edge("M600 140V225H640"),
+    "edges": "".join([edge("M170 165H230"), edge("M560 140H600V55H640"), edge("M600 140V145H640"), edge("M600 140V225H640"),
                       edge("M560 290H640", "one false", 600, 281)]),
     "cap": fact("s8-what", "Code builds the two files of a mock from the stored records. Nobody edits the files by hand.") + " " + fact("s8-item10", "Step 8 starts only after the owner accepts, and only when the conditions hold.") + " " + fact("s8-cond", "If a condition is false, code builds no file and lists the causes."),
 }
@@ -1560,7 +1560,7 @@ FIG82 = """
     fact("s8-count", "The correct letters of the 52 one-answer questions in each built mock. The dashed line is 13, the chance number.") + " " + fact("s8-letters", "In mock 4, D was the answer %d times." % LETTERS[3][3]))
 
 STEP8 = (level("overview",
-               '<h4 class="takeaway">Code builds the mock files from the records, only after the owner accepts</h4><p>%s %s %s</p>'
+               '<h4 class="takeaway">Code builds the mock files from the question records, only after the owner accepts</h4><p>%s %s %s</p>'
                % (fact("s8-what", "Code builds the two files of a mock from the stored question records. Nobody edits the files by hand."),
                   fact("s8-two", "One file has the 60 questions with no answers and no reasons. The other has the answers."),
                   fact("s8-accept", "The step starts only when the owner accepts the mock with a command, and code checks the conditions first.")))
@@ -1569,11 +1569,11 @@ STEP8 = (level("overview",
                  + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw."),
                                                           fact("s8-fpdef", "Each check saves a fingerprint of the question: a code of 64 characters that code calculates from its text. Before the build, code calculates it again and compares."),
                                                           fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL))
-                 + '<p class="gh">The task statements that step 8 uses</p><p>%s Step 8 is code with no model call, so no task statement applies, and the reason for one true copy is plain engineering. The facts of the exam form are: each question states how many answers to select, the questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
+                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The facts of the exam form are: each question states how many answers to select, the questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
                    % fact("s8-nopoint", "None. The step uses three facts of the exam form, not a point of a task statement."))
          + level("depth",
                  ('<h4 class="story">The first conditions could never be met</h4>'
-                  '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so a review found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, with tests (mock decisions 0038 and 0039).</p>'
+                  '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so the second design review (see step 5) found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, with tests (mock decisions 0038 and 0039).</p>'
                   % (fact("s8-never", "So the mock can never be built."), fact("s8-cmd", "step 8 starts when the owner accepts the mock, and code checks the conditions before it builds.")))
                  + '<h4 class="story">The letters were not balanced</h4>' + FIG82
                  + '<p>%s So from mock 5, the plan of step 1 sets the correct letters, 13 for each of A to D (see step 2). For mocks 1 to 4, %s</p>'
@@ -1611,7 +1611,7 @@ PARAGRAPH = re.search(r"   > (The mock builder is itself.*?)\n", PARAGRAPH).grou
 TITLE = "Mocks Built with the Same Principles They Test"
 assert TITLE in read("academy/decisions/0010-two-tabs-each-one-page-with-an-exploded-view.md")
 
-WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">8 words</span></summary><div class="body"><dl class="glossary">
+WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">11 words</span></summary><div class="body"><dl class="glossary">
 <dt>Mock</dt><dd>A practice exam of %(n)d questions. The mock builder made %(m)d mocks.</dd>
 <dt>Slot</dt><dd>%(slot)s</dd>
 <dt>Try</dt><dd>One question that the writer writes for a slot. A slot can have more than one try. The last try that passes goes into the mock.</dd>
@@ -1619,8 +1619,14 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
 <dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. Tab 1 explains them.</dd>
 <dt>Mark</dt><dd>In step 7, a reader marks each question good or bad. A bad mark sends the question back.</dd>
 <dt>The owner</dt><dd>%(owner)s</dd>
+<dt>Answer key</dt><dd>%(key)s</dd>
+<dt>Idea</dt><dd>%(idea)s</dd>
+<dt>Second review</dt><dd>%(sr)s</dd>
 <dt>Mock decision</dt><dd>A decision record of the build, such as mock decision 0038. The records are in the repository.</dd>
 </dl></div></details>""" % {"n": SLOTS, "m": len(glob.glob(os.path.join(ROOT, "mocks/mock-*.questions.json"))), "slot": fact("w-slot", "The place of one question in the plan of a mock. Step 1 plans %d slots for each mock." % SLOTS),
+                         "key": "The correct option or options of a question. The writer marks each option correct or wrong, and gives a reason.",
+                         "idea": fact("s1-idea", "A group of points of the guide on one subject. The build put the %d points into %d ideas." % (N_PTS, len(PG))),
+                         "sr": fact("s7-what", "A Claude model in a separate chat, outside the program, that read and marked the mocks after the checks. For mocks 4 and 5 it was the only reader."),
                          "owner": fact("w-owner", "The person who directs this work and who made the decisions of the build. The owner passed the CCAR-F exam.")}
 
 BODY = """<main>
