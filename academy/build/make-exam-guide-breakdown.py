@@ -735,8 +735,8 @@ FIG21 = figure("2.1-1", 890, 270,
                         box(250, 60, 190, 60, ["analyze_content"], sub="analyzes content"),
                         box(250, 160, 190, 60, ["analyze_document"], sub="analyzes content"),
                         box(480, 110, 140, 60, ["Summarize", "this web page"], cls="who-model"),
-                        box(650, 40, 230, 60, ["extract_web_results"], sub="web pages: when, input, output", cls="try ok"),
-                        box(650, 140, 230, 90, ["analyze_document"], sub="split into 3 tools with contracts")]),
+                        box(650, 40, 230, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
+                        box(650, 140, 230, 90, ["analyze_document"], sub="3 tools with contracts")]),
                "%s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
                              "Claude chooses a tool from the request and the description of the tool."),
                           cf("ts-2-1-s2", gx("Renaming tools and updating descriptions to eliminate functional overlap (e.g., renaming analyze_content to extract_web_results with a web-specific description)", "Exam guide, 2.1-S2"),
@@ -793,6 +793,82 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
                             "The description says what the tool returns, when to use it, and what it does not provide.")
             + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "The fields `name` and `description` of the tool are not sent as a tool.", "Mock decision 0040"),
                                    "The pipeline sends the model no tool: its forms go as structured outputs, so Claude never chooses a tool.")), "ts-2-1"))
+
+
+# ----- part 2.2 (facts: academy/facts/ts-2-2.md) -----
+
+HANDLE, SDKT = "anthropic-docs-handle-tool-calls", "claude-code-docs-agent-sdk-custom-tools"
+ERR22 = "\n".join(read(SRC % HANDLE).split("\n")[207:218])
+assert ERR22.strip().startswith("{") and '"is_error": true' in ERR22 and ERR22.rstrip().endswith("}")
+FIG22 = figure("2.2-1", 890, 380,
+               "An agent calls an MCP tool. A success returns data. A success with no matches is a valid empty result, not an error. A failure returns isError true, "
+               "with a category, whether a retry can help, and a text. A transient error is retried in the subagent and passed up only if it still fails. "
+               "A validation error needs new input. A business error is not retriable and the agent explains it. For a permission error, the guide names no action.",
+               "".join([edge("M190 165H225", cls="no-head"), '<path class="ve-e no-head" d="M225 45V215"/>',
+                        edge("M225 45H260"), edge("M225 115H260"), edge("M225 215H260", cls="is-hot"),
+                        edge("M490 215H515", cls="no-head"), '<path class="ve-e no-head" d="M515 175V346"/>',
+                        edge("M515 175H540"), edge("M515 232H540"), edge("M515 289H540"), edge("M515 346H540"),
+                        box(20, 130, 170, 70, ["Agent"], sub="calls an MCP tool", cls="who-model"),
+                        box(260, 20, 230, 50, ["data"], sub="success", cls="try ok"),
+                        box(260, 90, 230, 50, ["no matches"], sub="success, not an error", cls="try ok"),
+                        box(260, 170, 230, 90, ["isError: true"], sub="category · retry? · text"),
+                        box(540, 150, 330, 50, ["transient"], sub="retry in the subagent, then pass up"),
+                        box(540, 207, 330, 50, ["validation"], sub="fix the input, call again"),
+                        box(540, 264, 330, 50, ["business"], sub="retriable: false, explain it"),
+                        box(540, 321, 330, 50, ["permission"], sub="the guide names no action")]),
+               "%s %s" % (cf("ts-2-2-k2", gx("The distinction between transient errors (timeouts, service unavailability), validation errors (invalid input), business errors (policy violations), and permission errors", "Exam guide, 2.2-K2"),
+                             "The four categories of errors are those of the guide (2.2-K2)."),
+                          cf("ts-2-2-s4", gx("Distinguishing between access failures (needing retry decisions) and valid empty results (representing successful queries with no matches)", "Exam guide, 2.2-S4"),
+                             "An empty result of a query that succeeded is not an access failure (2.2-S4).")))
+
+PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry helps",
+                        "Mark a failed tool call with the error flag, and say the category, whether a new try can help, and what went wrong, so the agent can retry, fix its input, explain or escalate. "
+                        "An empty result of a query that succeeded is not an error.",
+                        FIG22)
+    + level("explanation",
+            "<p><b>The flag.</b> %s %s %s</p>" % (
+                cf("ts-2-2-k1", gx("The MCP isError flag pattern for communicating tool failures back to the agent", "Exam guide, 2.2-K1"),
+                   "A tool reports a failure to the agent with the isError flag of MCP (2.2-K1)."),
+                cf("ts-2-2-f3", D(SDKT, "`isError` (optional): set to `true` to signal a tool failure so Claude can react to it.", "Agent SDK, Custom tools"),
+                   "A tool of the Agent SDK sets isError to true, so Claude can react to the failure."),
+                cf("ts-2-2-f1", D(HANDLE, "`is_error` (optional): Set to `true` if the tool execution resulted in an error.", "Handle tool calls"),
+                   "In the Claude API, the same flag is is_error on the tool result."))
+            + "<p><b>Say what failed.</b> %s %s %s</p>" % (
+                cf("ts-2-2-k3", gx("Why uniform error responses (generic \"Operation failed\") prevent the agent from making appropriate recovery decisions", "Exam guide, 2.2-K3"),
+                   "A generic &ldquo;Operation failed&rdquo; leaves the agent with no basis to decide how to recover (2.2-K3)."),
+                cf("ts-2-2-f6", D(HANDLE, "Instead of generic errors like `\"failed\"`, include what went wrong and what Claude should try next", "Handle tool calls"),
+                   "The documentation agrees: say what went wrong and what Claude should try next."),
+                cf("ts-2-2-f7", D(SDKT, "In both cases Claude can retry, try a different tool, or explain the failure.", "Agent SDK, Custom tools"),
+                   "Then Claude can retry, try a different tool, or explain the failure."))
+            + "<p><b>The metadata.</b> %s %s</p>" % (
+                cf("ts-2-2-s1", gx("Returning structured error metadata including errorCategory (transient/validation/permission), isRetryable boolean, and human-readable descriptions", "Exam guide, 2.2-S1"),
+                   "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1)."),
+                cf("ts-2-2-f2", D(HANDLE, "you can return the error message in the `content` along with `\"is_error\": true`:", "Handle tool calls"),
+                   "These field names are the guide's: the documentation shows the flag and an error message in the content. The exam uses the guide."))
+            + "<p><b>Retry or not.</b> %s %s %s</p>" % (
+                cf("ts-2-2-k4", gx("The difference between retryable and non-retryable errors, and how returning structured metadata prevents wasted retry attempts", "Exam guide, 2.2-K4"),
+                   "Metadata that says whether an error is retryable prevents wasted retries (2.2-K4)."),
+                cf("ts-2-2-f8", D(HANDLE, "If a tool request is invalid or missing parameters, Claude will retry 2-3 times with corrections before apologizing to the user.", "Handle tool calls"),
+                   "For invalid input, Claude tries again 2 or 3 times with corrections."),
+                cf("ts-2-2-s2", gx("Including retriable: false flags and customer-friendly explanations for business rule violations so the agent can communicate appropriately", "Exam guide, 2.2-S2"),
+                   "A business rule violation gets retriable: false and an explanation for the customer, so the agent can tell the customer (2.2-S2)."))
+            + "<p><b>Recover locally.</b> %s Task statement 5.3 has the same points.</p>" %
+                cf("ts-2-2-s3", gx("Implementing local error recovery within subagents for transient failures, propagating to the coordinator only errors that cannot be resolved locally along with partial results and what was attempted", "Exam guide, 2.2-S3"),
+                   "A subagent recovers from a transient failure itself, and passes to the coordinator only what it cannot fix, with its partial results and what it tried (2.2-S3).")
+            + exam_tests("2.2", [("Error handling and propagation: structured error responses, transient vs business vs permission errors, local recovery before escalation", "Among the topics, the guide names")])
+            + guide_text("2.2"), "ts-2-2")
+    + level("depth",
+            beyond([cf("ts-2-2-b1", D(CCMCP, "Error text longer than about 11,000 characters keeps only its first 5,000 and last 5,000 characters", "Claude Code, MCP"),
+                       "When Claude Code is the MCP client, it cuts an error text longer than about 11,000 characters, so the category and the retry advice go first."),
+                    cf("ts-2-2-b2", D(SDKT, "The Python `@tool` decorator forwards only `content` and `is_error` from the handler", "Agent SDK, Custom tools"),
+                       "A Python tool of the Agent SDK forwards only the content and the flag, so the metadata must go into the text."),
+                    cf("ts-2-2-b3", D(SDKT, "A handler error doesn't stop the agent loop.", "Agent SDK, Custom tools"),
+                       "An exception in a tool does not stop the loop, but Claude then sees only the raw message, which is close to a generic error.")])
+            + code_pop_text("ts-2-2-code", "The code: an error result in the Claude API", "A tool result with is_error", HANDLE, ERR22, "Handle tool calls",
+                            "The example has the flag and a message, and no errorCategory or isRetryable field.")
+            + tab2_links("2.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no MCP."),
+                                           cf("ts-2-2-near", excerpt("src/model_call.py", "# 429, 5xx and network errors. Each other error stops the run.", "The code of the model calls"),
+                                              "It has a near case for errors of the Claude API, not of tools: a new call repairs a rate limit, a server error or a network error, and each other error stops the run."))), "ts-2-2"))
 
 # ----- the top: the map and how we broke it down -----
 
