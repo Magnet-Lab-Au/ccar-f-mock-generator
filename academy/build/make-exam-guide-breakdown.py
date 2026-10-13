@@ -1172,6 +1172,73 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
             + tab2_links("3.1") + "<p>%s</p>" % cf("ts-3-1-a02", excerpt(A02, "It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
                                                     "No step of the mock builder uses 3.1: it calls the Claude API and loads no CLAUDE.md. The build of the mock builder in Claude Code used a project CLAUDE.md with one import."), "ts-3-1"))
 
+
+# ----- part 3.3 (facts: academy/facts/ts-3-3.md) -----
+
+LCB = "claude-code-docs-large-codebases"
+D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1:]
+RULE33 = "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n\n# API Development Rules\n\n- All API endpoints must include input validation\n- Use the standard error response format\n- Include OpenAPI documentation comments"
+FIG33 = figure("3.3-1", 890, 330,
+               "A rule file in .claude/rules/ with paths **/*.test.tsx matches test files in several folders, such as src/ui/Button.test.tsx, src/api/users.test.tsx and lib/date.test.tsx, "
+               "but not src/ui/Button.tsx. When Claude reads or edits a matching file, the rule loads into the context. A CLAUDE.md in src/ui/ covers that one folder only.",
+               "".join(['<path class="ve-e no-head" d="M280 80H320M320 42V150"/>',
+                        edge("M320 42H360"), edge("M320 96H360"), edge("M320 150H360"),
+                        edge("M620 96H700"),
+                        '<text class="ve-lab" x="300" y="290">a directory CLAUDE.md covers one folder only</text>',
+                        box(20, 40, 260, 80, [".claude/rules/testing.md"], sub='paths: "**/*.test.tsx"'),
+                        box(360, 20, 260, 44, ["src/ui/Button.test.tsx"], cls="try ok"),
+                        box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok"),
+                        box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok"),
+                        box(360, 182, 260, 44, ["src/ui/Button.tsx"], sub="no match"),
+                        box(700, 50, 170, 90, ["Context"], sub="on a read or edit", cls="who-model"),
+                        box(20, 250, 260, 60, ["src/ui/CLAUDE.md"], sub="only files in src/ui/")]),
+               "%s %s" % (cf("ts-3-3-f1", D(MEMD, "Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.", "Claude Code, Memory"),
+                             "A paths field in the frontmatter scopes a rule to the files that match its patterns."),
+                          cf("ts-3-3-f13", gx("allows conventions to be automatically applied based on file paths regardless of directory location, essential for test files spread throughout the codebase.", "Exam guide, sample question 6"),
+                             "This is the answer of the guide for test files spread through the codebase.")))
+
+PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files",
+                        "A file in .claude/rules/ with a paths list of glob patterns loads into the context only when Claude works with a file that matches. "
+                        "A glob such as **/*.test.tsx finds files by type in every folder, which a CLAUDE.md in one directory cannot do.",
+                        FIG33)
+    + level("explanation",
+            "<p><b>The paths field.</b> %s %s %s</p>" % (
+                cf("ts-3-3-k1", gx(".claude/rules/ files with YAML frontmatter paths fields containing glob patterns for conditional rule activation", "Exam guide, 3.3-K1"),
+                   "A file in .claude/rules/ has a paths field in its YAML frontmatter, with glob patterns that decide when the rule applies (3.3-K1)."),
+                cf("ts-3-3-s1", gx("Creating .claude/rules/ files with YAML frontmatter path scoping (e.g., paths: [\"terraform/\\*\\*/\\*\"]) so rules load only when editing matching files", "Exam guide, 3.3-S1"),
+                   "An example of the guide is paths: [\"terraform/**/*\"] (3.3-S1)."),
+                cf("ts-3-3-f4", D(MEMD, "Use glob patterns in the `paths` field to match files by extension, directory, or any combination:", "Claude Code, Memory"),
+                   "A glob matches files by extension, by directory, or both."))
+            + "<p><b>When it loads.</b> %s %s %s</p>" % (
+                cf("ts-3-3-k2", gx("How path-scoped rules load only when editing matching files, reducing irrelevant context and token usage", "Exam guide, 3.3-K2"),
+                   "The guide says that a path rule loads only when Claude edits a matching file, so the context and the tokens stay small (3.3-K2)."),
+                cf("ts-3-3-f6", D(MEMD, "A path-scoped rule loads when Claude uses the Read, Write, or Edit tool on a matching file. It also loads when Claude views a matching file with a Bash command that [counts as a read](/docs/en/tools-reference#edit-tool-behavior), such as `cat` or `head` on a single file.", "Claude Code, Memory"),
+                   "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads the file. The exam uses the guide."),
+                fact("ts-3-1-f13", "A rule with no paths loads at launch like CLAUDE.md."))
+            + "<p><b>Across folders.</b> %s %s %s</p>" % (
+                cf("ts-3-3-s2", gx("Using glob patterns in path-specific rules to apply conventions to files by type regardless of directory location (e.g., \\*\\*/\\*.test.tsx for all test files)", "Exam guide, 3.3-S2"),
+                   "A glob applies a convention to files by type in every folder, for example **/*.test.tsx for all test files (3.3-S2)."),
+                cf("ts-3-3-f9", D(MEMD, "Instead of loading them at launch, Claude Code loads each one once Claude reads, writes, or edits another file in that subdirectory.", "Claude Code, Memory"),
+                   "A CLAUDE.md in a subdirectory also loads late, but only for files in that subdirectory."),
+                cf("ts-3-3-s3", gx("Choosing path-specific rules over subdirectory CLAUDE.md files when conventions must apply to files spread across the codebase", "Exam guide, 3.3-S3"),
+                   "So for files spread across the codebase, a path rule is the better choice (3.3-K3, 3.3-S3)."))
+            + exam_tests("3.3", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
+            + "<p>%s</p>" % cf("ts-3-3-q6", gx("Create rule files in .claude/rules/ with YAML frontmatter specifying glob patterns to conditionally apply conventions based on file paths", "Exam guide, sample question 6, answer A"),
+                               "Sample question 6 of the guide fits 3.3: its correct answer is a rule file with glob patterns.")
+            + guide_text("3.3"), "ts-3-3")
+    + level("depth",
+            beyond([cf("ts-3-3-b1", D(MEMD, "If the YAML between the markers doesn't parse, Claude Code ignores the frontmatter and loads the rule as if it had no `paths`.", "Claude Code, Memory"),
+                       "If the YAML of the frontmatter does not parse, Claude Code loads the rule in every session, as if it had no paths."),
+                    cf("ts-3-3-b2", D(HREF, "when conditional rules with `paths:` frontmatter match.", "Claude Code, Hooks reference"),
+                       "In Claude Code, the InstructionsLoaded hook fires when a path rule matches, which helps to find out why a rule loaded."),
+                    cf("ts-3-3-b3", D(MEMD, "or is a path-scoped rule that hasn't matched a file since.", "Claude Code, Memory"),
+                       "After /compact, a path rule is gone from the context until a matching file comes up again.")])
+            + code_pop_text("ts-3-3-code", "The code: a rule with a paths field", "A path-scoped rule", MEMD, RULE33, "Claude Code, Memory",
+                            "This rule loads only when Claude works with a TypeScript file under src/api/.")
+            + tab2_links("3.3", "%s %s" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.3: it loads no rule files."),
+                                           cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
+                                              "For the plan of a mock, 3.3 is one idea, because its 6 points have one correct answer, so each mock has about one question on it."))), "ts-3-3"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
