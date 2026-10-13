@@ -21,7 +21,7 @@ const path = require('path');
 const { chromium } = require('playwright-core');
 
 const PAGES = path.join(__dirname, '..', 'pages');
-const SHOTS = path.join(__dirname, '..', 'pages', 'screenshots');
+const SHOTS = path.join(__dirname, '..', 'screenshots');
 const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.png': 'image/png' };
 
 function serve() {

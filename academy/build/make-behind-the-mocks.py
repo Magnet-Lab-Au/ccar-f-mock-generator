@@ -32,6 +32,7 @@ S5 = "docs/build-guide/step-5-try-again.md"
 S7 = "docs/build-guide/step-7-the-owner-marks-the-questions.md"
 D33 = glob.glob(os.path.join(ROOT, "docs/decisions/0033-*.md"))[0][len(ROOT) + 1:]
 D38 = "docs/decisions/0038-a-simple-control-for-mock-1-written-as-code-with-tests.md"
+D45 = glob.glob(os.path.join(ROOT, "docs/decisions/0045-*.md"))[0][len(ROOT) + 1:]
 D74 = glob.glob(os.path.join(ROOT, "docs/decisions/0074-*.md"))[0][len(ROOT) + 1:]
 CONTROL = "src/control.py"
 OWNER5 = "runs/mock-05/owner-decisions.json"
@@ -94,6 +95,9 @@ def jexcerpt(path, text, title):
 CARD = {
     "c-auto": excerpt(D38, "1. **One automatic loop.** A question that fails step 3 or step 4 goes to step 5.", "Mock decision 0038, Decision"),
     "c-wait": excerpt(D38, "2. **Each other failure waits for the owner.** A slot that is `open`, a finding of step 6, a bad mark, and a call that fails 3 times. The program does no automatic repair for them.", "Mock decision 0038, Decision"),
+    "c-rw": excerpt(D45, "2. **A rewrite with no finding of step 6.** The owner names a question and gives a reason. The writer gets a request of step 5 with that question, and the reason as the finding (rule `owner`).", "Mock decision 0045, Decision"),
+    "c-rwp": excerpt(D45, "Then the writer gets a request of step 2 with the new point", "Mock decision 0045, Decision"),
+    "c-acc": code_block(CONTROL, "def accept(self", '"""Command of the owner: accept the mock.', "The command accept of the owner"),
     "c-s6": excerpt("src/step6_check_scenario.py", "Step 6 sends no question\nback. Each finding goes to the owner (decision 0038, part 3).", "The code of step 6", kind="code"),
     "c-s7": excerpt(S7, "For mocks 1 to 3 the reader is the owner. For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
     "c-slots": code_block("src/step1_plan.py", "QUESTIONS = ", "QUESTIONS = ", "The number of slots in the code of step 1"),
@@ -228,19 +232,20 @@ LEGEND = ('<g transform="translate(250 22)">'
           '<g class="ve-n who-model"><rect class="sh" x="110" y="30" width="28" height="18" rx="0"/></g><text class="ve-lab" x="146" y="44">a Claude model</text>'
           '<g class="ve-n who-owner"><rect class="sh" x="290" y="30" width="28" height="18" rx="0"/></g><text class="ve-lab" x="326" y="44">the owner</text>'
           '<path class="ve-e" d="M0 76H40"/><text class="ve-lab" x="50" y="80">automatic</text>'
-          '<path class="ve-e is-async" d="M150 76H190"/><text class="ve-lab" x="200" y="80">a decision of the owner</text></g>')
+          '<path class="ve-e is-async" d="M150 76H190"/><text class="ve-lab" x="200" y="80">a decision of the owner</text>'
+          '<path class="ve-e is-hot" d="M420 76H460"/><text class="ve-lab" x="470" y="80">the automatic loop</text></g>')
 
 FIG1 = """
 <figure data-figure="builder" id="builder-fig">
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 880 570" role="img" aria-label="The 9 steps of the mock builder. Step 0 prepares the guide records once. Step 1 plans 60 slots. Step 2 writes a question, step 3 checks it by code and step 4 by a model. A question that fails goes to step 5 and is checked again. When all 60 slots pass, step 6 checks the complete mock, step 7 marks the questions, and step 8 builds the files after the owner accepts. Dashed arrows are decisions of the owner: more tries or a new point for an open slot, a rewrite after step 6, and a bad mark after step 7.">
+    <svg class="ve-svg" viewBox="0 0 880 570" role="img" aria-label="The 9 steps of the mock builder. Step 0 prepares the guide records once for each version of the exam guide. Step 1 plans 60 slots. Step 2 writes a question, step 3 checks it by code and step 4 by a model. A question that fails goes to step 5 and is checked again. When all 60 slots pass, step 6 checks the complete mock, step 7 marks the questions, and step 8 builds the files after the owner accepts. Dashed arrows are decisions of the owner: more tries or a new point for an open slot, a rewrite after step 6 or after the marks, a bad mark, and accept. A rewrite with a new point goes to step 2.">
       %(edges)s
       %(nodes)s
-      <g class="ve-n who-owner"><rect class="sh" x="250" y="310" width="150" height="92" rx="0"/><text x="325" y="344">open slot</text><text class="sub" x="325" y="368">waits for owner</text></g>
+      <g class="ve-n who-owner"><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
       %(legend)s
     </svg>
   </div>
-  <figcaption><span class="fig-n">Fig. 1</span>Code moves each question through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6 and a bad mark.</figcaption>
+  <figcaption><span class="fig-n">Fig. 1</span>Code moves each question through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, %(rw)s, and %(acc)s. %(rwp)s</figcaption>
 </figure>
 """ % {
     "nodes": "".join(step_node(s) for s in range(9)),
@@ -251,19 +256,22 @@ FIG1 = """
         edge("M400 206H480", "question", 440, 197),
         edge("M630 206H710", "passes", 670, 197),
         edge("M525 252V310", "fails", 517, 286, cls="is-hot", anchor="l"),
-        edge("M760 252V356H630", "fails", 768, 300, cls="is-hot", anchor="r"),
-        edge("M585 310V252", "new try", 593, 286, cls="is-hot", anchor="r"),
-        edge("M480 340H400", "3 tries", 440, 331),
-        edge("M400 380H480", "more tries", 440, 420, cls="is-async"),
-        edge("M325 310V252", "new point", 333, 286, cls="is-async", anchor="r"),
-        edge("M820 252V460", "all %d pass" % SLOTS, 812, 395, anchor="l"),
+        edge("M760 252V356H630", cls="is-hot") + '<text class="ve-el l" x="752" y="298">fails or</text><text class="ve-el l" x="752" y="316">cannot decide</text>',
+        edge("M585 310V252", "new try", 593, 278, cls="is-hot", anchor="r"),
+        edge("M480 340H380", "3 tries", 430, 331),
+        edge("M380 380H480", "more tries", 430, 372, cls="is-async"),
+        edge("M305 310V252", "new point", 313, 286, cls="is-async", anchor="r"),
+        edge("M820 252V460", "all %d pass" % SLOTS, 812, 384, anchor="l"),
         edge("M710 506H630", "then", 670, 497),
-        edge("M480 506H400", "accepts", 440, 497),
-        edge("M760 460V435H615V402", "rewrite", 690, 427, cls="is-async"),
-        edge("M525 460V402", "bad mark", 533, 446, cls="is-async", anchor="r"),
+        edge("M480 506H400", "accepts", 440, 497, cls="is-async"),
+        edge("M780 460V420H615V402", "rewrite", 700, 411, cls="is-async"),
+        edge("M525 460V402", "bad mark, rewrite", 533, 446, cls="is-async", anchor="r"),
     ]),
-    "auto": fact("c-auto", "A question that fails a check goes back to the writer by itself"),
+    "auto": fact("c-auto", "A question that fails step 3 or step 4 goes back to the writer by itself"),
     "wait": fact("c-wait", "Each other way back waits for a decision of the owner"),
+    "rw": fact("c-rw", "a rewrite after the marks"),
+    "acc": fact("c-acc", "the acceptance of the mock"),
+    "rwp": fact("c-rwp", "A rewrite with a new point goes back to step 2."),
 }
 
 # Fig. 5-1: the loop of step 5 (facts: step-5.md, sections 2.1 to 2.3)
