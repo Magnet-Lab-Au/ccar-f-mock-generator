@@ -1063,38 +1063,39 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                 cf("ts-2-5-k1", gx("Grep for content search (searching file contents for patterns like function names, error messages, or import statements)", "Exam guide, 2.5-K1"),
                    "Grep searches the content of files, for example function names, error messages or imports (2.5-K1, 2.5-S1)."),
                 cf("ts-2-5-k2", gx("Glob for file path pattern matching (finding files by name or extension patterns)", "Exam guide, 2.5-K2"),
-                   "Glob finds files by name or extension, for example every file that matches **/*.test.tsx (2.5-K2, 2.5-S2)."),
+                   "Glob finds files by name or extension (2.5-K2).") + " " + cf("ts-2-5-s2", gx("Selecting Glob for finding files matching naming patterns (e.g., \\*\\*/\\*.test.tsx)", "Exam guide, 2.5-S2"),
+                   "An example is every file that matches **/*.test.tsx (2.5-S2)."),
                 cf("ts-2-5-f5", D(TREF, "Results are sorted by modification time and capped at 100 files.", "Claude Code, Tools reference"),
-                   "In Claude Code, Glob returns at most 100 files, newest first."))
+                   "In Claude Code, Glob returns at most 100 files, sorted by the time of their last change."))
             + "<p><b>Read, Write, Edit.</b> %s %s %s</p>" % (
                 cf("ts-2-5-k3", gx("Read/Write for full file operations; Edit for targeted modifications using unique text matching", "Exam guide, 2.5-K3"),
-                   "Read and Write work on the whole file, and Edit changes one part, found by text that is unique (2.5-K3)."),
+                   "In the guide, Read and Write work on the whole file, and Edit changes one part, found by text that is unique (2.5-K3)."),
                 cf("ts-2-5-f8", D(TREF, "The Write tool creates a new file or overwrites an existing one with the full content provided. It doesn't append or merge.", "Claude Code, Tools reference"),
                    "Write replaces the whole file."),
                 cf("ts-2-5-c2", D(TREF, "**Uniqueness**: `old_string` must appear exactly once. When it appears more than once, Claude either supplies a longer string with enough surrounding context to pin down one occurrence, or sets `replace_all: true` to replace them all.", "Claude Code, Tools reference"),
-                   "When the text occurs twice, the guide reads and writes the whole file (2.5-K4, 2.5-S3). The documentation uses a longer text that occurs once, or replaces all occurrences. The exam uses the guide."))
+                   "In the documentation, when the text occurs twice, Claude uses a longer text that occurs once, or replaces all occurrences. The guide reads and writes the whole file instead (2.5-K4, see Fig. 2.5-1). The exam uses the guide."))
             + "<p><b>Search first.</b> %s %s</p>" % (
                 cf("ts-2-5-f14", D(BEST, "Claude reads hundreds of files, filling the context.", "Claude Code, Best practices"),
                    "The documentation names the failure that 2.5-S4 prevents: Claude reads hundreds of files, and the context fills."),
                 cf("ts-2-5-s5", gx("Tracing function usage across wrapper modules by first identifying all exported names, then searching for each name across the codebase", "Exam guide, 2.5-S5"),
-                   "To trace a function through a wrapper module, first list all the names that it exports, then search for each name (2.5-S5)."))
+                   "To trace a function through a wrapper module, the guide first lists all the names that it exports, then searches for each name (2.5-S5)."))
             + "<p><b>The platform.</b> %s</p>" %
-                cf("ts-2-5-c1", D(TREF, "On macOS, Linux, and WSL, Claude Code leaves Glob and [Grep](#grep-tool-behavior) out of the default tool set, and Claude searches with `find` and `grep` through the Bash tool instead.", "Claude Code, Tools reference"),
+                cf("ts-2-5-c1", D(TREF, "On Windows, it's part of the default tool set. On macOS, Linux, and WSL, Claude Code leaves Glob and [Grep](#grep-tool-behavior) out of the default tool set, and Claude searches with `find` and `grep` through the Bash tool instead.", "Claude Code, Tools reference"),
                    "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools. The exam uses the guide.")
             + exam_tests("2.5", [("Built-in tools — Read, Write, Edit, Bash, Grep, Glob — their purposes and selection criteria", "Among the technologies, the guide names")])
             + guide_text("2.5"), "ts-2-5")
     + level("depth",
-            beyond([cf("ts-2-5-b1", D(TREF, "and refuses a whole file over 256 KB, so Claude reads a larger file in pages with `offset` and `limit`.", "Claude Code, Tools reference"),
-                       "By default, Read returns at most 25,000 tokens in one call and refuses a whole file over 256 KB, so a large file comes in pages. The guide says &ldquo;full file&rdquo; with no limit."),
-                    cf("ts-2-5-b2", D(CCS, "This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
+            beyond([cf("ts-2-5-b1", D(TREF, "By default one call returns at most 25,000 tokens, or the value you set in [`CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS`](/docs/en/env-vars), and refuses a whole file over 256 KB, so Claude reads a larger file in pages with `offset` and `limit`.", "Claude Code, Tools reference"),
+                       "In Claude Code, by default, Read returns at most 25,000 tokens in one call and refuses a whole file over 256 KB, so a large file comes in pages. The guide says &ldquo;full file&rdquo; with no limit."),
+                    cf("ts-2-5-b2", D(CCS, "Claude delegates to Explore when it needs to search or understand a codebase without making changes. This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
                        "Claude Code can also give the search to the read-only Explore subagent, which keeps the results out of the main context."),
-                    cf("ts-2-5-b3", D(TREF, "Claude Code keeps the tool inactive until you install a [code intelligence plugin](/docs/en/plugins/code-intelligence) for your language.", "Claude Code, Tools reference"),
-                       "With a code intelligence plugin for the language, a language server can find all references to a symbol, in place of a text search.")])
+                    cf("ts-2-5-b3", D(TREF, "Claude Code keeps the tool inactive until you install a [code intelligence plugin](/docs/en/plugins/code-intelligence) for your language. In [cloud sessions](/docs/en/claude-code-on-the-web), Claude Code doesn't start plugin language servers, so the LSP tool stays inactive there.", "Claude Code, Tools reference"),
+                       "In Claude Code, with a code intelligence plugin for the language, the LSP tool can find all references to a symbol, in place of a text search. It stays inactive in cloud sessions.")])
             + code_pop_text("ts-2-5-code", "The code: a subagent with only Read, Glob and Grep", "A review subagent with search tools only", CCS, YAML25, "Claude Code, Subagents",
                             "This subagent can search and read, but not change a file.")
-            + tab2_links("2.5", "%s %s" % (fact("ts-2-4-a02", "The mock builder calls only the Claude API and reads local files, so no model in it gets these tools."),
+            + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
-                                              "The build in Claude Code used these tools, but no record says which tool did what, so tab 2 has no part for 2.5."))), "ts-2-5"))
+                                              "The build in Claude Code used its built-in tools, on WSL without Grep and Glob by default, but no record says which tool did what, so tab 2 has no part for 2.5."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1109,14 +1110,14 @@ FIG31 = figure("3.1-1", 890, 340,
                         edge("M345 165H600", "joined, none overrides", 478, 156),
                         box(20, 20, 300, 60, ["~/.claude/CLAUDE.md"], sub="user: only you, not in git"),
                         box(20, 100, 300, 60, ["./CLAUDE.md"], sub="project: the team, in git", cls="try ok"),
-                        box(20, 180, 300, 60, [".claude/rules/*.md"], sub="one topic for each file"),
-                        box(20, 260, 300, 60, ["sub/CLAUDE.md"], sub="when Claude works there"),
+                        box(20, 180, 300, 60, [".claude/rules/*.md"], sub="one topic each, in git"),
+                        box(20, 260, 300, 60, ["sub/CLAUDE.md"], sub="loads when used, in git"),
                         box(600, 110, 270, 110, ["Context of", "the session"], cls="who-model"),
                         box(600, 260, 270, 60, ["/memory, /context"], sub="list and check the files")]),
                "%s %s" % (cf("ts-3-1-f5", D(MEMD, "All discovered files are concatenated into context rather than overriding each other.", "Claude Code, Memory"),
                              "Claude Code joins all the files that it finds, and no file overrides another."),
                           cf("ts-3-1-k2", gx("That user-level settings apply only to that user—instructions in ~/.claude/CLAUDE.md are not shared with teammates via version control", "Exam guide, 3.1-K2"),
-                             "Only the project files reach a teammate through git (3.1-K2).")))
+                             "The user file does not reach a teammate through git (3.1-K2).")))
 
 PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md, split into files",
                         "Claude Code joins the CLAUDE.md files of the user, the project and its subdirectories, and only the project files reach teammates through git. "
@@ -1128,20 +1129,22 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                    "The guide names three levels: the user (~/.claude/CLAUDE.md), the project (CLAUDE.md or .claude/CLAUDE.md), and the directory (a CLAUDE.md in a subdirectory) (3.1-K1)."),
                 cf("ts-3-1-f1", D(MEMD, "The table below lists them in load order, from broadest scope to most specific, so a project instruction appears in context after a user instruction.", "Claude Code, Memory"),
                    "They load from broad to specific."),
-                cf("ts-3-1-f4", D(MEMD, "Files in subdirectories load on demand.", "Claude Code, Memory"),
+                cf("ts-3-1-f4", D(MEMD, "Instead of loading them at launch, Claude Code loads each one once Claude reads, writes, or edits another file in that subdirectory.", "Claude Code, Memory"),
                    "A file in a subdirectory loads only when Claude works with a file there."))
             + "<p><b>Who gets which file.</b> %s %s</p>" % (
                 cf("ts-3-1-f6", D(MEMD, "These instructions are shared with your team through version control, so focus on project-level standards rather than personal preferences.", "Claude Code, Memory"),
                    "The project file reaches the team through version control."),
                 cf("ts-3-1-s1", gx("Diagnosing configuration hierarchy issues (e.g., a new team member not receiving instructions because they're in user-level rather than project-level configuration)", "Exam guide, 3.1-S1"),
                    "So when a new team member does not get an instruction, check whether it is in the user file, not the project file (3.1-S1)."))
-            + "<p><b>Imports.</b> %s %s %s %s</p>" % (
+            + "<p><b>Imports.</b> %s %s %s %s %s</p>" % (
                 cf("ts-3-1-k3", gx("The @import syntax for referencing external files to keep CLAUDE.md modular (e.g., importing specific standards files relevant to each package)", "Exam guide, 3.1-K3"),
-                   "A line with @ and a path imports another file, which keeps CLAUDE.md modular (3.1-K3)."),
+                   "The guide calls it the @import syntax, which keeps CLAUDE.md modular (3.1-K3)."),
+                cf("ts-3-1-f7", D(MEMD, "CLAUDE.md files can import additional files using `@path/to/import` syntax. Imported files are expanded and loaded into context at launch alongside the CLAUDE.md that references them.", "Claude Code, Memory"),
+                   "In the documentation, an @ and a path import a file, and the imported file loads at launch."),
                 cf("ts-3-1-f8", D(MEMD, "Relative paths resolve relative to the file containing the import, not the working directory.", "Claude Code, Memory"),
                    "A relative path starts at the file that imports."),
                 cf("ts-3-1-s2", gx("Using @import to selectively include relevant standards files in each package's CLAUDE.md based on maintainer domain knowledge", "Exam guide, 3.1-S2"),
-                   "The CLAUDE.md of each package imports only the standards that it needs (3.1-S2)."),
+                   "In the guide, the CLAUDE.md of each package imports only the standards that it needs (3.1-S2)."),
                 cf("ts-3-1-f9", D(MEMD, "Splitting into [`@path` imports](#import-additional-files) helps organization but doesn't reduce context, since imported files load at launch.", "Claude Code, Memory"),
                    "An import organizes, but it does not save context: the imported file loads at launch."))
             + "<p><b>Rules.</b> %s %s %s</p>" % (
@@ -1149,7 +1152,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                    "A large CLAUDE.md becomes topic files in .claude/rules/, such as testing.md and deployment.md (3.1-K4, 3.1-S3)."),
                 cf("ts-3-1-f14", D(MEMD, "target under 200 lines per CLAUDE.md file. Longer files consume more context and reduce adherence.", "Claude Code, Memory"),
                    "The documentation targets less than 200 lines for each CLAUDE.md."),
-                cf("ts-3-1-f13", D(MEMD, "are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
+                cf("ts-3-1-f13", D(MEMD, "Rules without [`paths` frontmatter](#path-specific-rules) are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
                    "A rule file with no paths loads at launch like CLAUDE.md. Part 3.3 shows rules that load only for some paths."))
             + "<p><b>Check.</b> %s %s %s</p>" % (
                 cf("ts-3-1-s4", gx("Using the /memory command to verify which memory files are loaded and diagnose inconsistent behavior across sessions", "Exam guide, 3.1-S4"),
@@ -1161,16 +1164,19 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
             + exam_tests("3.1", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
             + guide_text("3.1"), "ts-3-1")
     + level("depth",
-            beyond([cf("ts-3-1-b1", D(MEMD, "CLAUDE.md instructions shape Claude's behavior but are not a hard enforcement layer.", "Claude Code, Memory"),
-                       "CLAUDE.md guides Claude, but it does not enforce. To block an action, use a hook (part 1.4)."),
-                    cf("ts-3-1-b2", D(MEMD, "Personal project-specific preferences; add to `.gitignore`", "Claude Code, Memory"),
-                       "The documentation has more levels than the guide: a managed policy file for an organization, and CLAUDE.local.md for personal preferences in one project, kept out of git."),
+            beyond([cf("ts-3-1-b1", D(MEMD, "Claude treats them as context, not enforced configuration. To block an action regardless of what Claude decides, use a [PreToolUse hook](/docs/en/hooks-guide) instead.", "Claude Code, Memory"),
+                       "CLAUDE.md guides Claude, but it does not enforce. To block an action, use a PreToolUse hook (part 1.5)."),
+                    cf("ts-3-1-b2", D(MEMD, "Organization-wide instructions managed by IT/DevOps", "Claude Code, Memory"),
+                       "The documentation has more levels than the guide: a managed policy file for an organization,") + " " + cf("ts-3-1-b2b", D(MEMD, "Personal project-specific preferences; add to `.gitignore`", "Claude Code, Memory"),
+                       "and CLAUDE.local.md for personal preferences in one project, kept out of git."),
                     cf("ts-3-1-b3", D(SDKF, "When you omit `settingSources`, `query()` reads the same filesystem settings as the Claude Code CLI", "Agent SDK, Claude Code features"),
-                       "The Agent SDK reads the same CLAUDE.md files as the CLI, unless the option settingSources turns that off.")])
+                       "The Agent SDK reads the same CLAUDE.md files as the CLI, unless the option settingSources (setting_sources in Python) turns that off.")])
             + code_pop_text("ts-3-1-code", "The code: imports in a CLAUDE.md", "Imports with @ and a path", MEMD, IMP31, "Claude Code, Memory",
                             "Each @ and a path imports a file into the context at launch.")
-            + tab2_links("3.1") + "<p>%s</p>" % cf("ts-3-1-a02", excerpt(A02, "It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
-                                                    "No step of the mock builder uses 3.1: it calls the Claude API and loads no CLAUDE.md. The build of the mock builder in Claude Code used a project CLAUDE.md with one import."), "ts-3-1"))
+            + tab2_links("3.1") + "<p>%s %s</p>" % (cf("ts-3-1-a02", excerpt(A02, "It uses no task statement of domain 2 or domain 3. This is a deliberate choice.", "Academy decision 0002"),
+                                                    "No step of the mock builder uses 3.1, and this is a deliberate choice."),
+                                                 cf("ts-3-1-cc", excerpt("CLAUDE.md", "@WORKING-RULES.md", "CLAUDE.md of the project"),
+                                                    "The build of the mock builder in Claude Code used a project CLAUDE.md with one import.")), "ts-3-1"))
 
 
 # ----- part 3.3 (facts: academy/facts/ts-3-3.md) -----
