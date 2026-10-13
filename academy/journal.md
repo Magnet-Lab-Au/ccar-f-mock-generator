@@ -60,3 +60,4 @@ One entry for each work session. Newest entry first.
 - The eighth item: the task statements of the build in Claude Code. The review agent was right on two: the independent review fits 4.6, not 1.3, and the build did not use plan mode (3.4). The owner accepted a new table with 2.5 added. Decision 0023 (proposed) records it.
 - The ninth item: the build guide tables, not the diagram popups, say which task statements a step uses. The owner accepted it. Decision 0024 (proposed) records it.
 - The tenth item: the links of the source cards to the private repository. The owner accepted that the repository becomes public before the pages go live. Decision 0025 (proposed) records it.
+- The eleventh item: a check for the audience. The owner accepted word limits that a script counts, and asked for a separate reader agent after each slice. Decision 0026 (proposed) records it.
