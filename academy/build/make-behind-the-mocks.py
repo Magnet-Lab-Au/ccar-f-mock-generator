@@ -955,6 +955,134 @@ STEP2 = (level("overview",
          ).replace("@N@", "2")
 PART_HTML[2] = with_sources(2, STEP2)
 
+# ----- step 3: check by code (facts: academy/facts/step-3.md) -----
+
+S3 = step_file(3)
+D11 = glob.glob(os.path.join(ROOT, "docs/decisions/0011-*.md"))[0][len(ROOT) + 1:]
+D53 = glob.glob(os.path.join(ROOT, "docs/decisions/0053-*.md"))[0][len(ROOT) + 1:]
+DOC_SO = "docs/sources/2026-10-07-anthropic-docs-structured-outputs.md"
+V3, RULE3 = Counter(), Counter()
+for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/checks/M*-S*-T*-step3.json")):
+    r = jread(os.path.relpath(f, ROOT))
+    V3[r["verdict"]] += 1
+    if r["verdict"] != "pass":
+        for x in r["findings"]:
+            RULE3[x["rule"]] += 1
+assert sum(V3.values()) == TOTAL_TRIES
+FAIL3 = [sum(1 for f in glob.glob(os.path.join(ROOT, "runs/mock-%02d/checks/M*-step3.json" % m)) if jread(os.path.relpath(f, ROOT))["verdict"] != "pass") for m in range(1, 6)]
+SIX = []
+for m in range(1, 6):
+    for f in sorted(glob.glob(os.path.join(ROOT, "runs/mock-%02d/questions/M*.json" % m))):
+        q = jread(os.path.relpath(f, ROOT))
+        if q.get("options") and len(q["options"]) == 6:
+            SIX.append(q["question_id"])
+assert SIX == ["M4-S27-T3", "M5-S60-T2"], SIX
+LONG = []          # one-answer questions of each built mock whose correct option is the longest (characters)
+for m in range(1, 6):
+    ans = {a["question_id"]: a["correct"] for a in jread("mocks/mock-%02d.answers.json" % m)["answers"]}
+    n = 0
+    for g in jread("mocks/mock-%02d.questions.json" % m)["groups"]:
+        for q in g["questions"]:
+            if q["select"] == 1:
+                lens = {o["letter"]: len(o["text"]) for o in q["options"]}
+                n += lens[ans[q["question_id"]][0]] == max(lens.values())
+    LONG.append(n)
+D30 = glob.glob(os.path.join(ROOT, "docs/decisions/0030-*.md"))[0][len(ROOT) + 1:]
+T6 = jread("runs/mock-04/questions/M4-S27-T3.json")
+CARD.update({
+    "s3-what": excerpt("src/step3_check_code.py", "Code checks the rules A1 to A12, which have an exact answer. No model works in\nthis step.", "The code of step 3", kind="code"),
+    "s3-cheap": excerpt(S3, "The check is cheap and fast, so a question with a simple defect does not use a model call.", "Build guide, step 3"),
+    "s3-split": excerpt(D30, "code checks a rule that has one correct answer, and a model checks a rule that needs judgment.", "Mock decision 0030"),
+    "s3-count": excerpt(D29, "So the design does not rely on the form for a count. The code check of step 3 checks the number of options and the number of correct answers.", "Mock decision 0029, Reason"),
+    "s3-docs": excerpt(DOC_SO, "Array constraints beyond `minItems` of 0 or 1", "Anthropic documentation, Structured outputs, JSON Schema limitations, not supported (copy of 7 October 2026, the live page agreed on 14 October 2026)", kind="docs"),
+    "s3-ask": code_block("src/step2_write.py", '"Write %d options. Mark exactly %d of them correct."', '"Write %d options. Mark exactly %d of them correct."', "What the writer is told"),
+    "s3-a2": code_block("src/step3_check_code.py", 'found.append(finding("A2", "The question has %d options.', 'found.append(finding("A2", "The question has %d options.', "Rule A2 in the code"),
+    "s3-six": jexcerpt("runs/mock-04/questions/M4-S27-T3.json", next(o["text"] for o in T6["options"] if o["letter"] == "F"), "M4-S27, try 3, option F: the sixth option"),
+    "s3-d005": jexcerpt("runs/mock-04/owner-decisions.json", "The last try failed on the form (rules A1 and A2), not on B9.", "The decision of the owner on M4-S27"),
+    "s3-runs": {"title": "The step 3 records of mocks 1 to 5", "kind": "count",
+                "text": "%d tries have a step 3 record: %d pass, %d fail (per mock %s). The findings of the fails: %s. Two tries had 6 options: %s. The script of this page counted the files."
+                        % (sum(V3.values()), V3["pass"], V3["fail"], ", ".join(map(str, FAIL3)), ", ".join("%s %d" % (k, v) for k, v in RULE3.most_common()), " and ".join(SIX)),
+                "src": "runs/mock-0N/checks/*-step3.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s3-long1": excerpt(D53, "In the built mock 1, the correct option is the longest option (by characters) in 37 of the 52 questions with 1 answer. Chance is 13.", "Mock decision 0053, Question"),
+    "s3-gain": excerpt(D53, "a participant who always selects the longest option must not gain from it.", "Mock decision 0053, Reason"),
+    "s3-never": excerpt(D53, "2. A rule that the correct option is never the longest. Then a participant learns that the longest option is always wrong.", "Mock decision 0053, Options"),
+    "s3-a12": code_block("src/step3_check_code.py", "if right and wrong and max(right) >= max(wrong):", "if right and wrong and max(right) >= max(wrong):", "Rule A12 in the code"),
+    "s3-long": {"title": "The longest option in the built mocks", "kind": "count",
+                "text": "One-answer questions whose correct option is the longest, by characters: %s for mocks 1 to 5. The script of this page counted mocks/mock-0N.questions.json and answers.json." % ", ".join(map(str, LONG)),
+                "src": "mocks/mock-01.questions.json to mock-05.answers.json", "href": "%s/tree/%s/mocks" % (REPO, TAG)},
+})
+assert LONG[0] == 37
+
+RULES_A = [("A1", "complete form"), ("A2", "options: 4 or 5"), ("A3", "correct: 1 or 2"), ("A4", "no two the same"),
+           ("A5", "no “Option B”"), ("A6", "word limits"), ("A7", "not longer"), ("A8", "ends with ?"),
+           ("A9", "2 to 5 sentences"), ("A10", "one sentence"), ("A11", "not negative"), ("A12", "longest option")]
+FIG31 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 3. Code checks 12 rules with an exact answer, A1 to A12. A try that fails any rule goes to step 5 with the findings and never reaches step 4. A try that passes all 12 goes to step 4. In mocks 1 to 5, %(p)d tries passed and %(f)d failed.">
+      <g class="ve-n is-key"><rect class="sh" x="20" y="20" width="600" height="260" rx="0"/></g>
+      <text class="ve-lab" x="36" y="42">code checks 12 rules (no model)</text>
+      %(cells)s
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 3-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "p": V3["pass"], "f": V3["fail"],
+    "cells": "".join('<g class="blk"><rect x="%d" y="%d" width="138" height="56" rx="0"/><text x="%d" y="%d"><tspan class="role">%s</tspan></text><text x="%d" y="%d">%s</text></g>'
+                     % (36 + (i % 4) * 146, 56 + (i // 4) * 72, 46 + (i % 4) * 146, 72 + (i // 4) * 72, r, 46 + (i % 4) * 146, 94 + (i // 4) * 72, e(t))
+                     for i, (r, t) in enumerate(RULES_A)),
+    "edges": "".join([edge("M620 100H700", "%d pass" % V3["pass"], 660, 91, cls=""), edge("M620 220H700", "%d fail" % V3["fail"], 660, 211, cls="is-hot")]),
+    "nodes": "".join([box(700, 60, 170, 80, ["step 4"], sub="check by a model", cls="who-model"),
+                      box(700, 180, 170, 80, ["step 5"], sub="with the findings", cls="try bad")]),
+    "cap": fact("s3-what", "Code checks the 12 rules that have one exact answer. No model works in this step.") + " " + fact("s3-cheap", "A question with a simple defect does not use a model call."),
+}
+
+MAXL = max(LONG)
+FIG32 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="One-answer questions whose correct option is the longest: %(vals)s of 52 for mocks 1 to 5. Chance is 13.">%(bars)s
+      <path class="ve-e is-async" d="M%(cx)d 0V%(ch)d"/><text class="hv" x="%(cxt)d" y="%(ch2)d">chance: 13</text></svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 3-2</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": 5 * 34 + 30, "vals": ", ".join(map(str, LONG)), "cx": 80 + 13 * 400 // MAXL, "cxt": 84 + 13 * 400 // MAXL, "ch": 5 * 34, "ch2": 5 * 34 + 18,
+    "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">%d</text>'
+                    % (i * 34 + 16, i + 1, "hot" if i == 0 else "", i * 34 + 5, v * 400 // MAXL, 540, i * 34 + 16, v) for i, v in enumerate(LONG)),
+    "cap": fact("s3-long", "One-answer questions whose correct option is the longest: %d of 52 in mock 1, then %s." % (LONG[0], ", ".join(map(str, LONG[1:])))) + " Chance is 13.",
+}
+
+DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
+          '<p>Twice the writer was told to write 5 options and wrote 6: %s %s The form could not stop it. %s The owner noted it: %s</p>'
+          % (" and ".join(SIX) + ".", fact("s3-six", "In M4-S27, try 3, the sixth option was F."),
+             fact("s3-a2", "Rule A2 failed both tries, and the writer tried again."),
+             fact("s3-d005", "&ldquo;The last try failed on the form (rules A1 and A2), not on B9.&rdquo;"))
+          + '<h4 class="story">The longest option was too often correct</h4>' + FIG32
+          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest: %s Instead, %s So step 1 marks 13 of the 52 one-answer slots where the longest option may be correct, and %s</p>'
+          % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
+             fact("s3-never", "then a participant learns that the longest option is always wrong."),
+             fact("s3-gain", "a participant who always selects the longest option must not gain from it."),
+             fact("s3-a12", "rule A12 fails a question where a correct option is the longest on any other slot.")))
+
+STEP3 = (level("overview",
+               '<h4 class="takeaway">Code checks 12 exact rules before a model sees the question</h4><p>%s %s %s</p>'
+               % (fact("s3-what", "Code checks each try against 12 rules that have one exact answer, such as the number of options and the length of the text."),
+                  fact("s3-cheap", "The check is cheap and fast, so a question with a simple defect does not use a model call."),
+                  fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"]))))
+         + level("explanation",
+                 FIG31
+                 + '<p><b>Code or a model.</b> %s A model checks the rules that need judgment in step 4.</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
+                 + '<p><b>Why the form does not count.</b> The writer answers in a fixed form, but %s %s So %s</p>'
+                   % (fact("s3-docs", "a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."),
+                      fact("s3-ask", "The writer is told the number of options in words only."),
+                      fact("s3-count", "the design does not rely on the form for a count: step 3 counts the options and the correct answers."))
+                 + ts_block(3))
+         + level("depth", DEPTH3)
+         ).replace("@N@", "3")
+PART_HTML[3] = with_sources(3, STEP3)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'
