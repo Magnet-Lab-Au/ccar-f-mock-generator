@@ -158,7 +158,12 @@ def pts(*ids):
     return [{"id": i, "text": POINTS[i][0], "ctx": "Task statement %s: %s" % (POINTS[i][1]["id"], POINTS[i][1]["title"])} for i in ids]
 
 
-DEVIATION = "The newest Claude models reject a forced tool call, so the build sends its form as structured outputs."
+DEVIATION = ("Claude Opus 5.5, the model of this build, and three other current models (Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1) "
+             "reject a forced tool call, so the build sends its form as structured outputs.")
+EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several "
+           "schemas exist and the document type is unknown (4.3-S2), and a forced tool when one extraction must run first (4.3-S3).")
+lines_of("docs/sources/2026-10-07-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
+FIX_USE = {"4.3-K2": ("The current models accept only \"auto\" and \"none\".", "Claude Opus 5.5 and three other current models accept only \"auto\" and \"none\" (the Anthropic documentation, Define tools).")}
 lines_of(S5, "The reason: the newest Claude models reject it.")
 
 
@@ -177,8 +182,8 @@ POP = {
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-43": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
               "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3"),
-                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on Claude Opus 5.5 (read on 7 October 2026, and again on 13 October 2026).",
-                       "For the exam: the exam guide teaches the forced tool call (tool_choice). Answer the exam with it."],
+                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 7 October 2026 in docs/sources/).",
+                       EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
 }
 for k in POP:
@@ -533,7 +538,10 @@ def table_rows(n):
     for l in read(step_file(n)).split("\n"):
         m = re.match(r"^\| ([1-5]\.[0-9]-[KS][0-9]+) \|", l)
         if m:
-            out.append((m.group(1), l.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")))
+            use = l.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")
+            if m.group(1) in FIX_USE:
+                use = use.replace(*FIX_USE[m.group(1)])
+            out.append((m.group(1), use.replace(" (see the deviation above)", "")))
     return out
 
 
@@ -864,6 +872,7 @@ cor = lambda q: next(o["text"] for o in q["options"] if o["correct"])
 D2_001 = next(d for d in jread("runs/mock-02/owner-decisions.json") if d["id"] == "D001")
 
 CARD.update({
+    "s2-fields": excerpt(S2, "The model fills a form: the question, and each option with a mark (\"correct\" or \"wrong\") and a reason. The model can also answer \"cannot write\", with a reason.", "Build guide, step 2"),
     "s2-what": excerpt(S2, "For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock.", "Build guide, step 2"),
     "s2-why": excerpt(D10, "One call makes one record with one ID, so each later verdict connects to exactly one question. If one question fails, the program writes that one again and the others do not change.", "Mock decision 0010, Reason"),
     "s2-cost": excerpt(D10, "We accepted one disadvantage: a writer that sees one slot does not see the other questions of its scenario.", "Mock decision 0010, How we decided"),
@@ -871,7 +880,8 @@ CARD.update({
                  "src": "runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
     "s2-cache": code_block("src/step2_write.py", "# Decision 0067: the rules come first as a cached block.", "cached=[rules_for(request)])", "The rules come first, as a cached block"),
     "s2-letters": excerpt(D41, "Code mixes the options with the seed of the plan, the slot ID and the question text. So the same answer always gets the same letters.", "Mock decision 0041, Decision"),
-    "s2-samplea": excerpt(D29, "in the 12 sample questions of the guide, the correct answer is A 10 times and B 2 times. A model that sees those examples can copy that.", "Mock decision 0029, Reason"),
+    "s2-plan": excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0070-*.md"))[0][len(ROOT) + 1:], "2. **Step 2** (and step 5) puts the correct options at the letters of the slot.", "Mock decision 0070, Decision"),
+    "s2-samplea": excerpt(D29, "in the 12 sample questions of the guide, the correct answer is A 10 times and B 2 times. A model that sees those examples can copy that. This is an assumption of the assistant. It is not checked.", "Mock decision 0029, Reason"),
     "s2-form": excerpt(D40, "Option 2. Steps 2, 4 and 6 (and step 5, which uses the request of step 2) send their form as a JSON schema in `output_config.format`.", "Mock decision 0040, Decision"),
     "s2-forced": excerpt(D29, "The form is a JSON schema of a tool, and the request forces the model to call that tool.", "Mock decision 0029, Decision"),
     "s2-test": code_block("tests/test_model_steps.py", "def test_the_form_is_sent_as_structured_outputs_with_no_tool", "def test_the_form_is_sent_as_structured_outputs_with_no_tool", "A test: no tool and no forced tool call"),
@@ -882,6 +892,7 @@ CARD.update({
     "s2-did": excerpt(D56, "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options.", "Mock decision 0056, Reason"),
     "s2-earlier": excerpt(D56, "When the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option", "Mock decision 0056, Decision"),
     "s2-bad": excerpt(D43, "The question is confusing and needs calrification. I had to read the question more than one time. Use one name for the actor, not 'the subagent' and 'Claude'.", "Mock decision 0043, Question"),
+    "s2-first": excerpt(D43, "The assistant first recommended an instruction only. The owner asked if that is enough.", "Mock decision 0043, How we decided"),
     "s2-enough": excerpt(D43, "The owner asked: \"but is that enough? Only in the prompt?\" An instruction alone fails sometimes, so a check comes after it.", "Mock decision 0043, Reason"),
     "s2-b7": excerpt(D43, "1. **The instruction to the writer** (step 2, and so also step 5): \"Use one name for one actor. Write each sentence so that a reader understands it at the first reading.\"", "Mock decision 0043, Decision"),
 })
@@ -894,7 +905,7 @@ REQ = [("cached", "the rules: A1 to A12 and B1 to B9"), ("", "the role and the f
 FIG21 = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 %(h)d" role="img" aria-label="Step 2. Code builds one request for one slot: the rules first as a cached block, the role and the form, 3 sample questions of the guide, the story, the task statement with its point marked, the technologies, the slot, the earlier questions on the idea if any, and for step 5 the failed try with its findings. One Claude call answers in the form. Code then mixes the options and gives the letters, and saves one file for the try.">
+    <svg class="ve-svg" viewBox="0 0 890 %(h)d" role="img" aria-label="Step 2. Code builds one request for one slot: the rules first as a cached block, the role and the form, 3 sample questions of the guide, the story, the task statement with its point marked, the technologies, the slot, the earlier questions on the idea if any, and for step 5 the failed try with its findings. One Claude call answers in the form. Code then mixes the options and gives the letters,">
       <g class="ve-n is-key"><rect class="sh" x="20" y="10" width="380" height="%(rh)d" rx="0"/></g>
       <text class="ve-lab" x="36" y="32">the request, built by code</text>
       %(rows)s
@@ -921,13 +932,14 @@ STEP2 = (level("overview",
                   fact("s2-letters", "code, not the model, mixes the options and gives the letters.")))
          + level("explanation",
                  FIG21
-                 + '<p><b>The rules come first.</b> %s The writer gets the same rules that steps 3 and 4 check, so each instruction is also checked. %s</p>'
-                   % (fact("s2-cache", "The list of rules is the first block of each request, with a cache mark, so a repeated list costs less."), fact("s2-model", "Each of the %d tries of the 5 mocks used %s." % (sum(MODELS.values()), MODEL)))
-                 + '<p><b>The form.</b> %s The guide teaches a forced tool call for this. The newest Claude models reject a forced tool call, so the build sends a JSON schema as structured outputs. For the exam, answer with the forced tool call that the guide teaches.</p>'
-                   % fact("s2-form", "The writer answers in a fixed form: the question, and for each option its text, whether it is correct, and a short reason.")
+                 + '<p><b>The rules come first.</b> %s The writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
+                   % (fact("s2-cache", "From mock 4, the list of rules is a separate first block with a cache mark, so a repeated list costs less (mock decision 0067)."), fact("s2-model", "Each of the %d tries of the 5 mocks used %s." % (sum(MODELS.values()), MODEL)))
+                 + '<p><b>The form.</b> %s %s %s</p>'
+                   % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option with a mark (correct or wrong) and a reason. It can also answer &ldquo;cannot write&rdquo;."),
+                      fact("s2-form", DEVIATION), e(EXAM_43))
                  + '<p><b>The letters.</b> %s So %s</p>'
-                   % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times, and a model can copy that." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
-                      fact("s2-letters", "code mixes the options and gives the letters."))
+                   % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times, and a model can copy that (an assumption, not checked)." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
+                      fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "From mock 5, the correct options take the letters that the plan sets."))
                  + '<p><b>The cost of one call per slot.</b> %s Step 6 checks the questions of a scenario together.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
                  + ts_block(2))
          + level("depth",
@@ -935,9 +947,9 @@ STEP2 = (level("overview",
                  '<p>%s Example on one idea, the stop of an agentic loop:</p>'
                  '<ol class="checks"><li>Mock 1, M1-S28: %s</li><li>Mock 2, M2-S08, try 1: %s</li></ol>'
                  '<p>The owner sent it back: %s The new try asked for the cause instead: %s</p>'
-                 '<p>The fix for step 2: %s An instruction alone was not enough, so step 4 got rule B9 to check it.</p>'
+                 '<p>The fix for step 2: %s In the same mock decision, step 4 got rule B9 to check it.</p>'
                  '<h4 class="story">The first bad mark became an instruction and a check</h4>'
-                 '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s Step 4 got rule B7 for the same thing.</p>'
+                 '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s %s because of that question, step 4 got rule B7 to check it.</p>'
                  '<h4 class="story">The design forced a tool call</h4>'
                  '<p>%s Before the code was written, the documentation showed that the newest models reject it. So %s The code never had a forced tool call, and %s</p>'
                  % (fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options."),
@@ -947,11 +959,12 @@ STEP2 = (level("overview",
                     fact("s2-m2b", "a fixed cap of 12 iterations as the main stopping rule."),
                     fact("s2-earlier", "when the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option."),
                     fact("s2-bad", "The question is confusing and needs calrification. I had to read the question more than one time."),
-                    fact("s2-enough", "The assistant first suggested an instruction only. The owner asked: &ldquo;but is that enough? Only in the prompt?&rdquo;"),
-                    fact("s2-b7", "So the writer got the instruction &ldquo;Use one name for one actor&rdquo;."),
+                    fact("s2-first", "The assistant first suggested an instruction only."),
+                    fact("s2-enough", "The owner asked: &ldquo;but is that enough? Only in the prompt?&rdquo;"),
+                    fact("s2-b7", "So the writer got the instruction &ldquo;Use one name for one actor&rdquo;, and"),
                     fact("s2-forced", "The first design said that the request forces the model to call a tool."),
                     fact("s2-form", "the build chose structured outputs: a JSON schema in each request."),
-                    fact("s2-test", "a test checks that no request has a tool.")))
+                    fact("s2-test", "a test checks that the shared model call sends no tool and no tool choice.")))
          ).replace("@N@", "2")
 PART_HTML[2] = with_sources(2, STEP2)
 
