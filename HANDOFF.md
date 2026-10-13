@@ -10,16 +10,31 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
-Status of this report: a first version of 02:07. An independent agent checks the final version before 08:45.
+Status of this report: the final version of 07:30. An independent agent checked it against the commits (see the journal).
 
-**Done on `main`** (commits from 1cbae17 to caeb175, all local, no push):
+**In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed. Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
+
+**Done on `main`, tab 2 "Behind the mocks"** (slices 2 and 3):
 
 - Slice 2: steps 0 to 4 and 6 to 8 of tab 2 are written. Each step had a fact agent, a review agent and one round of fixes. Then a whole-picture agent (30 items, 26 fixed) and a reader agent. The reader's summaries agree with the intended takeaways of all 8 steps.
 - Each closed heading of a step names its task statements (night plan choice, 1cbae17).
-- Slice 3: the build in Claude Code, with 4 parts: 3.1, 1.7, 4.6 (with Fig. 4.6-1, the three document checks) and 3.4 (no example). One review, one whole-picture agent (18 items, all fixed) and one reader agent (summaries agree with the takeaways of all 4 parts).
-- The check `check-pages.js` prints "All checks passed." No part is over its word limit. The links to tab 1 are "pending", because tab 1 is not built.
+- Slice 3: the build in Claude Code, with 4 parts: 3.1, 1.7, 4.6 (with Fig. C-4.6-1, the three document checks) and 3.4 (no example). One review, one whole-picture agent (18 items, all fixed) and one reader agent (summaries agree with the takeaways of all 4 parts).
+- The check `check-pages.js` prints "All checks passed." No part is over its word limit. The links to tab 1 now resolve, because tab 1 is built.
 - Dated copies of 6 documentation pages are in `academy/sources/` (decision 0030).
 - Screenshots to look at: `academy/screenshots/slice-2/` (steps 0 to 8) and `academy/screenshots/slice-3/`, in light and dark, at 1280 and 390 pixels.
+
+**Done on `main`, tab 1 "Exam guide breakdown"** (slices 4 to 8, the owner's words of 02:06: "Do as many slices as you can. Go all the way"):
+
+- The script `academy/build/make-exam-guide-breakdown.py` writes `academy/pages/exam-guide-breakdown.html`. The top has the map of the guide (Fig. A, the domains and their task statements, and Fig. B, the scenarios) and "How we broke it down". Each domain has a summary.
+- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam", a code popup and the links to tab 2. Part 1.1 takes the checked content of the fifth sample.
+- A fact agent wrote a fact sheet for each part (`academy/facts/ts-N-M.md`), with its conflicts and what it did not find. The night added 66 dated copies of documentation pages to `academy/sources/`.
+- Review agents checked the parts, two parts for each agent. They found 245 items, and all are fixed. Most were cards that held only a near claim, facts without their product or condition, and claims of the guide that the page did not mark as the guide's.
+- Whole-picture agents found 14 items (the top and domain 1, all fixed except item 8) and 17 items (domains 2 and 3, all fixed). A third one found 13 items (domains 4 and 5). Nine are fixed. Three are in items 9, 10 and 12. The assistant checked the last one (step 4 and its verdict) and found the two tabs consistent.
+- Reader agents: their one-sentence summaries agree with the intended takeaways of all 30 parts (`academy/facts/takeaways-slice-4.md` and `takeaways-slices-5-to-8.md`). The unclear sentences that they found are fixed.
+- The check `check-pages.js` prints "All checks passed." for both tabs. No part is over its word limit.
+- Screenshots of the 30 figures: `academy/screenshots/tab-1/`.
+
+**Choices of the night for tab 1 (working rule 36):** one review agent checks two parts, not one. After the pause: one whole-picture agent for domains 4 and 5 together, and one reader agent for domains 2 to 5 together.
 
 **Done on the branch `fix-owner-reason`** (worktree `../ccar-f-fix-owner-reason`, commits 46ed3fd and bd63ff7, not merged):
 
@@ -53,10 +68,28 @@ Status of this report: a first version of 02:07. An independent agent checks the
    - The build guide and mock decision 0016 say that code builds the files again after a change. The code has no such path.
 6. The commit message of f62b523 says that the links of 3.2 and 2.5 "do not hold". For 3.2 that is too strong. The journal and decision 0035 have the correct reason.
 7. The open question from before: will more mocks be built?
+8. Tab 1: API names such as updatedToolOutput, allowed_tools and --fork-session are in the running text. Decision 0032 does not say whether a name counts as code.
+9. Tab 1: the sentence "The exam uses the guide" comes often (9 times in domain 1 alone). The idea "only the guide says this" has six different forms. The reader agent of slice 4 found that this slows the reading. The assistant suggests one fixed sentence.
+10. Tab 1 says "the documentation", "the Claude API documentation" and "the Claude Code documentation". Tab 2 and the source lists say "Anthropic documentation". One name for each set of pages is needed in both tabs.
+11. Points of the reader agent of slices 5 to 8:
+    - The notes about the mock builder (step numbers, rule D3, call 4a) mean little to a candidate.
+    - The page never explains "section 17" of the guide.
+    - Fig. 5.6-1 is busy.
+    - Fig. 2.1-1 mixes the rename example and the split example.
+    - Fig. 5.2-1 shows "Several matches?" in the chain of escalation checks, but it is not an escalation.
+12. Tab 2:
+    - Its chips list 4.3-S3 for steps 2, 4, 5 and 6, but the build guide rows say "This build does not use it". Tab 1 now says "names but does not use 4.3-S3".
+    - Step 6 has no chip for 5.2, but rule D3 rests on 5.2-K3.
+    - Three chip IDs of step 5 (`step-5-ts-44`, `step-5-ts-43`, `step-5-ts-11`) break the pattern `step-N-ts-X-Y`.
+13. The source links of the cards point to `blob/main/academy/sources/...` on GitHub. They fail until a push.
+14. Records of the mock builder, found by the fact agents of tab 1. None was changed at night:
+    - Some diagrams and mock decisions name guide points that the tables of the build guide do not have. For example, diagram 08 cites 5.2-K3, and mock decision 0014 and diagram 01 cite 1.6-K2, but the step 6 table has neither. Also, mock decision 0040 (line 6) says that the diagrams of steps 2, 4 and 6 show the deviation, but diagram 08 does not. Tab 1 links only by the tables (academy decision 0024). The fact sheets in `academy/facts/` list each case under their conflicts.
+    - Mock decision 0026 asks for a build guide section on why the mock builder uses no MCP, subagents, hooks or sessions. That section does not exist.
+    - Mock decision 0001 links the decision files and the journal to 5.4. Academy decision 0023 links the same files to 1.7.
+    - Step 6 stops the whole run when rule C2 fails. 5.3-K4 calls this an anti-pattern, but the stop names its cause and no retry can repair it. Should the Depth of 5.3 say so?
+15. Part 5.6: the Claude API returns an error when citations and `output_config.format` are in one request. This academy did not check whether citations work with a forced tool call.
 
-- Slices 4 to 8 (tab 1): in progress. The owner said at 02:06: "Do as many slices as you can. Go all the way". This report gets their state before 08:45.
-
-- Next step: the owner reads this report, decides items 1 to 7 and the merge of the fix. Then the next slice of decision 0022.
+- Next step: the owner reads this report, decides items 1 to 15 and the merge of the fix, and accepts slices 4 to 8 or names what to change (decision 0022).
 
 From 7 October 2026 the work continues in Claude Code. The owner moves this folder out of OneDrive, to a folder in WSL with a private repository on GitHub. The folder in OneDrive is then old.
 
