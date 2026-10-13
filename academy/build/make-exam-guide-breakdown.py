@@ -1017,6 +1017,74 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
             + tab2_links("2.4", cf("ts-2-4-a02", excerpt(A02, "the pipeline uses no MCP server, because it calls only the Claude API and reads local files.", "Academy decision 0002"),
                                    "The mock builder uses no MCP server: it calls only the Claude API and reads local files.")), "ts-2-4"))
 
+
+# ----- part 2.5 (facts: academy/facts/ts-2-5.md) -----
+
+TREF = "claude-code-docs-tools-reference"
+A35 = glob.glob(os.path.join(ROOT, "academy/decisions/0035-*.md"))[0][len(ROOT) + 1:]
+YAML25 = "---\nname: code-reviewer\ndescription: Reviews code for quality and best practices\ntools: Read, Glob, Grep\nmodel: sonnet\n---"
+FIG25 = figure("2.5-1", 890, 320,
+               "Glob finds files by name and Grep finds entry points and callers. Then Read follows the imports, and Edit changes text that occurs once. Reading all files first fills the context. "
+               "When the text of an Edit occurs twice, the guide reads and writes the whole file, and the documentation uses a longer match. "
+               "On macOS, Linux and WSL, Claude Code searches with find and grep through Bash.",
+               "".join([edge("M210 60H255V100H300"), edge("M210 140H255V100H300"), edge("M470 100H560"),
+                        edge("M610 130V160H560V190"), edge("M670 130V160H775V190"),
+                        '<text class="ve-el" x="640" y="152">two matches</text>',
+                        '<text class="ve-lab" x="20" y="300">macOS, Linux and WSL: find and grep through Bash</text>',
+                        box(20, 30, 190, 60, ["Glob"], sub="files by name"),
+                        box(20, 110, 190, 60, ["Grep"], sub="entry points, callers"),
+                        box(20, 200, 190, 60, ["Read all first"], sub="no: fills the context"),
+                        box(300, 70, 170, 60, ["Read"], sub="follow imports"),
+                        box(560, 70, 150, 60, ["Edit"], sub="one exact match"),
+                        box(470, 190, 180, 60, ["Read + Write"], sub="the guide"),
+                        box(680, 190, 190, 60, ["longer match"], sub="the documentation")]),
+               "%s %s" % (cf("ts-2-5-s4", gx("Building codebase understanding incrementally: starting with Grep to find entry points, then using Read to follow imports and trace flows, rather than reading all files upfront", "Exam guide, 2.5-S4"),
+                             "The guide starts with Grep to find the entry points, then follows the imports with Read, and does not read all files first (2.5-S4)."),
+                          cf("ts-2-5-k4", gx("When Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file modifications", "Exam guide, 2.5-K4"),
+                             "When Edit fails because its text is not unique, the guide falls back to Read and Write (2.5-K4).")))
+
+PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs unique text",
+                        "Search first: Glob finds files by name, Grep finds text inside files, and Read then follows only the files that matter. "
+                        "Edit changes a part of a file and needs text that occurs once. If the text is not unique, the guide reads and writes the whole file.",
+                        FIG25)
+    + level("explanation",
+            "<p><b>Grep and Glob.</b> %s %s %s</p>" % (
+                cf("ts-2-5-k1", gx("Grep for content search (searching file contents for patterns like function names, error messages, or import statements)", "Exam guide, 2.5-K1"),
+                   "Grep searches the content of files, for example function names, error messages or imports (2.5-K1, 2.5-S1)."),
+                cf("ts-2-5-k2", gx("Glob for file path pattern matching (finding files by name or extension patterns)", "Exam guide, 2.5-K2"),
+                   "Glob finds files by name or extension, for example every file that matches **/*.test.tsx (2.5-K2, 2.5-S2)."),
+                cf("ts-2-5-f5", D(TREF, "Results are sorted by modification time and capped at 100 files.", "Claude Code, Tools reference"),
+                   "In Claude Code, Glob returns at most 100 files, newest first."))
+            + "<p><b>Read, Write, Edit.</b> %s %s %s</p>" % (
+                cf("ts-2-5-k3", gx("Read/Write for full file operations; Edit for targeted modifications using unique text matching", "Exam guide, 2.5-K3"),
+                   "Read and Write work on the whole file, and Edit changes one part, found by text that is unique (2.5-K3)."),
+                cf("ts-2-5-f8", D(TREF, "The Write tool creates a new file or overwrites an existing one with the full content provided. It doesn't append or merge.", "Claude Code, Tools reference"),
+                   "Write replaces the whole file."),
+                cf("ts-2-5-c2", D(TREF, "**Uniqueness**: `old_string` must appear exactly once. When it appears more than once, Claude either supplies a longer string with enough surrounding context to pin down one occurrence, or sets `replace_all: true` to replace them all.", "Claude Code, Tools reference"),
+                   "When the text occurs twice, the guide reads and writes the whole file (2.5-K4, 2.5-S3). The documentation uses a longer text that occurs once, or replaces all occurrences. The exam uses the guide."))
+            + "<p><b>Search first.</b> %s %s</p>" % (
+                cf("ts-2-5-f14", D(BEST, "Claude reads hundreds of files, filling the context.", "Claude Code, Best practices"),
+                   "The documentation names the failure that 2.5-S4 prevents: Claude reads hundreds of files, and the context fills."),
+                cf("ts-2-5-s5", gx("Tracing function usage across wrapper modules by first identifying all exported names, then searching for each name across the codebase", "Exam guide, 2.5-S5"),
+                   "To trace a function through a wrapper module, first list all the names that it exports, then search for each name (2.5-S5)."))
+            + "<p><b>The platform.</b> %s</p>" %
+                cf("ts-2-5-c1", D(TREF, "On macOS, Linux, and WSL, Claude Code leaves Glob and [Grep](#grep-tool-behavior) out of the default tool set, and Claude searches with `find` and `grep` through the Bash tool instead.", "Claude Code, Tools reference"),
+                   "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools. The exam uses the guide.")
+            + exam_tests("2.5", [("Built-in tools — Read, Write, Edit, Bash, Grep, Glob — their purposes and selection criteria", "Among the technologies, the guide names")])
+            + guide_text("2.5"), "ts-2-5")
+    + level("depth",
+            beyond([cf("ts-2-5-b1", D(TREF, "and refuses a whole file over 256 KB, so Claude reads a larger file in pages with `offset` and `limit`.", "Claude Code, Tools reference"),
+                       "By default, Read returns at most 25,000 tokens in one call and refuses a whole file over 256 KB, so a large file comes in pages. The guide says &ldquo;full file&rdquo; with no limit."),
+                    cf("ts-2-5-b2", D(CCS, "This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
+                       "Claude Code can also give the search to the read-only Explore subagent, which keeps the results out of the main context."),
+                    cf("ts-2-5-b3", D(TREF, "Claude Code keeps the tool inactive until you install a [code intelligence plugin](/docs/en/plugins/code-intelligence) for your language.", "Claude Code, Tools reference"),
+                       "With a code intelligence plugin for the language, a language server can find all references to a symbol, in place of a text search.")])
+            + code_pop_text("ts-2-5-code", "The code: a subagent with only Read, Glob and Grep", "A review subagent with search tools only", CCS, YAML25, "Claude Code, Subagents",
+                            "This subagent can search and read, but not change a file.")
+            + tab2_links("2.5", "%s %s" % (fact("ts-2-4-a02", "The mock builder calls only the Claude API and reads local files, so no model in it gets these tools."),
+                                           cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
+                                              "The build in Claude Code used these tools, but no record says which tool did what, so tab 2 has no part for 2.5."))), "ts-2-5"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
