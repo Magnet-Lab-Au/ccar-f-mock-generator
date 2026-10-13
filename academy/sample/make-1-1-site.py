@@ -68,7 +68,7 @@ SITE = [
      "  .eyebrow { max-width: none; }\n"
      "  a { color: var(--accent); }\n"
      "  .key { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); max-width: none; margin: var(--s-2) 0; font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); }\n"
-     "  .tag-k, .tag-s { font: 600 var(--t-label) var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 1px var(--s-2); }\n"
+     "  .tag-k, .tag-s { font: 600 .62rem/1.5 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 0 .3rem; }\n"
      "  .tag-k { background: var(--k); color: var(--on-k); } .tag-s { background: var(--s); color: var(--on-s); }\n"
      "  .lk { color: var(--k); } .ls { color: var(--s); }\n"
      "  @media print { :root, :root:not(.light), :root.dark { --k: #245780; --s: #8a4b08; --on-k: #fff; --on-s: #fff; } }\n"
