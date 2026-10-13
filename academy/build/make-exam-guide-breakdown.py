@@ -1821,6 +1821,79 @@ PART["4.4"] = (overview("4.4", "Retry with the exact errors, but not for missing
             + tab2_links("4.4") + "<p>%s</p>" % cf("ts-4-4-use", excerpt(step_file(5), "Here: the \"document\" is the request of step 2, the \"failed extraction\" is the failed question, and the \"validation errors\" are the findings.", "Build guide, step 5"),
                                                     "Step 5 is a retry with error feedback: the writer gets the request, the failed question and its exact findings, the three parts of 4.4-S1."), "ts-4-4"))
 
+
+# ----- part 4.5 (facts: academy/facts/ts-4-5.md) -----
+
+BATCH = "anthropic-docs-batch-processing"
+D67 = "docs/decisions/0067-prompt-caching-of-the-guide-text.md"
+RES45 = "\n".join(read(SRC % BATCH).split("\n")[755:774])
+assert RES45.strip().startswith("client = anthropic.Anthropic()") and RES45.rstrip().endswith('print(f"Request expired {result.custom_id}")')
+FIG45 = figure("4.5-1", 890, 330,
+               "If somebody waits for the result, such as a pre-merge check, use the synchronous Messages API. If not, send a batch: half the price, a custom_id for each request. "
+               "The results take up to 24 hours, come in any order, and are matched by custom_id. Only the failed requests, fixed where needed, go into a new batch.",
+               "".join([edge("M110 120V50H260", "yes", 190, 41), edge("M200 165H260", "no", 230, 156),
+                        edge("M480 165H540"), edge("M710 165H760"),
+                        edge("M625 200V250"), edge("M540 280H370V200", "send again", 455, 272, cls="is-hot"),
+                        box(20, 120, 180, 90, ["Does anybody", "wait?"]),
+                        box(260, 20, 220, 60, ["Messages API"], sub="pre-merge check"),
+                        box(260, 130, 220, 70, ["Message Batches"], sub="half price, custom_id", cls="who-model"),
+                        box(540, 130, 170, 70, ["Results"], sub="up to 24 hours"),
+                        box(760, 130, 110, 70, ["Use"], cls="try ok"),
+                        box(540, 250, 170, 60, ["Failed only"], sub="fixed if needed")]),
+               "%s %s" % (cf("ts-4-5-k2", gx("Batch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports, weekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge checks)", "Exam guide, 4.5-K2"),
+                             "Batches suit work that can wait, such as an overnight report, and not a blocking check before a merge (4.5-K2)."),
+                          cf("ts-4-5-s3", gx("Handling batch failures: resubmitting only failed documents (identified by custom_id) with appropriate modifications (e.g., chunking documents that exceeded context limits)", "Exam guide, 4.5-S3"),
+                             "Only the failed documents go again, found by custom_id, and changed where needed, for example cut into chunks (4.5-S3).")))
+
+PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
+                        "The Message Batches API costs half, but a batch can take up to 24 hours with no promised time, so use it only for work that nobody waits for. "
+                        "Match each result to its request by custom_id, and send again only the requests that failed.",
+                        FIG45)
+    + level("explanation",
+            "<p><b>Half the price, no promised time.</b> %s %s %s</p>" % (
+                cf("ts-4-5-k1", gx("The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA", "Exam guide, 4.5-K1"),
+                   "The Message Batches API saves 50%, takes up to 24 hours, and guarantees no latency (4.5-K1)."),
+                cf("ts-4-5-f5", D(BATCH, "This approach is well-suited to tasks that do not require immediate responses, with most batches finishing in less than 1 hour while reducing costs by 50% and increasing throughput.", "Batch processing"),
+                   "The documentation says that most batches finish in less than 1 hour,"),
+                cf("ts-4-5-f3", D(BATCH, "It is possible for a batch to expire and not complete within 24 hours.", "Batch processing"),
+                   "but a batch can also expire before it completes."))
+            + "<p><b>Who waits.</b> %s %s</p>" % (
+                cf("ts-4-5-s1", gx("Matching API approach to workflow latency requirements: synchronous API for blocking pre-merge checks, batch API for overnight/weekly analysis", "Exam guide, 4.5-S1"),
+                   "The synchronous API serves a blocking check before a merge, and the batch API an analysis overnight or each week (4.5-S1)."),
+                cf("ts-4-5-q11", gx("This makes it unsuitable for blocking pre-merge checks where developers wait for results, but ideal for overnight batch jobs like technical debt reports.", "Exam guide, sample question 11"),
+                   "Sample question 11 of the guide fits 4.5: it batches only the overnight report."))
+            + "<p><b>Tool calls.</b> %s %s</p>" % (
+                cf("ts-4-5-k3", gx("The batch API does not support multi-turn tool calling within a single request (cannot execute tools mid-request and return results)", "Exam guide, 4.5-K3"),
+                   "The guide says that a batch request cannot run tools in the middle and continue with their results (4.5-K3)."),
+                cf("ts-4-5-c1", D(BATCH, "The batch worker runs the same server-side agentic loop as the synchronous Messages API.", "Batch processing"),
+                   "In the documentation, server tools do run their loop inside a batch request, so the point holds for your own client tools. The exam uses the guide."))
+            + "<p><b>custom_id.</b> %s %s</p>" % (
+                cf("ts-4-5-k4", gx("custom_id fields for correlating batch request/response pairs", "Exam guide, 4.5-K4"),
+                   "A custom_id links each response to its request (4.5-K4)."),
+                cf("ts-4-5-f11", D(BATCH, "To correctly match results with their corresponding requests, always use the `custom_id` field.", "Batch processing"),
+                   "The results come in any order, so the documentation always matches them by custom_id."))
+            + "<p><b>Plan the batch.</b> %s %s %s</p>" % (
+                cf("ts-4-5-s2", gx("Calculating batch submission frequency based on SLA constraints (e.g., 4-hour windows to guarantee 30-hour SLA with 24-hour batch processing)", "Exam guide, 4.5-S2"),
+                   "The guide plans the submissions for a service level: a batch every 4 hours, plus 24 hours of processing, meets 30 hours (4.5-S2)."),
+                cf("ts-4-5-s4", gx("Using prompt refinement on a sample set before batch-processing large volumes to maximize first-pass success rates and reduce iterative resubmission costs", "Exam guide, 4.5-S4"),
+                   "It refines the prompt on a sample before a large batch (4.5-S4)."),
+                cf("ts-4-5-f16", D(BATCH, "* Dry run a single request shape with the Messages API to avoid validation errors.", "Batch processing"),
+                   "The documentation tests the shape of one request on the Messages API first."))
+            + exam_tests("4.5", [("Batch processing: Message Batches API appropriateness, latency tolerance assessment, failure handling by custom_id", "Among the topics, the guide names")])
+            + guide_text("4.5"), "ts-4-5")
+    + level("depth",
+            beyond([cf("ts-4-5-b1", D(BATCH, "validation errors are returned when processing of the entire batch has ended.", "Batch processing"),
+                       "Validation errors come back only when the whole batch has ended, so a wrong request can cost a long wait."),
+                    cf("ts-4-5-b2", D(BATCH, "The pricing discounts from prompt caching and Message Batches can stack", "Batch processing"),
+                       "The discounts of prompt caching and of batches can stack, but cache hits in a batch are not sure."),
+                    cf("ts-4-5-b3", D(BATCH, "Extended output is available on the Message Batches API only, not the synchronous Messages API.", "Batch processing"),
+                       "Extended output exists only on the Message Batches API, with a beta header and some models.")])
+            + code_pop_text("ts-4-5-code", "The code: results sorted by type and custom_id", "Handle the results of a batch", BATCH, RES45, "Batch processing",
+                            "An invalid request must be fixed before it is sent again. A server error can be sent again as it is.")
+            + tab2_links("4.5", cf("ts-4-5-d67", excerpt(D67, "2. The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067"),
+                                   "The owner rejected the Message Batches API: each round of the mock builder would wait for its batch, so the work is blocking (4.5-K2).")
+                         + ' <a href="%s#step-4">Step 4, Check by a model &rarr;</a>' % TAB2), "ts-4-5"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
