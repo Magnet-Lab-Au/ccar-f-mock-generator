@@ -252,7 +252,7 @@ def exam_tests(tsid, lines):
     k = tsid.replace(".", "-")
     out = []
     for i, (text, what) in enumerate(lines):
-        out.append("%s %s" % (what, fact(card("ts-%s-x%d" % (k, i), gx(text, "Exam guide, section 17")), "&ldquo;%s&rdquo;" % e(text))))
+        out.append("%s %s" % (what, fact(card("ts-%s-x%d" % (k, i), gx(text, "Exam guide, appendix (section 17)")), "&ldquo;%s&rdquo;" % e(text))))
     return '<div><h4 class="gh2">The exam tests</h4><p>%s. %s</p></div>' % (" ".join(out), mock_count(tsid))
 
 
@@ -280,7 +280,7 @@ def from_sample(html):
         POP["ts-1-1-" + k] = S_POP[k]
     for k in sorted(set(re.findall(r'data-card="ts-1-1-([^"]+)"', html))):
         CARD["ts-1-1-" + k] = dict(S_CARD[k])
-        CARD["ts-1-1-" + k]["title"] = CARD["ts-1-1-" + k]["title"].replace("In-Scope Topics, Section 17 (Appendix)", "Exam guide, section 17").replace("Technologies and Concepts, Section 17 (Appendix)", "Exam guide, section 17")
+        CARD["ts-1-1-" + k]["title"] = CARD["ts-1-1-" + k]["title"].replace("In-Scope Topics, Section 17 (Appendix)", "Exam guide, appendix (section 17)").replace("Technologies and Concepts, Section 17 (Appendix)", "Exam guide, appendix (section 17)")
     if "ts-1-1-d-stop" in CARD:
         table = "\n".join(read(SRC % "anthropic-docs-handling-stop-reasons").split("\n")[13:21])
         assert table.count("| [`") == 7 and "model_context_window_exceeded" in table
@@ -1674,7 +1674,7 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
                    "The guide says that explicit severity criteria, with a code example for each level, make the classification consistent (4.1-S3)."),
                 cf("ts-4-1-f12", D(CREV, "State explicitly which classes of finding are Important and which are Nit at most.", "Claude Code, Code Review"),
                    "The documentation says to state in REVIEW.md which classes are Important and which are Nit, and its example uses prose, with no code (see the popup). The exam uses the guide."))
-            + '<div><h4 class="gh2">The exam tests</h4><p>No line of section 17 is for 4.1 alone. %s %s</p></div>' % (
+            + '<div><h4 class="gh2">The exam tests</h4><p>No line of the appendix of the guide is for 4.1 alone. %s %s</p></div>' % (
                 cf("ts-4-1-x0", gx("You need to design prompts that provide actionable feedback and minimize false positives.", "Exam guide, scenario 5"),
                    "Scenario 5, Claude Code for continuous integration, asks for prompts that give actionable feedback and few false positives."),
                 mock_count("4.1"))
@@ -1978,7 +1978,7 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                 cf("ts-4-6-use", excerpt(step_file(4), "The same context. Here: a new call, with no reasoning of the writer, checks the question.", "Build guide, step 4"),
                    "In step 4, a new call with no reasoning of the writer checks each question."),
                 cf("ts-4-6-lim", excerpt(D32, "A limit: only call 4a is blind. Call 4b is not completely \"without prior reasoning context\", because it gets the reason of each option from the writer.", "Mock decision 0032"),
-                   "But only call 4a is blind. Call 4b gets the reason that the writer gave for each option."),
+                   "But only the first of its two calls is blind. The second call gets the reason that the writer gave for each option."),
                 cf("ts-4-6-mod", excerpt("src/model_call.py", "MODEL = \"claude-opus-5-5\"", "Mock builder code, src/model_call.py"),
                    "The writer and the checker use the same model, so the independence comes from the context."),
                 cf("ts-4-6-d32", excerpt(D32, "For now, this design does the opposite of the point. The guide calibrates confidence with \"labeled validation sets\": \"Field-level confidence scores calibrated using labeled validation sets for routing review attention\" (5.5-K3). The guide wrote that point for the extraction of data. We have no such labels before the owner marks mock 1 (decision 0022).", "Mock decision 0032"),
@@ -2136,9 +2136,9 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                             "A document assistant, not a support agent: no page that we read shows a prompt with escalation criteria. This block is the user turn, after a system prompt.")
             + tab2_links("5.2", "%s %s" % ("The mock builder is not a support agent, so it has no customer to escalate.",
                                            cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3), and sample question 3 in Section 9 uses such an option as a wrong option. So it is a fair wrong option.", "Mock decision 0006"),
-                                              "But rule D3 of step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")
+                                              "But step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")
                                            + " " + cf("ts-5-2-d3lim", excerpt(step_file(6), "A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock.", "Build guide, step 6"),
-                                              "In mocks 2 to 5, a finding of rule D3 was recorded as a known limit of the mock, not fixed.")))
+                                              "In mocks 2 to 5, a scenario with more than one such option was recorded as a known limit of the mock, not fixed.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
 
 
@@ -2210,7 +2210,10 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
             + tab2_links("5.3") + "<p>%s %s</p>" % (cf("ts-5-3-use", excerpt(step_file(3), "Written for errors between agents. Here: an error must never look like a pass.", "Build guide, step 3"),
                                                     "Step 3 uses 5.3-K4: an error must never look like a pass."),
                                                  cf("ts-5-3-use6", excerpt(step_file(6), "Written for errors between agents. Here: a call that fails, or an answer that is not valid, never counts as a pass.", "Build guide, step 6"),
-                                                    "Step 6 uses it too: a call that fails, or an answer that is not valid, never counts as a pass.")), "ts-5-3"))
+                                                    "Step 6 uses it too: a call that fails, or an answer that is not valid, never counts as a pass."))
+            + "<p>%s The guide calls the end of a whole workflow on one failure an anti-pattern (5.3-K4). The build stops anyway: the error names its cause, no retry can repair it, and the mock waits for the owner.</p>"
+              % cf("ts-5-3-c2", excerpt("src/step6_check_scenario.py", "C2 failing stops the run with an error\n    that names the cause (decision 0034): a new call cannot repair it.", "Code of step 6, rule C2"),
+                   "One stop of step 6 looks like that anti-pattern: when the questions of a scenario do not agree with the plan, the run stops with an error, and a new call cannot repair it."), "ts-5-3"))
 
 
 # ----- part 5.4 (facts: academy/facts/ts-5-4.md) -----
@@ -2451,8 +2454,13 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
             beyond([cf("ts-5-6-b1", D(CIT, "If you enable citations on any user-provided document (`document` blocks or `search_result` blocks) and also include the `output_config.format` parameter (or the deprecated `output_format` parameter), the API returns a 400 error.", "Citations"),
                        "In the Claude API, citations and the structured outputs of output_config.format do not work in one request: the API returns a 400 error.")
                     + " " + fact("ts-5-6-s4", "The guide asks for dates in structured outputs (5.6-S4),") + " "
-                    + cf("ts-5-6-g1036", gx("Structured output via tool_use: schema design, tool_choice configuration, nullable fields to prevent hallucination", "Exam guide, section 17"),
-                         "and it names structured output through tool_use.") + " This academy did not check whether citations work with a forced tool call.",
+                    + cf("ts-5-6-g1036", gx("Structured output via tool_use: schema design, tool_choice configuration, nullable fields to prevent hallucination", "Exam guide, appendix (section 17)"),
+                         "and it names structured output through tool_use.") + " "
+                    + cf("ts-5-6-b1b", D(CIT, "Citations cannot be used together with [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs).", "Citations"),
+                         "The Claude API documentation says that citations cannot be used together with structured outputs,") + " "
+                    + cf("ts-5-6-b1c", D(SOUTA, "**Strict tool use** (`strict: true`): Guarantee schema validation on tool names and inputs.", "Structured outputs"),
+                         "and it counts strict tool use as one of the two features of structured outputs.")
+                    + " Neither page says whether citations work with a forced tool call.",
                     cf("ts-5-6-b2", D(CIT, "As image citations are not yet supported, PDFs that are scans of documents and do not contain extractable text are not citable.", "Citations"),
                        "Citations of the Claude API do not work for a scanned PDF with no extractable text."),
                     cf("ts-5-6-b3", D(SRES, "The text block is the minimal citable unit: Claude cites whole blocks, not substrings within a block.", "Search results"),
@@ -2526,6 +2534,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
   <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
+  <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts, the topics that the exam covers, and the topics that it does not cover.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),

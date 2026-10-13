@@ -176,13 +176,13 @@ def table_use(point):
 
 
 POP = {
-    "ts-44": {"who": "Task statement 4.4", "cls": "model", "title": TS["4.4"]["title"],
+    "ts-4-4": {"who": "Task statement 4.4", "cls": "model", "title": TS["4.4"]["title"],
               "sent": ["How step 5 uses each point:", table_use("4.4-K1"), table_use("4.4-S1"), table_use("4.4-K2")],
               "points": pts("4.4-K1", "4.4-S1", "4.4-K2")},
-    "ts-11": {"who": "Task statement 1.1", "cls": "model", "title": TS["1.1"]["title"],
+    "ts-1-1": {"who": "Task statement 1.1", "cls": "model", "title": TS["1.1"]["title"],
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
-    "ts-43": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
-              "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3"),
+    "ts-4-3": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
+              "sent": ["How step 5 uses the point:", table_use("4.3-K1"), "The step names, but does not use:", table_use("4.3-S3"),
                        "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 14 October 2026 in academy/sources/).",
                        EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
@@ -485,7 +485,7 @@ step5_html = STEP5 % {
     "guard": f("s5-guard", "Each start of a slot has at most %d tries. %d results &ldquo;cannot decide&rdquo; of step 4 also stop it." % (TRIES, CANNOT)),
     "file": f("s5-file", "Each try is a new file. No file is written over, so the history of each question stays."),
     "fig52": FIG52,
-    "ts": ts_chip("ts-44", "4.4") + ts_chip("ts-11", "1.1") + ts_chip("ts-43", "4.3"),
+    "ts": ts_chip("ts-4-4", "4.4") + ts_chip("ts-1-1", "1.1") + ts_chip("ts-4-3", "4.3"),
     "fig53": FIG53,
     "auto": f("c-auto", "one automatic loop."),
     "code": f("a-code", "The rules of the next action became code, with tests that make no model call."),
@@ -557,9 +557,13 @@ def ts_block(n, extra=None):
     for tsid in dict.fromkeys(p.split("-")[0] for p, _ in rows):
         key = "step-%d-ts-%s" % (n, tsid.replace(".", "-"))
         mine = [(p, u) for p, u in rows if p.startswith(tsid + "-")]
+        used = [(p, u) for p, u in mine if "This build does not use it" not in u]
+        unused = [(p, u) for p, u in mine if "This build does not use it" in u]
         POP[key] = {"who": "Task statement " + tsid, "cls": "model", "title": TS[tsid]["title"], "example": None,
-                    "sent": ["How step %d uses %s:" % (n, "each point" if len(mine) > 1 else "the point")]
-                            + ["%s: %s" % (p, u) for p, u in mine] + ((extra or {}).get(tsid) or [])
+                    "sent": ["How step %d uses %s:" % (n, "each point" if len(used) > 1 else "the point")]
+                            + ["%s: %s" % (p, u) for p, u in used]
+                            + (["The step names, but does not use:"] + ["%s: %s" % (p, u) for p, u in unused] if unused else [])
+                            + ((extra or {}).get(tsid) or [])
                             + (["Why: " + DEVIATION, EXAM_43] if any(p in ("4.3-K1", "4.3-S3") for p, _ in mine) else []),
                     "points": pts(*[p for p, _ in mine])}
         chips.append('<div class="tsrow"><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
@@ -579,15 +583,15 @@ def with_sources(n, html, extra=""):
     return html.replace("@SOURCES@", sources(cards) + extra)
 
 
-def level(kind, body):
+def level(kind, body, label="what went wrong, and the fix"):
     if kind == "overview":
         return '<section data-level="overview" aria-label="Overview"><p class="lvl1">Overview &middot; 30 seconds</p>%s</section>' % body
     if kind == "explanation":
         return ('<details class="level" data-level="explanation"><summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>'
                 '<div class="body">%s</div></details>' % body)
-    return ('<details class="level" data-level="depth"><summary><h4>Depth</h4><span class="ve-label">what went wrong, and the fix</span></summary>'
+    return ('<details class="level" data-level="depth"><summary><h4>Depth</h4><span class="ve-label">%s</span></summary>'
             '<div class="body">%s<section class="sources" aria-label="Sources of step @N@"><p class="ve-label">Sources of step @N@. '
-            'Each underlined fact opens its card.</p><ul>@SOURCES@</ul></section></div></details>' % body)
+            'Each underlined fact opens its card.</p><ul>@SOURCES@</ul></section></div></details>' % (label, body))
 
 
 PART_HTML = {}
@@ -696,7 +700,7 @@ STEP0 = (level("overview",
                  % (fact("s0-a1", "Early in the design, a proposal for step 2 said &ldquo;the story of the scenario&rdquo; and &ldquo;a fixed form with fields&rdquo;."),
                     fact("s0-a2", "The cause: the plan of work started at step 1, but each step reads the records of step 0."),
                     fact("s0-a3", "step 0 was designed and run before step 2, and each design names the exact file format and fields."),
-                    fact("s0-rule", "Working rule 30 has the same words: each design proposal names the exact file format and the exact fields."),
+                    fact("s0-rule", "A rule of the owner has the same words: each design proposal names the exact file format and the exact fields."),
                     fact("s0-b", "The assistant suggested to call this work an input, not a step. The owner said that it must be documented, because a goal of the build is a record that a portal page can show."),
                     fact("s0-same", "The file has not changed since the first commit of the repository, on 7 October 2026.")))
          ).replace("@N@", "0")
@@ -885,6 +889,7 @@ CARD.update({
     "s2-cost": excerpt(D10, "We accepted one disadvantage: a writer that sees one slot does not see the other questions of its scenario.", "Mock decision 0010, How we decided"),
     "s2-model": {"title": "The model of each try", "kind": "count", "text": "All %d question files of mocks 1 to 5 have the model %s. None has the status cannot_write. The script of this page counted them." % (sum(MODELS.values()), MODEL),
                  "src": "runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s2-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, Out-of-Scope Topics", kind="guide"),
     "s2-cache": code_block("src/step2_write.py", "# Decision 0067: the rules come first as a cached block.", "cached=[rules_for(request)])", "The rules come first, as a cached block"),
     "s2-letters": excerpt(D41, "Code mixes the options with the seed of the plan, the slot ID and the question text. So the same answer always gets the same letters.", "Mock decision 0041, Decision"),
     "s2-plan": excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0070-*.md"))[0][len(ROOT) + 1:], "2. **Step 2** (and step 5) puts the correct options at the letters of the slot.", "Mock decision 0070, Decision"),
@@ -939,8 +944,9 @@ STEP2 = (level("overview",
                   fact("s2-letters", "code, not the model, mixes the options and gives the letters.")))
          + level("explanation",
                  FIG21
-                 + '<p><b>The rules come first.</b> %s The writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
+                 + '<p><b>The rules come first.</b> %s Today the writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
                    % (fact("s2-cache", "From mock 4, the list of rules is a separate first block, cached, so a repeated list costs less (mock decision 0067)."), fact("s2-model", "Each of the %d tries of the 5 mocks used Claude Opus 5.5." % sum(MODELS.values())))
+                 + '<div class="callout"><span class="chip">Beyond the exam</span><p>The cached block of rules. %s</p></div>' % fact("s2-exam", "The exam tests only that prompt caching exists.")
                  + '<p><b>The form.</b> %s %s %s</p>'
                    % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option as correct or wrong, with a reason. It can also answer &ldquo;cannot write&rdquo;."),
                       fact("s2-form", DEVIATION), e(EXAM_43))
@@ -1088,7 +1094,7 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
 
 STEP3 = (level("overview",
                '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4><p>%s %s %s</p>'
-               % (fact("s3-what", "Code checks each try against 12 rules that have one exact answer, such as the number of options and the length of the text."),
+               % (fact("s3-what", "Today code checks each try against 12 rules that have one exact answer, such as the number of options and the length of the text."),
                   fact("s3-cheap", "Code runs before step 4, so a try with a simple defect does not use a step 4 model call."),
                   fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"]))))
          + level("explanation",
@@ -1098,6 +1104,7 @@ STEP3 = (level("overview",
                    % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
                       fact("s3-docs", "the documentation showed that a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
+                 + '<div class="callout"><span class="chip">Beyond the exam</span><p>The limit of a list in a JSON schema. The exam guide does not name this limit of the API.</p></div>'
                  + ts_block(3))
          + level("depth", DEPTH3)
          ).replace("@N@", "3")
@@ -1245,7 +1252,7 @@ DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</
 
 STEP4 = (level("overview",
                '<h4 class="takeaway">Two new Claude calls: one answers blind, one checks 9 rules, and code decides</h4><p>%s %s %s</p>'
-               % (fact("s4-calls", "Call 4a answers the question with no answer key. Call 4b checks the 9 rules B1 to B9 with the key."),
+               % (fact("s4-calls", "Call 4a answers the question with no answer key. Today call 4b checks the 9 rules B1 to B9 with the key."),
                   fact("s4-compare", "Code compares the letters of call 4a with the answer key.") + " " + fact("s4-verdict", "Code also searches the feature names in the guide records, and makes the verdict. A model does not make the verdict."),
                   fact("s4-runs", "In mocks 1 to 5, %d of %d checks passed." % (V4["pass"], sum(V4.values())))))
          + level("explanation",
@@ -1449,7 +1456,7 @@ FIG72 = """
   <figcaption><span class="fig-n">Fig. 7-2</span>%s</figcaption>
 </figure>""" % ("".join(
     '<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d marked</p><p class="cap">%s, round 1. Bad marks: %d. Reader: %s</p></div>'
-    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model (the owner did not read them, mock decision 0069)")
+    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model. The owner filled the 20 marks of round 1 without reading the questions (mock decision 0069)")
     for m in range(5)),
     fact("s7-runs", "Over the 5 mocks, %d marks were given: %d in round 1 and %d in round 2, after a send-back. %d were bad, both in mock 5." % (MARKS_ALL, sum(ROUND1), MARKS_ALL - sum(ROUND1), sum(BAD))))
 
@@ -1575,7 +1582,7 @@ STEP8 = (level("overview",
                    % fact("s8-nopoint", "None. The step uses three facts of the exam format, not a point of a task statement."))
          + level("depth",
                  ('<h4 class="story">The first conditions could never be met</h4>'
-                  '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so the second design review (see step 5) found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, with tests (mock decisions 0038 and 0039).</p>'
+                  '<p>The first design started step 8 when each question had passed steps 3, 4 and 6. But a finding that the owner ignores stays a &ldquo;fail&rdquo;, so the second design review (<a href="#step-5">step 5</a> counts its items) found: &ldquo;%s&rdquo; The fix: %s The exact conditions became code, with tests (mock decisions 0038 and 0039).</p>'
                   % (fact("s8-never", "So the mock can never be built."), fact("s8-cmd", "step 8 starts when the owner accepts the mock, and code checks the conditions before it builds.")))
                  + '<h4 class="story">The letters were not balanced</h4>' + FIG82
                  + '<p>%s So from mock 5, the plan of step 1 sets the correct letters, 13 for each of A to D (see step 2). For mocks 1 to 4, %s</p>'
@@ -1607,6 +1614,8 @@ CARD.update({
     "cc-blind": excerpt(JR, "The blind file was not in git: only the empty file of the program was committed. The owner had sent the blind file to the Cowork session before the second review, and it came back from there unchanged", "Journal of the mock builder, 8 October 2026"),
     "cc-line": excerpt("CLAUDE.md", "5. A marking file that the owner filled is committed before anybody else reads it.", "CLAUDE.md of the project"),
     "cc-handoff": excerpt("HANDOFF.md", "This file gives a new session what it needs to continue.", "HANDOFF.md"),
+    "cc-d01": excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0001-*.md"))[0][len(ROOT) + 1:], "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001, Exam guide points"),
+    "cc-54k2": excerpt("reference/exam-guide.md", "The role of scratchpad files for persisting key findings across context boundaries", "Exam guide, 5.4-K2", kind="guide"),
     "cc-17k4": excerpt("reference/exam-guide.md", "Why starting a new session with a structured summary is more reliable than resuming with stale tool results", "Exam guide, 1.7-K4", kind="guide"),
     "cc-doc-session": excerpt(DOCS_CC % "how-claude-code-works", "Each new session starts with a fresh context window, without the conversation history from previous sessions.", "Claude Code documentation, How Claude Code works (copy of 14 October 2026)", kind="docs"),
     "cc-records": {"title": "The records of the build", "kind": "count", "text": "docs/decisions/ has %d mock decisions. WORKING-RULES.md has %d numbered rules. CLAUDE.md has %d lines. The script of this page counted them." % (N_MOCK_DEC, N_RULES, CC_LINES),
@@ -1674,8 +1683,8 @@ def cc_ts(tsid, key):
 CC_POINTS = {"3.1": ["3.1-K3"], "1.7": ["1.7-K4"], "4.6": ["4.6-K1", "4.6-S1", "4.6-K3"], "3.4": ["3.4-K1", "3.4-K3"]}
 
 
-def cc_body(pid, overview, explanation, depth):
-    html = (level("overview", overview) + level("explanation", explanation) + level("depth", depth)).replace("Sources of step @N@", "Sources of this part").replace("@N@", pid)
+def cc_body(pid, overview, explanation, depth, label="what went wrong, and the fix"):
+    html = (level("overview", overview) + level("explanation", explanation) + level("depth", depth, label)).replace("Sources of step @N@", "Sources of this part").replace("@N@", pid)
     cards = list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', html)))
     return html.replace("@SOURCES@", sources(cards))
 
@@ -1697,40 +1706,41 @@ CC_HTML = "".join([
         % (fact("cc-doc-session", "Each new session of Claude Code starts with a fresh context window, without the history of earlier sessions."),
            fact("cc-handoff", "So HANDOFF.md gives a new session what it needs to continue.")),
         '<p>%s %s %s</p>'
-        % (fact("cc-r25", "The journal has one entry for each session (working rule 25),") + " " + fact("cc-r12", "and each decision of the owner is a file (working rule 12)."), fact("cc-check", "The end-of-session check of CLAUDE.md asks for a journal entry, the decision files and an update of HANDOFF.md."),
-           fact("cc-17k4", "The guide says that a new session with a structured summary is more reliable than one that resumes with stale tool results (1.7-K4)."))
+        % (fact("cc-r25", "The journal has one entry for each session,") + " " + fact("cc-r12", "and each decision of the owner is a file. Both are rules of the owner."), fact("cc-check", "The end-of-session check of CLAUDE.md asks for a journal entry, the decision files and an update of HANDOFF.md."),
+           fact("cc-17k4", "The guide says that a new session with a structured summary is more reliable than one that resumes with stale tool results (1.7-K4).")
+           + " " + fact("cc-d01", "The first decision of the build also names 5.4-K2 for the same files:") + " " + fact("cc-54k2", "files that keep key findings across context boundaries."))
         + cc_ts("1.7", "cc-1-7-ts"),
         '<h4 class="story">The summary was not read</h4><p>%s</p>'
-        % (fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not.") + " " + fact("cc-six", "It read them, and changed six points of the plan.")))),
+        % (fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not.") + " " + fact("cc-six", "It read them, and changed six points of the plan.")), "how the build used it")),
     cc_part("cc-4-6", "4.6", "A new agent reviews each file", "task statement 4.6", cc_body("cc-4-6",
         '<h4 class="takeaway">A file is checked by an agent that did not write it</h4><p>%s %s</p>'
-        % (fact("cc-r15", "Working rule 15: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
-           fact("cc-r14", "Working rule 14: a check must not depend on the memory or the judgment of the assistant alone.")),
+        % (fact("cc-r15", "A rule of the owner: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
+           fact("cc-r14", "Another rule: a check must not depend on the memory or the judgment of the assistant alone.")),
         '<p>%s %s %s</p>'
         % (fact("cc-46k1", "The exam guide gives the reason: a model that keeps the reasoning of its own work is less likely to question its decisions (4.6-K1).") + " " + fact("cc-46s1", "So the guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
            fact("cc-doc-fresh", "In Claude Code, a subagent that is not a fork starts with a fresh context, so it does not see the conversation that made the file."),
            fact("cc-code", "On 7 October 2026, two independent reviewers checked the first code that moves each try, and its tests: the first found 4 serious and 6 minor bugs, the second found 1 serious and 3 minor bugs in the fixes."))
-        + '<p>This tab was built the same way: %s %s %s</p>' % (fact("cc-a12", "a fact agent and a review agent for each part (academy decision 0012),"), fact("cc-a15", "then a whole-picture agent after each slice (academy decision 0015)."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
+        + '<p>This tab was built the same way: %s %s %s</p>' % (fact("cc-a12", "a fact agent and a review agent for each part,"), fact("cc-a15", "then a whole-picture agent after each group of parts."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
         + cc_ts("4.6", "cc-4-6-ts"),
         '<h4 class="story">Three checks of all documents</h4>' + FIGCC
         + '<p>Before a push on 9 October 2026, %s %s %s %s</p>'
         % (fact("cc-c1", "an independent agent checked all documents, and the assistant fixed the gaps."),
            fact("cc-c2", "A second independent check, over more files, found %d gaps." % GAPS2),
            fact("cc-c3", "A third check found %d smaller gaps." % GAPS3),
-           fact("cc-stop", "No reviewer checked the last 20 fixes. The owner stopped the checks there.")))),
+           fact("cc-stop", "No reviewer checked the last 20 fixes. The owner stopped the checks there.")), "how the build used it")),
     cc_part("cc-3-4", "3.4", "Discuss first, not plan mode", "task statement 3.4 · no example in the build", cc_body("cc-3-4",
         '<h4 class="takeaway">The build used a rule to discuss first, not plan mode</h4><p>%s %s</p>'
-        % (fact("cc-r8", "Working rule 8: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
+        % (fact("cc-r8", "A rule of the owner: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
            fact("cc-d23", "No record shows that the build used plan mode or the Explore subagent.")),
         '<p>%s %s The build had a different method: %s %s</p>'
         % (fact("cc-34k1", "The guide teaches plan mode for complex tasks with large changes and architectural decisions (3.4-K1)."),
            fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
-           fact("cc-r30", "for the design of a step of the mock builder, the assistant showed one proposal with all details, and the owner accepted it or named a change (working rule 30, see step 0)."),
-           fact("cc-r12", "Each decision of the owner became a file on the same day (working rule 12).") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
+           fact("cc-r30", "for the design of a step of the mock builder, the assistant showed one proposal with all details, and the owner accepted it or named a change (see step 0)."),
+           fact("cc-r12", "Each decision of the owner became a file on the same day.") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
         + cc_ts("3.4", "cc-3-4-ts"),
         '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'
         % (fact("cc-soon", "During the plan of the two tabs of this academy, the assistant moved to the build too soon, and the owner stopped it."),
-           fact("cc-doc-context", "As the part on CLAUDE.md above says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")))),
+           fact("cc-doc-context", "As the part on CLAUDE.md above says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")), "how the build used it")),
 ])
 
 # ----- the parts -----
@@ -1799,7 +1809,7 @@ BODY = """<main>
 </section>
 <section class="parts" id="claude-code" aria-label="The build in Claude Code">
   <h2>The build in Claude Code</h2>
-  <p class="lead">The mock builder was itself built with Claude Code. These parts show where that build used a task statement of the exam, and one where it did not.</p>
+  <p class="lead">The mock builder was itself built with Claude Code. The owner, the person who directed the build, gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
   %(cc)s
 </section>
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
