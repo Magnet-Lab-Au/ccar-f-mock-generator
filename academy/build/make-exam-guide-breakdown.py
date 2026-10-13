@@ -248,8 +248,8 @@ def exam_tests(tsid, lines):
     k = tsid.replace(".", "-")
     out = []
     for i, (text, what) in enumerate(lines):
-        out.append("%s %s" % (what, fact(card("ts-%s-x%d" % (k, i), gx(text, "Exam guide, section 17")), "&ldquo;%s&rdquo;." % e(text))))
-    return '<div><h4 class="gh2">The exam tests</h4><p>%s %s</p></div>' % (" ".join(out), mock_count(tsid))
+        out.append("%s %s" % (what, fact(card("ts-%s-x%d" % (k, i), gx(text, "Exam guide, section 17")), "&ldquo;%s&rdquo;" % e(text))))
+    return '<div><h4 class="gh2">The exam tests</h4><p>%s. %s</p></div>' % (" ".join(out), mock_count(tsid))
 
 
 # ----- part 1.1: the checked content of the fifth sample -----
@@ -887,7 +887,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
 YAML23 = "---\nname: safe-researcher\ndescription: Research agent with restricted capabilities\ntools: Read, Grep, Glob, Bash\n---"
 FIG23 = figure("2.3-1", 890, 350,
                "A coordinator delegates to four agents of the research system, and each agent has only the tools of its role: web search tools, load_document, "
-               "verify_fact, and the tools of the report. The synthesis agent checks a simple fact with its own verify_fact tool, and sends a complex check through the coordinator.",
+               "verify_fact. The guide names no tools for the report agent. The synthesis agent checks a simple fact with its own verify_fact tool, and sends a complex check through the coordinator.",
                "".join(['<path class="ve-e no-head" d="M445 90V120M120 120H780"/>',
                         edge("M120 120V150"), edge("M340 120V150"), edge("M560 120V150"), edge("M780 120V150"),
                         edge("M560 240V280", "simple check", 568, 265, anchor="r"),
@@ -895,9 +895,9 @@ FIG23 = figure("2.3-1", 890, 350,
                         box(330, 20, 230, 70, ["Coordinator"], sub="delegates", cls="who-model"),
                         box(20, 150, 200, 90, ["Web search"], sub="web search tools", cls="who-model"),
                         box(240, 150, 200, 90, ["Document", "analysis"], sub="load_document", cls="who-model"),
-                        box(460, 150, 200, 90, ["Synthesis"], sub="verify_fact only", cls="who-model"),
-                        box(680, 150, 190, 90, ["Report"], sub="its own tools", cls="who-model"),
-                        box(460, 280, 200, 50, ["verify_fact"], sub="a narrow shared tool", cls="try ok")]),
+                        box(460, 150, 200, 90, ["Synthesis"], sub="no web search tools", cls="who-model"),
+                        box(680, 150, 190, 90, ["Report"], sub="(not in the guide)", cls="who-model"),
+                        box(440, 280, 240, 50, ["verify_fact"], sub="a scoped cross-role tool", cls="try ok")]),
                "%s %s" % (cf("ts-2-3-k3", gx("Scoped tool access: giving agents only the tools needed for their role, with limited cross-role tools for specific high-frequency needs", "Exam guide, 2.3-K3"),
                              "Each agent gets only the tools of its role, plus a narrow tool for a frequent need (2.3-K3)."),
                           cf("ts-2-3-f14", gx("Option A applies the principle of least privilege by giving the synthesis agent only what it needs for the 85% common case (simple fact verification) while preserving the existing coordination pattern for complex cases.", "Exam guide, sample question 9"),
@@ -905,7 +905,7 @@ FIG23 = figure("2.3-1", 890, 350,
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
                         "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
-                        "tool_choice sets whether Claude can, must, or must use one named tool, but the newest models reject the forced settings.",
+                        "tool_choice sets whether Claude can, must, or must use one named tool, but Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 reject the forced settings.",
                         FIG23)
     + level("explanation",
             "<p><b>Few tools.</b> %s %s</p>" % (
@@ -915,19 +915,24 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "The documentation puts the drop higher, above 30 to 50 tools. The exam uses the guide."))
             + "<p><b>Scope by role.</b> %s %s %s</p>" % (
                 cf("ts-2-3-s1", gx("Restricting each subagent's tool set to those relevant to its role, preventing cross-specialization misuse", "Exam guide, 2.3-S1"),
-                   "Each subagent gets only the tools of its role, so that it does not misuse tools of another role, such as a synthesis agent that searches the web (2.3-K2, 2.3-S1)."),
+                   "Each subagent gets only the tools of its role (2.3-S1).") + " " + cf("ts-2-3-k2", gx("Why agents with tools outside their specialization tend to misuse them (e.g., a synthesis agent attempting web searches)", "Exam guide, 2.3-K2"),
+                   "The guide says that an agent with tools of another role tends to misuse them, such as a synthesis agent that searches the web (2.3-K2)."),
                 cf("ts-2-3-f5", D(SUB, "subagents can be limited to specific tools, reducing the risk of unintended actions", "Agent SDK, Subagents"),
-                   "The documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
-                fact("ts-1-3-f10", "A tool that the list of a subagent leaves out is not in its session."))
+                   "The Agent SDK documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
+                fact("ts-1-3-f10", "In the Agent SDK, a tool that the list of a subagent leaves out is not in its session."))
             + "<p><b>Narrow tools.</b> %s %s</p>" % (
                 cf("ts-2-3-s2", gx("Replacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document that validates document URLs)", "Exam guide, 2.3-S2"),
-                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2)."),
+                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2). Part 2.1 shows that the documentation also advises to join related actions."),
                 cf("ts-2-3-s3", gx("Providing scoped cross-role tools for high-frequency needs (e.g., a verify_fact tool for the synthesis agent) while routing complex cases through the coordinator", "Exam guide, 2.3-S3"),
                    "A narrow tool of another role serves a frequent need, and complex cases still go through the coordinator (2.3-S3). Only the guide describes these two points."))
-            + "<p><b>tool_choice.</b> %s %s %s %s</p>" % (
+            + "<p><b>tool_choice.</b> %s %s %s %s %s %s</p>" % (
                 cf("ts-2-3-k4", gx("tool_choice configuration options: \"auto\", \"any\", and forced tool selection ({\"type\": \"tool\", \"name\": \"...\"})", "Exam guide, 2.3-K4"),
-                   "The guide names three options: auto, any, and a forced tool (2.3-K4). With any, Claude must call a tool and gives no text (2.3-S5). A forced tool makes one tool run first, and the next steps follow in later turns (2.3-S4)."),
-                cf("ts-2-3-f9", D(DEFT, "When working with the `tool_choice` parameter, there are four possible options:", "Define tools"),
+                   "The guide names three options: auto, any, and a forced tool (2.3-K4)."),
+                cf("ts-2-3-s5", gx("Setting tool_choice: \"any\" to guarantee the model calls a tool rather than returning conversational text", "Exam guide, 2.3-S5"),
+                   "With any, Claude must call a tool and gives no text (2.3-S5)."),
+                cf("ts-2-3-s4", gx("Using tool_choice forced selection to ensure a specific tool is called first (e.g., forcing extract_metadata before enrichment tools), then processing subsequent steps in follow-up turns", "Exam guide, 2.3-S4"),
+                   "A forced tool makes one tool run first, and the next steps follow in later turns (2.3-S4)."),
+                cf("ts-2-3-f9", D(DEFT, "* `none` prevents Claude from using any tools. This is the default value when no `tools` are provided.", "Define tools"),
                    "The documentation names four: it adds none, which blocks all tools."),
                 cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
                    "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
@@ -946,7 +951,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
             + code_pop_text("ts-2-3-code", "The code: a subagent with a list of tools", "A Claude Code subagent with an allowlist", CCS, YAML23, "Claude Code, Subagents",
                             "The field tools lists the only tools of the subagent.")
             + tab2_links("2.3", cf("ts-2-3-d40", excerpt(D40, "The current Claude models do not accept a forced tool call.", "Mock decision 0040"),
-                                   "No step gives an agent a set of tools. Step 2 of tab 2 tells why the build sends no forced tool call: the current models do not accept one.")
+                                   "No step gives an agent a set of tools. Step 2 of tab 2 tells why the build sends no forced tool call: Claude Opus 5.5, the model of the build, does not accept one.")
                          + ' <a href="%s#step-2">Step 2, Write the question &rarr;</a>' % TAB2), "ts-2-3"))
 
 
@@ -958,14 +963,14 @@ MCP24 = "\n".join(read(SRC % CCMCP).split("\n")[650:661])
 assert MCP24.startswith("{") and "${API_KEY}" in MCP24 and MCP24.rstrip().endswith("}")
 FIG24 = figure("2.4-1", 890, 320,
                "An environment variable expands into .mcp.json, the project file that the team commits. ~/.claude.json holds the personal servers of a user. "
-               "Claude Code or the Agent SDK connects to the servers of both files, and the agent gets the tools of all servers together. Resources show the agent what data exists.",
+               "Claude Code connects to the servers of both files, and the agent gets the tools of all servers together. Resources show the agent what data exists.",
                "".join([edge("M145 80V110", "${VAR} expands", 153, 99, anchor="r"),
                         edge("M270 150H305V180H340"), edge("M270 260H305V180H340"),
                         edge("M540 180H580V80H620"), edge("M745 220V120", "what data exists", 753, 175, anchor="r"),
                         box(20, 20, 250, 60, ["environment"], sub="the secret, not in git"),
                         box(20, 110, 250, 80, [".mcp.json"], sub="project: team, committed"),
                         box(20, 220, 250, 80, ["~/.claude.json"], sub="user: personal servers"),
-                        box(340, 140, 200, 80, ["Claude Code", "or Agent SDK"], sub="connects"),
+                        box(340, 140, 200, 80, ["Claude Code"], sub="connects to each"),
                         box(620, 40, 250, 80, ["The agent"], sub="tools of all servers", cls="who-model"),
                         box(620, 220, 250, 80, ["Resources"], sub="issues, schemas, docs")]),
                "%s %s" % (cf("ts-2-4-k1", gx("MCP server scoping: project-level (.mcp.json) for shared team tooling vs user-level (~/.claude.json) for personal/experimental servers", "Exam guide, 2.4-K1"),
@@ -981,9 +986,9 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
             "<p><b>Two files.</b> %s %s %s</p>" % (
                 cf("ts-2-4-f2", D(CCMCP, "Check `.mcp.json` into version control so everyone on your team gets the same MCP tools and services.", "Claude Code, MCP"),
                    "The team commits .mcp.json, so that each member gets the same MCP servers (2.4-S1)."),
-                cf("ts-2-4-f3", D(CCMCP, "User-scoped servers are stored in `~/.claude.json` and provide cross-project accessibility", "Claude Code, MCP"),
+                cf("ts-2-4-f3", D(CCMCP, "User-scoped servers are stored in `~/.claude.json` and provide cross-project accessibility, making them available across all projects on your machine while remaining private to your user account.", "Claude Code, MCP"),
                    "User scope is in ~/.claude.json, for all the projects of one person (2.4-S2)."),
-                cf("ts-2-4-c1", D(CCMCP, "Use local scope for personal development servers, experimental configurations, or servers with credentials you don't want in version control.", "Claude Code, MCP"),
+                cf("ts-2-4-c1", D(CCMCP, "Local scope is the default. A local-scoped server loads only in the project where you added it and stays private to you. Claude Code stores it in `~/.claude.json` under that project's path, so the same server won't appear in your other projects. Use local scope for personal development servers, experimental configurations, or servers with credentials you don't want in version control.", "Claude Code, MCP"),
                    "The documentation has a third scope: local, the default, also in ~/.claude.json, which it names for experimental servers. The exam uses the guide."))
             + "<p><b>Secrets.</b> %s %s</p>" % (
                 cf("ts-2-4-k2", gx("Environment variable expansion in .mcp.json (e.g., ${GITHUB_TOKEN}) for credential management without committing secrets", "Exam guide, 2.4-K2"),
@@ -992,27 +997,28 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
                    "Claude Code expands the variable when it loads the file, so a team shares the file and each person keeps the key."))
             + "<p><b>All tools at once.</b> %s %s</p>" % (
                 cf("ts-2-4-f9", D(SDKM, "MCP tools follow the naming pattern `mcp__<server-name>__<tool-name>`.", "Agent SDK, MCP"),
-                   "Each tool name carries the name of its server, so the tools of many servers can sit side by side."),
-                cf("ts-2-4-c3", D(CCMCP, "Only tool names and server instructions load at session start", "Claude Code, MCP"),
-                   "The guide says that the tools are discovered at connection time. In Claude Code, by default, only the tool names load at the start, and the full definitions load on demand. The exam uses the guide."))
+                   "In the Agent SDK, each MCP tool name carries the name of its server: mcp__server__tool."),
+                cf("ts-2-4-c3", D(CCMCP, "Tool search is enabled by default: MCP tools are deferred and discovered on demand.", "Claude Code, MCP"),
+                   "The guide says that the tools are discovered at connection time. In Claude Code, tool search is on by default for first-party hosts: MCP tools are deferred and discovered on demand. The exam uses the guide."))
             + "<p><b>Resources.</b> %s %s</p>" % (
                 cf("ts-2-4-s5", gx("Exposing content catalogs as MCP resources to give agents visibility into available data without requiring exploratory tool calls", "Exam guide, 2.4-S5"),
-                   "A server can expose a catalog, such as issue summaries or database schemas, as resources, so the agent sees what data exists without exploratory tool calls (2.4-K4, 2.4-S5)."),
+                   "The guide says that a catalog exposed as resources lets the agent see what data exists without exploratory tool calls (2.4-S5).") + " " + cf("ts-2-4-k4", gx("MCP resources as a mechanism for exposing content catalogs (e.g., issue summaries, documentation hierarchies, database schemas) to reduce exploratory tool calls", "Exam guide, 2.4-K4"),
+                   "Examples are issue summaries and database schemas (2.4-K4)."),
                 cf("ts-2-4-f13", D(CCMCP, "Claude Code automatically provides tools to list and read MCP resources when servers support them", "Claude Code, MCP"),
-                   "Claude Code gives Claude tools to list and read them."))
+                   "In Claude Code, Claude itself lists and reads resources with tool calls. The exam uses the guide."))
             + "<p><b>Good servers.</b> %s Part 2.1 shows how. %s %s</p>" % (
                 cf("ts-2-4-s3", gx("Enhancing MCP tool descriptions to explain capabilities and outputs in detail, preventing the agent from preferring built-in tools (like Grep) over more capable MCP tools", "Exam guide, 2.4-S3"),
-                   "A detailed description of an MCP tool keeps the agent from using a built-in tool such as Grep in its place (2.4-S3)."),
+                   "The guide says that a detailed description of an MCP tool keeps the agent from using a built-in tool such as Grep in its place (2.4-S3)."),
                 cf("ts-2-4-s4", gx("Choosing existing community MCP servers over custom implementations for standard integrations (e.g., Jira), reserving custom servers for team-specific workflows", "Exam guide, 2.4-S4"),
                    "For a standard integration such as Jira, the guide uses an existing community server, and a custom server only for a workflow of the team (2.4-S4)."),
                 cf("ts-2-4-c6", D(CCMCP, "Verify you trust each server before connecting it.", "Claude Code, MCP"),
                    "The documentation warns: check that you trust each server before you connect it."))
             + exam_tests("2.4", [("MCP server configuration: project vs user scope, environment variable expansion, multi-server simultaneous access", "Among the topics, the guide names"),
-                                 ("MCP tool and resource design: resources for content catalogs, tools for actions, description quality for adoption", "and")])
+                                 ("MCP tool and resource design: resources for content catalogs, tools for actions, description quality for adoption", "and also")])
             + guide_text("2.4"), "ts-2-4")
     + level("depth",
-            beyond([cf("ts-2-4-b1", D(CCMCP, "For security reasons, Claude Code prompts for approval in interactive sessions before using project-scoped servers from `.mcp.json` files.", "Claude Code, MCP"),
-                       "In an interactive session, Claude Code asks for approval before it uses a server of a committed .mcp.json. In a non-interactive run it cannot ask, and it loads the server without a prompt."),
+            beyond([cf("ts-2-4-b1", D(CCMCP, "In `claude -p` runs, [Agent SDK](/docs/en/headless) sessions, and [cloud sessions](/docs/en/claude-code-on-the-web), Claude Code can't show that prompt: it loads project-scoped servers without asking.", "Claude Code, MCP"),
+                       "In an interactive session, Claude Code asks for approval before it uses a server of a committed .mcp.json. In claude -p runs, Agent SDK sessions and cloud sessions it cannot ask, and it loads the server without a prompt."),
                     cf("ts-2-4-b2", D(CCMCP, "In a remote server's `url` and `headers`, Claude Code reads credential variables from your environment as empty rather than expanding them.", "Claude Code, MCP"),
                        "For a remote server, some credential variables in the URL and the headers are read as empty, not expanded."),
                     cf("ts-2-4-b3", D(SDKM, "MCP tools require explicit permission before Claude can use them.", "Agent SDK, MCP"),
