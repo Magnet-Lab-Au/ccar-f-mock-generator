@@ -89,3 +89,4 @@ One entry for each work session. Newest entry first.
 
 - 00:30 Goal set. Slice 2 started: fact agents for steps 0 and 1.
 - 00:34 Closed headings name their task statements (commit 1cbae17). The fix is committed on `fix-owner-reason` in `../ccar-f-fix-owner-reason`: 232 tests OK, replay of M5-S38-T5 shows B9 and owner. Waiting: its independent review.
+- 00:47 Steps 0 and 1 written and committed (fb6975e, b24ea7f). Step 0 reviewed, 11 items fixed (e51bfee). The fix reviewed: no bug, 6 low items fixed on the branch, 234 tests OK (bd63ff7). Running: the fact agent of step 2 and the review of step 1.
