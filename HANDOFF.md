@@ -10,7 +10,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
-Status of this report: the final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. All are fixed (see the journal).
+Status of this report: the final version. An independent agent checked it against the commits at about 07:38 and found 8 problems. A second agent checked the fixes and decision 0036 and found 7 problems. All 15 are fixed (see the journal).
 
 **In short:** tab 1 is complete: all 30 task statements are written, reviewed and fixed. Tab 2 has slices 2 and 3. All work is in local commits on `main` and on the branch `fix-owner-reason`, from 1cbae17 to the commit of this report. Nothing is pushed. The work paused from about 03:50 to 06:30, probably at a usage limit, and then continued.
 
@@ -26,7 +26,7 @@ Status of this report: the final version. An independent agent checked it agains
 **Done on `main`, tab 1 "Exam guide breakdown"** (slices 4 to 8, the owner's words of 02:06: "Do as many slices as you can. Go all the way"):
 
 - The script `academy/build/make-exam-guide-breakdown.py` writes `academy/pages/exam-guide-breakdown.html`. The top has the map of the guide (Fig. A, the domains and their task statements, and Fig. B, the scenarios) and "How we broke it down". Each domain has a summary.
-- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam" and the links to tab 2. 28 parts have a code popup. Part 1.1 takes the checked content of the fifth sample, with its code in the popups of its figure. Part 1.2 has no code popup (item 16).
+- Each of the 30 parts has the three levels, one figure, its K and S points, "The exam tests" with the count of mock questions, "Beyond the exam" and the links to tab 2. 28 parts have a code popup. Part 1.1 takes the checked content of the fifth sample, with its code in one popup of its figure. Part 1.2 has no code popup (item 16).
 - A fact agent wrote a fact sheet for each part except 1.1, 29 in all (`academy/facts/ts-N-M.md`), with its conflicts and what it did not find. The night added 66 dated copies of documentation pages to `academy/sources/`.
 - Review agents checked the parts, in most cases two parts for each agent. They found 245 items, and all are fixed. Most were cards that held only a near claim, facts without their product or condition, and claims of the guide that the page did not mark as the guide's.
 - Whole-picture agents found 14 items (the top and domain 1, all fixed except one, which is item 8 below) and 17 items (domains 2 and 3, all fixed). A third one found 13 items (domains 4 and 5). Nine are fixed. Three are in items 9, 10 and 12. The assistant checked the last one (step 4 and its verdict) and found the two tabs consistent.
@@ -34,7 +34,7 @@ Status of this report: the final version. An independent agent checked it agains
 - The check `check-pages.js` prints "All checks passed." for both tabs. No part is over its word limit.
 - Screenshots of the 30 figures: `academy/screenshots/tab-1/`.
 
-**Choices of the night for tab 1 (working rule 36):** academy decision 0036 (proposed) records them. One review agent checks two parts. One whole-picture agent checks slices 5 and 6, and one checks slices 7 and 8. One reader agent reads slices 5 to 8, and it does not follow all of the method of decision 0026. The top of tab 1 has no fact agent and no review agent. These choices change how decisions 0012, 0015 and 0026 apply.
+**Choices of the night for tab 1 (working rule 36):** academy decision 0036 (proposed) records them. One review agent checks two parts, except part 3.6, which had its own, and part 1.1, which had no review agent at night. One whole-picture agent checks slices 5 and 6, and one checks slices 7 and 8. One reader agent reads slices 5 to 8, and it does not follow all of the method of decision 0026. The top of tab 1 has no fact agent and no review agent. These choices change how decisions 0012, 0015 and 0026 apply.
 
 **Done on the branch `fix-owner-reason`** (worktree `../ccar-f-fix-owner-reason`, commits 46ed3fd and bd63ff7, not merged):
 
@@ -89,7 +89,7 @@ Status of this report: the final version. An independent agent checked it agains
     - Mock decision 0001 links the decision files and the journal to 5.4. Academy decision 0023 links the same files to 1.7.
     - Step 6 stops the whole run when rule C2 fails. 5.3-K4 calls this an anti-pattern, but the stop names its cause and no retry can repair it. Should the Depth of 5.3 say so?
 15. Part 5.6: the Claude API returns an error when citations and `output_config.format` are in one request. This academy did not check whether citations work with a forced tool call.
-16. Part 1.2 has no code popup. Its fact sheet gave its code example to part 1.3.
+16. Part 1.2 has no code popup. Its fact sheet proposed the same code that part 1.3 shows, or a text popup. The assistant used neither for 1.2.
 
 - Next step: the owner reads this report, decides items 1 to 16, decision 0036 and the merge of the fix, and accepts slices 4 to 8 or names what to change (decision 0022).
 
