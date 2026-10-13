@@ -800,3 +800,60 @@ class TestNewPlan(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestOwnerPartsReachEachTryOfTheStart(Base):
+    """Decision 0080: the parts that an event of the owner adds go to each try of the
+    new start, not only to the first try. Before the fix, try 2 and try 3 of the start
+    got only the findings of steps 3 and 4 (M5-S38-T5 in mock 5)."""
+
+    def requests_of(self, slot_id):
+        return [r for r in self.steps.requests if r["slot"]["slot_id"] == slot_id]
+
+    def test_more_tries_reason_reaches_try_2_and_3_of_the_start(self):
+        self.steps.model_script["M1-S05"] = ["fail", "fail", "fail", "fail", "fail", "pass"]
+        c = self.control()
+        c.run()
+        c.decide("more_tries", "M1-S05", "Use the second problem of the point.")
+        c.run()
+        after = self.requests_of("M1-S05")[3:]
+        self.assertEqual([r["shown_try"] for r in after], ["M1-S05-T3", "M1-S05-T4", "M1-S05-T5"])
+        for r in after:
+            self.assertEqual(r["step"], 5)
+            self.assertIn("Use the second problem of the point.", [f["detail"] for f in r["findings"]])
+        self.assertEqual([f["rule"] for f in after[1]["findings"]], ["B1", "owner"])
+        self.assertEqual(self.status(c, "M1-S05")["status"], "passed")
+
+    def test_bad_mark_reason_reaches_try_2_of_the_start(self):
+        self.steps.marks["M1-S20-T1"] = {"mark": "bad", "reason": "C is also correct."}
+        self.steps.model_script["M1-S20"] = ["pass", "fail", "pass"]
+        c = self.control()
+        self.run_to_marks(c)
+        c.read_marks()
+        c.run()
+        after = self.requests_of("M1-S20")[1:]
+        self.assertEqual([r["shown_try"] for r in after], ["M1-S20-T1", "M1-S20-T2"])
+        self.assertEqual([f["rule"] for f in after[0]["findings"]], ["owner"])
+        self.assertEqual([f["rule"] for f in after[1]["findings"]], ["B1", "owner"])
+        self.assertEqual(after[1]["findings"][1]["detail"], "C is also correct.")
+
+    def test_rewrite_parts_reach_try_2_of_the_start(self):
+        self.steps.scenario_script[1] = [self.finding("D1", ["M1-S03-T1", "M1-S04-T1"])]
+        self.steps.model_script["M1-S04"] = ["pass", "fail", "pass"]
+        c = self.control()
+        self.run_to_marks(c)
+        c.read_marks()
+        c.decide("rewrite", "M1-SC1-R1-F1", "Write a new scene.", question_id="M1-S04-T1")
+        c.run()
+        after = self.requests_of("M1-S04")[1:]
+        self.assertEqual([r["shown_try"] for r in after], ["M1-S04-T1", "M1-S04-T2"])
+        self.assertEqual([f["rule"] for f in after[0]["findings"]], ["D1", "owner"])
+        self.assertEqual([f["rule"] for f in after[1]["findings"]], ["B1", "D1", "owner"])
+        self.assertEqual([q["question_id"] for q in after[1]["other_questions"]], ["M1-S03-T1"])
+
+    def test_a_try_with_no_event_gets_no_owner_finding(self):
+        self.steps.model_script["M1-S05"] = ["fail", "fail", "pass"]
+        self.control().run()
+        for r in self.requests_of("M1-S05"):
+            self.assertNotIn("owner", [f["rule"] for f in r["findings"]])
+            self.assertEqual(r["other_questions"], [])
