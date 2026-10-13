@@ -1096,6 +1096,148 @@ STEP3 = (level("overview",
          ).replace("@N@", "3")
 PART_HTML[3] = with_sources(3, STEP3)
 
+# ----- step 4: check by a model (facts: academy/facts/step-4.md) -----
+
+S4 = step_file(4)
+D32 = glob.glob(os.path.join(ROOT, "docs/decisions/0032-*.md"))[0][len(ROOT) + 1:]
+D67 = glob.glob(os.path.join(ROOT, "docs/decisions/0067-*.md"))[0][len(ROOT) + 1:]
+PRICE_IN = float(re.search(r'PRICE = \{"input": ([\d.]+)', read("src/model_call.py")).group(1))
+PRICE_OUT = float(re.search(r'"output": ([\d.]+)\}', read("src/model_call.py")).group(1))
+V4, RULE4, BLIND_OFF = Counter(), Counter(), 0
+for f in glob.glob(os.path.join(ROOT, "runs/mock-0*/checks/M*-S*-T*-step4.json")):
+    r = jread(os.path.relpath(f, ROOT))
+    V4[r["verdict"]] += 1
+    for x in r["findings"]:
+        RULE4[x["rule"]] += 1
+    b = r.get("blind_answer") or {}
+    marked = sorted(o["letter"] for o in jread(os.path.relpath(f, ROOT).replace("/checks/", "/questions/").replace("-step4.json", ".json"))["options"] if o["correct"])
+    if b.get("status") != "answered" or sorted(b.get("selected", [])) != marked:
+        BLIND_OFF += 1
+assert BLIND_OFF == 0 and V4["cannot_decide"] == 0
+
+
+def dollars(usages, cached=True):
+    i = sum(u["input_tokens"] for u in usages); o = sum(u["output_tokens"] for u in usages)
+    w = sum(u.get("cache_write_tokens", 0) for u in usages); r = sum(u.get("cache_read_tokens", 0) for u in usages)
+    return (i + w + r) * PRICE_IN / 1e6 + o * PRICE_OUT / 1e6
+
+
+COST = []
+for m in range(1, 6):
+    us = [jread(os.path.relpath(f, ROOT)) for f in sorted(glob.glob(os.path.join(ROOT, "runs/mock-%02d/usage/*.json" % m)))]
+    COST.append((round(sum(u["dollars"] for u in us), 2), round(dollars(us), 2), sum(u.get("cache_read_tokens", 0) for u in us) > 0))
+TC = jread("runs/test-cache/results.json")["cost"]
+T24 = jread("runs/test-0024/part2.json")
+TC_WITH, TC_WITHOUT = TC["dollars"], round(dollars([TC]), 2)
+
+CARD.update({
+    "s4-what": excerpt(S4, "Some rules need judgment, so a model checks them. The step has two calls, and code sits between them.", "Build guide, step 4"),
+    "s4-calls": excerpt("src/step4_check_model.py", "Call 4a answers the question with no marks and no reasons. Call 4b checks the\nrules B1 to B9", "The code of step 4", kind="code"),
+    "s4-verdict": excerpt("src/step4_check_model.py", "Code checks each\nanswer, searches the feature names in the records file, and makes the verdict.\nA model does not make the verdict.", "The code of step 4", kind="code"),
+    "s4-first": excerpt(S4, "Two calls with code between them make sure that the blind answer always comes first.", "Build guide, step 4"),
+    "s4-order": excerpt(D32, "The guide says that prompt instructions alone have a non-zero failure rate (1.4-K2, in decision 0009).", "Mock decision 0032, Reason"),
+    "s4-b6": code_block("src/step4_check_model.py", 'Decision 0030: "named" means that the name is in the text of the records', 'Decision 0030: "named" means that the name is in the text of the records', "Rule B6: code searches each feature name"),
+    "s4-runs": {"title": "The step 4 records of mocks 1 to 5", "kind": "count",
+                "text": "%d checks: %d pass, %d fail, %d cannot decide. Findings per rule: %s. Call 4a selected other letters than the marks, or could not decide, in %d of the %d checks. The script of this page counted the files."
+                        % (sum(V4.values()), V4["pass"], V4["fail"], V4["cannot_decide"], ", ".join("%s %d" % kv for kv in RULE4.most_common()), BLIND_OFF, sum(V4.values())),
+                "src": "runs/mock-0N/checks/*-step4.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s4-none": excerpt(D67, "The program did not use prompt caching. Each check call sent the full text of the guide again, at the full input price.", "Mock decision 0067, Question"),
+    "s4-asked": excerpt(D67, "The owner asked if the program uses prompt caching. The assistant said no", "Mock decision 0067, How we decided"),
+    "s4-batch": excerpt(D67, "2. The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067, Options"),
+    "s4-test": excerpt(D67, "The calls cost $0.58 with caching. The same tokens with no caching cost $1.72.", "Mock decision 0067"),
+    "s4-cache": code_block("src/model_call.py", "# Decision 0067, page \"Prompt caching\"", "CACHE_READ = ", "The cache prices in the code (read on 9 October 2026)"),
+    "s4-cost": {"title": "The cost of each mock", "kind": "count",
+                "text": "Dollars per mock from runs/mock-0N/usage/: %s. The same tokens with no cache, at the prices of src/model_call.py: %s. The usage files do not split the cost by step. The script of this page computed it."
+                        % (", ".join("%.2f" % c[0] for c in COST), ", ".join("%.2f" % c[1] for c in COST)),
+                "src": "runs/mock-0N/usage/, src/model_call.py", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "s4-46": excerpt("reference/exam-guide.md", "Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking", "Exam guide, 4.6-K2", kind="guide"),
+    "s4-batches": excerpt("reference/exam-guide.md", "The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA", "Exam guide, 4.5-K1", kind="guide"),
+    "s4-t24": {"title": "The test before mock 1", "kind": "count", "text": "runs/test-0024/part2.json: call 4a answered %d of %d sample questions of the guide right." % (T24["right"], T24["of"]),
+               "src": "runs/test-0024/part2.json", "href": link("runs/test-0024/part2.json")},
+    "s4-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, Out-of-Scope Topics", kind="guide"),
+})
+assert COST[3][2] and COST[4][2] and not any(c[2] for c in COST[:3])
+
+FIG41 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 4. Call 4a, a new Claude call, answers the question with no answer key. Then call 4b checks the 9 rules B1 to B9 with the answer key. Code compares the letters, searches the feature names in the guide records, and makes the verdict: pass to step 6, fail to step 5.">
+      %(edges)s
+      %(nodes)s
+    </svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 4-1</span>%(cap)s</figcaption>
+</figure>""" % {
+    "nodes": "".join([box(20, 110, 150, 80, ["question"], sub="passed step 3"),
+                      box(240, 30, 180, 90, ["call 4a"], sub="no answer key", cls="who-model"),
+                      box(240, 180, 180, 90, ["call 4b"], sub="9 rules, the key", cls="who-model"),
+                      box(500, 105, 160, 90, ["code"], sub="makes the verdict", cls="is-key"),
+                      box(730, 30, 140, 80, ["pass"], sub="to step 6", cls="try ok"),
+                      box(730, 190, 140, 80, ["fail"], sub="to step 5", cls="try bad")]),
+    "edges": "".join([edge("M170 150H205V75H240"), edge("M330 120V180", "then", 338, 155, anchor="r"),
+                      edge("M420 75H460V135H500", "letters", 470, 66, anchor="r"), edge("M420 225H460V165H500", "results", 470, 250, anchor="r"),
+                      edge("M660 135H695V70H730"), edge("M660 165H695V230H730", cls="is-hot")]),
+    "cap": fact("s4-what", "Some rules need judgment, so a model checks them. The step has two calls, and code sits between them.") + " " + fact("s4-verdict", "A model does not make the verdict: code does."),
+}
+
+R4 = [(k, RULE4.get(k, 0)) for k in ("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9")]
+MX4 = max(v for _, v in R4)
+FIG42 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Findings of step 4 per rule in mocks 1 to 5: %(vals)s.">%(bars)s</svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 4-2</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": len(R4) * 30 + 6, "vals": ", ".join("%s %d" % kv for kv in R4),
+    "bars": "".join('<text x="0" y="%d">%s</text><rect class="%s" x="60" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
+                    % (i * 30 + 14, k, "hot" if v == MX4 else "", i * 30 + 4, max(2, v * 440 // MX4), 70 + max(2, v * 440 // MX4), i * 30 + 14, v) for i, (k, v) in enumerate(R4)),
+    "cap": fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9, a repeat of an earlier question." % (sum(V4.values()), V4["pass"], V4["fail"])),
+}
+
+MXC = max(c[1] for c in COST)
+FIG43 = """
+<figure>
+  <div class="frame">
+    <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Dollars per mock: %(vals)s. Mocks 4 and 5 used prompt caching. Without the cache, the same tokens would cost %(w4).2f and %(w5).2f dollars.">%(bars)s
+      <text x="0" y="%(ly)d">dark: paid. outline: the same tokens with no cache</text></svg>
+  </div>
+  <figcaption><span class="fig-n">Fig. 4-3</span>%(cap)s</figcaption>
+</figure>""" % {
+    "h": 5 * 34 + 30, "ly": 5 * 34 + 20, "vals": ", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), "w4": COST[3][1], "w5": COST[4][1],
+    "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="ghost" x="80" y="%d" width="%d" height="22"/><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">$%.2f</text>'
+                    % (i * 34 + 16, i + 1, i * 34 + 5, c[1] * 400 / MXC, "hot" if c[2] else "", i * 34 + 5, c[0] * 400 / MXC, 88 + c[1] * 400 / MXC, i * 34 + 16, c[0]) for i, c in enumerate(COST)),
+    "cap": fact("s4-cost", "Mocks 1 to 3 paid the full input price for the same guide text in each call. Mocks 4 and 5 used prompt caching and cost about half.") ,
+}
+
+DEPTH4 = ('<h4 class="story">Prompt caching was missed, and added before mock 4</h4>' + FIG43
+          + '<p>%s Each call of step 4 sends the whole guide. Before mock 4, %s The fix puts the guide first, the same in each call, with a cache mark. %s %s The owner did not choose the Message Batches API: %s</p>'
+          % (fact("s4-none", "The first design did not use prompt caching. Each check call sent the full text of the guide again, at the full input price."),
+             fact("s4-asked", "the owner asked if the program uses prompt caching. The assistant said no."),
+             fact("s4-cache", "A cached block costs 1.25 times the input price to write and 0.05 times to read on Claude Opus 5.5."),
+             fact("s4-test", "A test on 10 questions cost $%.2f with caching and $%.2f with no cache." % (TC_WITH, TC_WITHOUT)),
+             fact("s4-batch", "the rounds of the pipeline would wait for each batch.") )
+          + '<p>For the exam: %s %s</p>' % (fact("s4-exam", "the guide puts prompt caching details out of scope, beyond knowing that it exists."), fact("s4-batches", "The guide teaches the Message Batches API as a way to save cost (4.5-K1)."))
+          + '<h4 class="story">The blind answer never caught a question</h4>'
+          + '<p>%s Call 4b found each B1 problem. %s</p>'
+          % (fact("s4-runs", "In the %d checks of mocks 1 to 5, call 4a never selected other letters than the marks, and never said &ldquo;cannot decide&rdquo;." % sum(V4.values())), fact("s4-t24", "Before mock 1, a test gave call 4a the %d sample questions of the guide, and it answered %d of %d right." % (T24["of"], T24["right"], T24["of"]))))
+
+STEP4 = (level("overview",
+               '<h4 class="takeaway">A second Claude call answers blind, then checks 9 rules, and code decides</h4><p>%s %s %s</p>'
+               % (fact("s4-calls", "Call 4a answers the question with no answer key. Call 4b checks the 9 rules B1 to B9 with the key."),
+                  fact("s4-verdict", "Code compares the letters, searches the feature names in the guide records, and makes the verdict. A model does not make the verdict."),
+                  fact("s4-runs", "In mocks 1 to 5, %d of %d checks passed." % (V4["pass"], sum(V4.values())))))
+         + level("explanation",
+                 FIG41
+                 + '<p><b>Why two calls.</b> %s %s So code enforces the order, not an instruction.</p>'
+                   % (fact("s4-first", "Two calls with code between them make sure that the blind answer always comes first."), fact("s4-order", "The guide says that prompt instructions alone have a non-zero failure rate (1.4-K2)."))
+                 + '<p><b>Why a new call.</b> The checker is a new call, not the writer. %s</p>' % fact("s4-46", "The guide says that review instances without prior reasoning context catch more than self-review (4.6-K2).")
+                 + '<p><b>A rule in code.</b> %s</p>' % fact("s4-b6", "For rule B6, the model lists each feature name, and code searches it in the guide records. A name that is not there fails the question.")
+                 + FIG42 + ts_block(4))
+         + level("depth", DEPTH4)
+         ).replace("@N@", "4")
+PART_HTML[4] = with_sources(4, STEP4)
+
 # ----- the parts -----
 
 MINI = {s: '<svg class="minimap" viewBox="0 0 126 14" role="img" aria-label="Step %d of the steps 0 to 8">%s</svg>'

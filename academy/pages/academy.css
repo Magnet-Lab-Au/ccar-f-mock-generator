@@ -291,3 +291,4 @@ dl.glossary dd { margin: 0; }
 /* status colors mark borders only (decision 0008) */
 .chip.info::before { background: none; border: 1px solid var(--info); }
 ol.checks { display: grid; gap: var(--s-2); padding-left: 1.5rem; max-width: 65ch; }
+.ve-bars rect.ghost { fill: none; stroke: var(--border-bright); stroke-dasharray: 4 3; }
