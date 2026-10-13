@@ -46,3 +46,4 @@ One entry for each work session. Newest entry first.
 - The owner confirmed the text of decision 0012.
 - The owner asked how the figures will be the best that the plugin can make. The owner accepted four stages for each figure: plan, draw, check by script, check by review. Decision 0013 (proposed) records them.
 - The owner confirmed the text of decision 0013.
+- The assistant found that the order of trust did not name the Anthropic documentation, which the "Beyond the exam" parts use. The owner accepted it as the source for product facts. Decision 0014 (proposed) records it, and the status line of 0011 names it.
