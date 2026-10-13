@@ -230,7 +230,7 @@ def code_pop_text(key, label, title, copy, text, page_name, note=""):
     """A code popup from an exact block of a dated copy."""
     c = D(copy, text, page_name)
     POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the Anthropic documentation, %s" % page_name,
-                "example": "\n".join(l[2:] if l.startswith("  ") else l for l in text.split("\n")), "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
+                "example": __import__("textwrap").dedent(text), "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
 
@@ -715,6 +715,85 @@ PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open
                    "Step 1 takes only one idea of 1.6: the work of a mock is known before it starts, so code fixes the plan first."), cf("ts-1-6-rev", excerpt("docs/reviews/review-decisions-0003-to-0018.md", "A list of 60 slots made by code for a generation task is neither a review nor a prompt chain.", "Review of mock decisions 0003 to 0018"),
                    "It is not a prompt chain.")), "ts-1-6"))
 
+
+# ----- part 2.1 (facts: academy/facts/ts-2-1.md) -----
+
+DEFT, OVT, TRB, TSR, CCMCP = "anthropic-docs-define-tools", "anthropic-docs-tool-use-overview", "anthropic-docs-troubleshooting-tool-use", "anthropic-docs-tool-search-tool", "claude-code-docs-mcp"
+D40 = glob.glob(os.path.join(ROOT, "docs/decisions/0040-*.md"))[0][len(ROOT) + 1:]
+GOOD21 = "\n".join(read(SRC % DEFT).split("\n")[92:106])
+assert GOOD21.strip().startswith("{") and '"name": "get_stock_price"' in GOOD21 and GOOD21.rstrip().endswith("}")
+FIG21 = figure("2.1-1", 890, 270,
+               "Before: a request to summarize a web page can go to analyze_content or to analyze_document, because both say only that they analyze content. "
+               "After: analyze_content is renamed extract_web_results with a web-specific description, and analyze_document is split into tools with contracts, so the request has one clear tool.",
+               "".join(['<text class="ve-lab" x="20" y="24">Before: near-identical descriptions</text>',
+                        '<text class="ve-lab" x="480" y="24">After: renamed and split</text>',
+                        '<path class="ve-e no-head is-async" d="M455 10V260"/>',
+                        edge("M190 130H220V90H250", cls="is-async"), edge("M190 150H220V190H250", cls="is-async"),
+                        '<text class="ve-el" x="130" y="215">which one?</text>',
+                        edge("M620 140H635V70H650", cls="is-hot"),
+                        box(20, 110, 170, 60, ["Summarize", "this web page"], cls="who-model"),
+                        box(250, 60, 190, 60, ["analyze_content"], sub="analyzes content"),
+                        box(250, 160, 190, 60, ["analyze_document"], sub="analyzes content"),
+                        box(480, 110, 140, 60, ["Summarize", "this web page"], cls="who-model"),
+                        box(650, 40, 230, 60, ["extract_web_results"], sub="web pages: when, input, output", cls="try ok"),
+                        box(650, 140, 230, 90, ["analyze_document"], sub="split into 3 tools with contracts")]),
+               "%s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
+                             "Claude chooses a tool from the request and the description of the tool."),
+                          cf("ts-2-1-s2", gx("Renaming tools and updating descriptions to eliminate functional overlap (e.g., renaming analyze_content to extract_web_results with a web-specific description)", "Exam guide, 2.1-S2"),
+                             "The renamed tool is the example of the guide (2.1-S2).")))
+
+PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks",
+                        "Claude chooses among tools mainly by their descriptions. So each description says what the tool does, its inputs, its output, and when to use it instead of a similar tool. "
+                        "Rename or split tools that overlap, and check the system prompt for words that pull Claude to the wrong tool.",
+                        FIG21)
+    + level("explanation",
+            "<p><b>The description chooses.</b> %s %s %s</p>" % (
+                cf("ts-2-1-k1", gx("Tool descriptions as the primary mechanism LLMs use for tool selection; minimal descriptions lead to unreliable selection among similar tools", "Exam guide, 2.1-K1"),
+                   "The guide calls the description the primary mechanism of tool selection, and a minimal description makes the choice among similar tools unreliable (2.1-K1)."),
+                cf("ts-2-1-f2", D(DEFT, "**Provide extremely detailed descriptions.** This is by far the most important factor in tool performance.", "Define tools"),
+                   "The documentation calls a detailed description by far the most important factor in tool performance."),
+                cf("ts-2-1-f3", D(DEFT, "The poor description is too brief and leaves Claude with many open questions about the tool's behavior and usage.", "Define tools"),
+                   "A short description leaves Claude with open questions."))
+            + "<p><b>What it holds.</b> %s %s %s</p>" % (
+                cf("ts-2-1-k2", gx("The importance of including input formats, example queries, edge cases, and boundary explanations in tool descriptions", "Exam guide, 2.1-K2"),
+                   "The guide puts input formats, example queries, edge cases and boundaries in the description (2.1-K2, 2.1-S1)."),
+                cf("ts-2-1-f5", D(DEFT, "Aim for at least 3–4 sentences for each tool description, more if the tool is complex.", "Define tools"),
+                   "The documentation asks for at least 3 or 4 sentences for each tool."),
+                cf("ts-2-1-c3", D(DEFT, "you can use the `input_examples` field to provide schema-validated examples.", "Define tools"),
+                   "It gives example inputs their own field, input_examples. The exam uses the guide."))
+            + "<p><b>Overlap.</b> %s %s %s</p>" % (
+                cf("ts-2-1-k3", gx("How ambiguous or overlapping tool descriptions cause misrouting (e.g., analyze_content vs analyze_document with near-identical descriptions)", "Exam guide, 2.1-K3"),
+                   "Two tools with near-identical descriptions cause misrouting (2.1-K3)."),
+                cf("ts-2-1-f7", D(TRB, "Sharpen descriptions. Differentiate tools by WHEN to use them, not only WHAT they do.", "Troubleshooting tool use"),
+                   "The documentation says to separate tools by when to use them, not only by what they do."),
+                cf("ts-2-1-f9", D(DEFT, "This makes tool selection unambiguous as your library grows", "Define tools"),
+                   "Names with a prefix for each service also make the choice unambiguous."))
+            + "<p><b>Split or join.</b> %s %s</p>" % (
+                cf("ts-2-1-s3", gx("Splitting generic tools into purpose-specific tools with defined input/output contracts (e.g., splitting a generic analyze_document into extract_data_points, summarize_content, and verify_claim_against_source)", "Exam guide, 2.1-S3"),
+                   "The guide splits a generic tool into tools with one purpose and a defined input and output each, for example analyze_document into extract_data_points, summarize_content and verify_claim_against_source (2.1-S3)."),
+                cf("ts-2-1-c1", D(DEFT, "**Consolidate related operations into fewer tools.**", "Define tools"),
+                   "The documentation also advises to join related actions into fewer tools. Both can hold: split a tool that does different jobs, join the actions on one resource. The guide names both, and the exam uses the guide."))
+            + "<p><b>The system prompt.</b> %s %s %s</p>" % (
+                cf("ts-2-1-f11", D(DEFT, "the API constructs a special system prompt from the tool definitions, tool configuration, and any user-specified system prompt.", "Define tools"),
+                   "Claude reads the tool definitions and your system prompt in one prompt."),
+                cf("ts-2-1-k4", gx("The impact of system prompt wording on tool selection: keyword-sensitive instructions can create unintended tool associations", "Exam guide, 2.1-K4"),
+                   "So the wording of the system prompt can tie a keyword to the wrong tool, and you review the prompt for such words (2.1-K4, 2.1-S4)."),
+                cf("ts-2-1-f13", D(PBP, "The fix is to dial back any aggressive language.", "Prompting best practices"),
+                   "The documentation warns that aggressive words in a prompt make current models call a tool too often."))
+            + exam_tests("2.1", [("Tool interface design: writing effective tool descriptions, splitting vs consolidating tools, tool naming to reduce ambiguity", "Among the topics, the guide names")])
+            + "<p>%s</p>" % cf("ts-2-1-q2", gx("Expand each tool's description to include input formats it handles, example queries, edge cases, and boundaries explaining when to use it versus similar tools.", "Exam guide, sample question 2, answer B"),
+                               "Sample question 2 of the guide tests 2.1: its correct answer expands each description.")
+            + guide_text("2.1"), "ts-2-1")
+    + level("depth",
+            beyond([cf("ts-2-1-b1", D(CCMCP, "Claude Code truncates each tool description and each server's instructions at 2,048 characters by default.", "Claude Code, MCP"),
+                       "Claude Code cuts each MCP tool description at 2,048 characters by default, so the important details go first."),
+                    cf("ts-2-1-b2", D(TSR, "Claude's ability to pick the right tool degrades once you exceed 30–50 available tools.", "Tool search tool"),
+                       "Above 30 to 50 tools, the choice degrades, also with good descriptions.")])
+            + code_pop_text("ts-2-1-code", "The code: a good tool description", "A tool definition with a detailed description", DEFT, GOOD21, "Define tools",
+                            "The description says what the tool returns, when to use it, and what it does not provide.")
+            + tab2_links("2.1", cf("ts-2-1-d40", excerpt(D40, "The fields `name` and `description` of the tool are not sent as a tool.", "Mock decision 0040"),
+                                   "The pipeline sends the model no tool: its forms go as structured outputs, so Claude never chooses a tool.")), "ts-2-1"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
@@ -777,6 +856,8 @@ CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
 
 DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles of its task statements (decision 0021)
+DOMAIN_SUMMARY[2] = ("Tools that Claude can use well: descriptions that make the choice clear, errors that say what went wrong, "
+                     "the right tools for each agent and the choice of tool_choice, MCP servers, and the built-in tools of Claude Code.")
 DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents and what each subagent gets, "
                      "workflows with enforced steps and handoffs, hooks of the Agent SDK, how to split a task, and sessions that resume or fork.")
 
