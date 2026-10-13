@@ -281,3 +281,12 @@ h4.story { font-size: var(--t-lead) !important; border-top: 1px solid var(--gold
 .ve-svg a, .ve-svg a text { text-decoration: none; }
 .ve-el.l { text-anchor: end; }
 .ve-n .corner { fill: var(--text-dim); font: 600 13px var(--font-mono); text-anchor: start; dominant-baseline: auto; }
+.words { margin-top: var(--s-2); }
+.words > summary h2 { font-size: var(--t-body); }
+dl.glossary { display: grid; grid-template-columns: minmax(7rem, max-content) minmax(0, 1fr); gap: var(--s-2) var(--s-4); max-width: 65ch; }
+dl.glossary dt { font: 600 var(--t-small) var(--font-mono); }
+dl.glossary dd { margin: 0; }
+@media (max-width: 40rem) { dl.glossary { grid-template-columns: minmax(0, 1fr); } dl.glossary dd { margin-bottom: var(--s-2); } }
+.case .kpi-n { font-weight: 600; }
+/* status colors mark borders only (decision 0008) */
+.chip.info::before { background: none; border: 1px solid var(--info); }

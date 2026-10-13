@@ -33,6 +33,7 @@ S7 = "docs/build-guide/step-7-the-owner-marks-the-questions.md"
 D33 = glob.glob(os.path.join(ROOT, "docs/decisions/0033-*.md"))[0][len(ROOT) + 1:]
 D38 = "docs/decisions/0038-a-simple-control-for-mock-1-written-as-code-with-tests.md"
 D45 = glob.glob(os.path.join(ROOT, "docs/decisions/0045-*.md"))[0][len(ROOT) + 1:]
+D66 = glob.glob(os.path.join(ROOT, "docs/decisions/0066-*.md"))[0][len(ROOT) + 1:]
 D74 = glob.glob(os.path.join(ROOT, "docs/decisions/0074-*.md"))[0][len(ROOT) + 1:]
 CONTROL = "src/control.py"
 OWNER5 = "runs/mock-05/owner-decisions.json"
@@ -103,6 +104,11 @@ CARD = {
     "c-rw": excerpt(D45, "2. **A rewrite with no finding of step 6.** The owner names a question and gives a reason. The writer gets a request of step 5 with that question, and the reason as the finding (rule `owner`).", "Mock decision 0045, Decision"),
     "c-rwp": excerpt(D45, "Then the writer gets a request of step 2 with the new point", "Mock decision 0045, Decision"),
     "c-acc": code_block(CONTROL, "def accept(self", '"""Command of the owner: accept the mock.', "The command accept of the owner"),
+    "w-slot": excerpt("docs/build-guide/step-1-plan-the-mock.md", "Before a model writes a question, code makes the plan of the mock: a list of 60 slots. Each slot says what one question must be", "Build guide, step 1"),
+    "w-owner": excerpt("HANDOFF.md", "| The owner | The person who directs this work. The owner passed the CCAR-F exam. |", "HANDOFF.md, the words of the project"),
+    "w-b9": excerpt(D66, "The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data).", "Mock decision 0066, the text of rule B9"),
+    "w-forced": excerpt("docs/sources/2026-10-07-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://anthropic.com/glasswing)", "Anthropic documentation, Define tools, copy of 7 October 2026 (the live page agreed on 13 October 2026)", kind="docs"),
+    "w-guide": excerpt("reference/exam-guide.md", "Using tool_choice forced selection to ensure a specific tool is called first", "Exam guide, task statement 4.3", kind="guide"),
     "c-s6": excerpt("src/step6_check_scenario.py", "Step 6 sends no question\nback. Each finding goes to the owner (decision 0038, part 3).", "The code of step 6", kind="code"),
     "c-s7": excerpt(S7, "For mocks 1 to 3 the reader is the owner. For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
     "c-slots": code_block("src/step1_plan.py", "QUESTIONS = ", "QUESTIONS = ", "The number of slots in the code of step 1"),
@@ -160,7 +166,7 @@ def table_use(point):
     """How step 5 uses a point, from the table of guide points in the build guide (decision 0024), with its point ID."""
     row = next(l for l in read(S5).split("\n") if l.startswith("| %s |" % point))
     use = row.split(" | ")[-1].rstrip(" |").replace("The same context. ", "")
-    return "%s: %s" % (point, use.replace("(see the deviation above)", "(" + DEVIATION + ")"))
+    return "%s: %s" % (point, use.replace(" (see the deviation above)", ""))
 
 
 POP = {
@@ -170,10 +176,14 @@ POP = {
     "ts-11": {"who": "Task statement 1.1", "cls": "model", "title": TS["1.1"]["title"],
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-43": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
-              "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3")], "points": pts("4.3-K1", "4.3-S3")},
+              "sent": ["How step 5 uses each point:", table_use("4.3-K1"), table_use("4.3-S3"),
+                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on Claude Opus 5.5 (read on 7 October 2026, and again on 13 October 2026).",
+                       "For the exam: the exam guide teaches the forced tool call (tool_choice). Answer the exam with it."],
+              "points": pts("4.3-K1", "4.3-S3")},
 }
 for k in POP:
     POP[k].setdefault("example", None)
+POP = {"step-5-" + k: v for k, v in POP.items()}   # each key starts with its part (decision 0033)
 
 # ----- the figures -----
 
@@ -219,7 +229,7 @@ W, H = 150, 92
 WHO = {0: ("code", ""), 1: ("code", ""), 2: ("Claude", "who-model"), 3: ("code", ""), 4: ("Claude + code", "who-model"),
        5: ("Claude", "who-model"), 6: ("code + Claude", "who-model"), 7: ("owner or Claude", "who-owner"), 8: ("code", "")}
 WHO_LONG = {0: "code", 1: "code", 2: "a Claude model", 3: "code", 4: "two Claude model calls, then code makes the verdict",
-            5: "a Claude model, the writer of step 2. Code selects the request.", 6: "code and two Claude model calls for each scenario",
+            5: "a Claude model: the writer of step 2 again, with the failed try and its findings", 6: "code and two Claude model calls for each scenario",
             7: "the owner (mocks 1 to 3), or a Claude model (mocks 4 and 5)", 8: "code, after the owner accepts the mock"}
 NAMES = {0: ["Prepare the", "guide records"], 1: ["Plan the mock"], 2: ["Write the", "question"], 3: ["Check by code"],
          4: ["Check by", "a model"], 5: ["Try again"], 6: ["Check the", "complete mock"], 7: ["The owner marks", "the questions"],
@@ -247,16 +257,17 @@ LEGEND = ('<g transform="translate(250 22)">'
           '<path class="ve-e is-hot" d="M420 76H460"/><text class="ve-lab" x="470" y="80">the automatic loop</text></g>')
 
 FIG1 = """
-<figure data-figure="builder" id="builder-fig">
+<figure data-figure="builder" id="top-fig-a">
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 880 570" role="img" aria-label="The 9 steps of the mock builder. Step 0 prepares the guide records once for each version of the exam guide. Step 1 plans 60 slots. Step 2 writes a question, step 3 checks it by code and step 4 by a model. A question that fails goes to step 5 and is checked again. When all 60 slots pass, step 6 checks the complete mock, step 7 marks the questions, and step 8 builds the files after the owner accepts. Dashed arrows are decisions of the owner: more tries or a new point for an open slot, a rewrite after step 6 or after the marks, a bad mark, and accept. A rewrite with a new point goes to step 2.">
+    <svg class="ve-svg" viewBox="0 0 880 570" role="img" aria-label="The 9 steps of the mock builder. Step 0 prepares the guide records once for each version of the exam guide. Step 1 plans 60 slots. Step 2 writes a question, step 3 checks it by code and step 4 by a model. A try that fails goes to step 5 and is checked again. When all 60 slots pass, step 6 checks the complete mock, step 7 marks the questions, and step 8 builds the files after the owner accepts. Dashed arrows are decisions of the owner: more tries or a new point for an open slot, a rewrite after step 6 or after the marks, a bad mark, and accept. A rewrite with a new point goes to step 2.">
       %(edges)s
       %(nodes)s
       <g class="ve-n who-owner"><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
       %(legend)s
     </svg>
   </div>
-  <figcaption><span class="fig-n">Fig. 1</span>Code moves each question through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, %(rw)s, and %(acc)s. %(rwp)s</figcaption>
+  <figcaption><span class="fig-n">Fig. A</span>Code moves each try through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, and a call that fails 3 times. Since mock decision 0045, %(rw)s also waits for the owner. %(rwp)s The owner %(acc)s before step 8.</figcaption>
+  <section class="sources" aria-label="Sources of Fig. A"><p class="ve-label">Sources of Fig. A</p><ul>@SOURCES_TOP@</ul></section>
 </figure>
 """ % {
     "nodes": "".join(step_node(s) for s in range(9)),
@@ -278,11 +289,11 @@ FIG1 = """
         edge("M780 460V420H615V402", "rewrite", 700, 411, cls="is-async"),
         edge("M525 460V402", "bad mark, rewrite", 533, 446, cls="is-async", anchor="r"),
     ]),
-    "auto": fact("c-auto", "A question that fails step 3 or step 4 goes back to the writer by itself"),
+    "auto": fact("c-auto", "A try that fails step 3 or step 4 goes to step 5, where the writer of step 2 tries again by itself"),
     "wait": fact("c-wait", "Each other way back waits for a decision of the owner"),
     "rw": fact("c-rw", "a rewrite after the marks"),
-    "acc": fact("c-acc", "the acceptance of the mock"),
-    "rwp": fact("c-rwp", "A rewrite with a new point goes back to step 2."),
+    "acc": fact("c-acc", "accepts the mock"),
+    "rwp": fact("c-rwp", "A rewrite with a new point starts again at step 2. The figure does not draw this arrow, or the choice of a new plan."),
 }
 
 # Fig. 5-1: the loop of step 5 (facts: step-5.md, sections 2.1 to 2.3)
@@ -310,10 +321,10 @@ FIG51 = """
     "edges": "".join([
         edge("M180 70H250", "a try", 215, 61),
         edge("M410 70H480", "passes", 445, 61),
-        edge("M640 70H710", "passes", 675, 61, cls="is-hot"),
-        edge("M330 110V180", "fails", 338, 150, anchor="r"),
-        edge("M560 110V180", "fails", 568, 150, anchor="r"),
-        edge("M250 225H100V110", "tries again", 175, 216),
+        edge("M640 70H710", "passes", 675, 61),
+        edge("M330 110V180", "fails", 338, 150, cls="is-hot", anchor="r"),
+        edge("M560 110V180", "fails", 568, 150, cls="is-hot", anchor="r"),
+        edge("M250 225H100V110", "tries again", 175, 216, cls="is-hot"),
     ]),
     "pass": fact("s5-pass", "A pass stops the loop."),
     "open": fact("s5-open", "A slot that stops is open, and the owner decides: more tries, a new point, or a new plan."),
@@ -330,7 +341,7 @@ def grid(x):
         txt = '<text x="%d" y="%d">%d</text>' % (cx + 10, cy + 10, n) if n > 1 else ""
         cells.append('<g class="cell %s"><rect x="%d" y="%d" width="20" height="20" rx="0"/>%s<title>%s: %d %s</title></g>'
                      % (cls, cx, cy, txt, sid, n, "try" if n == 1 else "tries"))
-    return ('<div class="case"><span class="ve-label">Mock %d</span><h3>%d tries</h3>'
+    return ('<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d tries</p>'
             '<svg class="ve-grid" viewBox="0 0 227 135" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
             '<p class="cap">%d of %d passed both checks at the first try</p></div>'
             % (x["mock"], x["tries"], x["mock"], x["tries"], SLOTS, x["first"], x["more"], x["max"], "".join(cells),
@@ -340,25 +351,25 @@ def grid(x):
 FIG52 = """
 <figure>
   <div class="cases">%s</div>
-  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A number is the tries of a slot that had more than one. It also counts new tries after a rewrite or a bad mark of the owner. %s %s</figcaption>
+  <figcaption><span class="fig-n">Fig. 5-2</span>One square for each slot. A darker square had more tries, and its number is the tries. The number also counts new tries after a rewrite or a bad mark of the owner. So a slot can pass both checks at the first try and still have a number. %s %s</figcaption>
 </figure>
 """ % ("".join(grid(x) for x in MOCKS),
        fact("s5-counts", "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)),
-       "In %d cases a slot stopped at the guard and waited for the owner. The guard of %d results &ldquo;cannot decide&rdquo; never stopped a slot."
+       "In %d cases a slot stopped at the limit of tries and waited for the owner. The limit of %d results &ldquo;cannot decide&rdquo; never stopped a slot."
        % (TOTAL_OPENED, CANNOT))
 
 # Fig. 5-3: the review loop (story a)
 FIG53_T = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first review found 14 serious items. The second review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the control is code with tests.">
+    <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first review found 14 serious items. The second review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the rules of the next action are code with tests.">
       <path class="ve-e" d="M250 60H318"/><text class="ve-el" x="284" y="51">answers</text>
       <path class="ve-e is-hot" d="M560 60H628"/><text class="ve-el" x="594" y="51">fix</text>
       <g class="ve-n"><rect class="sh" x="20" y="20" width="230" height="80" rx="0"/><text x="135" y="44">first review</text>
         <rect class="bar" x="40" y="62" width="140" height="16" rx="0"/><text class="sub" x="210" y="70">14</text></g>
       <g class="ve-n"><rect class="sh" x="320" y="20" width="240" height="80" rx="0"/><text x="440" y="44">second review</text>
         <rect class="bar" x="340" y="62" width="100" height="16" rx="0"/><text class="sub r" x="452" y="70">10 new</text></g>
-      <g class="ve-n is-key"><rect class="sh" x="630" y="20" width="240" height="80" rx="0"/><text x="750" y="44">the control is code</text><text class="sub" x="750" y="70">with tests</text></g>
+      <g class="ve-n is-key"><rect class="sh" x="630" y="20" width="240" height="80" rx="0"/><text x="750" y="44">the rules are code</text><text class="sub" x="750" y="70">with tests</text></g>
       <text class="ve-lab" x="20" y="130">bar length = number of serious items</text>
     </svg>
   </div>
@@ -408,15 +419,15 @@ FIG54 = """
 STEP5 = """
 <section data-level="overview" aria-label="Overview">
   <p class="lvl1">Overview &middot; 30 seconds</p>
-  <h4 class="takeaway">A failed question goes back to the writer with its findings</h4>
+  <h4 class="takeaway">A failed try goes back to the writer with its findings</h4>
   <p>%(what)s %(again)s %(one)s %(pass)s</p>
 </section>
 <details class="level" data-level="explanation">
   <summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>
   <div class="body">
     %(fig51)s
-    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and, where it fits, the letter of the option. %(short)s The guide names the same three parts for a new try: %(three)s</p>
-    <p><b>The limits.</b> %(guard)s Code checks for a pass first, so the limits are only guards. A slot that reaches a limit waits for the owner. The other slots continue.</p>
+    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and, where it fits, the letter of the option. %(short)s The exam guide names the same three parts for a new try: %(three)s</p>
+    <p><b>The limits.</b> %(guard)s A start is the first try of a slot, or the first try after a decision of the owner. The other slots continue.</p>
     <p><b>The record.</b> %(file)s</p>
     %(fig52)s
     <p class="gh">The task statements that step 5 uses</p>
@@ -426,11 +437,11 @@ STEP5 = """
 <details class="level" data-level="depth">
   <summary><h4>Depth</h4><span class="ve-label">what went wrong, and the fix</span></summary>
   <div class="body">
-    <h4 class="story">The review loop that ended when the control became code</h4>
+    <h4 class="story">The review loop that ended when the rules became code</h4>
     %(fig53)s
-    <p>The answer to the first review added rules, and the new rules made new cases. The fix: %(auto)s Each other failure waits for the owner. %(code)s Code checks %(passfirst)s. Today the program has %(tests)s.</p>
+    <p>The fix kept %(auto)s Each other failure waits for the owner. %(code)s Now the code that moves each try %(passfirst)s. Today the mock builder has %(tests)s.</p>
     <h4 class="story">The reason of the owner reached only one try</h4>
-    <p>Slot M5-S38 failed rule B9 three times. The owner gave more tries with a reason: &ldquo;%(reason)s&rdquo; %(q)s So mock decision 0074 added the reason to the next request, %(fix)s, and %(test)s checks it.</p>
+    <p>Slot M5-S38 failed %(b9)s three times. The owner gave more tries with a reason: &ldquo;%(reason)s&rdquo; %(q)s So mock decision 0074 (a decision record of the build) added the reason to the next request, %(fix)s, and %(test)s checks it.</p>
     %(fig54)s
     <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. The code still works this way. %(limit)s</p>
     <section class="sources" aria-label="Sources of step 5">
@@ -443,7 +454,7 @@ STEP5 = """
 
 
 def ts_chip(key, tsid):
-    return ('<div class="tsrow"><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
+    return ('<div class="tsrow"><span class="chip info" data-step="step-5-%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
             '<span>%s</span> <a href="%s#ts-%s">Exam guide breakdown %s &rarr;</a></div>'
             % (key, tsid, e(TS[tsid]["title"]), TAB1, tsid.replace(".", "-"), tsid))
 
@@ -463,18 +474,19 @@ step5_html = STEP5 % {
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
     "fig51": FIG51,
     "short": f("s5-short", "The writer does not see older tries, so the request stays short."),
-    "three": f("s5-three", "the original, the failed result and the errors (4.4-S1)."),
-    "guard": f("s5-guard", "Each start of a slot has at most %d tries, and %d results &ldquo;cannot decide&rdquo; also stop it." % (TRIES, CANNOT)),
+    "three": f("s5-three", "the original, the failed result and the errors (point 4.4-S1 of the exam guide)."),
+    "guard": f("s5-guard", "Each start of a slot has at most %d tries. %d results &ldquo;cannot decide&rdquo; of step 4 also stop it." % (TRIES, CANNOT)),
     "file": f("s5-file", "Each try is a new file. No file is written over, so the history of each question stays."),
     "fig52": FIG52,
     "ts": ts_chip("ts-44", "4.4") + ts_chip("ts-11", "1.1") + ts_chip("ts-43", "4.3"),
     "fig53": FIG53,
     "auto": f("c-auto", "one automatic loop."),
-    "code": f("a-code", "The control became code, with tests that make no model call."),
-    "passfirst": f("a-passfirst", "for a pass before the limits"),
+    "code": f("a-code", "The rules of the next action became code, with tests that make no model call."),
+    "passfirst": f("a-passfirst", "checks for a pass before the limits"),
     "tests": f("a-tests", "%d tests" % TESTS),
     "reason": f("b-reason", e(D004["reason"])),
-    "q": f("b-q", "But the program, as it was built, sent the writer only the last failed try and its findings, not the reason."),
+    "b9": f("w-b9", "rule B9 of step 4 (a question must not repeat the problem of an earlier question)"),
+    "q": f("b-q", "But the mock builder, as it was built, sent the writer only the last failed try and its findings, not the reason."),
     "fix": f("b-fix", "in the code"),
     "test": f("b-test", "a test"),
     "fig54": FIG54,
@@ -501,7 +513,11 @@ def sources(cards):
     return "".join(items)
 
 
-step5_html = step5_html.replace("<ul></ul>", "<ul>%s</ul>" % sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', step5_html)))))
+EXTRA5 = ('<li><a href="%s">Build guide, step 5, the table of guide points</a> <span class="ve-label">%s, lines %d to %d</span></li>'
+          '<li><a href="%s">The exam guide as records</a> <span class="ve-label">reference/guide-records.json</span></li>'
+          % (e(link(S5, *lines_of(S5, "| 4.4-K1 |"))) , S5, lines_of(S5, "| 4.4-K1 |")[0], lines_of(S5, "| 4.3-S3 |")[0],
+             e(link("reference/guide-records.json"))))
+step5_html = step5_html.replace("<ul></ul>", "<ul>%s%s</ul>" % (sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', step5_html)))), EXTRA5))
 
 # ----- the parts -----
 
@@ -524,11 +540,24 @@ PARAGRAPH = re.search(r"   > (The mock builder is itself.*?)\n", PARAGRAPH).grou
 TITLE = "Mocks Built with the Same Principles They Test"
 assert TITLE in read("academy/decisions/0010-two-tabs-each-one-page-with-an-exploded-view.md")
 
+WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">8 words</span></summary><div class="body"><dl class="glossary">
+<dt>Mock</dt><dd>A practice exam of %(n)d questions. The mock builder made %(m)d mocks.</dd>
+<dt>Slot</dt><dd>%(slot)s</dd>
+<dt>Try</dt><dd>One question that the writer writes for a slot. A slot can have more than one try. The last try that passes goes into the mock.</dd>
+<dt>Finding</dt><dd>A problem that a check names, with its rule, such as rule B9.</dd>
+<dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. Tab 1 explains them.</dd>
+<dt>Mark</dt><dd>In step 7, a reader marks each question good or bad. A bad mark sends the question back.</dd>
+<dt>The owner</dt><dd>%(owner)s</dd>
+<dt>Mock decision</dt><dd>A decision record of the build, such as mock decision 0038. The records are in the repository.</dd>
+</dl></div></details>""" % {"n": SLOTS, "m": len(glob.glob(os.path.join(ROOT, "mocks/mock-*.questions.json"))), "slot": fact("w-slot", "The place of one question in the plan of a mock. Step 1 plans %d slots for each mock." % SLOTS),
+                         "owner": fact("w-owner", "The person who directs this work and who made the decisions of the build. The owner passed the CCAR-F exam.")}
+
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
   <h1>%(title)s</h1>
   <p class="lead">%(para)s</p>
+  %(words)s
 </header>
 %(fig1)s
 <section class="parts" id="steps" aria-label="The 9 steps">
@@ -540,10 +569,12 @@ BODY = """<main>
   <p class="pending">This part comes in slice 3.</p>
 </section>
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "fig1": FIG1, "parts": "".join(part(s) for s in range(9))}
+             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": WORDS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="ve-svg" viewBox="0 0 (\d+) ', lambda m: '<svg class="ve-svg" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(1)), BODY)
+TOP = BODY.split('<section class="parts" id="steps"')[0]
+BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)
 CARD = {k: v for k, v in CARD.items() if k in USED}
