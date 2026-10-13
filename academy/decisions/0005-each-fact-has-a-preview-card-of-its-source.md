@@ -1,7 +1,7 @@
 # 0005: Each fact has a preview card of its source
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0030 says where the excerpts of documentation pages come from.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
