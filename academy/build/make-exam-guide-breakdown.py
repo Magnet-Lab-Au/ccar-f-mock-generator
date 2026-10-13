@@ -1316,6 +1316,82 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                                            cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035 (proposed)"),
                                               "The build in Claude Code has no part for 3.2, because the link to the records is weak."))), "ts-3-2"))
 
+
+# ----- part 3.4 (facts: academy/facts/ts-3-4.md) -----
+
+PMODE, MCONF = "claude-code-docs-permission-modes", "claude-code-docs-model-config"
+A23 = glob.glob(os.path.join(ROOT, "academy/decisions/0023-*.md"))[0][len(ROOT) + 1:]
+FIG34 = figure("3.4-1", 890, 320,
+               "A change that is big or unclear goes through plan mode: Claude explores and reads with no edits, writes a plan, and you approve it. Then Claude implements the plan. "
+               "A small and clear change goes to direct execution. The Explore subagent can do the verbose discovery and return only a summary.",
+               "".join(['<text class="ve-lab" x="460" y="20">plan mode: edits wait for your approval</text>',
+                        edge("M170 165H220"), edge("M410 140H435V60H460", "yes", 446, 100, anchor="r"),
+                        edge("M590 60H605"), edge("M720 60H735"),
+                        edge("M802 90V230", "implement the plan", 718, 165),
+                        edge("M315 210V265H700", "no: small and clear", 505, 256),
+                        edge("M520 90V130", cls="is-async"),
+                        box(20, 130, 150, 70, ["A change"]),
+                        box(220, 120, 190, 90, ["Big or", "unclear?"]),
+                        box(460, 30, 130, 60, ["Explore"], sub="read, no edits", cls="who-model"),
+                        box(605, 30, 115, 60, ["Plan"], sub="Claude writes", cls="who-model"),
+                        box(735, 30, 135, 60, ["Approve"], sub="you decide"),
+                        box(440, 130, 190, 60, ["Explore subagent"], sub="returns a summary", cls="who-model"),
+                        box(700, 230, 170, 70, ["Direct", "execution"], cls="try ok")]),
+               "%s %s" % (cf("ts-3-4-k1", gx("Plan mode is designed for complex tasks involving large-scale changes, multiple valid approaches, architectural decisions, and multi-file modifications", "Exam guide, 3.4-K1"),
+                             "Plan mode is for complex tasks: large changes, several valid approaches, architectural decisions, many files (3.4-K1)."),
+                          cf("ts-3-4-f4", D(PMODE, "Plan mode tells Claude to research and propose changes without making them. Claude reads files, runs shell commands to explore, and writes a plan, but does not edit your source.", "Claude Code, Permission modes"),
+                             "In plan mode, Claude reads and proposes, but does not edit the source.")))
+
+PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
+                        "In plan mode, Claude reads the code and proposes a plan, and the edits wait until you approve it. "
+                        "Use it for large, multi-file or architectural changes, and execute a small, clear change directly.",
+                        FIG34)
+    + level("explanation",
+            "<p><b>When to plan.</b> %s %s</p>" % (
+                cf("ts-3-4-s1", gx("Selecting plan mode for tasks with architectural implications (e.g., microservice restructuring, library migrations affecting 45+ files, choosing between integration approaches with different infrastructure requirements)", "Exam guide, 3.4-S1"),
+                   "The guide plans first for tasks with architectural implications, such as a library migration that touches more than 45 files (3.4-S1)."),
+                cf("ts-3-4-f1", D(BEST, "Planning is most useful when you're uncertain about the approach, when the change modifies multiple files, or when you're unfamiliar with the code being modified.", "Claude Code, Best practices"),
+                   "The documentation plans first when the approach is uncertain, the change touches many files, or the code is not familiar."))
+            + "<p><b>When to go direct.</b> %s %s %s</p>" % (
+                cf("ts-3-4-k2", gx("Direct execution is appropriate for simple, well-scoped changes (e.g., adding a single validation check to one function)", "Exam guide, 3.4-K2"),
+                   "Direct execution suits a simple change with a clear scope, such as one validation check in one function (3.4-K2, 3.4-S2)."),
+                cf("ts-3-4-f2", D(BEST, "If you could describe the diff in one sentence, skip the plan.", "Claude Code, Best practices"),
+                   "The documentation gives a test: if you can describe the diff in one sentence, skip the plan."),
+                cf("ts-3-4-f3", D(BEST, "For tasks where the scope is clear and the fix is small (like fixing a typo, adding a log line, or renaming a variable) ask Claude to do it directly.", "Claude Code, Best practices"),
+                   "It does not use the term &ldquo;direct execution&rdquo;: it says to ask Claude to do it directly."))
+            + "<p><b>Safe exploration.</b> %s %s</p>" % (
+                cf("ts-3-4-k3", gx("Plan mode enables safe codebase exploration and design before committing to changes, preventing costly rework", "Exam guide, 3.4-K3"),
+                   "The guide says that plan mode makes the exploration safe before any change, and so prevents costly rework (3.4-K3)."),
+                cf("ts-3-4-f5", D(PMODE, "Except in interactive terminal sessions with [bypass permissions available](#skip-all-checks-with-bypasspermissions-mode), edits stay blocked until you approve the plan.", "Claude Code, Permission modes"),
+                   "In Claude Code, the edits stay blocked until you approve the plan, except in an interactive terminal session with bypass permissions available. The exam uses the guide."))
+            + "<p><b>Plan, then execute.</b> %s %s</p>" % (
+                cf("ts-3-4-s4", gx("Combining plan mode for investigation with direct execution for implementation (e.g., planning a library migration, then executing the planned approach)", "Exam guide, 3.4-S4"),
+                   "Plan mode investigates, and direct execution implements, for example a planned library migration (3.4-S4)."),
+                cf("ts-3-4-f9", D(BEST, "Switch out of plan mode by approving the plan or pressing `Shift+Tab`, then let Claude code, verifying against its plan.", "Claude Code, Best practices"),
+                   "In Claude Code, you approve the plan, and Claude codes against it."))
+            + "<p><b>The Explore subagent.</b> %s %s %s</p>" % (
+                cf("ts-3-4-s3", gx("Using the Explore subagent for verbose discovery phases to prevent context window exhaustion during multi-phase tasks", "Exam guide, 3.4-S3"),
+                   "The Explore subagent takes the verbose discovery, so the main context does not fill up, and returns a summary (3.4-K4, 3.4-S3)."),
+                fact("ts-2-5-b2", "Claude delegates to Explore when it searches without making changes."),
+                cf("ts-3-4-c3", D(CCS, "it delegates research to the Plan subagent so that exploration output stays in a separate context window while the main conversation remains read-only.", "Claude Code, Subagents"),
+                   "In plan mode, Claude Code gives the research to a different built-in subagent, Plan. The exam uses the guide."))
+            + exam_tests("3.4", [("Plan mode vs direct execution: complexity assessment, architectural decisions, single-file changes", "Among the topics, the guide names")])
+            + "<p>%s</p>" % cf("ts-3-4-q5", gx("Enter plan mode to explore the codebase, understand dependencies, and design an implementation approach before making changes.", "Exam guide, sample question 5, answer A"),
+                               "Sample question 5 of the guide fits 3.4: for a move from a monolith to microservices, its correct answer enters plan mode.")
+            + guide_text("3.4"), "ts-3-4")
+    + level("depth",
+            beyond([cf("ts-3-4-b1", D(LCB, "Claude Code re-injects the plan file after each compaction, so the plan survives where conversation history may not", "Claude Code, Large codebases"),
+                       "In Claude Code, the plan survives a compaction: Claude Code puts the plan file back after each one."),
+                    cf("ts-3-4-b2", D(PMODE, "Press `Ctrl+G` to open the proposed plan in your default text editor and edit it directly before Claude proceeds.", "Claude Code, Permission modes"),
+                       "You can edit the proposed plan in your editor before Claude starts."),
+                    cf("ts-3-4-b3", D(MCONF, "Special mode that uses `opus` during plan mode, then switches to `sonnet` for execution", "Claude Code, Model configuration"),
+                       "The model alias opusplan uses Opus to plan and Sonnet to execute, with some providers as exceptions.")])
+            + code_pop_text("ts-3-4-code", "The code: start Claude Code in plan mode", "Start a session in plan mode", PMODE, "claude --permission-mode plan", "Claude Code, Permission modes",
+                            "Or press Shift+Tab in a session, or start one prompt with /plan.")
+            + tab2_links("3.4") + "<p>%s %s</p>" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.4: it calls the Claude API and has no plan mode."),
+                                                     cf("ts-3-4-a23", excerpt(A23, "The build did not use plan mode, so 3.4 has no example.", "Academy decision 0023"),
+                                                        "The build in Claude Code used a rule to discuss first, not plan mode.")), "ts-3-4"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
