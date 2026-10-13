@@ -417,6 +417,80 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
             + tab2_links("1.2", "%s %s" % (fact("ts-1-3-d26", "The mock builder uses no subagent."),
                                            fact("ts-1-3-d12", "A subagent is necessary only when code cannot know before the call what the model must read."))), "ts-1-2"))
 
+
+# ----- part 1.4 (facts: academy/facts/ts-1-4.md) -----
+
+HOOKS, HG, MEMD, MAO = "claude-code-docs-agent-sdk-hooks", "claude-code-docs-hooks-guide", "claude-code-docs-memory", "anthropic-docs-multiagent-orchestration"
+HANDOFF14 = ('<g class="ve-n" transform="translate(640 200)"><rect class="sh" width="230" height="140" rx="0"/>'
+             '<text x="115" y="26">Handoff summary</text><text class="sub" x="115" y="54">customer ID</text><text class="sub" x="115" y="78">root cause</text>'
+             '<text class="sub" x="115" y="102">refund amount</text><text class="sub" x="115" y="126">recommended action</text></g>')
+FIG14 = figure("1.4-1", 890, 380,
+               "The agent asks for process_refund. A PreToolUse hook, which is code, checks that get_customer has returned a verified customer ID. "
+               "If yes, the refund runs. If no, the hook denies the call with a reason, and the agent goes back. Above a threshold, the hook sends the case "
+               "to escalate_to_human, with a handoff summary of customer ID, root cause, refund amount and recommended action.",
+               "".join([edge("M200 80H290", "tool call", 245, 71), edge("M540 80H650", "yes", 595, 71),
+                        edge("M415 130V170H110V120", "no: deny + reason", 262, 162, cls="is-hot"),
+                        edge("M500 130V230", "above a threshold", 508, 190, anchor="r"),
+                        edge("M560 270H640"),
+                        '<text class="ve-el" x="755" y="365">the human has no transcript</text>',
+                        box(20, 40, 180, 80, ["Agent"], sub="asks for a refund", cls="who-model"),
+                        box(290, 30, 250, 100, ["PreToolUse hook"], sub="verified ID returned?"),
+                        box(650, 40, 220, 80, ["process_refund"], sub="runs", cls="try ok"),
+                        box(330, 230, 230, 80, ["escalate_to_human"]),
+                        HANDOFF14]),
+               "%s %s" % (cf("ts-1-4-f1", D(HG, "Claude Code runs them at specific points in its lifecycle, which gives you deterministic control: certain actions always happen rather than relying on the LLM to choose to run them.", "Hooks guide"),
+                             "A hook is code at a fixed point of the loop, so it always runs, and the model does not choose."),
+                          cf("ts-1-4-f12", gx("Implement a programmatic hook that intercepts tool calls to enforce a business rule (e.g., blocking operations above a threshold amount), redirecting to an escalation workflow when triggered.", "Exam guide, section 8, exercise"),
+                             "The guide joins the gate and the escalation in one exercise.")))
+
+PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt",
+                        "When a step must come first, such as identity verification before a refund, code blocks the later tool call until the step is done, because a prompt instruction can fail. "
+                        "When the agent escalates, it gives the human a structured summary, because the human does not see the conversation.",
+                        FIG14)
+    + level("explanation",
+            "<p><b>Code or prompt.</b> %s %s</p>" % (
+                cf("ts-1-4-k1", gx("The difference between programmatic enforcement (hooks, prerequisite gates) and prompt-based guidance for workflow ordering", "Exam guide, 1.4-K1"),
+                   "The guide separates enforcement by code, such as hooks and prerequisite gates, from guidance in a prompt (1.4-K1)."),
+                cf("ts-1-4-f2", D(MEMD, "Claude treats them as context, not enforced configuration. To block an action regardless of what Claude decides, use a [PreToolUse hook](/docs/en/hooks-guide) instead.", "Claude Code, Memory"),
+                   "The documentation says the same: Claude treats its instructions as context, not as enforced configuration. To block an action whatever Claude decides, use a PreToolUse hook."))
+            + "<p><b>A prompt can fail.</b> %s %s</p>" % (
+                cf("ts-1-4-k2", gx("When deterministic compliance is required (e.g., identity verification before financial operations), prompt instructions alone have a non-zero failure rate", "Exam guide, 1.4-K2"),
+                   "When compliance must be certain, such as identity verification before a financial operation, a prompt alone has a failure rate above zero (1.4-K2)."),
+                cf("ts-1-4-f14", gx("programmatic enforcement provides deterministic guarantees that prompt-based approaches cannot. Options B and C rely on probabilistic LLM compliance, which is insufficient when errors have financial consequences.", "Exam guide, sample question 1"),
+                   "Sample question 1 of the guide gives the reason: code gives a guarantee, a prompt gives only a probability."))
+            + "<p><b>The gate.</b> %s %s %s</p>" % (
+                cf("ts-1-4-s1", gx("Implementing programmatic prerequisites that block downstream tool calls until prerequisite steps have completed (e.g., blocking process_refund until get_customer has returned a verified customer ID)", "Exam guide, 1.4-S1"),
+                   "Code blocks process_refund until get_customer has returned a verified customer ID (1.4-S1)."),
+                cf("ts-1-4-f3", D(HOOKS, "| `PreToolUse` | Yes | Yes | Tool call request (can block or modify) |", "Agent SDK, Hooks"),
+                   "In the Agent SDK, a PreToolUse hook gets each tool call before it runs, and can block it."),
+                cf("ts-1-4-f6", D(HOOKS, "`permissionDecisionReason` tells the model why, so it avoids retrying.", "Agent SDK, Hooks"),
+                   "A deny carries a reason, so the model knows why and can call get_customer first."))
+            + "<p><b>Many concerns.</b> %s %s</p>" % (
+                cf("ts-1-4-s2", gx("Decomposing multi-concern customer requests into distinct items, then investigating each in parallel using shared context before synthesizing a unified resolution", "Exam guide, 1.4-S2"),
+                   "A request with several issues becomes distinct items. The agent investigates each one, then joins them in one resolution (1.4-S2)."),
+                cf("ts-1-4-f11", D(MAO, "**Parallelization:** Fan out independent subtasks simultaneously (searching multiple sources, analyzing separate files) and have the agent synthesize the results.", "Managed Agents, Multiagent orchestration"),
+                   "The documentation names the same pattern: fan out independent subtasks, then synthesize the results."))
+            + "<p><b>The handoff.</b> %s Only the guide describes the content of a handoff.</p>" %
+                cf("ts-1-4-s3", gx("Compiling structured handoff summaries (customer ID, root cause, refund amount, recommended action) when escalating to human agents who lack access to the conversation transcript", "Exam guide, 1.4-S3"),
+                   "When the agent escalates, it writes a structured summary: customer ID, root cause, refund amount and recommended action, because the human does not see the transcript (1.4-K3, 1.4-S3).")
+            + exam_tests("1.4", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names")])
+            + "<p>%s</p>" % cf("ts-1-4-q1", gx("Add a programmatic prerequisite that blocks lookup_order and process_refund calls until get_customer has returned a verified customer ID.", "Exam guide, sample question 1, answer A"),
+                               "Sample question 1 of the guide tests 1.4-S1: its correct answer is a programmatic prerequisite.")
+            + guide_text("1.4"), "ts-1-4")
+    + level("depth",
+            beyond([cf("ts-1-4-b1", D(HOOKS, "Claude Code doesn't run the tool call, Claude receives a tool result stating the hook didn't respond before its timeout, and the turn continues.", "Agent SDK, Hooks"),
+                       "A gate that is too slow fails closed: if a PreToolUse hook does not answer before its timeout, the tool call does not run."),
+                    cf("ts-1-4-b2", D(PAR, "If you run in parallel and a call fails because its prerequisite hadn't completed, return `is_error: true` with the natural error message.", "Parallel tool use"),
+                       "A prerequisite and its dependent call can come in one response. If they run in parallel, the dependent call can fail and must return an error."),
+                    cf("ts-1-4-b3", D(PERM, "A hook that returns `allow` does not skip the deny and ask rules below", "Agent SDK, Permissions"),
+                       "A hook that allows a call does not skip the deny and ask rules of the permissions.")])
+            + code_pop("ts-1-4-code", "The code: a PreToolUse hook in Python", "A hook that denies a tool call", HOOKS, "import asyncio", "asyncio.run(main())", "Agent SDK, Hooks",
+                       "This hook blocks a write to a .env file. A prerequisite gate uses the same deny, and also reads state that the application keeps.")
+            + tab2_links("1.4") + "<p>%s %s</p>" % (
+                fact("ts-1-3-d26", "The mock builder uses no hook."),
+                cf("ts-1-4-s2use", excerpt(step_file(2), "Here: an instruction to the writer can fail, so each rule that the writer gets is also checked, by code or by a model.", "Build guide, step 2"),
+                   "It takes the general idea: an instruction to the writer can fail, so code or a model checks each rule.")), "ts-1-4"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
