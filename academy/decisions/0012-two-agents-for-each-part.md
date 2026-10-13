@@ -1,8 +1,8 @@
 # 0012: Two agents for each part
 
 - Date: 13 October 2026
-- Status: proposed
-- Text confirmed by the owner: not yet
+- Status: accepted
+- Text confirmed by the owner: 13 October 2026
 - Diagram: none
 
 ## Question
