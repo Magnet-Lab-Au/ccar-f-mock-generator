@@ -1896,6 +1896,77 @@ PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                                    "The owner rejected the Message Batches API: each round of the mock builder would wait for its batch, so the work is blocking (4.5-K2).")
                          + ' <a href="%s#step-4">Step 4, Check by a model &rarr;</a>' % TAB2), "ts-4-5"))
 
+
+# ----- part 4.6 (facts: academy/facts/ts-4-6.md) -----
+
+ETH = "anthropic-docs-extended-thinking"
+D32 = glob.glob(os.path.join(ROOT, "docs/decisions/0032-*.md"))[0][len(ROOT) + 1:]
+REV46 = "Use a subagent to review the rate limiter diff against PLAN.md. Check that\nevery requirement is implemented, the listed edge cases have tests, and\nnothing outside the task's scope changed. Report gaps, not style preferences."
+FIG46 = figure("4.6-1", 890, 320,
+               "Top: the writer keeps its reasoning, so a new reviewer instance that sees only the code and the criteria checks the code. "
+               "Bottom: a large review gets one pass for each file, then an integration pass across the files, then a verification pass that adds a confidence to each finding, "
+               "and the findings are routed by a calibrated confidence.",
+               "".join(['<text class="ve-lab" x="20" y="14">Who reviews</text><text class="ve-lab" x="20" y="150">Split and route</text>',
+                        edge("M200 55H260"), edge("M420 55H480"),
+                        edge("M180 180H220V230H260"), edge("M180 230H260"), edge("M180 280H220V230H260"),
+                        edge("M460 230H520"), edge("M690 230H740"),
+                        box(20, 20, 180, 70, ["Writer"], sub="keeps its reasoning", cls="who-model"),
+                        box(260, 20, 160, 70, ["The code"]),
+                        box(480, 20, 240, 70, ["New reviewer"], sub="code and criteria only", cls="who-model"),
+                        box(20, 160, 160, 40, ["File 1: pass"]), box(20, 210, 160, 40, ["File 2: pass"]), box(20, 260, 160, 40, ["File N: pass"]),
+                        box(260, 195, 200, 70, ["Integration pass"], sub="across the files", cls="who-model"),
+                        box(520, 195, 170, 70, ["Verification"], sub="confidence each"),
+                        box(740, 195, 130, 70, ["Route"], sub="calibrated", cls="try ok")]),
+               "%s %s" % (cf("ts-4-6-k1", gx("Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1"),
+                             "A model keeps the reasoning of its own work, so it is less likely to question its decisions in the same session (4.6-K1)."),
+                          cf("ts-4-6-k3", gx("Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "Exam guide, 4.6-K3"),
+                             "A large review splits into passes for each file plus passes across the files (4.6-K3).")))
+
+PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files together",
+                        "The session that wrote the work keeps its reasoning, so it seldom questions its own choices. Give the review to a new instance that sees only the work and the criteria, "
+                        "and split a large review into one pass for each file plus one pass across the files.",
+                        FIG46)
+    + level("explanation",
+            "<p><b>The writer is biased.</b> %s</p>" %
+                cf("ts-4-6-f2", D(BEST, "A fresh context improves code review since Claude won't be biased toward code it just wrote.", "Claude Code, Best practices"),
+                   "The documentation agrees with 4.6-K1: a fresh context is not biased toward the code it just wrote.")
+            + "<p><b>A new instance.</b> %s %s %s %s</p>" % (
+                cf("ts-4-6-k2", gx("Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking", "Exam guide, 4.6-K2"),
+                   "The guide says that an independent instance, with no prior reasoning, finds subtle issues better than an instruction to check itself or extended thinking (4.6-K2)."),
+                cf("ts-4-6-s1", gx("Using a second independent Claude instance to review generated code without the generator's reasoning context", "Exam guide, 4.6-S1"),
+                   "So a second Claude instance reviews the code, without the reasoning of the writer (4.6-S1)."),
+                cf("ts-4-6-f3", D(BEST, "A reviewer running in a fresh [subagent](/docs/en/sub-agents) context sees only the diff and the criteria you give it, not the reasoning that produced the change, so it evaluates the result on its own terms.", "Claude Code, Best practices"),
+                   "In Claude Code, a reviewer in a fresh subagent sees only the diff and the criteria."),
+                cf("ts-4-6-c2", D(ETH, "Extended thinking (`thinking.type: \"enabled\"` with `budget_tokens`) is deprecated on the Claude 4.6 models (requests using it still succeed).", "Extended thinking"),
+                   "The mode that the guide calls extended thinking is deprecated in the documentation. The exam uses the guide."))
+            + "<p><b>Passes.</b> %s %s Part 1.6 shows the same split.</p>" % (
+                cf("ts-4-6-s2", gx("Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "Exam guide, 4.6-S2"),
+                   "The passes for each file find local issues, and a separate integration pass follows the data flow across the files (4.6-S2)."),
+                cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "The documentation also runs a reviewer for each file, then one agent over all the findings."))
+            + "<p><b>Route by confidence.</b> %s %s %s</p>" % (
+                cf("ts-4-6-s3", gx("Running verification passes where the model self-reports confidence alongside each finding to enable calibrated review routing", "Exam guide, 4.6-S3"),
+                   "A verification pass adds the confidence of the model to each finding, to route the review (4.6-S3)."),
+                cf("ts-4-6-f16", gx("Field-level confidence scores calibrated using labeled validation sets for routing review attention", "Exam guide, 5.5-K3"),
+                   "The guide calibrates that confidence on labeled examples (5.5-K3),"),
+                cf("ts-4-6-f17", gx("Option B fails because LLM self-reported confidence is poorly calibrated—the agent is already incorrectly confident on hard cases.", "Exam guide, sample question 3"),
+                   "because a raw self-reported confidence is poorly calibrated."))
+            + exam_tests("4.6", [("Confidence scoring — field-level confidence, calibration with labeled validation sets, stratified sampling for error rate measurement", "Among the technologies, the guide names")])
+            + guide_text("4.6"), "ts-4-6")
+    + level("depth",
+            beyond([cf("ts-4-6-b1", D(CCS, "This drops the input isolation that subagents otherwise provide", "Claude Code, Subagents"),
+                       "In Claude Code, a fork sees the whole conversation, so it is not an independent reviewer."),
+                    cf("ts-4-6-b2", D(BEST, "A reviewer prompted to find gaps will usually report some, even when the work is sound, because that is what it was asked to do.", "Claude Code, Best practices"),
+                       "A reviewer that is asked to find gaps usually reports some, also when the work is sound."),
+                    cf("ts-4-6-b3", D(CREV, "Each agent looks for a different class of issue, then a verification step checks candidates against actual code behavior to filter out false positives.", "Claude Code, Code Review"),
+                       "Code Review of Claude Code, a research preview, runs several agents, each for one class of issue, then a verification step.")])
+            + code_pop_text("ts-4-6-code", "The code: a prompt for an independent review", "A review by a subagent", BEST, REV46, "Claude Code, Best practices",
+                            "The subagent checks the diff against the plan, with no reasoning of the writer.")
+            + tab2_links("4.6") + "<p>%s %s</p>" % (
+                cf("ts-4-6-use", excerpt(step_file(4), "The same context. Here: a new call, with no reasoning of the writer, checks the question.", "Build guide, step 4"),
+                   "In step 4, a new call with no reasoning of the writer checks each question. The writer and the checker use the same model, so the independence comes from the context."),
+                cf("ts-4-6-d32", excerpt(D32, "For now, this design does the opposite of the point.", "Mock decision 0032"),
+                   "No step uses 4.6-S3: the build had no labeled data to calibrate a confidence.")), "ts-4-6"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
