@@ -50,3 +50,4 @@ One entry for each work session. Newest entry first.
 - The owner confirmed the text of decision 0014.
 - The owner asked for a review of the whole picture as the slices are built. The owner accepted a script and a new agent after each slice. Decision 0015 (proposed) records it, and the status line of 0012 names it.
 - The owner confirmed the text of decision 0015.
+- The owner asked for an independent review of the plan. A new agent read the brief, decisions 0001 to 0015, the two 1.1 samples and the rules, and found 24 items. The assistant checked the main items against the files: they hold. Two are errors of the assistant: decision 0011 counts 84 and 24 mock decisions, but there are 79 decisions and 19 were changed later, and HANDOFF.md does not point to the academy work. The first item for the owner: real mock questions on the pages. The owner chose to allow them. Decision 0016 (proposed) records it.
