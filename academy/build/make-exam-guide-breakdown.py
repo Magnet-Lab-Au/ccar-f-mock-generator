@@ -1239,6 +1239,77 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
                                               "For the plan of a mock, 3.3 is one idea, because its 6 points have one correct answer, so each mock has about one question on it."))), "ts-3-3"))
 
+
+# ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----
+
+SKL, FOV, CDIR = "claude-code-docs-skills", "claude-code-docs-features-overview", "claude-code-docs-claude-directory"
+SKILL32 = "---\nname: deep-research\ndescription: Research a topic thoroughly\ncontext: fork\nagent: Explore\n---\n\nResearch $ARGUMENTS thoroughly:\n\n1. Find relevant files using Glob and Grep\n2. Read and analyze the code\n3. Summarize findings with specific file references"
+FIG32 = figure("3.2-1", 890, 300,
+               "A skill with context: fork runs in a new subagent. The content of SKILL.md is its task, and it gets no conversation history. "
+               "It reads files and runs searches, and only a summary returns to the main conversation. Without context: fork, the body of the skill enters the main context.",
+               "".join([edge("M280 80H560", "SKILL.md content = the task", 420, 71),
+                        edge("M280 125H560", "no conversation history", 420, 145, cls="is-async no-head"),
+                        '<path class="ve-e no-head" d="M412 117l16 16M428 117l-16 16"/>',
+                        edge("M715 160V200H150V160", "only a summary returns", 430, 192),
+                        box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
+                        box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model"),
+                        box(20, 225, 300, 60, ["Without context: fork"], sub="the body enters the main context")]),
+               "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
+                             "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
+                          cf("ts-3-2-f10", D(FOV, "The subagent might read dozens of files or run extensive searches, but your main conversation only receives a summary.", "Claude Code, Features overview"),
+                             "The main conversation receives only a summary.")))
+
+PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how they run",
+                        "A command or a skill in the .claude/ folder of the project reaches the team through git. One in ~/.claude/ stays personal. "
+                        "The frontmatter of a skill sets how it runs, and unlike CLAUDE.md, a skill loads only when it is used.",
+                        FIG32)
+    + level("explanation",
+            "<p><b>Team or personal.</b> %s %s %s</p>" % (
+                cf("ts-3-2-k1", gx("Project-scoped commands in .claude/commands/ (shared via version control) vs user-scoped commands in ~/.claude/commands/ (personal)", "Exam guide, 3.2-K1"),
+                   "A command in .claude/commands/ of the project reaches the team through git. One in ~/.claude/commands/ is personal (3.2-K1, 3.2-S1)."),
+                cf("ts-3-2-f3", D(CDIR, "Files here apply to every project you work in and are never committed to any repository.", "Claude Code, The .claude directory"),
+                   "Files in ~/.claude/ are never committed."),
+                cf("ts-3-2-c3", D(SKL, "**Custom commands have been merged into skills.** A file at `.claude/commands/deploy.md` and a skill at `.claude/skills/deploy/SKILL.md` both create `/deploy` and work the same way.", "Claude Code, Skills"),
+                   "Claude Code has merged commands into skills: a command file still works, and a skill in .claude/skills/ makes the same command. The exam uses the guide."))
+            + "<p><b>The frontmatter.</b> %s %s</p>" % (
+                cf("ts-3-2-k2", gx("Skills in .claude/skills/ with SKILL.md files that support frontmatter configuration including context: fork, allowed-tools, and argument-hint", "Exam guide, 3.2-K2"),
+                   "A skill is a SKILL.md file in .claude/skills/, with frontmatter such as context: fork, allowed-tools and argument-hint (3.2-K2)."),
+                cf("ts-3-2-s2", gx("Using context: fork to isolate skills that produce verbose output (e.g., codebase analysis) or exploratory context (e.g., brainstorming alternatives) from the main session", "Exam guide, 3.2-S2"),
+                   "context: fork suits a skill with long output, such as an analysis of the codebase (3.2-S2)."))
+            + "<p><b>Two fields that differ.</b> %s %s %s %s</p>" % (
+                cf("ts-3-2-s3", gx("Configuring allowed-tools in skill frontmatter to restrict tool access during skill execution (e.g., limiting to file write operations to prevent destructive actions)", "Exam guide, 3.2-S3"),
+                   "The guide uses allowed-tools to restrict the tools of a skill (3.2-S3)."),
+                cf("ts-3-2-c1", D(SKL, "It does not restrict which tools are available", "Claude Code, Skills"),
+                   "In the documentation, allowed-tools only approves tools in advance, and it does not restrict which tools are available."),
+                cf("ts-3-2-s4", gx("Using argument-hint frontmatter to prompt developers for required parameters when they invoke the skill without arguments", "Exam guide, 3.2-S4"),
+                   "The guide uses argument-hint to ask for missing parameters (3.2-S4)."),
+                cf("ts-3-2-c2", D(SKL, "Hint shown during autocomplete to indicate expected arguments.", "Claude Code, Skills"),
+                   "In the documentation, it is a hint in the autocomplete. The exam uses the guide."))
+            + "<p><b>Personal variants.</b> %s %s</p>" % (
+                cf("ts-3-2-k4", gx("Personal skill customization: creating personal variants in ~/.claude/skills/ with different names to avoid affecting teammates", "Exam guide, 3.2-K4"),
+                   "The guide puts a personal variant in ~/.claude/skills/ with another name (3.2-K4)."),
+                cf("ts-3-2-f16", D(SKL, "Enterprise over personal, and personal over project.", "Claude Code, Skills"),
+                   "With the same name, a personal skill wins over the project skill, but only for its owner."))
+            + "<p><b>Skill or CLAUDE.md.</b> %s %s</p>" % (
+                cf("ts-3-2-s5", gx("Choosing between skills (on-demand invocation for task-specific workflows) and CLAUDE.md (always-loaded universal standards)", "Exam guide, 3.2-S5"),
+                   "A skill is for a workflow that runs on demand, and CLAUDE.md is for standards that always load (3.2-S5)."),
+                cf("ts-3-2-f23", D(SKL, "In a regular session, skill descriptions are loaded into context so Claude knows what's available, but full skill content only loads when invoked.", "Claude Code, Skills"),
+                   "Only the description of a skill is always in context. Its body loads when it is used."))
+            + exam_tests("3.2", [("Custom commands and skills: project vs user scope, context: fork, allowed-tools, argument-hint frontmatter", "Among the topics, the guide names")])
+            + guide_text("3.2"), "ts-3-2")
+    + level("depth",
+            beyond([cf("ts-3-2-b1", D(SKL, "Workspace trust doesn't gate this field.", "Claude Code, Skills"),
+                       "allowed-tools of a project skill applies even in a folder that you have never trusted, so a repository can grant itself tools."),
+                    cf("ts-3-2-b2", D(SKL, "**`disable-model-invocation: true`**: Claude can't invoke the skill on its own.", "Claude Code, Skills"),
+                       "The field disable-model-invocation keeps Claude from starting a skill with side effects, such as a deploy."),
+                    cf("ts-3-2-b3", D(SKL, "Unexpected key(s) in SKILL.md frontmatter: argument-hint.", "Claude Code, Skills"),
+                       "Outside Claude Code, on a claude.ai upload or in the Skills API, argument-hint is an error.")])
+            + code_pop_text("ts-3-2-code", "The code: a skill with context: fork", "A research skill that runs in a forked subagent", SKL, SKILL32, "Claude Code, Skills",
+                            "The Explore agent runs the task, and $ARGUMENTS takes the words after the command.")
+            + tab2_links("3.2", "%s %s" % (fact("ts-3-1-a02", "No step of the mock builder uses 3.2: it calls the Claude API and is not Claude Code."),
+                                           cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035 (proposed)"),
+                                              "The build in Claude Code has no part for 3.2, because the link to the records is weak."))), "ts-3-2"))
+
 # ----- the top: the map and how we broke it down -----
 
 CARD.update({
