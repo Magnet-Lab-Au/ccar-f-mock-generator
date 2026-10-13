@@ -25,11 +25,16 @@ def read(path):
         return f.read()
 
 
+_SAME = {}
+
+
 def in_tag(path):
-    """True if the file was in the repository at the tag."""
-    import subprocess
-    r = subprocess.run(["git", "-C", ROOT, "cat-file", "-e", "%s:%s" % (TAG, path)], capture_output=True)
-    return r.returncode == 0
+    """True if the file is at the tag with the same text as today, so a line number of today is right at the tag."""
+    if path not in _SAME:
+        import subprocess
+        r = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (TAG, path)], capture_output=True)
+        _SAME[path] = r.returncode == 0 and r.stdout.decode("utf-8", "replace") == read(path)
+    return _SAME[path]
 
 
 def link(path, a=None, b=None):
