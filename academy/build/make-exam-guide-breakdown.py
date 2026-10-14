@@ -2851,6 +2851,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
   <p>The label <span class="chip guide">Guide only</span> ends a point where no copied page of the Anthropic documentation says it, or where the documentation says it in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
   <p>Where a fact of the product could lead to a different exam answer, a box gives both: <b>For the exam</b>, the answer of the guide, and <b>The product today</b>, the documentation of 14 October 2026. The detail is in the Depth.</p>
+  <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam, the topics that the exam covers, and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
@@ -2882,67 +2883,89 @@ def domain_html(d):
 # ----- the primer before domain 1 (academy decision 0043, item 2) -----
 
 OVT_P, CCW, SDKL, MCPD = "anthropic-docs-tool-use-overview", "claude-code-docs-how-claude-code-works", "claude-code-docs-agent-sdk-agent-loop", "claude-code-docs-mcp"
+
+
+def to_parts(*ids):
+    """The pointer of a glossary word to the parts that teach it, as links."""
+    links = ['<a href="#ts-%s">%s</a>' % (t.replace(".", "-"), t) for t in ids]
+    return ("Part " if len(ids) == 1 else "Parts ") + (links[0] if len(links) == 1 else ", ".join(links[:-1]) + " and " + links[-1]) + "."
+
+
 FIGC = cases("C", [
     ("info", "Your code or Anthropic", "Claude API",
-     "In the Claude API, Claude returns a tool call. Your application runs a client tool. Anthropic runs a server tool.", 150,
+     "In the Claude API, Claude returns a tool call. Your code runs a client tool. Anthropic runs a server tool.", 150,
      mini_box(2, 2, 236, 44, "Claude", "returns a tool call") + '<path class="ve-e" d="M60 46V60"/><path class="ve-e" d="M180 46V60"/>'
-     + mini_box(2, 62, 114, 86, "Your app", "client tool", st=True) + mini_box(124, 62, 114, 86, "Anthropic", "server tool", st=True),
+     + mini_box(2, 62, 114, 86, "Your code", "client tool", st=True) + mini_box(124, 62, 114, 86, "Anthropic", "server tool", st=True),
      cf("pr-api", D(OVT_P, "It then returns a structured call that your application executes (client tools) or that Anthropic executes (server tools).", "Tool use overview"),
-        "Claude returns a tool call. Your application runs a client tool, and Anthropic runs a server tool.")),
-    ("info", "Your computer", "Claude Code",
-     "Claude Code runs in your terminal. Around the model, it gives the tools and manages the context.", 150,
+        "Claude returns a tool call. Your code runs a client tool, and Anthropic runs a server tool.") + " " +
+     cf("pr-api2", D(OVT_P, "**Client tools** (including user-defined tools and tools with Anthropic-defined schemas, such as `bash` and `text_editor`) run in your application.", "Tool use overview"),
+        "A tool that Anthropic defines, such as bash, is also a client tool.")),
+    ("info", "Your computer, by default", "Claude Code",
+     "Claude Code is the layer around the model. It gives the tools and runs them, by default on your computer.", 150,
      mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "Claude Code", "gives the tools", st=True),
+     + mini_box(2, 62, 236, 86, "Claude Code", "runs the tools", st=True),
      cf("pr-cc", D(CCW, "Claude Code is the layer around the model that provides the tools and manages the context the model sees.", "Claude Code, How Claude Code works"),
         "Claude Code is the layer around the model that gives the tools and manages the context.") + " " +
-     cf("pr-cc2", D(CCW, "Claude Code is an agentic assistant that runs in your terminal.", "Claude Code, How Claude Code works"),
-        "It runs in your terminal.")),
-    ("info", "Your program", "Agent SDK",
-     "The Agent SDK puts the agent loop of Claude Code into your own program, with control over tools and permissions.", 150,
+     cf("pr-cc3", D(CCW, "| **Local** | Your machine | Default. Full access to your files, tools, and environment |", "Claude Code, How Claude Code works"),
+        "By default, it runs on your computer.")),
+    ("info", "Your code", "Agent SDK",
+     "The Agent SDK puts the agentic loop of Claude Code into your own code. The SDK runs each tool that Claude asks for.", 150,
      mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "Your program", "runs the agent loop", st=True),
+     + mini_box(2, 62, 236, 86, "Your code, with the SDK", "runs the tools", st=True),
      cf("pr-sdk", D(SDKL, "The Agent SDK lets you embed Claude Code's autonomous agent loop in your own applications. The SDK is a standalone package that gives you programmatic control over tools, permissions, cost limits, and output.", "Agent SDK, The agent loop"),
-        "The Agent SDK puts the agent loop of Claude Code into your own program, with control over tools, permissions, cost limits and output.")),
-    ("info", "An MCP server", "MCP",
-     "MCP is an open standard. An MCP server gives Claude Code access to your tools, databases and APIs.", 150,
-     mini_box(2, 2, 236, 44, "Claude Code", "calls a tool") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "MCP server", "tools, data, APIs", st=True),
+        "The Agent SDK puts the agentic loop of Claude Code into your own code, with control over tools, permissions, cost limits and output.") + " " +
+     cf("pr-sdk2", D(SDKL, "The SDK runs each requested tool and collects the results.", "Agent SDK, The agent loop"),
+        "The SDK runs each tool that Claude asks for.")),
+    ("info", "An MCP server", "MCP, a protocol",
+     "MCP is an open source standard. An MCP server gives Claude Code or an agent of the Agent SDK access to your tools, databases and APIs.", 150,
+     mini_box(2, 2, 236, 44, "Claude Code or SDK", "calls a tool") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 86, "MCP server", "runs the tool", st=True),
      cf("pr-mcp", D(MCPD, "Claude Code can connect to hundreds of external tools and data sources through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction), an open source standard for AI-tool integrations. MCP servers give Claude Code access to your tools, databases, and APIs.", "Claude Code, MCP"),
-        "MCP (Model Context Protocol) is an open standard. An MCP server gives Claude Code access to your tools, databases and APIs.")),
-], "Four products of the exam, and who runs the tools in each.")
+        "MCP (Model Context Protocol) is an open source standard. An MCP server gives Claude Code access to your tools, databases and APIs.") + " " +
+     cf("pr-mcp2", D("claude-code-docs-agent-sdk-mcp", "With MCP, your agent can query databases, integrate with APIs like Slack and GitHub, and connect to other services without writing custom tool implementations.", "Agent SDK, MCP"),
+        "An agent of the Agent SDK can use MCP too.")),
+], "Three products and one protocol of the exam, and who runs the tools in each.")
 
 GLOSS = [
     ("tool", cf("pr-g-tool", D(OVT_P, "Tool use (also called function calling) lets Claude call functions that you define or that Anthropic provides.", "Tool use overview"),
-                "A function that Claude can call. You define it, or Anthropic gives it. Fig. C shows who runs it.")),
+                "A function that Claude can call. You define it, or Anthropic defines it. Fig. C shows who runs it.")),
+    ("agentic loop", cf("pr-g-loop", D(CCW, "The agentic loop is powered by two components: [models](#models) that reason and [tools](#tools) that act.", "Claude Code, How Claude Code works"),
+                        "The loop of the model that reasons and the tools that act, until the work is done.") + " " + to_parts("1.1")),
+    ("context window", cf("pr-g-ctx", D("claude-code-docs-context-window", "Claude Code's context window holds everything Claude knows about your session: your instructions, the files it reads, its own responses, and content that never appears in your terminal.", "Claude Code, Context window"),
+                          "Everything that Claude knows in a session: your instructions, the files that it reads and its own responses.") + " " + to_parts("5.1", "5.4")),
     ("built-in tool", cf("pr-g-builtin", D("claude-code-docs-tools-reference", "Claude Code has access to a set of built-in tools that help it understand and modify your codebase.", "Claude Code, Tools reference"),
-                         "A tool that comes with Claude Code, to read and change your code. Part 2.5 shows six of them.")),
+                         "A tool that comes with Claude Code, to read and change the files of your project.") + " " + to_parts("2.5")),
     ("session", cf("pr-g-session", D("claude-code-docs-agent-sdk-sessions", "A session is the conversation history the SDK accumulates while your agent works. It contains your prompt, every tool call the agent made, every tool result, and every response.", "Agent SDK, Sessions"),
-                   "The conversation history of one piece of work: the prompt, each tool call, each tool result and each response. Part 1.7.")),
+                   "The conversation history of one piece of work: the prompt, each tool call, each tool result and each response.") + " " + to_parts("1.7")),
     ("fork", cf("pr-g-fork", D("claude-code-docs-agent-sdk-sessions", "Forking creates a new session that starts with a copy of the original's history but diverges from that point.", "Agent SDK, Sessions"),
-                "A new session that starts with a copy of the history of another session, and then goes its own way. Part 1.7.")),
+                "A new session that starts with a copy of the history of another session, and then goes its own way.") + " " + to_parts("1.7") + " " +
+             cf("pr-g-fork2", D("claude-code-docs-sub-agents", "A fork is a subagent that inherits the entire conversation so far instead of starting fresh.", "Claude Code, Subagents"),
+                "In Claude Code, a fork is also a subagent that starts with the whole conversation.") + " " + to_parts("1.3")),
     ("subagent", cf("pr-g-sub", D("claude-code-docs-sub-agents", "Use one when a side task would flood your main conversation with search results, logs, or file contents you won't reference again: the subagent does that work in its own context and returns only the summary.", "Claude Code, Subagents"),
-                    "A separate assistant that does a side task in its own context and returns only a summary. Parts 1.2 and 1.3.")),
+                    "A separate assistant that does a side task in its own context and returns only a summary.") + " " + to_parts("1.2", "1.3")),
     ("hook", cf("pr-g-hook", D("claude-code-docs-agent-sdk-hooks", "Hooks are callback functions that run your code in response to agent events, like a tool being called, a session starting, or execution stopping.", "Agent SDK, Hooks"),
-                "Your own code that runs at an event of the agent, such as a tool call. In the Agent SDK it is a function of your program.") + " " +
+                "Your own code that runs at an event of the agent, such as a tool call.") + " " +
              cf("pr-g-hook2", D("claude-code-docs-hooks-guide", "Hooks are user-defined shell commands. Claude Code runs them at specific points in its lifecycle, which gives you deterministic control: certain actions always happen rather than relying on the LLM to choose to run them.", "Claude Code, Hooks guide"),
-                "In Claude Code it is often a shell command. The action always happens, and the model does not choose it. Parts 1.4 and 1.5.")),
+                "In Claude Code it is often a shell command. The action always happens, and the model does not choose it.") + " " + to_parts("1.4", "1.5")),
     ("permission mode", cf("pr-g-perm", D("claude-code-docs-permission-modes", "A permission mode sets which actions Claude can take in a session without asking you first.", "Claude Code, Permission modes"),
-                           "The setting that says which actions Claude can take without asking you first. Part 3.4.")),
+                           "The setting that says which actions Claude can take without asking you first.") + " " +
+                        cf("pr-g-perm2", D("claude-code-docs-permission-modes", "the cycle then runs `default` → `acceptEdits` → `plan`", "Claude Code, Permission modes"),
+                           "Plan mode is one of them.") + " " + to_parts("1.5", "3.4")),
     ("command", cf("pr-g-cmd", D("claude-code-docs-commands", "Commands control Claude Code from inside a session.", "Claude Code, Commands"),
-                   "It controls Claude Code from inside a session.") + " " +
+                   "A command controls Claude Code from inside a session.") + " " +
                 cf("pr-g-cmd2", D("claude-code-docs-commands", "Type `/` to see the commands available to you", "Claude Code, Commands"),
-                   "You type it after a /, such as /memory. Part 3.2.")),
-    ("CLAUDE.md", cf("pr-g-claudemd", D("claude-code-docs-memory", "CLAUDE.md files are markdown files that give Claude persistent instructions for a project, your personal workflow, or your entire organization.", "Claude Code, Memory"),
-                     "A file of instructions that Claude reads at the start of each session, for a project, for you, or for an organization. Part 3.1.")),
+                   "You type it after a /, such as /memory.") + " " + to_parts("3.1", "3.2")),
+    ("CLAUDE.md", cf("pr-g-claudemd", D("claude-code-docs-memory", "CLAUDE.md files are markdown files that give Claude persistent instructions for a project, your personal workflow, or your entire organization. You write these files in plain text; Claude reads them at the start of every session.", "Claude Code, Memory"),
+                     "A file of instructions that Claude reads at the start of each session, for a project, for you, or for an organization.") + " " + to_parts("3.1")),
     ("skill", cf("pr-g-skill", D("claude-code-docs-skills", "Skills extend what Claude can do. Create a `SKILL.md` file with instructions, and Claude adds it to its toolkit.", "Claude Code, Skills"),
-                 "A SKILL.md file with instructions that Claude adds to what it can do. Part 3.2.")),
-    ("MCP", "The Model Context Protocol, see Fig. C. Part 2.4."),
-    ("Agent SDK", "Claude Code as a package for your own program, see Fig. C."),
+                 "A SKILL.md file with instructions that Claude adds to what it can do.") + " " + to_parts("3.2")),
+    ("MCP", "The Model Context Protocol, see Fig. C. " + to_parts("2.4")),
+    ("Agent SDK", "Claude Code as a package for your own code, see Fig. C. Domain 1 uses it, for example in " + to_parts("1.3", "1.5", "1.7")[6:]),
 ]
 
 PRIMER = """<section class="parts" id="primer" aria-label="Before you start">
   <h2>Before you start: the products and the words</h2>
-  <p>The exam asks about four products. They differ mainly in who runs the tools that Claude calls.</p>
+  <p>The exam asks about three products and one protocol. Fig. C shows who runs the tools in each.</p>
   %(fig)s
   <details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">%(n)d words</span></summary><div class="body"><dl class="glossary">%(gloss)s</dl>
   <p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%(tab2)s#top-words">Words on tab 2 &rarr;</a></p></div></details>
