@@ -2,6 +2,40 @@
 
 One entry for each work session. Newest entry first.
 
+## 14 October 2026, evening: the reader checks (decision 0041)
+
+- The popups are done (95 on 40 figures). The owner asked if all figures have popups. 41 of 56 have popups, and the plan says why the others have none.
+- The owner will write notes on both tabs in one pass, not today. The owner asked what the assistant can check in the meantime, and chose all checks of `academy/check-plan.md`. An independent agent found 14 problems in the plan, 5 high, all fixed. The owner said yes to the push of 32 commits (GitHub at d938b71).
+- The owner started `/goal` with the condition of the plan. Decision 0041 records it. The tag `owner-review-2026-10-14` marks the version that the owner reads (d938b71).
+
+Progress list (updated after each check):
+
+| ID | State | Result |
+|---|---|---|
+| A1 | open | |
+| A2 | open | |
+| A3 | open | |
+| A4 | open | |
+| B1 | open | |
+| B2 | open | |
+| B3 | open | |
+| B4 | open | |
+| C1 | open | |
+| C2 | open | |
+| C3 | open | |
+| C4 | open | |
+| C5 | open | |
+| D1 | open | |
+| D2 | open | |
+| E1 | open | |
+| E2 | open | |
+| E3 | open | |
+| F1 | open | |
+| F2 | open | |
+| F3 | open | |
+| G1 | open | |
+| G2 | open | |
+
 ## 14 October 2026, morning: the answers to the morning report
 
 - The owner asked for a short version of the morning report and for the number of figures with an animation. Only 1 of the 56 figures has one: the stepper of Fig. 1 of part 1.1, from the sample.
