@@ -1,6 +1,6 @@
 # The list for the owner: results of the reader checks
 
-The checks of `academy/check-plan.md` ran on 14 October 2026, evening. Each check has its own result file in this folder. This file gives the items that need the owner, most important first. The assistant changed only clear errors: they are in `changes.md` (34 lines), and the version that the owner reads has the tag `owner-review-2026-10-14`.
+The checks of `academy/check-plan.md` ran on 14 October 2026, evening. Each check has its own result file in this folder. This file gives the items that need the owner, most important first. The assistant changed only clear errors: they are in `changes.md` (41 lines), and the version that the owner reads has the tag `owner-review-2026-10-14`. A review agent checked all fixes and found 7 problems, 1 high (a new card reused an ID, so the caption of Fig. 2.3-1 opened the wrong card). All 7 are fixed, and the build now stops when two different cards have one ID. Three fixes add a reading or a fact rather than correct an error. `changes.md` names them, and the owner can take them back.
 
 ## In short
 

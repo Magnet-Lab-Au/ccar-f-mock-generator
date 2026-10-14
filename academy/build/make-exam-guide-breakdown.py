@@ -204,6 +204,8 @@ def cf(key, c, text):
     if c.get("kind") == "docs":
         name = "Claude Code documentation" if c["title"].startswith("Claude Code documentation") else "Claude API documentation"
         text = DOC_NAME.sub(lambda m: m.group(1) + "he " + name, text)
+    if key in CARD and CARD[key] != c:   # two different cards with one ID: the later one would replace the first (check of 14 October 2026)
+        raise SystemExit("Two different cards have the ID %s" % key)
     CARD[key] = c
     return fact(key, text)
 
@@ -629,7 +631,7 @@ PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt
                    "When the agent escalates, it writes a structured summary: customer ID, root cause, refund amount and recommended action, because the human does not see the transcript (1.4-K3, 1.4-S3).")
             + exam_tests("1.4", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names")])
             + "<p>%s</p>" % cf("ts-1-4-q1", gx("Add a programmatic prerequisite that blocks lookup_order and process_refund calls until get_customer has returned a verified customer ID.", "Exam guide, sample question 1, answer A"),
-                               "Sample question 1 of the guide tests 1.4-S1: its correct answer is a programmatic prerequisite.")
+                               "Sample question 1 of the guide matches 1.4-S1: its correct answer is a programmatic prerequisite.")
             + guide_text("1.4"), "ts-1-4")
     + level("depth",
             beyond([cf("ts-1-4-b1", D(HOOKS, "Claude Code doesn't run the tool call, Claude receives a tool result stating the hook didn't respond before its timeout, and the turn continues.", "Agent SDK, Hooks"),
@@ -1083,7 +1085,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "The documentation names four: it adds none, which blocks all tools."),
                 cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
                    "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
-                cf("ts-2-3-f14", D(DEFT, "| Manual [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking) (`thinking: {type: \"enabled\"}`)", "Define tools"),
+                cf("ts-2-3-f15", D(DEFT, "| Manual [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking) (`thinking: {type: \"enabled\"}`)", "Define tools"),
                    "Manual extended thinking rejects both on each model."),
                 GUIDE)
             + exam_tests("2.3", [("Claude API — tool_use with JSON schemas, tool_choice options (\"auto\", \"any\", forced tool selection), stop_reason values (\"tool_use\", \"end_turn\"), max_tokens, system prompts", "Among the technologies, the guide names")])
@@ -1909,7 +1911,7 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                    "With several schemas and an unknown document type, any makes Claude call one of them (4.3-S2)."),
                 cf("ts-4-3-s3", gx("Forcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a particular extraction runs before enrichment steps", "Exam guide, 4.3-S3"),
                    "A forced tool makes one extraction run first (4.3-S3)."),
-                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool.") + " " + fact("ts-2-3-f14", "Manual extended thinking rejects both on each model.") + GUIDE)
+                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool.") + " " + fact("ts-2-3-f15", "Manual extended thinking rejects both on each model.") + GUIDE)
             + "<p><b>Schema design.</b> %s %s %s %s</p>" % (
                 cf("ts-4-3-k4", gx("Schema design considerations: required vs optional fields, enum fields with \"other\" + detail string patterns for extensible categories", "Exam guide, 4.3-K4"),
                    "A schema chooses between required and optional fields, and an enum can have &ldquo;other&rdquo; with a detail string (4.3-K4)."),
@@ -2129,7 +2131,7 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                 cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "An example in the dynamic workflows of Claude Code runs a reviewer for each file, then one agent that ranks and deduplicates all the findings."),
                 cf("ts-4-6-f9c", D(WF, "Dynamic workflows are available on all paid plans, with Anthropic API access", "Claude Code, Workflows"), "They need a paid plan or API access."),
                 cf("ts-4-6-q12", gx("Split into focused passes: analyze each file individually for local issues, then run a separate integration-focused pass examining cross-file data flow.", "Exam guide, sample question 12"),
-                   "Sample question 12 of the guide tests this split: one pass for each file, then an integration pass."))
+                   "Sample question 12 of the guide matches this split: one pass for each file, then an integration pass."))
             + "<p><b>Route by confidence.</b> %s %s %s</p>" % (
                 cf("ts-4-6-s3", gx("Running verification passes where the model self-reports confidence alongside each finding to enable calibrated review routing", "Exam guide, 4.6-S3"),
                    "A verification pass adds the confidence of the model to each finding, to route the review (4.6-S3)."),
@@ -2282,9 +2284,9 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                    "The documentation for a support agent aims at an escalation accuracy of 95% or more.")
             + "<p><b>A request for a human.</b> %s %s %s <span class=\"chip guide\">Guide only</span></p>" % (
                 cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
-                   "When a customer demands a human, the agent escalates at once. When the customer does not ask for a human and the issue is simple, it offers to resolve it (5.2-K2)."),
+                   "When a customer asks for a human, the agent escalates at once. When the customer does not ask for a human and the issue is simple, it offers to resolve it (5.2-K2)."),
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
-                   "In the first case, it does not investigate first (5.2-S2)."),
+                   "When the customer asks for a human, the agent does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
                    "When a frustrated customer does not ask for a human and the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates if the customer then asks for a human (5.2-S3)."))
             + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated: 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
@@ -2572,7 +2574,7 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                    "Step 7 uses 5.5 outside its context. The bad marks are shown for each scenario and each domain, because one total can hide a bad part (5.5-K1)."),
                 cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
                    "In mocks 4 and 5, the reader is a Claude model, not a person."),
-                cf("ts-5-5-m1", excerpt(step_file(7), "For mock 5 the file has all 60 questions again (decision 0073).", "Build guide, step 7"),
+                cf("ts-5-5-m1", excerpt(step_file(7), "For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073).", "Build guide, step 7"),
                    "For mocks 1 and 5, the file had all 60 questions, so those were not samples.")), "ts-5-5"))
 
 # ----- part 5.6 (facts: academy/facts/ts-5-6.md) -----
