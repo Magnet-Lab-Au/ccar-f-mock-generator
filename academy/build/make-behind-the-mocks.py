@@ -935,7 +935,7 @@ STEP1 = (level("overview",
                       fact("s1-rep", "A second review found that %s questions of mock 2 repeat mock 1." % REPEAT2.group(1)),
                       fact("s1-same", "%s slots of mock 2 had the same point as mock 1, although their idea had a point that mock 1 did not use." % SAME7.group(1)),
                       fact("s1-point", "inside an idea, the point that earlier mocks used less comes first."),
-                      fact("s1-spread", "Over the %d built mocks, %d of the %d ideas are in 2 to 4 mocks." % (N_MOCKS, sum(SPREAD[k] for k in (2, 3, 4)), len(PG)))))
+                      fact("s1-spread", "Over the %d built mocks, %d of the %d ideas are in 2 to 4 mocks, and %d are in all %d." % (N_MOCKS, sum(SPREAD[k] for k in (2, 3, 4)), len(PG), SPREAD[5], N_MOCKS))))
          ).replace("@N@", "1")
 PART_HTML[1] = with_sources(1, STEP1)
 
@@ -1581,7 +1581,7 @@ FIG72 = """
 
 STEP7 = (level("overview",
                '<h4 class="takeaway">A reader marks the questions in a file good or bad, and the file shows no verdict</h4><p>%s %s %s</p>'
-               % (fact("s7-what", "The checks before this step are code or a model. Here a reader marks the questions, to show if those checks are right. For mocks 1 to 3 the reader was the owner. For mocks 4 and 5 it was a Claude model, the second review."),
+               % (fact("s7-what", "The checks before this step are code or a model. The build guide says that a reader who marks the questions shows if those checks are right. For mocks 1 to 3 the reader was the owner. For mocks 4 and 5 it was a Claude model, the second review."),
                   fact("s7-bad", "A bad mark sends the question to step 5, with the reason as the finding."),
                   fact("s7-stop", "Too many bad marks stop the mock.")))
          + level("explanation",
@@ -1929,6 +1929,48 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
                          "sr": fact("s7-what", "A Claude model in a separate chat, outside the program, that read and marked the mocks after the checks. For mocks 4 and 5 it was the only reader."),
                          "owner": fact("w-owner", "The person who directs this work and who made the decisions of the build. The owner passed the CCAR-F exam.")}
 
+# ----- what this shows and what it does not (academy decision 0043, item 4) -----
+T24P3 = jread("runs/test-0024/part3.json")
+T24D = [c for c in T24P3["checks"] if c["copy"] == "damaged"]
+T24B1 = [c for c in T24D if c["rule"] == "B1"]
+assert T24P3["as_expected"] == T24P3["of"] and all(c["as_expected"] for c in T24D)
+CARD.update({
+    "lim-t24": {"title": "The test before mock 1, part 3", "kind": "count",
+                "text": "runs/test-0024/part3.json: %d checks, %d as expected. %d damaged copies, %d of them with the mark 'correct' moved to a wrong option (rule B1). Step 4 failed each damaged copy on its rule. The script of this page counted them."
+                        % (T24P3["of"], T24P3["as_expected"], len(T24D), len(T24B1), ),
+                "src": "runs/test-0024/part3.json", "href": link("runs/test-0024/part3.json")},
+    "lim-cost": {"title": "The cost of the 5 mocks", "kind": "count",
+                 "text": "Dollars per mock, all steps: %s. Total: %.2f. The script of this page added the usage records." % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), sum(c[0] for c in COST)),
+                 "src": "runs/mock-0N/usage/*.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+})
+LIMITS = """<section class="parts" id="limits" aria-label="What this shows and what it does not">
+  <h2>What this shows and what it does not</h2>
+  <p class="lead">The records show how the questions were checked. They show less about how good the questions are.</p>
+  <div class="limits">
+    <div class="callout"><span class="chip ok">The records show</span><ul class="beyond">
+      <li>%(s3)s <a href="#step-3">Step 3 &rarr;</a></li>
+      <li>%(s4)s <a href="#step-4">Step 4 &rarr;</a></li>
+      <li>%(spread)s <a href="#step-1">Step 1 &rarr;</a></li>
+      <li>%(cost)s <a href="#step-4">Step 4 &rarr;</a></li>
+    </ul></div>
+    <div class="callout"><span class="chip risk">They do not show</span><ul class="beyond">
+      <li>%(t24)s %(blind)s So the records cannot show how often step 4 misses a wrong answer key. <a href="#step-4">Step 4 &rarr;</a></li>
+      <li>%(reader)s <a href="#step-7">Step 7 &rarr;</a></li>
+      <li>Rule B9 did not stop each repeat. Try 5 of M5-S38 wrote the old problem again and passed. M5-S33, a copy of a question of mock 2, passed too. <a href="#step-5">Step 5 &rarr;</a></li>
+      <li>No page compares the mocks with the real exam. %(owner)s</li>
+    </ul></div>
+  </div>
+</section>""" % {
+    "s3": fact("s3-what", "Code checks the 12 rules that have one exact answer."),
+    "s4": fact("s4-what", "A model checks the rules that need judgment, in two calls, and code makes the verdict."),
+    "spread": fact("s1-spread", "%d of the %d ideas are in 2 to 4 mocks, and %d are in all %d." % (sum(SPREAD[k] for k in (2, 3, 4)), len(PG), SPREAD[5], N_MOCKS)),
+    "cost": fact("lim-cost", "The %d mocks cost %.2f dollars in total, for all steps." % (len(COST), sum(c[0] for c in COST))),
+    "blind": fact("s4-runs", "In the %d checks of the 5 mocks, call 4a never selected other letters than the answer key." % sum(V4.values())),
+    "t24": fact("lim-t24", "Before mock 1, a test gave step 4 two questions with a wrong answer key on purpose, and step 4 failed both.") if len(T24B1) == 2 else None,
+    "reader": fact("s7-what", "For mocks 4 and 5, a Claude model, not a person, marked the questions."),
+    "owner": fact("w-owner", "The only link is that the owner passed the CCAR-F exam."),
+}
+
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
@@ -1946,8 +1988,9 @@ BODY = """<main>
   <p class="lead">The mock builder was itself built with Claude Code. The owner gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
   %(cc)s
 </section>
+%(limits)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": WORDS, "cc": CC_HTML}
+             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": WORDS, "cc": CC_HTML, "limits": LIMITS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)

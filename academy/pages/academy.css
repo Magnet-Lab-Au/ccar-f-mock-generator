@@ -364,3 +364,6 @@ table.matrix tbody th { font-weight: 400; } table.matrix .sn { font: 600 var(--t
 .stops li.wide { grid-column: span 2; } @media (max-width: 640px) { .stops li.wide { grid-column: auto; overflow-wrap: anywhere; } }
 #pop pre { white-space: pre; overflow-x: auto; overflow-wrap: normal; }
 .chip code, .tlist code, .ve-label code, .who code, summary code { font-size: inherit; }
+/* what this shows and what it does not (academy decision 0043, item 4) */
+.limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--s-4); }
+.limits .callout { min-width: 0; align-content: start; }
