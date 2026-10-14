@@ -8,6 +8,11 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
+### State on 14 October 2026, night: the exam box (academy decision 0042)
+
+- The owner finds `academy/checks/findings.md` too long to read. The assistant brings its items one at a time, with one recommendation each. Item 1 is done: where a product fact could lead to a different exam answer, a box on tab 1 gives "For the exam" and "The product today", and the detail moved to a list in the Depth. 23 boxes in 15 parts.
+- Next step: item 2 of the short list, a primer and a glossary for beginners. Then the phone layout, tab 2's evidence, and the popups.
+
 ### State on 14 October 2026, evening: the reader checks (academy decision 0041)
 
 - The owner chose to write notes on both tabs in one pass, on another day. Meanwhile the assistant ran the 23 checks of `academy/check-plan.md` alone, under `/goal`. Each check has its result in `academy/checks/<ID>.md`.

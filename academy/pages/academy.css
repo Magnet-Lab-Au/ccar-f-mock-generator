@@ -326,6 +326,15 @@ p > .chip.info[data-step$="-code"] { white-space: normal; }
 .js-motion svg.ve-bars rect, .js-motion svg.ve-grow rect.bar { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); transition: transform 900ms var(--ease); }
 .js-motion svg.ve-bars.grown rect, .js-motion svg.ve-grow.grown rect.bar { transform: none; }
 .chip.guide { color: var(--text-dim); margin-left: var(--s-1); vertical-align: .1em; }
+/* the exam answer and the product today (academy decision 0042) */
+.exambox { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--s-2) var(--s-4); margin: 0; padding: var(--s-3) var(--s-4); background: var(--surface); border: 1px solid var(--border); }
+.exambox dt { font: 600 var(--t-label) var(--font-mono); padding-top: .3rem; align-self: start; display: flex; align-items: center; gap: var(--s-2); }
+.exambox dt::before { content: ''; width: .5rem; height: .5rem; flex: none; }
+.exambox dt.exam::before { background: var(--ok); border-radius: 50%; } .exambox dt.today::before { background: var(--info); transform: rotate(45deg) scale(.85); }
+.exambox dd { margin: 0; min-width: 0; }
+.exambox dd a { white-space: nowrap; }
+.today-list li { scroll-margin-top: var(--s-6); }
+@media (max-width: 34rem) { .exambox { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } .exambox dd + dt { margin-top: var(--s-2); } }
 @media print { .ve-toggle { display: none; } .ve-ba .ba-panel[hidden] { display: block; } svg.ve-bars rect, svg.ve-grow rect.bar { transform: none !important; } }
 .ve-waffle .w-a { fill: var(--ok); } .ve-waffle .w-b { fill: var(--accent); }
 .ve-mini { max-width: 20rem; } .ve-waffle { max-width: 34rem; }

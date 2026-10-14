@@ -2,6 +2,12 @@
 
 One entry for each work session. Newest entry first.
 
+## 14 October 2026, night: the box "For the exam" and "The product today" (decision 0042)
+
+- The owner asked where the open items of the checks are. They are in `academy/checks/findings.md`. The owner said that the list is too long to read. The assistant now brings the items one at a time, with one recommendation each.
+- Item 1: where a product fact differs from the guide, the page did not say which answer the exam expects. The owner said yes to a line for the exam, and asked to show the product in reality too. The assistant said that "changed since the guide" is mostly not true (the guide is from July 2026), and that three Explanations were at their word limit. The owner accepted a box with two lines, with the detail moved to the Depth.
+- Built: 23 boxes in 15 parts of tab 1, and a list "The product today" in the Depth of each of these parts. Fig. 4.3-1 says the same in its notes. The top of tab 1 explains the box. An independent agent reviewed the change and found 0 high and 2 medium items, and 2 places with no box (2.3 narrow tools, 2.4 the local scope). All are fixed.
+
 ## 14 October 2026, evening: the reader checks (decision 0041)
 
 - The popups are done (95 on 40 figures). The owner asked if all figures have popups. 41 of 56 have popups, and the plan says why the others have none.
