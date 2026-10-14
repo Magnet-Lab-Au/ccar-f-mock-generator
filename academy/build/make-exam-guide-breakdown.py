@@ -390,7 +390,7 @@ def note11():
                                          "That page uses max_tokens=1024 and passes json.dumps of the result. The exam guide has no code.")
 
 
-PART["1.1"] = (overview("1.1", "The loop runs while Claude asks for tools", from_sample(LEAD11), from_sample(FIG11))
+PART["1.1"] = (overview("1.1", "The loop runs while Claude asks for tools", from_sample(LEAD11), from_sample(FIG11).replace('data-step="ts-1-1-convo" tabindex="0"', 'data-step="ts-1-1-convo" aria-label="The conversation grows" tabindex="0"'))
                + level("explanation", from_sample(WHO11 + CASES11 + TESTS11) + "<p>%s</p>" % mock_count("1.1") + guide_text("1.1"), "ts-1-1")
                + level("depth", from_sample(CODE11 + BEYOND11) + tab2_links("1.1"), "ts-1-1"))
 note11()
@@ -993,7 +993,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                 cf("ts-2-2-f6", D(HANDLE, "Instead of generic errors like `\"failed\"`, include what went wrong and what Claude should try next", "Handle tool calls"),
                    "The documentation agrees: say what went wrong and what Claude should try next."),
                 cf("ts-2-2-f7", D(SDKT, "In both cases Claude can retry, try a different tool, or explain the failure.", "Agent SDK, Custom tools"),
-                   "With an error result, Claude can retry, try a different tool, or explain the failure."))
+                   "The Claude Code documentation adds, for the Agent SDK: with an error result, Claude can retry, try a different tool, or explain the failure."))
             + "<p><b>The metadata.</b> %s %s</p>" % (
                 cf("ts-2-2-s1", gx("Returning structured error metadata including errorCategory (transient/validation/permission), isRetryable boolean, and human-readable descriptions", "Exam guide, 2.2-S1"),
                    "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1). The errorCategory of 2.2-S1 has three values, not the four categories of 2.2-K2: business errors are not in it. For those, 2.2-S2 uses a flag that it names retriable: false."),
@@ -1041,7 +1041,7 @@ FIG23 = figure("2.3-1", 890, 350,
                         box(20, 150, 200, 90, ["Web search"], sub="web search tools", cls="who-model"),
                         box(240, 150, 200, 90, ["Document", "analysis"], sub="load_document", cls="who-model"),
                         box(460, 150, 200, 90, ["Synthesis"], sub="no web search tools", cls="who-model"),
-                        box(680, 150, 190, 90, ["Report"], sub="(not in the guide)", cls="who-model"),
+                        box(680, 150, 190, 90, ["Report"], sub="(guide names no tools)", cls="who-model"),
                         box(440, 280, 240, 50, ["verify_fact"], sub="a scoped cross-role tool", cls="try ok")]),
                "%s %s" % (cf("ts-2-3-k3", gx("Scoped tool access: giving agents only the tools needed for their role, with limited cross-role tools for specific high-frequency needs", "Exam guide, 2.3-K3"),
                              "Each agent gets only the tools of its role, plus a narrow tool for a frequent need (2.3-K3)."),
@@ -1065,32 +1065,34 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "Each subagent gets only the tools of its role (2.3-S1).") + " " + cf("ts-2-3-k2", gx("Why agents with tools outside their specialization tend to misuse them (e.g., a synthesis agent attempting web searches)", "Exam guide, 2.3-K2"),
                    "The guide says that an agent with tools of another role tends to misuse them, such as a synthesis agent that searches the web (2.3-K2)."),
                 cf("ts-2-3-f5", D(SUB, "subagents can be limited to specific tools, reducing the risk of unintended actions", "Agent SDK, Subagents"),
-                   "The Claude Code documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
+                   "In its Agent SDK pages, the Claude Code documentation gives its own reason: a subagent that is limited to specific tools has less risk of unintended actions."),
                 fact("ts-1-3-f10", "In the Agent SDK, a tool that the list of a subagent leaves out is not in its session."))
             + "<p><b>Narrow tools.</b> %s %s</p>" % (
                 cf("ts-2-3-s2", gx("Replacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document that validates document URLs)", "Exam guide, 2.3-S2"),
-                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2). Part 2.1 shows that the Claude API documentation also advises to join related actions."),
+                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2). The Claude API documentation gives different advice: join related actions into fewer tools (part 2.1)."),
                 cf("ts-2-3-s3", gx("Providing scoped cross-role tools for high-frequency needs (e.g., a verify_fact tool for the synthesis agent) while routing complex cases through the coordinator", "Exam guide, 2.3-S3"),
                    "A narrow tool of another role serves a frequent need, and complex cases still go through the coordinator (2.3-S3).") + GUIDE)
-            + "<p><b>tool_choice.</b> %s %s %s %s %s %s</p>" % (
+            + "<p><b>tool_choice.</b> %s %s %s %s %s %s %s</p>" % (
                 cf("ts-2-3-k4", gx("tool_choice configuration options: \"auto\", \"any\", and forced tool selection ({\"type\": \"tool\", \"name\": \"...\"})", "Exam guide, 2.3-K4"),
                    "The guide names three options: auto, any, and a forced tool (2.3-K4)."),
                 cf("ts-2-3-s5", gx("Setting tool_choice: \"any\" to guarantee the model calls a tool rather than returning conversational text", "Exam guide, 2.3-S5"),
-                   "With any, Claude must call a tool and gives no text (2.3-S5)."),
+                   "With any, Claude must call a tool and does not answer with text only (2.3-S5)."),
                 cf("ts-2-3-s4", gx("Using tool_choice forced selection to ensure a specific tool is called first (e.g., forcing extract_metadata before enrichment tools), then processing subsequent steps in follow-up turns", "Exam guide, 2.3-S4"),
                    "A forced tool makes one tool run first, and the next steps follow in later turns (2.3-S4)."),
                 cf("ts-2-3-f9", D(DEFT, "* `none` prevents Claude from using any tools. This is the default value when no `tools` are provided.", "Define tools"),
                    "The documentation names four: it adds none, which blocks all tools."),
                 cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
                    "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
+                cf("ts-2-3-f14", D(DEFT, "| Manual [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking) (`thinking: {type: \"enabled\"}`)", "Define tools"),
+                   "Manual extended thinking rejects both on each model."),
                 GUIDE)
             + exam_tests("2.3", [("Claude API — tool_use with JSON schemas, tool_choice options (\"auto\", \"any\", forced tool selection), stop_reason values (\"tool_use\", \"end_turn\"), max_tokens, system prompts", "Among the technologies, the guide names")])
             + "<p>%s</p>" % cf("ts-2-3-q9", gx("Give the synthesis agent a scoped verify_fact tool for simple lookups, while complex verifications continue delegating to the web search agent through the coordinator.", "Exam guide, sample question 9, answer A"),
-                               "Sample question 9 of the guide tests 2.3-S3: its correct answer is a scoped verify_fact tool.")
+                               "Sample question 9 of the guide matches 2.3-S3: its correct answer is a scoped verify_fact tool.")
             + guide_text("2.3"), "ts-2-3")
     + level("depth",
             beyond([cf("ts-2-3-b1", D(SDKT, "`tools` and bare-name `disallowedTools` entries change availability. `allowedTools` and scoped `disallowedTools` rules change permission.", "Agent SDK, Custom tools"),
-                       "In the Agent SDK, the list tools removes a tool, but allowedTools only changes its permission. The guide does not separate the two."),
+                       "In the Agent SDK, the option tools removes each built-in tool that it does not list, and MCP tools stay. allowedTools only changes permission: a tool that it does not list stays available. The guide does not separate the two."),
                     cf("ts-2-3-b2", D(DEFT, "changes to the `tool_choice` parameter will invalidate cached message blocks.", "Define tools"),
                        "A change of tool_choice between turns, as in 2.3-S4, invalidates part of the prompt cache."),
                     cf("ts-2-3-b3", D(TSR, "Because tool search loads only a focused set of relevant tools on demand, selection accuracy stays high even across thousands of tools.", "Tool search tool"),
@@ -1301,7 +1303,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                 cf("ts-3-1-f16", D(MEMD, "The `/memory` command lists your CLAUDE.md, CLAUDE.local.md, and other memory file locations across user and project scopes, including user and project CLAUDE.md entries for files that don't exist yet.", "Claude Code, Memory"),
                    "In the documentation, /memory lists the locations of the files, also of files that do not exist yet."),
                 cf("ts-3-1-f17", D(MEMD, "To check which `CLAUDE.md` and rules files loaded at launch, run `/context`.", "Claude Code, Memory"),
-                   "To see which CLAUDE.md and rules files loaded, the documentation names /context.") + GUIDE)
+                   "To see which CLAUDE.md and rule files loaded, the documentation names /context.") + GUIDE)
             + exam_tests("3.1", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
             + guide_text("3.1"), "ts-3-1")
     + level("depth",
@@ -1386,7 +1388,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                             "This rule loads only when Claude works with a .ts file under src/api/.")
             + tab2_links("3.3", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
-                                              "When the mock builder plans a mock, it counts 3.3 as one group, because its 6 points have one correct answer: a rules file with a path."))), "ts-3-3"))
+                                              "When the mock builder plans a mock, it counts 3.3 as one group, because its 6 points have one correct answer: a rule file with a path."))), "ts-3-3"))
 
 
 # ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----

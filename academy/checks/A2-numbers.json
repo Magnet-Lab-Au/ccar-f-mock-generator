@@ -1,0 +1,2098 @@
+[
+ {
+  "part": "top",
+  "text": "A practice exam of 60 questions",
+  "value": 60,
+  "expr": "int(re.search(r'(?m)^QUESTIONS = (\\d+)', open(ROOT+'/src/step1_plan.py').read()).group(1))",
+  "source": "src/step1_plan.py",
+  "note": "the build script reads this constant (SLOTS)"
+ },
+ {
+  "part": "top",
+  "text": "The mock builder made 5 mocks",
+  "value": 5,
+  "expr": "len(glob.glob(ROOT+'/mocks/mock-*.questions.json'))",
+  "source": "mocks/",
+  "note": ""
+ },
+ {
+  "part": "top",
+  "text": "Step 1 plans 60 slots for each mock",
+  "value": 60,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(json.load(open(f))['slots']) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "all 5 plans have 60 slots"
+ },
+ {
+  "part": "top",
+  "text": "The build put the 240 points into 95 ideas",
+  "value": 240,
+  "expr": "sum(len(t['points']) for t in json.load(open(ROOT+'/reference/guide-records.json'))['task_statements'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "top",
+  "text": "The build put the 240 points into 95 ideas",
+  "value": 95,
+  "expr": "len(json.load(open(ROOT+'/data/point-groups.json'))['groups'])",
+  "source": "data/point-groups.json",
+  "note": "data/ is not in the list of permitted sources, but the build script reads it (PG)"
+ },
+ {
+  "part": "step-0",
+  "text": "The file has the 5 domains ... of the guide",
+  "value": 5,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['domains'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "The file has the 6 scenarios ... of the guide",
+  "value": 6,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['scenarios'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "The file has the 30 task statements ... of the guide",
+  "value": 30,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['task_statements'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "The file has the 12 sample questions ... of the guide",
+  "value": 12,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['sample_questions'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "The file has ... 240 points",
+  "value": 240,
+  "expr": "sum(len(t['points']) for t in json.load(open(ROOT+'/reference/guide-records.json'))['task_statements'])",
+  "source": "reference/guide-records.json",
+  "note": "the same number is in the popup on 'second script' (the 240 bullets of Section 6)"
+ },
+ {
+  "part": "step-0",
+  "text": "Every question of the 5 mocks keeps the ID of its point: 300 of 300",
+  "value": 300,
+  "expr": "(lambda P: sum(1 for q in [q for m in range(1, 6) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']] if q['point'] in P))({p['id'] for t in json.load(open(ROOT+'/reference/guide-records.json'))['task_statements'] for p in t['points']})",
+  "source": "mocks/mock-0N.questions.json, reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "Every question of the 5 mocks keeps the ID of its point: 300 of 300 (the total)",
+  "value": 300,
+  "expr": "len([q for m in range(1, 6) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']])",
+  "source": "mocks/mock-0N.questions.json",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "The script leaves out the 39 page headers of the PDF",
+  "value": 39,
+  "expr": "len(re.findall(r'(?m)^<!-- Page \\d+ \\|.*-->$', open(ROOT+'/reference/exam-guide.md').read()))",
+  "source": "reference/exam-guide.md",
+  "note": "the build script counts these page marks"
+ },
+ {
+  "part": "step-0",
+  "text": "A second script ... checks the file: 41 of 41 checks pass (also Fig. 0-1)",
+  "value": 41,
+  "expr": "int(re.search(r'(\\d+) of (\\d+) checks passed', __import__('subprocess').run([__import__('sys').executable, '-B', ROOT+'/src/check_guide_records.py'], capture_output=True, text=True, cwd=ROOT).stdout).group(1))",
+  "source": "src/check_guide_records.py (its output)",
+  "note": "runs the check script, no model call"
+ },
+ {
+  "part": "step-0",
+  "text": "41 of 41 checks pass (the total)",
+  "value": 41,
+  "expr": "int(re.search(r'(\\d+) of (\\d+) checks passed', __import__('subprocess').run([__import__('sys').executable, '-B', ROOT+'/src/check_guide_records.py'], capture_output=True, text=True, cwd=ROOT).stdout).group(2))",
+  "source": "src/check_guide_records.py (its output)",
+  "note": ""
+ },
+ {
+  "part": "step-0",
+  "text": "Card s0-pdf: 11,157 words in each",
+  "value": 11157,
+  "expr": null,
+  "source": "academy/decisions/0027-*.md, line 18 (as cited by academy/facts/step-0.md, line 142)",
+  "note": "text record; academy/decisions/ is not in the permitted list, so not opened; the fact sheet says it was not re-run (pypdf missing)"
+ },
+ {
+  "part": "step-0",
+  "text": "compared the copy of the guide with the official PDF, word for word: 0 differences",
+  "value": 0,
+  "expr": null,
+  "source": "academy/decisions/0027-*.md, line 18 (as cited by academy/facts/step-0.md, line 142)",
+  "note": "text record"
+ },
+ {
+  "part": "step-0",
+  "text": "Popup 'exam guide': The script reads five sections of the guide",
+  "value": 5,
+  "expr": "len(re.findall(r'section\\(lines, r\"\\^## \\d+', open(ROOT+'/src/step0_prepare_guide_records.py').read()))",
+  "source": "src/step0_prepare_guide_records.py",
+  "note": "sections 4, 5, 6, 9 and 17"
+ },
+ {
+  "part": "step-1",
+  "text": "a list of 60 slots (overview, Fig. 1-1, its caption)",
+  "value": 60,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(json.load(open(f))['slots']) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "A mock has 4 scenarios",
+  "value": 4,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len({x['scenario'] for x in json.load(open(f))['slots']}) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also the constant SCENARIOS_IN_MOCK of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "4 scenarios of 15 questions",
+  "value": 15,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({c for f in glob.glob(ROOT+'/runs/mock-0*/plan.json') for c in __import__('collections').Counter(x['scenario'] for x in json.load(open(f))['slots']).values()})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also PER_SCENARIO of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "16, 11, 12, 12, 9 questions for domains 1 to 5 (domain 1; also Fig. 1-1)",
+  "value": 16,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for x in json.load(open(f))['slots'] if x['task_statement'].startswith('1.')) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also DOMAIN_COUNTS of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "16, 11, 12, 12, 9 questions for domains 1 to 5 (domain 2; also Fig. 1-1)",
+  "value": 11,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for x in json.load(open(f))['slots'] if x['task_statement'].startswith('2.')) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also DOMAIN_COUNTS of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "16, 11, 12, 12, 9 questions for domains 1 to 5 (domain 3; also Fig. 1-1)",
+  "value": 12,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for x in json.load(open(f))['slots'] if x['task_statement'].startswith('3.')) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also DOMAIN_COUNTS of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "16, 11, 12, 12, 9 questions for domains 1 to 5 (domain 4; also Fig. 1-1)",
+  "value": 12,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for x in json.load(open(f))['slots'] if x['task_statement'].startswith('4.')) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also DOMAIN_COUNTS of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "16, 11, 12, 12, 9 questions for domains 1 to 5 (domain 5; also Fig. 1-1)",
+  "value": 9,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for x in json.load(open(f))['slots'] if x['task_statement'].startswith('5.')) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also DOMAIN_COUNTS of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "the build put the 240 points into 95 ideas (also Fig. 1-1 '95 groups of points')",
+  "value": 95,
+  "expr": "len(json.load(open(ROOT+'/data/point-groups.json'))['groups'])",
+  "source": "data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "the build put the 240 points into 95 ideas (the points)",
+  "value": 240,
+  "expr": "len({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "data/point-groups.json",
+  "note": "each of the 240 points is in one group"
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-1: each of the 30 task statements: 1 or more",
+  "value": 30,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len({x['task_statement'] for x in json.load(open(f))['slots']}) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "each plan uses all 30 task statements"
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-1: 2 two-answer slots in each scenario",
+  "value": 2,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({c for f in glob.glob(ROOT+'/runs/mock-0*/plan.json') for c in __import__('collections').Counter(x['scenario'] for x in json.load(open(f))['slots'] if x['select'] == 2).values()})",
+  "source": "runs/mock-0N/plan.json",
+  "note": "also MULTIPLE_RESPONSE_PER_SCENARIO of src/step1_plan.py"
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-3: ideas with two or more slots in one plan, mock 1",
+  "value": 12,
+  "expr": "(lambda G: sum(1 for c in __import__('collections').Counter(G[x['point']] for x in json.load(open(ROOT+'/runs/mock-01/plan.json'))['slots']).values() if c > 1))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "runs/mock-01/plan.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-3: ideas with two or more slots in one plan, mock 2",
+  "value": 0,
+  "expr": "(lambda G: sum(1 for c in __import__('collections').Counter(G[x['point']] for x in json.load(open(ROOT+'/runs/mock-02/plan.json'))['slots']).values() if c > 1))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "runs/mock-02/plan.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-3: ideas with two or more slots in one plan, mock 3",
+  "value": 0,
+  "expr": "(lambda G: sum(1 for c in __import__('collections').Counter(G[x['point']] for x in json.load(open(ROOT+'/runs/mock-03/plan.json'))['slots']).values() if c > 1))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "runs/mock-03/plan.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-3: ideas with two or more slots in one plan, mock 4",
+  "value": 0,
+  "expr": "(lambda G: sum(1 for c in __import__('collections').Counter(G[x['point']] for x in json.load(open(ROOT+'/runs/mock-04/plan.json'))['slots']).values() if c > 1))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "runs/mock-04/plan.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Fig. 1-3: ideas with two or more slots in one plan, mock 5",
+  "value": 0,
+  "expr": "(lambda G: sum(1 for c in __import__('collections').Counter(G[x['point']] for x in json.load(open(ROOT+'/runs/mock-05/plan.json'))['slots']).values() if c > 1))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})",
+  "source": "runs/mock-05/plan.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "a script ran it over 2000 seeds, and each seed failed",
+  "value": 2000,
+  "expr": null,
+  "source": "docs/decisions/0048-*.md, line 15",
+  "note": "text record"
+ },
+ {
+  "part": "step-1",
+  "text": "A second review found that 17 questions of mock 2 repeat mock 1",
+  "value": 17,
+  "expr": null,
+  "source": "docs/decisions/0056-*.md, line 10",
+  "note": "text record"
+ },
+ {
+  "part": "step-1",
+  "text": "7 slots of mock 2 had the same point as mock 1, although their idea had a point that mock 1 did not use",
+  "value": 7,
+  "expr": "(lambda G, m1: sum(1 for s in json.load(open(ROOT+'/runs/mock-02/plan.json'))['slots'] if s['point'] in m1 and any(G[p] == G[s['point']] and p not in m1 for p in G)))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']}, {q['point'] for g in json.load(open(ROOT+'/mocks/mock-01.questions.json'))['groups'] for q in g['questions']})",
+  "source": "runs/mock-02/plan.json, mocks/mock-01.questions.json, data/point-groups.json",
+  "note": "also stated in docs/decisions/0056-*.md, line 30"
+ },
+ {
+  "part": "step-1",
+  "text": "Over the 5 built mocks, 84 of the 95 ideas are in 2 to 4 mocks",
+  "value": 84,
+  "expr": "(lambda c: c[2] + c[3] + c[4])((lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']}))",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Card s1-spread: of the 95 ideas, 1 is in 1 mock",
+  "value": 1,
+  "expr": "(lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})[1]",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Card s1-spread: of the 95 ideas, 35 are in 2 mocks",
+  "value": 35,
+  "expr": "(lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})[2]",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Card s1-spread: of the 95 ideas, 32 are in 3 mocks",
+  "value": 32,
+  "expr": "(lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})[3]",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Card s1-spread: of the 95 ideas, 17 are in 4 mocks",
+  "value": 17,
+  "expr": "(lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})[4]",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Card s1-spread: of the 95 ideas, 10 are in 5 mocks",
+  "value": 10,
+  "expr": "(lambda G: (lambda B: __import__('collections').Counter(sum(1 for m in B if g['id'] in m) for g in json.load(open(ROOT+'/data/point-groups.json'))['groups']))([{G[q['point']] for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']} for m in range(1, 6)]))({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']})[5]",
+  "source": "mocks/mock-0N.questions.json, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Popup 'ideas': Of the 95 ideas, 65 have 2 or more points",
+  "value": 65,
+  "expr": "sum(1 for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] if len(g['points']) >= 2)",
+  "source": "data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-1",
+  "text": "Popup 'ideas': ... and 30 have 1",
+  "value": 30,
+  "expr": "sum(1 for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] if len(g['points']) == 1)",
+  "source": "data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "Today the writer gets the 21 rules that steps 3 and 4 check",
+  "value": 21,
+  "expr": "len(set(re.findall(r'\\b([AB]\\d+)\\. ', open(ROOT+'/src/step2_write.py').read())))",
+  "source": "src/step2_write.py",
+  "note": "A1 to A12 in RULES, B1 to B8 in RULES, B9 in B9_STRICT and B9_COPY"
+ },
+ {
+  "part": "step-2",
+  "text": "Two other instructions to the writer have no check",
+  "value": 2,
+  "expr": null,
+  "source": "academy/facts/step-2.md, line 95 (item X4; docs/decisions/0054-*.md, line 35)",
+  "note": "text record; the two instructions are in src/step2_write.py"
+ },
+ {
+  "part": "step-2",
+  "text": "Each of the 488 tries of the 5 mocks used Claude Opus 5.5",
+  "value": 488,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-0*/questions/M*-S*-T*.json') if json.load(open(f))['model'] == 'claude-opus-5-5')",
+  "source": "runs/mock-0N/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "In the 12 sample questions of the guide",
+  "value": 12,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['sample_questions'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "the correct answer is A 10 times",
+  "value": 10,
+  "expr": "sum(1 for q in json.load(open(ROOT+'/reference/guide-records.json'))['sample_questions'] if q['correct_answer'][0] == 'A')",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "and B 2 times",
+  "value": 2,
+  "expr": "sum(1 for q in json.load(open(ROOT+'/reference/guide-records.json'))['sample_questions'] if q['correct_answer'][0] == 'B')",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "Fig. 2-1: 3 sample questions of the guide",
+  "value": 3,
+  "expr": "int(re.search(r'def examples\\(records, slot, count=(\\d+)\\)', open(ROOT+'/src/step2_write.py').read()).group(1))",
+  "source": "src/step2_write.py",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "Fig. 2-1: the 14 technologies of the guide",
+  "value": 14,
+  "expr": "len(json.load(open(ROOT+'/reference/guide-records.json'))['section_17']['technologies'])",
+  "source": "reference/guide-records.json",
+  "note": ""
+ },
+ {
+  "part": "step-2",
+  "text": "Popup: In mock 5, each try got 2.88 earlier questions on average",
+  "value": 2.88,
+  "expr": "(lambda L: round(sum(L) / len(L), 2))((lambda G, E: [sum(1 for p in E if G[p] == G[json.load(open(f))['point']]) for f in glob.glob(ROOT+'/runs/mock-05/questions/M5-*.json')])({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']}, [q['point'] for m in range(1, 5) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']]))",
+  "source": "runs/mock-05/questions/, mocks/mock-01 to mock-04, data/point-groups.json",
+  "note": "the logic of Earlier.on_idea() of src/earlier.py, with today's mocks/ (as academy/facts/step-2.md, line 166)"
+ },
+ {
+  "part": "step-2",
+  "text": "Popup: ... 7 at most",
+  "value": 7,
+  "expr": "max((lambda G, E: [sum(1 for p in E if G[p] == G[json.load(open(f))['point']]) for f in glob.glob(ROOT+'/runs/mock-05/questions/M5-*.json')])({pt: g['id'] for g in json.load(open(ROOT+'/data/point-groups.json'))['groups'] for pt in g['points']}, [q['point'] for m in range(1, 5) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']]))",
+  "source": "runs/mock-05/questions/, mocks/mock-01 to mock-04, data/point-groups.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Code checks each try against 12 rules (also the title and Fig. 3-1)",
+  "value": 12,
+  "expr": "len(set(re.findall(r'finding\\(\"(A\\d+)\"', open(ROOT+'/src/step3_check_code.py').read())))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "477 of 488 tries passed (also Fig. 3-1)",
+  "value": 477,
+  "expr": "[json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json')].count('pass')",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "477 of 488 tries passed (the total)",
+  "value": 488,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json'))",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "and 11 failed (also Fig. 3-1)",
+  "value": 11,
+  "expr": "sum(1 for v in [json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json')] if v != 'pass')",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Twice the writer was told to write 5 options and wrote 6",
+  "value": 2,
+  "expr": "len([json.load(open(f))['question_id'] for f in glob.glob(ROOT+'/runs/mock-0*/questions/M*-S*-T*.json') if len(json.load(open(f)).get('options') or []) == 6])",
+  "source": "runs/mock-0N/questions/",
+  "note": "M4-S27-T3 and M5-S60-T2"
+ },
+ {
+  "part": "step-3",
+  "text": "... and wrote 6",
+  "value": 6,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-04/questions/M4-S27-T3.json'))['options'])",
+  "source": "runs/mock-04/questions/M4-S27-T3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "was told to write 5 options",
+  "value": 5,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({s['options'] for m, sid in ((4, 'M4-S27'), (5, 'M5-S60')) for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if s['slot_id'] == sid})",
+  "source": "runs/mock-04/plan.json, runs/mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Fig. 3-2 and text: one-answer questions whose correct option is the longest, mock 1",
+  "value": 37,
+  "expr": "(lambda m: (lambda A: sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1 and len(next(o['text'] for o in q['options'] if o['letter'] == A[q['question_id']][0])) == max(len(o['text']) for o in q['options'])))({a['question_id']: a['correct'] for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers']}))(1)",
+  "source": "mocks/mock-01.questions.json, mocks/mock-01.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Fig. 3-2 and text: one-answer questions whose correct option is the longest, mock 2",
+  "value": 11,
+  "expr": "(lambda m: (lambda A: sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1 and len(next(o['text'] for o in q['options'] if o['letter'] == A[q['question_id']][0])) == max(len(o['text']) for o in q['options'])))({a['question_id']: a['correct'] for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers']}))(2)",
+  "source": "mocks/mock-02.questions.json, mocks/mock-02.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Fig. 3-2 and text: one-answer questions whose correct option is the longest, mock 3",
+  "value": 11,
+  "expr": "(lambda m: (lambda A: sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1 and len(next(o['text'] for o in q['options'] if o['letter'] == A[q['question_id']][0])) == max(len(o['text']) for o in q['options'])))({a['question_id']: a['correct'] for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers']}))(3)",
+  "source": "mocks/mock-03.questions.json, mocks/mock-03.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Fig. 3-2 and text: one-answer questions whose correct option is the longest, mock 4",
+  "value": 5,
+  "expr": "(lambda m: (lambda A: sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1 and len(next(o['text'] for o in q['options'] if o['letter'] == A[q['question_id']][0])) == max(len(o['text']) for o in q['options'])))({a['question_id']: a['correct'] for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers']}))(4)",
+  "source": "mocks/mock-04.questions.json, mocks/mock-04.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Fig. 3-2 and text: one-answer questions whose correct option is the longest, mock 5",
+  "value": 12,
+  "expr": "(lambda m: (lambda A: sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1 and len(next(o['text'] for o in q['options'] if o['letter'] == A[q['question_id']][0])) == max(len(o['text']) for o in q['options'])))({a['question_id']: a['correct'] for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers']}))(5)",
+  "source": "mocks/mock-05.questions.json, mocks/mock-05.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "37 of the 52 one-answer questions (each mock has 52)",
+  "value": 52,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1) for m in range(1, 6)})",
+  "source": "mocks/mock-0N.questions.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Chance is 13 (Fig. 3-2 too)",
+  "value": 13,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions'] if q['select'] == 1) // 4 for m in range(1, 6)})",
+  "source": "mocks/mock-0N.questions.json",
+  "note": "52 one-answer questions / 4 options"
+ },
+ {
+  "part": "step-3",
+  "text": "step 1 lets the longest option be correct on 13 of the 52 one-answer slots",
+  "value": 13,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if s['select'] == 1 and s.get('longest_may_be_correct')) for m in range(2, 6)})",
+  "source": "runs/mock-02 to mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "13 of the 52 one-answer slots (the 52)",
+  "value": 52,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if s['select'] == 1) for m in range(2, 6)})",
+  "source": "runs/mock-02 to mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "and 3 of the 8 two-answer slots",
+  "value": 3,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if s['select'] == 2 and s.get('longest_may_be_correct')) for m in range(2, 6)})",
+  "source": "runs/mock-02 to mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "3 of the 8 two-answer slots (the 8)",
+  "value": 8,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if s['select'] == 2) for m in range(2, 6)})",
+  "source": "runs/mock-02 to mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: fails of step 3, mock 1",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-01/checks/M*-step3.json') if json.load(open(f))['verdict'] != 'pass')",
+  "source": "runs/mock-01/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: fails of step 3, mock 2",
+  "value": 1,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-02/checks/M*-step3.json') if json.load(open(f))['verdict'] != 'pass')",
+  "source": "runs/mock-02/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: fails of step 3, mock 3",
+  "value": 2,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-03/checks/M*-step3.json') if json.load(open(f))['verdict'] != 'pass')",
+  "source": "runs/mock-03/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: fails of step 3, mock 4",
+  "value": 4,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-04/checks/M*-step3.json') if json.load(open(f))['verdict'] != 'pass')",
+  "source": "runs/mock-04/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: fails of step 3, mock 5",
+  "value": 4,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-05/checks/M*-step3.json') if json.load(open(f))['verdict'] != 'pass')",
+  "source": "runs/mock-05/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: findings of the fails, A12 7",
+  "value": 7,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json') for x in json.load(open(f))['findings'] if json.load(open(f))['verdict'] != 'pass')['A12']",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: findings of the fails, A1 2",
+  "value": 2,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json') for x in json.load(open(f))['findings'] if json.load(open(f))['verdict'] != 'pass')['A1']",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: findings of the fails, A2 2",
+  "value": 2,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json') for x in json.load(open(f))['findings'] if json.load(open(f))['verdict'] != 'pass')['A2']",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Card s3-runs: findings of the fails, A9 2",
+  "value": 2,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step3.json') for x in json.load(open(f))['findings'] if json.load(open(f))['verdict'] != 'pass')['A9']",
+  "source": "runs/mock-0N/checks/*-step3.json",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A6: A question has 25",
+  "value": 25,
+  "expr": "int(re.search(r'(?m)^QUESTION_WORDS = \\((\\d+), (\\d+)\\)', open(ROOT+'/src/step3_check_code.py').read()).group(1))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A6: to 110 words",
+  "value": 110,
+  "expr": "int(re.search(r'(?m)^QUESTION_WORDS = \\((\\d+), (\\d+)\\)', open(ROOT+'/src/step3_check_code.py').read()).group(2))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A6: and an option 5",
+  "value": 5,
+  "expr": "int(re.search(r'(?m)^OPTION_WORDS = \\((\\d+), (\\d+)\\)', open(ROOT+'/src/step3_check_code.py').read()).group(1))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A6: to 45",
+  "value": 45,
+  "expr": "int(re.search(r'(?m)^OPTION_WORDS = \\((\\d+), (\\d+)\\)', open(ROOT+'/src/step3_check_code.py').read()).group(2))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A7: at most 1.3 times the words of the wrong options",
+  "value": 1.3,
+  "expr": "float(re.search(r'(?m)^LONGER_LIMIT = ([\\d.]+)', open(ROOT+'/src/step3_check_code.py').read()).group(1))",
+  "source": "src/step3_check_code.py",
+  "note": ""
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A7: The largest ratio in the 12 sample questions of the guide is 1.21",
+  "value": 1.21,
+  "expr": "round(max((lambda r, w: (sum(r) / len(r)) / (sum(w) / len(w)))([len(t.split()) for l, t in q['options'].items() if l in q['correct_answer']], [len(t.split()) for l, t in q['options'].items() if l not in q['correct_answer']]) for q in json.load(open(ROOT+'/reference/guide-records.json'))['sample_questions']), 2)",
+  "source": "reference/guide-records.json",
+  "note": "the ratio of rule A7 in src/step3_check_code.py: mean words of the correct options / mean words of the wrong options"
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A7: and in the 488 tries 1.29",
+  "value": 1.29,
+  "expr": "round(max((lambda q: (lambda r, w: (sum(r) / len(r)) / (sum(w) / len(w)))([len(o['text'].split()) for o in q['options'] if o['correct'] is True], [len(o['text'].split()) for o in q['options'] if o['correct'] is False]))(json.load(open(f))) for f in glob.glob(ROOT+'/runs/mock-0*/questions/M*-S*-T*.json')), 2)",
+  "source": "runs/mock-0N/questions/",
+  "note": "the same ratio over all 488 question files"
+ },
+ {
+  "part": "step-3",
+  "text": "Popup A9: M5-S43-T1 failed with 6 sentences",
+  "value": 6,
+  "expr": "len([s for s in re.split(r'(?<=[.?!])\\s+', json.load(open(ROOT+'/runs/mock-05/questions/M5-S43-T1.json'))['question'].strip()) if s])",
+  "source": "runs/mock-05/questions/M5-S43-T1.json",
+  "note": "the sentence rule of sentences() in src/step3_check_code.py"
+ },
+ {
+  "part": "step-3",
+  "text": "Popup step 5: The longest option is a correct option (191 characters)",
+  "value": 191,
+  "expr": "max(len(o['text']) for o in json.load(open(ROOT+'/runs/mock-02/questions/M2-S02-T1.json'))['options'] if o['correct'])",
+  "source": "runs/mock-02/questions/M2-S02-T1.json",
+  "note": "the same text is in runs/mock-02/checks/M2-S02-T1-step3.json"
+ },
+ {
+  "part": "step-4",
+  "text": "call 4b checks the 9 rules B1 to B9 (title, overview, Fig. 4-1)",
+  "value": 9,
+  "expr": "len(re.search(r'(?m)^RULES_B = \\[(.*)\\]', open(ROOT+'/src/step4_check_model.py').read()).group(1).split(','))",
+  "source": "src/step4_check_model.py",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "329 of 477 checks passed (also Fig. 4-2)",
+  "value": 329,
+  "expr": "[json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json')].count('pass')",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "329 of 477 checks (the total; also 'In the 477 checks')",
+  "value": 477,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json'))",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: 148 failed",
+  "value": 148,
+  "expr": "[json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json')].count('fail')",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B1",
+  "value": 2,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B1']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": "B1: 'Both B1 findings came from call 4b'"
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B2",
+  "value": 1,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B2']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B3",
+  "value": 7,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B3']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B4",
+  "value": 1,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B4']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B5",
+  "value": 3,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B5']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B6",
+  "value": 15,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B6']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B7",
+  "value": 29,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B7']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B8",
+  "value": 4,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B8']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-2: findings of rule B9",
+  "value": 94,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') for x in json.load(open(f))['findings'])['B9']",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: the cost of mock 1, $17.17",
+  "value": 17.17,
+  "expr": "round(sum(json.load(open(f))['dollars'] for f in glob.glob(ROOT+'/runs/mock-01/usage/*.json')), 2)",
+  "source": "runs/mock-01/usage/*.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: the cost of mock 2, $20.73",
+  "value": 20.73,
+  "expr": "round(sum(json.load(open(f))['dollars'] for f in glob.glob(ROOT+'/runs/mock-02/usage/*.json')), 2)",
+  "source": "runs/mock-02/usage/*.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: the cost of mock 3, $23.85",
+  "value": 23.85,
+  "expr": "round(sum(json.load(open(f))['dollars'] for f in glob.glob(ROOT+'/runs/mock-03/usage/*.json')), 2)",
+  "source": "runs/mock-03/usage/*.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: the cost of mock 4, $12.83",
+  "value": 12.83,
+  "expr": "round(sum(json.load(open(f))['dollars'] for f in glob.glob(ROOT+'/runs/mock-04/usage/*.json')), 2)",
+  "source": "runs/mock-04/usage/*.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: the cost of mock 5, $11.68",
+  "value": 11.68,
+  "expr": "round(sum(json.load(open(f))['dollars'] for f in glob.glob(ROOT+'/runs/mock-05/usage/*.json')), 2)",
+  "source": "runs/mock-05/usage/*.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: mock 4 (no cache: $26.88)",
+  "value": 26.88,
+  "expr": "(lambda P, U: round((sum(u['input_tokens'] + u.get('cache_write_tokens', 0) + u.get('cache_read_tokens', 0) for u in U) * P[0] + sum(u['output_tokens'] for u in U) * P[1]) / 1e6, 2))([float(x) for x in re.search(r'PRICE = \\{\"input\": ([\\d.]+), \"output\": ([\\d.]+)\\}', open(ROOT+'/src/model_call.py').read()).groups()], [json.load(open(f)) for f in glob.glob(ROOT+'/runs/mock-04/usage/*.json')])",
+  "source": "runs/mock-04/usage/*.json, src/model_call.py",
+  "note": "all tokens at the input price of src/model_call.py, as dollars() of the build script"
+ },
+ {
+  "part": "step-4",
+  "text": "Fig. 4-3: mock 5 (no cache: $23.95)",
+  "value": 23.95,
+  "expr": "(lambda P, U: round((sum(u['input_tokens'] + u.get('cache_write_tokens', 0) + u.get('cache_read_tokens', 0) for u in U) * P[0] + sum(u['output_tokens'] for u in U) * P[1]) / 1e6, 2))([float(x) for x in re.search(r'PRICE = \\{\"input\": ([\\d.]+), \"output\": ([\\d.]+)\\}', open(ROOT+'/src/model_call.py').read()).groups()], [json.load(open(f)) for f in glob.glob(ROOT+'/runs/mock-05/usage/*.json')])",
+  "source": "runs/mock-05/usage/*.json, src/model_call.py",
+  "note": "all tokens at the input price of src/model_call.py, as dollars() of the build script"
+ },
+ {
+  "part": "step-4",
+  "text": "A 5-minute cache write costs 1.25 times the input price",
+  "value": 1.25,
+  "expr": "float(re.search(r'(?m)^CACHE_WRITE = ([\\d.]+)', open(ROOT+'/src/model_call.py').read()).group(1))",
+  "source": "src/model_call.py",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "a read from the cache costs 0.05 times the input price",
+  "value": 0.05,
+  "expr": "float(re.search(r'(?m)^CACHE_READ = ([\\d.]+)', open(ROOT+'/src/model_call.py').read()).group(1))",
+  "source": "src/model_call.py",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "A test on 10 questions",
+  "value": 10,
+  "expr": "len(json.load(open(ROOT+'/runs/test-cache/results.json'))['results'])",
+  "source": "runs/test-cache/results.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "A test on 10 questions cost $0.58 with caching",
+  "value": 0.58,
+  "expr": "json.load(open(ROOT+'/runs/test-cache/results.json'))['cost']['dollars']",
+  "source": "runs/test-cache/results.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "The same tokens would cost $1.72 with no cache",
+  "value": 1.72,
+  "expr": "(lambda P, u: round(((u['input_tokens'] + u['cache_write_tokens'] + u['cache_read_tokens']) * P[0] + u['output_tokens'] * P[1]) / 1e6, 2))([float(x) for x in re.search(r'PRICE = \\{\"input\": ([\\d.]+), \"output\": ([\\d.]+)\\}', open(ROOT+'/src/model_call.py').read()).groups()], json.load(open(ROOT+'/runs/test-cache/results.json'))['cost'])",
+  "source": "runs/test-cache/results.json, src/model_call.py",
+  "note": "also stated in docs/decisions/0067-*.md"
+ },
+ {
+  "part": "step-4",
+  "text": "2 of the 10 verdicts changed from pass to fail",
+  "value": 2,
+  "expr": "sum(1 for r in json.load(open(ROOT+'/runs/test-cache/results.json'))['results'] if r['stored'] == 'pass' and r['new'] == 'fail')",
+  "source": "runs/test-cache/results.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "A check of those 2 with no cache passed both",
+  "value": 2,
+  "expr": null,
+  "source": "docs/decisions/0067-*.md, line 38",
+  "note": "text record"
+ },
+ {
+  "part": "step-4",
+  "text": "call 4a never selected other letters than the answer key, and never said 'cannot decide'",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json') if (json.load(open(f)).get('blind_answer') or {}).get('status') != 'answered' or sorted((json.load(open(f)).get('blind_answer') or {}).get('selected', [])) != sorted(o['letter'] for o in json.load(open(f.replace('/checks/', '/questions/').replace('-step4.json', '.json')))['options'] if o['correct']))",
+  "source": "runs/mock-0N/checks/*-step4.json, runs/mock-0N/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "Popup: No check of mocks 1 to 5 gave it [cannot decide]: 0 of 477",
+  "value": 0,
+  "expr": "[json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json')].count('cannot_decide')",
+  "source": "runs/mock-0N/checks/*-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "a test gave call 4a the 12 sample questions ... it answered 12 of 12 right",
+  "value": 12,
+  "expr": "json.load(open(ROOT+'/runs/test-0024/part2.json'))['right']",
+  "source": "runs/test-0024/part2.json",
+  "note": ""
+ },
+ {
+  "part": "step-4",
+  "text": "12 of 12 right (the total)",
+  "value": 12,
+  "expr": "json.load(open(ROOT+'/runs/test-0024/part2.json'))['of']",
+  "source": "runs/test-0024/part2.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Each start of a slot has at most 3 tries (also Fig. 5-1, popup)",
+  "value": 3,
+  "expr": "int(re.search(r'(?m)^TRIES = (\\d+)', open(ROOT+'/src/control.py').read()).group(1))",
+  "source": "src/control.py",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "2 results 'cannot decide' of step 4 also stop it",
+  "value": 2,
+  "expr": "int(re.search(r'(?m)^CANNOT_DECIDE = (\\d+)', open(ROOT+'/src/control.py').read()).group(1))",
+  "source": "src/control.py",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 1, 83 tries",
+  "value": 83,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-01/questions/M1-S*-T*.json'))",
+  "source": "runs/mock-01/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 2, 92 tries",
+  "value": 92,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-02/questions/M2-S*-T*.json'))",
+  "source": "runs/mock-02/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 3, 101 tries",
+  "value": 101,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-03/questions/M3-S*-T*.json'))",
+  "source": "runs/mock-03/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 4, 111 tries",
+  "value": 111,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-04/questions/M4-S*-T*.json'))",
+  "source": "runs/mock-04/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 5, 101 tries",
+  "value": 101,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-05/questions/M5-S*-T*.json'))",
+  "source": "runs/mock-05/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 1, 49 of 60 passed both checks at the first try",
+  "value": 49,
+  "expr": "(lambda m: sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if all(os.path.exists(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)) and json.load(open(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)))['verdict'] == 'pass' for k in (3, 4))))(1)",
+  "source": "runs/mock-01/checks/*-T1-step3.json and -step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 2, 46 of 60 passed both checks at the first try",
+  "value": 46,
+  "expr": "(lambda m: sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if all(os.path.exists(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)) and json.load(open(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)))['verdict'] == 'pass' for k in (3, 4))))(2)",
+  "source": "runs/mock-02/checks/*-T1-step3.json and -step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 3, 34 of 60 passed both checks at the first try",
+  "value": 34,
+  "expr": "(lambda m: sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if all(os.path.exists(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)) and json.load(open(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)))['verdict'] == 'pass' for k in (3, 4))))(3)",
+  "source": "runs/mock-03/checks/*-T1-step3.json and -step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 4, 33 of 60 passed both checks at the first try",
+  "value": 33,
+  "expr": "(lambda m: sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if all(os.path.exists(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)) and json.load(open(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)))['verdict'] == 'pass' for k in (3, 4))))(4)",
+  "source": "runs/mock-04/checks/*-T1-step3.json and -step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: Mock 5, 40 of 60 passed both checks at the first try",
+  "value": 40,
+  "expr": "(lambda m: sum(1 for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots'] if all(os.path.exists(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)) and json.load(open(ROOT+'/runs/mock-%02d/checks/%s-T1-step%d.json' % (m, s['slot_id'], k)))['verdict'] == 'pass' for k in (3, 4))))(5)",
+  "source": "runs/mock-05/checks/*-T1-step3.json and -step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: ... of 60 (slots of each mock)",
+  "value": 60,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(json.load(open(f))['slots']) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "The 5 mocks needed 488 tries",
+  "value": 488,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-0*/questions/M*-S*-T*.json'))",
+  "source": "runs/mock-0N/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "for 300 questions",
+  "value": 300,
+  "expr": "len([q for m in range(1, 6) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups'] for q in g['questions']])",
+  "source": "mocks/mock-0N.questions.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "In 17 cases a slot stopped at the limit of tries and waited for the owner",
+  "value": 17,
+  "expr": "sum(sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')) for m in range(1, 6))",
+  "source": "runs/mock-0N/owner-decisions.json",
+  "note": "the build script counts the actions more_tries and new_point"
+ },
+ {
+  "part": "step-5",
+  "text": "The limit of 2 results 'cannot decide' never stopped a slot (0 results)",
+  "value": 0,
+  "expr": "[json.load(open(f))['verdict'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-S*-T*-step4.json')].count('cannot_decide') + sum(1 for f in glob.glob(ROOT+'/runs/mock-0*/questions/M*-S*-T*.json') if json.load(open(f))['status'] == 'cannot_write')",
+  "source": "runs/mock-0N/checks/*-step4.json, runs/mock-0N/questions/",
+  "note": "card s5-counts: 'cannot decide' and 'cannot write': 0 in all"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: the numbers in the squares of mock 1 (tries of each slot with more than one try, in slot order)",
+  "value": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   6,
+   2,
+   2,
+   2,
+   2
+  ],
+  "expr": "(lambda c: [c['M1-S%02d' % i] for i in range(1, 61) if c['M1-S%02d' % i] > 1])(__import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-01/questions/M1-S*-T*.json')))",
+  "source": "runs/mock-01/questions/",
+  "note": "a list: one value for each numbered square"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: the numbers in the squares of mock 2 (tries of each slot with more than one try, in slot order)",
+  "value": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   3,
+   2,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   2
+  ],
+  "expr": "(lambda c: [c['M2-S%02d' % i] for i in range(1, 61) if c['M2-S%02d' % i] > 1])(__import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-02/questions/M2-S*-T*.json')))",
+  "source": "runs/mock-02/questions/",
+  "note": "a list: one value for each numbered square"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: the numbers in the squares of mock 3 (tries of each slot with more than one try, in slot order)",
+  "value": [
+   4,
+   2,
+   3,
+   2,
+   2,
+   4,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   3,
+   2,
+   2,
+   2,
+   6,
+   2,
+   2,
+   4,
+   2,
+   2
+  ],
+  "expr": "(lambda c: [c['M3-S%02d' % i] for i in range(1, 61) if c['M3-S%02d' % i] > 1])(__import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-03/questions/M3-S*-T*.json')))",
+  "source": "runs/mock-03/questions/",
+  "note": "a list: one value for each numbered square"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: the numbers in the squares of mock 4 (tries of each slot with more than one try, in slot order)",
+  "value": [
+   2,
+   2,
+   3,
+   5,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   5,
+   2,
+   7,
+   2,
+   3,
+   2,
+   2,
+   3,
+   3,
+   3,
+   2,
+   2,
+   4,
+   4,
+   3,
+   3
+  ],
+  "expr": "(lambda c: [c['M4-S%02d' % i] for i in range(1, 61) if c['M4-S%02d' % i] > 1])(__import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-04/questions/M4-S*-T*.json')))",
+  "source": "runs/mock-04/questions/",
+  "note": "a list: one value for each numbered square"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-2: the numbers in the squares of mock 5 (tries of each slot with more than one try, in slot order)",
+  "value": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   2,
+   5,
+   5,
+   2,
+   2,
+   4,
+   5,
+   6,
+   2,
+   2,
+   5,
+   2,
+   2,
+   2,
+   4
+  ],
+  "expr": "(lambda c: [c['M5-S%02d' % i] for i in range(1, 61) if c['M5-S%02d' % i] > 1])(__import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-05/questions/M5-S*-T*.json')))",
+  "source": "runs/mock-05/questions/",
+  "note": "a list: one value for each numbered square"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-3: A first design review found 14 serious items",
+  "value": 14,
+  "expr": null,
+  "source": "docs/decisions/0038-a-simple-control-for-mock-1-written-as-code-with-tests.md, line 10",
+  "note": "text record"
+ },
+ {
+  "part": "step-5",
+  "text": "Fig. 5-3: A second design review found 10 new ones (also the quote 'these new 10 issues')",
+  "value": 10,
+  "expr": null,
+  "source": "docs/decisions/0038-a-simple-control-for-mock-1-written-as-code-with-tests.md, line 10",
+  "note": "text record"
+ },
+ {
+  "part": "step-5",
+  "text": "Today the mock builder has 234 tests",
+  "value": 234,
+  "expr": "sum(len(re.findall(r'(?m)^\\s*def test', open(f).read())) for f in glob.glob(ROOT+'/tests/*.py'))",
+  "source": "tests/*.py",
+  "note": "the method of the build script: each line that starts with 'def test'"
+ },
+ {
+  "part": "step-5",
+  "text": "Slot M5-S38 failed rule B9 of step 4 ... three times",
+  "value": 3,
+  "expr": "sum(1 for t in (1, 2, 3) if any(x['rule'] == 'B9' for x in json.load(open(ROOT+'/runs/mock-05/checks/M5-S38-T%d-step4.json' % t))['findings']))",
+  "source": "runs/mock-05/checks/M5-S38-T1 to T3-step4.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Popup 'the rules are code': the 10 cases of the second review were the first tests",
+  "value": 10,
+  "expr": null,
+  "source": "docs/decisions/0038-a-simple-control-for-mock-1-written-as-code-with-tests.md, line 26",
+  "note": "text record"
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: slots with more than one try, mock 1",
+  "value": 18,
+  "expr": "sum(1 for c in __import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-01/questions/M1-S*-T*.json')).values() if c > 1)",
+  "source": "runs/mock-01/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: slots with more than one try, mock 2",
+  "value": 27,
+  "expr": "sum(1 for c in __import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-02/questions/M2-S*-T*.json')).values() if c > 1)",
+  "source": "runs/mock-02/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: slots with more than one try, mock 3",
+  "value": 28,
+  "expr": "sum(1 for c in __import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-03/questions/M3-S*-T*.json')).values() if c > 1)",
+  "source": "runs/mock-03/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: slots with more than one try, mock 4",
+  "value": 29,
+  "expr": "sum(1 for c in __import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-04/questions/M4-S*-T*.json')).values() if c > 1)",
+  "source": "runs/mock-04/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: slots with more than one try, mock 5",
+  "value": 21,
+  "expr": "sum(1 for c in __import__('collections').Counter(json.load(open(f))['slot_id'] for f in glob.glob(ROOT+'/runs/mock-05/questions/M5-S*-T*.json')).values() if c > 1)",
+  "source": "runs/mock-05/questions/",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: times that a slot opened at the limit, mock 1",
+  "value": 1,
+  "expr": "(lambda m: sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')))(1)",
+  "source": "runs/mock-01/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: times that a slot opened at the limit, mock 2",
+  "value": 0,
+  "expr": "(lambda m: sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')))(2)",
+  "source": "runs/mock-02/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: times that a slot opened at the limit, mock 3",
+  "value": 4,
+  "expr": "(lambda m: sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')))(3)",
+  "source": "runs/mock-03/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: times that a slot opened at the limit, mock 4",
+  "value": 6,
+  "expr": "(lambda m: sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')))(4)",
+  "source": "runs/mock-04/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-5",
+  "text": "Card s5-counts: times that a slot opened at the limit, mock 5",
+  "value": 6,
+  "expr": "(lambda m: sum(1 for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] in ('more_tries', 'new_point')))(5)",
+  "source": "runs/mock-05/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "two model calls read the 15 questions of each scenario together (also Fig. 6-1)",
+  "value": 15,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({c for f in glob.glob(ROOT+'/runs/mock-0*/plan.json') for c in __import__('collections').Counter(x['scenario'] for x in json.load(open(f))['slots']).values()})",
+  "source": "runs/mock-0N/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "When all 60 slots have passed (also Fig. 6-1 'all 60')",
+  "value": 60,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(json.load(open(f))['slots']) for f in glob.glob(ROOT+'/runs/mock-0*/plan.json')})",
+  "source": "runs/mock-0N/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: Step 6 ran 33 times over mocks 1 to 5",
+  "value": 33,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: and made 108 findings",
+  "value": 108,
+  "expr": "sum(len(json.load(open(f))['findings']) for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: The owner rewrote a question for 4 of them",
+  "value": 4,
+  "expr": "sum(1 for m in range(1, 6) for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] == 'rewrite' and '-SC' in d['target'])",
+  "source": "runs/mock-0N/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: findings of rule D1",
+  "value": 12,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json') for x in json.load(open(f))['findings'])['D1']",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: findings of rule D2",
+  "value": 30,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json') for x in json.load(open(f))['findings'])['D2']",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: findings of rule D3",
+  "value": 9,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json') for x in json.load(open(f))['findings'])['D3']",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Fig. 6-2: findings of rule D4",
+  "value": 57,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json') for x in json.load(open(f))['findings'])['D4']",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Card s6-runs: runs of step 6, mock 1",
+  "value": 8,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-01/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-01/checks/",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Card s6-runs: runs of step 6, mock 2",
+  "value": 8,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-02/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-02/checks/",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Card s6-runs: runs of step 6, mock 3",
+  "value": 6,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-03/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-03/checks/",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Card s6-runs: runs of step 6, mock 4",
+  "value": 6,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-04/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-04/checks/",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Card s6-runs: runs of step 6, mock 5",
+  "value": 5,
+  "expr": "len(glob.glob(ROOT+'/runs/mock-05/checks/M*-scenario-*-step6-run*.json'))",
+  "source": "runs/mock-05/checks/",
+  "note": ""
+ },
+ {
+  "part": "step-6",
+  "text": "Popup 'code': C3 found none in the 5 mocks",
+  "value": 0,
+  "expr": "__import__('collections').Counter(x['rule'] for f in glob.glob(ROOT+'/runs/mock-0*/checks/M*-scenario-*-step6-run*.json') for x in json.load(open(f))['findings'])['C3']",
+  "source": "runs/mock-0N/checks/*-step6-run*.json",
+  "note": "counts findings with rule C3 in the step 6 records; 0 also if the records keep no C3 result"
+ },
+ {
+  "part": "step-6",
+  "text": "Popup 'call 6b': Rule D2 fails a wrong idea that is a wrong option in more than 2 questions",
+  "value": 2,
+  "expr": "int(re.search(r'D2\\. No wrong idea is a wrong option in more than (\\d+) questions', open(ROOT+'/src/step6_check_scenario.py').read()).group(1))",
+  "source": "src/step6_check_scenario.py",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Mocks 1 and 5: all 60 questions; mocks 2 to 4: a sample of 20 (Fig. 7-2 round 1, mock 1)",
+  "value": 60,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-01/marking-rounds/round-1.json'))['question_ids'])",
+  "source": "runs/mock-01/marking-rounds/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Mocks 1 and 5: all 60 questions; mocks 2 to 4: a sample of 20 (Fig. 7-2 round 1, mock 2)",
+  "value": 20,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-02/marking-rounds/round-1.json'))['question_ids'])",
+  "source": "runs/mock-02/marking-rounds/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Mocks 1 and 5: all 60 questions; mocks 2 to 4: a sample of 20 (Fig. 7-2 round 1, mock 3)",
+  "value": 20,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-03/marking-rounds/round-1.json'))['question_ids'])",
+  "source": "runs/mock-03/marking-rounds/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Mocks 1 and 5: all 60 questions; mocks 2 to 4: a sample of 20 (Fig. 7-2 round 1, mock 4)",
+  "value": 20,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-04/marking-rounds/round-1.json'))['question_ids'])",
+  "source": "runs/mock-04/marking-rounds/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Mocks 1 and 5: all 60 questions; mocks 2 to 4: a sample of 20 (Fig. 7-2 round 1, mock 5)",
+  "value": 60,
+  "expr": "len(json.load(open(ROOT+'/runs/mock-05/marking-rounds/round-1.json'))['question_ids'])",
+  "source": "runs/mock-05/marking-rounds/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "a random sample of 20, 5 from each scenario",
+  "value": 5,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({c for m in (2, 3, 4) for c in (lambda P: __import__('collections').Counter(P[q.split('-T')[0]] for q in json.load(open(ROOT+'/runs/mock-%02d/marking-rounds/round-1.json' % m))['question_ids']).values())({s['slot_id']: s['scenario'] for s in json.load(open(ROOT+'/runs/mock-%02d/plan.json' % m))['slots']})})",
+  "source": "runs/mock-02 to mock-04: marking-rounds/round-1.json and plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: Over the 5 mocks, 209 marks were given",
+  "value": 209,
+  "expr": "sum(len(json.load(open(f))) for f in glob.glob(ROOT+'/runs/mock-0*/marks/round-*.json'))",
+  "source": "runs/mock-0N/marks/round-*.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: 180 in round 1",
+  "value": 180,
+  "expr": "sum(len(json.load(open(ROOT+'/runs/mock-%02d/marking-rounds/round-1.json' % m))['question_ids']) for m in range(1, 6))",
+  "source": "runs/mock-0N/marking-rounds/round-1.json",
+  "note": "the build script counts the questions of round 1"
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: and 29 in round 2, after a send-back",
+  "value": 29,
+  "expr": "sum(len(json.load(open(f))) for f in glob.glob(ROOT+'/runs/mock-0*/marks/round-*.json') if f.endswith('round-2.json'))",
+  "source": "runs/mock-0N/marks/round-2.json",
+  "note": "the build script computes it as 209 - 180"
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: 2 were bad, both in mock 5 (also 'the only 2 bad marks')",
+  "value": 2,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-0*/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-0N/marks/round-*.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: round 2, mock 1",
+  "value": 9,
+  "expr": "(lambda p: len(json.load(open(p))['question_ids']) if os.path.exists(p) else 0)(ROOT+'/runs/mock-01/marking-rounds/round-2.json')",
+  "source": "runs/mock-01/marking-rounds/round-2.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: round 2, mock 2",
+  "value": 14,
+  "expr": "(lambda p: len(json.load(open(p))['question_ids']) if os.path.exists(p) else 0)(ROOT+'/runs/mock-02/marking-rounds/round-2.json')",
+  "source": "runs/mock-02/marking-rounds/round-2.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: round 2, mock 3",
+  "value": 2,
+  "expr": "(lambda p: len(json.load(open(p))['question_ids']) if os.path.exists(p) else 0)(ROOT+'/runs/mock-03/marking-rounds/round-2.json')",
+  "source": "runs/mock-03/marking-rounds/round-2.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: round 2, mock 4",
+  "value": 2,
+  "expr": "(lambda p: len(json.load(open(p))['question_ids']) if os.path.exists(p) else 0)(ROOT+'/runs/mock-04/marking-rounds/round-2.json')",
+  "source": "runs/mock-04/marking-rounds/round-2.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: round 2, mock 5",
+  "value": 2,
+  "expr": "(lambda p: len(json.load(open(p))['question_ids']) if os.path.exists(p) else 0)(ROOT+'/runs/mock-05/marking-rounds/round-2.json')",
+  "source": "runs/mock-05/marking-rounds/round-2.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: bad, mock 1",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-01/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-01/marks/",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: bad, mock 2",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-02/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-02/marks/",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: bad, mock 3",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-03/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-03/marks/",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: bad, mock 4",
+  "value": 0,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-04/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-04/marks/",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-2: bad, mock 5",
+  "value": 2,
+  "expr": "sum(1 for f in glob.glob(ROOT+'/runs/mock-05/marks/round-*.json') for r in json.load(open(f)) if r['mark'] == 'bad')",
+  "source": "runs/mock-05/marks/",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "The owner marked the 60 questions of mock 1 blind: 60 good",
+  "value": 60,
+  "expr": "sum(1 for r in json.load(open(ROOT+'/runs/mock-01/marks/round-1.json')) if r['mark'] == 'good')",
+  "source": "runs/mock-01/marks/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "A second review by a Claude model then found 7 problems of the mock as a set (also 'So the 7 became rewrites')",
+  "value": 7,
+  "expr": null,
+  "source": "docs/decisions/0045-*.md, line 10",
+  "note": "text record"
+ },
+ {
+  "part": "step-7",
+  "text": "15 of the 27 rewrites of the owner changed a question that had a good mark",
+  "value": 15,
+  "expr": "sum(1 for m in range(1, 6) for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] == 'rewrite' and d.get('question_id') in {r['question_id'] for r in json.load(open(ROOT+'/runs/mock-%02d/marks/round-1.json' % m)) if r['mark'] == 'good'})",
+  "source": "runs/mock-0N/owner-decisions.json, runs/mock-0N/marks/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "15 of the 27 rewrites of the owner",
+  "value": 27,
+  "expr": "sum(1 for m in range(1, 6) for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] == 'rewrite')",
+  "source": "runs/mock-0N/owner-decisions.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "The other 12 had no mark",
+  "value": 12,
+  "expr": "sum(1 for m in range(1, 6) for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] == 'rewrite') - sum(1 for m in range(1, 6) for d in json.load(open(ROOT+'/runs/mock-%02d/owner-decisions.json' % m)) if d['action'] == 'rewrite' and d.get('question_id') in {r['question_id'] for r in json.load(open(ROOT+'/runs/mock-%02d/marks/round-1.json' % m)) if r['mark'] == 'good'})",
+  "source": "runs/mock-0N/owner-decisions.json, runs/mock-0N/marks/round-1.json",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-1: written by code: 13 columns",
+  "value": 13,
+  "expr": "len([h for h in eval(re.search(r'(?s)^HEADERS = (\\[.*?\\])', open(ROOT+'/src/step7_marking.py').read(), re.M).group(1)) if h not in ('Mark', 'Reason (needed for a bad mark)')])",
+  "source": "src/step7_marking.py",
+  "note": "HEADERS has 15 columns"
+ },
+ {
+  "part": "step-7",
+  "text": "Fig. 7-1: filled by the reader: 2 columns (also 'The reader fills two columns')",
+  "value": 2,
+  "expr": "len([h for h in eval(re.search(r'(?s)^HEADERS = (\\[.*?\\])', open(ROOT+'/src/step7_marking.py').read(), re.M).group(1)) if h in ('Mark', 'Reason (needed for a bad mark)')])",
+  "source": "src/step7_marking.py",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "Popup 'too many bad': More than 6 bad marks of 60",
+  "value": 6,
+  "expr": "int(re.search(r'(?m)^STOP_MOCK_1 = (\\d+)', open(ROOT+'/src/control.py').read()).group(1)) - 1",
+  "source": "src/control.py",
+  "note": "STOP_MOCK_1 = 7 means 'more than 6'"
+ },
+ {
+  "part": "step-7",
+  "text": "Popup 'too many bad': or 2 or more of 20",
+  "value": 2,
+  "expr": "int(re.search(r'(?m)^STOP_LATER_MOCK = (\\d+)', open(ROOT+'/src/control.py').read()).group(1))",
+  "source": "src/control.py",
+  "note": ""
+ },
+ {
+  "part": "step-7",
+  "text": "The old rule, a sample of 20 with the same seed, holds neither of them",
+  "value": 0,
+  "expr": "(lambda c: (lambda keep: (setattr(c, 'MARK_ALL', {1}), (lambda S: sum(1 for r in json.load(open(ROOT+'/runs/mock-05/marks/round-1.json')) if r['mark'] == 'bad' and r['question_id'].split('-T')[0] in S))(c.Control(ROOT+'/runs/mock-05', 5, json.load(open(ROOT+'/runs/mock-05/plan.json'))['seed'], None, {}).sample()), setattr(c, 'MARK_ALL', keep))[1])(c.MARK_ALL))((__import__('sys').path.insert(0, ROOT+'/src'), __import__('control'))[1])",
+  "source": "src/control.py (Control.sample with MARK_ALL = {1}), runs/mock-05/plan.json, runs/mock-05/marks/round-1.json",
+  "note": "imports src/control.py, no model call"
+ },
+ {
+  "part": "step-7",
+  "text": "The old rule, a sample of 20",
+  "value": 20,
+  "expr": "(lambda c: (lambda keep: (setattr(c, 'MARK_ALL', {1}), (lambda S: len(S))(c.Control(ROOT+'/runs/mock-05', 5, json.load(open(ROOT+'/runs/mock-05/plan.json'))['seed'], None, {}).sample()), setattr(c, 'MARK_ALL', keep))[1])(c.MARK_ALL))((__import__('sys').path.insert(0, ROOT+'/src'), __import__('control'))[1])",
+  "source": "src/control.py, runs/mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "One file has the 60 questions with no answers and no reasons",
+  "value": 60,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(len(g['questions']) for g in json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['groups']) for m in range(1, 6)})",
+  "source": "mocks/mock-0N.questions.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Code builds the two files of a mock",
+  "value": 2,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(glob.glob(ROOT+'/mocks/mock-%02d.*.json' % m)) for m in range(1, 6)})",
+  "source": "mocks/",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "a fingerprint: a code of 64 characters",
+  "value": 64,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({len(fp) for m in range(1, 6) for fp in json.load(open(ROOT+'/runs/mock-%02d/build.json' % m))['fingerprints'].values()})",
+  "source": "runs/mock-0N/build.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "In the 5 built mocks, each of the 300 fingerprints still equals its question record",
+  "value": 300,
+  "expr": "(lambda c: sum(1 for m in range(1, 6) for q, fp in json.load(open(ROOT+'/runs/mock-%02d/build.json' % m))['fingerprints'].items() if c.fingerprint(json.load(open(ROOT+'/runs/mock-%02d/questions/%s.json' % (m, q)))) == fp))((__import__('sys').path.insert(0, ROOT+'/src'), __import__('control'))[1])",
+  "source": "runs/mock-0N/build.json, runs/mock-0N/questions/, src/control.py (fingerprint())",
+  "note": "counts the fingerprints that equal; the build script asserts 300 of 300"
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-1: code checks 6 conditions",
+  "value": 6,
+  "expr": null,
+  "source": "docs/decisions/0039-the-control-in-code-the-states-and-the-records.md, items 1 to 6 (the last at line 70)",
+  "note": "text record; the build script draws a fixed list of 6 and checks only that item 6 is in decision 0039"
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 1, A 10",
+  "value": 10,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-01.answers.json'))['answers'] if len(a['correct']) == 1)['A']",
+  "source": "mocks/mock-01.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 1, B 17",
+  "value": 17,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-01.answers.json'))['answers'] if len(a['correct']) == 1)['B']",
+  "source": "mocks/mock-01.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 1, C 7",
+  "value": 7,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-01.answers.json'))['answers'] if len(a['correct']) == 1)['C']",
+  "source": "mocks/mock-01.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 1, D 18",
+  "value": 18,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-01.answers.json'))['answers'] if len(a['correct']) == 1)['D']",
+  "source": "mocks/mock-01.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 2, A 11",
+  "value": 11,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-02.answers.json'))['answers'] if len(a['correct']) == 1)['A']",
+  "source": "mocks/mock-02.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 2, B 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-02.answers.json'))['answers'] if len(a['correct']) == 1)['B']",
+  "source": "mocks/mock-02.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 2, C 15",
+  "value": 15,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-02.answers.json'))['answers'] if len(a['correct']) == 1)['C']",
+  "source": "mocks/mock-02.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 2, D 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-02.answers.json'))['answers'] if len(a['correct']) == 1)['D']",
+  "source": "mocks/mock-02.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 3, A 12",
+  "value": 12,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-03.answers.json'))['answers'] if len(a['correct']) == 1)['A']",
+  "source": "mocks/mock-03.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 3, B 12",
+  "value": 12,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-03.answers.json'))['answers'] if len(a['correct']) == 1)['B']",
+  "source": "mocks/mock-03.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 3, C 18",
+  "value": 18,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-03.answers.json'))['answers'] if len(a['correct']) == 1)['C']",
+  "source": "mocks/mock-03.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 3, D 10",
+  "value": 10,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-03.answers.json'))['answers'] if len(a['correct']) == 1)['D']",
+  "source": "mocks/mock-03.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 4, A 8",
+  "value": 8,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-04.answers.json'))['answers'] if len(a['correct']) == 1)['A']",
+  "source": "mocks/mock-04.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 4, B 8",
+  "value": 8,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-04.answers.json'))['answers'] if len(a['correct']) == 1)['B']",
+  "source": "mocks/mock-04.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 4, C 14",
+  "value": 14,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-04.answers.json'))['answers'] if len(a['correct']) == 1)['C']",
+  "source": "mocks/mock-04.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 4, D 22",
+  "value": 22,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-04.answers.json'))['answers'] if len(a['correct']) == 1)['D']",
+  "source": "mocks/mock-04.answers.json",
+  "note": "'In mock 4, D was the answer 22 times'"
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 5, A 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-05.answers.json'))['answers'] if len(a['correct']) == 1)['A']",
+  "source": "mocks/mock-05.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 5, B 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-05.answers.json'))['answers'] if len(a['correct']) == 1)['B']",
+  "source": "mocks/mock-05.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 5, C 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-05.answers.json'))['answers'] if len(a['correct']) == 1)['C']",
+  "source": "mocks/mock-05.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: mock 5, D 13",
+  "value": 13,
+  "expr": "__import__('collections').Counter(a['correct'][0] for a in json.load(open(ROOT+'/mocks/mock-05.answers.json'))['answers'] if len(a['correct']) == 1)['D']",
+  "source": "mocks/mock-05.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: The correct letters of the 52 one-answer questions in each built mock",
+  "value": 52,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers'] if len(a['correct']) == 1) for m in range(1, 6)})",
+  "source": "mocks/mock-0N.answers.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Fig. 8-2: The dashed line is 13, the chance number",
+  "value": 13,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({sum(1 for a in json.load(open(ROOT+'/mocks/mock-%02d.answers.json' % m))['answers'] if len(a['correct']) == 1) // 4 for m in range(1, 6)})",
+  "source": "mocks/mock-0N.answers.json",
+  "note": "52 / 4"
+ },
+ {
+  "part": "step-8",
+  "text": "the plan of step 1 sets the correct letters, 13 for each of A to D",
+  "value": 13,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))(set(__import__('collections').Counter(l for s in json.load(open(ROOT+'/runs/mock-05/plan.json'))['slots'] if s['select'] == 1 for l in s['correct_letters']).values()))",
+  "source": "runs/mock-05/plan.json",
+  "note": ""
+ },
+ {
+  "part": "step-8",
+  "text": "Popup 'questions file': the time of the mock: 120 minutes",
+  "value": 120,
+  "expr": "(lambda s: s.pop() if len(s) == 1 else sorted(s))({json.load(open(ROOT+'/mocks/mock-%02d.questions.json' % m))['minutes'] for m in range(1, 6)})",
+  "source": "mocks/mock-0N.questions.json",
+  "note": ""
+ },
+ {
+  "part": "cc-3-1",
+  "text": "CLAUDE.md has 22 lines",
+  "value": 22,
+  "expr": "len(open(ROOT+'/CLAUDE.md').read().splitlines())",
+  "source": "CLAUDE.md",
+  "note": "not in the permitted list, but it is the source that the build script counts"
+ },
+ {
+  "part": "cc-3-1",
+  "text": "WORKING-RULES.md has 36 rules",
+  "value": 36,
+  "expr": "len(re.findall(r'(?m)^\\d+\\. ', open(ROOT+'/WORKING-RULES.md').read()))",
+  "source": "WORKING-RULES.md",
+  "note": "not in the permitted list, but it is the source that the build script counts"
+ },
+ {
+  "part": "cc-3-1",
+  "text": "Card cc-records: docs/decisions/ has 83 mock decisions",
+  "value": 83,
+  "expr": "len([f for f in os.listdir(ROOT+'/docs/decisions') if re.match(r'^\\d{4}-.*\\.md$', f)])",
+  "source": "docs/decisions/",
+  "note": ""
+ },
+ {
+  "part": "cc-1-7",
+  "text": "It read them, and changed six points of the plan",
+  "value": 6,
+  "expr": null,
+  "source": "docs/journal.md, line 184",
+  "note": "text record"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "two independent reviewers ... the first found 4 serious",
+  "value": 4,
+  "expr": null,
+  "source": "docs/journal.md, line 189",
+  "note": "text record"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "two independent reviewers ... and 6 minor bugs",
+  "value": 6,
+  "expr": null,
+  "source": "docs/journal.md, line 189",
+  "note": "text record"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "two independent reviewers ... the second found 1 serious",
+  "value": 1,
+  "expr": null,
+  "source": "docs/journal.md, line 189",
+  "note": "text record"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "two independent reviewers ... and 3 minor bugs in the fixes",
+  "value": 3,
+  "expr": null,
+  "source": "docs/journal.md, line 189",
+  "note": "text record"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "A second independent check, over more files, found 26 gaps (also Fig. C-4.6-1)",
+  "value": 26,
+  "expr": null,
+  "source": "docs/journal.md, line 57",
+  "note": "text record; the build script reads it with a regex"
+ },
+ {
+  "part": "cc-4-6",
+  "text": "A third check found 20 smaller gaps (also Fig. C-4.6-1, 'the last 20 fixes')",
+  "value": 20,
+  "expr": null,
+  "source": "docs/journal.md, lines 58 and 59",
+  "note": "text record; the build script reads it with a regex"
+ }
+]

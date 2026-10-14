@@ -219,7 +219,7 @@ def box(x, y, w, h, lines, sub=None, cls="", glyph=None, href=None, step=None, c
         out += '<text class="sub" x="%d" y="%d">%s</text>' % (w / 2, y0 + len(lines) * 20 + 2, e(sub))
     out += "</g>"
     if href:
-        out = '<a href="%s" aria-label="%s">%s</a>' % (href, e(" ".join(lines)), out)
+        out = '<a href="%s">%s</a>' % (href, out)  # the name is the visible text (check F1)
     return out
 
 
