@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check plan</title>
+<link rel="stylesheet" href="pages/academy.css">
+<style>
+main { max-width: 80rem; }
+table { border-collapse: collapse; width: 100%; font-size: var(--t-small); }
+th { text-align: left; font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); background: var(--surface); padding: var(--s-2) var(--s-3); }
+td { border-top: 1px solid var(--border); padding: var(--s-2) var(--s-3); vertical-align: top; }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; }
+tr[data-change="Keep"] td { color: var(--text-dim); }
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); }
+.kind { font-weight: 600; }
+ul, ol { padding-left: var(--s-5); display: grid; gap: var(--s-1); }
+</style>
+</head>
+<body>
+<main>
+<h1>Reader check plan, from 14 October 2026</h1>
+<p>Status: proposed. The owner asked for this plan on 14 October 2026 and chose to run all checks.</p>
+<p>An independent agent checked the first version and found 14 problems, 5 of them high. This version fixes all 14.</p>
+<h2>Aim</h2>
+<p>Find the errors and the weak places of the two tabs before the owner reviews them. Most checks read the pages as a stranger would. Scripts do the checks that need no judgment.</p>
+<p>The assistant works alone. The owner's yes to this plan covers each step in it (working rules 32 and 33). It also covers the push at the end.</p>
+<h2>What the assistant changes, and what it only lists</h2>
+<div class="table-scroll"><table><thead><tr><th>Kind of finding</th><th>Action</th></tr></thead><tbody><tr data-change=""><td>A clear error: a wrong fact, a wrong number, a broken link, a typo, two names for one thing</td><td>The assistant fixes it.</td></tr><tr data-change=""><td>A change of text, a popup or a figure that no decision of the owner covers</td><td>The assistant puts it on the list for the owner.</td></tr><tr data-change=""><td>A new design, a new figure type, a change of layout</td><td>The assistant puts it on the list for the owner.</td></tr></tbody></table></div>
+<ul><li>Before the first fix, the assistant tags the commit that the owner reads now: <code>owner-review-2026-10-14</code>.</li><li>A fix never changes an element ID, a figure number, a heading or a popup title. So the notes of the owner keep their places.</li><li>Each fix gets one line in <code>academy/checks/changes.md</code>. The line gives the tab, the element ID, the finding and the source. It also gives the old text and the new text.</li><li>A review agent checks each batch of fixes. It also checks that each fix is a clear error.</li><li>A fix must not push a part over its word limit.</li><li>If an item is possibly not a clear error, the assistant puts it on the list.</li></ul>
+<h2>The checks</h2>
+<p>Each check writes its result to <code>academy/checks/&lt;ID&gt;.md</code>. The list for the owner is <code>academy/checks/findings.md</code>.</p>
+<p>Agents get the text of the pages as extracted files in the scratch folder, in slices. They do not get the HTML.</p>
+<h3>A. Accuracy</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>A1</td><td>Test each external link of both tabs. The links to the repository use the push of 14 October 2026.</td><td>Script</td></tr><tr data-change=""><td>A2</td><td>Compute each number of tab 2 again from its source, and compare. An agent lists the numbers and their sources in <code>mocks/</code>, <code>runs/</code>, <code>docs/</code> and <code>tests/</code>.</td><td>1 agent, then script</td></tr><tr data-change=""><td>A3</td><td>Compare each fact that both tabs state.</td><td>1 agent</td></tr><tr data-change=""><td>A4</td><td>Check each claim of parts 5.2, 2.2, 2.3, 4.3 and 4.6 against its source again.</td><td>2 agents</td></tr></tbody></table></div>
+<p>A2 does not read <code>marking/*.xlsx</code>.</p>
+<h3>B. Learning</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>B1</td><td>An agent reads the parts of one domain and answers the mock questions of that domain. A script scores the answers.</td><td>5 agents, then script</td></tr><tr data-change=""><td>B2</td><td>For each part, name the wrong answer that tempts a candidate. Check if the page warns against it.</td><td>2 agents</td></tr><tr data-change=""><td>B3</td><td>Explain each part back at each level: Overview, Explanation and Depth.</td><td>3 agents</td></tr><tr data-change=""><td>B4</td><td>For each K and S point of the guide, judge if the page teaches it or only names it.</td><td>2 agents</td></tr></tbody></table></div>
+<p>B1 details:</p>
+<ul><li>The agent gets two files only: the tab 1 text of its domain and the questions of its domain.</li><li>The question file has the scenario story, the question, the options and the number to select. It has no point, no task statement and no answer.</li><li>A script removes each question that a tab shows: by its ID, its question text or its option text.</li><li>For each answer, the agent quotes the page sentence that supports it. A script checks that each quote is in the page.</li><li>The score counts only the answers with a valid quote. This measures the page, not what the model already knows.</li><li>A question with more than one correct answer scores only when the set matches exactly.</li><li>The agent lists each file that it read.</li></ul>
+<h3>C. Reader types</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Reader</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>C1</td><td>A beginner who never used the Claude API or Claude Code</td><td>1 agent</td></tr><tr data-change=""><td>C2</td><td>A skimmer: the agent gets only the headings, the figures and the captions</td><td>2 agents</td></tr><tr data-change=""><td>C3</td><td>A reader with English as a second language</td><td>1 agent, and a script for sentence length</td></tr><tr data-change=""><td>C4</td><td>A phone reader, from pictures at 390 pixels</td><td>1 agent</td></tr><tr data-change=""><td>C5</td><td>A sceptic of tab 2: does the tab convince, and does it show its weak points?</td><td>1 agent</td></tr></tbody></table></div>
+<h3>D. Figures and popups</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>D1</td><td>The agent sees a figure without its captions and states its claim. A table gives the claim, the caption and the result: match, partial or miss.</td><td>2 agents</td></tr><tr data-change=""><td>D2</td><td>List the boxes with no popup that raise a question. Check that each popup answers its question.</td><td>2 agents</td></tr></tbody></table></div>
+<p>For D1, <code>shot-figure.js</code> gets a mode that hides the caption and the step captions. The batch review agent checks the D1 table.</p>
+<h3>E. Finding things</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>E1</td><td>A script picks 20 points from <code>reference/guide-records.json</code> at random and records the seed. The agent finds where the page explains each point and reports its wrong turns.</td><td>1 agent</td></tr><tr data-change=""><td>E2</td><td>Find each term that the page uses before it explains the term.</td><td>1 agent</td></tr><tr data-change=""><td>E3</td><td>Find two names for one thing across both tabs.</td><td>Script</td></tr></tbody></table></div>
+<p>E3 searches for three kinds of pairs. The first are the three names of the documentation (decision 0039, item 11). The second are spelling forms of one name, for example "subagent" and "sub-agent". The third are the pairs that the agents find.</p>
+<h3>F. Layout and use</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>F1</td><td>Check contrast and labels with axe-core in light and dark mode. Check keyboard order with a script that presses the Tab key.</td><td>Script</td></tr><tr data-change=""><td>F2</td><td>Take a picture of each figure at 390 pixels. C4 uses them.</td><td>Script</td></tr><tr data-change=""><td>F3</td><td>Measure the load time of each tab and find the large parts.</td><td>Script</td></tr></tbody></table></div>
+<p>axe-core goes into the scratch folder, not into the repository. The known exceptions of decisions 0009 and 0013 are listed apart.</p>
+<h3>G. Portal and records</h3>
+<div class="table-scroll"><table><thead><tr><th>ID</th><th>Check</th><th>Who</th></tr></thead><tbody><tr data-change=""><td>G1</td><td>Read <code>~/magnetlab-academy</code> and list what the move of the tabs needs (decision 0017). Read only.</td><td>1 agent</td></tr><tr data-change=""><td>G2</td><td>In <code>academy/popup-plan.md</code> and <code>HANDOFF.md</code>, say that 40 figures have new popups. With Fig. 1.1-1, 41 of 56 figures have popups. A script gives the counts.</td><td>The assistant</td></tr></tbody></table></div>
+<h2>Order and time</h2>
+<ol><li>An independent agent checked this plan before the owner saw it. The assistant fixed it.</li><li>The journal entry and its progress list start before the first check.</li><li>Scripts first: A1, E3, F1, F2, F3, G2.</li><li>Agents, in this order of priority: B1, A4, A2, A3, D2, C1, B2, B4, D1, C2, C3, C4, C5, B3, E1, E2, G1.</li><li>Fixes in batches. After each batch, <code>check-pages.js</code> runs, and a review agent checks the batch.</li><li>The report.</li></ol>
+<p>Agents: 29 for the checks, 1 for this plan, 1 for the report, and 1 for each batch of fixes. With about 4 batches, the total is about 35. At most 2 run at the same time, all Opus 5.5.</p>
+<p>Time: 6 to 8 hours. A usage limit can add hours. If the time runs out, the order of priority above says which checks stay.</p>
+<h2>When things go wrong</h2>
+<ul><li>An agent has no result after 45 minutes: stop it and run it again once. After a second failure, skip the check and name it in the report.</li><li>A check fails after 3 rounds of fixes: stop, commit what works, and name it in the report.</li><li>A usage limit pauses the work: continue from the progress list in <code>academy/journal.md</code>.</li><li>After each check, update the progress list. After a compaction, read it again.</li></ul>
+<h2>Limits</h2>
+<ul><li>No new design. No change to a decision text that the owner confirmed.</li><li>No model call through the API, and no API cost. Only the agents of Claude Code.</li><li>No change to the mock builder, <code>reference/</code>, the old folders, the study packs or the portal folders.</li><li>No personal file of the owner and no conversation transcript, also not in a prompt (rules 19 and 28).</li><li>At most 2 agents at the same time.</li><li>Commit after each check and after each batch of fixes.</li><li>Never end a turn with a question to the owner. If a check cannot continue, record why. Then start the next check.</li><li>Text in Simplified Technical English. No semicolons, no em dashes.</li></ul>
+<h2>The report</h2>
+<ol><li><code>academy/checks/findings.md</code> gives the list for the owner, sorted by part, with the most important items first.</li><li><code>HANDOFF.md</code> and <code>academy/journal.md</code> get the result: the checks done and skipped, the fixes, and the B1 scores for each domain.</li><li>Academy decision 0041 records the owner's yes to this plan.</li><li>A new agent checks the report against the commits. The assistant fixes what it finds.</li><li>Final commit and push. <code>git status</code> is clean.</li></ol>
+<h2>Done when</h2>
+<p>The report is checked, <code>check-pages.js</code> prints "All checks passed." for both tabs, and GitHub has the last commit.</p>
+</main>
+</body>
+</html>

@@ -55,6 +55,8 @@ def convert(md):
             out.append(table(rows)); continue
         if l.startswith("# "):
             out.append("<h1>%s</h1>" % inline(l[2:]))
+        elif l.startswith("### "):
+            out.append("<h3>%s</h3>" % inline(l[4:]))
         elif l.startswith("## "):
             out.append("<h2>%s</h2>" % inline(l[3:]))
         elif l.startswith("- ") or re.match(r"^\d+\. ", l):
