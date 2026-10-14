@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- Plan review source (plugin visual-explainer, command plan-review). Render it with:
+     node <skill>/plan/render.mjs academy/figure-plan-review.src.html --root . -->
+<html lang="en">
+<head>
+<title>Review: Figure plan (academy decision 0037)</title>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Plan review · ccar-f-mock-generator</p>
+  <h1>Review: Figure plan of decision 0037</h1>
+  <p class="lead">Revise, then approve: the types are sound, but <b>two moves break the word limits</b>, and the plan leaves out the new page code, the new checks and two rules that already hold.</p>
+  <ve-files>
+    ~ academy/figure-plan.md              # the plan under review
+    ~ academy/build/make-exam-guide-breakdown.py   # tab 1 figures
+    ~ academy/build/make-behind-the-mocks.py       # tab 2 figures
+    ~ academy/build/academy.js            # shared page code: stepper only today
+    ~ academy/build/check-pages.js        # the checks of decision 0013
+  </ve-files>
+  <ve-why>
+    <ve-quote via="chat" from="the owner">yes, run plan-review</ve-quote>
+    <ve-quote via="chat" from="the owner">Why did you not use the plugin I told you to</ve-quote>
+  </ve-why>
+</header>
+
+<figure class="hero">
+  <ve-flow label="The figure plan drives the two build scripts, which write the two tabs. Five findings touch the plan: text moved into a full Explanation, the shared page code that has only a stepper, the page check that skips hidden steps, the stepper form that the owner chose, and the nine links of Fig. A of tab 2 that the check requires.">
+    <ve-node id="plan" at="1 1" sub="56 figures">figure-plan.md</ve-node>
+    <ve-node id="build" at="2 1" sub="make-*.py">Build scripts</ve-node>
+    <ve-node id="pages" at="3 1" sub="tab 1 and tab 2" key>Two tabs</ve-node>
+    <ve-node id="words" at="1 2" sub="500 words" claim="1">Explanation</ve-node>
+    <ve-node id="js" at="3 2" sub="+ toggle, live" new claim="3">academy.js</ve-node>
+    <ve-node id="check" at="4 1" sub="+ each step" new claim="2">check-pages.js</ve-node>
+    <ve-node id="form" at="2 2" sub="arrows only" claim="4">Stepper form</ve-node>
+    <ve-node id="figa" at="4 2" sub="9 step links" claim="5">Fig. A, tab 2</ve-node>
+    <ve-edge from="plan" to="build" hot label="drives"/>
+    <ve-edge from="build" to="pages" hot label="writes"/>
+    <ve-edge from="plan" to="words" claim="1" label="moves text"/>
+    <ve-edge from="js" to="pages" claim="3" label="runs in"/>
+    <ve-edge from="check" to="pages" claim="2" label="checks"/>
+    <ve-edge from="form" to="js" claim="4" label="shapes"/>
+    <ve-edge from="check" to="figa" claim="5" label="requires"/>
+  </ve-flow>
+  <figcaption><span class="fig-n">Fig. 1</span>The plan changes only figures, but five other parts of the build depend on those figures.</figcaption>
+</figure>
+
+<ve-plan>
+
+  <ve-claim check="check-pages.js prints no line &quot;Over the word limit&quot; after the redraw of 2.1 and 5.6.">
+    <p>Two planned moves push an Explanation over its limit of 500 words.</p>
+    <ve-code src="academy/figure-plan.md" lines="122-129" hl="124 129">
+      <ve-pin line="124">The Explanation of 2.1 has 498 of 500 words today (check-pages.js, run on 14 October 2026).</ve-pin>
+      <ve-pin line="129">The Explanation of 5.6 has 500 of 500 words today. A caption does not count, so only "caption" works here.</ve-pin>
+    </ve-code>
+    <ve-ask id="f1" q="Fix the plan this way?">
+      <ve-opt value="accept" default note="captions are not counted">Move the split of 2.1 and the left-out parts of 5.6 into the caption, not the Explanation</ve-opt>
+      <ve-opt value="popup" note="one more popup">Move them into a popup of the figure</ve-opt>
+      <ve-opt value="reject">Keep the plan as written</ve-opt>
+    </ve-ask>
+    <ve-claim>
+      <p>The check counts the Explanation without figures, so a caption is free.</p>
+      <ve-code src="academy/build/check-pages.js" lines="109-115" hl="110">
+        <ve-pin line="110">Each figure is removed before the count, with its caption.</ve-pin>
+      </ve-code>
+    </ve-claim>
+    <ve-claim>
+      <p>The Explanation of 5.2 has 28 words left for the identifier.</p>
+      <ve-code src="academy/figure-plan.md" lines="63-63"/>
+    </ve-claim>
+  </ve-claim>
+
+  <ve-claim check="check-pages.js reports each step of each stepper and each state of each toggle, in both modes and at both widths.">
+    <p>The page check skips hidden text, so later steps go unchecked.</p>
+    <ve-code src="academy/build/check-pages.js" lines="82-86" hl="84">
+      <ve-pin line="84">Text inside an element with the attribute hidden is skipped. The stepper hides each caption that is not current.</ve-pin>
+    </ve-code>
+    <ve-ask id="f2" q="Fix the plan this way?">
+      <ve-opt value="accept" default note="one change to check-pages.js">Add a step to the plan: check-pages.js visits each step, each toggle state and each live-figure choice</ve-opt>
+      <ve-opt value="reject">Keep the plan as written</ve-opt>
+    </ve-ask>
+    <ve-claim>
+      <p>The stepper hides each caption except the current one.</p>
+      <ve-code src="academy/build/academy.js" lines="137-150" hl="146">
+        <ve-pin line="146">So at step 0 the check sees only the first caption.</ve-pin>
+      </ve-code>
+    </ve-claim>
+  </ve-claim>
+
+  <ve-claim check="academy.js has the code of the toggle and of the live figure, and the pages have no inline script.">
+    <p>The shared page code has only a stepper, and the security policy forbids an inline script.</p>
+    <ve-code src="academy/build/lib.py" lines="18-20" hl="19">
+      <ve-pin line="19">script-src 'self': each new control must be code in academy/build/academy.js, not a script in the page.</ve-pin>
+    </ve-code>
+    <ve-ask id="f3" q="Fix the plan this way?">
+      <ve-opt value="accept" default note="names the work that the plan misses">Add to the plan: the toggle and the live figure are new shared code in academy.js, with no inline script, and the move into the portal later ports them too</ve-opt>
+      <ve-opt value="reject">Keep the plan as written</ve-opt>
+    </ve-ask>
+  </ve-claim>
+
+  <ve-claim check="Each new stepper has arrows only, no Play button and no slider, and each step adds at most one part.">
+    <p>The plan omits the rule of the owner: no Play, no slider.</p>
+    <ve-code src="academy/journal.md" lines="42-42">
+      <ve-pin line="42">The owner never liked Play, and the assistant removed Play and the slider. The plugin's scene player has both.</ve-pin>
+    </ve-code>
+    <ve-ask id="f4" q="Fix the plan this way?">
+      <ve-opt value="accept" default>Add to the plan: each stepper has the form of Fig. 1.1-1, with arrows only and at most one new part for each step</ve-opt>
+      <ve-opt value="reject">Keep the plan as written</ve-opt>
+    </ve-ask>
+  </ve-claim>
+
+  <ve-claim check="check-pages.js finds a link to each of steps 0 to 8 inside the figure with data-figure=&quot;builder&quot;.">
+    <p>Fig. A of tab 2 must keep its nine step links.</p>
+    <ve-code src="academy/build/check-pages.js" lines="72-78" hl="73 75">
+      <ve-pin line="75">The check fails when the figure has no link to a step.</ve-pin>
+    </ve-code>
+    <ve-ask id="f5" q="Fix the plan this way?">
+      <ve-opt value="accept" default>Add to the plan: the stepper of Fig. A keeps data-figure="builder", the ID top-fig-a and the nine links, in the full picture</ve-opt>
+      <ve-opt value="reject">Keep the plan as written</ve-opt>
+    </ve-ask>
+  </ve-claim>
+
+  <ve-claim aux="scope">
+    <p>What the plan gets right, and this review does not change:</p>
+    <ul>
+      <li>All 56 figures are in the plan once, and the counts agree with the rows (an independent check).</li>
+      <li>Each type follows the table of the plugin: steppers for processes, small multiples for cases, before / after for a difference, a picture for each number.</li>
+      <li>No figure gets numbers that no source gives: Fig. 5.5-1 stays a diagram, and the context in Fig. 2.5-1 has no measure.</li>
+      <li>Domain 1 first, as a test, before the rest.</li>
+    </ul>
+  </ve-claim>
+
+</ve-plan>
+
+</body>
+</html>
