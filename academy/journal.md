@@ -22,8 +22,8 @@ Progress list (updated after each check):
 | B4 | done | 190 of 239 points taught, 49 thin, 0 named only. 1 fix (5.2). About 22 conflicts of product and guide for the owner. |
 | C1 | done | Domain 1 needs a primer of the products and a glossary. 25 stops for the owner. |
 | C2 | done | Tab 1 works for a skimmer (4.3 is the exception). Tab 2 shows the story, but not the link to the task statements. |
-| C3 | script done | agent open |
-| C4 | open | |
+| C3 | done | 5.5% and 6.5% of sentences over 25 words. 1 fix ("second design review"). 17 rewrites for the owner. |
+| C4 | done | The sideways scroll hides the point of about 25 of 67 figures on a phone. Layout for the owner. |
 | C5 | open | |
 | D1 | done | Tab 1: 32 match, 2 partial. Tab 2: 16 match, 3 partial, 3 miss. 4 drawing faults fixed. |
 | D2 | done | Tab 1: 20 weak, 10 missing. Tab 2: 7 weak, 9 missing. 4 popups fixed ("marks" for the answer key), the rest for the owner. |

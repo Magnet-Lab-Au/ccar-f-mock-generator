@@ -755,7 +755,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'the rules are code',
   'title': 'How can a test run with no model call?',
-  'sent': ['A fake writer and fake checkers give the answers that each test tells them to give. Each case is one test, and the 10 cases of the second review '
+  'sent': ['A fake writer and fake checkers give the answers that each test tells them to give. Each case is one test, and the 10 cases of the second design review '
            'were the first tests.'],
   'points': [],
   'source': 'step-5.md A8'},

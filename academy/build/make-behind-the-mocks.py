@@ -415,7 +415,7 @@ FIG52 = """
 FIG53_T = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first review found 14 serious items. The second review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the rules of the next action are code with tests.">
+    <svg class="ve-svg" viewBox="0 0 890 150" role="img" aria-label="The first design review found 14 serious items. The second design review found 10 new ones. The fix: one automatic loop, each other failure waits for the owner, and the rules of the next action are code with tests.">
       <path class="ve-e" d="M250 60H318"/><text class="ve-el" x="284" y="51">answers</text>
       <path class="ve-e" d="M560 60H628"/><text class="ve-el" x="594" y="51">fix</text>
       <g class="ve-n"><rect class="sh" x="20" y="20" width="230" height="80" rx="0"/><text x="135" y="44">first design review</text>
@@ -429,7 +429,7 @@ FIG53_T = """
   <figcaption><span class="fig-n">Fig. 5-3</span>%s The owner said: &ldquo;%s&rdquo;</figcaption>
 </figure>
 """
-FIG53_T = (FIG53_T.replace('found 14 serious items. The second review found 10 new', 'found @R1@ serious items. The second review found @R2@ new')
+FIG53_T = (FIG53_T.replace('found 14 serious items. The second design review found 10 new', 'found @R1@ serious items. The second design review found @R2@ new')
            .replace('width="140" height="16" rx="0"/><text class="sub" x="210" y="70">14</text>', 'width="%d" height="16" rx="0"/><text class="sub" x="210" y="70">@R1@</text>' % (REVIEW1 * 10))
            .replace('width="100" height="16" rx="0"/><text class="sub r" x="452" y="70">10 new</text>', 'width="%d" height="16" rx="0"/><text class="sub r" x="452" y="70">@R2@ new</text>' % (REVIEW2 * 10))
            .replace("@R1@", str(REVIEW1)).replace("@R2@", str(REVIEW2)))
