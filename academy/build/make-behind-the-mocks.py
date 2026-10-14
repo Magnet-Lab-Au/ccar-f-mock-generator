@@ -395,7 +395,7 @@ def grid(x):
         cells.append('<g class="cell %s"><rect x="%d" y="%d" width="20" height="20" rx="0"/>%s<title>%s: %d %s</title></g>'
                      % (cls, cx, cy, txt, sid, n, "try" if n == 1 else "tries"))
     return ('<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d tries</p>'
-            '<svg class="ve-grid" viewBox="0 0 227 135" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
+            '<svg class="ve-grid" viewBox="-2 -2 231 139" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
             '<p class="cap">%d of %d passed both checks at the first try</p></div>'
             % (x["mock"], x["tries"], x["mock"], x["tries"], SLOTS, x["first"], x["more"], x["max"], "".join(cells),
                x["first"], SLOTS))
@@ -712,14 +712,14 @@ FIG01 = """
         box(20, 40, 170, 90, ["exam guide"], sub="the copy, .md"),
         box(260, 40, 190, 90, ["script of step 0"], sub="code, no model", cls="is-key"),
         box(520, 40, 170, 90, ["guide records"], sub="one JSON file"),
-        box(740, 40, 130, 90, ["steps"], sub="1, 2, 4, 5, 7, 8"),
+        box(745, 40, 140, 90, ["steps"], sub="1, 2, 4, 5, 7, 8"),
         box(260, 190, 190, 70, ["no file"], sub="and the cause", cls="try bad"),
         box(520, 190, 170, 70, ["second script"], sub="%d of %d checks" % (N_CHECKS, N_CHECKS), cls="try ok"),
     ]),
     "edges": "".join([
         edge("M190 85H260", "reads", 225, 76),
         edge("M450 85H520", "writes", 485, 76),
-        edge("M690 85H740", "parts", 715, 76),
+        edge("M690 85H745", "parts", 717, 76),
         edge("M355 130V190", "a check fails", 363, 165, anchor="r"),
         edge("M605 190V130", "checks", 613, 165, anchor="r"),
     ]),
@@ -1395,7 +1395,7 @@ FIG61 = """
                       box(700, 115, 170, 100, ["the owner"], sub="ignore or rewrite", cls="who-owner")]),
     "edges": "".join([edge("M170 165H230"), edge("M380 165H410V80H440"), edge("M410 165V250H440"),
                       edge("M630 80H665V145H700", "findings", 640, 72, anchor="r"), edge("M630 250H665V185H700"),
-                      edge("M785 215V300", "rewrite: to step 5", 777, 270, cls="is-async", anchor="l")]),
+                      edge("M785 215V300", "to step 5", 777, 270, cls="is-async", anchor="l")]),
     "cap": fact("s6-calls", "Two model calls read the 15 questions of a scenario together.") + " " + fact("s6-back", "Step 6 sends no question back. Each finding goes to the owner."),
 }
 R6 = [(k, RULE6.get(k, 0)) for k in ("D1", "D2", "D3", "D4")]
