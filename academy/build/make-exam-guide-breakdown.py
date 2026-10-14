@@ -202,8 +202,9 @@ def cf(key, c, text):
     return fact(key, text)
 
 
-def box(x, y, w, h, lines, sub=None, cls="", step=None):
+def box(x, y, w, h, lines, sub=None, cls="", step=None, a=None, s=None):
     attrs = ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step if step else ""
+    attrs += (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
     out = '<g class="ve-n %s"%s transform="translate(%d %d)"><rect class="sh" width="%d" height="%d" rx="0"/>' % (cls, attrs, x, y, w, h)
     n = len(lines) + (1 if sub else 0)
     y0 = h / 2 - (n - 1) * 10
@@ -214,11 +215,33 @@ def box(x, y, w, h, lines, sub=None, cls="", step=None):
     return out + "</g>"
 
 
-def edge(d, label=None, lx=0, ly=0, cls="", anchor=""):
-    out = '<path class="ve-e %s" d="%s"/>' % (cls, d)
+def edge(d, label=None, lx=0, ly=0, cls="", anchor="", a=None, s=None):
+    """An arrow with its label. In a stepper, a (the steps that light it) or s (the step where it appears) draws it in (decision 0037)."""
+    st = (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
+    out = '<path class="ve-e %s"%s%s d="%s"/>' % (cls, st, ' pathLength="1"' if st else "", d)
     if label:
-        out += '<text class="ve-el %s" x="%d" y="%d">%s</text>' % (anchor, lx, ly, e(label))
+        out += '<text class="ve-el %s"%s x="%d" y="%d">%s</text>' % (anchor, st, lx, ly, e(label))
     return out
+
+
+def stepper(fid, num, svg_w, svg_h, aria, inner, caps, cap):
+    """A figure that goes one step at a time (decision 0037, the form of Fig. 1.1-1): it opens on the full picture,
+    the arrows go one step at a time, and nothing plays by itself. caps[0] is the caption of the full picture."""
+    n = len(caps) - 1
+    lis = ['<li data-n="%d steps">%s</li>' % (n, caps[0])] + ['<li data-n="%d/%d">%s</li>' % (i, n, c) for i, c in enumerate(caps[1:], 1)]
+    return ('<figure class="ve-steps" id="%s"><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
+            '<div class="ve-player"><ol class="ve-cap" aria-live="polite">%s</ol>'
+            '<button data-go="-1" aria-label="Previous step">&larr;</button><button data-go="1" aria-label="Next step">&rarr;</button></div>'
+            '<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (fid, svg_w, svg_h, e(aria), inner, "".join(lis), num, cap))
+
+
+def cases(num, cards, cap, cls=""):
+    """Small multiples (decision 0037): the same small drawing once for each case. Each card is (status, chip, title, aria, svg_h, inner, note)."""
+    out = []
+    for st, chip, title, aria, h, inner, note in cards:
+        out.append('<div class="case"%s><span class="chip %s">%s</span><h3>%s</h3><svg class="ve-mini" viewBox="0 0 240 %d" role="img" aria-label="%s">%s</svg>%s</div>'
+                   % (' data-st="%s"' % st if st else "", st or "info", e(chip), e(title), h, e(aria), inner, '<p class="cap">%s</p>' % note if note else ""))
+    return '<figure><div class="cases%s">%s</div><figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (" " + cls if cls else "", "".join(out), num, cap)
 
 
 def figure(num, svg_w, svg_h, aria, inner, cap):
@@ -312,19 +335,26 @@ CARD.update({
     "ts-1-3-f5": D(SUB, "Unless the subagent is a [fork](/docs/en/sub-agents#fork-the-current-conversation), its context window starts fresh, with no parent conversation, but isn't empty. The only content you pass from parent to subagent is the Agent tool's prompt string, so include any file paths, error messages, or decisions the subagent needs directly in that prompt.", "Agent SDK, Subagents"),
     "ts-1-3-f7": D(SUB, "only its final message returns to the parent.", "Agent SDK, Subagents"),
 })
-FIG13 = figure("1.3-1", 890, 350,
+FIG13 = stepper("ts-1-3-fig1", "1.3-1", 890, 350,
                "A coordinator sends three Task calls in one response. Each subagent gets only the prompt of its call, with the findings and their sources. "
                "The conversation history of the coordinator is not passed. Only the final message of each subagent comes back.",
-               "".join([edge("M250 170H360"), edge("M360 170V70H540"), edge("M360 170H540"), edge("M360 170V270H540"),
-                        edge("M250 48H520", "not passed", 385, 39, cls="is-async"),
-                        edge("M870 70H880V340H135V220", cls="is-async"), '<path class="ve-e no-head is-async" d="M870 170H880M870 270H880"/>',
-                        '<text class="ve-el" x="510" y="332">only the final message of each comes back</text>',
-                        '<text class="ve-el" x="305" y="161">Task calls</text><text class="ve-el" x="450" y="261">findings + sources</text>',
-                        box(20, 20, 230, 56, ["conversation history"], sub="of the coordinator"),
-                        box(20, 120, 230, 100, ["Coordinator"], sub='allowedTools has "Task"', cls="who-model"),
-                        box(540, 30, 330, 80, ["Subagent A"], sub="description · prompt · tools", cls="who-model"),
-                        box(540, 130, 330, 80, ["Subagent B"], sub="description · prompt · tools", cls="who-model"),
-                        box(540, 230, 330, 80, ["Subagent C"], sub="description · prompt · tools", cls="who-model")]),
+               "".join([edge("M250 170H360", "Task calls", 305, 161, s="1"),
+                        edge("M360 170V70H540", "findings + sources", 450, 61, s="2"), edge("M360 170H540", s="3"), edge("M360 170V270H540", s="4"),
+                        edge("M250 48H520", "not passed", 385, 39, cls="is-async", s="5"),
+                        edge("M870 70H880V340H135V220", cls="is-async", s="6"), '<path class="ve-e no-head is-async" data-s="6" d="M870 170H880M870 270H880"/>',
+                        '<text class="ve-el" data-s="6" x="510" y="332">only the final message of each comes back</text>',
+                        box(20, 20, 230, 56, ["conversation history"], sub="of the coordinator", a="5"),
+                        box(20, 120, 230, 100, ["Coordinator"], sub='allowedTools has "Task"', cls="who-model", a="1"),
+                        box(540, 30, 330, 80, ["Subagent A"], sub="description · prompt · tools", cls="who-model", a="2 6"),
+                        box(540, 130, 330, 80, ["Subagent B"], sub="description · prompt · tools", cls="who-model", a="3 6"),
+                        box(540, 230, 330, 80, ["Subagent C"], sub="description · prompt · tools", cls="who-model", a="4 6")]),
+               ["A coordinator and three subagents. Use the arrow buttons to go through it one step at a time.",
+                "The coordinator, whose allowedTools has &ldquo;Task&rdquo;, sends three Task calls in one response.",
+                "Subagent A gets only the prompt of its call, with the findings and their sources.",
+                "In the same response, subagent B gets only the prompt of its call, with the findings and their sources.",
+                "In the same response, subagent C gets only the prompt of its call, with the findings and their sources.",
+                "The conversation history of the coordinator is not passed.",
+                "Only the final message of each subagent comes back."],
                "Parallel subagents start from one response. %s %s The names and the allowedTools rule are those of the guide. The product today calls the tool Agent." % (fact("ts-1-3-f5", "A subagent that is not a fork gets only the prompt of its call."), fact("ts-1-3-f7", "Only its final message goes back.")))
 
 PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conversation",
@@ -390,21 +420,35 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
 # ----- part 1.2 (facts: academy/facts/ts-1-2.md) -----
 
 AT, O5 = "claude-code-docs-agent-teams", "anthropic-docs-prompting-claude-opus-5"
-FIG12 = figure("1.2-1", 890, 380,
+FIG12 = stepper("ts-1-2-fig1", "1.2-1", 890, 380,
                "A coordinator in the middle sends a task prompt to four subagents: web search, document analysis, synthesis and report. "
                "Each subagent has its own context and sends only its final result back. No arrow joins two subagents. When the synthesis has gaps, the coordinator sends targeted queries again.",
-               "".join([edge("M380 140V55H240"), edge("M510 140V55H650"), edge("M380 250V325H240"), edge("M510 250V325H650"),
-                        edge("M240 75H410V140", cls="is-async"), edge("M650 75H480V140", cls="is-async"), edge("M240 310H410V250", cls="is-async"),
-                        '<text class="ve-el" x="325" y="94">result</text><text class="ve-el" x="565" y="94">result</text>',
-                        edge("M240 30H650", "no direct path", 445, 16, cls="is-async no-head"), '<path class="ve-e no-head" d="M437 22l16 16M453 22l-16 16"/>',
-                        edge("M760 290V195H560", "gaps? targeted queries again", 690, 186, cls="is-hot"),
-                        '<text class="ve-el" x="310" y="48">task prompt</text>',
+               "".join([edge("M380 140V55H240", "task prompt", 310, 48, s="1"), edge("M510 140V55H650", s="2"),
+                        edge("M240 75H410V140", "result", 325, 94, cls="is-async", s="3"), edge("M650 75H480V140", "result", 565, 94, cls="is-async", s="3"),
+                        edge("M510 250V325H650", s="4"),
+                        edge("M760 290V195H560", "gaps? targeted queries again", 690, 186, cls="is-hot", a="5"),
+                        edge("M380 250V325H240", s="6"), edge("M240 310H410V250", cls="is-async", s="6"),
+                        edge("M240 30H650", "no direct path", 445, 16, cls="is-async no-head", s="7"),
+                        '<path class="ve-e no-head" data-s="7" d="M437 22l16 16M453 22l-16 16"/>',
+                        # moving dots on the full picture: a test of the owner (figure plan, Motion)
+                        "".join('<path data-flow="hub" data-every="3200" data-delay="%d" d="%s"/>' % (dl, d) for dl, d in
+                                ((0, "M380 140V55H240"), (0, "M510 140V55H650"), (0, "M510 250V325H650"), (0, "M380 250V325H240"),
+                                 (1600, "M240 75H410V140"), (1600, "M650 75H480V140"), (1600, "M240 310H410V250"))),
+                        '<g class="ve-dots" aria-hidden="true"></g>',
                         box(330, 140, 230, 110, ["Coordinator"], sub="split · select · join", cls="who-model"),
-                        box(20, 20, 220, 70, ["Web search"], sub="own context", cls="who-model"),
-                        box(650, 20, 220, 70, ["Document analysis"], sub="own context", cls="who-model"),
-                        box(20, 290, 220, 70, ["Report"], sub="own context", cls="who-model"),
-                        box(650, 290, 220, 70, ["Synthesis"], sub="own context", cls="who-model")]),
-               "%s %s" % (cf("ts-1-2-k1", gx("Hub-and-spoke architecture where a coordinator agent manages all inter-subagent communication, error handling, and information routing", "Exam guide, 1.2-K1"),
+                        box(20, 20, 220, 70, ["Web search"], sub="own context", cls="who-model", a="1 3 5 7"),
+                        box(650, 20, 220, 70, ["Document analysis"], sub="own context", cls="who-model", a="2 3 5 7"),
+                        box(20, 290, 220, 70, ["Report"], sub="own context", cls="who-model", a="6"),
+                        box(650, 290, 220, 70, ["Synthesis"], sub="own context", cls="who-model", a="4 5")]),
+               ["The coordinator and its four subagents. Use the arrow buttons to go through it one step at a time.",
+                "The coordinator sends a task prompt to the web search subagent.",
+                "It sends a task prompt to the document analysis subagent.",
+                "Each subagent works in its own context and sends only its result back.",
+                "The coordinator sends the findings to the synthesis subagent.",
+                "The synthesis has gaps, so the coordinator sends targeted queries again to the search and analysis subagents.",
+                "The report subagent gets its task, and its result comes back.",
+                "No path joins two subagents. All communication goes through the coordinator."],
+               "%s %s The order of the steps is the page&rsquo;s." % (cf("ts-1-2-k1", gx("Hub-and-spoke architecture where a coordinator agent manages all inter-subagent communication, error handling, and information routing", "Exam guide, 1.2-K1"),
                              "The coordinator manages all communication between the subagents, the errors and the routing of information."),
                           cf("ts-1-2-f1", gx("A coordinator agent delegates to specialized subagents: one searches the web, one analyzes documents, one synthesizes findings, and one generates reports.", "Exam guide, scenario 3"),
                              "The four subagents are those of scenario 3 of the guide, a multi-agent research system.")))
@@ -452,27 +496,32 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
 # ----- part 1.4 (facts: academy/facts/ts-1-4.md) -----
 
 HOOKS, HG, MEMD, MAO = "claude-code-docs-agent-sdk-hooks", "claude-code-docs-hooks-guide", "claude-code-docs-memory", "anthropic-docs-multiagent-orchestration"
-HANDOFF14 = ('<g class="ve-n" transform="translate(640 200)"><rect class="sh" width="230" height="140" rx="0"/>'
-             '<text x="115" y="26">Handoff summary</text><text class="sub" x="115" y="54">customer ID</text><text class="sub" x="115" y="78">root cause</text>'
-             '<text class="sub" x="115" y="102">refund amount</text><text class="sub" x="115" y="126">recommended action</text></g>')
-FIG14 = figure("1.4-1", 890, 380,
-               "The agent asks for process_refund. A PreToolUse hook, which is code, checks that get_customer has returned a verified customer ID. "
-               "If yes, the refund runs. If no, the hook denies the call with a reason, and the agent goes back. When the agent escalates, it calls the tool "
-               "escalate_to_human with a handoff summary of customer ID, root cause, refund amount and recommended action.",
-               "".join([edge("M200 80H290", "tool call", 245, 71), edge("M540 80H650", "yes", 595, 71),
-                        edge("M415 130V170H110V120", "no: deny + reason", 262, 162, cls="is-hot"),
-                        edge("M60 120V270H330", "the agent escalates", 195, 262),
-                        edge("M560 270H640"),
-                        '<text class="ve-el" x="755" y="365">the human has no transcript</text>',
-                        box(20, 40, 180, 80, ["Agent"], sub="asks for a refund", cls="who-model"),
-                        box(290, 30, 250, 100, ["PreToolUse hook"], sub="ID returned? (your state)"),
-                        box(650, 40, 220, 80, ["process_refund"], sub="runs", cls="try ok"),
-                        box(330, 230, 230, 80, ["escalate_to_human"]),
-                        HANDOFF14]),
-               "%s %s" % (cf("ts-1-4-f1", D(HG, "Claude Code runs them at specific points in its lifecycle, which gives you deterministic control: certain actions always happen rather than relying on the LLM to choose to run them.", "Hooks guide"),
-                             "A hook runs at a fixed point of the loop, so the model does not choose whether it runs."),
-                          cf("ts-1-4-f12", gx("Implement a programmatic hook that intercepts tool calls to enforce a business rule (e.g., blocking operations above a threshold amount), redirecting to an escalation workflow when triggered.", "Exam guide, section 8, exercise"),
-                             "The guide practices the gate and the escalation in one exercise.")))
+def mini_box(x, y, w, h, title, sub=None, st=False):
+    return ('<g class="ve-n%s"><rect class="sh" x="%d" y="%d" width="%d" height="%d" rx="0"/><text x="%d" y="%d">%s</text>%s</g>'
+            % (" is-st" if st else "", x, y, w, h, x + w / 2, y + (h / 2 - 10 if sub else h / 2), e(title),
+               '<text class="sub" x="%d" y="%d">%s</text>' % (x + w / 2, y + h / 2 + 12, e(sub)) if sub else ""))
+
+
+FIG14 = cases("1.4-1", [
+    ("ok", "Allowed", "A verified customer ID",
+     "The agent asks for process_refund. A PreToolUse hook, which is code, checks your state: get_customer has returned a verified customer ID, so the refund runs.", 150,
+     mini_box(2, 2, 236, 44, "Agent", "asks for process_refund") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 40, "PreToolUse hook", "your state: ID returned? yes") + '<path class="ve-e is-st" d="M120 102V114"/>'
+     + mini_box(2, 116, 236, 32, "process_refund runs", st=True), "The hook allows the call, and the refund runs."),
+    ("risk", "Denied", "No verified customer ID",
+     "The agent asks for process_refund. A PreToolUse hook, which is code, checks your state: get_customer has not returned a verified customer ID, so the hook denies the call with a reason, and the agent goes back.", 150,
+     mini_box(2, 2, 236, 44, "Agent", "asks for process_refund") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 40, "PreToolUse hook", "your state: ID returned? no") + '<path class="ve-e is-st" d="M120 102V114"/>'
+     + mini_box(2, 116, 236, 32, "deny + reason to the agent", st=True), "The hook denies the call with a reason, and the agent goes back."),
+    (None, "Escalation", "The agent escalates",
+     "When the agent escalates, it calls escalate_to_human with a handoff summary of customer ID, root cause, refund amount and recommended action.", 150,
+     mini_box(2, 2, 236, 44, "Agent", "escalates") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 40, "escalate_to_human") + '<path class="ve-e is-st" d="M120 102V114"/>'
+     + mini_box(2, 116, 236, 32, "handoff summary", st=True), "The summary has the customer ID, root cause, refund amount and recommended action. The human has no transcript."),
+], "%s %s" % (cf("ts-1-4-f1", D(HG, "Claude Code runs them at specific points in its lifecycle, which gives you deterministic control: certain actions always happen rather than relying on the LLM to choose to run them.", "Hooks guide"),
+                 "A hook runs at a fixed point of the loop, so the model does not choose whether it runs."),
+              cf("ts-1-4-f12", gx("Implement a programmatic hook that intercepts tool calls to enforce a business rule (e.g., blocking operations above a threshold amount), redirecting to an escalation workflow when triggered.", "Exam guide, section 8, exercise"),
+                 "The guide practices the gate and the escalation in one exercise.")))
 
 PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt",
                         "When a step must come first, such as identity verification before a refund, code blocks the later tool call until the step is done, because a prompt instruction can fail. "
@@ -527,16 +576,27 @@ PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt
 
 HREF, LOOP = "claude-code-docs-hooks", "claude-code-docs-agent-sdk-agent-loop"
 D29 = glob.glob(os.path.join(ROOT, "docs/decisions/0029-*.md"))[0][len(ROOT) + 1:]
-FIG15 = figure("1.5-1", 890, 270,
+FIG15 = stepper("ts-1-5-fig1", "1.5-1", 890, 320,
                "Claude asks for a tool. A PreToolUse hook, your code, sees the call first. A deny sends a reason back to Claude. An allow lets the tool run. "
                "Then a PostToolUse hook, your code, can replace the result, for example Unix time with ISO 8601, before Claude sees it.",
-               "".join([edge("M170 80H230", "call", 200, 71), edge("M400 80H460", "allow", 430, 71), edge("M610 80H670", "result", 640, 71),
-                        edge("M315 120V170H130V120", "deny + reason", 222, 162, cls="is-hot"),
-                        edge("M770 120V240H60V120", "updatedToolOutput: Unix time → ISO 8601", 415, 232),
-                        box(20, 40, 150, 80, ["Claude"], sub="asks for a tool", cls="who-model"),
-                        box(230, 40, 170, 80, ["PreToolUse"], sub="your code"),
-                        box(460, 40, 150, 80, ["The tool runs"], sub="an MCP tool"),
-                        box(670, 40, 200, 80, ["PostToolUse"], sub="your code")]),
+               "".join([edge("M170 80H230", "call", 200, 71, s="1"),
+                        edge("M315 120V170H130V120", "deny + reason", 222, 162, cls="is-hot", a="3"),
+                        edge("M400 80H460", "allow", 430, 71, s="4"), edge("M610 80H670", "result", 640, 71, s="5"),
+                        edge("M770 120V240H60V120", "updatedToolOutput", 415, 232, s="6"),
+                        box(20, 40, 150, 80, ["Claude"], sub="asks for a tool", cls="who-model", a="1 3 6"),
+                        box(230, 40, 170, 80, ["PreToolUse"], sub="your code", a="2 3 4"),
+                        box(460, 40, 150, 80, ["The tool runs"], sub="an MCP tool", a="4 5"),
+                        box(670, 40, 200, 80, ["PostToolUse"], sub="your code", a="5 6 7"),
+                        # close-up of the value that changes (figure plan)
+                        box(290, 262, 150, 44, ["Unix time"], s="7"), '<path class="ve-e" data-s="7" pathLength="1" d="M440 284H500"/>', box(500, 262, 150, 44, ["ISO 8601"], s="7")]),
+               ["Two hooks around one tool call. Use the arrow buttons to go through it one step at a time.",
+                "Claude asks for a tool.",
+                "The PreToolUse hook, your code, sees the call first.",
+                "A deny sends a reason back to Claude.",
+                "An allow lets the tool run.",
+                "The result goes to the PostToolUse hook, your code.",
+                "PostToolUse replaces the result with updatedToolOutput before Claude sees it.",
+                "For example, it turns Unix time into ISO 8601."],
                "%s %s" % (cf("ts-1-5-f2", D(HOOKS, "a tool is about to be called (`PreToolUse`), a tool returned a result (`PostToolUse`)", "Agent SDK, Hooks"),
                              "Two hook events surround each tool call: PreToolUse before it, PostToolUse after it."),
                           fact("ts-1-5-k3", "The guide calls this control deterministic.")))
@@ -587,21 +647,23 @@ PART["1.5"] = (overview("1.5", "Hooks block a tool call or clean its result",
 # ----- part 1.7 (facts: academy/facts/ts-1-7.md) -----
 
 CSES, CLI, BEST, HOW = "claude-code-docs-sessions", "claude-code-docs-cli-reference", "claude-code-docs-best-practices", "claude-code-docs-how-claude-code-works"
-FIG17 = figure("1.7-1", 890, 320,
-               "A named session A can continue three ways. To compare two approaches, fork it: a new ID with a copy of the history. "
-               "If its earlier context is mostly valid, resume it by name and tell it which files changed. If its tool results are stale, start a new session with a structured summary.",
-               "".join([edge("M120 120V55H560", "compare two approaches", 340, 46),
-                        edge("M220 165H280"), edge("M470 165H560", "yes", 515, 156),
-                        edge("M375 210V265H560", "no: results stale", 467, 256, cls="is-hot"),
-                        box(20, 120, 200, 90, ["Session A"], sub="name: auth-refactor", cls="who-model"),
-                        box(280, 120, 190, 90, ["Context", "mostly valid?"]),
-                        box(560, 20, 310, 70, ["--resume … --fork-session"], sub="new ID, copy of the history", cls="who-model"),
-                        box(560, 125, 310, 70, ["--resume auth-refactor"], sub="same ID + the changed files", cls="who-model"),
-                        box(560, 230, 310, 70, ["New session"], sub="fresh context + summary", cls="who-model")]),
-               "%s %s" % (cf("ts-1-7-f4", D(HOW, "Resuming a session with `claude --continue` or `claude --resume` reopens it under the same session ID and appends new messages to the existing conversation. Forking with `--fork-session` or `/branch` copies the history into a new session ID, leaving the original unchanged.", "Claude Code, How Claude Code works"),
-                             "A resume keeps the session ID. A fork copies the history into a new ID and leaves the original unchanged."),
-                          cf("ts-1-7-s3", gx("Choosing between session resumption (when prior context is mostly valid) and starting fresh with injected summaries (when prior tool results are stale)", "Exam guide, 1.7-S3"),
-                             "The guide gives the test: resume when the earlier context is mostly valid, start fresh with a summary when the tool results are stale (1.7-S3).")))
+FIG17 = cases("1.7-1", [
+    ("ok", "Resume", "Context mostly valid",
+     "Session A, named auth-refactor. Resume it by name: the same ID, and tell it which files changed.", 120,
+     mini_box(2, 2, 236, 44, "Session A", "name: auth-refactor") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "--resume auth-refactor", "same ID + the changed files", st=True), "Tell it which files changed."),
+    (None, "Fork", "Compare two approaches",
+     "Session A, named auth-refactor. Fork it: a new ID with a copy of the history. The original does not change.", 120,
+     mini_box(2, 2, 236, 44, "Session A", "name: auth-refactor") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "--resume … --fork-session", "new ID, copy of the history", st=True), "The original session does not change."),
+    (None, "Fresh start", "Tool results stale",
+     "Session A, named auth-refactor, has stale tool results. Start a new session with a structured summary.", 120,
+     mini_box(2, 2, 236, 44, "Session A", "results stale") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "New session", "fresh context + summary", st=True), "Give it a structured summary."),
+], "%s %s" % (cf("ts-1-7-f4", D(HOW, "Resuming a session with `claude --continue` or `claude --resume` reopens it under the same session ID and appends new messages to the existing conversation. Forking with `--fork-session` or `/branch` copies the history into a new session ID, leaving the original unchanged.", "Claude Code, How Claude Code works"),
+                 "A resume keeps the session ID. A fork copies the history into a new ID and leaves the original unchanged."),
+              cf("ts-1-7-s3", gx("Choosing between session resumption (when prior context is mostly valid) and starting fresh with injected summaries (when prior tool results are stale)", "Exam guide, 1.7-S3"),
+                 "The guide gives the test: resume when the earlier context is mostly valid, start fresh with a summary when the tool results are stale (1.7-S3).")))
 
 PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart when stale",
                         "Resume a named session when its earlier context is mostly valid, and tell it which files changed. "

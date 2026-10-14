@@ -111,7 +111,9 @@ svg.has-lit text[data-ref]:not(.is-lit) { fill: var(--text-dim); }
 
 /* stepper */
 .ve-steps [data-a], .ve-steps [data-s] { transition: opacity var(--med) var(--ease); }
-.ve-steps.is-step [data-a]:not(.now) { opacity: .35; }
+/* a part that is not current: its shapes and lines fade, its text turns dim but never fades (the plugin, style guide: Dimming) */
+.ve-steps.is-step path[data-a]:not(.now), .ve-steps.is-step g[data-a]:not(.now) > :not(text) { opacity: .35; }
+.ve-steps.is-step text[data-a]:not(.now), .ve-steps.is-step g[data-a]:not(.now) text { fill: var(--text-dim); }
 .ve-steps.is-step [data-s]:not(.on) { opacity: 0; }
 .ve-steps .ve-n.now .sh { stroke: var(--accent); stroke-width: 2.25; }
 .ve-steps .ve-e.now { stroke: var(--accent); stroke-width: 2.75; }

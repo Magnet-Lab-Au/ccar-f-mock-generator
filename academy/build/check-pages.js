@@ -8,6 +8,7 @@
    - each step of the 9-step diagram has its part
    - each popup and preview card opens, has a title and stays inside the window
    - text contrast at least 4.5 to 1 (3 to 1 for large text), with the known exceptions of decisions 0009 and 0013
+   - the same text checks at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
    - each text at least 12 pixels high as rendered, also in the figures
    - the word limits of decision 0026: Overview at most 100 words, Explanation at most 500 words, figures not counted
    It also saves screenshots for the owner.
@@ -77,19 +78,24 @@ function inPage() {
     else if (!document.getElementById('step-' + s)) out.fail.push('Step ' + s + ' has no part');
   }
   // text: contrast and size, HTML and SVG
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const checkText = (rootNode, pre) => {
+  const fail0 = out.fail.length, known0 = out.known.length;
+  const walker = document.createTreeWalker(rootNode, NodeFilter.SHOW_TEXT);
   const seen = new Set();
   while (walker.nextNode()) {
     const t = walker.currentNode; if (!t.textContent.trim()) continue;
     const n = t.parentElement; if (!n || seen.has(n) || n.closest('#pop[hidden],script,style,[hidden],title')) continue; seen.add(n);
     if (!visible(n)) continue;
+    let op = 1; for (let x = n; x && x.nodeType === 1; x = x.parentElement) op *= +getComputedStyle(x).opacity;   // a faded part fades its text too
+    if (op < 0.01) continue;
     const s = getComputedStyle(n);
     const svgText = n.closest('svg') && n.tagName.toLowerCase() !== 'svg';
     let size = parseFloat(s.fontSize);
     if (svgText) { const ctm = n.getScreenCTM && n.getScreenCTM(); if (ctm) size *= Math.hypot(ctm.a, ctm.b); }
     const where = (n.id ? '#' + n.id : n.tagName.toLowerCase() + (n.className && n.className.baseVal == null ? '.' + String(n.className).split(' ').join('.') : '')) + ' "' + t.textContent.trim().slice(0, 30) + '"';
     if (size < 11.9) out.fail.push('Text below 12 px (' + size.toFixed(1) + '): ' + where);
-    const fg = rgb(svgText ? s.fill : s.color); if (!fg) continue;
+    const fg0 = rgb(svgText ? s.fill : s.color); if (!fg0) continue;
+    const fg = [fg0[0], fg0[1], fg0[2], fg0[3] * op];
     let bg = bgOf(svgText ? n.closest('figure, .frame, .case, main, body') : n);
     if (svgText) {   // a text drawn on a filled shape: the shape is its background
       const kids = n.parentElement && n.parentElement.tagName.toLowerCase() === 'g' ? [...n.parentElement.children].filter((c) => /^(rect|path|circle)$/.test(c.tagName)) : [];
@@ -105,6 +111,24 @@ function inPage() {
       const known = n.matches('.lk, .ls');
       (known ? out.known : out.fail).push('Contrast ' + ratio.toFixed(2) + ' < ' + need + ': ' + where);
     }
+  }
+  if (pre) { for (let i = fail0; i < out.fail.length; i++) out.fail[i] = pre + out.fail[i]; for (let i = known0; i < out.known.length; i++) out.known[i] = pre + out.known[i]; }
+  };
+  checkText(document.body, '');
+  // each step of each stepper (figure plan, plan review item 2): the check above sees only the full picture
+  for (const root of document.querySelectorAll('.ve-steps')) {
+    const caps = [...root.querySelectorAll('.ve-cap li')], next = root.querySelector('[data-go="1"]'), prev = root.querySelector('[data-go="-1"]');
+    const name = root.id || (root.querySelector('.fig-n') || {}).textContent || 'a stepper';
+    if (!caps.length || !next || !prev) { out.fail.push('Stepper without captions or arrows: ' + name); continue; }
+    for (let k = 1; k < caps.length; k++) {
+      next.click();
+      const shown = caps.filter((c) => !c.hidden);
+      if (shown.length !== 1 || shown[0] !== caps[k]) out.fail.push('Stepper ' + name + ': step ' + k + ' does not show only its own caption');
+      checkText(root, 'Stepper ' + name + ', step ' + k + ': ');
+    }
+    for (let k = 1; k < caps.length; k++) prev.click();
+    out.info.push('STEPPER ' + name + ': ' + (caps.length - 1) + ' steps checked');
+    if (caps[0].hidden) out.fail.push('Stepper ' + name + ' does not go back to the full picture');
   }
   // word limits (decision 0026): figures and popups are not counted
   const words = (n) => { const c = n.cloneNode(true); c.querySelectorAll('figure, details, .sources, svg').forEach((x) => x.remove()); return (c.textContent.match(/\S+/g) || []).length; };
@@ -175,6 +199,7 @@ function inPage() {
             }
           }
           for (const x of r.info.filter((x) => x.startsWith('WORDS '))) console.log('  ' + x.slice(6));
+          for (const x of r.info.filter((x) => x.startsWith('STEPPER '))) console.log('  ' + x);
         }
         console.log(tag + ': ' + r.fail.length + ' failures, ' + r.known.length + ' known exceptions, ' + r.pending.length + ' pending');
         for (const x of r.fail) console.log('  FAIL ' + x);
