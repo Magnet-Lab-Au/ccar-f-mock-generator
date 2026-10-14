@@ -73,7 +73,7 @@ details.level > .body { display: grid; gap: var(--s-6); margin-top: var(--s-5); 
 .frame.split { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 52rem) { .frame.split { grid-template-columns: 3fr 2fr; } }
 figcaption { color: var(--text-dim); margin-top: var(--s-3); max-width: 65ch; }
-.fig-n { font: 600 var(--t-label) var(--font-mono); color: var(--text); margin-right: var(--s-2); }
+.fig-n { display: block; font: 600 var(--t-label) var(--font-mono); color: var(--text); margin-bottom: var(--s-1); }   /* the number stands on its own line above the caption (owner, 15 October 2026) */
 .ve-svg { width: 100%; min-width: 700px; height: auto; display: block; font: 500 17px var(--font-body); }
 .ve-n .sh { fill: url(#ve-node); stroke: var(--border-bright); stroke-width: 1.5; filter: drop-shadow(0 6px 14px var(--lift)); transition: stroke var(--fast) var(--ease), opacity var(--med) var(--ease); }
 .ve-n.is-key .sh { fill: color-mix(in srgb, var(--accent) 11%, var(--surface)); stroke: var(--accent); stroke-width: 2; filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent) var(--halo), transparent)); }

@@ -15,6 +15,7 @@ One entry for each work session. Newest entry first.
   - Batch 6: sentences over 25 words went from 151 to 34. The 34 are false hits of the count script and the paragraph of the owner.
 - Open for the owner: the Overview of 3.2 does not name context: fork (check B3). The paragraphs that read as one long underline (the owner said to take this next).
 - Pushed to GitHub at 29f95da, with the yes of the owner. The owner then asked if the reader checks had found that the text is too dense. They had not: their agents read extracted text, so they never saw the dotted lines. The owner chose, for now, to show the dots only on the fact under the pointer (first on the paragraph, then, at the request of the owner, on the one fact). A touch screen keeps them. The owner agrees that the real cause is text written as a chain of sourced facts, and declined a trial rewrite of part 1.3 for now.
+- The figure number (for example "Fig. A") now stands on its own line above the caption, on all figures (owner, 15 October 2026). The owner kept the caption of Fig. A as it is.
 - Decision 0044: the glossary of each tab is a panel at the right side, opened by a fixed button "Glossary". Each list of sources is a closed section with its count. "Sources of the top" is now "Sources of the introduction". check-pages prints "All checks passed." for both tabs.
 
 ## 14 October 2026, evening: the reader checks (decision 0041)
