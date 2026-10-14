@@ -333,3 +333,5 @@ p > .chip.info[data-step$="-code"] { white-space: normal; }
 .ve-live .ve-n.dim > :not(text) { opacity: .35; } .ve-live .ve-n.dim text { fill: var(--text-dim); }
 .ve-live [data-target].on .sh { stroke: var(--ok); stroke-width: 2.25; }
 .ve-say { margin-top: var(--s-3); min-height: 1.6em; }
+svg.ve-grow rect.bar { fill: var(--border-bright); } svg.ve-grow rect.bar.hot { fill: var(--accent); }
+svg.ve-grow { max-width: 34rem; } .cases + .frame, .frame + .frame { margin-top: var(--s-4); }

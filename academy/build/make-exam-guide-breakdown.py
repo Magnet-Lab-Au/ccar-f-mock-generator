@@ -245,6 +245,11 @@ def stepper(fid, num, svg_w, svg_h, aria, inner, caps, cap):
             '<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (fid, svg_w, svg_h, e(aria), inner, "".join(lis), num, cap))
 
 
+def strip(svg_w, svg_h, aria, inner):
+    """A second, small drawing inside the same figure, under the cards (figure plan)."""
+    return '<div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>' % (svg_w, svg_h, e(aria), inner)
+
+
 def waffle(n, label_a, label_b, aria):
     """A picture for a share: n of 100 cells (decision 0037, every number gets a picture)."""
     cells = "".join('<rect class="%s" x="%d" y="%d" width="13" height="13"/>' % ("w-a" if k < n else "w-b", 2 + (k % 10) * 16, 2 + (k // 10) * 16) for k in range(100))
@@ -1682,15 +1687,17 @@ EXBOX42 = ('<g class="ve-n" transform="translate(20 110)"><rect class="sh" width
            '<text x="125" y="28">&lt;examples&gt;</text><text class="sub" x="125" y="56">2 to 4 in the guide</text>'
            '<text class="sub" x="125" y="92">input: an ambiguous case</text><text class="sub" x="125" y="118">output: the fixed format</text>'
            '<text class="sub" x="125" y="144">reason: why this choice</text></g>')
-FIG42 = figure("4.2-1", 890, 300,
+FIG42 = figure("4.2-1", 950, 300,
                "A few-shot prompt has the instructions and a block of 2 to 4 examples. Each example has an input, often an ambiguous case, the output in the fixed format, "
                "and the reason for the choice. With a new input, Claude gives a consistent output, also for cases that the examples do not show.",
-               "".join([edge("M270 60H300V135H330"), edge("M270 195H300V135H330"), edge("M430 210V170"), edge("M530 135H600"),
+               '<g class="ve-dim is-key"><path class="ext" d="M78 110H34M78 280H34"/><path class="ln" d="M40 110V280M36 114l8-8M36 284l8-8"/>'
+               '<text x="24" y="195" transform="rotate(-90 24 195)">2 to 4</text></g><g transform="translate(60 0)">'
+               + "".join([edge("M270 60H300V135H330"), edge("M270 195H300V135H330"), edge("M430 210V170"), edge("M530 135H600"),
                         box(20, 30, 250, 60, ["Instructions"], sub="alone: inconsistent"),
                         EXBOX42,
                         box(330, 100, 200, 70, ["Claude"], cls="who-model"),
                         box(330, 210, 200, 60, ["New input"]),
-                        box(600, 100, 270, 70, ["Consistent output"], sub="also for new cases", cls="try ok")]),
+                        box(600, 100, 270, 70, ["Consistent output"], sub="also for new cases", cls="try ok")]) + "</g>",
                "%s %s" % (cf("ts-4-2-s1", gx("Creating 2-4 targeted few-shot examples for ambiguous scenarios that show reasoning for why one action was chosen over plausible alternatives", "Exam guide, 4.2-S1"),
                              "The guide gives 2 to 4 targeted examples for ambiguous cases, each with the reason for the choice (4.2-S1)."),
                           cf("ts-4-2-f12", D(PBP, "* **Structured:** Wrap examples in `<example>` tags (multiple examples in `<examples>` tags) so Claude can distinguish them from instructions.", "Prompting best practices"),
@@ -1753,22 +1760,28 @@ PART["4.2"] = (overview("4.2", "Few-shot examples fix what instructions alone le
 CREV = "claude-code-docs-code-review"
 REV41 = "\n".join(read(SRC % CREV).split("\n")[202:211])
 assert REV41.startswith("# Review instructions") and REV41.endswith("most.")
-FIG41 = figure("4.1-1", 890, 320,
-               "Candidate findings pass through explicit criteria: report bugs and security issues, skip minor style. Then severity criteria, each with a code example, classify them. "
-               "The findings are posted. If one category gives many false positives, it loses the trust of the developers, so it is disabled for a time while its prompt improves.",
-               "".join([edge("M190 75H240"), edge("M470 75H520"), edge("M680 75H730"),
-                        edge("M800 120V225H790"),
-                        edge("M540 225H355V120", "disable, fix the prompt", 445, 216, cls="is-hot"),
-                        '<text class="ve-lab" x="20" y="300">not: &#8220;be conservative&#8221; or &#8220;only high-confidence&#8221;</text>',
-                        box(20, 40, 170, 70, ["Candidate", "findings"]),
-                        box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style"),
-                        box(520, 30, 160, 90, ["Severity"], sub="code examples"),
-                        box(730, 30, 140, 90, ["Posted", "findings"], cls="try ok"),
-                        box(540, 190, 250, 70, ["A noisy category?"], sub="false positives lose trust")]),
-               "%s %s" % (cf("ts-4-1-s1", gx("Writing specific review criteria that define which issues to report (bugs, security) versus skip (minor style, local patterns) rather than relying on confidence-based filtering", "Exam guide, 4.1-S1"),
-                             "Specific criteria say which issues to report and which to skip, in place of a filter by confidence (4.1-S1)."),
-                          cf("ts-4-1-s2", gx("Temporarily disabling high false-positive categories to restore developer trust while improving prompts for those categories", "Exam guide, 4.1-S2"),
-                             "The guide disables a noisy category for a time, while its prompt improves (4.1-S2).")))
+FIG41 = before_after("4.1-1", [
+    ("Filter on confidence", "Before: a filter on confidence", 890, 150,
+     "Before: candidate findings pass a filter on confidence, such as be conservative or report only high-confidence findings, and are posted.",
+     "".join([edge("M190 75H240", cls="is-hot"), edge("M590 75H730", cls="is-hot"),
+              box(20, 40, 170, 70, ["Candidate", "findings"]),
+              box(240, 30, 350, 90, ["Filter on confidence"], sub="be conservative · only high-confidence"),
+              box(730, 30, 140, 90, ["Posted", "findings"])])),
+    ("Explicit criteria", "After: explicit criteria, and a noisy category disabled for a time", 890, 280,
+     "Candidate findings pass through explicit criteria: report bugs and security issues, skip minor style. Then severity criteria, each with a code example, classify them. "
+     "The findings are posted. If one category gives many false positives, it loses the trust of the developers, so it is disabled for a time while its prompt improves.",
+     "".join([edge("M190 75H240"), edge("M470 75H520"), edge("M680 75H730"),
+              edge("M800 120V225H790"),
+              edge("M540 225H355V120", "disable, fix the prompt", 445, 216, cls="is-hot"),
+              box(20, 40, 170, 70, ["Candidate", "findings"]),
+              box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style"),
+              box(520, 30, 160, 90, ["Severity"], sub="code examples"),
+              box(730, 30, 140, 90, ["Posted", "findings"], cls="try ok"),
+              box(540, 190, 250, 70, ["A noisy category?"], sub="false positives lose trust")])),
+], "%s %s" % (cf("ts-4-1-s1", gx("Writing specific review criteria that define which issues to report (bugs, security) versus skip (minor style, local patterns) rather than relying on confidence-based filtering", "Exam guide, 4.1-S1"),
+                 "Specific criteria say which issues to report and which to skip, in place of a filter by confidence (4.1-S1)."),
+              cf("ts-4-1-s2", gx("Temporarily disabling high false-positive categories to restore developer trust while improving prompts for those categories", "Exam guide, 4.1-S2"),
+                 "The guide disables a noisy category for a time, while its prompt improves (4.1-S2).")))
 
 PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
                         "A review prompt gets precise when it names the categories to report and to skip, and gives a code example for each severity level. "
@@ -1819,24 +1832,26 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
 # ----- part 4.3 (facts: academy/facts/ts-4-3.md) -----
 
 SOUTA, STRICT = "anthropic-docs-structured-outputs", "anthropic-docs-strict-tool-use"
-FIG43 = figure("4.3-1", 890, 320,
-               "A request carries the document and extraction tools, each with a schema. With tool_choice auto, Claude can call a tool or answer in text. With any, it must call one tool and picks which. "
-               "With a forced tool, it calls that tool, for example extract_metadata first. The input of the tool_use block is the data, with no syntax errors, and code still checks the values.",
-               "".join(['<path class="ve-e no-head" d="M220 155H270M270 50V230"/>',
-                        edge("M270 50H320"), edge("M270 140H320"), edge("M270 230H320"),
-                        edge("M580 140H610V105H640"), edge("M580 230H610V105H640"),
-                        edge("M755 140V200"),
-                        '<text class="ve-lab" x="300" y="305">Claude Opus 5.5 and three other current models reject the settings any and tool</text>',
-                        box(20, 110, 200, 90, ["Request"], sub="tools with schemas"),
-                        box(320, 20, 260, 60, ["auto"], sub="a tool call or text"),
-                        box(320, 110, 260, 60, ["any"], sub="one tool, Claude picks"),
-                        box(320, 200, 260, 60, ["tool: extract_metadata"], sub="that tool first"),
-                        box(640, 70, 230, 70, ["tool_use input"], sub="no syntax errors (strict)", cls="who-model"),
-                        box(640, 200, 230, 70, ["Code checks"], sub="the values", cls="try ok")]),
-               "%s %s" % (cf("ts-4-3-k2", gx("The distinction between tool_choice: \"auto\" (model may return text instead of calling a tool), \"any\" (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)", "Exam guide, 4.3-K2"),
-                             "The three settings of tool_choice are those of the guide (4.3-K2)."),
-                          cf("ts-4-3-k3", gx("That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "Exam guide, 4.3-K3"),
-                             "The guide says that a schema stops syntax errors, but not errors of meaning, such as line items that do not sum to the total (4.3-K3).")))
+FIG43 = cases("4.3-1", [
+    (None, 'auto', 'Claude may answer in text',
+     'tool_choice auto: Claude can call a tool or answer in text.', 120,
+     mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'a tool call or text', 'Claude decides', st=True), 'The model may return text instead of calling a tool.'),
+    (None, 'any', 'Claude must call a tool',
+     'tool_choice any: Claude must call one tool, and picks which.', 120,
+     mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'one tool', 'Claude picks which', st=True), 'Claude Opus 5.5 and three other current models reject this setting.'),
+    (None, 'forced', 'Claude must call the named tool',
+     'A forced tool: Claude calls that tool, for example extract_metadata first.', 120,
+     mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'tool: extract_metadata', 'that tool first', st=True), 'Claude Opus 5.5 and three other current models reject this setting.'),
+], "%s %s" % (cf("ts-4-3-k2", gx("The distinction between tool_choice: \"auto\" (model may return text instead of calling a tool), \"any\" (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)", "Exam guide, 4.3-K2"),
+                 "The three settings of tool_choice are those of the guide (4.3-K2)."),
+              cf("ts-4-3-k3", gx("That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "Exam guide, 4.3-K3"),
+                 "The guide says that a schema stops syntax errors, but not errors of meaning, such as line items that do not sum to the total (4.3-K3).")))
+FIG43 = FIG43.replace("<figcaption>", strip(890, 100, "The input of the tool_use block is the data, with no syntax errors, and code still checks the values.",
+                                            edge("M300 50H380") + box(20, 15, 280, 70, ["tool_use input"], sub="no syntax errors (strict)", cls="who-model")
+                                            + box(380, 15, 280, 70, ["Code checks"], sub="the values", cls="try ok")) + "<figcaption>", 1)
 
 PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                         "Give Claude a JSON schema with structured outputs or a strict tool, and the output parses. Code must still check the values, and a field that a source can lack must be nullable, so that Claude does not invent a value.",
@@ -1892,24 +1907,23 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
 
 RETRY44 = "\n".join(read(SRC % HANDLE).split("\n")[233:244])
 assert RETRY44.strip().startswith("{") and "Missing required 'location' parameter" in RETRY44
-FIG44 = figure("4.4-1", 890, 320,
-               "Claude extracts data from the source document. Code checks the values. If the check passes, the result is used. If it fails, and a retry can fix it, "
-               "a follow-up request sends the document, the failed result and the exact errors back to Claude. If the information is absent from the source, the loop stops.",
-               "".join([edge("M170 75H220"), edge("M390 75H440"), edge("M630 75H690", "pass", 660, 66),
-                        edge("M535 110V170", "fail", 543, 145, anchor="r"),
-                        edge("M440 205H305V110", "yes: format", 372, 196, cls="is-hot"),
-                        edge("M630 205H690", "no", 660, 196),
-                        '<text class="ve-lab" x="20" y="300">a retry sends the document, the failed result and the exact errors</text>',
-                        box(20, 40, 150, 70, ["Source", "document"]),
-                        box(220, 40, 170, 70, ["Claude", "extracts"], cls="who-model"),
-                        box(440, 40, 190, 70, ["Checks in code"], sub="sums, fields"),
-                        box(690, 40, 180, 70, ["Use the result"], cls="try ok"),
-                        box(440, 170, 190, 70, ["Can a retry", "fix it?"]),
-                        box(690, 170, 180, 70, ["Stop"], sub="information absent")]),
-               "%s %s" % (cf("ts-4-4-s1", gx("Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction", "Exam guide, 4.4-S1"),
-                             "The follow-up request has the original document, the failed extraction and the specific errors (4.4-S1)."),
-                          cf("ts-4-4-k2", gx("The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "Exam guide, 4.4-K2"),
-                             "A retry does not help when the information is absent from the source (4.4-K2).")))
+FIG44 = cases("4.4-1", [
+    ('ok', 'Pass', 'The check passes',
+     'Code checks the values, and the check passes: the result is used.', 120,
+     mini_box(2, 2, 236, 44, 'Checks in code', 'sums, fields') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'use the result', 'pass', st=True), 'If the check passes, the result is used.'),
+    (None, 'Retry', 'A format error',
+     'The check fails on a format error, so a follow-up request sends the document, the failed result and the exact errors back to Claude.', 120,
+     mini_box(2, 2, 236, 44, 'Checks in code', 'fail: format') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'retry', 'document + result + errors', st=True), 'A follow-up request sends the document, the failed result and the exact errors.'),
+    ('risk', 'Stop', 'Information absent',
+     'The check fails because the information is absent from the source, so the loop stops.', 120,
+     mini_box(2, 2, 236, 44, 'Checks in code', 'fail: information absent') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'stop', 'a retry cannot help', st=True), 'The information is not in the source, so a retry cannot help.'),
+], "%s %s" % (cf("ts-4-4-s1", gx("Implementing follow-up requests that include the original document, the failed extraction, and specific validation errors for model self-correction", "Exam guide, 4.4-S1"),
+                 "The follow-up request has the original document, the failed extraction and the specific errors (4.4-S1)."),
+              cf("ts-4-4-k2", gx("The limits of retry: retries are ineffective when the required information is simply absent from the source document (vs format or structural errors)", "Exam guide, 4.4-K2"),
+                 "A retry does not help when the information is absent from the source (4.4-K2).")))
 
 PART["4.4"] = (overview("4.4", "Retry with the exact errors, but not for missing facts",
                         "When an extraction fails a check, send the document, the failed result and the specific errors back, so that the model can correct it. "
@@ -1964,16 +1978,20 @@ FIG45 = figure("4.5-1", 890, 330,
                "".join([edge("M110 120V50H260", "yes", 190, 41), edge("M200 165H260", "no", 230, 156),
                         edge("M480 165H540"), edge("M710 165H760"),
                         edge("M625 200V250"), edge("M540 280H370V200", "send again", 455, 272, cls="is-hot"),
+                        '<g class="ve-dim is-key"><path class="ext" d="M260 128V98M710 128V98"/><path class="ln" d="M260 104H710M256 108l8-8M706 108l8-8"/><text x="485" y="97">up to 24 hours</text></g>',
                         box(20, 120, 180, 90, ["Does anybody", "wait?"]),
                         box(260, 20, 220, 60, ["Messages API"], sub="pre-merge check"),
                         box(260, 130, 220, 70, ["Message Batches"], sub="half price, custom_id", cls="who-model"),
-                        box(540, 130, 170, 70, ["Results"], sub="up to 24 hours"),
+                        box(540, 130, 170, 70, ["Results"], sub="any order, by custom_id"),
                         box(760, 130, 110, 70, ["Use"], cls="try ok"),
                         box(540, 250, 170, 60, ["Failed only"], sub="fixed if needed")]),
                "%s %s" % (cf("ts-4-5-k2", gx("Batch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports, weekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge checks)", "Exam guide, 4.5-K2"),
                              "Batches suit work that can wait, such as an overnight report, and not a blocking check before a merge (4.5-K2)."),
                           cf("ts-4-5-s3", gx("Handling batch failures: resubmitting only failed documents (identified by custom_id) with appropriate modifications (e.g., chunking documents that exceeded context limits)", "Exam guide, 4.5-S3"),
                              "Only the failed documents go again, found by custom_id, and changed where needed, for example cut into chunks (4.5-S3).")))
+FIG45 = FIG45.replace("<figcaption>", strip(640, 96, "The price of a request: the Messages API is the full price, and Message Batches is half of it.",
+                                            '<text class="ve-lab" x="0" y="30">Messages API</text><rect class="bar" x="190" y="14" width="400" height="24"/><text class="ve-lab" x="598" y="30">100%</text>'
+                                            '<text class="ve-lab" x="0" y="74">Message Batches</text><rect class="bar hot" x="190" y="58" width="200" height="24"/><text class="ve-lab" x="398" y="74">50%</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
 
 PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                         "The Message Batches API costs half, but a batch can take up to 24 hours with no promised time, so use it only for work that nobody waits for. "
@@ -2034,25 +2052,25 @@ PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
 ETH = "anthropic-docs-extended-thinking"
 D32 = glob.glob(os.path.join(ROOT, "docs/decisions/0032-*.md"))[0][len(ROOT) + 1:]
 REV46 = "Use a subagent to review the rate limiter diff against PLAN.md. Check that\nevery requirement is implemented, the listed edge cases have tests, and\nnothing outside the task's scope changed. Report gaps, not style preferences."
-FIG46 = figure("4.6-1", 890, 320,
-               "Top: the writer keeps its reasoning, so a new reviewer instance that sees only the code and the criteria checks the code. "
-               "Bottom: a large review gets one pass for each file, then an integration pass across the files, then a verification pass that adds a confidence to each finding, "
-               "and the findings are routed by a calibrated confidence.",
-               "".join(['<text class="ve-lab" x="20" y="14">Who reviews</text><text class="ve-lab" x="20" y="150">Split and route</text>',
-                        edge("M200 55H260"), edge("M420 55H480"),
-                        edge("M180 180H220V230H260"), edge("M180 230H260"), edge("M180 280H220V230H260"),
-                        edge("M460 230H520"), edge("M690 230H740"),
-                        box(20, 20, 180, 70, ["Writer"], sub="keeps its reasoning", cls="who-model"),
-                        box(260, 20, 160, 70, ["The code"]),
-                        box(480, 20, 240, 70, ["New reviewer"], sub="code and criteria only", cls="who-model"),
-                        box(20, 160, 160, 40, ["File 1: pass"]), box(20, 210, 160, 40, ["File 2: pass"]), box(20, 260, 160, 40, ["File N: pass"]),
-                        box(260, 195, 200, 70, ["Integration pass"], sub="across the files", cls="who-model"),
-                        box(520, 195, 170, 70, ["Verification"], sub="confidence each"),
-                        box(740, 195, 130, 70, ["Route"], sub="calibrated", cls="try ok")]),
-               "%s %s" % (cf("ts-4-6-k1", gx("Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1"),
-                             "A model keeps the reasoning of its own work, so it is less likely to question its decisions in the same session (4.6-K1)."),
-                          cf("ts-4-6-k3", gx("Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "Exam guide, 4.6-K3"),
-                             "A large review splits into passes for each file plus passes across the files (4.6-K3).") + " The order of the passes in the figure is the page&rsquo;s."))
+FIG46 = cases("4.6-1", [
+    ('risk', 'Same session', 'The writer reviews itself',
+     'The writer keeps the reasoning of its own work, so in the same session it is less likely to question its decisions.', 120,
+     mini_box(2, 2, 236, 44, 'Writer', 'keeps its reasoning') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'reviews its own code', 'less likely to question it', st=True), 'A model keeps the reasoning of its own work, so it is less likely to question its decisions.'),
+    ('ok', 'New instance', 'A new reviewer',
+     'A new reviewer instance sees only the code and the criteria, and checks the code.', 120,
+     mini_box(2, 2, 236, 44, 'Writer', 'keeps its reasoning') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'new reviewer', 'code and criteria only', st=True), 'A new instance sees only the code and the criteria.'),
+], "%s %s" % (cf("ts-4-6-k1", gx("Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1"),
+                 "A model keeps the reasoning of its own work, so it is less likely to question its decisions in the same session (4.6-K1)."),
+              cf("ts-4-6-k3", gx("Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "Exam guide, 4.6-K3"),
+                 "A large review splits into passes for each file plus passes across the files (4.6-K3).") + " The order of the passes in the figure is the page&rsquo;s."), cls="two")
+FIG46 = FIG46.replace("<figcaption>", strip(890, 150, "A large review gets one pass for each file, then an integration pass across the files, then a verification pass that adds a confidence to each finding, and the findings are routed by a calibrated confidence.",
+                                            "".join([edge("M180 25H220V75H260"), edge("M180 75H260"), edge("M180 125H220V75H260"), edge("M460 75H520"), edge("M690 75H740"),
+                                                     box(20, 5, 160, 40, ["File 1: pass"]), box(20, 55, 160, 40, ["File 2: pass"]), box(20, 105, 160, 40, ["File N: pass"]),
+                                                     box(260, 40, 200, 70, ["Integration pass"], sub="across the files", cls="who-model"),
+                                                     box(520, 40, 170, 70, ["Verification"], sub="confidence each"),
+                                                     box(740, 40, 130, 70, ["Route"], sub="calibrated", cls="try ok")])) + "<figcaption>", 1)
 
 PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files together",
                         "The session that wrote the work keeps its reasoning, so it is less likely to question its own choices. Give the review to a new instance that sees only the work and the criteria, "
