@@ -1239,7 +1239,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                             "This subagent can search and read, but not change a file.")
             + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035"),
-                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
+                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so academy decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1388,7 +1388,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                             "This rule loads only when Claude works with a .ts file under src/api/.")
             + tab2_links("3.3", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
-                                              "When the mock builder plans a mock, it counts 3.3 as one group, because its 6 points have one correct answer: a rule file with a path."))), "ts-3-3"))
+                                              "When the mock builder plans a mock, it counts 3.3 as one idea, because its 6 points have one correct answer: a rule file with a path."))), "ts-3-3"))
 
 
 # ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----
@@ -1466,7 +1466,7 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                             "The Explore agent runs the task, and $ARGUMENTS takes the words after the command.")
             + tab2_links("3.2", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035"),
-                                              "Decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
+                                              "Academy decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
 
 
 # ----- part 3.4 (facts: academy/facts/ts-3-4.md) -----
@@ -2324,7 +2324,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                                            cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3), and sample question 3 in Section 9 uses such an option as a wrong option. So it is a fair wrong option.", "Mock decision 0006"),
                                               "But step 6 allows at most one wrong option on self-reported confidence in each scenario, and 5.2-K3 is why such an option is a fair wrong option.")
                                            + " " + cf("ts-5-2-d3lim", excerpt(step_file(6), "A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock.", "Build guide, step 6"),
-                                              "In mocks 2 to 5, a scenario with more than one such option was recorded as a known limit of the mock, not fixed.")))
+                                              "In mocks 2 to 5, some scenarios with more than one such option were recorded as known limits of the mock.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
 
 
@@ -2572,8 +2572,8 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
                    "Step 7 uses 5.5 outside its context. The bad marks are shown for each scenario and each domain, because one total can hide a bad part (5.5-K1)."),
                 cf("ts-5-5-c3", excerpt(step_file(7), "For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
                    "In mocks 4 and 5, the reader is a Claude model, not a person."),
-                cf("ts-5-5-m1", excerpt(step_file(7), "For mock 1 the owner reads all 60, so that is not a sample.", "Build guide, step 7"),
-                   "For mock 1 the owner read all 60 questions, so that was not a sample.")), "ts-5-5"))
+                cf("ts-5-5-m1", excerpt(step_file(7), "For mock 5 the file has all 60 questions again (decision 0073).", "Build guide, step 7"),
+                   "For mocks 1 and 5, the file had all 60 questions, so those were not samples.")), "ts-5-5"))
 
 # ----- part 5.6 (facts: academy/facts/ts-5-6.md) -----
 

@@ -1427,7 +1427,7 @@ STEP6 = (level("overview",
                  '<h4 class="story">Too many wrong options on the confidence of the model</h4>'
                  '<p>%s ruling 2: %s The reason: %s %s</p>'
                  '<p>%s Only call 6b checks it. In mock 2, %s Its options B and C both used the confidence of the model: %s and %s The owner sent it back: %s The new try asks for the categories to report instead: %s</p>'
-                 '<p>In mocks 2 to 4, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
+                 '<p>In mocks 2 to 5, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
                  % (fact("s6-date", "Since 29 September 2026, the owner had a ruling,"),
                     fact("s6-r2", "in one scenario of one mock, at most one wrong option uses a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
                     fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
