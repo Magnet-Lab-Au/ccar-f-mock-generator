@@ -1989,6 +1989,9 @@ LIMITS = """<section class="parts" id="limits" aria-label="What this shows and w
     "owner": fact("w-owner", "The owner passed the CCAR-F exam."),
 }
 
+# the steps mark of the owner (academy/pages/icons/steps.svg): its shape is drawn inline in the colour of the text, so it shows in both colour schemes (owner, 15 October 2026)
+STEPS_ICON = '<svg class="h-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><polygon fill="currentColor" points="%s"/></svg>' % " ".join(
+    re.search(r'points="([^"]+)"', read("academy/pages/icons/steps.svg")).group(1).split())
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
@@ -1997,7 +2000,7 @@ BODY = """<main>
 </header>
 %(fig1)s
 <section class="parts" id="steps" aria-label="The 9 steps">
-  <h2>The 9 steps</h2>
+  <h2 class="with-icon">The 9 steps%(steps_icon)s</h2>
   %(parts)s
 </section>
 <section class="parts" id="claude-code" aria-label="The build in Claude Code">
@@ -2008,7 +2011,7 @@ BODY = """<main>
 %(limits)s
 %(words)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "cc": CC_HTML, "limits": LIMITS}
+             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "steps_icon": STEPS_ICON, "cc": CC_HTML, "limits": LIMITS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
