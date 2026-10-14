@@ -385,6 +385,5 @@ details.sources > summary { cursor: pointer; }
 details.sources > ul { margin-top: var(--s-2); }
 @media (max-width: 34rem) { .glossary-btn { writing-mode: horizontal-tb; transform: none; top: auto; bottom: var(--s-4); right: var(--s-4); border-left: 1px solid var(--border-bright); padding: var(--s-2) var(--s-4); } .glossary-btn[aria-expanded="true"] { box-shadow: inset 0 -3px 0 var(--accent); } }
 @media print { .glossary-btn { display: none; } }
-/* tab 2: the title in the center, and the paragraph of the owner in body size (owner, 15 October 2026) */
-h1.title-center { text-align: center; margin-inline: auto; }
-.lead.intro { font-size: var(--t-body); margin-inline: auto; max-width: 60ch; }
+/* tab 2: the paragraph of the owner in body size (owner, 15 October 2026) */
+.lead.intro { font-size: var(--t-body); }
