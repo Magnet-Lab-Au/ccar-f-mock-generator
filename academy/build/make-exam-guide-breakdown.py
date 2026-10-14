@@ -2845,7 +2845,7 @@ def scen_row(s):
 
 def map_html():
     return """<section class="parts" id="map" aria-label="The map of the exam guide">
-  <h2>The exam guide on one page</h2>
+  <h2 class="with-icon">The exam guide on one page<img class="h-icon h-page" src="icons/notepad.svg" alt="" width="24" height="24"></h2>
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
   <figure data-figure="map">
     <div class="tmap">%(cols)s</div>
