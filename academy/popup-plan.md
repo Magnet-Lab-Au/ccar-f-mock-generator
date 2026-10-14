@@ -1,7 +1,7 @@
 # Popup plan for the figures
 
 - Date: 14 October 2026
-- Status: proposed. The owner checks it before any popup is built.
+- Status: accepted by the owner on 14 October 2026 ("I accept without reading it in detail as it is too long"). A review agent checks each popup against its source when it is built.
 - Source: two drafts by agents, one for each tab, with the five rules below. The assistant merged them and kept only the popups that answer the first question a reader has about a box.
 
 ## Why popups

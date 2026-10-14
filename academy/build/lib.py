@@ -157,3 +157,76 @@ def code_font(html):
         else:
             out.append(part if skip else NAME.sub(lambda x: "<code>%s</code>" % x.group(0), part))
     return "".join(out)
+
+
+_RECORDS = None
+
+
+def guide_points(ids):
+    """The guide points of a popup, in the form of the popups of Fig. 1.1-1: the ID, the text and its task statement."""
+    global _RECORDS
+    if _RECORDS is None:
+        _RECORDS = json.loads(read("reference/guide-records.json"))
+    out = []
+    for i in ids:
+        for t in _RECORDS["task_statements"]:
+            for p in t["points"]:
+                if p["id"] == i:
+                    out.append({"id": i, "text": p["text"], "ctx": "Task statement %s: %s" % (t["id"], t["title"])})
+    assert len(out) == len(ids), ids
+    return out
+
+
+def popup_prefix(fig):
+    """The part of a figure, for the key of a popup (decision 0033): ts-1-2 for Fig. 1.2-1, step-5 for Fig. 5-1, top for Fig. A."""
+    if fig == "A":
+        return "top"
+    if fig.startswith("C-"):
+        return "cc-" + fig[2:].rsplit("-", 1)[0].replace(".", "-")
+    if re.match(r"^\d\.\d-\d$", fig):
+        return "ts-" + fig.rsplit("-", 1)[0].replace(".", "-")
+    return "step-" + fig.split("-")[0]
+
+
+def add_popups(body, specs, tab, pop):
+    """Put each popup of the plan on its box (academy/popup-plan.md). A label that is not in its figure stops the build."""
+    attrs = ' data-step="%s" tabindex="0" role="button" aria-expanded="false"'
+    seen = {}
+    for sp in [x for x in specs if x["tab"] == tab]:
+        part = popup_prefix(sp["fig"])
+        n = seen[part] = seen.get(part, 0) + 1   # counted for each part, because a part can have several figures
+        key = "%s-pop%d" % (part, n)
+        cls = "io"
+        for m in sp["match"]:
+            cap = body.index('<span class="fig-n">Fig. %s</span>' % sp["fig"])
+            start = body.rfind("<figure", 0, cap)
+            pos = -1
+            for v in (html.escape(m), html.escape(m, quote=False)):
+                pos = body.find(">%s<" % v, start, cap)
+                if pos >= 0:
+                    break
+            if pos < 0:
+                raise SystemExit("Popup label not in Fig. %s: %r" % (sp["fig"], m))
+            tag = body.rfind("<", 0, pos)
+            while body.startswith(("<tspan", "<code"), tag):
+                tag = body.rfind("<", 0, tag)
+            target = tag
+            if not sp.get("text_el"):
+                g = body.rfind("<g ", start, pos)
+                li = body.rfind("<li", start, pos)
+                if g >= 0 and body.find("</g>", g, pos) < 0:
+                    target = g
+                elif li >= 0 and body.find("</li>", li, pos) < 0:
+                    target = li
+            end = body.index(">", target)
+            head = body[target:end]
+            if "data-step=" in head or "data-card=" in head:
+                raise SystemExit("The box of %r in Fig. %s opens something already" % (m, sp["fig"]))
+            if "who-model" in head:
+                cls = "model"
+            elif "who-owner" in head:
+                cls = "owner"
+            cut = target + len(re.match(r"<[a-zA-Z0-9]+", head).group(0))
+            body = body[:cut] + attrs % key + body[cut:]
+        pop[key] = {"who": sp["who"], "cls": cls, "title": sp["title"], "sent": sp["sent"], "points": guide_points(sp["points"]), "example": None}
+    return body

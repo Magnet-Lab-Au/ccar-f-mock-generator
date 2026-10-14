@@ -19,7 +19,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import REPO, ROOT, TAG, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
+from lib import REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
 
 TAB2 = "behind-the-mocks.html"
 EG = "reference/exam-guide.md"
@@ -2767,6 +2767,8 @@ BODY = """<main>
 </main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN,
              "domains": "".join(domain_html(DOM[i]) for i in range(1, 6))}
 
+from popups import POPUPS  # noqa: E402
+BODY = add_popups(BODY, POPUPS, 1, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = code_font(BODY)
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 %s %s ' % (m.group(1), m.group(3), m.group(2), m.group(3)), BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
