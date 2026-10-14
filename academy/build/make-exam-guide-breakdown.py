@@ -141,7 +141,7 @@ def tab2_links(tsid, why=""):
     for n in sorted(set(used) | set(unused)):
         what = (["uses " + ", ".join(used[n])] if n in used else []) + (["names but does not use " + ", ".join(unused[n])] if n in unused else [])
         rows.append('<li><a href="%s#step-%d">Step %d, %s &rarr;</a> <span class="ve-label">%s</span></li>'
-                    % (TAB2, n, n, e(STEP_NAME[n]), "; ".join(what)))
+                    % (TAB2, n, n, e(STEP_NAME[n]), " · ".join(what)))
     if tsid in CC_PART:
         rows.append('<li><a href="%s#%s">The build in Claude Code, %s &rarr;</a></li>' % (TAB2, CC_PART[tsid], tsid))
     if rows:
@@ -1889,7 +1889,7 @@ FIG43 = FIG43.replace("<figcaption>", strip(890, 100, "The input of the tool_use
                                             + box(380, 15, 280, 70, ["Code checks"], sub="the values", cls="try ok"), head="After the call") + "<figcaption>", 1)
 
 PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
-                        "Give Claude a JSON schema with structured outputs or a strict tool, and the output parses. Code must still check the values, and a field that a source can lack must be nullable, so that Claude does not invent a value.",
+                        "Give Claude a JSON schema with structured outputs or a strict tool, and the output almost always parses. Code must still check the values, and a field that a source can lack must be nullable, so that Claude does not invent a value.",
                         FIG43)
     + level("explanation",
             "<p><b>The guarantee.</b> %s %s %s</p>" % (
@@ -1909,7 +1909,7 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                    "With several schemas and an unknown document type, any makes Claude call one of them (4.3-S2)."),
                 cf("ts-4-3-s3", gx("Forcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a particular extraction runs before enrichment steps", "Exam guide, 4.3-S3"),
                    "A forced tool makes one extraction run first (4.3-S3)."),
-                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool.") + GUIDE)
+                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool.") + " " + fact("ts-2-3-f14", "Manual extended thinking rejects both on each model.") + GUIDE)
             + "<p><b>Schema design.</b> %s %s %s %s</p>" % (
                 cf("ts-4-3-k4", gx("Schema design considerations: required vs optional fields, enum fields with \"other\" + detail string patterns for extensible categories", "Exam guide, 4.3-K4"),
                    "A schema chooses between required and optional fields, and an enum can have &ldquo;other&rdquo; with a detail string (4.3-K4)."),
@@ -1927,7 +1927,7 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                     cf("ts-4-3-b2", D(SOUTA, "While structured outputs guarantee schema compliance in most cases, there are scenarios where the output may not match your schema:", "Structured outputs"),
                        "Structured outputs fit the schema in most cases, not all. The page names cases such as a refusal or the limit of max_tokens."),
                     cf("ts-4-3-b3", D(SOUTA, "2. **Reduce optional parameters.** Make parameters `required` where possible. Each optional parameter roughly doubles a portion of the grammar's state space.", "Structured outputs"),
-                       "When a schema hits the limits of complexity, the documentation advises required fields where possible, because each optional field makes the grammar much larger.")])
+                       "When a schema hits the limits of complexity, the documentation advises required fields where possible, because each optional field roughly doubles a part of the grammar.")])
             + code_pop("ts-4-3-code", "The code: a request with structured outputs", "A request with a JSON schema in output_config", SOUTA, "curl https://api.anthropic.com/v1/messages", "}'", "Structured outputs",
                        "The schema goes in output_config.format, with no tool. This is the method of the mock builder.")
             + tab2_links("4.3") + "<p>%s %s</p>" % (
@@ -2122,11 +2122,11 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                 cf("ts-4-6-f3", D(BEST, "A reviewer running in a fresh [subagent](/docs/en/sub-agents) context sees only the diff and the criteria you give it, not the reasoning that produced the change, so it evaluates the result on its own terms.", "Claude Code, Best practices"),
                    "In Claude Code, a reviewer in a fresh subagent sees only the diff and the criteria."),
                 cf("ts-4-6-c2", D(ETH, "Extended thinking (`thinking.type: \"enabled\"` with `budget_tokens`) is deprecated on the Claude 4.6 models (requests using it still succeed). Claude 4.7 and later models do not support it and reject requests that use it, returning a 400 error.", "Extended thinking"),
-                   "In the Claude API documentation, the mode that the guide calls extended thinking is deprecated on the Claude 4.6 models, and Claude 4.7 and later models reject it.") + GUIDE)
+                   "In the Claude API documentation, extended thinking is the mode with budget_tokens. It is deprecated on the Claude 4.6 models, and Claude 4.7 and later models reject it.") + GUIDE)
             + "<p><b>Passes.</b> %s %s %s %s Part 1.6 shows the same split.</p>" % (
                 cf("ts-4-6-s2", gx("Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "Exam guide, 4.6-S2"),
                    "The passes for each file find local issues, and a separate integration pass follows the data flow across the files (4.6-S2)."),
-                cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "The dynamic workflows of Claude Code also run a reviewer for each file, then one agent over all the findings."),
+                cf("ts-4-6-f9", D(WF, "Run a reviewer per file, then pass all the findings to one agent that ranks and deduplicates them.", "Claude Code, Workflows"), "An example in the dynamic workflows of Claude Code runs a reviewer for each file, then one agent that ranks and deduplicates all the findings."),
                 cf("ts-4-6-f9c", D(WF, "Dynamic workflows are available on all paid plans, with Anthropic API access", "Claude Code, Workflows"), "They need a paid plan or API access."),
                 cf("ts-4-6-q12", gx("Split into focused passes: analyze each file individually for local issues, then run a separate integration-focused pass examining cross-file data flow.", "Exam guide, sample question 12"),
                    "Sample question 12 of the guide tests this split: one pass for each file, then an integration pass."))
@@ -2282,7 +2282,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                    "The documentation for a support agent aims at an escalation accuracy of 95% or more.")
             + "<p><b>A request for a human.</b> %s %s %s <span class=\"chip guide\">Guide only</span></p>" % (
                 cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
-                   "When a customer demands a human, the agent escalates at once. When the issue is simple, it offers to resolve it (5.2-K2)."),
+                   "When a customer demands a human, the agent escalates at once. When the customer does not ask for a human and the issue is simple, it offers to resolve it (5.2-K2)."),
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
                    "It does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),

@@ -22,13 +22,13 @@ The two drafts had 140 popups. The assistant kept a popup only when it answers t
 
 ## Totals
 
-| | Figures with popups | New popups |
+| | Figures with new popups | New popups |
 |---|---|---|
 | Tab 1 | 27 of 34 | 54 |
 | Tab 2 | 13 of 22 | 41 |
 | All | 40 of 56 | 95 |
 
-Fig. 1.1-1 keeps its 6 popups. Bars, waffles, tables and most cards get none.
+Fig. 1.1-1 keeps its 6 popups. With Fig. 1.1-1, 41 of 56 figures have popups. Bars, waffles, tables and most cards get none.
 
 ## Points for the owner
 
