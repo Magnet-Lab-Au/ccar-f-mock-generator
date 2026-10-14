@@ -127,6 +127,8 @@ Nothing plays by itself. Dots move only while the figure is on the screen and sh
 
 A test in domain 1: Fig. 1.2-1 (the coordinator) also gets dots, so tab 1 has two figures with dots. The owner looks at both. If the second helps, each tab can have 2 or 3 figures with dots. If not, the dots of 1.2-1 go, and the pages follow the plugin exactly.
 
+The result of the test (the owner, 14 October 2026): "keep the dots on 1.2, add them where reasonable". So the pages do not follow the rule "One moving layer per page" of the plugin. A figure gets dots only where something flows along its arrows. The figures with dots: 1.1-1 (the loop), 1.2-1 (the coordinator), 3.5-1 (the test loop) and 3.6-1 (the CI pipeline) on tab 1, and Fig. A (the 9 steps) and 5-1 (the retry loop) on tab 2. Each figure still moves only while it is on the screen and shows its full picture.
+
 ## Order of the work
 
 1. Tab 1, domain 1 (9 figures), as a test of the new types. The owner looks at the screenshots before the rest.
