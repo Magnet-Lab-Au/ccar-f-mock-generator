@@ -8,7 +8,7 @@
    - each step of the 9-step diagram has its part
    - each popup and preview card opens, has a title and stays inside the window
    - text contrast at least 4.5 to 1 (3 to 1 for large text), with the known exceptions of decisions 0009 and 0013
-   - the same text checks in both panels of each before / after figure, and at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
+   - the same text checks in both panels of each before / after figure, for each choice of each live figure, and at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
    - each text at least 12 pixels high as rendered, also in the figures
    - the word limits of decision 0026: Overview at most 100 words, Explanation at most 500 words, figures not counted
    It also saves screenshots for the owner.
@@ -142,6 +142,15 @@ function inPage() {
     });
     buttons[1].click();
     out.info.push('TOGGLE ' + name + ': 2 panels checked');
+  }
+  // each choice of each live figure (plan review item 2)
+  for (const fig of document.querySelectorAll('.ve-live')) {
+    const name = (fig.querySelector('.fig-n') || {}).textContent || 'a live figure';
+    const buttons = [...fig.querySelectorAll('.ve-toggle button')], say = fig.querySelector('.ve-say');
+    if (!buttons.length || !say) { out.fail.push('Live figure without buttons or a sentence: ' + name); continue; }
+    buttons.forEach((b, i) => { b.click(); if (!say.textContent.trim()) out.fail.push(name + ': choice ' + (i + 1) + ' says nothing'); checkText(fig, name + ', choice ' + (i + 1) + ': '); });
+    buttons[buttons.length - 1].click();
+    out.info.push('LIVE ' + name + ': ' + buttons.length + ' choices checked');
   }
   // word limits (decision 0026): figures and popups are not counted
   const words = (n) => { const c = n.cloneNode(true); c.querySelectorAll('figure, details, .sources, svg').forEach((x) => x.remove()); return (c.textContent.match(/\S+/g) || []).length; };

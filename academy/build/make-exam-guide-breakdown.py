@@ -211,9 +211,10 @@ def cf(key, c, text):
 GUIDE = ' <span class="chip guide">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
 
 
-def box(x, y, w, h, lines, sub=None, cls="", step=None, a=None, s=None):
+def box(x, y, w, h, lines, sub=None, cls="", step=None, a=None, s=None, data=None):
     attrs = ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step if step else ""
     attrs += (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
+    attrs += "".join(' data-%s="%s"' % (k, e(v)) for k, v in (data or {}).items())
     out = '<g class="ve-n %s"%s transform="translate(%d %d)"><rect class="sh" width="%d" height="%d" rx="0"/>' % (cls, attrs, x, y, w, h)
     n = len(lines) + (1 if sub else 0)
     y0 = h / 2 - (n - 1) * 10
@@ -250,6 +251,14 @@ def waffle(n, label_a, label_b, aria):
     return ('<div class="frame"><svg class="ve-svg ve-waffle" viewBox="0 0 640 164" role="img" aria-label="%s">%s'
             '<rect class="w-a" x="190" y="34" width="13" height="13"/><text class="ve-lab" x="212" y="45">%s</text>'
             '<rect class="w-b" x="190" y="104" width="13" height="13"/><text class="ve-lab" x="212" y="115">%s</text></svg></div>' % (e(aria), cells, e(label_a), e(label_b)))
+
+
+def live(num, controls, svg_w, svg_h, aria, inner, say_all, cap):
+    """A live figure (decision 0037): with no script the full picture and say_all show. The script adds a button for each
+    part with data-pick, and a choice lights that part and shows its data-say."""
+    return ('<figure class="ve-live" data-controls="%s"><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
+            '<p class="ve-say" aria-live="polite" data-all="%s">%s</p><figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>'
+            % (e(controls), svg_w, svg_h, e(aria), inner, e(say_all), e(say_all), num, cap))
 
 
 def before_after(num, panels, cap):
@@ -1278,7 +1287,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
 LCB = "claude-code-docs-large-codebases"
 D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1:]
 RULE33 = "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n\n# API Development Rules\n\n- All API endpoints must include input validation\n- Use the standard error response format\n- Include OpenAPI documentation comments"
-FIG33 = figure("3.3-1", 890, 330,
+FIG33 = live("3.3-1", "Choose a file", 890, 330,
                "A rule file in .claude/rules/ with paths **/*.test.tsx matches test files in several folders, such as src/ui/Button.test.tsx, src/api/users.test.tsx and lib/date.test.tsx, "
                "but not src/ui/Button.tsx. When Claude edits a matching file, the rule loads into the context (in Claude Code, a read is enough too). A CLAUDE.md in src/ui/ covers that one folder only.",
                "".join(['<path class="ve-e no-head" d="M280 80H320M320 42V150"/>',
@@ -1286,12 +1295,13 @@ FIG33 = figure("3.3-1", 890, 330,
                         edge("M620 96H700"),
                         '<text class="ve-lab" x="300" y="290">a directory CLAUDE.md covers one folder only</text>',
                         box(20, 40, 260, 80, [".claude/rules/testing.md"], sub='paths: "**/*.test.tsx"'),
-                        box(360, 20, 260, 44, ["src/ui/Button.test.tsx"], cls="try ok"),
-                        box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok"),
-                        box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok"),
-                        box(360, 182, 260, 44, ["src/ui/Button.tsx"], sub="no match"),
-                        box(700, 50, 170, 90, ["Context"], sub="on an edit (guide)", cls="who-model"),
+                        box(360, 20, 260, 44, ["src/ui/Button.test.tsx"], cls="try ok", data={"pick": "src/ui/Button.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
+                        box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok", data={"pick": "src/api/users.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
+                        box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok", data={"pick": "lib/date.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
+                        box(360, 182, 260, 44, ["src/ui/Button.tsx"], sub="no match", data={"pick": "src/ui/Button.tsx", "match": "no", "say": "This path does not match **/*.test.tsx, so the rule does not load."}),
+                        box(700, 50, 170, 90, ["Context"], sub="on an edit (guide)", cls="who-model", data={"target": "context"}),
                         box(20, 250, 260, 60, ["src/ui/CLAUDE.md"], sub="only files in src/ui/")]),
+               "Choose a file to see if the rule loads. The buttons show the example paths of the figure.",
                "%s %s" % (cf("ts-3-3-f1", D(MEMD, "Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.", "Claude Code, Memory"),
                              "A paths field in the frontmatter scopes a rule to the files that match its patterns."),
                           cf("ts-3-3-f13", gx("allows conventions to be automatically applied based on file paths regardless of directory location, essential for test files spread throughout the codebase.", "Exam guide, sample question 6"),
@@ -1345,20 +1355,25 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
 
 SKL, FOV, CDIR = "claude-code-docs-skills", "claude-code-docs-features-overview", "claude-code-docs-claude-directory"
 SKILL32 = "---\nname: deep-research\ndescription: Research a topic thoroughly\ncontext: fork\nagent: Explore\n---\n\nResearch $ARGUMENTS thoroughly:\n\n1. Find relevant files using Glob and Grep\n2. Read and analyze the code\n3. Summarize findings with specific file references"
-FIG32 = figure("3.2-1", 890, 300,
-               "A skill with context: fork runs in a new subagent. The content of SKILL.md is its task, and it gets no conversation history. "
-               "It reads files and runs searches, and only a summary returns to the main conversation. Without context: fork, the body of the skill enters the main context.",
-               "".join([edge("M280 80H560", "SKILL.md content = the task", 420, 71),
-                        edge("M280 125H560", "no conversation history", 420, 145, cls="is-async no-head"),
-                        '<path class="ve-e no-head" d="M412 117l16 16M428 117l-16 16"/>',
-                        edge("M715 160V200H150V160", "only a summary returns", 430, 192),
-                        box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
-                        box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model"),
-                        box(20, 225, 300, 60, ["Without context: fork"], sub="the body enters the main context")]),
-               "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
-                             "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
-                          cf("ts-3-2-f10", D(SKL, "4. The subagent summarizes its results and returns them to your main conversation when it finishes", "Claude Code, Skills"),
-                             "The subagent returns a summary of its results to the main conversation.")))
+FIG32 = before_after("3.2-1", [
+    ("Without fork", "Without context: fork", 890, 200,
+     "Without context: fork, the body of the skill enters the main context.",
+     "".join([edge("M560 100H280", "the body enters the main context", 420, 91, cls="is-hot"),
+              box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
+              box(560, 40, 310, 120, ["The skill"], sub="the body of SKILL.md")])),
+    ("With context: fork", "With context: fork", 890, 240,
+     "A skill with context: fork runs in a new subagent. The content of SKILL.md is its task, and it gets no conversation history. "
+     "It reads files and runs searches, and only a summary returns to the main conversation.",
+     "".join([edge("M280 80H560", "SKILL.md content = the task", 420, 71),
+              edge("M280 125H560", "no conversation history", 420, 145, cls="is-async no-head"),
+              '<path class="ve-e no-head" d="M412 117l16 16M428 117l-16 16"/>',
+              edge("M715 160V200H150V160", "only a summary returns", 430, 192, cls="is-hot"),
+              box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
+              box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model")])),
+], "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
+                 "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
+              cf("ts-3-2-f10", D(SKL, "4. The subagent summarizes its results and returns them to your main conversation when it finishes", "Claude Code, Skills"),
+                 "The subagent returns a summary of its results to the main conversation.")))
 
 PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how they run",
                         "A command or a skill in the .claude/ folder of the project reaches the team through git. One in ~/.claude/ stays personal. "
@@ -1497,20 +1512,28 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
 PLIB = "claude-code-docs-prompt-library"
 INT35 = "\n".join(read(SRC % BEST).split("\n")[345:350])
 assert INT35.startswith("I want to build [brief description].") and INT35.endswith("SPEC.md.")
-FIG35 = figure("3.5-1", 890, 320,
+FIG35 = stepper("ts-3-5-fig1", "3.5-1", 890, 320,
                "In an unfamiliar domain, an interview can come first, where Claude asks questions. Then the tests are written first. Claude implements and runs the tests. "
                "If all pass, the work is done. If not, the failures go back to Claude: interacting issues in one message, independent issues one at a time.",
-               "".join([edge("M210 65H260", cls="is-async"), edge("M430 65H480"), edge("M650 65H700"),
-                        edge("M785 100V180", "all pass", 793, 145, anchor="r"),
-                        edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot"),
-                        '<path class="ve-e no-head is-async" d="M565 140V190"/>',
+               "".join([edge("M210 65H260", cls="is-async", s="2"), edge("M430 65H480", s="3"), edge("M650 65H700", s="4"),
+                        edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot", a="5"),
+                        '<path class="ve-e no-head is-async" data-a="5" d="M565 140V190"/>',
+                        edge("M785 100V180", "all pass", 793, 145, anchor="r", s="6"),
                         '<text class="ve-lab" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
-                        box(20, 30, 190, 70, ["Interview"], sub="if the domain is new", cls="who-model"),
-                        box(260, 30, 170, 70, ["Write tests"], sub="before the code"),
-                        box(480, 30, 170, 70, ["Claude", "implements"], cls="who-model"),
-                        box(700, 30, 170, 70, ["Run the tests"]),
-                        box(700, 180, 170, 60, ["Done"], cls="try ok"),
-                        box(330, 190, 320, 80, ["interacting: one message", "independent: one at a time"])]),
+                        '<path data-flow="tdd" data-every="2600" d="M565 65H785V140H565V65"/>', '<g class="ve-dots" aria-hidden="true"></g>',
+                        box(20, 30, 190, 70, ["Interview"], sub="if the domain is new", cls="who-model", a="1"),
+                        box(260, 30, 170, 70, ["Write tests"], sub="before the code", a="2"),
+                        box(480, 30, 170, 70, ["Claude", "implements"], cls="who-model", a="3 5"),
+                        box(700, 30, 170, 70, ["Run the tests"], a="4"),
+                        box(700, 180, 170, 60, ["Done"], cls="try ok", a="6"),
+                        box(330, 190, 320, 80, ["interacting: one message", "independent: one at a time"], a="5")]),
+               ["The loop of a change. Use the arrow buttons to go through it one step at a time.",
+                "In an unfamiliar domain, an interview can come first: Claude asks questions.",
+                "The tests are written first, before the code.",
+                "Claude implements.",
+                "The tests run.",
+                "The failures go back to Claude: interacting issues in one message, independent issues one at a time.",
+                "When all tests pass, the work is done."],
                "%s %s" % (cf("ts-3-5-k2", gx("Test-driven iteration: writing test suites first, then iterating by sharing test failures to guide progressive improvement", "Exam guide, 3.5-K2"),
                              "The guide writes the tests first, then iterates on the failures (3.5-K2)."),
                           cf("ts-3-5-s5", gx("Addressing multiple interacting issues in a single detailed message when fixes interact, versus sequential iteration for independent issues", "Exam guide, 3.5-S5"),
@@ -1568,19 +1591,26 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
 HLESS, GHA, CWF, SOUT = "claude-code-docs-headless", "claude-code-docs-github-actions", "claude-code-docs-common-workflows", "claude-code-docs-agent-sdk-structured-outputs"
 CLI36 = "\n".join(read(SRC % HLESS).split("\n")[163:166])
 assert CLI36.startswith('claude -p "Extract') and "--json-schema" in CLI36
-FIG36 = figure("3.6-1", 890, 320,
+FIG36 = stepper("ts-3-6-fig1", "3.6-1", 890, 320,
                "A pull request or a new commit starts a CI job that runs claude -p. CLAUDE.md, the prior findings and the existing tests give the context. "
                "With --output-format json and --json-schema, the findings come back as JSON, which the guide posts as inline comments on the pull request.",
-               "".join([edge("M170 75H225"), edge("M425 75H480"), edge("M670 75H720", "post", 695, 66),
-                        '<path class="ve-e no-head" d="M115 250V215H535V250M325 215V250"/>',
-                        edge("M325 215V110", "context", 333, 165, anchor="r"),
-                        box(20, 40, 150, 70, ["PR or", "new commit"]),
-                        box(225, 40, 200, 70, ["claude -p"], sub="in the CI job", cls="who-model"),
-                        box(480, 40, 190, 70, ["JSON"], sub="fits --json-schema"),
-                        box(720, 40, 150, 70, ["Inline PR", "comments"], cls="try ok"),
-                        box(20, 250, 190, 55, ["Prior findings"], sub="report only new"),
-                        box(230, 250, 190, 55, ["Existing tests"], sub="for new tests"),
-                        box(440, 250, 190, 55, ["CLAUDE.md"], sub="not with --bare")]),
+               "".join([edge("M170 75H225", s="1"), edge("M425 75H480", s="4"), edge("M670 75H720", "post", 695, 66, s="5"),
+                        '<path class="ve-e no-head" data-s="3" d="M115 250V215H535V250M325 215V250"/>',
+                        edge("M325 215V110", "context", 333, 165, anchor="r", s="3"),
+                        '<path data-flow="ci" data-every="2600" d="M95 75H795"/>', '<g class="ve-dots" aria-hidden="true"></g>',
+                        box(20, 40, 150, 70, ["PR or", "new commit"], a="1"),
+                        box(225, 40, 200, 70, ["claude -p"], sub="in the CI job", cls="who-model", a="2"),
+                        box(480, 40, 190, 70, ["JSON"], sub="fits --json-schema", a="4"),
+                        box(720, 40, 150, 70, ["Inline PR", "comments"], cls="try ok", a="5"),
+                        box(20, 250, 190, 55, ["Prior findings"], sub="report only new", a="3"),
+                        box(230, 250, 190, 55, ["Existing tests"], sub="for new tests", a="3"),
+                        box(440, 250, 190, 55, ["CLAUDE.md"], sub="not with --bare", a="3")]),
+               ["Claude Code in a CI pipeline. Use the arrow buttons to go through it one step at a time.",
+                "A pull request or a new commit starts a CI job.",
+                "The CI job runs <code>claude -p</code>, with no interaction.",
+                "CLAUDE.md, the prior findings and the existing tests give the context.",
+                "With <code>--output-format json</code> and <code>--json-schema</code>, the findings come back as JSON.",
+                "In the guide, the findings become inline comments on the pull request."],
                "%s %s" % (cf("ts-3-6-f1", D(HLESS, "Add the `-p` (or `--print`) flag to any `claude` command to run it non-interactively.", "Claude Code, Run Claude Code programmatically"),
                              "The -p flag runs Claude Code with no interaction."),
                           cf("ts-3-6-s2", gx("Using --output-format json with --json-schema to produce machine-parseable structured findings for automated posting as inline PR comments", "Exam guide, 3.6-S2"),
