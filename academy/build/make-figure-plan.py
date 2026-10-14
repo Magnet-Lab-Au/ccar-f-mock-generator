@@ -8,8 +8,10 @@ import os
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SRC = os.path.join(ROOT, "academy", "figure-plan.md")
-OUT = os.path.join(ROOT, "academy", "figure-plan.html")
+import sys
+NAME = sys.argv[1] if len(sys.argv) > 1 else "figure-plan"   # also: popup-plan
+SRC = os.path.join(ROOT, "academy", NAME + ".md")
+OUT = os.path.join(ROOT, "academy", NAME + ".html")
 CHIP = {"Redraw": "info", "Add": "ok", "Keep": ""}
 
 
@@ -84,7 +86,7 @@ page = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Figure plan (academy decision 0037)</title>
+<title>%s</title>
 <link rel="stylesheet" href="pages/academy.css">
 <style>%s</style>
 </head>
@@ -94,6 +96,6 @@ page = """<!DOCTYPE html>
 </main>
 </body>
 </html>
-""" % (STYLE, convert(open(SRC, encoding="utf-8").read()))
+""" % (NAME.replace("-", " ").capitalize(), STYLE, convert(open(SRC, encoding="utf-8").read()))
 open(OUT, "w", encoding="utf-8", newline="\n").write(page)
-print("Wrote academy/figure-plan.html")
+print("Wrote academy/%s.html" % NAME)

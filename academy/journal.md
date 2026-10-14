@@ -38,6 +38,7 @@ One entry for each work session. Newest entry first.
 - The reader's summaries and flags are in `facts/reader-slices-5-to-8-2026-10-14.md`.
 - A last check of today's records found 9 items, none high. Fixed: the pictures were older than the last fixes and are taken again, the step of code font covers tab 2 and quoted values, the reader's summaries are on file, and counts and wording in the records.
 - Before-and-after pictures of all 36 changed figures (27 redraws, 9 additions): `screenshots/tab-1-redraw/` (domain 1) and `screenshots/redraw/` (the rest).
+- The owner asked why only Fig. 1.1-1 has hover popups. The night dropped the box popups of the sample with no decision, to go faster. The owner asked for a plan of popups "with intention", and accepted five rules: a popup only where a box raises a question that the figure does not answer, 1 to 3 sentences with the guide point, no repeats, a source for each sentence, one design. Two agents drafted 140 popups. The assistant kept 95, the ones that answer the first question about a box (`popup-plan.md`, page `popup-plan.html`). Proposed, for the owner to check.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 
