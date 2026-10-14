@@ -159,10 +159,9 @@ def pts(*ids):
     return [{"id": i, "text": POINTS[i][0], "ctx": "Task statement %s: %s" % (POINTS[i][1]["id"], POINTS[i][1]["title"])} for i in ids]
 
 
-DEVIATION = ("Claude Opus 5.5, the model of this build, and three other current models (Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1) "
-             "reject a forced tool call, so the build sends its form as structured outputs.")
-EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several "
-           "schemas exist and the document type is unknown (4.3-S2), and a forced tool when one extraction must run first (4.3-S3).")
+DEVIATION = ("Claude Opus 5.5, the model of this build, rejects a forced tool call. Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1 reject it too. "
+             "So the build sends its form as structured outputs.")
+EXAM_43 = ("For the exam: the guide's answer for a fixed form is tool use with a JSON schema (4.3-K1). It names tool_choice \"any\" when several schemas exist and the document type is unknown (4.3-S2). It names a forced tool when one extraction must run first (4.3-S3).")
 lines_of("academy/sources/2026-10-14-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1]")
 FIX_USE = {"5.5-K2": ("For mock 1 the owner reads all 60, so that is not a sample.", "Mocks 1 and 5 put all 60 questions in the file, so that is not a sample. The reader was the owner for mocks 1 to 3 and a Claude model for mocks 4 and 5.")}
 lines_of(S5, "The reason: the newest Claude models reject it.")
@@ -183,7 +182,7 @@ POP = {
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-4-3": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
               "sent": ["How step 5 uses the point:", table_use("4.3-K1"), "The step names, but does not use:", table_use("4.3-S3"),
-                       "Why: " + DEVIATION + " The Claude API documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 14 October 2026 in academy/sources/).",
+                       "Why: " + DEVIATION + " The Claude API documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models. Its copy of 14 October 2026 is in academy/sources/.",
                        EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
 }
@@ -398,7 +397,7 @@ FIG51 = """
                       "Step 3 checks the try by code.",
                       "If it passes, step 4 checks it by a model.",
                       "A pass of step 4 stops the loop: the slot has passed.",
-                      "A try that fails step 3 or step 4 becomes a new request of step 5: the request of step 2, the failed try and its findings.",
+                      "A try that fails step 3 or step 4 becomes a new request of step 5. It holds the request of step 2, the failed try and its findings.",
                       "The writer tries again with the new request.",
                       "After %d failed tries in one start, the slot is open, and the owner decides." % TRIES]),
     "pass": fact("s5-pass", "A pass stops the loop."),
@@ -509,7 +508,7 @@ STEP5 = """
   <summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>
   <div class="body">
     %(fig51)s
-    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and, where it fits, the letter of the option. %(short)s The exam guide names the same three parts for a new try: %(three)s</p>
+    <p><b>What the writer gets.</b> The request of step 2, the failed try and its findings. A finding names the rule and, where it fits, the letter of the option. %(short)s The exam guide names the same three parts for a new try. %(three)s</p>
     <p><b>The limits.</b> %(guard)s A start is the first try of a slot, or the first try after a decision of the owner. The other slots continue.</p>
     <p><b>The record.</b> %(file)s</p>
     %(fig52)s
@@ -526,7 +525,7 @@ STEP5 = """
     <h4 class="story">The reason of the owner reached only one try</h4>
     <p>Slot M5-S38 failed %(b9)s three times. The owner gave more tries with a reason: &ldquo;%(reason)s&rdquo; %(q)s So mock decision 0074 (a decision record of the build) added the reason to the next request, %(fix)s, and %(test)s checks it.</p>
     %(fig54)s
-    <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix, and the test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. Mock decision 0080 later changed %(fix80)s: now each try of the new start gets the reason. %(limit)s</p>
+    <p>The run files and the code show more. Try 4 got the reason and put a custom ID into its correct options: %(t4)s It failed B9, %(t4f)s. Try 2, before the reason, had already tried a custom ID and %(t2f)s. Try 5 did not get the reason. In the code, %(first)s runs before the fix. The test checks only the first try after the decision. Try 5 wrote the old problem again: %(t5)s It passed, and it is the question in mock 5. Mock decision 0074 says: %(said)s The code shows that only the first try of the new start got the instruction. Mock decision 0080 later changed %(fix80)s: now each try of the new start gets the reason. %(limit)s</p>
     <section class="sources" aria-label="Sources of step 5">
       <p class="ve-label">Sources of step 5. Each underlined fact opens its card.</p>
       <ul>%(sources)s</ul>
@@ -557,7 +556,7 @@ step5_html = STEP5 % {
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
     "fig51": FIG51,
     "short": f("s5-short", "The writer does not see older tries, so the request stays short."),
-    "three": f("s5-three", "the original, the failed result and the errors (point 4.4-S1 of the exam guide)."),
+    "three": f("s5-three", "They are the original, the failed result and the errors (point 4.4-S1 of the exam guide)."),
     "guard": f("s5-guard", "Each start of a slot has at most %d tries. %d results &ldquo;cannot decide&rdquo; of step 4 also stop it." % (TRIES, CANNOT)),
     "file": f("s5-file", "Each try is a new file. No file is written over, so the history of each question stays."),
     "fig52": FIG52,
@@ -759,7 +758,7 @@ STEP0 = (level("overview",
          + level("explanation",
                  FIG01
                  + '<p><b>Labels.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
-                   % (fact("s0-ids", "Each point gets a label that the guide does not have: the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
+                   % (fact("s0-ids", "Each point gets a label that the guide does not have. The label is the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
                       fact("s0-keep", "Every question of the 5 mocks keeps the ID of its point: %d of %d." % (KEPT, TOTAL_Q)))
                  + '<p><b>Checks.</b> %s %s and %s, or it writes no file. Then three checks:</p>'
                    '<ol class="checks"><li>%s</li><li>%s</li><li>%s</li></ol>'
@@ -928,7 +927,7 @@ STEP1 = (level("overview",
                    % (fact("s1-never", "a script ran it over %d seeds, and each seed failed." % SEEDS), fact("s1-cap", "&ldquo;So the count must follow the groups, not the groups the count.&rdquo;"),
                       fact("s1-bug", "the code could stop although a plan existed."))
                  + '<h4 class="story">Mock 2 repeated mock 1</h4>'
-                 + '<p>Before mock 2, the owner asked: &ldquo;%s&rdquo; So step 1 reads the built earlier mocks, and %s That spread the ideas, but %s %s Part of the cause was in step 1: %s So now %s Step 2 got the earlier questions on the idea, and step 4 got rule B9. %s</p>'
+                 + '<p>Before mock 2, the owner asked: &ldquo;%s&rdquo; So step 1 reads the built earlier mocks, and %s That spread the ideas, but %s %s Part of the cause was in step 1. %s So now %s Step 2 got the earlier questions on the idea, and step 4 got rule B9. %s</p>'
                    % (fact("s1-owner", "Is there no simple way to ensure that similar questions are spread out between mocks?"),
                       fact("s1-least", "it puts the least-used ideas first."),
                       fact("s1-notq", "it did not prevent the same question in two mocks."),
@@ -1029,7 +1028,7 @@ STEP2 = (level("overview",
                    % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option as correct or wrong, with a reason. It can also answer &ldquo;cannot write&rdquo;."),
                       fact("s2-form", DEVIATION), e(EXAM_43))
                  + '<p><b>The letters.</b> %s So %s</p>'
-                   % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times, and a model can copy that (an assumption, not checked)." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
+                   % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times. A model can copy that (an assumption, not checked)." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
                       fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "The mix alone did not balance the letters (see step 8). From mock 5, the correct options take the letters that the plan sets."))
                  + '<p><b>The cost of one call per slot.</b> %s Step 6 checks the questions of a scenario together.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
                  + ts_block(2))
@@ -1038,7 +1037,7 @@ STEP2 = (level("overview",
                  '<p>%s Example on one idea, the stop of an agentic loop:</p>'
                  '<ol class="checks"><li>Mock 1, M1-S28: %s</li><li>Mock 2, M2-S08, try 1: %s</li></ol>'
                  '<p>The owner sent it back: %s The new try asked for the cause instead: %s</p>'
-                 '<p>The fix for step 2: %s In the same mock decision, step 4 got rule B9 to check it.</p>'
+                 '<p>The fix for step 2 is this. %s In the same mock decision, step 4 got rule B9 to check it.</p>'
                  '<h4 class="story">In a test, a bad mark became an instruction and a check</h4>'
                  '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s %s because of that question, step 4 got rule B7 to check it.</p>'
                  '<h4 class="story">The design forced a tool call</h4>'
@@ -1048,7 +1047,7 @@ STEP2 = (level("overview",
                     fact("s2-m2a", "the correct answer again continues while Claude asks for a tool."),
                     fact("s2-d001", "&ldquo;Use a different scene and a different angle: the cause, the fix, or a choice between rules.&rdquo;"),
                     fact("s2-m2b", "a fixed cap of 12 iterations as the main stopping rule."),
-                    fact("s2-earlier", "when the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the answer key of each."),
+                    fact("s2-earlier", "When the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea. Each comes with its answer key."),
                     fact("s2-bad", "The question is confusing and needs calrification. I had to read the question more than one time."),
                     fact("s2-first", "The assistant first suggested an instruction only."),
                     fact("s2-enough", "The owner asked: &ldquo;but is that enough? Only in the prompt?&rdquo;"),
@@ -1166,11 +1165,11 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
              fact("s3-a2", "Rule A2 failed both tries."),
              fact("s3-d005", "&ldquo;The last try failed on the form (rules A1 and A2), not on B9.&rdquo;"))
           + '<h4 class="story">The longest option was too often correct</h4>' + FIG32
-          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest: %s Instead, %s So from mock 2, step 1 lets the longest option be correct on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots, and %s</p>'
+          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest. %s Instead, %s From mock 2, step 1 allows a correct longest option on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots. %s</p>'
           % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
-             fact("s3-never", "then a participant learns that the longest option is always wrong."),
+             fact("s3-never", "With that rule, a participant learns that the longest option is always wrong."),
              fact("s3-gain", "a participant who always selects the longest option must not gain from it."),
-             fact("s3-a12", "on each other slot, rule A12 fails a question where a correct option is as long as or longer than each wrong option.")))
+             fact("s3-a12", "On each other slot, rule A12 fails a question where a correct option is as long as or longer than each wrong option.")))
 
 STEP3 = (level("overview",
                '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4><p>%s %s %s</p>'
@@ -1183,7 +1182,7 @@ STEP3 = (level("overview",
                  + '<p><b>Why the form does not count.</b> %s %s Later, %s</p>'
                    % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
-                      fact("s3-docs", "the Claude API documentation showed that a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
+                      fact("s3-docs", "the Claude API documentation showed a limit of structured outputs. A JSON schema cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
                  + '<div class="callout"><span class="chip">Beyond the exam</span><p>The limit of a list in a JSON schema. The exam guide does not name this limit of the API.</p></div>'
                  + ts_block(3))
          + level("depth", DEPTH3)
@@ -1451,15 +1450,15 @@ STEP6 = (level("overview",
          + level("explanation",
                  FIG61
                  + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong option in too many questions."))
-                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored the findings of a question that gives away another answer, and recorded one wrong option in too many questions as a known limit of the mock."))
+                 + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored the findings of a question that gives away another answer. The owner recorded one wrong option in too many questions as a known limit of the mock."))
                  + FIG62 + ts_block(6))
          + level("depth",
                  '<h4 class="story">Too many wrong options on the confidence of the model</h4>'
-                 '<p>%s ruling 2: %s The reason: %s %s</p>'
+                 '<p>%s ruling 2. %s The reason: %s %s</p>'
                  '<p>%s Only call 6b checks it. In mock 2, %s Its options B and C both used the confidence of the model: %s and %s The owner sent it back: %s The new try asks for the categories to report instead: %s</p>'
                  '<p>In mocks 2 to 5, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
                  % (fact("s6-date", "Since 29 September 2026, the owner had a ruling,"),
-                    fact("s6-r2", "in one scenario of one mock, at most one wrong option uses a model that rates its own confidence and uses the rating as a filter, a threshold or a trigger."),
+                    fact("s6-r2", "In one scenario of one mock, at most one wrong option uses the confidence that a model gives itself. Such an option uses the rating as a filter, a threshold or a trigger."),
                     fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
                     fact("s6-r2why", "But if it appears many times, a participant can rule it out without thought."),
                     fact("s6-writer", "The writer of step 2 sees one slot, so it cannot count these options."),
@@ -1590,7 +1589,7 @@ STEP7 = (level("overview",
                  + FIG72 + ts_block(7))
          + level("depth",
                  '<h4 class="story">A sample of 20 would have marked neither bad question</h4>'
-                 '<p>For mock 5, no person read the questions. %s %s The second review then gave the only 2 bad marks in the records of the 5 mocks: %s %s %s Only M5-S33, a copy of a question of mock 2, had no other check that found it, although it had passed step 4 with rule B9.</p>'
+                 '<p>For mock 5, no person read the questions. %s %s The second review then gave the only 2 bad marks in the records of the 5 mocks: %s %s %s Only M5-S33, a copy of a question of mock 2, had no other check that found it. It had passed step 4 with rule B9.</p>'
                  '<h4 class="story">Good on its own, wrong as a set</h4>'
                  '<p>%s %s So the 7 became rewrites, not bad marks. %s</p>'
                  % (fact("s7-all", "The owner said: &ldquo;Put all 60 questions of mock 5 in the marking file.&rdquo;"),
@@ -1694,10 +1693,10 @@ STEP8 = (level("overview",
                   fact("s8-accept", "The step starts only when the owner accepts the mock with a command, and code checks the conditions first.")))
          + level("explanation",
                  FIG81
-                 + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw."),
+                 + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw."),
                                                           fact("s8-fpdef", "Each check saves a fingerprint of the question: a code of 64 characters that code calculates from its text. Before the build, code calculates it again and compares."),
                                                           fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL))
-                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The facts of the exam format are: each question states how many answers to select, the questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
+                 + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The exam format has three facts. Each question states how many answers to select. The questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
                    % fact("s8-nopoint", "None. The step uses three facts of the exam format, not a point of a task statement."))
          + level("depth",
                  ('<h4 class="story">The first conditions could never be met</h4>'
@@ -1705,7 +1704,7 @@ STEP8 = (level("overview",
                   % (fact("s8-never", "So the mock can never be built."), fact("s8-cmd", "step 8 starts when the owner accepts the mock, and code checks the conditions before it builds.")))
                  + '<h4 class="story">The letters were not balanced</h4>' + FIG82
                  + '<p>%s So from mock 5, the plan of step 1 sets the correct letters, 13 for each of A to D (see step 2). For mocks 1 to 4, %s</p>'
-                 % (fact("s8-plan5", "The fix starts at mock 5."), fact("s8-portal", "the files did not change, and a note asks the portal to show the options in a random order on each attempt.")))
+                 % (fact("s8-plan5", "The fix starts at mock 5."), fact("s8-portal", "the files did not change. A note asks the portal to show the options in a random order on each attempt.")))
          ).replace("@N@", "8")
 PART_HTML[8] = with_sources(8, STEP8)
 
@@ -1850,9 +1849,9 @@ CC_HTML = "".join([
            fact("cc-r14", "Another rule: a check must not depend on the memory or the judgment of the assistant alone.")),
         '<p>%s %s %s</p>'
         % (fact("cc-46k1", "The exam guide gives the reason: a model that keeps the reasoning of its own work is less likely to question its decisions (4.6-K1).") + " " + fact("cc-46s1", "So the guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
-           fact("cc-doc-fresh", "In Claude Code, a subagent that is not a fork starts with a fresh context, so it does not see the conversation that made the file."),
-           fact("cc-code", "On 7 October 2026, two independent reviewers checked the first code that moves each try, and its tests: the first found 4 serious and 6 minor bugs, the second found 1 serious and 3 minor bugs in the fixes."))
-        + '<p>This tab was built the same way: %s %s %s</p>' % (fact("cc-a12", "a fact agent and a review agent for each part,"), fact("cc-a15", "then a whole-picture agent after each group of parts."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
+           fact("cc-doc-fresh", "In Claude Code, a subagent that is not a fork starts with a fresh context. So it does not see the conversation that made the file."),
+           fact("cc-code", "On 7 October 2026, two independent reviewers checked the first code that moves each try, and its tests. The first found 4 serious and 6 minor bugs. The second found 1 serious and 3 minor bugs in the fixes."))
+        + '<p>This tab was built the same way. %s %s %s</p>' % (fact("cc-a12", "It had a fact agent and a review agent for each part,"), fact("cc-a15", "then a whole-picture agent after each group of parts."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
         + cc_ts("4.6", "cc-4-6-ts"),
         '<h4 class="story">Three checks of all documents</h4>' + FIGCC
         + '<p>Before a push on 9 October 2026, %s %s %s %s</p>'
@@ -1864,10 +1863,10 @@ CC_HTML = "".join([
         '<h4 class="takeaway">The build used a rule to discuss first, not plan mode</h4><p>%s %s</p>'
         % (fact("cc-r8", "A rule of the owner: discuss first, and do not write a document, a diagram or code before the owner asks for it."),
            fact("cc-d23", "No record shows that the build used plan mode or the Explore subagent.")),
-        '<p>%s %s The build had a different method: %s %s</p>'
+        '<p>%s %s The build had a different method. %s %s</p>'
         % (fact("cc-34k1", "The guide teaches plan mode for complex tasks with large changes and architectural decisions (3.4-K1)."),
            fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
-           fact("cc-r30", "for the design of a step of the mock builder, the assistant showed one proposal with all details, and the owner accepted it or named a change (see step 0)."),
+           fact("cc-r30", "For the design of a step of the mock builder, the assistant showed one proposal with all details. The owner accepted it or named a change (see step 0)."),
            fact("cc-r12", "Each decision of the owner became a file on the same day.") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
         + cc_ts("3.4", "cc-3-4-ts"),
         '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'

@@ -76,7 +76,7 @@ POPUPS = [{'tab': 1,
   'who': 'Coordinator',
   'title': 'How does it choose a subagent, and what does it pass on?',
   'sent': ['It chooses from the task and from the description of each subagent. It passes on the complete findings of earlier subagents, because a '
-           'subagent sees nothing else.'],
+           'subagent does not see the conversation of the coordinator.'],
   'points': ['1.2-K2', '1.3-S1'],
   'source': 'ts-1-2 F7, F12. ts-1-3 S1, F6'},
  {'tab': 1,
@@ -85,8 +85,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'own context',
   'title': 'What does a subagent not get?',
-  'sent': ['It does not get the conversation history of the coordinator, its tool results or its system prompt. Only the prompt of its task reaches '
-           'it, and only its final message goes back.'],
+  'sent': ['It does not get the conversation history of the coordinator or its tool results. From the coordinator, only the prompt of its call '
+           'reaches it, and only its final message goes back.'],
   'points': ['1.2-K2', '1.3-K2'],
   'source': 'ts-1-3 F5, F6, F7. ts-1-2 popup of 14 October (the system prompt)',
   'every': True},
@@ -124,8 +124,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'escalate_to_human',
   'title': 'What makes the agent escalate here?',
-  'sent': ['In an exercise of the guide, a hook enforces a business rule, such as a limit on the amount, and sends the case to an escalation '
-           'workflow when the rule triggers.'],
+  'sent': ['In an exercise of the guide, a hook enforces a business rule, such as a limit on the amount. When the rule triggers, the hook sends the '
+           'case to an escalation workflow.'],
   'points': [],
   'source': 'ts-1-4 F12, GUIDE 71'},
  {'tab': 1,
@@ -134,9 +134,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'PreToolUse, your code',
   'title': 'What can the hook answer?',
-  'sent': ['It sets permissionDecision to allow, deny, ask or defer. Defer is for a program that runs Claude Code with -p, such as an Agent SDK app: '
-           'the tool does not run, and that program asks the question in its own interface.',
-           'It can also change the input of the call with updatedInput.'],
+  'sent': ['It sets permissionDecision to allow, deny, ask or defer, and it can change the input of the call with updatedInput. Defer is for a '
+           'program that runs Claude Code with -p, such as an Agent SDK app. The tool does not run, and that program asks the question in its own '
+           'interface.'],
   'points': ['1.5-K2'],
   'source': 'ts-1-5 F8. `academy/sources/2026-10-14-claude-code-docs-hooks.md` 1905, 1980, 1985'},
  {'tab': 1,
@@ -173,8 +173,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'New session, fresh context + summary',
   'title': 'What goes into the summary?',
-  'sent': ['For the Agent SDK, the Claude Code documentation advises to capture what you need, such as the analysis output, the decisions and the '
-           'file diffs, and to put it into the prompt of the new session.'],
+  'sent': ['For the Agent SDK, the Claude Code documentation advises to capture what you need and to put it into the prompt of the new session. '
+           'Examples are the analysis output, the decisions and the file diffs.'],
   'points': ['1.7-K4', '1.7-S3'],
   'source': 'ts-1-7 F10'},
  {'tab': 1,
@@ -385,8 +385,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'Inline PR comments',
   'title': 'Who posts the comments?',
-  'sent': ['In the guide, the CI job posts the JSON findings automatically, as inline comments. In the review workflow of Claude Code GitHub '
-           'Actions, Claude itself posts each review on the pull request, as an inline comment on each issue.'],
+  'sent': ['The guide says only that the posting is automated. In the review workflow of Claude Code GitHub Actions, Claude itself posts each review '
+           'on the pull request, as an inline comment on each issue.'],
   'points': ['3.6-S2'],
   'source': 'GUIDE 3.6-S2. `academy/sources/2026-10-14-claude-code-docs-github-actions.md` 44'},
  {'tab': 1,
@@ -405,8 +405,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'Severity, code examples',
   'title': 'What does a code example for a level look like?',
-  'sent': ['The guide gives no example. One way: under each level, a short snippet of code with a finding of that level, so that Claude can compare '
-           'new code with it. Code Review of Claude Code names the classes of each level in prose instead.'],
+  'sent': ['The guide gives no example. A suggestion of this page: under each level, put a short snippet of code with a finding of that level. '
+           'Then Claude can compare new code with it. Code Review of Claude Code names the classes of each level in prose instead.'],
   'points': ['4.1-S3'],
   'source': 'GUIDE 4.1-S3. ts-4-1 F12. The way is a suggestion of this page.'},
  {'tab': 1,
@@ -415,10 +415,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'A noisy category?',
   'title': 'How do I know that a category is noisy?',
-  'sent': ['Track the findings that developers dismiss. The guide adds a field detected_pattern to each finding, so that the dismissed findings show '
-           'the patterns of false positives.',
-           'In Code Review of Claude Code, developers mark each finding as useful, or as wrong or noisy. Anthropic uses the counts to tune the '
-           'reviewer.'],
+  'sent': ['Track the findings that developers dismiss. The guide adds a field detected_pattern to each finding, so the dismissed findings show the '
+           'patterns of false positives.',
+           'In Code Review of Claude Code, developers mark each finding as useful, or as wrong or noisy.'],
   'points': ['4.4-S3', '4.1-S2'],
   'source': 'GUIDE 4.4-K3, 4.4-S3. ts-4-1 F7'},
  {'tab': 1,
@@ -457,8 +456,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'fail: information absent',
   'title': 'How does code know that the information is absent?',
-  'sent': ['The schema lets the field be null when the document may not hold the value. The model then returns null instead of a made-up value, and '
-           'code does not retry that field, because a retry cannot find what the document does not have.'],
+  'sent': ['The schema lets the field be null when the document may not hold the value. The model then returns null instead of a made-up value. Code '
+           'does not retry that field, because a retry cannot find what the document does not have.'],
   'points': ['4.3-S4', '4.4-K2'],
   'source': 'GUIDE 4.3-S4, 4.4-K2, 4.4-S2'},
  {'tab': 1,
@@ -537,7 +536,7 @@ POPUPS = [{'tab': 1,
   'title': 'How does the coordinator choose?',
   'sent': ['From the error context: the type of failure, the query that the subagent tried, the partial results and the alternatives. Without it, '
            'the coordinator cannot tell a timeout from a source that does not exist.'],
-  'points': ['5.3-K1', '5.3-K3', '5.3-S1'],
+  'points': ['5.3-K1', '5.3-K2', '5.3-S1'],
   'source': 'GUIDE 5.3-K1, 5.3-K3, 5.3-S1'},
  {'tab': 1,
   'fig': '5.4-1',
@@ -555,8 +554,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'stratified random sample',
   'title': 'Stratified by what?',
-  'sent': ['By the groups that can fail apart, such as the document type and the field. Each group gets its share of the sample, so that a small '
-           'group with many errors is not missed.'],
+  'sent': ['A reading of this page: by the groups that can fail apart, such as the document type and the field. Each group gets enough items to '
+           'measure its own error rate.'],
   'points': ['5.5-K1', '5.5-K2', '5.5-S2'],
   'source': 'GUIDE 5.5-K1, 5.5-K2, 5.5-S2'},
  {'tab': 1,
@@ -565,8 +564,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'calibrates',
   'title': 'How does a labeled set set a threshold?',
-  'sent': ['The labeled set has the right value of each field. Compare the confidence of the model with how often it was right, and find the '
-           'confidence above which the error rate is low enough. A field below it goes to a person.'],
+  'sent': ['A reading of this page: the labeled set has the right value of each field. Compare the confidence of the model with how often it was '
+           'right, and find the confidence above which the error rate is low enough. A field below it goes to a person.'],
   'points': ['5.5-K3', '5.5-S3', '5.5-S4'],
   'source': 'GUIDE 5.5-K3, 5.5-S3, 5.5-S4. The method is the reading of this page.'},
  {'tab': 1,
@@ -575,8 +574,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'decides how to reconcile',
   'title': 'Why does the report still keep both values?',
-  'sent': ['The coordinator decides how to present the conflict, not which value is true. The report keeps both values, each with its source, in the '
-           'section of contested findings.'],
+  'sent': ['A reading of this page: the coordinator decides how to present the conflict, not which value is true. The report keeps both values, each '
+           'with its source, in the section of contested findings.'],
   'points': ['5.6-K3', '5.6-S2', '5.6-S3'],
   'source': 'GUIDE 5.6-K3, 5.6-S2, 5.6-S3'},
  {'tab': 2,
@@ -595,7 +594,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'exam guide',
   'title': 'Which file, and which parts?',
-  'sent': ['The script reads `reference/exam-guide.md`, the copy of the guide in Markdown, not the PDF. From the copy, it reads five sections: 4 '
+  'sent': ['The script reads reference/exam-guide.md, the copy of the guide in Markdown, not the PDF. From the copy, it reads five sections: 4 '
            '(domains), 5 (scenarios), 6 (task statements), 9 (sample questions) and 17 (the lists of technologies and topics). The records leave out '
            'the other sections.'],
   'points': [],
@@ -606,9 +605,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'steps',
   'title': 'Does each step get the same part?',
-  'sent': ['No: the writer gets its scenario and its own task statement, but step 4 gets all 30 task statements, the same text in each call, so that '
-           'it can be cached. Steps 3 and 6 get no part: step 3 checks the form of a try against its slot, and step 6 compares the questions of a '
-           'scenario with the plan and with each other.'],
+  'sent': ['No. The writer gets a slice: its scenario, its own task statement, 3 sample questions and the 14 technologies. Step 4 gets all 30 task '
+           'statements in each call, so the text can be cached. Steps 3 and 6 get no part: they check the questions against their slots and the '
+           'plan.'],
   'points': [],
   'source': 'step-0.md E33, E34; `src/steps.py`, 70-71 and 80-81 (step 3 gets the question and the slot, step 6 the plan); '
             '`src/step3_check_code.py`, 77; `src/step6_check_scenario.py`, 59; step-6.md E6'},
@@ -618,9 +617,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'second script',
   'title': 'What does it check that the script of step 0 does not?',
-  'sent': ['It also checks the other direction: the 240 bullets of Section 6 of the guide are the 240 points, in the same sequence. It compares the '
-           'points with `reference/task-statements-and-points.md` too, an older list of the points for people that a reviewer confirmed on 5 October '
-           '2026. No test in `tests/` covers step 0, so this script is its test.'],
+  'sent': ['It also checks the other direction: the 240 bullets of section 6 of the guide are the 240 points, in the same order. It also compares '
+           'them with reference/task-statements-and-points.md, a list of the points that a reviewer confirmed on 5 October 2026. No test covers step '
+           '0, so this script is its test.'],
   'points': [],
   'source': 'step-0.md E19, E23, E24, E47; `src/check_guide_records.py`, 1-5, 100-102'},
  {'tab': 2,
@@ -640,7 +639,7 @@ POPUPS = [{'tab': 1,
   'who': 'earlier mocks',
   'title': 'Which mocks count, and what does code read?',
   'sent': ['Code counts how often each idea came in each built mock with a lower number. A mock counts only when its file '
-           '`mocks/mock-NN.questions.json` exists.'],
+           'mocks/mock-NN.questions.json exists.'],
   'points': [],
   'source': 'step-1.md R14, R15, section 4.2 (`earlier_mocks`)'},
  {'tab': 2,
@@ -649,7 +648,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'a seed',
   'title': 'Does the same seed always give the same plan?',
-  'sent': ['The seed controls each random choice. The code uses only `random()` of Python, because Python guarantees its sequence for the same seed. '
+  'sent': ['The seed controls each random choice. The code uses only random() of Python, because Python guarantees its sequence for the same seed. '
            "But with today's code the seeds of mocks 1 and 2 no longer give their plans, because later rules changed the points."],
   'points': [],
   'source': 'step-1.md R21, R22, C2, C-10'},
@@ -659,16 +658,15 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'the plan',
   'title': 'Can the plan change later?',
-  'sent': ['No: code writes `plan.json` once and never writes over it. A new point of the owner goes into the file of the decisions of the owner, '
-           '`owner-decisions.json`, and code reads the point from there. A new plan stops the mock: how a new plan starts is not built, and no mock '
-           'used one.'],
+  'sent': ['No. Code writes plan.json once and never writes over it. A new point of the owner goes into owner-decisions.json, and code reads it from '
+           'there. A new plan stops the mock. How a new plan starts is not built, and no mock used one.'],
   'points': [],
   'source': 'step-1.md E2, E3, E15; step-5.md L10, L13, section 4 (`new_plan`: 0 in mocks 1 to 5) and section 9, item 3'},
  {'tab': 2,
   'fig': '1-1',
   'match': ['6'],
   'text_el': True,
-  'who': 'rule line 6 "2 two-answer slots in each scenario"',
+  'who': '2 two-answer slots in each scenario',
   'title': 'Why 2 two-answer slots in each scenario?',
   'sent': ['The guide gives no number of two-answer questions. It says only that each question states how many answers to select. The assistant '
            'guessed 8 for a mock, 2 in each of the 4 scenarios, with no source.'],
@@ -690,8 +688,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'row "the slot: type, options, answers"',
   'title': 'Does the writer see the correct letters?',
-  'sent': ['The writer sees the scenario, the task statement, the point, the type, the number of options and answers, and if the longest option may '
-           'be correct. It does not see the letters that the plan sets from mock 5, so the model never chooses a letter.'],
+  'sent': ['The writer sees the scenario, the task statement, the point and the type. It also sees the number of options and answers, and if the '
+           'longest option may be correct. It does not see the letters that the plan sets from mock 5, so the model never chooses a letter.'],
   'points': [],
   'source': 'step-2.md R9, L5'},
  {'tab': 2,
@@ -700,9 +698,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'row "if any: earlier questions on the idea"',
   'title': 'What instruction comes with them?',
-  'sent': ['A narrow idea has almost only one problem, for example "find text across many files, so use Grep". The narrow list, '
-           '`data/narrow-ideas.json`, has 63 of the 95 ideas today, and each of them gets "Use a different setting and scene". Each other idea gets '
-           '"Write a question with a different problem, also if you change the setting".'],
+  'sent': ['A narrow idea has almost only one problem, for example "find text across many files, so use Grep". The 63 narrow ideas of '
+           'data/narrow-ideas.json get "Use a different setting and scene". The other ideas get "Write a question with a different problem, also if '
+           'you change the setting".'],
   'points': [],
   'source': '`docs/decisions/0066-a-stricter-rule-b9-for-mocks-4-and-5.md`, 26; step-2.md R10, A12, A14, section 4 (63 of 95); `src/step2_write.py`, '
             '89-99'},
@@ -712,7 +710,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'the form',
   'title': 'How does code make the form strict?',
-  'sent': ['Code adds `"additionalProperties": false` to each object before it sends the schema, because the Claude API documentation of structured '
+  'sent': ['Code adds "additionalProperties": false to each object before it sends the schema, because the Claude API documentation of structured '
            'outputs requires it. The form stops format errors, not content errors, so step 3 checks the content.'],
   'points': ['4.3-K3'],
   'source': 'step-2.md F1, F2, section 3 (4.3-K3)'},
@@ -722,9 +720,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'row "the 14 technologies of the guide"',
   'title': 'Why does the writer get this list?',
-  'sent': ['Mock decision 0029 gives the list for one rule: no question may depend on a feature that the exam guide does not name. Section 17 lists '
-           'the technologies that "might appear on the exam". Rule B6 of step 4 then checks by code that each feature name of a question is in the '
-           'guide records.'],
+  'sent': ['Mock decision 0029 gives the list for one rule: no question may depend on a feature that the guide does not name. Section 17 lists the '
+           'technologies that "might appear on the exam". Rule B6 of step 4 then checks by code that each feature name is in the guide records.'],
   'points': [],
   'source': '`docs/decisions/0029-the-design-of-step-2-the-writer-call.md`, 125; '
             '`docs/decisions/0005-a-question-depends-only-on-features-that-the-guide-names.md`, 20, 26; step-0.md E33, E35'},
@@ -794,8 +791,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': '11 fail',
   'title': 'Which rules failed the 11 tries?',
-  'sent': ['Rule A12 failed 7: a correct option was the longest on a slot that needs a longer wrong option. Rules A1 and A2 failed 2 tries with 6 '
-           'options for a slot of 5, and rule A9 failed 2 questions of 6 sentences. The next try of each slot passed step 3.'],
+  'sent': ['Rule A12 failed 7 tries: a correct option was the longest, and the slot needs a longer wrong option. Rules A1 and A2 failed 2 tries with '
+           '6 options for a slot of 5. Rule A9 failed 2 questions of 6 sentences. Each next try passed step 3.'],
   'points': [],
   'source': 'step-3.md section 4.2 (findings by rule), notes under it (11 tries, 13 findings, 11 of 11 repaired), section 4.3; '
             '`runs/mock-0N/checks/*-step3.json`, field `findings`'},
@@ -805,9 +802,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'Mock 4',
   'title': 'Must the longest option be correct on some slots?',
-  'sent': ['No: on 13 of the 52 one-answer slots, the plan allows a correct option to be the longest, but it does not require it. On the other 39, '
-           'rule A12 fails a try in which a correct option is at least as long as the longest wrong option. In mock 4, the correct option was the '
-           'longest on 5 of the 13 slots that allow it.'],
+  'sent': ['No. On 13 of the 52 one-answer slots, the plan allows a correct option to be the longest, but it does not require it. On the other 39, '
+           'rule A12 fails such a try. In mock 4, the correct option was the longest, or tied, on 5 of the 13 slots that allow it.'],
   'points': [],
   'source': 'step-3.md R11, R12, rule table A12, b11, section 4.2 (built mock row); `src/step3_check_code.py`, 151-160'},
  {'tab': 2,
@@ -816,8 +812,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'call 4a',
   'title': 'What does call 4a see?',
-  'sent': ['Call 4a gets the task statements and points of the guide, the story and the question with its options, but no answer key and no reasons. '
-           'It answers as a candidate does. That a checker who sees the answer key can tend to agree with it is an assumption of the assistant.'],
+  'sent': ['Call 4a gets the task statements and points of the guide, the story and the question with its options. It gets no answer key and no '
+           'reasons. It answers as a candidate does. That a checker who sees the answer key can tend to agree with it is an assumption of the '
+           'assistant.'],
   'points': [],
   'source': 'step-4.md A1, A2, A3, A7'},
  {'tab': 2,
@@ -836,8 +833,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'code',
   'title': 'When is it a fail?',
-  'sent': ['A fail: the letters of call 4a differ from the answer key, a rule fails, or code does not find a feature name in the guide records. If '
-           'not, "cannot decide" when call 4a or a rule cannot decide. If not, a pass.'],
+  'sent': ['A fail comes in three cases. The letters of call 4a differ from the answer key, a rule fails, or code does not find a feature name in '
+           'the guide records. If not, "cannot decide" when call 4a or a rule cannot decide. If not, a pass.'],
   'points': [],
   'source': 'step-4.md V3'},
  {'tab': 2,
@@ -857,7 +854,7 @@ POPUPS = [{'tab': 1,
   'who': 'B2',
   'title': 'What does rule B2 check?',
   'sent': ['"Each wrong option is wrong for a reason that the guide gives, and its reason says so." Its one finding, M2-S44-T1: the reason of option '
-           'B argued only that the guide is silent, but point 3.6-K3 gives a direct reason that B is wrong.'],
+           'B argued only that the guide is silent. But point 3.6-K3 gives a direct reason that B is wrong.'],
   'points': [],
   'source': 'step-4.md section 2.3 (B2), section 4 (findings per rule); `src/step4_check_model.py`, 22; `runs/mock-02/checks/M2-S44-T1-step4.json`, '
             'field `findings`'},
@@ -868,7 +865,7 @@ POPUPS = [{'tab': 1,
   'who': 'B3',
   'title': 'What does rule B3 check?',
   'sent': ['"Each reason is true and agrees with the guide." Example, M5-S28-T3: the reason of option D said that the guide recommends tables for '
-           '"financial and numeric data", but point 5.6-S5 names only financial data.'],
+           '"financial and numeric data". Point 5.6-S5 names only financial data.'],
   'points': [],
   'source': 'step-4.md section 2.3 (B3); `src/step4_check_model.py`, 23; `runs/mock-05/checks/M5-S28-T3-step4.json`, field `findings`'},
  {'tab': 2,
@@ -878,7 +875,7 @@ POPUPS = [{'tab': 1,
   'who': 'B4',
   'title': 'What does rule B4 check?',
   'sent': ['"The question tests the point of its slot." Its one finding, M1-S47-T5: the point says that few-shot examples are the most effective '
-           'technique, but the question already named the technique and tested how to build the examples.'],
+           'technique. But the question already named the technique and tested how to build the examples.'],
   'points': [],
   'source': 'step-4.md section 2.3 (B4), section 4 (findings per rule); `src/step4_check_model.py`, 24; `runs/mock-01/checks/M1-S47-T5-step4.json`, '
             'field `findings`'},
@@ -889,7 +886,7 @@ POPUPS = [{'tab': 1,
   'who': 'B5',
   'title': 'What does rule B5 check?',
   'sent': ['"The question is inside the story of its scenario and does not contradict it." Example, M2-S51-T1: the correct option told the agent to '
-           '"request an additional identifier", but the story of scenario 6 has no customer, user or reviewer to ask.'],
+           '"request an additional identifier". But the story of scenario 6 has no customer, user or reviewer to ask.'],
   'points': [],
   'source': 'step-4.md section 2.3 (B5); `src/step4_check_model.py`, 25; `runs/mock-02/checks/M2-S51-T1-step4.json`, field `findings`'},
  {'tab': 2,
@@ -898,9 +895,9 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'new request of step 5',
   'title': 'What does the writer read?',
-  'sent': ['The request says: "Correct each finding. The letters are the letters that the checker saw." Code then mixes the options of the new try '
-           'again, so the new try can get other letters. After a bad mark, a rewrite or "more tries", each try of the new start also gets the reason '
-           'of the owner, as a finding.'],
+  'sent': ['The request says: "Correct each finding. The letters are the letters that the checker saw." Code then mixes the options again, so the '
+           'new try can get other letters. After a bad mark, a rewrite or "more tries", each new try also gets the reason of the owner, as a '
+           'finding.'],
   'points': ['4.4-K1'],
   'source': 'step-5.md E2, E10, E11; step-2.md L1, L3; `src/step2_write.py`, 157 and 183-190 (the seed of the mix holds the text of the question); '
             '`src/control.py`, 236-240 and 270-299'},
@@ -989,9 +986,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'D4',
   'title': 'Why did the owner ignore the D4 findings?',
-  'sent': ['The records give no reason for rule D4 alone. Mock decision 0059 gives one reason for its decisions on mock 2: the owner and the second '
-           'review had found each question good, and another round of rewrites costs a round of marks and can make new close questions. Mocks 3 to 5 '
-           'used the same rule.'],
+  'sent': ['The records give no reason for rule D4 alone. For mock 2, mock decision 0059 says that the owner and the second review had found each '
+           'question good. Another round of rewrites costs a round of marks and can make new close questions. Mocks 3 to 5 used the same rule.'],
   'points': [],
   'source': '`docs/decisions/0059-mock-2-more-known-limits-and-the-findings-of-step-6.md`, 30, 36; 0064, 30; 0069, 35; 0077, 31; step-6.md B6, B7, '
             'section 9, item 3'},
@@ -1040,8 +1036,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'the owner',
   'title': 'What does accept save, and when?',
-  'sent': ['Code saves the decision `accept` only after step 8 built the files, so a failed build saves no accept. Then the mock is `built`, and '
-           'code refuses each later decision. The code has no path to build the files again.'],
+  'sent': ['Code saves the decision accept only after step 8 built the files, so a failed build saves no accept. Then the mock is built, and code '
+           'refuses each later decision. The code has no path to build the files again.'],
   'points': [],
   'source': 'step-8.md E5, E6, E7, `docs/decisions/0082-the-code-has-no-path-to-build-the-files-again.md`'},
  {'tab': 2,
@@ -1070,8 +1066,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'fingerprints',
   'title': 'What does a fingerprint cover?',
-  'sent': ['It covers what a participant sees: the question ID, the question, the field `select`, and each option with its letter, its text, whether '
-           'it is correct, and its reason. The date and the model are not in it, because they do not change what a participant sees.'],
+  'sent': ['It covers what a participant sees: the question ID, the question and the field select. It also covers each option with its letter, its '
+           'text, whether it is correct, and its reason. The date and the model are not in it, because they do not change what a participant sees.'],
   'points': [],
   'source': 'step-8.md P1, P2'},
  {'tab': 2,
@@ -1111,7 +1107,7 @@ POPUPS = [{'tab': 1,
   'who': 'stopped',
   'title': 'Why did the owner stop with 20 fixes that nobody checked?',
   'sent': ['The records give no reason. The journal and a commit record only the stop, at 23:23 on 9 October 2026, 40 minutes after the first fixes. '
-           'Five minutes later, the tag `mocks-v2` went on the next commit.'],
+           'Five minutes later, the tag mocks-v2 went on the next commit.'],
   'points': [],
   'source': '`docs/journal.md`, 59; claude-code.md entry 3 (c), rows "stop" and "after", and "Time"; git `3992c49` (23:23:30) and `aca8a23` '
             '(23:28:09); academy decision 0031 (no reason)'}]
