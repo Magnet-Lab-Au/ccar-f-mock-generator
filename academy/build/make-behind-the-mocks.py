@@ -1992,8 +1992,8 @@ LIMITS = """<section class="parts" id="limits" aria-label="What this shows and w
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
-  <h1>%(title)s</h1>
-  <p class="lead">%(para)s</p>
+  <h1 class="title-center">%(title)s</h1>
+  <p class="lead intro">%(para)s</p>
 </header>
 %(fig1)s
 <section class="parts" id="steps" aria-label="The 9 steps">
