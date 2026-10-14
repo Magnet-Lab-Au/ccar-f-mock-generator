@@ -18,7 +18,8 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 - Pictures for the owner: `academy/screenshots/tab-1-redraw/before-after-1.N.png` (domain 1) and `academy/screenshots/redraw/before-after-*.png` (the rest), dark mode in `academy/screenshots/redraw/dark/`. All were taken again after the last fixes.
 - `main` was pushed to GitHub at 7b47e4d. The later commits are local.
 - The missing reviews of decision 0036 are done: the top of tab 1, part 1.1, and the reader agent of decision 0026 for slices 5 to 8. Their items are fixed, except the few that the academy journal names as not changed.
-- Next step: the owner looks at the pictures and the pages, says yes to a push (main is ahead of GitHub), and accepts slices 2 to 8 or names what to change (decision 0022).
+- The popup plan (`academy/popup-plan.md`, accepted) is built: 95 popups on the boxes of 40 figures, from `academy/build/popups.py`, reviewed and fixed.
+- Next step: the owner looks at the pages, says yes to a push (main is ahead of GitHub), and accepts slices 2 to 8 or names what to change (decision 0022).
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
