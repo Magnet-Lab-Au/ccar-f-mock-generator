@@ -247,3 +247,25 @@ def group_roles(body):
         svg = m.group(0)
         return svg.replace(' role="img"', ' role="group"', 1) if "data-step=" in svg else svg
     return re.sub(r"<svg\b[^>]*>.*?</svg>", one, body, flags=re.S)
+
+
+SOURCES_RX = re.compile(r'<section class="sources" aria-label="([^"]*)">\s*<p class="ve-label">.*?</p>\s*<ul>(.*?)</ul>\s*</section>', re.S)
+
+
+def fold_sources(body):
+    """Each list of sources is a closed section that the reader opens (owner, 15 October 2026)."""
+    def one(m):
+        name = re.sub(r"^Sources of ts-(\d)-(\d)$", r"Sources of part \1.\2", m.group(1))
+        name = {"Sources of the top": "Sources of the introduction"}.get(name, name)
+        return ('<details class="sources" aria-label="%s"><summary class="ve-label">%s (%d)</summary><ul>%s</ul></details>'
+                % (name, name, m.group(2).count("<li"), m.group(2)))
+    out, n = SOURCES_RX.subn(one, body)
+    assert 'class="sources"' not in SOURCES_RX.sub("", body) or n == body.count('<section class="sources"'), "a list of sources has another form"
+    return out
+
+
+def glossary_panel(dl, extra=""):
+    """The glossary in a panel at the side, which a fixed button opens at any point of the page (owner, 15 October 2026)."""
+    return ('<button type="button" class="glossary-btn" aria-controls="top-words" aria-expanded="false">Glossary</button>'
+            '<aside class="glossary-panel" id="top-words" aria-label="Glossary" hidden><div class="gp-head"><h2>Glossary</h2>'
+            '<button type="button" class="gp-close">Close</button></div>%s%s</aside>' % (dl, extra))

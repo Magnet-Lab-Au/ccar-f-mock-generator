@@ -19,7 +19,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
+from lib import fold_sources, glossary_panel, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
 
 TAB2 = "behind-the-mocks.html"
 EG = "reference/exam-guide.md"
@@ -2980,12 +2980,12 @@ GLOSS = [
     ("Agent SDK", "Claude Code as a package for your own code, see Fig. C. Domain 1 uses it, for example in " + to_parts("1.3", "1.5", "1.7")[6:]),
 ]
 
+GLOSSARY = glossary_panel('<dl class="glossary">%s</dl>' % "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS),
+                          '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%s#top-words">Glossary of tab 2 &rarr;</a></p>' % TAB2)
 PRIMER = """<section class="parts" id="primer" aria-label="Before you start">
   <h2>Before you start: the products and the words</h2>
-  <p>The exam asks about three products and one protocol. Fig. C shows who runs the tools in each.</p>
+  <p>The exam asks about three products and one protocol. Fig. C shows who runs the tools in each. The button Glossary at the right edge of the screen explains the words of this tab.</p>
   %(fig)s
-  <details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">%(n)d words</span></summary><div class="body"><dl class="glossary">%(gloss)s</dl>
-  <p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%(tab2)s#top-words">Words on tab 2 &rarr;</a></p></div></details>
 </section>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
 
 TITLE = "Exam guide breakdown"
@@ -2999,12 +2999,14 @@ BODY = """<main>
 %(breakdown)s
 %(primer)s
 %(domains)s
-</main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN, "primer": PRIMER,
+%(glossary)s
+</main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN, "primer": PRIMER, "glossary": GLOSSARY,
              "domains": "".join(domain_html(DOM[i]) for i in range(1, 6))}
 
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, POPUPS, 1, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
+BODY = fold_sources(BODY)
 BODY = code_font(BODY)
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 %s %s ' % (m.group(1), m.group(3), m.group(2), m.group(3)), BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))

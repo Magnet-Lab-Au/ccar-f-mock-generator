@@ -152,6 +152,18 @@ document.addEventListener('DOMContentLoaded', function () {
     show(0);
   }
 
+  /* the glossary panel at the side (owner, 15 October 2026): a fixed button opens and closes it */
+  const gBtn = document.querySelector('.glossary-btn'), gPan = document.getElementById('top-words');
+  if (gBtn && gPan) {
+    const gSet = (on) => { gPan.hidden = !on; gBtn.setAttribute('aria-expanded', String(on)); if (on) gPan.querySelector('.gp-close').focus(); };
+    gBtn.addEventListener('click', () => gSet(gPan.hidden));
+    gPan.querySelector('.gp-close').addEventListener('click', () => { gSet(false); gBtn.focus(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !gPan.hidden) { gSet(false); gBtn.focus(); } });
+    const gHash = () => { if (location.hash === '#top-words') gSet(true); };
+    addEventListener('hashchange', gHash);
+    gHash();
+  }
+
   /* before / after (decision 0037): with no script both panels show, and the script shows one panel and two buttons */
   for (const fig of document.querySelectorAll('.ve-ba')) {
     const panels = [...fig.querySelectorAll('.ba-panel')];

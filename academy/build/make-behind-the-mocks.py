@@ -18,7 +18,7 @@ import sys
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import (BRANCH, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
+from lib import (BRANCH, fold_sources, glossary_panel, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
                  script_file, write)
 
 TAB1 = "exam-guide-breakdown.html"
@@ -1906,7 +1906,7 @@ PARAGRAPH = re.search(r"   > (The mock builder is itself.*?)\n", PARAGRAPH).grou
 TITLE = "Mocks Built with the Same Principles They Test"
 assert TITLE in read("academy/decisions/0010-two-tabs-each-one-page-with-an-exploded-view.md")
 
-WORDS = """<details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">15 words</span></summary><div class="body"><dl class="glossary">
+WORDS = """<dl class="glossary">
 <dt>Mock</dt><dd>A practice exam of %(n)d questions. The mock builder made %(m)d mocks.</dd>
 <dt>Slot</dt><dd>%(slot)s</dd>
 <dt>Try</dt><dd>One question that the writer writes for a slot. A slot can have more than one try. The last try that passes goes into the mock.</dd>
@@ -1922,7 +1922,7 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
 <dt>Idea</dt><dd>%(idea)s</dd>
 <dt>Second review</dt><dd>%(sr)s</dd>
 <dt>Mock decision</dt><dd>A decision record of the build, such as mock decision 0038. The records are in the repository.</dd>
-</dl></div></details>""" % {"n": SLOTS, "m": len(glob.glob(os.path.join(ROOT, "mocks/mock-*.questions.json"))), "slot": fact("w-slot", "The place of one question in the plan of a mock. Step 1 plans %d slots for each mock." % SLOTS),
+</dl>""" % {"n": SLOTS, "m": len(glob.glob(os.path.join(ROOT, "mocks/mock-*.questions.json"))), "slot": fact("w-slot", "The place of one question in the plan of a mock. Step 1 plans %d slots for each mock." % SLOTS),
                          "key": "The correct option or options of a question. The writer marks each option correct or wrong, and gives a reason.",
                          "idea": fact("s1-idea", "A group of points of the guide on one subject. The build put the %d points into %d ideas." % (N_PTS, len(PG))),
                          "sr": fact("s7-what", "A Claude model in a separate chat, outside the program, that read and marked the mocks after the checks. For mocks 4 and 5 it was the only reader."),
@@ -1994,7 +1994,6 @@ BODY = """<main>
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
   <h1>%(title)s</h1>
   <p class="lead">%(para)s</p>
-  %(words)s
 </header>
 %(fig1)s
 <section class="parts" id="steps" aria-label="The 9 steps">
@@ -2007,17 +2006,19 @@ BODY = """<main>
   %(cc)s
 </section>
 %(limits)s
+%(words)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": WORDS, "cc": CC_HTML, "limits": LIMITS}
+             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "cc": CC_HTML, "limits": LIMITS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
-TOP = BODY.split('<section class="parts" id="steps"')[0]
+TOP = BODY.split('<section class="parts" id="steps"')[0] + WORDS   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, POPUPS, 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
 BODY = code_font(BODY)   # academy decision 0038
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
+BODY = fold_sources(BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)
 CARD = {k: v for k, v in CARD.items() if k in USED}
