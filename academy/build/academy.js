@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const bar = document.createElement('div');
     bar.className = 've-toggle'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', fig.dataset.controls || 'Choose an example');
     items.forEach((it, i) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.textContent = it.dataset.pick; bar.append(b); });
-    const all = document.createElement('button'); all.type = 'button'; all.dataset.i = -1; all.textContent = 'all'; bar.append(all);
+    const all = document.createElement('button'); all.type = 'button'; all.dataset.i = -1; all.textContent = fig.dataset.allLabel || 'All'; bar.append(all);
     const show = (k) => {
       items.forEach((it, i) => { it.classList.toggle('sel', i === k); it.classList.toggle('dim', k >= 0 && i !== k); });
       if (target) target.classList.toggle('on', k >= 0 && items[k].dataset.match === 'yes');

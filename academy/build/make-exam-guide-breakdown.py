@@ -261,7 +261,7 @@ def waffle(n, label_a, label_b, aria):
 def live(num, controls, svg_w, svg_h, aria, inner, say_all, cap):
     """A live figure (decision 0037): with no script the full picture and say_all show. The script adds a button for each
     part with data-pick, and a choice lights that part and shows its data-say."""
-    return ('<figure class="ve-live" data-controls="%s"><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
+    return ('<figure class="ve-live" data-controls="%s" data-all-label="All files"><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
             '<p class="ve-say" aria-live="polite" data-all="%s">%s</p><figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>'
             % (e(controls), svg_w, svg_h, e(aria), inner, e(say_all), e(say_all), num, cap))
 
@@ -1297,16 +1297,16 @@ FIG33 = live("3.3-1", "Choose a file", 890, 330,
                "but not src/ui/Button.tsx. When Claude edits a matching file, the rule loads into the context (in Claude Code, a read is enough too). A CLAUDE.md in src/ui/ covers that one folder only.",
                "".join(['<path class="ve-e no-head" d="M280 80H320M320 42V150"/>',
                         edge("M320 42H360"), edge("M320 96H360"), edge("M320 150H360"),
-                        edge("M620 96H700"),
+                        '<path class="ve-e no-head" d="M620 42H660V150M620 150H660"/>', edge("M660 96H700"),
                         '<text class="ve-lab" x="300" y="290">a directory CLAUDE.md covers one folder only</text>',
                         box(20, 40, 260, 80, [".claude/rules/testing.md"], sub='paths: "**/*.test.tsx"'),
-                        box(360, 20, 260, 44, ["src/ui/Button.test.tsx"], cls="try ok", data={"pick": "src/ui/Button.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
-                        box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok", data={"pick": "src/api/users.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
-                        box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok", data={"pick": "lib/date.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file."}),
+                        box(360, 20, 260, 44, ["src/ui/Button.test.tsx"], cls="try ok", data={"pick": "src/ui/Button.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file (the guide). In Claude Code, a read is enough too."}),
+                        box(360, 74, 260, 44, ["src/api/users.test.tsx"], cls="try ok", data={"pick": "src/api/users.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file (the guide). In Claude Code, a read is enough too."}),
+                        box(360, 128, 260, 44, ["lib/date.test.tsx"], cls="try ok", data={"pick": "lib/date.test.tsx", "match": "yes", "say": "This path matches **/*.test.tsx, so the rule loads into the context when Claude edits the file (the guide). In Claude Code, a read is enough too."}),
                         box(360, 182, 260, 44, ["src/ui/Button.tsx"], sub="no match", data={"pick": "src/ui/Button.tsx", "match": "no", "say": "This path does not match **/*.test.tsx, so the rule does not load."}),
                         box(700, 50, 170, 90, ["Context"], sub="on an edit (guide)", cls="who-model", data={"target": "context"}),
                         box(20, 250, 260, 60, ["src/ui/CLAUDE.md"], sub="only files in src/ui/")]),
-               "Choose a file to see if the rule loads. The buttons show the example paths of the figure.",
+               "The three test files match **/*.test.tsx, and src/ui/Button.tsx does not.",
                "%s %s" % (cf("ts-3-3-f1", D(MEMD, "Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.", "Claude Code, Memory"),
                              "A paths field in the frontmatter scopes a rule to the files that match its patterns."),
                           cf("ts-3-3-f13", gx("allows conventions to be automatically applied based on file paths regardless of directory location, essential for test files spread throughout the codebase.", "Exam guide, sample question 6"),
@@ -1361,10 +1361,10 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
 SKL, FOV, CDIR = "claude-code-docs-skills", "claude-code-docs-features-overview", "claude-code-docs-claude-directory"
 SKILL32 = "---\nname: deep-research\ndescription: Research a topic thoroughly\ncontext: fork\nagent: Explore\n---\n\nResearch $ARGUMENTS thoroughly:\n\n1. Find relevant files using Glob and Grep\n2. Read and analyze the code\n3. Summarize findings with specific file references"
 FIG32 = before_after("3.2-1", [
-    ("Without fork", "Without context: fork", 890, 200,
+    ("Without fork", "Without context: fork", 890, 240,
      "Without context: fork, the body of the skill enters the main context.",
      "".join([edge("M560 100H280", "the body enters the main context", 420, 91, cls="is-hot"),
-              box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
+              box(20, 40, 260, 120, ["Main", "conversation"], sub="descriptions, then the body", cls="who-model"),
               box(560, 40, 310, 120, ["The skill"], sub="the body of SKILL.md")])),
     ("With context: fork", "With context: fork", 890, 240,
      "A skill with context: fork runs in a new subagent. The content of SKILL.md is its task, and it gets no conversation history. "
@@ -1521,11 +1521,11 @@ FIG35 = stepper("ts-3-5-fig1", "3.5-1", 890, 320,
                "In an unfamiliar domain, an interview can come first, where Claude asks questions. Then the tests are written first. Claude implements and runs the tests. "
                "If all pass, the work is done. If not, the failures go back to Claude: interacting issues in one message, independent issues one at a time.",
                "".join([edge("M210 65H260", cls="is-async", s="2"), edge("M430 65H480", s="3"), edge("M650 65H700", s="4"),
-                        edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot", a="5"),
-                        '<path class="ve-e no-head is-async" data-a="5" d="M565 140V190"/>',
+                        edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot", s="5"),
+                        '<path class="ve-e no-head is-async" data-s="5" pathLength="1" d="M565 140V190"/>',
                         edge("M785 100V180", "all pass", 793, 145, anchor="r", s="6"),
-                        '<text class="ve-lab" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
-                        '<path data-flow="tdd" data-every="2600" d="M565 65H785V140H565V65"/>', '<g class="ve-dots" aria-hidden="true"></g>',
+                        '<text class="ve-lab" data-a="9" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
+                        '<path data-flow="tdd" data-every="2600" d="M565 65H740V140H565V65"/>', '<g class="ve-dots" aria-hidden="true"></g>',
                         box(20, 30, 190, 70, ["Interview"], sub="if the domain is new", cls="who-model", a="1"),
                         box(260, 30, 170, 70, ["Write tests"], sub="before the code", a="2"),
                         box(480, 30, 170, 70, ["Claude", "implements"], cls="who-model", a="3 5"),
@@ -1534,7 +1534,7 @@ FIG35 = stepper("ts-3-5-fig1", "3.5-1", 890, 320,
                         box(330, 190, 320, 80, ["interacting: one message", "independent: one at a time"], a="5")]),
                ["The loop of a change. Use the arrow buttons to go through it one step at a time.",
                 "In an unfamiliar domain, an interview can come first: Claude asks questions.",
-                "The tests are written first, before the code.",
+                "Write the tests first, before the code.",
                 "Claude implements.",
                 "The tests run.",
                 "The failures go back to Claude: interacting issues in one message, independent issues one at a time.",

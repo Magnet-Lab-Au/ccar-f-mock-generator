@@ -148,8 +148,16 @@ function inPage() {
     const name = (fig.querySelector('.fig-n') || {}).textContent || 'a live figure';
     const buttons = [...fig.querySelectorAll('.ve-toggle button')], say = fig.querySelector('.ve-say');
     if (!buttons.length || !say) { out.fail.push('Live figure without buttons or a sentence: ' + name); continue; }
-    buttons.forEach((b, i) => { b.click(); if (!say.textContent.trim()) out.fail.push(name + ': choice ' + (i + 1) + ' says nothing'); checkText(fig, name + ', choice ' + (i + 1) + ': '); });
-    buttons[buttons.length - 1].click();
+    const items = [...fig.querySelectorAll('[data-pick]')];
+    buttons.forEach((b, i) => {
+      b.click();
+      const k = +b.dataset.i, want = k >= 0 ? items[k].dataset.say : say.dataset.all;
+      if (say.textContent !== want) out.fail.push(name + ': choice ' + (i + 1) + ' shows the wrong sentence');
+      if (k >= 0 && !items[k].classList.contains('sel')) out.fail.push(name + ': choice ' + (i + 1) + ' does not light its part');
+      if (k < 0 && fig.querySelector('.sel, .dim')) out.fail.push(name + ': the choice for all does not reset the figure');
+      checkText(fig, name + ', choice ' + (i + 1) + ': ');
+    });
+    (buttons.find((b) => +b.dataset.i < 0) || buttons[buttons.length - 1]).click();
     out.info.push('LIVE ' + name + ': ' + buttons.length + ' choices checked');
   }
   // word limits (decision 0026): figures and popups are not counted
