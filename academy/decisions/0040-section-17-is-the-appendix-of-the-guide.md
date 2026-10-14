@@ -1,8 +1,8 @@
 # 0040: Section 17 is the appendix of the guide
 
 - Date: 14 October 2026
-- Status: proposed. A correction by the assistant. The owner sees it in the report of this session.
-- Text confirmed by the owner: not yet
+- Status: accepted. A correction by the assistant.
+- Text confirmed by the owner: 14 October 2026, in the discussion (working rule 35). An independent agent checked it.
 - Diagram: none
 - Changes: decision 0039, item 12, the name of section 17. Decision 0039 does not change (working rule 26).
 

@@ -10,7 +10,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 ### State on 14 October 2026, morning: the answers to the morning report
 
-- The owner answered all items of the morning report below, one question at a time. The 27 answers are in academy decision 0039. Academy decision 0040 (proposed) corrects its item 12: section 17 is the appendix of the guide.
+- The owner answered all items of the morning report below, one question at a time. The 27 answers are in academy decision 0039. Academy decision 0040 corrects its item 12: section 17 is the appendix of the guide.
 - Accepted: academy decisions 0035 and 0036, mock decision 0080 (merged into `main`, bec0418). New: academy decisions 0037 (the figures are made again with the plugin), 0038 (a single name can appear in the running text), and mock decisions 0081 (ruling 2), 0082 (no path to build the files again) and 0083 (no more mocks for now).
 - Done after the answers: the records, the paths without the user name, the build guide (step 2 line 45, step 6 table with 1.6-K2, step 8, the section of mock decision 0026), diagram 08, and the text fixes of both tabs. `check-pages.js` prints "All checks passed." The tests print "Ran 234 tests" and "OK".
 - An independent check found that step 6 uses 1.6-K2 but not 5.2-K3. So only 1.6-K2 is in the step 6 table, and tab 2 shows no 5.2 chip on step 6.

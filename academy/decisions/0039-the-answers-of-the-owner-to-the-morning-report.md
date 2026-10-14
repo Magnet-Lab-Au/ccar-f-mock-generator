@@ -1,7 +1,7 @@
 # 0039: The answers of the owner to the morning report
 
 - Date: 14 October 2026
-- Status: accepted. Decision 0040 (proposed) corrects item 12 (the name of section 17). In item 25, "decision 0040" is mock decision 0040.
+- Status: accepted. Decision 0040 corrects item 12 (the name of section 17). In item 25, "decision 0040" is mock decision 0040.
 - Text confirmed by the owner: 14 October 2026, in the discussion (working rule 35)
 - Diagram: none
 - Names: decisions 0035 and 0036, mock decision 0080, and the 16 items of the morning report in `HANDOFF.md`, "Morning report, night of 14 October 2026"

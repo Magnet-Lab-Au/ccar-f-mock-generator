@@ -16,6 +16,7 @@ One entry for each work session. Newest entry first.
 - An independent agent checked all fixes after the records (360708e to 4db3116). It found 4 medium and 8 low items, none high. 11 are fixed. Not changed: the line "The exam tests only that prompt caching exists." It is the text of academy decision 0006, and step 4 uses it too.
 - `main` is pushed to GitHub (79c7e28, decision 0039, item 27). A scan of the commits found no API key and no personal file of the owner.
 - The owner made the repository public. All 155 distinct GitHub links of both tabs return HTTP 200 (checked with curl, without the line anchors).
+- The owner accepted decision 0040.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 
