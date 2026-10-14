@@ -14,10 +14,11 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 - Accepted: academy decisions 0035 and 0036, mock decision 0080 (merged into `main`, bec0418; the branch `fix-owner-reason` and its worktree are deleted). New: academy decisions 0037 (the figures are made again with the plugin), 0038 (a single name can appear in the running text), and mock decisions 0081 (ruling 2), 0082 (no path to build the files again) and 0083 (no more mocks for now).
 - Done after the answers: the records, the paths without the user name, the build guide (step 2 line 45, step 6 table with 1.6-K2, step 8, the section of mock decision 0026), diagram 08, and the text fixes of both tabs. `check-pages.js` prints "All checks passed." The tests print "Ran 234 tests" and "OK".
 - An independent check found that step 6 uses 1.6-K2 but not 5.2-K3. So only 1.6-K2 is in the step 6 table, and tab 2 shows no 5.2 chip on step 6.
-- Waiting for the figure redo (decision 0037): the takeaway in each closed heading, the label "Guide only", the three names of the documentation, the code popup of part 1.2, and Figs. 5.6-1, 2.1-1 and 5.2-1. Then the missing reviews of decision 0036, and the acceptance of slices 2 to 8 (decision 0022).
-- `main` is pushed to GitHub (79c7e28), so the links to `blob/main/...` resolve.
-- The figure plan of academy decision 0037 is accepted (`academy/figure-plan.md`, with the 5 fixes of its plan review).
-- Next step: extend `check-pages.js` to visit each step, toggle state and live-figure choice (plan, order of the work, item 5). Then redraw domain 1 of tab 1 (9 figures) as a test, and show the owner the screenshots. Load the skill of the plugin visual-explainer first.
+- The figure plan of academy decision 0037 is built (14 October 2026, afternoon): 27 redraws and 9 number pictures, with steppers, small multiples, before/after, one live figure (3.3-1), moving dots on six figures, and growing bars. The text changes of decision 0039 are done too: the label "Guide only", the three names of the documentation, the code popup of part 1.2, and the takeaway in each closed heading of tab 2. Each domain and tab 2 had a review agent, and all their items are fixed. `check-pages.js` checks each step, panel and choice, and prints "All checks passed." for both tabs.
+- Pictures for the owner: `academy/screenshots/tab-1-redraw/before-after-1.N.png` (domain 1) and `academy/screenshots/redraw/before-after-*.png` (the rest), dark mode in `academy/screenshots/redraw/dark/`.
+- `main` was pushed to GitHub at 7b47e4d. The later commits are local.
+- The missing reviews of decision 0036: the top of tab 1 is reviewed and fixed. Running: the review of part 1.1, and the reader agent of decision 0026 for slices 5 to 8.
+- Next step: fix the items of those two reviews, push after a yes of the owner, then the owner accepts slices 2 to 8 or names what to change (decision 0022).
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 
