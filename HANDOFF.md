@@ -16,7 +16,8 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 - An independent check found that step 6 uses 1.6-K2 but not 5.2-K3. So only 1.6-K2 is in the step 6 table, and tab 2 shows no 5.2 chip on step 6.
 - Waiting for the figure redo (decision 0037): the takeaway in each closed heading, the label "Guide only", the three names of the documentation, the code popup of part 1.2, and Figs. 5.6-1, 2.1-1 and 5.2-1. Then the missing reviews of decision 0036, and the acceptance of slices 2 to 8 (decision 0022).
 - `main` is pushed to GitHub (79c7e28), so the links to `blob/main/...` resolve.
-- Next step: the figure plan of academy decision 0037, for all 56 figures. Load the skill of the plugin visual-explainer first. The owner checks the plan before any figure is drawn.
+- The figure plan of academy decision 0037 is accepted (`academy/figure-plan.md`, with the 5 fixes of its plan review).
+- Next step: extend `check-pages.js` to visit each step, toggle state and live-figure choice (plan, order of the work, item 5). Then redraw domain 1 of tab 1 (9 figures) as a test, and show the owner the screenshots. Load the skill of the plugin visual-explainer first.
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 

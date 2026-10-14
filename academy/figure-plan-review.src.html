@@ -45,13 +45,17 @@
   <figcaption><span class="fig-n">Fig. 1</span>The plan changes only figures, but five other parts of the build depend on those figures.</figcaption>
 </figure>
 
+<ve-revision v="2">
+  <li>The owner approved the plan and accepted all 5 fixes. They are in academy/figure-plan.md.</li>
+</ve-revision>
+
 <ve-plan>
 
-  <ve-claim check="check-pages.js prints no line &quot;Over the word limit&quot; after the redraw of 2.1 and 5.6.">
+  <ve-claim rev="2" status="built" ref="figure-plan.md" check="check-pages.js prints no line &quot;Over the word limit&quot; after the redraw of 2.1 and 5.6.">
     <p>Two planned moves push an Explanation over its limit of 500 words.</p>
-    <ve-code src="academy/figure-plan.md" lines="122-129" hl="124 129">
-      <ve-pin line="124">The Explanation of 2.1 has 498 of 500 words today (check-pages.js, run on 14 October 2026).</ve-pin>
-      <ve-pin line="129">The Explanation of 5.6 has 500 of 500 words today. A caption does not count, so only "caption" works here.</ve-pin>
+    <ve-code src="academy/figure-plan.md" lines="129-136" hl="131 136">
+      <ve-pin line="131">The Explanation of 2.1 has 498 of 500 words today (check-pages.js, run on 14 October 2026).</ve-pin>
+      <ve-pin line="136">The Explanation of 5.6 has 500 of 500 words today. A caption does not count, so only "caption" works here.</ve-pin>
     </ve-code>
     <ve-ask id="f1" q="Fix the plan this way?">
       <ve-opt value="accept" default note="captions are not counted">Move the split of 2.1 and the left-out parts of 5.6 into the caption, not the Explanation</ve-opt>
@@ -70,7 +74,7 @@
     </ve-claim>
   </ve-claim>
 
-  <ve-claim check="check-pages.js reports each step of each stepper and each state of each toggle, in both modes and at both widths.">
+  <ve-claim rev="2" status="built" ref="figure-plan.md" check="check-pages.js reports each step of each stepper and each state of each toggle, in both modes and at both widths.">
     <p>The page check skips hidden text, so later steps go unchecked.</p>
     <ve-code src="academy/build/check-pages.js" lines="82-86" hl="84">
       <ve-pin line="84">Text inside an element with the attribute hidden is skipped. The stepper hides each caption that is not current.</ve-pin>
@@ -87,7 +91,7 @@
     </ve-claim>
   </ve-claim>
 
-  <ve-claim check="academy.js has the code of the toggle and of the live figure, and the pages have no inline script.">
+  <ve-claim rev="2" status="built" ref="figure-plan.md" check="academy.js has the code of the toggle and of the live figure, and the pages have no inline script.">
     <p>The shared page code has only a stepper, and the security policy forbids an inline script.</p>
     <ve-code src="academy/build/lib.py" lines="18-20" hl="19">
       <ve-pin line="19">script-src 'self': each new control must be code in academy/build/academy.js, not a script in the page.</ve-pin>
@@ -98,7 +102,7 @@
     </ve-ask>
   </ve-claim>
 
-  <ve-claim check="Each new stepper has arrows only, no Play button and no slider, and each step adds at most one part.">
+  <ve-claim rev="2" status="built" ref="figure-plan.md" check="Each new stepper has arrows only, no Play button and no slider, and each step adds at most one part.">
     <p>The plan omits the rule of the owner: no Play, no slider.</p>
     <ve-code src="academy/journal.md" lines="42-42">
       <ve-pin line="42">The owner never liked Play, and the assistant removed Play and the slider. The plugin's scene player has both.</ve-pin>
@@ -109,7 +113,7 @@
     </ve-ask>
   </ve-claim>
 
-  <ve-claim check="check-pages.js finds a link to each of steps 0 to 8 inside the figure with data-figure=&quot;builder&quot;.">
+  <ve-claim rev="2" status="built" ref="figure-plan.md" check="check-pages.js finds a link to each of steps 0 to 8 inside the figure with data-figure=&quot;builder&quot;.">
     <p>Fig. A of tab 2 must keep its nine step links.</p>
     <ve-code src="academy/build/check-pages.js" lines="72-78" hl="73 75">
       <ve-pin line="75">The check fails when the figure has no link to a step.</ve-pin>

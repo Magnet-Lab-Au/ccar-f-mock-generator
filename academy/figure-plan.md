@@ -1,7 +1,7 @@
 # Figure plan (academy decision 0037)
 
 - Date: 14 October 2026
-- Status: proposed. The owner checks it before any figure is drawn.
+- Status: accepted by the owner on 14 October 2026, with the 5 fixes of the plan review (`figure-plan-review.html`, made with the command plan-review of the plugin).
 - Source: the 56 figures of `pages/exam-guide-breakdown.html` (34) and `pages/behind-the-mocks.html` (22), as built at commit 982c7c5. The assistant loaded the skill of the plugin visual-explainer (version 0.12.0) for this plan.
 
 ## How to read the plan
@@ -42,7 +42,7 @@ The facts of each figure stay the same. A redraw changes the form, not the conte
 | 1.5-1 | Two hook events wrap each tool call, and PostToolUse can change the result before Claude sees it. | diagram | Stepper, with a close-up of the value that changes | Redraw |
 | 1.6-1 | A fixed chain suits known steps, and a dynamic plan changes with what each step finds. | two panels | Small multiples (two panels) | Keep |
 | 1.7-1 | Resume keeps the session ID, fork copies the history to a new ID, and a fresh start uses a summary. | diagram | Small multiples: resume, fork, fresh start | Redraw |
-| 2.1-1 | A specific name and description send each request to one tool. | diagram | Before / after: the rename only. The split example moves to the text, because the reader agent found that the figure mixes two examples (decision 0039, item 12). | Redraw |
+| 2.1-1 | A specific name and description send each request to one tool. | diagram | Before / after: the rename only. The split example moves to the caption, because the reader agent found that the figure mixes two examples (decision 0039, item 12). | Redraw |
 | 2.2-1 | Each category of error needs a different response, and an empty result is not an error. | diagram | Small multiples: valid empty result, transient, validation, business, permission | Redraw |
 | 2.3-1 | Each agent gets only the tools of its role. | diagram | Diagram, plus a waffle for the 85% of simple checks | Add |
 | 2.4-1 | Team servers go in .mcp.json, personal servers in ~/.claude.json, and the agent gets the tools of both. | diagram | Diagram | Keep |
@@ -109,24 +109,31 @@ New steppers: 9 (1.2, 1.3, 1.5, 3.5, 3.6, A of tab 2, 4-1, 5-1, 5-4). With Fig. 
 - The label "Guide only" (item 10) and the three names of the documentation (item 11).
 - The code popup of part 1.2 (item 15).
 
+## Rules for the new figures (plan review)
+
+- Each stepper has the form of Fig. 1.1-1: it opens on the full picture, the arrows go one step at a time, and each step adds at most one new part. It has no Play button and no slider (the choice of the owner, academy journal, 13 October 2026).
+- The toggle of a before / after figure and the control of the live figure are new shared code in `build/academy.js`. A page has no inline script, because the security policy of the portal allows only scripts from the portal itself (`build/lib.py`, CSP). The move into the portal (decision 0017) ports this code too.
+- The stepper of Fig. A of tab 2 keeps `data-figure="builder"`, the ID `top-fig-a` and the links to steps 0 to 8 in the full picture, because `check-pages.js` needs them.
+
 ## Order of the work
 
 1. Tab 1, domain 1 (9 figures), as a test of the new types. The owner looks at the screenshots before the rest.
 2. The other figures of tab 1, one domain at a time.
 3. Tab 2.
 4. The checks of decision 0013 for each figure, a review agent for each pair of parts, and screenshots in light and dark mode.
+5. Before step 1: `check-pages.js` gets the visit of each step of each stepper, each state of each toggle and each choice of the live figure, in both modes and at both widths. Today it skips hidden text, so it checks only the first step.
 
 ## Facts that move out of a figure
 
 A redraw keeps each fact of the current figure. Where a fact leaves the drawing, it goes to the caption, the text of the part, or a popup:
 
 - 1.4-1: the escalation and its handoff summary become a third card of the same figure.
-- 2.1-1: the split of analyze_document goes to the Explanation of 2.1.
+- 2.1-1: the split of analyze_document goes to the caption. The Explanation of 2.1 has 498 of 500 words, and a caption does not count.
 - 2.5-1: the fallback from Edit to Read and Write (2.5-K4) goes to the caption.
 - 4.1-1: the disabled category (4.1-S2) stays in the after panel.
 - 4.3-1: the limit of a schema (4.3-K3) becomes a strip under the cards.
-- 5.2-1: the question for one more identifier goes to the Explanation of 5.2.
-- 5.6-1: the parts that the close-up leaves out (the reconcile step of the coordinator, the content types) go to the caption or the Explanation.
+- 5.2-1: the question for one more identifier goes to the Explanation of 5.2 in one short sentence. It has 28 words left.
+- 5.6-1: the parts that the close-up leaves out (the reconcile step of the coordinator, the content types) go to the caption. The Explanation of 5.6 has 500 of 500 words.
 
 ## Limits
 

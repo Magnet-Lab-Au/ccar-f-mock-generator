@@ -1,7 +1,7 @@
 # 0037: The figures are made again with the plugin
 
 - Date: 14 October 2026
-- Status: accepted
+- Status: accepted. The owner accepted the figure plan (`academy/figure-plan.md`) on 14 October 2026, with the 5 fixes of its plan review.
 - Text confirmed by the owner: 14 October 2026, in the discussion (working rule 35)
 - Diagram: none
 - Names: decision 0013. Its text does not change (working rule 26).

@@ -18,6 +18,8 @@ One entry for each work session. Newest entry first.
 - The owner made the repository public. All 155 distinct GitHub links of both tabs return HTTP 200 (checked with curl, without the line anchors).
 - The owner accepted decision 0040.
 - On the yes of the owner: the two record commits are pushed, and the merged branch `fix-owner-reason` and its worktree `~/ccar-f-fix-owner-reason` are deleted. All of its commits are in `main`.
+- The figure plan of decision 0037 is in `figure-plan.md` (page `figure-plan.html`). The assistant loaded the skill of the plugin visual-explainer and took each type from its table. An independent agent checked the plan and found 18 items, 2 high (Fig. A of tab 1 already has weight bars, Fig. 7-2 is five cards of text). All are fixed.
+- The owner asked why the assistant did not use the plan review of the plugin. The assistant had not thought of it. On the yes of the owner, it ran the command plan-review: 5 findings (two moves that break the word limits, `check-pages.js` skips hidden steps, new shared code for the toggle and the live figure, no Play and no slider in a stepper, the nine links of Fig. A of tab 2). The owner approved the plan and accepted all 5 fixes in the page (`figure-plan-review.html`). They are in the plan.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 
