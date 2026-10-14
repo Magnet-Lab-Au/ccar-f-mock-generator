@@ -33,7 +33,7 @@ Progress list (updated after each check):
 | F1 | done | Contrast passes. 2 names fixed. nested-interactive and list for the owner. |
 | F2 | done | 67 pictures at 390 pixels. |
 | F3 | done | Tab 1 65 ms, tab 2 40 ms from disk. Cards are 329 KB of tab 1. |
-| G1 | open | |
+| G1 | done | Three ways (copy, React page around the HTML, rewrite). 7 decisions for the owner first. |
 | G2 | done | 41 of 56 figures with popups, in the popup plan and HANDOFF. |
 
 ## 14 October 2026, morning: the answers to the morning report
