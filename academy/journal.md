@@ -12,29 +12,29 @@ Progress list (updated after each check):
 
 | ID | State | Result |
 |---|---|---|
-| A1 | open | |
-| A2 | open | |
-| A3 | open | |
-| A4 | open | |
-| B1 | open | |
+| A1 | done | 822 links, 0 broken. 6 links gave 504 once (a large file on GitHub), then 200. |
+| A2 | done | 246 numbers of tab 2: 228 computed again, all equal. 18 from text records, all checked. |
+| A3 | running |  |
+| A4 | done | 2.2 and 2.3: 8 items fixed. 4.3, 4.6, 5.2: 6 fixed (1 high), 4 for the owner. |
+| B1 | done | 293 questions: 293 correct with a quote of the page. 4 needed own knowledge. Notes for the owner. |
 | B2 | open | |
 | B3 | open | |
 | B4 | open | |
 | C1 | open | |
 | C2 | open | |
-| C3 | open | |
+| C3 | script done | agent open |
 | C4 | open | |
 | C5 | open | |
 | D1 | open | |
-| D2 | open | |
+| D2 | running | tab 1 agent |
 | E1 | open | |
 | E2 | open | |
-| E3 | open | |
-| F1 | open | |
-| F2 | open | |
-| F3 | open | |
+| E3 | done | "rules file" fixed to "rule file". The other forms are quotes, file names or flags. |
+| F1 | done | Contrast passes. 2 names fixed. nested-interactive and list for the owner. |
+| F2 | done | 67 pictures at 390 pixels. |
+| F3 | done | Tab 1 65 ms, tab 2 40 ms from disk. Cards are 329 KB of tab 1. |
 | G1 | open | |
-| G2 | open | |
+| G2 | done | 41 of 56 figures with popups, in the popup plan and HANDOFF. |
 
 ## 14 October 2026, morning: the answers to the morning report
 
