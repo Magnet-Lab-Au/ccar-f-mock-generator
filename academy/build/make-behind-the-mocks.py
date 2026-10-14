@@ -1933,15 +1933,25 @@ WORDS = """<details class="level words" id="top-words"><summary><h2>Words on thi
 T24P3 = jread("runs/test-0024/part3.json")
 T24D = [c for c in T24P3["checks"] if c["copy"] == "damaged"]
 T24B1 = [c for c in T24D if c["rule"] == "B1"]
-assert T24P3["as_expected"] == T24P3["of"] and all(c["as_expected"] for c in T24D)
+assert T24P3["as_expected"] == T24P3["of"] and len(T24B1) == 2 and all(c["as_expected"] for c in T24B1)
+DEC = lambda n: glob.glob(os.path.join(ROOT, "docs/decisions/%04d-*.md" % n))[0][len(ROOT) + 1:]
+assert [S38V[t] for t in range(1, 6)] == ["fail", "fail", "fail", "fail", "pass"], S38V
 CARD.update({
     "lim-t24": {"title": "The test before mock 1, part 3", "kind": "count",
-                "text": "runs/test-0024/part3.json: %d checks, %d as expected. %d damaged copies, %d of them with the mark 'correct' moved to a wrong option (rule B1). Step 4 failed each damaged copy on its rule. The script of this page counted them."
-                        % (T24P3["of"], T24P3["as_expected"], len(T24D), len(T24B1), ),
-                "src": "runs/test-0024/part3.json", "href": link("runs/test-0024/part3.json")},
+                "text": "runs/test-0024/part3.json: %d checks, %d as expected. %d damaged copies, %d of them with the mark 'correct' moved to a wrong option and the reasons swapped (rule B1). Part 3 ran call 4b alone (src/test_0024.py, rules_verdict), not call 4a. The script of this page counted them."
+                        % (T24P3["of"], T24P3["as_expected"], len(T24D), len(T24B1)),
+                "src": "runs/test-0024/part3.json, src/test_0024.py", "href": link("src/test_0024.py")},
     "lim-cost": {"title": "The cost of the 5 mocks", "kind": "count",
-                 "text": "Dollars per mock, all steps: %s. Total: %.2f. The script of this page added the usage records." % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), sum(c[0] for c in COST)),
+                 "text": "Dollars per mock, all steps of the program: %s. Total: %.2f. The script of this page added the usage records. The tests and the build sessions are not in this sum." % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), sum(c[0] for c in COST)),
                  "src": "runs/mock-0N/usage/*.json", "href": "%s/tree/%s/runs" % (REPO, TAG)},
+    "lim-m4": excerpt(DEC(69), "so 31 of the 60 questions are close", "Mock decision 0069, known limits of mock 4"),
+    "lim-m5": excerpt(DEC(76), "**Known limit:** 46 of the 60 questions of mock 5 are close to a question of an earlier mock.", "Mock decision 0076"),
+    "lim-person": excerpt(DEC(71), "**Known limit: no person reads the questions of mocks 4 and 5.**", "Mock decision 0071"),
+    "lim-m4r1": excerpt(DEC(69), "the owner states that they did not read the 20 questions of round 1", "Mock decision 0069"),
+    "lim-b9": {"title": "The step 4 verdicts of M5-S38", "kind": "count",
+               "text": "runs/mock-05/checks/M5-S38-T1-step4.json to T5: %s. Try 5 is the question in mock 5." % ", ".join("try %d %s" % (t, S38V[t]) for t in range(1, 6)),
+               "src": "runs/mock-05/checks/M5-S38-T*-step4.json", "href": "%s/tree/%s/runs/mock-05/checks" % (REPO, TAG)},
+    "lim-s33": excerpt("runs/mock-05/marks/round-1.json", "Copy of M2-S34", "The marks of mock 5, round 1"),
 })
 LIMITS = """<section class="parts" id="limits" aria-label="What this shows and what it does not">
   <h2>What this shows and what it does not</h2>
@@ -1949,26 +1959,35 @@ LIMITS = """<section class="parts" id="limits" aria-label="What this shows and w
   <div class="limits">
     <div class="callout"><span class="chip ok">The records show</span><ul class="beyond">
       <li>%(s3)s <a href="#step-3">Step 3 &rarr;</a></li>
-      <li>%(s4)s <a href="#step-4">Step 4 &rarr;</a></li>
+      <li>%(s4)s %(t24a)s <a href="#step-4">Step 4 &rarr;</a></li>
       <li>%(spread)s <a href="#step-1">Step 1 &rarr;</a></li>
+      <li>%(s33)s <a href="#step-7">Step 7 &rarr;</a></li>
       <li>%(cost)s <a href="#step-4">Step 4 &rarr;</a></li>
     </ul></div>
     <div class="callout"><span class="chip risk">They do not show</span><ul class="beyond">
-      <li>%(t24)s %(blind)s So the records cannot show how often step 4 misses a wrong answer key. <a href="#step-4">Step 4 &rarr;</a></li>
-      <li>%(reader)s <a href="#step-7">Step 7 &rarr;</a></li>
-      <li>Rule B9 did not stop each repeat. Try 5 of M5-S38 wrote the old problem again and passed. M5-S33, a copy of a question of mock 2, passed too. <a href="#step-5">Step 5 &rarr;</a></li>
-      <li>No page compares the mocks with the real exam. %(owner)s</li>
+      <li>%(blind)s %(t24)s So the records cannot show how often step 4 misses a wrong answer key. <a href="#step-4">Step 4 &rarr;</a></li>
+      <li>%(m4)s %(m5)s %(all5)s <a href="#step-1">Step 1 &rarr;</a></li>
+      <li>%(person)s %(m4r1)s <a href="#step-7">Step 7 &rarr;</a></li>
+      <li>%(b9)s <a href="#step-5">Step 5 &rarr;</a></li>
+      <li>Nobody compared the difficulty or the style of the mocks with the real exam. The mocks follow the task statements and the scenarios of the guide. %(owner)s</li>
     </ul></div>
   </div>
 </section>""" % {
-    "s3": fact("s3-what", "Code checks the 12 rules that have one exact answer."),
+    "s3": fact("s3-what", "Today, code checks 12 rules that have one exact answer. Mock 1 had 11."),
     "s4": fact("s4-what", "A model checks the rules that need judgment, in two calls, and code makes the verdict."),
-    "spread": fact("s1-spread", "%d of the %d ideas are in 2 to 4 mocks, and %d are in all %d." % (sum(SPREAD[k] for k in (2, 3, 4)), len(PG), SPREAD[5], N_MOCKS)),
-    "cost": fact("lim-cost", "The %d mocks cost %.2f dollars in total, for all steps." % (len(COST), sum(c[0] for c in COST))),
-    "blind": fact("s4-runs", "In the %d checks of the 5 mocks, call 4a never selected other letters than the answer key." % sum(V4.values())),
-    "t24": fact("lim-t24", "Before mock 1, a test gave step 4 two questions with a wrong answer key on purpose, and step 4 failed both.") if len(T24B1) == 2 else None,
-    "reader": fact("s7-what", "For mocks 4 and 5, a Claude model, not a person, marked the questions."),
-    "owner": fact("w-owner", "The only link is that the owner passed the CCAR-F exam."),
+    "t24a": fact("s4-t24", "Before mock 1, call 4a answered %d of the %d sample questions of the guide right." % (T24["right"], T24["of"])),
+    "spread": fact("s1-spread", "%d of the %d ideas are in 2 to 4 mocks." % (sum(SPREAD[k] for k in (2, 3, 4)), len(PG))),
+    "s33": fact("lim-s33", "The reader of step 7 found that M5-S33 was a copy of a question of mock 2, and the question was written again."),
+    "cost": fact("lim-cost", "The program runs of the %d mocks cost %.2f dollars, for all steps. The tests and the build sessions are not in this sum." % (len(COST), sum(c[0] for c in COST))),
+    "blind": fact("s4-runs", "Call 4a was never tested with a wrong answer key. In the %d checks of the 5 mocks, it never selected letters other than the answer key." % sum(V4.values())),
+    "t24": fact("lim-t24", "A test before mock 1 gave call 4b alone two questions with a wrong answer key and swapped reasons, and call 4b failed both."),
+    "m4": fact("lim-m4", "31 of the 60 questions of mock 4 are close to a question of an earlier mock,"),
+    "m5": fact("lim-m5", "and 46 of the 60 of mock 5."),
+    "all5": fact("s1-spread", "%d ideas are in all %d mocks." % (SPREAD[5], N_MOCKS)),
+    "person": fact("lim-person", "No person read the questions of mocks 4 and 5."),
+    "m4r1": fact("lim-m4r1", "For mock 4, the owner recorded 20 good marks without reading the questions, and a Claude model was the second reader."),
+    "b9": fact("lim-b9", "Rule B9 did not stop each repeat. Try 5 of M5-S38 wrote the old problem again and passed step 4."),
+    "owner": fact("w-owner", "The owner passed the CCAR-F exam."),
 }
 
 BODY = """<main>
