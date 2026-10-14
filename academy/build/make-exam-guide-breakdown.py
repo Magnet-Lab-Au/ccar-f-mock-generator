@@ -2843,9 +2843,30 @@ def scen_row(s):
     return '<tr><th scope="row"><span class="sn">%d</span>%s</th>%s</tr>' % (s["id"], fact("m-s%d" % s["id"], e(s["name"])), cells)
 
 
+def notepad_icon():
+    """The notepad mark of the owner (academy/pages/icons/notepad.svg), drawn inline and tilted. At heading size its 24 thin
+    lines melt into one colour, so the page keeps every third ruled line and draws all lines thicker (owner, 15 October 2026).
+    The file itself does not change."""
+    svg = read("academy/pages/icons/notepad.svg")
+    svg = svg[svg.index("<svg"):]
+    svg = re.sub(r"<metadata.*?</metadata>", "", svg, flags=re.S)
+    svg = re.sub(r"<sodipodi:namedview.*?(/>|</sodipodi:namedview>)", "", svg, flags=re.S)
+    keep = {"109.04", "218.09", "327.13", "-109.04", "-218.09", "-327.13"}
+    svg = re.sub(r'<use[^>]*transform="translate\(0 (-?[\d.]+)\)"[^>]*/>', lambda m: m.group(0) if m.group(1) in keep else "", svg, flags=re.S)
+    svg = svg.replace("stroke:#5f8dd3;stroke-width:1.7583", "stroke:#5f8dd3;stroke-width:22").replace("stroke:#ff5555;stroke-width:1.7583", "stroke:#ff5555;stroke-width:22")
+    svg = svg.replace("stroke:#ff5555;stroke-width:3;", "stroke:#ff5555;stroke-width:22;")
+    svg = re.sub(r"<svg\b", '<svg class="h-icon h-page" aria-hidden="true" focusable="false"', svg, count=1)
+    svg = re.sub(r'(<svg[^>]*?)\s(width|height)="[^"]*"', r"\1", svg, count=1)
+    svg = re.sub(r'(<svg[^>]*?)\s(width|height)="[^"]*"', r"\1", svg, count=1)
+    assert svg.count("<use") == len(keep) and "stroke-width:1.7583" not in svg, "the notepad file changed"
+    return re.sub(r">\s+<", "><", svg.strip())
+
+
+NOTEPAD_ICON = notepad_icon()
+
 def map_html():
     return """<section class="parts" id="map" aria-label="The map of the exam guide">
-  <h2 class="with-icon">The exam guide on one page<img class="h-icon h-page" src="icons/notepad.svg" alt="" width="24" height="24"></h2>
+  <h2 class="with-icon">The exam guide on one page%(notepad)s</h2>
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
   <figure data-figure="map">
     <div class="tmap">%(cols)s</div>
@@ -2855,7 +2876,7 @@ def map_html():
     <div class="table-scroll"><table class="matrix"><thead><tr><th scope="col">Scenario</th>%(dhead)s</tr></thead><tbody>%(scen)s</tbody></table></div>
     <figcaption><span class="fig-n">Fig. B</span>%(scap)s</figcaption>
   </figure>
-</section>""" % {"what": fact("m-what", "The exam guide is the official reference for the CCAR-F exam: it lists the domains and the task statements that the exam tests."),
+</section>""" % {"notepad": NOTEPAD_ICON, "what": fact("m-what", "The exam guide is the official reference for the CCAR-F exam: it lists the domains and the task statements that the exam tests."),
                  "items": fact("m-items", "The exam has 60 questions"),
                  "format": fact("m-format", "and each question states how many answers to select."),
                  "struct": fact("m-struct", "Each exam uses 4 of the 6 scenarios of the guide."),
