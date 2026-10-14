@@ -2284,7 +2284,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                 cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
                    "When a customer demands a human, the agent escalates at once. When the customer does not ask for a human and the issue is simple, it offers to resolve it (5.2-K2)."),
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
-                   "It does not investigate first (5.2-S2)."),
+                   "In the first case, it does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
                    "When a frustrated customer does not ask for a human and the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates if the customer then asks for a human (5.2-S3)."))
             + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated: 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
@@ -2686,7 +2686,7 @@ for s in SCEN:
 
 
 def map_col(d):
-    lis = "".join('<li><a href="#ts-%s"><span class="pid">%s</span> %s</a></li>' % (t.replace(".", "-"), t, e(TAKEAWAY.get(t, TS[t]["title"])))
+    lis = "".join('<li><a href="#ts-%s"><span class="pid">%s</span> <span>%s</span></a></li>' % (t.replace(".", "-"), t, e(TAKEAWAY.get(t, TS[t]["title"])))
                   for t in sorted(TS, key=lambda x: (int(x.split(".")[0]), int(x.split(".")[1]))) if TS[t]["domain"] == d["id"])
     return ('<div class="tcol"><p class="ve-label"><a href="#domain-%d">Domain %d</a></p><p class="tname">%s</p>'
             '<div class="tbar" role="img" aria-label="Weight %d%%"><span style="width:%d%%"></span></div><p class="tw">%s</p><ol class="tlist">%s</ol></div>'

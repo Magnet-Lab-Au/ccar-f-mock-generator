@@ -17,9 +17,9 @@ Progress list (updated after each check):
 | A3 | done | 6 differences, 4 fixed (1 high), 2 left as true. |
 | A4 | done | 2.2 and 2.3: 8 items fixed. 4.3, 4.6, 5.2: 6 fixed (1 high), 4 for the owner. |
 | B1 | done | 293 questions: 293 correct with a quote of the page. 4 needed own knowledge. Notes for the owner. |
-| B2 | running | domains 1 to 3 |
+| B2 | done | 22 traps warned clearly, 5 weakly, 3 not warned (2.1, 3.6, 5.4). |
 | B3 | open | |
-| B4 | open | |
+| B4 | done | 190 of 239 points taught, 49 thin, 0 named only. 1 fix (5.2). About 22 conflicts of product and guide for the owner. |
 | C1 | done | Domain 1 needs a primer of the products and a glossary. 25 stops for the owner. |
 | C2 | open | |
 | C3 | script done | agent open |
