@@ -28,6 +28,14 @@ The work runs in six batches. After each batch: a build, `check-pages.js`, and o
 
 After the eight items: the paragraphs that read as one long underline. Each sentence is a fact with its own card, and the parts have almost no sentences in their own words between the facts. The owner said to take this next.
 
+## Built (15 October 2026)
+
+All nine items are built, in six batches. After each batch, `check-pages.js` printed "All checks passed." for both tabs, and an independent agent reviewed the batch. The journal of the academy lists the review findings and their fixes.
+
+- Item 4: a review found that the assistant had misread a test. `runs/test-0024/part3.json` gave two questions with a wrong answer key to call 4b alone, not to call 4a. So call 4a was never tested with a wrong answer key, as check C5 said. The section says so.
+- Item 8: the count script finds 34 sentences over 25 words after the splits, against 151 before. The 34 are joins of table cells, captions and quotes, sentences that start with a number, and the paragraph of the owner.
+- Not done: the Overview of 3.2 does not name context: fork (check B3). It is not one of the three points of item 7.
+
 ## Reason
 
 The checks of decision 0041 found these items. The owner does not read the long list, so the assistant gave one recommendation for each item.

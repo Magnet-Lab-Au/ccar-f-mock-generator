@@ -1122,7 +1122,7 @@ FIG23 = FIG23.replace("<figcaption>", waffle(85, "85 of 100: simple checks, veri
                                              "In sample question 9, 85 of 100 checks are simple and go to verify_fact. The rest are complex and go through the coordinator.") + "<figcaption>", 1)
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
-                        "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
+                        "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need. The coordinator handles the rest. "
                         "tool_choice sets whether Claude can, must, or must use one named tool.",
                         exam_box("2.3", "tc", "With <code>any</code>, Claude must call a tool. With a forced tool, Claude calls that tool.",
                                  "Claude Opus 5.5 and three other current models return a 400 error for both.", [
@@ -1488,7 +1488,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                             "This rule loads only when Claude works with a .ts file under src/api/.")
             + tab2_links("3.3", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-3-d48", excerpt(D48, "Task statement 3.3 is one group, because its 6 points have one correct answer (a rules file with a path).", "Mock decision 0048"),
-                                              "When the mock builder plans a mock, it counts 3.3 as one idea. Its 6 points have one correct answer: a rule file with a path."))), "ts-3-3"))
+                                              "When the mock builder plans a mock, it counts 3.3 as one idea. The reason: its 6 points have one correct answer: a rule file with a path."))), "ts-3-3"))
 
 
 # ----- part 3.2 (facts: academy/facts/ts-3-2.md) -----
@@ -2367,7 +2367,7 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                 cf("ts-5-1-s5", gx("Requiring subagents to include metadata (dates, source locations, methodological context) in structured outputs to support accurate downstream synthesis", "Exam guide, 5.1-S5"),
                    "A subagent returns its findings with metadata, such as dates and source locations (5.1-S5)."),
                 cf("ts-5-1-s6", gx("Modifying upstream agents to return structured data (key facts, citations, relevance scores) instead of verbose content and reasoning chains when downstream agents have limited context budgets", "Exam guide, 5.1-S6"),
-                   "When the next agent has little room, it returns structured key facts, not long reasoning (5.1-S6)."))
+                   "When the next agent has little room, the subagent returns structured key facts, not long reasoning (5.1-S6)."))
             + exam_tests("5.1", [("Context window optimization: trimming verbose tool outputs, structured fact extraction, position-aware input ordering", "Among the topics, the guide names")])
             + guide_text("5.1"), "ts-5-1")
     + level("depth",
@@ -2432,7 +2432,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                    "When the customer asks for a human, the agent does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
                    "Sometimes a frustrated customer does not ask for a human, and the issue is within the capability of the agent. Then the agent says that it understands the frustration and offers the fix. It escalates if the customer then asks for a human (5.2-S3)."))
-            + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated. 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
+            + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated. Point 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
                 cf("ts-5-2-f11", gx("Option D solves a different problem entirely; sentiment doesn't correlate with case complexity, which is the actual issue.", "Exam guide, sample question 3"),
                    "Sample question 3 of the guide says that sentiment does not follow the complexity of a case.")
             + "<p><b>Criteria in the prompt.</b> %s %s %s</p>" % (
@@ -2467,7 +2467,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                             "A document assistant, not a support agent: no page that we read shows a prompt with escalation criteria. This block is the user turn, after a system prompt.")
             + tab2_links("5.2", "%s %s" % ("The mock builder is not a support agent, so it has no customer to escalate.",
                                            cf("ts-5-2-d06", excerpt(D06, "The guide says that self-reported confidence scores are \"unreliable proxies for actual case complexity\" (5.2-K3), and sample question 3 in Section 9 uses such an option as a wrong option. So it is a fair wrong option.", "Mock decision 0006"),
-                                              "But step 6 allows at most one wrong option on self-reported confidence in each scenario. 5.2-K3 is why such an option is a fair wrong option.")
+                                              "But step 6 allows at most one wrong option on self-reported confidence in each scenario. Point 5.2-K3 is why such an option is a fair wrong option.")
                                            + " " + cf("ts-5-2-d3lim", excerpt(step_file(6), "A finding of rule D2 or D3, one wrong idea in too many questions, is recorded as a known limit of the mock.", "Build guide, step 6"),
                                               "In mocks 2 to 5, some scenarios with more than one such option were recorded as known limits of the mock.")))
             + ' <p><a href="%s#step-6">Step 6, Check the complete mock &rarr;</a></p>' % TAB2, "ts-5-2"))
@@ -2872,7 +2872,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The guide numbers the task statements but not their points, so the labels of the points are ours.</span></p>
   <p>Each task statement opens in three levels. The <b>Overview</b> takes about 30 seconds. The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests. The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</p>
   <p>The label <span class="chip guide">Guide only</span> ends a point that no copied page of the Anthropic documentation says. It also ends a point that the documentation says in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
-  <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. <b>For the exam</b> gives the answer of the guide. <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
+  <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. The line <b>For the exam</b> gives the answer of the guide. The line <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
   <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam. It also lists the topics that the exam covers and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
@@ -2884,7 +2884,7 @@ DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles 
 DOMAIN_SUMMARY[5] = ("Reliable systems: context that keeps the facts, escalation and ambiguity, errors that travel between agents. It also covers context in large codebases, human review with calibrated confidence, and the provenance of each claim.")
 DOMAIN_SUMMARY[4] = ("Prompts that give reliable output: explicit criteria, few-shot examples, structured output with tool use and JSON schemas. It also covers validation with retries, batch processing, and reviews by several instances or passes.")
 DOMAIN_SUMMARY[3] = ("Claude Code for a team: CLAUDE.md files and their levels, commands and skills, rules for some paths. It also covers plan mode against direct work, refinement step by step, and Claude Code in a CI/CD pipeline.")
-DOMAIN_SUMMARY[2] = ("Tools that Claude can use well: descriptions that make the choice clear, errors that say what went wrong. It also covers the right tools for each agent, how to set tool_choice, and MCP servers. The last part covers the built-in tools Read, Write, Edit, Bash, Grep and Glob.")
+DOMAIN_SUMMARY[2] = ("Tools that Claude can use well: descriptions that make the choice clear, errors that say what went wrong. It also covers the right tools for each agent, how to set tool_choice, and MCP servers. It also covers the built-in tools Read, Write, Edit, Bash, Grep and Glob.")
 DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents, how subagents start and what each one gets. It also covers workflows with enforced steps and handoffs, hooks of the Agent SDK, how to split a task, and sessions that resume or fork.")
 
 

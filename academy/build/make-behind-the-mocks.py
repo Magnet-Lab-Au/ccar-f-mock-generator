@@ -932,7 +932,7 @@ STEP1 = (level("overview",
                       fact("s1-least", "it puts the least-used ideas first."),
                       fact("s1-notq", "it did not prevent the same question in two mocks."),
                       fact("s1-rep", "A second review found that %s questions of mock 2 repeat mock 1." % REPEAT2.group(1)),
-                      fact("s1-same", "%s slots of mock 2 had the same point as mock 1, although their idea had a point that mock 1 did not use." % SAME7.group(1)),
+                      fact("s1-same", "In %s slots of mock 2, the point was the same as in mock 1, although their idea had a point that mock 1 did not use." % SAME7.group(1)),
                       fact("s1-point", "inside an idea, the point that earlier mocks used less comes first."),
                       fact("s1-spread", "Over the %d built mocks, %d of the %d ideas are in 2 to 4 mocks, and %d are in all %d." % (N_MOCKS, sum(SPREAD[k] for k in (2, 3, 4)), len(PG), SPREAD[5], N_MOCKS))))
          ).replace("@N@", "1")
@@ -1165,7 +1165,7 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
              fact("s3-a2", "Rule A2 failed both tries."),
              fact("s3-d005", "&ldquo;The last try failed on the form (rules A1 and A2), not on B9.&rdquo;"))
           + '<h4 class="story">The longest option was too often correct</h4>' + FIG32
-          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest. %s Instead, %s From mock 2, step 1 allows a correct longest option on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots. %s</p>'
+          + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest. %s Instead, %s So from mock 2, step 1 allows a correct longest option on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots. %s</p>'
           % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
              fact("s3-never", "With that rule, a participant learns that the longest option is always wrong."),
              fact("s3-gain", "a participant who always selects the longest option must not gain from it."),
@@ -1458,7 +1458,7 @@ STEP6 = (level("overview",
                  '<p>%s Only call 6b checks it. In mock 2, %s Its options B and C both used the confidence of the model: %s and %s The owner sent it back: %s The new try asks for the categories to report instead: %s</p>'
                  '<p>In mocks 2 to 5, some scenarios kept more than one such option. The owner recorded them as known limits of the mock, by the rule for findings above.</p>'
                  % (fact("s6-date", "Since 29 September 2026, the owner had a ruling,"),
-                    fact("s6-r2", "In one scenario of one mock, at most one wrong option uses the confidence that a model gives itself. Such an option uses the rating as a filter, a threshold or a trigger."),
+                    fact("s6-r2", "In one scenario of one mock, at most one wrong option lets a model rate its own confidence. Such an option uses the rating as a filter, a threshold or a trigger."),
                     fact("s6-52k3", "the guide calls self-reported confidence scores &ldquo;unreliable proxies for actual case complexity&rdquo; (5.2-K3), so it is a fair wrong option."),
                     fact("s6-r2why", "But if it appears many times, a participant can rule it out without thought."),
                     fact("s6-writer", "The writer of step 2 sees one slot, so it cannot count these options."),

@@ -11,7 +11,8 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 ### State on 14 October 2026, night: the exam box (academy decision 0042)
 
 - The owner finds `academy/checks/findings.md` too long to read. The assistant brings its items one at a time, with one recommendation each. Item 1 is done: where a product fact could lead to a different exam answer, a box on tab 1 gives "For the exam" and "The product today", and the detail moved to a list in the Depth. 23 boxes in 15 parts.
-- Next step: item 2 of the short list, a primer and a glossary for beginners. Then the phone layout, tab 2's evidence, and the popups.
+- Decision 0043: the owner answered the other items of the short list, and all are built and reviewed: the Guide only popup, the primer before domain 1, phone drawings for 7 figures, the tab 2 section "What this shows and what it does not", the 45 popup items of check D2, role="group" on drawings with popups, facts moved between levels, and the long sentences split (151 to 34, the rest are false hits). `check-pages.js` prints "All checks passed." for both tabs.
+- Next step: the paragraphs that read as one long underline, because each sentence is a fact with its own card (the owner said to take this straight after the 8 items). Then the owner writes notes on the new version of both tabs.
 
 ### State on 14 October 2026, evening: the reader checks (academy decision 0041)
 

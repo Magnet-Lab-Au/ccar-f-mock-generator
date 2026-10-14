@@ -792,7 +792,7 @@ POPUPS = [{'tab': 1,
   'who': '11 fail',
   'title': 'Which rules failed the 11 tries?',
   'sent': ['Rule A12 failed 7 tries: a correct option was the longest, and the slot needs a longer wrong option. Rules A1 and A2 failed 2 tries with '
-           '6 options for a slot of 5. Rule A9 failed 2 questions of 6 sentences. Each next try passed step 3.'],
+           '6 options for a slot of 5. Rule A9 failed 2 questions of 6 sentences. The next try of each slot passed step 3.'],
   'points': [],
   'source': 'step-3.md section 4.2 (findings by rule), notes under it (11 tries, 13 findings, 11 of 11 repaired), section 4.3; '
             '`runs/mock-0N/checks/*-step3.json`, field `findings`'},
@@ -803,7 +803,7 @@ POPUPS = [{'tab': 1,
   'who': 'Mock 4',
   'title': 'Must the longest option be correct on some slots?',
   'sent': ['No. On 13 of the 52 one-answer slots, the plan allows a correct option to be the longest, but it does not require it. On the other 39, '
-           'rule A12 fails such a try. In mock 4, the correct option was the longest, or tied, on 5 of the 13 slots that allow it.'],
+           'rule A12 fails a try in which a correct option is as long as or longer than each wrong option. In mock 4, the correct option was the longest, or tied, on 5 of the 13 slots that allow it.'],
   'points': [],
   'source': 'step-3.md R11, R12, rule table A12, b11, section 4.2 (built mock row); `src/step3_check_code.py`, 151-160'},
  {'tab': 2,
@@ -987,7 +987,7 @@ POPUPS = [{'tab': 1,
   'who': 'D4',
   'title': 'Why did the owner ignore the D4 findings?',
   'sent': ['The records give no reason for rule D4 alone. For mock 2, mock decision 0059 says that the owner and the second review had found each '
-           'question good. Another round of rewrites costs a round of marks and can make new close questions. Mocks 3 to 5 used the same rule.'],
+           'question good. It adds that another round of rewrites costs a round of marks and can make new close questions. Mocks 3 to 5 used the same rule.'],
   'points': [],
   'source': '`docs/decisions/0059-mock-2-more-known-limits-and-the-findings-of-step-6.md`, 30, 36; 0064, 30; 0069, 35; 0077, 31; step-6.md B6, B7, '
             'section 9, item 3'},
