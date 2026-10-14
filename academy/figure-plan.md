@@ -1,7 +1,7 @@
 # Figure plan (academy decision 0037)
 
 - Date: 14 October 2026
-- Status: accepted by the owner on 14 October 2026, with the 5 fixes of the plan review (`figure-plan-review.html`, made with the command plan-review of the plugin). Built on 14 October 2026: all 27 redraws and 9 number pictures (commits 625e061 to 2c5cbe9). Before-and-after pictures: `screenshots/tab-1-redraw/` and `screenshots/redraw/`.
+- Status: accepted by the owner on 14 October 2026, with the 5 fixes of the plan review (`figure-plan-review.html`, made with the command plan-review of the plugin). Built on 14 October 2026: all 27 redraws and 9 additions (commits 625e061 to ad7ec34, fixes to the last commit of that day). Before-and-after pictures: `screenshots/tab-1-redraw/` and `screenshots/redraw/`.
 - Source: the 56 figures of `pages/exam-guide-breakdown.html` (34) and `pages/behind-the-mocks.html` (22), as built at commit 982c7c5. The assistant loaded the skill of the plugin visual-explainer (version 0.12.0) for this plan.
 
 ## How to read the plan

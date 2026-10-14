@@ -132,3 +132,28 @@ def script_file(name, pop, card):
 def write(name, text):
     with open(os.path.join(PAGES, name), "w", encoding="utf-8") as f:
         f.write(text)
+
+
+VALUES = "auto|any|none|tool|end_turn|tool_use|max_tokens|stop_sequence|pause_turn|refusal|model_context_window_exceeded|json"
+NAME = re.compile(r'(?<![\w./@#&-])(?:"(?:%s)"|[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?:\.[a-z_]+)*|[a-z]+(?:[A-Z][a-z0-9]+)+|--[a-z][a-z0-9-]*[a-z0-9]|claude -p|-p(?=[\s,.)]))(?![\w-])' % VALUES)
+
+
+def code_font(html):
+    """A single name in the running text is in code font (academy decision 0038): a name with an underscore, a camelCase name,
+    a flag, claude -p, and a quoted value of an API field, with its quotes. Text inside a drawing, code, pre, a script or a tag
+    is not changed. A list that quotes the guide (class glist) is not changed either, so its text stays as the guide has it."""
+    out, skip = [], []
+    for part in re.split(r"(<[^>]+>)", html):
+        if part.startswith("<"):
+            m = re.match(r"<(/?)([a-zA-Z0-9]+)", part)
+            tag = m.group(2).lower() if m else ""
+            if tag in ("svg", "code", "script", "style", "pre", "title") or (tag == "ul" and 'class="glist' in part) or (tag == "ul" and m.group(1) and skip and skip[-1] == "ul"):
+                if m.group(1):
+                    if skip:
+                        skip.pop()
+                elif not part.endswith("/>"):
+                    skip.append(tag)
+            out.append(part)
+        else:
+            out.append(part if skip else NAME.sub(lambda x: "<code>%s</code>" % x.group(0), part))
+    return "".join(out)

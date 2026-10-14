@@ -18,7 +18,7 @@ import sys
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import (BRANCH, REPO, ROOT, TAG, code_block, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
+from lib import (BRANCH, REPO, ROOT, TAG, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
                  script_file, write)
 
 TAB1 = "exam-guide-breakdown.html"
@@ -1922,6 +1922,7 @@ BODY = """<main>
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
 TOP = BODY.split('<section class="parts" id="steps"')[0]
+BODY = code_font(BODY)   # academy decision 0038
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)

@@ -19,7 +19,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import REPO, ROOT, TAG, code_block, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
+from lib import REPO, ROOT, TAG, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
 
 TAB2 = "behind-the-mocks.html"
 EG = "reference/exam-guide.md"
@@ -2766,28 +2766,6 @@ BODY = """<main>
 %(domains)s
 </main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN,
              "domains": "".join(domain_html(DOM[i]) for i in range(1, 6))}
-
-NAME = re.compile(r"(?<![\w./@#-])(?:[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?:\.[a-z_]+)*|[a-z]+(?:[A-Z][a-z0-9]+)+|--[a-z][a-z0-9-]*[a-z0-9]|claude -p)(?![\w-])")
-
-
-def code_font(html):
-    """A single name in the running text is in code font (academy decision 0038): a name with an underscore, a camelCase name,
-    a flag, and claude -p. Text inside a drawing, code, a script or a tag is not changed."""
-    out, skip = [], []
-    for part in re.split(r"(<[^>]+>)", html):
-        if part.startswith("<"):
-            m = re.match(r"<(/?)([a-zA-Z0-9]+)", part)
-            if m and m.group(2).lower() in ("svg", "code", "script", "style", "pre", "title"):
-                if m.group(1):
-                    if skip:
-                        skip.pop()
-                elif not part.endswith("/>"):
-                    skip.append(m.group(2).lower())
-            out.append(part)
-        else:
-            out.append(part if skip else NAME.sub(lambda x: "<code>%s</code>" % x.group(0), part))
-    return "".join(out)
-
 
 BODY = code_font(BODY)
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 %s %s ' % (m.group(1), m.group(3), m.group(2), m.group(3)), BODY)
