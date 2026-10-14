@@ -387,4 +387,4 @@ details.sources > ul { margin-top: var(--s-2); }
 @media print { .glossary-btn { display: none; } }
 /* tab 2: the title in the center, and the paragraph of the owner in body size (owner, 15 October 2026) */
 h1.title-center { text-align: center; margin-inline: auto; }
-.lead.intro { font-size: var(--t-body); }
+.lead.intro { font-size: var(--t-body); margin-inline: auto; max-width: 60ch; }
