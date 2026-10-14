@@ -390,3 +390,4 @@ details.sources > ul { margin-top: var(--s-2); }
 /* the Claude Code mark next to the heading of the build in Claude Code (owner, 15 October 2026) */
 h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
 .h-icon { width: 1.3em; height: 1.3em; flex: none; }   /* the mark fills only the middle 15 of its 24 units, so 1.3em gives it about the height of the capital letters */
+.h-icon.h-puzzle { width: 1.5em; height: 1.5em; }   /* the puzzle mark is a line drawing, so it needs more size than the other marks */

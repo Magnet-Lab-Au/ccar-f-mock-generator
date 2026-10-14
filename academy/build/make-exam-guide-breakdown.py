@@ -2866,8 +2866,15 @@ def map_html():
                  "scap": "The 6 scenarios of the guide. Each scenario has 2 or 3 primary domains."}
 
 
+# the puzzle mark of the owner (academy/pages/icons/puzzle.svg): drawn inline in the colour of the text, cut to its drawing, with its thin lines made thicker, so it reads at the size of a heading in both colour schemes (owner, 15 October 2026)
+PUZZLE = read("academy/pages/icons/puzzle.svg")
+PUZZLE_DARK = [d for d, f in re.findall(r'<path d="([^"]+)"[^>]*fill="([^"]+)"', PUZZLE) if f == "#111111"]
+assert len(PUZZLE_DARK) == 1
+PUZZLE_ICON = ('<svg class="h-icon h-puzzle" viewBox="62 95 490 427" aria-hidden="true" focusable="false">'
+               '<path d="%s" fill="currentColor" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/></svg>' % PUZZLE_DARK[0])
+
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
-  <h2>How we broke it down</h2>
+  <h2 class="with-icon">How we broke it down%(puzzle)s</h2>
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The guide numbers the task statements but not their points, so the labels of the points are ours.</span></p>
   <p>Each task statement opens in three levels. The <b>Overview</b> takes about 30 seconds. The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests. The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</p>
@@ -2875,7 +2882,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. The line <b>For the exam</b> gives the answer of the guide. The line <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
   <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam. It also lists the topics that the exam covers and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
-</section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
+</section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
