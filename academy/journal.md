@@ -14,7 +14,7 @@ One entry for each work session. Newest entry first.
   - Batches 4 and 5: 22 popups changed or added on tab 1 and 18 on tab 2 (the tab 2 texts drafted by an agent from the run files), and facts moved in 11 parts. Reviews: 8 medium items, fixed.
   - Batch 6: sentences over 25 words went from 151 to 34. The 34 are false hits of the count script and the paragraph of the owner.
 - Open for the owner: the Overview of 3.2 does not name context: fork (check B3). The paragraphs that read as one long underline (the owner said to take this next).
-- Pushed to GitHub at 29f95da, with the yes of the owner. The owner then asked if the reader checks had found that the text is too dense. They had not: their agents read extracted text, so they never saw the dotted lines. The owner chose, for now, to show the dots only on the paragraph under the pointer. A touch screen keeps them. The owner agrees that the real cause is text written as a chain of sourced facts, and declined a trial rewrite of part 1.3 for now.
+- Pushed to GitHub at 29f95da, with the yes of the owner. The owner then asked if the reader checks had found that the text is too dense. They had not: their agents read extracted text, so they never saw the dotted lines. The owner chose, for now, to show the dots only on the fact under the pointer (first on the paragraph, then, at the request of the owner, on the one fact). A touch screen keeps them. The owner agrees that the real cause is text written as a chain of sourced facts, and declined a trial rewrite of part 1.3 for now.
 
 ## 14 October 2026, evening: the reader checks (decision 0041)
 

@@ -52,8 +52,8 @@ h3 { font-size: var(--t-body); line-height: 1.3; font-weight: 600; }
 p { max-width: 65ch; }
 code { font: .875em var(--font-mono); font-variant-ligatures: none; }
 .fact { text-decoration: underline dotted var(--text-dim) 1.5px; text-underline-offset: .22em; cursor: help; border-radius: var(--r-1); }
-/* the dots show only on the paragraph under the pointer, so a paragraph does not read as one long underline (owner, 15 October 2026). A touch screen keeps them. */
-@media (hover: hover) and (pointer: fine) { .fact { text-decoration-color: transparent; transition: text-decoration-color var(--fast) var(--ease); } :hover > .fact, .fact:focus-visible { text-decoration-color: var(--text-dim); } .fact:hover, .fact[aria-expanded="true"] { text-decoration-color: var(--accent); } }
+/* the dots show only on the fact under the pointer, so a paragraph does not read as one long underline (owner, 15 October 2026). A touch screen keeps them. */
+@media (hover: hover) and (pointer: fine) { .fact { text-decoration-color: transparent; transition: text-decoration-color var(--fast) var(--ease); } .fact:focus-visible { text-decoration-color: var(--text-dim); } .fact:hover, .fact[aria-expanded="true"] { text-decoration-color: var(--accent); } }
 .fact:hover, .fact[aria-expanded="true"] { text-decoration-color: var(--accent); background: var(--accent-dim); }
 .split-line { border: 0; border-top: 1px solid var(--border); margin: var(--s-6) 0 0; }
 
