@@ -3012,8 +3012,8 @@ GLOSS = [
 
 GLOSSARY = glossary_panel('<dl class="glossary">%s</dl>' % "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS),
                           '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%s#top-words">Glossary of tab 2 &rarr;</a></p>' % TAB2)
-PRIMER = """<section class="parts" id="primer" aria-label="Before you start">
-  <h2>Before you start: the products and the words</h2>
+PRIMER = """<section class="parts" id="primer" aria-label="Before you start: who runs the tools in each product">
+  <h2 class="with-icon">Before you start: who runs the tools in each product<svg class="h-icon h-tools" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg></h2>
   <p>The exam asks about three products and one protocol. Fig. C shows who runs the tools in each. The button Glossary at the right edge of the screen explains the words of this tab.</p>
   %(fig)s
 </section>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
