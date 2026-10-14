@@ -395,7 +395,7 @@ def grid(x):
         cells.append('<g class="cell %s"><rect x="%d" y="%d" width="20" height="20" rx="0"/>%s<title>%s: %d %s</title></g>'
                      % (cls, cx, cy, txt, sid, n, "try" if n == 1 else "tries"))
     return ('<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d tries</p>'
-            '<svg class="ve-grid" viewBox="-2 -2 231 139" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
+            '<svg class="ve-grid" viewBox="0 0 227 135" style="overflow:visible" role="img" aria-label="Mock %d: %d tries for %d slots. %d slots passed both checks at the first try. %d slots had more than one try. The most tries for one slot: %d.">%s</svg>'
             '<p class="cap">%d of %d passed both checks at the first try</p></div>'
             % (x["mock"], x["tries"], x["mock"], x["tries"], SLOTS, x["first"], x["more"], x["max"], "".join(cells),
                x["first"], SLOTS))
