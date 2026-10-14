@@ -326,6 +326,11 @@ p > .chip.info[data-step$="-code"] { white-space: normal; }
 .js-motion svg.ve-bars rect, .js-motion svg.ve-grow rect.bar { transform-box: fill-box; transform-origin: left center; transform: scaleX(0); transition: transform 900ms var(--ease); }
 .js-motion svg.ve-bars.grown rect, .js-motion svg.ve-grow.grown rect.bar { transform: none; }
 .chip.guide { color: var(--text-dim); margin-left: var(--s-1); vertical-align: .1em; }
+.chip.guide[data-step] { cursor: pointer; }
+/* a second drawing for a phone (academy decision 0043, item 3) */
+.frame.narrow { display: none; padding: var(--s-3); } .frame.has-narrow + .frame.narrow { margin-top: 0; }
+.ve-svg.ve-phone { min-width: 0; }
+@media (max-width: 34rem) { .frame.has-narrow { display: none; } .frame.narrow { display: block; } }
 /* the exam answer and the product today (academy decision 0042) */
 .exambox { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--s-2) var(--s-4); margin: 0; padding: var(--s-3) var(--s-4); background: var(--surface); border: 1px solid var(--border); }
 .exambox dt { font: 600 var(--t-label) var(--font-mono); padding-top: .3rem; align-self: start; display: flex; align-items: center; gap: var(--s-2); }

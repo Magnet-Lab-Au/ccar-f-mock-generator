@@ -18,7 +18,7 @@ import sys
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import (BRANCH, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
+from lib import (BRANCH, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
                  script_file, write)
 
 TAB1 = "exam-guide-breakdown.html"
@@ -229,6 +229,28 @@ def edge(d, label=None, lx=0, ly=0, cls="", anchor="", a=None, s=None):
     if label:
         out += '<text class="ve-el %s"%s x="%d" y="%d">%s</text>' % (anchor, st, lx, ly, e(label))
     return out
+
+
+def phone_bars(rows, aria, mx, note=None):
+    """The same bar chart drawn for a phone, with each label above its bar (academy decision 0043, item 3).
+    rows: (label, value, hot, text, ghost), where ghost is the value of an outline bar or None."""
+    out = ""
+    if all(len(r[0]) <= 3 for r in rows):   # short labels, such as B1, stand left of their bars
+        for i, (k, v, h, t, g) in enumerate(rows):
+            w = max(2, v * 240 / mx)
+            out += ('<text x="0" y="%d">%s</text><rect class="%s" x="36" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%s</text>'
+                    % (i * 30 + 14, e(k), "hot" if h else "", i * 30 + 4, w, 44 + w, i * 30 + 14, e(t)))
+        return '<div class="frame narrow"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 30 + 6, e(aria), out)
+    for i, (k, v, h, t, g) in enumerate(rows):
+        y = i * 46
+        if g:
+            out += '<rect class="ghost" x="0" y="%d" width="%d" height="18"/>' % (y + 20, g * 240 / mx)
+        w = max(2, v * 240 / mx)
+        out += ('<text x="0" y="%d">%s</text><rect class="%s" x="0" y="%d" width="%d" height="18"/><text class="hv" x="%d" y="%d">%s</text>'
+                % (y + 10, e(k), "hot" if h else "", y + 20, w, max(w, g * 240 / mx if g else 0) + 8, y + 29, e(t)))
+    if note:
+        out += '<text x="0" y="%d">%s</text>' % (len(rows) * 46 + 12, e(note))
+    return '<div class="frame narrow"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46 + (24 if note else 0), e(aria), out)
 
 
 def small_bars(rows, aria, mx=None):
@@ -1270,13 +1292,15 @@ R4 = [(k, RULE4.get(k, 0)) for k in ("B1", "B2", "B3", "B4", "B5", "B6", "B7", "
 MX4 = max(v for _, v in R4)
 FIG42 = """
 <figure>
-  <div class="frame">
+  <div class="frame has-narrow">
     <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Findings of step 4 per rule in mocks 1 to 5: %(vals)s.">%(bars)s</svg>
   </div>
+  %(phone)s
   %(pbars)s
   <figcaption><span class="fig-n">Fig. 4-2</span>%(cap)s</figcaption>
 </figure>""" % {
     "h": len(R4) * 30 + 6, "vals": ", ".join("%s %d" % kv for kv in R4),
+    "phone": phone_bars([(k, v, v == MX4, str(v), None) for k, v in R4], "Findings of step 4 per rule in mocks 1 to 5: %s." % ", ".join("%s %d" % kv for kv in R4), MX4),
     "pbars": small_bars([("passed step 4", V4["pass"], False), ("failed step 4", V4["fail"], True)], "Checks of step 4 in mocks 1 to 5: %d passed and %d failed." % (V4["pass"], V4["fail"])),
     "bars": "".join('<text x="0" y="%d">%s</text><rect class="%s" x="60" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
                     % (i * 30 + 14, k, "hot" if v == MX4 else "", i * 30 + 4, max(2, v * 440 // MX4), 70 + max(2, v * 440 // MX4), i * 30 + 14, v) for i, (k, v) in enumerate(R4)),
@@ -1286,13 +1310,17 @@ FIG42 = """
 MXC = max(c[1] for c in COST)
 FIG43 = """
 <figure>
-  <div class="frame">
+  <div class="frame has-narrow">
     <svg class="ve-bars" viewBox="0 0 760 %(h)d" role="img" aria-label="Dollars per mock: %(vals)s. Mocks 4 and 5 used prompt caching. Without the cache, the same tokens would cost %(w4).2f and %(w5).2f dollars.">%(bars)s
       <text x="0" y="%(ly)d">dark: paid. outline: the same tokens with no cache</text></svg>
   </div>
+  %(phone)s
   <figcaption><span class="fig-n">Fig. 4-3</span>%(cap)s</figcaption>
 </figure>""" % {
     "h": 5 * 34 + 30, "ly": 5 * 34 + 20, "vals": ", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), "w4": COST[3][1], "w5": COST[4][1],
+    "phone": phone_bars([("Mock %d%s" % (i + 1, (", no cache: $%.2f" % c[1]) if c[2] else ""), c[0], c[2], "$%.2f" % c[0], c[1] if c[2] else None) for i, c in enumerate(COST)],
+                        "Dollars per mock: %s. Mocks 4 and 5 used prompt caching. Without the cache, the same tokens would cost %.2f and %.2f dollars. The outline bar shows the cost with no cache."
+                        % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), COST[3][1], COST[4][1]), MXC, "dark: paid. outline: no cache"),
     "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="ghost" x="80" y="%d" width="%d" height="22"/><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">$%.2f%s</text>'
                     % (i * 34 + 16, i + 1, i * 34 + 5, c[1] * 400 / MXC, "hot" if c[2] else "", i * 34 + 5, c[0] * 400 / MXC, 88 + c[1] * 400 / MXC, i * 34 + 16, c[0],
                        (" (no cache: $%.2f)" % c[1]) if c[2] else "") for i, c in enumerate(COST)),
@@ -1402,12 +1430,14 @@ R6 = [(k, RULE6.get(k, 0)) for k in ("D1", "D2", "D3", "D4")]
 MX6 = max(v for _, v in R6)
 FIG62 = """
 <figure>
-  <div class="frame">
+  <div class="frame has-narrow">
     <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Findings of step 6 in mocks 1 to 5: %(vals)s.">%(bars)s</svg>
   </div>
+  %(phone)s
   <figcaption><span class="fig-n">Fig. 6-2</span>%(cap)s</figcaption>
 </figure>""" % {
     "h": len(R6) * 30 + 6, "vals": ", ".join("%s %d" % kv for kv in R6),
+    "phone": phone_bars([(k, v, k == "D3", str(v), None) for k, v in R6], "Findings of step 6 in mocks 1 to 5: %s." % ", ".join("%s %d" % kv for kv in R6), MX6),
     "bars": "".join('<text x="0" y="%d">%s</text><rect class="%s" x="60" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
                     % (i * 30 + 14, k, "hot" if k == "D3" else "", i * 30 + 4, v * 440 // MX6, 70 + v * 440 // MX6, i * 30 + 14, v) for i, (k, v) in enumerate(R6)),
     "cap": fact("s6-runs", "Step 6 ran %d times over mocks 1 to 5 and made %d findings. The owner rewrote a question for %d of them." % (sum(RUNS6.values()), N6, len(RW6))),
@@ -1924,6 +1954,7 @@ BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<
 TOP = BODY.split('<section class="parts" id="steps"')[0]
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, POPUPS, 2, POP)   # the popups of the boxes (academy/popup-plan.md)
+BODY = group_roles(BODY)   # academy decision 0043, item 6
 BODY = code_font(BODY)   # academy decision 0038
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))

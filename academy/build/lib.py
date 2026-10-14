@@ -200,33 +200,45 @@ def add_popups(body, specs, tab, pop):
         for m in sp["match"]:
             cap = body.index('<span class="fig-n">Fig. %s</span>' % sp["fig"])
             start = body.rfind("<figure", 0, cap)
-            pos = -1
+            found = []
             for v in (html.escape(m), html.escape(m, quote=False)):
                 pos = body.find(">%s<" % v, start, cap)
-                if pos >= 0:
+                while pos >= 0:   # a figure with a phone drawing has each label twice (academy decision 0043)
+                    found.append(pos)
+                    pos = body.find(">%s<" % v, pos + 1, cap)
+                if found:
                     break
-            if pos < 0:
+            if not found:
                 raise SystemExit("Popup label not in Fig. %s: %r" % (sp["fig"], m))
-            tag = body.rfind("<", 0, pos)
-            while body.startswith(("<tspan", "<code"), tag):
-                tag = body.rfind("<", 0, tag)
-            target = tag
-            if not sp.get("text_el"):
-                g = body.rfind("<g ", start, pos)
-                li = body.rfind("<li", start, pos)
-                if g >= 0 and body.find("</g>", g, pos) < 0:
-                    target = g
-                elif li >= 0 and body.find("</li>", li, pos) < 0:
-                    target = li
-            end = body.index(">", target)
-            head = body[target:end]
-            if "data-step=" in head or "data-card=" in head:
-                raise SystemExit("The box of %r in Fig. %s opens something already" % (m, sp["fig"]))
-            if "who-model" in head:
-                cls = "model"
-            elif "who-owner" in head:
-                cls = "owner"
-            cut = target + len(re.match(r"<[a-zA-Z0-9]+", head).group(0))
-            body = body[:cut] + attrs % key + body[cut:]
+            for pos in reversed(found):
+                tag = body.rfind("<", 0, pos)
+                while body.startswith(("<tspan", "<code"), tag):
+                    tag = body.rfind("<", 0, tag)
+                target = tag
+                if not sp.get("text_el"):
+                    g = body.rfind("<g ", start, pos)
+                    li = body.rfind("<li", start, pos)
+                    if g >= 0 and body.find("</g>", g, pos) < 0:
+                        target = g
+                    elif li >= 0 and body.find("</li>", li, pos) < 0:
+                        target = li
+                end = body.index(">", target)
+                head = body[target:end]
+                if "data-step=" in head or "data-card=" in head:
+                    raise SystemExit("The box of %r in Fig. %s opens something already" % (m, sp["fig"]))
+                if "who-model" in head:
+                    cls = "model"
+                elif "who-owner" in head:
+                    cls = "owner"
+                cut = target + len(re.match(r"<[a-zA-Z0-9]+", head).group(0))
+                body = body[:cut] + attrs % key + body[cut:]
         pop[key] = {"who": sp["who"], "cls": cls, "title": sp["title"], "sent": sp["sent"], "points": guide_points(sp["points"]), "example": None}
     return body
+
+
+def group_roles(body):
+    """A drawing with popups is a group, not one picture, so that a screen reader reaches its popups (academy decision 0043, item 6)."""
+    def one(m):
+        svg = m.group(0)
+        return svg.replace(' role="img"', ' role="group"', 1) if "data-step=" in svg else svg
+    return re.sub(r"<svg\b[^>]*>.*?</svg>", one, body, flags=re.S)

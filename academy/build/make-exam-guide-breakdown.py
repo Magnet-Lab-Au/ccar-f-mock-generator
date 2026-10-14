@@ -19,7 +19,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
+from lib import group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, page, read, script_file, write  # noqa: E402
 
 TAB2 = "behind-the-mocks.html"
 EG = "reference/exam-guide.md"
@@ -216,7 +216,10 @@ def cf(key, c, text):
     return fact(key, text)
 
 
-GUIDE = ' <span class="chip guide">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
+GUIDE = ' <span class="chip guide" data-step="guide-only" tabindex="0" role="button" aria-expanded="false">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
+POP["guide-only"] = {"who": "Guide only", "cls": "io", "title": "What does the label mean?", "points": [], "example": None,   # academy decision 0043, item 9
+                     "sent": ["No copied page of the Anthropic documentation states this point, or the documentation states it in other words. For the exam, answer as the guide says.",
+                              "Where a fact of the product could lead to a different exam answer, a box gives both: For the exam, and The product today."]}
 
 
 def exam_box(tsid, key, exam, today, facts=None):
@@ -295,19 +298,29 @@ def waffle(n, label_a, label_b, aria):
             % (e(aria), cells, e(la[0] + ":"), e(la[1]), e(lb[0] + ":"), e(lb[1])))
 
 
-def live(num, controls, svg_w, svg_h, aria, inner, say_all, cap):
+def live(num, controls, svg_w, svg_h, aria, inner, say_all, cap, phone=None):
     """A live figure (decision 0037): with no script the full picture and say_all show. The script adds a button for each
-    part with data-pick, and a choice lights that part and shows its data-say."""
-    return ('<figure class="ve-live" data-controls="%s" data-all-label="All files"><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>'
+    part with data-pick, and a choice lights that part and shows its data-say. phone: the drawing for a phone."""
+    return ('<figure class="ve-live" data-controls="%s" data-all-label="All files"><div class="frame%s"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>%s'
             '<p class="ve-say" aria-live="polite" data-all="%s">%s</p><figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>'
-            % (e(controls), svg_w, svg_h, e(aria), inner, e(say_all), e(say_all), num, cap))
+            % (e(controls), " has-narrow" if phone else "", svg_w, svg_h, e(aria), inner, narrow(aria, phone), e(say_all), e(say_all), num, cap))
+
+
+def narrow(aria, phone):
+    """The drawing for a phone, (svg_w, svg_h, inner): the boxes stack from top to bottom (academy decision 0043, item 3).
+    The class list of its svg is not "ve-svg" alone, so it gets no minimum width and fits the screen."""
+    if not phone:
+        return ""
+    w, h, inner = phone
+    return '<div class="frame narrow"><svg class="ve-svg ve-phone" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>' % (w, h, e(aria), inner)
 
 
 def before_after(num, panels, cap):
     """Before / after (decision 0037): the same drawing twice, at the same scale. With no script both panels show,
-    and the script shows one panel and a button for each. Each panel is (button, label, svg_w, svg_h, aria, inner)."""
-    out = "".join('<div class="ba-panel" data-label="%s"><span class="ve-label">%s</span><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div></div>'
-                  % (e(btn), e(label), w, h, e(aria), inner) for btn, label, w, h, aria, inner in panels)
+    and the script shows one panel and a button for each. Each panel is (button, label, svg_w, svg_h, aria, inner),
+    with an optional seventh item, the drawing for a phone."""
+    out = "".join('<div class="ba-panel" data-label="%s"><span class="ve-label">%s</span><div class="frame%s"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>%s</div>'
+                  % (e(pn[0]), e(pn[1]), " has-narrow" if len(pn) > 6 else "", pn[2], pn[3], e(pn[4]), pn[5], narrow(pn[4], pn[6] if len(pn) > 6 else None)) for pn in panels)
     return '<figure class="ve-ba">%s<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (out, num, cap)
 
 
@@ -647,7 +660,7 @@ PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt
                    "A request with several issues becomes distinct items. The agent investigates each one, then joins them in one resolution (1.4-S2)."),
                 cf("ts-1-4-f11", D(MAO, "Agents can act in parallel with their own isolated context", "Managed Agents, Multiagent orchestration"),
                    "The guide says &ldquo;using shared context&rdquo;. In the documentation, agents that work in parallel have their own isolated context.") + GUIDE)
-            + "<p><b>The handoff.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
+            + "<p><b>The handoff.</b> %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" %
                 cf("ts-1-4-s3", gx("Compiling structured handoff summaries (customer ID, root cause, refund amount, recommended action) when escalating to human agents who lack access to the conversation transcript", "Exam guide, 1.4-S3"),
                    "When the agent escalates, it writes a structured summary: customer ID, root cause, refund amount and recommended action, because the human does not see the transcript (1.4-K3, 1.4-S3).")
             + exam_tests("1.4", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names")])
@@ -788,7 +801,7 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                    "When those tool results are stale, the guide prefers a new session with a structured summary (1.7-K4)."),
                 cf("ts-1-7-f10", D(SES, "Capture the results you need (analysis output, decisions, file diffs) as application state and pass them into a fresh session", "Agent SDK, Sessions"),
                    "For a session on another machine, the Claude Code documentation advises to capture the results and pass them into a fresh session."))
-            + "<p><b>Changed files.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
+            + "<p><b>Changed files.</b> %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" %
                 cf("ts-1-7-s4", gx("Informing a resumed session about specific file changes for targeted re-analysis rather than requiring full re-exploration", "Exam guide, 1.7-S4"),
                    "When the earlier context is still mostly valid, tell the resumed session which files changed, so it analyzes only those again (1.7-K3, 1.7-S4).")
             + exam_tests("1.7", [("Session management — session resumption, fork_session, named sessions, session context isolation", "Among the technologies, the guide names")])
@@ -898,13 +911,22 @@ FIG21 = before_after("2.1-1", [
               '<text class="ve-el" x="560" y="114">which one?</text>',
               box(20, 80, 210, 60, ["Get the results", "of this web page"], cls="who-model"),
               box(330, 30, 230, 60, ["analyze_content"], sub="analyzes content"),
-              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")])),
+              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")]),
+     (340, 290, "".join([edge("M50 74V130H80", cls="is-async"), edge("M50 74V220H80", cls="is-async"),
+                         '<text class="ve-el" x="200" y="276">which one?</text>',
+                         box(20, 10, 300, 64, ["Get the results", "of this web page"], cls="who-model"),
+                         box(80, 100, 240, 60, ["analyze_content"], sub="analyzes content"),
+                         box(80, 190, 240, 60, ["analyze_document"], sub="analyzes content")]))),
     ("After", "After: renamed, with a web-specific description", 720, 220,
      "After: analyze_content is renamed extract_web_results with a web-specific description, so the request for the results of a web page has one clear tool.",
      "".join([edge("M230 110H280V60H330", cls="is-hot"),
               box(20, 80, 210, 60, ["Get the results", "of this web page"], cls="who-model"),
               box(330, 30, 230, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
-              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")])),
+              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")]),
+     (340, 290, "".join([edge("M50 74V130H80", cls="is-hot"),
+                         box(20, 10, 300, 64, ["Get the results", "of this web page"], cls="who-model"),
+                         box(80, 100, 240, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
+                         box(80, 190, 240, 60, ["analyze_document"], sub="analyzes content")]))),
 ], "%s %s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
                     "Claude chooses a tool from the request and the description of the tool."),
                  cf("ts-2-1-s2", gx("Renaming tools and updating descriptions to eliminate functional overlap (e.g., renaming analyze_content to extract_web_results with a web-specific description)", "Exam guide, 2.1-S2"),
@@ -1367,6 +1389,17 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
 LCB = "claude-code-docs-large-codebases"
 D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1:]
 RULE33 = "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n\n# API Development Rules\n\n- All API endpoints must include input validation\n- Use the standard error response format\n- Include OpenAPI documentation comments"
+FIG33_PHONE = (340, 530, "".join([   # the drawing for a phone (academy decision 0043, item 3)
+    '<path class="ve-e no-head" d="M40 74V275M40 120H60M40 170H60M40 220H60M40 275H60"/>',
+    '<path class="ve-e no-head" d="M320 120H332V220M320 170H332M320 220H332"/>', edge("M332 220V305H170V325"),
+    box(60, 100, 260, 40, ["src/ui/Button.test.tsx"], cls="try ok", data={"pick": "src/ui/Button.test.tsx", "match": "yes"}),
+    box(60, 150, 260, 40, ["src/api/users.test.tsx"], cls="try ok", data={"pick": "src/api/users.test.tsx", "match": "yes"}),
+    box(60, 200, 260, 40, ["lib/date.test.tsx"], cls="try ok", data={"pick": "lib/date.test.tsx", "match": "yes"}),
+    box(60, 250, 260, 50, ["src/ui/Button.tsx"], sub="no match", data={"pick": "src/ui/Button.tsx", "match": "no"}),
+    box(20, 10, 300, 64, [".claude/rules/testing.md"], sub='paths: "**/*.test.tsx"'),
+    box(20, 325, 300, 70, ["Context"], sub="on an edit (guide)", cls="who-model", data={"target": "context"}),
+    box(20, 420, 300, 56, ["src/ui/CLAUDE.md"], sub="only files in src/ui/"),
+    '<text class="ve-lab" x="20" y="500">a directory CLAUDE.md</text><text class="ve-lab" x="20" y="518">covers one folder only</text>']))
 FIG33 = live("3.3-1", "Choose a file", 890, 330,
                "A rule file in .claude/rules/ with paths **/*.test.tsx matches test files in several folders, such as src/ui/Button.test.tsx, src/api/users.test.tsx and lib/date.test.tsx, "
                "but not src/ui/Button.tsx. When Claude edits a matching file, the rule loads into the context (in Claude Code, a read is enough too). A CLAUDE.md in src/ui/ covers that one folder only.",
@@ -1385,7 +1418,8 @@ FIG33 = live("3.3-1", "Choose a file", 890, 330,
                "%s %s" % (cf("ts-3-3-f1", D(MEMD, "Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.", "Claude Code, Memory"),
                              "A paths field in the frontmatter scopes a rule to the files that match its patterns."),
                           cf("ts-3-3-f13", gx("allows conventions to be automatically applied based on file paths regardless of directory location, essential for test files spread throughout the codebase.", "Exam guide, sample question 6"),
-                             "This is the answer of the guide for test files spread through the codebase.")))
+                             "This is the answer of the guide for test files spread through the codebase.")),
+               phone=FIG33_PHONE)
 
 PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files",
                         "A file in .claude/rules/ with a paths list of glob patterns loads into the context only when Claude edits a file that matches (the guide). "
@@ -1442,7 +1476,10 @@ FIG32 = before_after("3.2-1", [
      "Without context: fork, the body of the skill enters the main context.",
      "".join([edge("M560 100H280", "the body enters the main context", 420, 91, cls="is-hot"),
               box(20, 40, 260, 120, ["Main", "conversation"], sub="descriptions, then the body", cls="who-model"),
-              box(560, 40, 310, 120, ["The skill"], sub="the body of SKILL.md")])),
+              box(560, 40, 310, 120, ["The skill"], sub="the body of SKILL.md")]),
+     (340, 250, "".join([edge("M40 90V160", "the body enters the main context", 52, 125, cls="is-hot", anchor="r"),
+                         box(20, 10, 300, 80, ["The skill"], sub="the body of SKILL.md"),
+                         box(20, 160, 300, 80, ["Main", "conversation"], sub="descriptions, then the body", cls="who-model")]))),
     ("With context: fork", "With context: fork", 890, 240,
      "A skill with context: fork runs in a new subagent. The content of SKILL.md is its task, and it gets no conversation history. "
      "It reads files and runs searches, and only a summary returns to the main conversation.",
@@ -1451,7 +1488,13 @@ FIG32 = before_after("3.2-1", [
               '<path class="ve-e no-head" d="M412 117l16 16M428 117l-16 16"/>',
               edge("M715 160V200H150V160", "only a summary returns", 430, 192, cls="is-hot"),
               box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
-              box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model")])),
+              box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model")]),
+     (340, 350, "".join([edge("M40 90V260", "SKILL.md = the task", 84, 125, anchor="r"),
+                         edge("M70 90V260", "no conversation history", 84, 175, cls="is-async no-head", anchor="r"),
+                         '<path class="ve-e no-head" d="M62 207l16 16M78 207l-16 16"/>',
+                         edge("M300 260V90", "only a summary returns", 288, 225, cls="is-hot", anchor="l"),
+                         box(20, 10, 300, 80, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
+                         box(20, 260, 300, 80, ["New subagent"], sub="reads files, runs searches", cls="who-model")]))),
 ], "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
                  "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
               cf("ts-3-2-f10", D(SKL, "4. The subagent summarizes its results and returns them to your main conversation when it finishes", "Claude Code, Skills"),
@@ -1659,7 +1702,7 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                    "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion.") + GUIDE,
                 cf("ts-3-5-f11", D(BEST, "Claude asks about things you might not have considered yet, including technical implementation, UI/UX, edge cases, and tradeoffs.", "Claude Code, Best practices"),
                    "Claude asks about the implementation, edge cases and tradeoffs."))
-            + "<p><b>One message or a sequence.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
+            + "<p><b>One message or a sequence.</b> %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" %
                 cf("ts-3-5-k4", gx("When to provide all issues in a single message (interacting problems) versus fixing them sequentially (independent problems)", "Exam guide, 3.5-K4"),
                    "Problems that interact go in one message, and independent problems go one at a time (3.5-K4, 3.5-S5).")
             + exam_tests("3.5", [("Iterative refinement: input/output examples, test-driven iteration, interview pattern, sequential vs parallel issue resolution", "Among the topics, the guide names")])
@@ -1856,7 +1899,11 @@ FIG41 = before_after("4.1-1", [
      "".join([edge("M190 75H240", cls="is-hot"), edge("M590 75H730", cls="is-hot"),
               box(20, 40, 170, 70, ["Candidate", "findings"]),
               box(240, 30, 350, 90, ["Filter on confidence"], sub="be conservative · only high-confidence"),
-              box(730, 30, 140, 90, ["Posted", "findings"])])),
+              box(730, 30, 140, 90, ["Posted", "findings"])]),
+     (340, 300, "".join([edge("M170 70V100", cls="is-hot"), edge("M170 190V220", cls="is-hot"),
+                         box(20, 10, 300, 60, ["Candidate", "findings"]),
+                         box(10, 100, 320, 90, ["Filter on confidence"], sub="be conservative, high confidence"),
+                         box(20, 220, 300, 70, ["Posted", "findings"])]))),
     ("Explicit criteria", "After: explicit criteria, and a noisy category disabled for a time", 890, 280,
      "Candidate findings pass through explicit criteria: report bugs and security issues, skip minor style. Then severity criteria, each with a code example, classify them. "
      "The findings are posted. If one category gives many false positives, it loses the trust of the developers, so it is disabled for a time while its prompt improves.",
@@ -1867,7 +1914,15 @@ FIG41 = before_after("4.1-1", [
               box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style"),
               box(520, 30, 160, 90, ["Severity"], sub="code examples"),
               box(730, 30, 140, 90, ["Posted", "findings"], cls="try ok"),
-              box(540, 190, 250, 70, ["A noisy category?"], sub="false positives lose trust")])),
+              box(540, 190, 250, 70, ["A noisy category?"], sub="false positives lose trust")]),
+     (340, 480, "".join([edge("M170 66V96"), edge("M170 166V196"), edge("M170 266V296"),
+                         edge("M80 352V396"),
+                         edge("M320 431H332V131H320", "disable, fix the prompt", 324, 378, cls="is-hot", anchor="l"),
+                         box(20, 10, 300, 56, ["Candidate", "findings"]),
+                         box(20, 96, 300, 70, ["Explicit criteria"], sub="report bugs, skip style"),
+                         box(20, 196, 300, 70, ["Severity"], sub="code examples"),
+                         box(20, 296, 300, 56, ["Posted", "findings"], cls="try ok"),
+                         box(20, 396, 300, 70, ["A noisy category?"], sub="false positives lose trust")]))),
 ], "%s %s" % (cf("ts-4-1-s1", gx("Writing specific review criteria that define which issues to report (bugs, security) versus skip (minor style, local patterns) rather than relying on confidence-based filtering", "Exam guide, 4.1-S1"),
                  "Specific criteria say which issues to report and which to skip, in place of a filter by confidence (4.1-S1)."),
               cf("ts-4-1-s2", gx("Temporarily disabling high false-positive categories to restore developer trust while improving prompts for those categories", "Exam guide, 4.1-S2"),
@@ -1895,7 +1950,7 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
             + "<p><b>Report and skip.</b> %s %s</p>" % (cf("ts-4-1-f9", D(CREV, "* **`REVIEW.md`**: review-only instructions, given to the agents that find and verify findings and consulted by the agents that rank and report them. Use it to say what your team wants flagged, at what severity, and how findings are reported.", "Claude Code, Code Review"), "In Code Review, a file REVIEW.md says what the team wants flagged, and at what severity."),
                 cf("ts-4-1-f10", D(CREV, "**Skip rules**: list paths, branch patterns, and finding categories where Claude should post no findings.", "Claude Code, Code Review"),
                    "Its skip rules name the paths and categories with no findings."))
-            + "<p><b>Trust.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
+            + "<p><b>Trust.</b> %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" %
                 cf("ts-4-1-k3", gx("The impact of false positive rates on developer trust: high false positive categories undermine confidence in accurate categories", "Exam guide, 4.1-K3"),
                    "A category with many false positives makes developers doubt the accurate categories too (4.1-K3).")
             + "<p><b>Severity.</b> %s</p>" % (
@@ -2347,7 +2402,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
             "<p><b>Measure it.</b> %s</p>" %
                 cf("ts-5-2-f2", D(CSUP, "Aim for an escalation accuracy of 95% or higher.", "Customer support agent"),
                    "The documentation for a support agent aims at an escalation accuracy of 95% or more.")
-            + "<p><b>A request for a human.</b> %s %s %s <span class=\"chip guide\">Guide only</span></p>" % (
+            + "<p><b>A request for a human.</b> %s %s %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" % (
                 cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
                    "When a customer asks for a human, the agent escalates at once. When the customer does not ask for a human and the issue is simple, it offers to resolve it (5.2-K2)."),
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
@@ -2430,7 +2485,7 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
                 fact("ts-2-2-f6", "For an error of a client tool, the Claude API documentation also says to name what went wrong and what Claude should try next."),
                 cf("ts-5-3-f4", D(SUB, "Either way, intermediate tool calls and results stay inside the subagent; only its final message returns to the parent.", "Agent SDK, Subagents"),
                    "In the Agent SDK, only the final message of a subagent returns to its parent, so put the error context in that message."))
-            + "<p><b>Empty is not failure.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
+            + "<p><b>Empty is not failure.</b> %s <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" %
                 cf("ts-5-3-s2", gx("Distinguishing access failures from valid empty results in error reporting so the coordinator can make appropriate decisions", "Exam guide, 5.3-S2"),
                    "The report keeps an access failure apart from a valid empty result (5.3-S2).")
             + "<p><b>Two anti-patterns.</b> %s %s %s</p>" % (
@@ -2692,7 +2747,7 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                    "Search result blocks of the Claude API, on all active models except Claude Haiku 3, carry your source and title into citations."),
                 cf("ts-5-6-f8", D(RHAL, "Make Claude's response auditable by having it cite quotes and sources for each of its claims. You can also have Claude verify each claim by finding a supporting quote after it generates a response. If it can't find a quote, it must retract the claim.", "Reduce hallucinations"),
                    "Prompt advice of the Claude API documentation: have Claude cite a quote and a source for each claim, and retract a claim with no quote."))
-            + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the Anthropic documentation covers conflicting values or dates. <span class=\"chip guide\">Guide only</span></p>" % (
+            + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the Anthropic documentation covers conflicting values or dates. <span class=\"chip guide\" data-step=\"guide-only\" tabindex=\"0\" role=\"button\" aria-expanded=\"false\">Guide only</span></p>" % (
                 cf("ts-5-6-k3", gx("How to handle conflicting statistics from credible sources: annotating conflicts with source attribution rather than arbitrarily selecting one value", "Exam guide, 5.6-K3"),
                    "When credible sources give different statistics, annotate the conflict with the sources, and do not select one value arbitrarily (5.6-K3)."),
                 cf("ts-5-6-s3", gx("Completing document analysis with conflicting values included and explicitly annotated, letting the coordinator decide how to reconcile before passing to synthesis", "Exam guide, 5.6-S3"),
@@ -2839,6 +2894,7 @@ BODY = """<main>
 
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, POPUPS, 1, POP)   # the popups of the boxes (academy/popup-plan.md)
+BODY = group_roles(BODY)   # academy decision 0043, item 6
 BODY = code_font(BODY)
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 %s %s ' % (m.group(1), m.group(3), m.group(2), m.group(3)), BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
