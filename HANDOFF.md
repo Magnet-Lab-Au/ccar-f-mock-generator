@@ -8,6 +8,15 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
+### State on 14 October 2026, evening: the reader checks (academy decision 0041)
+
+- The owner chose to write notes on both tabs in one pass, on another day. Meanwhile the assistant ran the 23 checks of `academy/check-plan.md` alone, under `/goal`. Each check has its result in `academy/checks/<ID>.md`.
+- The list for the owner is `academy/checks/findings.md`. Its main points: the facts hold (822 links, 246 numbers of tab 2, a second fact check of the 5 hardest parts), and agents answered 293 mock questions from the page alone. The main weakness: in about 22 places the page states a product fact that goes against a guide point, and no line says which answer the exam expects. A beginner of domain 1 needs a primer and a glossary. On a phone, the sideways scroll hides the point of about 25 of 67 figure pictures. Tab 2 convinces about the process, less about the quality of the questions.
+- The fixes: only clear errors, 41 lines in `academy/checks/changes.md`, from facts in 2.2, 2.3, 4.3, 4.6, 5.2 and 5.5 to four drawing faults (Fig. A, 0-1, 5-2, 6-1). No fix changed an element ID, a figure number, a heading or a popup title. The tag `owner-review-2026-10-14` (d938b71) marks the version that the owner reads, so the owner's notes keep their places. A review agent checked all fixes and found 7 problems, 1 high (a reused card ID). All are fixed, and the build now stops on two different cards with one ID.
+- The tools of the checks are in `academy/checks/tools/`. `check-pages.js` prints "All checks passed." for both tabs.
+- G1 surveyed the portal for the move (decision 0017): three ways, and 7 decisions for the owner first (`academy/checks/G1.md`).
+- Next step: the owner writes notes on both tabs, reads `academy/checks/findings.md`, and says which items to take. Then the assistant sorts the notes into fixes and new design decisions (one question at a time).
+
 ### State on 14 October 2026, morning: the answers to the morning report
 
 - The owner answered all items of the morning report below, one question at a time. The 27 answers are in academy decision 0039. Academy decision 0040 corrects its item 12: section 17 is the appendix of the guide.

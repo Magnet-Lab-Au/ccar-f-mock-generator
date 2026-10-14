@@ -36,6 +36,13 @@ Progress list (updated after each check):
 | G1 | done | Three ways (copy, React page around the HTML, rewrite). 7 decisions for the owner first. |
 | G2 | done | 41 of 56 figures with popups, in the popup plan and HANDOFF. |
 
+Result (about 20:55):
+
+- All 23 checks ran, with 31 check agents, 7 scripts and 1 review agent of all fixes, at most 2 at a time. No check was skipped.
+- The list for the owner: `academy/checks/findings.md`. The fixes: `academy/checks/changes.md` (41 lines).
+- The assistant made errors on the way, and the checks found them: a fix of 2.3 went 2 words over the limit of 500 (found by `check-pages.js`, shortened), a wider viewBox of Fig. 5-2 made its numbers 11.8 pixels (found by `check-pages.js`, changed back), a fix of 5.2 put "It does not investigate first" after the wrong sentence (found by B4), and a new card reused an ID (found by the review of the fixes).
+- The plan said "Push once, at the end". The owner's yes to the plan covers it.
+
 ## 14 October 2026, morning: the answers to the morning report
 
 - The owner asked for a short version of the morning report and for the number of figures with an animation. Only 1 of the 56 figures has one: the stepper of Fig. 1 of part 1.1, from the sample.
