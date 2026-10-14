@@ -732,7 +732,7 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                 cf("ts-1-7-k4", gx("Why starting a new session with a structured summary is more reliable than resuming with stale tool results", "Exam guide, 1.7-K4"),
                    "When those tool results are stale, the guide prefers a new session with a structured summary (1.7-K4)."),
                 cf("ts-1-7-f10", D(SES, "Capture the results you need (analysis output, decisions, file diffs) as application state and pass them into a fresh session", "Agent SDK, Sessions"),
-                   "For a session on another machine, the Agent SDK documentation advises to capture the results and pass them into a fresh session."))
+                   "For a session on another machine, the Claude Code documentation advises to capture the results and pass them into a fresh session."))
             + "<p><b>Changed files.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-1-7-s4", gx("Informing a resumed session about specific file changes for targeted re-analysis rather than requiring full re-exploration", "Exam guide, 1.7-S4"),
                    "When the earlier context is still mostly valid, tell the resumed session which files changed, so it analyzes only those again (1.7-K3, 1.7-S4).")
@@ -1033,7 +1033,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "Each subagent gets only the tools of its role (2.3-S1).") + " " + cf("ts-2-3-k2", gx("Why agents with tools outside their specialization tend to misuse them (e.g., a synthesis agent attempting web searches)", "Exam guide, 2.3-K2"),
                    "The guide says that an agent with tools of another role tends to misuse them, such as a synthesis agent that searches the web (2.3-K2)."),
                 cf("ts-2-3-f5", D(SUB, "subagents can be limited to specific tools, reducing the risk of unintended actions", "Agent SDK, Subagents"),
-                   "The Agent SDK documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
+                   "The Claude Code documentation gives its own reason: fewer tools reduce the risk of unintended actions."),
                 fact("ts-1-3-f10", "In the Agent SDK, a tool that the list of a subagent leaves out is not in its session."))
             + "<p><b>Narrow tools.</b> %s %s</p>" % (
                 cf("ts-2-3-s2", gx("Replacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document that validates document URLs)", "Exam guide, 2.3-S2"),
@@ -1162,7 +1162,7 @@ FIG25 = cases("2.5-1", [
                        "The guide starts with Grep to find the entry points, then follows the imports with Read, and does not read all files first (2.5-S4)."),
                     cf("ts-2-5-k4", gx("When Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file modifications", "Exam guide, 2.5-K4"),
                        "When Edit fails because its text is not unique, the guide falls back to Read and Write (2.5-K4)."),
-                    fact("ts-2-5-c2", "The Claude Code documentation uses a longer match instead."),
+                    fact("ts-2-5-c2", "The Claude Code documentation uses a longer match, or replaces all occurrences."),
                     fact("ts-2-5-c1", "On macOS, Linux and WSL, Claude searches with find and grep through Bash.")), cls="two")
 
 PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs unique text",
@@ -1553,7 +1553,7 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                 cf("ts-3-5-k1", gx("Concrete input/output examples as the most effective way to communicate expected transformations when prose descriptions are interpreted inconsistently", "Exam guide, 3.5-K1"),
                    "The guide calls concrete input and output examples the most effective way to show a transformation when prose gives mixed results (3.5-K1)."),
                 cf("ts-3-5-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
-                   "The prompting documentation of the Claude API calls them one of the most reliable ways to steer the format, the tone and the structure.") + GUIDE,
+                   "The Claude API documentation calls them one of the most reliable ways to steer the format, the tone and the structure.") + GUIDE,
                 cf("ts-3-5-s1", gx("Providing 2-3 concrete input/output examples to clarify transformation requirements when natural language descriptions produce inconsistent results", "Exam guide, 3.5-S1"),
                    "The guide gives 2 or 3 examples (3.5-S1)."),
                 cf("ts-3-5-f3", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
@@ -2399,7 +2399,7 @@ FIG54 = cases("5.4-1", [
                     cf("ts-5-4-s4c", gx("Designing crash recovery using structured agent state exports (manifests) that the coordinator loads on resume and injects into agent prompts", "Exam guide, 5.4-S4"),
                        "The coordinator loads the manifest of the state exports on resume (5.4-S4)."),
                     cf("ts-5-4-s5c", gx("Using /compact to reduce context usage during extended exploration sessions when context fills with verbose discovery output", "Exam guide, 5.4-S5"),
-                       "/compact reduces the context when discovery output fills it (5.4-S5).")))
+                       "/compact reduces the context when discovery output fills it (5.4-S5).")), cls="two")
 
 PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in subagents",
                         "A long exploration fills the context, and then the answers get worse. Send verbose searches to subagents that return summaries, "
@@ -2691,7 +2691,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
   <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
-  <p>The label <span class="chip guide">Guide only</span> marks a point where the exam follows the guide: the Anthropic documentation says it in a different way, or does not say it.</p>
+  <p>The label <span class="chip guide">Guide only</span> ends a point where only the guide says it, or where the Anthropic documentation says it in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts, the topics that the exam covers, and the topics that it does not cover.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",

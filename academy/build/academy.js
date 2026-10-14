@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     show(0);
   }
 
-  /* before / after (decision 0037): with no script both panels show; the script shows one panel and two buttons */
+  /* before / after (decision 0037): with no script both panels show, and the script shows one panel and two buttons */
   for (const fig of document.querySelectorAll('.ve-ba')) {
     const panels = [...fig.querySelectorAll('.ba-panel')];
     if (panels.length !== 2) continue;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
     show(1);   // the answer first: the after panel
   }
 
-  /* live figure (decision 0037): with no script the full picture shows; the script adds one button for each example,
+  /* live figure (decision 0037): with no script the full picture shows, and the script adds one button for each example,
      and a choice lights that example and says what happens to it */
   for (const fig of document.querySelectorAll('.ve-live')) {
     const items = [...fig.querySelectorAll('[data-pick]')], target = fig.querySelector('[data-target]'), say = fig.querySelector('.ve-say');
