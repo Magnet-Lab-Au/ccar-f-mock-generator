@@ -391,3 +391,6 @@ details.sources > ul { margin-top: var(--s-2); }
 h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
 .h-icon { width: 1.3em; height: 1.3em; flex: none; }   /* the mark fills only the middle 15 of its 24 units, so 1.3em gives it about the height of the capital letters */
 .h-icon.h-puzzle { width: 1.5em; height: 1.5em; }   /* the puzzle mark is a line drawing, so it needs more size than the other marks */
+.h-puzzle .pz-face { fill: none; } .h-puzzle .pz-line { fill: currentColor; stroke: currentColor; }
+@media (prefers-color-scheme: dark) { :root:not(.light) .h-puzzle .pz-face { fill: var(--text); } :root:not(.light) .h-puzzle .pz-line { fill: var(--bg); stroke: var(--bg); } }
+:root.dark .h-puzzle .pz-face { fill: var(--text); } :root.dark .h-puzzle .pz-line { fill: var(--bg); stroke: var(--bg); }

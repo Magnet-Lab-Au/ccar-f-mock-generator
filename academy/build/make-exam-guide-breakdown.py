@@ -2869,9 +2869,11 @@ def map_html():
 # the puzzle mark of the owner (academy/pages/icons/puzzle.svg): drawn inline in the colour of the text, cut to its drawing, with its thin lines made thicker, so it reads at the size of a heading in both colour schemes (owner, 15 October 2026)
 PUZZLE = read("academy/pages/icons/puzzle.svg")
 PUZZLE_DARK = [d for d, f in re.findall(r'<path d="([^"]+)"[^>]*fill="([^"]+)"', PUZZLE) if f == "#111111"]
-assert len(PUZZLE_DARK) == 1
+PUZZLE_FACE = [d for d, f in re.findall(r'<path d="([^"]+)"[^>]*fill="([^"]+)"', PUZZLE) if f == "#ffffff"]
+assert len(PUZZLE_DARK) == 1 and len(PUZZLE_FACE) == 1
 PUZZLE_ICON = ('<svg class="h-icon h-puzzle" viewBox="62 95 490 427" aria-hidden="true" focusable="false">'
-               '<path d="%s" fill="currentColor" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/></svg>' % PUZZLE_DARK[0])
+               '<path class="pz-face" d="%s"/>'   # the faces: empty in light mode, solid cream in dark mode (owner, 15 October 2026)
+               '<path class="pz-line" d="%s" stroke-width="9" stroke-linejoin="round"/></svg>' % (PUZZLE_FACE[0], PUZZLE_DARK[0]))
 
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
   <h2 class="with-icon">How we broke it down%(puzzle)s</h2>
