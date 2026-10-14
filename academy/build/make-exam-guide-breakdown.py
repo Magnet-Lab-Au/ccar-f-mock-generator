@@ -2136,7 +2136,7 @@ assert CMP51.startswith("{") and '"type": "summarize"' in CMP51 and CMP51.endswi
 FIG51 = figure("5.1-1", 890, 330,
                "One request of a long support session carries, from top to bottom: the system prompt, a block of case facts that is never summarized, a summary of the older turns where numbers can blur, "
                "the recent turns word for word, and tool results cut to the relevant fields. An order lookup with more than 40 fields is cut to the few that matter. The whole history goes to Claude on each turn.",
-               "".join([edge("M620 280H470", "keep a few", 545, 271), edge("M470 165H545V115H620", "each turn", 583, 106),
+               "".join([edge("M620 280H470", "keep 5", 545, 271), edge("M470 165H545V115H620", "each turn", 583, 106),
                         box(20, 20, 450, 40, ["System prompt"]),
                         box(20, 70, 450, 60, ["Case facts"], sub="amounts, dates, order numbers: kept as they are", cls="try ok"),
                         box(20, 140, 450, 50, ["Summary of older turns"], sub="numbers can blur here"),
@@ -2148,6 +2148,9 @@ FIG51 = figure("5.1-1", 890, 330,
                              "The guide keeps amounts, dates, order numbers and statuses in a case facts block in each prompt, outside the summary (5.1-S1)."),
                           cf("ts-5-1-s3", gx("Trimming verbose tool outputs to only relevant fields before they accumulate in context (e.g., keeping only return-relevant fields from order lookups)", "Exam guide, 5.1-S3"),
                              "It cuts each tool output to the relevant fields before it enters the context (5.1-S3).")))
+FIG51 = FIG51.replace("<figcaption>", strip(640, 96, "The example of the guide: an order lookup returns more than 40 fields, and only 5 are relevant.",
+                                            '<text class="ve-lab" x="0" y="30">order lookup</text><rect class="bar" x="190" y="14" width="400" height="24"/><text class="ve-lab" x="598" y="30">40+</text>'
+                                            '<text class="ve-lab" x="0" y="74">relevant fields</text><rect class="bar hot" x="190" y="58" width="50" height="24"/><text class="ve-lab" x="248" y="74">5</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
 
 PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim the rest",
                         "A summary of a long conversation blurs numbers, dates and promises, so keep these facts in a separate block that each request carries word for word. "
@@ -2207,26 +2210,32 @@ CSUP, UINP = "anthropic-docs-customer-support-chat", "claude-code-docs-agent-sdk
 D06 = glob.glob(os.path.join(ROOT, "docs/decisions/0006-*.md"))[0][len(ROOT) + 1:]
 RULES52 = "\n".join(read(SRC % ICON).split("\n")[339:353])
 assert RULES52.strip().startswith("Here is the user query") and RULES52.rstrip().endswith('section 3.2..."')
-FIG52 = figure("5.2-1", 890, 330,
-               "A customer message passes four checks: does the customer ask for a human, do several customers match, is the policy silent or unclear, can the agent make no progress. "
-               "A request for a human, a policy gap and no progress lead to escalate_to_human. Several matches lead to a question for one more identifier. Sentiment and self-reported confidence are not triggers.",
-               "".join([edge("M170 165H200", cls="no-head"), '<path class="ve-e no-head" d="M200 47V272"/>',
-                        edge("M200 47H230"), edge("M200 122H230"), edge("M200 197H230"), edge("M200 272H230"),
-                        '<path class="ve-e no-head is-hot" d="M480 47H560V272M480 197H560M480 272H560"/>',
-                        edge("M560 145H620", "yes", 590, 136, cls="is-hot"),
-                        '<text class="ve-lab" x="20" y="322">otherwise: resolve, and acknowledge any frustration</text>',
-                        box(20, 130, 150, 70, ["Customer", "message"]),
-                        box(230, 20, 250, 55, ["Asks for a human?"], sub="yes: escalate at once"),
-                        box(230, 95, 250, 55, ["Several matches?"], sub="yes: ask for one more ID"),
-                        box(230, 170, 250, 55, ["Policy silent?"], sub="yes: escalate"),
-                        box(230, 245, 250, 55, ["No progress?"], sub="yes: escalate"),
-                        box(620, 110, 250, 70, ["escalate_to_human"], cls="who-model"),
-                        box(620, 220, 250, 70, ["Not triggers"], sub="sentiment, own confidence")]),
-               "%s %s" % (cf("ts-5-2-k1", gx("Appropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just complex cases), and inability to make meaningful progress", "Exam guide, 5.2-K1"),
-                             "The three triggers of the guide are a request for a human, a gap or exception in the policy, and no meaningful progress (5.2-K1)."),
-                          cf("ts-5-2-k3", gx("Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "Exam guide, 5.2-K3"),
-                             "Sentiment and self-reported confidence do not show how complex a case is (5.2-K3).") + " The order of the checks is the page&rsquo;s. "
-                          + cf("ts-5-2-g71f", gx("(get_customer, lookup_order, process_refund, escalate_to_human)", "Exam guide, scenario 1"), "The tool escalate_to_human is from scenario 1 of the guide.")))
+FIG52 = cases("5.2-1", [
+    ('ok', 'Trigger', 'Asks for a human',
+     'The customer asks for a human: escalate_to_human at once.', 120,
+     mini_box(2, 2, 236, 44, 'Customer message', 'asks for a human') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'escalate_to_human', 'at once', st=True), 'Escalate at once when the customer asks for a human.'),
+    ('ok', 'Trigger', 'A policy gap',
+     'The policy is silent or has an exception: escalate_to_human.', 120,
+     mini_box(2, 2, 236, 44, 'Customer message', 'the policy is silent') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'escalate_to_human', 'a gap or an exception', st=True), 'Escalate when the policy is silent or has a gap or an exception.'),
+    ('ok', 'Trigger', 'No progress',
+     'The agent cannot make meaningful progress: escalate_to_human.', 120,
+     mini_box(2, 2, 236, 44, 'The agent', 'no meaningful progress') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'escalate_to_human', 'it cannot go on', st=True), 'Escalate when the agent cannot make meaningful progress.'),
+    (None, 'Not a trigger', 'Sentiment',
+     'The customer is frustrated. That is not a trigger: resolve the case, and acknowledge the frustration.', 120,
+     mini_box(2, 2, 236, 44, 'Customer message', 'frustrated') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'resolve the case', 'acknowledge the frustration', st=True), 'Sentiment does not show how complex a case is.'),
+    (None, 'Not a trigger', 'Own confidence',
+     'The model reports a low confidence of its own. That is not a trigger.', 120,
+     mini_box(2, 2, 236, 44, 'The agent', 'low confidence of its own') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'no escalation', 'not a trigger', st=True), 'Self-reported confidence does not show how complex a case is.'),
+], "%s %s %s" % (cf("ts-5-2-k1", gx("Appropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just complex cases), and inability to make meaningful progress", "Exam guide, 5.2-K1"),
+                    "The three triggers of the guide are a request for a human, a gap or exception in the policy, and no meaningful progress (5.2-K1)."),
+                 cf("ts-5-2-k3", gx("Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "Exam guide, 5.2-K3"),
+                    "Sentiment and self-reported confidence do not show how complex a case is (5.2-K3)."),
+                 cf("ts-5-2-g71f", gx("(get_customer, lookup_order, process_refund, escalate_to_human)", "Exam guide, scenario 1"), "The tool escalate_to_human is from scenario 1 of the guide.")), cls="two")
 
 PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or confidence",
                         "Write the escalation criteria and a few examples into the system prompt: a request for a human, a gap in the policy, and no progress. "
@@ -2286,27 +2295,27 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
 
 # ----- part 5.3 (facts: academy/facts/ts-5-3.md) -----
 
-FIG53 = figure("5.3-1", 890, 350,
-               "A subagent runs a query. Results and a valid empty result are both successes. An access failure is first retried in the subagent. If it is not resolved, "
-               "the subagent returns structured error context: the failure type, the query, the partial results and the alternatives. The coordinator decides to retry, change the plan "
-               "or go on, and the synthesis marks the gaps.",
-               "".join([edge("M190 165H220", cls="no-head"), '<path class="ve-e no-head" d="M220 47V200"/>',
-                        edge("M220 47H250"), edge("M220 117H250"), edge("M220 200H250"),
-                        edge("M360 230V250", "not resolved", 368, 243, anchor="r"),
-                        '<path class="ve-e no-head" d="M470 47H510V285H470M470 117H510"/>',
-                        edge("M510 145H540"), edge("M710 145H750"),
-                        box(20, 130, 170, 70, ["Subagent", "runs a query"], cls="who-model"),
-                        box(250, 20, 220, 55, ["Results"], sub="success", cls="try ok"),
-                        box(250, 90, 220, 55, ["0 matches"], sub="success, not an error", cls="try ok"),
-                        box(250, 170, 220, 60, ["Access failure"], sub="retry it locally first"),
-                        box(250, 250, 220, 70, ["Error context"]),
-                        '<text class="ve-lab" x="250" y="340">type, query, partial results, alternatives</text>',
-                        box(540, 100, 170, 90, ["Coordinator"], sub="retry, change, go on", cls="who-model"),
-                        box(750, 100, 120, 90, ["Synthesis"], sub="gaps marked")]),
-               "%s %s" % (cf("ts-5-3-k1", gx("Structured error context (failure type, attempted query, partial results, alternative approaches) as enabling intelligent coordinator recovery decisions", "Exam guide, 5.3-K1"),
-                             "Structured error context lets the coordinator decide how to recover (5.3-K1)."),
-                          cf("ts-5-3-k2", gx("The distinction between access failures (timeouts needing retry decisions) and valid empty results (successful queries with no matches)", "Exam guide, 5.3-K2"),
-                             "An access failure needs a decision, but an empty result is a success (5.3-K2).")))
+FIG53 = cases("5.3-1", [
+    ('ok', 'Success', 'Results',
+     'The subagent runs a query and gets results: a success.', 120,
+     mini_box(2, 2, 236, 44, 'Subagent', 'runs a query') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'results', 'success', st=True), 'The query returns results.'),
+    ('ok', 'Success', 'No matches',
+     'The query succeeds with 0 matches: a success, not an error.', 120,
+     mini_box(2, 2, 236, 44, 'Subagent', 'runs a query') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, '0 matches', 'success, not an error', st=True), 'An empty result is a success, not an error.'),
+    (None, 'Access failure', 'The query fails',
+     'An access failure is first retried in the subagent. If it is not resolved, the subagent returns structured error context: the failure type, the query, the partial results and the alternatives.', 120,
+     mini_box(2, 2, 236, 44, 'Subagent', 'access failure') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'error context', 'type, query, partial results, alternatives', st=True), 'Retry it locally first. If it is not resolved, return the error context.'),
+], "%s %s" % (cf("ts-5-3-k1", gx("Structured error context (failure type, attempted query, partial results, alternative approaches) as enabling intelligent coordinator recovery decisions", "Exam guide, 5.3-K1"),
+                 "Structured error context lets the coordinator decide how to recover (5.3-K1)."),
+              cf("ts-5-3-k2", gx("The distinction between access failures (timeouts needing retry decisions) and valid empty results (successful queries with no matches)", "Exam guide, 5.3-K2"),
+                 "An access failure needs a decision, but an empty result is a success (5.3-K2).")))
+FIG53 = FIG53.replace("<figcaption>", strip(890, 100, "The coordinator gets the error context, decides to retry, change the plan or go on, and the synthesis marks the gaps.",
+                                            edge("M240 50H300") + edge("M540 50H600") + box(20, 15, 220, 70, ["Error context"])
+                                            + box(300, 15, 240, 70, ["Coordinator"], sub="retry, change, go on", cls="who-model")
+                                            + box(600, 15, 270, 70, ["Synthesis"], sub="gaps marked")) + "<figcaption>", 1)
 
 PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a silent empty",
                         "A subagent retries a transient failure itself. If it cannot fix it, it tells the coordinator the failure type, the query, the partial results and the alternatives, "
@@ -2366,25 +2375,31 @@ MEMT, CTXW, CMDS = "anthropic-docs-memory-tool", "claude-code-docs-context-windo
 D01 = glob.glob(os.path.join(ROOT, "docs/decisions/0001-*.md"))[0][len(ROOT) + 1:]
 SUM54 = "\n".join(read(SRC % LOOP).split("\n")[283:290])
 assert SUM54.strip().startswith("# Summary instructions") and SUM54.rstrip().endswith("reasoning behind them")
-FIG54 = figure("5.4-1", 890, 330,
-               "A main agent keeps the high-level view and sends specific questions, such as finding all test files, to subagents, which keep the verbose output and send back a summary. "
-               "The main agent writes key findings to a scratchpad file and reads it for later questions. Each agent exports its state, and on resume the coordinator loads a manifest. "
-               "When discovery output fills the context, /compact makes it smaller.",
-               "".join(['<path class="ve-e no-head" d="M330 80H300V280"/>', edge("M300 200H270"), edge("M300 280H270"),
-                        '<text class="ve-el" x="380" y="160">a question, then a summary back</text>',
-                        edge("M560 50H620", "write", 590, 41), edge("M620 75H560", "read", 590, 92, cls="is-async"),
-                        edge("M620 210H445V100", "load on resume", 532, 201, cls="is-hot"),
-                        edge("M270 295H745V250", "agents export their state", 520, 287),
-                        '<text class="ve-lab" x="330" y="125">context fills: /compact</text>',
-                        box(330, 20, 230, 80, ["Main agent"], sub="high-level view", cls="who-model"),
-                        box(20, 170, 250, 60, ["Subagent: test files"], sub="verbose output stays", cls="who-model"),
-                        box(20, 250, 250, 60, ["Subagent: refund flow"], sub="verbose output stays", cls="who-model"),
-                        box(620, 20, 250, 80, ["Scratchpad file"], sub="key findings"),
-                        box(620, 170, 250, 80, ["Manifest"], sub="the state of each agent")]),
-               "%s %s" % (cf("ts-5-4-s1", gx("Spawning subagents to investigate specific questions (e.g., \"find all test files,\" \"trace refund flow dependencies\") while the main agent preserves high-level coordination", "Exam guide, 5.4-S1"),
-                             "Subagents investigate specific questions, while the main agent keeps the coordination (5.4-S1)."),
-                          cf("ts-5-4-s2", gx("Having agents maintain scratchpad files recording key findings, referencing them for subsequent questions to counteract context degradation", "Exam guide, 5.4-S2"),
-                             "Agents keep scratchpad files of key findings and read them for later questions (5.4-S2).")))
+FIG54 = cases("5.4-1", [
+    (None, 'Subagents', 'Questions to subagents',
+     'The main agent keeps the high-level view and sends a specific question, such as finding all test files, to a subagent, which keeps the verbose output and sends back a summary.', 120,
+     mini_box(2, 2, 236, 44, 'Main agent', 'high-level view') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'subagent: test files', 'verbose output stays', st=True), 'A subagent answers one specific question and sends back a summary.'),
+    (None, 'Scratchpad', 'Key findings in a file',
+     'The main agent writes key findings to a scratchpad file and reads it for later questions.', 120,
+     mini_box(2, 2, 236, 44, 'Main agent', 'write, then read') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'scratchpad file', 'key findings', st=True), 'The agent writes key findings and reads them for later questions.'),
+    (None, 'Manifest', 'A resume after a crash',
+     'Each agent exports its state, and on resume the coordinator loads a manifest.', 120,
+     mini_box(2, 2, 236, 44, 'Each agent', 'exports its state') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'manifest', 'loaded on resume', st=True), 'After a crash, the coordinator loads the manifest on resume.'),
+    (None, '/compact', 'A full context',
+     'When discovery output fills the context, /compact makes it smaller.', 120,
+     mini_box(2, 2, 236, 44, 'The context', 'full of discovery output') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, '/compact', 'makes it smaller', st=True), 'When discovery output fills the context, /compact makes it smaller.'),
+], "%s %s %s %s" % (cf("ts-5-4-s1", gx("Spawning subagents to investigate specific questions (e.g., \"find all test files,\" \"trace refund flow dependencies\") while the main agent preserves high-level coordination", "Exam guide, 5.4-S1"),
+                       "Subagents investigate specific questions, while the main agent keeps the coordination (5.4-S1)."),
+                    cf("ts-5-4-s2", gx("Having agents maintain scratchpad files recording key findings, referencing them for subsequent questions to counteract context degradation", "Exam guide, 5.4-S2"),
+                       "Agents keep scratchpad files of key findings and read them for later questions (5.4-S2)."),
+                    cf("ts-5-4-s4c", gx("Designing crash recovery using structured agent state exports (manifests) that the coordinator loads on resume and injects into agent prompts", "Exam guide, 5.4-S4"),
+                       "The coordinator loads the manifest of the state exports on resume (5.4-S4)."),
+                    cf("ts-5-4-s5c", gx("Using /compact to reduce context usage during extended exploration sessions when context fills with verbose discovery output", "Exam guide, 5.4-S5"),
+                       "/compact reduces the context when discovery output fills it (5.4-S5).")))
 
 PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in subagents",
                         "A long exploration fills the context, and then the answers get worse. Send verbose searches to subagents that return summaries, "
@@ -2444,7 +2459,7 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
 TRT, CMOD, DTST, RHAL = "anthropic-docs-ticket-routing", "anthropic-docs-content-moderation", "anthropic-docs-develop-tests", "anthropic-docs-reduce-hallucinations"
 SCH55 = "\n".join(read(SRC % SOUTA).split("\n")[1549:1564])
 assert SCH55.strip().startswith('"output_config": {') and '"confidence": {"type": "number"},' in SCH55 and SCH55.rstrip().endswith("}")
-FIG55 = figure("5.5-1", 890, 360,
+FIG55 = figure("5.5-1", 890, 330,
                "An extraction has a confidence score for each field. A review threshold, calibrated on a labeled validation set, routes it. "
                "Low confidence or a contradictory source goes to human review by priority. High confidence goes to automation, and a stratified random sample of it goes back to human review. "
                "Before review is cut, the accuracy is checked for each document type and field, because 97% overall can hide a weak segment.",
@@ -2454,7 +2469,7 @@ FIG55 = figure("5.5-1", 890, 360,
                         edge("M350 260V200", "calibrates", 358, 234, anchor="r"),
                         edge("M670 130V70", "stratified random sample", 678, 104, cls="is-async", anchor="r"),
                         edge("M670 250V190", "check each segment first", 678, 224, anchor="r"),
-                        '<text class="ve-lab" x="600" y="345">97% overall can hide a weak segment</text>',
+                        
                         box(20, 120, 200, 80, ["Extraction"], sub="confidence per field", cls="who-model"),
                         box(260, 120, 180, 80, ["Review thresholds"], sub="calibrated"),
                         box(260, 260, 180, 60, ["Labeled set"], sub="validation"),
@@ -2465,6 +2480,9 @@ FIG55 = figure("5.5-1", 890, 360,
                              "Confidence scores for each field, calibrated on labeled validation sets, route the review (5.5-K3)."),
                           cf("ts-5-5-k2", gx("Stratified random sampling for measuring error rates in high-confidence extractions and detecting novel error patterns", "Exam guide, 5.5-K2"),
                              "A stratified random sample of the high-confidence extractions measures their error rate and finds new error patterns (5.5-K2).")))
+FIG55 = FIG55.replace("<figcaption>", strip(640, 60, "97% overall can hide a weak segment. The guide gives no numbers for each segment.",
+                                            '<text class="ve-lab" x="0" y="30">overall accuracy</text><rect class="bar hot" x="190" y="14" width="388" height="24"/><text class="ve-lab" x="586" y="30">97%</text>'
+                                            '<text class="ve-lab" x="0" y="56">can hide a weak segment</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
 
 PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data calibrates them",
                         "One total accuracy can hide a weak document type or field, so measure each segment before you cut human review. "
@@ -2528,33 +2546,28 @@ PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data 
 CIT, SRES = "anthropic-docs-citations", "anthropic-docs-search-results"
 SR56 = "\n".join(read(SRC % SRES).split("\n")[28:44])
 assert SR56.startswith("{") and SR56.rstrip().endswith("}") and '"type": "search_result",' in SR56
-FIG56 = figure("5.6-1", 890, 380,
+REC56 = ('<g class="ve-n is-key" transform="translate(230 10)"><rect class="sh" width="320" height="220" rx="0"/>'
+         '<text x="160" y="28">one finding</text>'
+         + "".join('<text class="sub" x="20" y="%d" style="text-anchor:start">%s</text>' % (66 + i * 34, e(t)) for i, t in enumerate(
+             ["claim", "evidence excerpt", "source URL or document name", "publication date", "conflict: both values, annotated"]))
+         + '</g>')
+FIG56 = figure("5.6-1", 890, 330,
                "Subagents return each finding as a record with a claim, an evidence excerpt, a source and a publication date, with conflicting values annotated. The coordinator decides how to reconcile them, "
-               "and the synthesis agent merges the records. The report has sections for well-established findings, contested findings with both values, and coverage gaps. "
-               "A summary without sources loses the attribution. Picking one value, or a finding with no date, is wrong. Each content type keeps its own format.",
-               "".join(['<text class="ve-lab" x="240" y="12">one finding</text>',
-                        edge("M200 75H240"), edge("M470 75H520"), edge("M680 75H720"), edge("M795 130V180"),
-                        edge("M110 120V200", "compressed", 118, 165, anchor="r"),
-                        '<text class="ve-lab" x="250" y="215">Wrong: pick one value</text>',
-                        '<text class="ve-lab" x="250" y="245">Wrong: no date, so an older</text>',
-                        '<text class="ve-lab" x="250" y="265">figure looks like a contradiction</text>',
-                        '<text class="ve-lab" x="20" y="320">Format by content type:</text>',
-                        '<text class="ve-lab" x="20" y="342">financial data as tables, news as</text>',
-                        '<text class="ve-lab" x="20" y="362">prose, technical findings as lists</text>',
-                        box(20, 30, 180, 90, ["Subagents"], sub="search, analysis", cls="who-model"),
-                        box(240, 20, 230, 110, ["claim", "evidence excerpt", "source URL or name", "publication date"], sub="conflicts annotated"),
-                        box(520, 20, 160, 110, ["Coordinator"], cls="who-model"),
-                        '<text class="ve-lab" x="520" y="150">decides how to reconcile</text>',
-                        box(720, 20, 150, 110, ["Synthesis"], sub="merges records", cls="who-model"),
-                        box(20, 200, 200, 60, ["Summary only"], sub="sources lost", cls="try bad"),
-                        '<text class="ve-lab" x="520" y="174">Report</text>',
-                        box(520, 180, 350, 45, ["Well-established"]),
-                        box(520, 235, 350, 55, ["Contested"], sub="both values, each with its source", cls="try ok"),
-                        box(520, 300, 350, 45, ["Coverage gaps"], sub="a point of 5.3-S4")]),
-               "%s %s" % (cf("ts-5-6-s1", gx("Requiring subagents to output structured claim-source mappings (source URLs, document names, relevant excerpts) that downstream agents preserve through synthesis", "Exam guide, 5.6-S1"),
-                             "Subagents output structured claim-source mappings, and the agents after them keep the mappings through the synthesis (5.6-S1)."),
-                          cf("ts-5-6-s2", gx("Structuring reports with explicit sections distinguishing well-established findings from contested ones, preserving original source characterizations and methodological context", "Exam guide, 5.6-S2"),
-                             "The report has separate sections for well-established and for contested findings (5.6-S2).")))
+               "and the synthesis agent merges the records. The report has sections for well-established findings, contested findings with both values, and coverage gaps.",
+               "".join([edge("M190 55H230"), edge("M550 55H590"), edge("M720 55H740"), edge("M805 90V130"),
+                        box(20, 20, 170, 70, ["Subagents"], sub="search, analysis", cls="who-model"),
+                        REC56,
+                        box(590, 20, 130, 70, ["Coordinator"], sub="reconciles", cls="who-model"),
+                        box(740, 20, 130, 70, ["Synthesis"], sub="merges", cls="who-model"),
+                        '<text class="ve-lab" x="590" y="124">Report</text>',
+                        box(590, 130, 280, 45, ["Well-established"]),
+                        box(590, 185, 280, 55, ["Contested"], sub="both values, each with its source", cls="try ok"),
+                        box(590, 250, 280, 45, ["Coverage gaps"], sub="a point of 5.3-S4")]),
+               "%s %s A summary without the sources loses the attribution. To pick one value is wrong, and a finding with no date can make an older figure look like a contradiction. Each content type keeps its format: financial data as tables, news as prose, technical findings as lists." % (
+                   cf("ts-5-6-s1", gx("Requiring subagents to output structured claim-source mappings (source URLs, document names, relevant excerpts) that downstream agents preserve through synthesis", "Exam guide, 5.6-S1"),
+                      "Subagents output structured claim-source mappings, and the agents after them keep the mappings through the synthesis (5.6-S1)."),
+                   cf("ts-5-6-s2", gx("Structuring reports with explicit sections distinguishing well-established findings from contested ones, preserving original source characterizations and methodological context", "Exam guide, 5.6-S2"),
+                      "The report has separate sections for well-established and for contested findings (5.6-S2).")))
 
 PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts",
                         "Each subagent returns its findings as structured records: the claim, the excerpt, the source and the date. "
