@@ -27,7 +27,7 @@ Progress list (updated after each check):
 | C5 | open | |
 | D1 | open | |
 | D2 | done | Tab 1: 20 weak, 10 missing. Tab 2: 7 weak, 9 missing. 4 popups fixed ("marks" for the answer key), the rest for the owner. |
-| E1 | running | seed 20261014 |
+| E1 | done | 18 of 20 points found at the first try, 2 later, 0 not found. 5 headings for the owner. |
 | E2 | open | |
 | E3 | done | "rules file" fixed to "rule file". The other forms are quotes, file names or flags. |
 | F1 | done | Contrast passes. 2 names fixed. nested-interactive and list for the owner. |
