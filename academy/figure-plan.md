@@ -115,6 +115,18 @@ New steppers: 9 (1.2, 1.3, 1.5, 3.5, 3.6, A of tab 2, 4-1, 5-1, 5-4). With Fig. 
 - The toggle of a before / after figure and the control of the live figure are new shared code in `build/academy.js`. A page has no inline script, because the security policy of the portal allows only scripts from the portal itself (`build/lib.py`, CSP). The move into the portal (decision 0017) ports this code too.
 - The stepper of Fig. A of tab 2 keeps `data-figure="builder"`, the ID `top-fig-a` and the links to steps 0 to 8 in the full picture, because `check-pages.js` needs them.
 
+## Motion (the owner, 14 October 2026)
+
+The owner likes motion that keeps the reader interested and releases information step by step, but not too much. Three kinds, all from `references/diagrams.md` of the plugin:
+
+- **Stepper**: the 10 steppers of this plan.
+- **Moving dots** (the plugin calls them flow dots) on the full picture of a figure where something flows. The plugin says "One moving layer per page". So by default each tab has one figure with dots: Fig. 1.1-1 (the loop) on tab 1 and Fig. A (the 9 steps) on tab 2. Fig. 1.1-1 had dots in the sample, and the built page lost them, because the page script has no code for them.
+- **Charts that grow and numbers that count up** when the reader scrolls to them, on each chart.
+
+Nothing plays by itself. Dots move only while the figure is on the screen and shows its full picture. With reduced motion in the settings of the device, the page shows the final picture with no motion.
+
+A test in domain 1: Fig. 1.2-1 (the coordinator) also gets dots, so tab 1 has two figures with dots. The owner looks at both. If the second helps, each tab can have 2 or 3 figures with dots. If not, the dots of 1.2-1 go, and the pages follow the plugin exactly.
+
 ## Order of the work
 
 1. Tab 1, domain 1 (9 figures), as a test of the new types. The owner looks at the screenshots before the rest.
