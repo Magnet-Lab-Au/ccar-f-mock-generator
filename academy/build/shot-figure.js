@@ -14,6 +14,9 @@ const { chromium } = require('playwright-core');
   await el.scrollIntoViewIfNeeded();
   const n = await el.evaluate(x => x.querySelectorAll('.ve-cap li').length);
   await el.screenshot({ path: `${out}-0.png` });
+  const nb = await el.evaluate(x => x.querySelectorAll('.ve-toggle button').length);
+  for (let k = 0; k < nb; k++) { await el.evaluate((x, i) => x.querySelectorAll('.ve-toggle button')[i].click(), k); await el.screenshot({ path: `${out}-panel${k + 1}.png` }); }
+  if (nb) await el.evaluate(x => x.querySelectorAll('.ve-toggle button')[1].click());
   if (mode === 'all') for (let k = 1; k < n; k++) { await el.evaluate(x => x.querySelector('[data-go="1"]').click()); await el.screenshot({ path: `${out}-${k}.png` }); }
   console.log(fig, 'steps', Math.max(0, n - 1), 'errors', errs.length, errs.slice(0, 3).join(' | '));
   await b.close();

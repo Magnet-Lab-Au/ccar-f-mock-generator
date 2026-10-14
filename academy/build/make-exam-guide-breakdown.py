@@ -244,6 +244,22 @@ def stepper(fid, num, svg_w, svg_h, aria, inner, caps, cap):
             '<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (fid, svg_w, svg_h, e(aria), inner, "".join(lis), num, cap))
 
 
+def waffle(n, label_a, label_b, aria):
+    """A picture for a share: n of 100 cells (decision 0037, every number gets a picture)."""
+    cells = "".join('<rect class="%s" x="%d" y="%d" width="13" height="13"/>' % ("w-a" if k < n else "w-b", 2 + (k % 10) * 16, 2 + (k // 10) * 16) for k in range(100))
+    return ('<div class="frame"><svg class="ve-svg ve-waffle" viewBox="0 0 640 164" role="img" aria-label="%s">%s'
+            '<rect class="w-a" x="190" y="34" width="13" height="13"/><text class="ve-lab" x="212" y="45">%s</text>'
+            '<rect class="w-b" x="190" y="104" width="13" height="13"/><text class="ve-lab" x="212" y="115">%s</text></svg></div>' % (e(aria), cells, e(label_a), e(label_b)))
+
+
+def before_after(num, panels, cap):
+    """Before / after (decision 0037): the same drawing twice, at the same scale. With no script both panels show,
+    and the script shows one panel and a button for each. Each panel is (button, label, svg_w, svg_h, aria, inner)."""
+    out = "".join('<div class="ba-panel" data-label="%s"><span class="ve-label">%s</span><div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div></div>'
+                  % (e(btn), e(label), w, h, e(aria), inner) for btn, label, w, h, aria, inner in panels)
+    return '<figure class="ve-ba">%s<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (out, num, cap)
+
+
 def cases(num, cards, cap, cls=""):
     """Small multiples (decision 0037): the same small drawing once for each case. Each card is (status, chip, title, aria, svg_h, inner, note)."""
     out = []
@@ -806,25 +822,26 @@ DEFT, OVT, TRB, TSR, CCMCP = "anthropic-docs-define-tools", "anthropic-docs-tool
 D40 = glob.glob(os.path.join(ROOT, "docs/decisions/0040-*.md"))[0][len(ROOT) + 1:]
 GOOD21 = "\n".join(read(SRC % DEFT).split("\n")[92:106])
 assert GOOD21.strip().startswith("{") and '"name": "get_stock_price"' in GOOD21 and GOOD21.rstrip().endswith("}")
-FIG21 = figure("2.1-1", 890, 270,
-               "Before: a request for the results of a web page can go to analyze_content or to analyze_document, because both say only that they analyze content. "
-               "After: analyze_content is renamed extract_web_results with a web-specific description, and analyze_document is split into tools with contracts, so the request has one clear tool.",
-               "".join(['<text class="ve-lab" x="20" y="24">Before: near-identical descriptions</text>',
-                        '<text class="ve-lab" x="480" y="24">After: renamed and split</text>',
-                        '<path class="ve-e no-head is-async" d="M455 10V260"/>',
-                        edge("M190 130H220V90H250", cls="is-async"), edge("M190 150H220V190H250", cls="is-async"),
-                        '<text class="ve-el" x="130" y="215">which one?</text>',
-                        edge("M620 140H635V70H650", cls="is-hot"),
-                        box(20, 110, 170, 60, ["Get the results", "of this web page"], cls="who-model"),
-                        box(250, 60, 190, 60, ["analyze_content"], sub="analyzes content"),
-                        box(250, 160, 190, 60, ["analyze_document"], sub="analyzes content"),
-                        box(470, 110, 150, 60, ["Get the results", "of this web page"], cls="who-model"),
-                        box(650, 40, 230, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
-                        box(650, 140, 230, 90, ["analyze_document"], sub="3 tools with contracts")]),
-               "%s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
-                             "Claude chooses a tool from the request and the description of the tool."),
-                          cf("ts-2-1-s2", gx("Renaming tools and updating descriptions to eliminate functional overlap (e.g., renaming analyze_content to extract_web_results with a web-specific description)", "Exam guide, 2.1-S2"),
-                             "The renamed tool is the example of the guide (2.1-S2).")))
+FIG21 = before_after("2.1-1", [
+    ("Before", "Before: near-identical descriptions", 720, 220,
+     "Before: a request for the results of a web page can go to analyze_content or to analyze_document, because both say only that they analyze content.",
+     "".join([edge("M230 110H280V60H330", cls="is-async"), edge("M230 110H280V160H330", cls="is-async"),
+              '<text class="ve-el" x="560" y="114">which one?</text>',
+              box(20, 80, 210, 60, ["Get the results", "of this web page"], cls="who-model"),
+              box(330, 30, 230, 60, ["analyze_content"], sub="analyzes content"),
+              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")])),
+    ("After", "After: renamed, with a web-specific description", 720, 220,
+     "After: analyze_content is renamed extract_web_results with a web-specific description, so the request for the results of a web page has one clear tool.",
+     "".join([edge("M230 110H280V60H330", cls="is-hot"),
+              box(20, 80, 210, 60, ["Get the results", "of this web page"], cls="who-model"),
+              box(330, 30, 230, 60, ["extract_web_results"], sub="web-specific description", cls="try ok"),
+              box(330, 130, 230, 60, ["analyze_document"], sub="analyzes content")])),
+], "%s %s %s" % (cf("ts-2-1-f1", D(OVT, "Claude determines when to call a tool based on the user's request and the tool's description.", "Tool use overview"),
+                    "Claude chooses a tool from the request and the description of the tool."),
+                 cf("ts-2-1-s2", gx("Renaming tools and updating descriptions to eliminate functional overlap (e.g., renaming analyze_content to extract_web_results with a web-specific description)", "Exam guide, 2.1-S2"),
+                    "The renamed tool is the example of the guide (2.1-S2)."),
+                 cf("ts-2-1-s3c", gx("Splitting generic tools into purpose-specific tools with defined input/output contracts (e.g., splitting a generic analyze_document into extract_data_points, summarize_content, and verify_claim_against_source)", "Exam guide, 2.1-S3"),
+                    "The guide also splits the generic analyze_document into three tools with defined contracts (2.1-S3).")))
 
 PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks",
                         "Claude chooses among tools mainly by their descriptions. So each description says what the tool does, its inputs, its output, and when to use it instead of a similar tool. "
@@ -886,26 +903,31 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
 HANDLE, SDKT = "anthropic-docs-handle-tool-calls", "claude-code-docs-agent-sdk-custom-tools"
 ERR22 = "\n".join(read(SRC % HANDLE).split("\n")[207:218])
 assert ERR22.strip().startswith("{") and '"is_error": true' in ERR22 and ERR22.rstrip().endswith("}")
-FIG22 = figure("2.2-1", 890, 380,
-               "An agent calls an MCP tool. A success returns data. A success with no matches is a valid empty result, not an error. A failure returns isError true, "
-               "with a category, whether a retry can help, and a text. A transient error is retried in the subagent and passed up only if it still fails. "
-               "A validation error needs new input. A business error is not retriable and the agent explains it. For a permission error, the guide names no action.",
-               "".join([edge("M190 165H225", cls="no-head"), '<path class="ve-e no-head" d="M225 45V215"/>',
-                        edge("M225 45H260"), edge("M225 115H260"), edge("M225 215H260", cls="is-hot"),
-                        edge("M490 215H515", cls="no-head"), '<path class="ve-e no-head" d="M515 175V346"/>',
-                        edge("M515 175H540"), edge("M515 232H540"), edge("M515 289H540"), edge("M515 346H540"),
-                        box(20, 130, 170, 70, ["Agent"], sub="calls an MCP tool", cls="who-model"),
-                        box(260, 20, 230, 50, ["data"], sub="success", cls="try ok"),
-                        box(260, 90, 230, 50, ["no matches"], sub="success, not an error", cls="try ok"),
-                        box(260, 170, 230, 90, ["isError: true"], sub="category · retry? · text"),
-                        box(540, 150, 330, 50, ["transient"], sub="retry; pass up if it still fails"),
-                        box(540, 207, 330, 50, ["validation"], sub="fix the input, call again"),
-                        box(540, 264, 330, 50, ["business"], sub="retriable: false, explain it"),
-                        box(540, 321, 330, 50, ["permission"], sub="the guide names no action")]),
-               "%s %s" % (cf("ts-2-2-k2", gx("The distinction between transient errors (timeouts, service unavailability), validation errors (invalid input), business errors (policy violations), and permission errors", "Exam guide, 2.2-K2"),
-                             "The four categories of errors are those of the guide (2.2-K2)."),
-                          cf("ts-2-2-s4", gx("Distinguishing between access failures (needing retry decisions) and valid empty results (representing successful queries with no matches)", "Exam guide, 2.2-S4"),
-                             "An empty result of a query that succeeded is not an access failure (2.2-S4).")))
+FIG22 = cases("2.2-1", [
+    ('ok', 'Not an error', 'No matches',
+     'The tool call succeeds with no matches. That is a valid empty result, not an error.', 120,
+     mini_box(2, 2, 236, 44, 'success', 'no matches') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'a valid empty result', 'not an error', st=True), 'A success returns data. A query that succeeded with no matches is not an error.'),
+    (None, 'Transient', 'Timeout, service down',
+     'isError true, category transient: retry in the subagent, and pass the error up only if it still fails.', 120,
+     mini_box(2, 2, 236, 44, 'isError: true', 'transient') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'retry', 'pass up if it still fails', st=True), 'Retry in the subagent. Pass the error up only if it still fails.'),
+    (None, 'Validation', 'Invalid input',
+     'isError true, category validation: fix the input and call again.', 120,
+     mini_box(2, 2, 236, 44, 'isError: true', 'validation') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'fix the input', 'call again', st=True), 'The input is not valid. Fix it and call again.'),
+    (None, 'Business', 'Policy violation',
+     'isError true, category business: retriable false, so the agent explains it.', 120,
+     mini_box(2, 2, 236, 44, 'isError: true', 'business') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'explain it', 'retriable: false', st=True), 'A retry cannot help, so the agent explains it.'),
+    (None, 'Permission', 'No permission',
+     'isError true, category permission: the guide names no action.', 120,
+     mini_box(2, 2, 236, 44, 'isError: true', 'permission') + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, 'no action named', 'in the guide', st=True), 'The guide names no action for a permission error.'),
+], "%s %s" % (cf("ts-2-2-k2", gx("The distinction between transient errors (timeouts, service unavailability), validation errors (invalid input), business errors (policy violations), and permission errors", "Exam guide, 2.2-K2"),
+                 "The four categories of errors are those of the guide (2.2-K2)."),
+              cf("ts-2-2-s4", gx("Distinguishing between access failures (needing retry decisions) and valid empty results (representing successful queries with no matches)", "Exam guide, 2.2-S4"),
+                 "An empty result of a query that succeeded is not an access failure (2.2-S4).")), cls="two")
 
 PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry helps",
                         "Mark a failed tool call with the error flag, and say the category, whether a new try can help, and what went wrong, so the agent can retry, fix its input, explain or escalate. "
@@ -979,6 +1001,8 @@ FIG23 = figure("2.3-1", 890, 350,
                              "Each agent gets only the tools of its role, plus a narrow tool for a frequent need (2.3-K3)."),
                           cf("ts-2-3-f14", gx("Option A applies the principle of least privilege by giving the synthesis agent only what it needs for the 85% common case (simple fact verification) while preserving the existing coordination pattern for complex cases.", "Exam guide, sample question 9"),
                              "In sample question 9 of the guide, verify_fact serves the 85% of simple checks, and complex checks keep the route through the coordinator.")))
+FIG23 = FIG23.replace("<figcaption>", waffle(85, "85 of 100: simple checks, verify_fact", "the rest: complex checks, through the coordinator",
+                                             "In sample question 9, 85 of 100 checks are simple and go to verify_fact. The rest are complex and go through the coordinator.") + "<figcaption>", 1)
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
                         "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
@@ -1111,25 +1135,21 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
 TREF = "claude-code-docs-tools-reference"
 A35 = glob.glob(os.path.join(ROOT, "academy/decisions/0035-*.md"))[0][len(ROOT) + 1:]
 YAML25 = "---\nname: code-reviewer\ndescription: Reviews code for quality and best practices\ntools: Read, Glob, Grep\nmodel: sonnet\n---"
-FIG25 = figure("2.5-1", 890, 320,
-               "Glob finds files by name and Grep finds entry points and callers. Then Read follows the imports, and Edit changes text that occurs once. Reading all files first fills the context. "
-               "When the text of an Edit occurs twice, the guide reads and writes the whole file, and the documentation uses a longer match. "
-               "On macOS, Linux and WSL, Claude Code searches with find and grep through Bash.",
-               "".join([edge("M210 60H255V100H300"), edge("M210 140H255V100H300"), edge("M470 100H560"),
-                        edge("M610 130V160H560V190"), edge("M670 130V160H775V190"),
-                        '<text class="ve-el" x="640" y="152">two matches</text>',
-                        '<text class="ve-lab" x="20" y="300">macOS, Linux and WSL: find and grep through Bash</text>',
-                        box(20, 30, 190, 60, ["Glob"], sub="files by name"),
-                        box(20, 110, 190, 60, ["Grep"], sub="entry points, callers"),
-                        box(20, 200, 190, 60, ["Read all first"], sub="no: fills the context"),
-                        box(300, 70, 170, 60, ["Read"], sub="follow imports"),
-                        box(560, 70, 150, 60, ["Edit"], sub="one exact match"),
-                        box(470, 190, 180, 60, ["Read + Write"], sub="the guide"),
-                        box(680, 190, 190, 60, ["longer match"], sub="the documentation")]),
-               "%s %s" % (cf("ts-2-5-s4", gx("Building codebase understanding incrementally: starting with Grep to find entry points, then using Read to follow imports and trace flows, rather than reading all files upfront", "Exam guide, 2.5-S4"),
-                             "The guide starts with Grep to find the entry points, then follows the imports with Read, and does not read all files first (2.5-S4)."),
-                          cf("ts-2-5-k4", gx("When Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file modifications", "Exam guide, 2.5-K4"),
-                             "When Edit fails because its text is not unique, the guide falls back to Read and Write (2.5-K4).")))
+FIG25 = cases("2.5-1", [
+    ("risk", "Wrong", "Read all files first",
+     "Read every file first: the context fills.", 120,
+     mini_box(2, 2, 236, 44, "Read", "every file first") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "the context", "full", st=True), "Reading all files first fills the context."),
+    ("ok", "The guide", "Glob and Grep, then Read",
+     "Glob finds files by name and Grep finds entry points and callers. Then Read follows the imports: the context does not fill.", 120,
+     mini_box(2, 2, 236, 44, "Glob + Grep, then Read", "entry points, then imports") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "the context", "not full", st=True), "Glob finds files by name, Grep finds entry points and callers, and Read follows the imports."),
+], "%s %s %s %s" % (cf("ts-2-5-s4", gx("Building codebase understanding incrementally: starting with Grep to find entry points, then using Read to follow imports and trace flows, rather than reading all files upfront", "Exam guide, 2.5-S4"),
+                       "The guide starts with Grep to find the entry points, then follows the imports with Read, and does not read all files first (2.5-S4)."),
+                    cf("ts-2-5-k4", gx("When Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file modifications", "Exam guide, 2.5-K4"),
+                       "When Edit fails because its text is not unique, the guide falls back to Read and Write (2.5-K4)."),
+                    fact("ts-2-5-c2", "The Claude Code documentation uses a longer match instead."),
+                    fact("ts-2-5-c1", "On macOS, Linux and WSL, Claude searches with find and grep through Bash.")), cls="two")
 
 PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs unique text",
                         "Search first: Glob finds files by name, Grep finds text inside files, and Read then follows only the files that matter. "

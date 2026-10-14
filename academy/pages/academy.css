@@ -327,3 +327,5 @@ p > .chip.info[data-step$="-code"] { white-space: normal; }
 .js-motion svg.ve-bars.grown rect, .js-motion svg.ve-grow.grown rect.bar { transform: none; }
 .chip.guide { color: var(--text-dim); margin-left: var(--s-1); vertical-align: .1em; }
 @media print { .ve-toggle { display: none; } .ve-ba .ba-panel[hidden] { display: block; } svg.ve-bars rect, svg.ve-grow rect.bar { transform: none !important; } }
+.ve-waffle .w-a { fill: var(--ok); } .ve-waffle .w-b { fill: var(--accent); }
+.ve-mini { max-width: 20rem; } .ve-waffle { max-width: 34rem; }
