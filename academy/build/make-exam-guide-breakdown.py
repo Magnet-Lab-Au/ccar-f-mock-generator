@@ -250,7 +250,7 @@ def strip(svg_w, svg_h, aria, inner, head=None):
     return ('<span class="ve-label strip-head">%s</span>' % e(head) if head else "") + '<div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>' % (svg_w, svg_h, e(aria), inner)
 
 
-def bar_strip(rows, aria, track=False):
+def bar_strip(rows, aria, track=False, head=None):
     """Bars for a number, narrow enough for a phone (decision 0037): the label above each bar. rows: (label, value, shown value, hot)."""
     mx = max(v for _, v, _, _ in rows)
     out = []
@@ -260,7 +260,7 @@ def bar_strip(rows, aria, track=False):
         if track:
             out.append('<rect class="track" x="0" y="%d" width="280" height="18"/>' % (y + 20))
         out.append('<rect class="%s" x="0" y="%d" width="%d" height="18"/><text class="hv" x="%d" y="%d">%s</text>' % ("hot" if hot else "", y + 20, w, w + 8, y + 29, e(shown)))
-    return '<div class="frame"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46, e(aria), "".join(out))
+    return (('<span class="ve-label strip-head">%s</span>' % e(head)) if head else "") + '<div class="frame"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46, e(aria), "".join(out))
 
 
 def waffle(n, label_a, label_b, aria):
@@ -351,7 +351,13 @@ def from_sample(html):
     html = re.sub(r'data-card="([^"]+)"', lambda m: 'data-card="ts-1-1-%s"' % m.group(1), html)
     html = html.replace('id="fig1"', 'id="ts-1-1-fig1"')
     html = html.replace("The code of the loop is on <i>Your code sends the request</i>.", "The popup of <i>Your code sends the request</i> shows the code of the loop.")
-    for a, b in (("Fig. 1<", "Fig. 1.1-1<"), ("Fig. 2<", "Fig. 1.1-2<"), ("Fig. 4<", "Fig. 1.1-3<"), ("in Fig. 1,", "in Fig. 1.1-1,")):
+    for a, b in (("Fig. 1<", "Fig. 1.1-1<"), ("Fig. 2<", "Fig. 1.1-2<"), ("Fig. 4<", "Fig. 1.1-3<"), ("in Fig. 1,", "in Fig. 1.1-1,"),
+                 # fixes of the review of part 1.1 (decision 0036)
+                 ("The API has <span", "The Stop reasons page of the API lists <span"),
+                 ("<p class=\"ve-label\">stop_reason values of the Claude API</p>", "<p class=\"ve-label\">stop_reason values on the Stop reasons page of the Claude API</p>"),
+                 ("<h3>Stops only at a count</h3>", "<h3>Stops mainly at a count</h3>"),
+                 ("Your code sends a request to Claude and checks <code>stop_reason</code>.", "Your code sends a request to Claude and checks the field <code>stop_reason</code> of the response."),
+                 ('<li class=""><code>"model_context_window_exceeded"</code></li>', '<li class="wide"><code>"model_context_window_exceeded"</code></li>')):
         html = html.replace(a, b)
     for k in sorted(set(re.findall(r'data-step="ts-1-1-([^"]+)"', html))):
         POP["ts-1-1-" + k] = S_POP[k]
@@ -366,6 +372,8 @@ def from_sample(html):
 
 
 LEAD11 = re.search(r'<p class="lead">(.*?)</p>', SAMPLE, re.S).group(1)
+BTA = "anthropic-docs-build-a-tool-using-agent"
+lines_of(SRC % BTA, "Ring 3")   # the dated copy that the code of the loop follows (review of part 1.1)
 FIG11 = cut('<figure class="ve-steps" id="fig1">', "</figure>") + "</figure>"
 WHO11 = cut("<p><b>Who decides.</b>", "</p>") + "</p>"
 CASES11 = cut('<figure><div class="cases">', "</figure>") + "</figure>"
@@ -374,9 +382,18 @@ CODE11 = cut("<p><b>The loop in code.</b>", "</p>") + "</p>"
 BEYOND11 = cut('<div class="callout"><span class="chip">Beyond the exam</span>', "</figure></div>") + "</figure></div>"
 TESTS11 = TESTS11.replace("<div><h3>The exam tests</h3>", '<div><h4 class="gh2">The exam tests</h4>')
 
+def note11():
+    """The source note of the code of the loop names the dated copy (review of part 1.1, decision 0036)."""
+    POP["ts-1-1-send"] = dict(POP["ts-1-1-send"])
+    POP["ts-1-1-send"]["examplenote"] = ("Based on the Claude API documentation, page \"Build a tool-using agent\", Ring 3 (copy of 14 October 2026, "
+                                         "academy/sources/2026-10-14-anthropic-docs-build-a-tool-using-agent.md, lines 2190 to 2225). "
+                                         "That page uses max_tokens=1024 and passes json.dumps of the result. The exam guide has no code.")
+
+
 PART["1.1"] = (overview("1.1", "The loop runs while Claude asks for tools", from_sample(LEAD11), from_sample(FIG11))
                + level("explanation", from_sample(WHO11 + CASES11 + TESTS11) + "<p>%s</p>" % mock_count("1.1") + guide_text("1.1"), "ts-1-1")
                + level("depth", from_sample(CODE11 + BEYOND11) + tab2_links("1.1"), "ts-1-1"))
+note11()
 
 
 # ----- part 1.3 (facts: academy/facts/ts-1-3.md) -----
@@ -979,7 +996,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                    "With an error result, Claude can retry, try a different tool, or explain the failure."))
             + "<p><b>The metadata.</b> %s %s</p>" % (
                 cf("ts-2-2-s1", gx("Returning structured error metadata including errorCategory (transient/validation/permission), isRetryable boolean, and human-readable descriptions", "Exam guide, 2.2-S1"),
-                   "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1). Its three categories do not include business errors. For those, 2.2-S2 uses a flag that it names retriable: false."),
+                   "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1). The errorCategory of 2.2-S1 has three values, not the four categories of 2.2-K2: business errors are not in it. For those, 2.2-S2 uses a flag that it names retriable: false."),
                 cf("ts-2-2-f2", D(HANDLE, "you can return the error message in the `content` along with `\"is_error\": true`:", "Handle tool calls"),
                    "These field names are the guide's: the documentation shows the flag and an error message in the content.") + GUIDE)
             + "<p><b>Retry or not.</b> %s %s %s</p>" % (
@@ -1035,7 +1052,7 @@ FIG23 = FIG23.replace("<figcaption>", waffle(85, "85 of 100: simple checks, veri
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
                         "Each agent gets a small set of tools for its role, plus a narrow shared tool for a frequent need, and the coordinator handles the rest. "
-                        "tool_choice sets whether Claude can, must, or must use one named tool, but Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 reject any and a forced tool.",
+                        "tool_choice sets whether Claude can, must, or must use one named tool, but Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 reject <code>any</code> and a forced tool.",
                         FIG23)
     + level("explanation",
             "<p><b>Few tools.</b> %s %s</p>" % (
@@ -1169,10 +1186,10 @@ FIG25 = cases("2.5-1", [
      "Read every file first: the context fills.", 120,
      mini_box(2, 2, 236, 44, "Read", "every file first") + '<path class="ve-e is-st" d="M120 46V64"/>'
      + mini_box(2, 66, 236, 52, "the context", "full", st=True), "Reading all files first fills the context."),
-    ("ok", "The guide", "Glob and Grep, then Read",
-     "Glob finds files by name and Grep finds entry points and callers. Then Read follows the imports: the context does not fill.", 120,
-     mini_box(2, 2, 236, 44, "Glob + Grep, then Read", "entry points, then imports") + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, "the context", "not full", st=True), "Glob finds files by name, Grep finds entry points and callers, and Read follows the imports."),
+    ("ok", "The guide", "Grep, then Read",
+     "Grep finds the entry points and callers. Then Read follows the imports: the context does not fill.", 120,
+     mini_box(2, 2, 236, 44, "Grep, then Read", "entry points, then imports") + '<path class="ve-e is-st" d="M120 46V64"/>'
+     + mini_box(2, 66, 236, 52, "the context", "not full", st=True), "Grep finds the entry points and callers, and Read follows the imports. Glob finds files by name."),
 ], "%s %s %s %s" % (cf("ts-2-5-s4", gx("Building codebase understanding incrementally: starting with Grep to find entry points, then using Read to follow imports and trace flows, rather than reading all files upfront", "Exam guide, 2.5-S4"),
                        "The guide starts with Grep to find the entry points, then follows the imports with Read, and does not read all files first (2.5-S4)."),
                     cf("ts-2-5-k4", gx("When Edit fails due to non-unique text matches, using Read + Write as a fallback for reliable file modifications", "Exam guide, 2.5-K4"),
@@ -1219,8 +1236,8 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
             + code_pop_text("ts-2-5-code", "The code: a subagent with only Read, Glob and Grep", "A review subagent with search tools only", CCS, YAML25, "Claude Code, Subagents",
                             "This subagent can search and read, but not change a file.")
             + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
-                                           cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
-                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so proposed decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
+                                           cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035"),
+                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1446,8 +1463,8 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
             + code_pop_text("ts-3-2-code", "The code: a skill with context: fork", "A research skill that runs in a forked subagent", SKL, SKILL32, "Claude Code, Skills",
                             "The Explore agent runs the task, and $ARGUMENTS takes the words after the command.")
             + tab2_links("3.2", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
-                                           cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035 (proposed)"),
-                                              "Proposed decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
+                                           cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035"),
+                                              "Decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
 
 
 # ----- part 3.4 (facts: academy/facts/ts-3-4.md) -----
@@ -1856,11 +1873,11 @@ FIG43 = cases("4.3-1", [
     (None, 'any', 'Claude must call a tool',
      'tool_choice any: Claude must call one tool, and picks which.', 120,
      mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'one tool', 'Claude picks which', st=True), 'Claude Opus 5.5 and three other current models reject this setting.'),
+     + mini_box(2, 66, 236, 52, 'one tool', 'Claude picks which', st=True), 'Claude Opus 5.5 and three other current models reject the setting any.'),
     (None, 'forced', 'Claude must call the named tool',
      'A forced tool: Claude calls that tool, for example extract_metadata first.', 120,
      mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'tool: extract_metadata', 'that tool first', st=True), 'Claude Opus 5.5 and three other current models reject this setting.'),
+     + mini_box(2, 66, 236, 52, 'tool: extract_metadata', 'that tool first', st=True), 'Claude Opus 5.5 and three other current models reject a forced tool.'),
 ], "%s %s" % (cf("ts-4-3-k2", gx("The distinction between tool_choice: \"auto\" (model may return text instead of calling a tool), \"any\" (model must call a tool but can choose which), and forced tool selection (model must call a specific named tool)", "Exam guide, 4.3-K2"),
                  "The three settings of tool_choice are those of the guide (4.3-K2)."),
               cf("ts-4-3-k3", gx("That strict JSON schemas via tool use eliminate syntax errors but do not prevent semantic errors (e.g., line items that don't sum to total, values in wrong fields)", "Exam guide, 4.3-K3"),
@@ -2006,7 +2023,7 @@ FIG45 = figure("4.5-1", 890, 330,
                           cf("ts-4-5-s3", gx("Handling batch failures: resubmitting only failed documents (identified by custom_id) with appropriate modifications (e.g., chunking documents that exceeded context limits)", "Exam guide, 4.5-S3"),
                              "Only the failed documents go again, found by custom_id, and changed where needed, for example cut into chunks (4.5-S3).")))
 FIG45 = FIG45.replace("<figcaption>", bar_strip([("Messages API", 100, "100%", False), ("Message Batches", 50, "50%", True)],
-                                                "The price of a request: the Messages API is the full price, and Message Batches is half of it.") + "<figcaption>", 1)
+                                                "The price of a request: the Messages API is the full price, and Message Batches is half of it.", head="The price of a request") + "<figcaption>", 1)
 
 PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                         "The Message Batches API costs half, but a batch can take up to 24 hours with no promised time, so use it only for work that nobody waits for. "
@@ -2079,7 +2096,7 @@ FIG46 = cases("4.6-1", [
 ], "%s %s" % (cf("ts-4-6-k1", gx("Self-review limitations: a model retains reasoning context from generation, making it less likely to question its own decisions in the same session", "Exam guide, 4.6-K1"),
                  "A model keeps the reasoning of its own work, so it is less likely to question its decisions in the same session (4.6-K1)."),
               cf("ts-4-6-k3", gx("Multi-pass review: splitting large reviews into per-file local analysis passes plus cross-file integration passes to avoid attention dilution and contradictory findings", "Exam guide, 4.6-K3"),
-                 "A large review splits into passes for each file plus passes across the files (4.6-K3).") + " The order of the passes in the figure is the page&rsquo;s."), cls="two")
+                 "A large review splits into passes for each file plus passes across the files (4.6-K3).") + " A verification pass then adds a confidence to each finding, and the findings are routed by a calibrated confidence. The order of the passes is the page&rsquo;s."), cls="two")
 FIG46 = FIG46.replace("<figcaption>", strip(890, 150, "A large review gets one pass for each file, then an integration pass across the files, then a verification pass that adds a confidence to each finding, and the findings are routed by a calibrated confidence.",
                                             "".join([edge("M180 25H220V75H260"), edge("M180 75H260"), edge("M180 125H220V75H260"), edge("M460 75H520"), edge("M690 75H740"),
                                                      box(20, 5, 160, 40, ["File 1: pass"]), box(20, 55, 160, 40, ["File 2: pass"]), box(20, 105, 160, 40, ["File N: pass"]),
@@ -2164,7 +2181,7 @@ FIG51 = figure("5.1-1", 890, 330,
                           cf("ts-5-1-s3", gx("Trimming verbose tool outputs to only relevant fields before they accumulate in context (e.g., keeping only return-relevant fields from order lookups)", "Exam guide, 5.1-S3"),
                              "It cuts each tool output to the relevant fields before it enters the context (5.1-S3).")))
 FIG51 = FIG51.replace("<figcaption>", bar_strip([("order lookup", 40, "40+", False), ("relevant fields", 5, "5", True)],
-                                                "The example of the guide: an order lookup returns more than 40 fields, and only 5 are relevant.") + "<figcaption>", 1)
+                                                "The example of the guide: an order lookup returns more than 40 fields, and only 5 are relevant.", head="Fields of one tool result") + "<figcaption>", 1)
 
 PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim the rest",
                         "A summary of a long conversation blurs numbers, dates and promises, so keep these facts in a separate block that each request carries word for word. "
@@ -2267,7 +2284,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
                    "It does not investigate first (5.2-S2)."),
                 cf("ts-5-2-s3", gx("Acknowledging frustration while offering resolution when the issue is within the agent's capability, escalating only if the customer reiterates their preference", "Exam guide, 5.2-S3"),
-                   "When the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates only if the customer asks again for a human (5.2-S3)."))
+                   "When a frustrated customer does not ask for a human and the issue is within its capability, the agent says that it understands the frustration and offers the fix. It escalates if the customer then asks for a human (5.2-S3)."))
             + "<p><b>Not mood or confidence.</b> %s In the reading of this page, the limit is on a confidence that nobody calibrated: 5.5-S3 calibrates on labeled data, and 4.6-S3 asks for calibrated routing.</p>" %
                 cf("ts-5-2-f11", gx("Option D solves a different problem entirely; sentiment doesn't correlate with case complexity, which is the actual issue.", "Exam guide, sample question 3"),
                    "Sample question 3 of the guide says that sentiment does not follow the complexity of a case.")
@@ -2497,7 +2514,7 @@ FIG55 = figure("5.5-1", 890, 330,
                           cf("ts-5-5-k2", gx("Stratified random sampling for measuring error rates in high-confidence extractions and detecting novel error patterns", "Exam guide, 5.5-K2"),
                              "A stratified random sample of the high-confidence extractions measures their error rate and finds new error patterns (5.5-K2).")))
 FIG55 = FIG55.replace("<figcaption>", bar_strip([("overall: can hide a weak segment", 97, "97%", True)],
-                                                "97% overall can hide a weak segment. The guide gives no numbers for each segment.", track=True) + "<figcaption>", 1)
+                                                "97% overall can hide a weak segment. The guide gives no numbers for each segment.", track=True, head="The example of the guide: one total accuracy") + "<figcaption>", 1)
 
 PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data calibrates them",
                         "One total accuracy can hide a weak document type or field, so measure each segment before you cut human review. "
@@ -2577,7 +2594,7 @@ FIG56 = figure("5.6-1", 890, 330,
                         '<text class="ve-lab" x="590" y="124">Report</text>',
                         box(590, 130, 280, 45, ["Well-established"]),
                         box(590, 185, 280, 55, ["Contested"], sub="both values, each with its source", cls="try ok"),
-                        box(590, 250, 280, 45, ["Coverage gaps"], sub="a point of 5.3-S4")]),
+                        box(590, 250, 280, 45, ["Coverage gaps"], sub="also in 5.3-S4")]),
                "%s %s A summary without the sources loses the attribution. To pick one value arbitrarily is wrong, and a finding with no date can make an older figure look like a contradiction. Each content type keeps its format: financial data as tables, news as prose, technical findings as lists." % (
                    cf("ts-5-6-s1", gx("Requiring subagents to output structured claim-source mappings (source URLs, document names, relevant excerpts) that downstream agents preserve through synthesis", "Exam guide, 5.6-S1"),
                       "Subagents output structured claim-source mappings, and the agents after them keep the mappings through the synthesis (5.6-S1)."),
@@ -2750,6 +2767,29 @@ BODY = """<main>
 </main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN,
              "domains": "".join(domain_html(DOM[i]) for i in range(1, 6))}
 
+NAME = re.compile(r"(?<![\w./@#-])(?:[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?:\.[a-z_]+)*|[a-z]+(?:[A-Z][a-z0-9]+)+|--[a-z][a-z0-9-]*[a-z0-9]|claude -p)(?![\w-])")
+
+
+def code_font(html):
+    """A single name in the running text is in code font (academy decision 0038): a name with an underscore, a camelCase name,
+    a flag, and claude -p. Text inside a drawing, code, a script or a tag is not changed."""
+    out, skip = [], []
+    for part in re.split(r"(<[^>]+>)", html):
+        if part.startswith("<"):
+            m = re.match(r"<(/?)([a-zA-Z0-9]+)", part)
+            if m and m.group(2).lower() in ("svg", "code", "script", "style", "pre", "title"):
+                if m.group(1):
+                    if skip:
+                        skip.pop()
+                elif not part.endswith("/>"):
+                    skip.append(m.group(2).lower())
+            out.append(part)
+        else:
+            out.append(part if skip else NAME.sub(lambda x: "<code>%s</code>" % x.group(0), part))
+    return "".join(out)
+
+
+BODY = code_font(BODY)
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 %s %s ' % (m.group(1), m.group(3), m.group(2), m.group(3)), BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)

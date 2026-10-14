@@ -17,8 +17,8 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 - The figure plan of academy decision 0037 is built (14 October 2026, afternoon): 27 redraws and 9 number pictures, with steppers, small multiples, before/after, one live figure (3.3-1), moving dots on six figures, and growing bars. The text changes of decision 0039 are done too: the label "Guide only", the three names of the documentation, the code popup of part 1.2, and the takeaway in each closed heading of tab 2. Each domain and tab 2 had a review agent, and all their items are fixed. `check-pages.js` checks each step, panel and choice, and prints "All checks passed." for both tabs.
 - Pictures for the owner: `academy/screenshots/tab-1-redraw/before-after-1.N.png` (domain 1) and `academy/screenshots/redraw/before-after-*.png` (the rest), dark mode in `academy/screenshots/redraw/dark/`.
 - `main` was pushed to GitHub at 7b47e4d. The later commits are local.
-- The missing reviews of decision 0036: the top of tab 1 is reviewed and fixed. Running: the review of part 1.1, and the reader agent of decision 0026 for slices 5 to 8.
-- Next step: fix the items of those two reviews, push after a yes of the owner, then the owner accepts slices 2 to 8 or names what to change (decision 0022).
+- The missing reviews of decision 0036 are done: the top of tab 1, part 1.1, and the reader agent of decision 0026 for slices 5 to 8. Their items are fixed (academy journal).
+- Next step: the owner looks at the pictures and the pages, says yes to a push (main is ahead of GitHub), and accepts slices 2 to 8 or names what to change (decision 0022).
 
 ### Morning report, night of 14 October 2026 (`academy/night-plan.md`)
 

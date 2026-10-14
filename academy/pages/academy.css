@@ -347,3 +347,6 @@ table.matrix th, table.matrix td { border-top: 1px solid var(--border); padding:
 table.matrix thead th { font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); background: var(--surface); }
 table.matrix tbody th { font-weight: 400; } table.matrix .sn { font: 600 var(--t-label) var(--font-mono); margin-right: var(--s-2); color: var(--text-dim); }
 .ve-svg .chance { fill: none; stroke: var(--text-dim); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.stops li.wide { grid-column: span 2; } @media (max-width: 640px) { .stops li.wide { grid-column: auto; overflow-wrap: anywhere; } }
+#pop pre { white-space: pre; overflow-x: auto; overflow-wrap: normal; }
+.chip code, .tlist code, .ve-label code, .who code, summary code { font-size: inherit; }
