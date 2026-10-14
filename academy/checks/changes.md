@@ -1,6 +1,6 @@
 # Changes of the reader checks (academy/check-plan.md)
 
-The owner reads the version at the tag `owner-review-2026-10-14`. Each line below is one change after that tag. No change touches an element ID, a figure number, a heading or a popup title.
+The owner reads the version at the tag `owner-review-2026-10-14`. Each line below is one change after that tag. Some later lines change a text that an earlier line had already changed, so their old text is a step between the tag and the last version, not the text of the tag. No change touches an element ID, a figure number, a heading or a popup title.
 
 | Tab | Element | Finding | Source | Old text | New text |
 |---|---|---|---|---|---|
@@ -42,7 +42,7 @@ The owner reads the version at the tag `owner-review-2026-10-14`. Each line belo
 | 1 | `ts-1-4` and `ts-4-6`, sample questions 1 and 12 | Review of the fixes: the same finding as card `ts-2-3-q9`, the guide maps no sample question to a task statement | guide lines 848 to 858 | Sample question 1 of the guide tests 1.4-S1 / Sample question 12 of the guide tests this split | Sample question 1 of the guide matches 1.4-S1 / Sample question 12 of the guide matches this split |
 | 1 | `ts-5-5`, card `ts-5-5-m1`, its quote | Review of the fixes: the new quote named only mock 5, but the sentence names mocks 1 and 5 | build guide step 7, line 13 | (quote) For mock 5 the file has all 60 questions again (decision 0073). | (quote) For mock 1 the owner marks all 60 questions. For mocks 2 to 4 the file has a random sample of 20, 5 from each scenario. For mock 5 the file has all 60 questions again (decision 0073). The quote before the checks was "For mock 1 the owner reads all 60, so that is not a sample." |
 | 1 | `ts-5-2`, Explanation, cards of 5.2-K2 and 5.2-S2 | Review of the fixes: "In the first case" pointed back across a sentence, and "demands" and "ask for" named one thing | guide, 5.2-K2 and 5.2-S2 | When a customer demands a human ... In the first case, it does not investigate first (5.2-S2). | When a customer asks for a human ... When the customer asks for a human, the agent does not investigate first (5.2-S2). |
-| 2 | card `w-owner` (a link to `HANDOFF.md`) | Not a fix: the build reads the line again, and `HANDOFF.md` had moved by one line before the checks | `HANDOFF.md` | ...HANDOFF.md?plain=1#L114 | ...HANDOFF.md?plain=1#L115 (the right line) |
+| 2 | card `w-owner` (a link to `HANDOFF.md`) | Not a fix: the build reads the line again, and `HANDOFF.md` had moved by one line before the checks | `HANDOFF.md` | ...HANDOFF.md?plain=1#L114 | the line of the owner's entry in `HANDOFF.md` at the last build, before the push. Each change of `HANDOFF.md` moves it, see A2. |
 | 2 | Fig. 0-1, the label "parts" | Part of the fix of Fig. 0-1 above | picture of D1 | x 715 | x 717 |
 | tools | `academy/build/make-figure-plan.py`, `academy/build/shot-figure.js` | Tools of the checks, not the pages | (none) | (none) | level 3 headings in the plan page, and the mode `nocap` for the pictures of D1 |
 

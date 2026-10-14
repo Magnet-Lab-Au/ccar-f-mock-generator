@@ -12,7 +12,7 @@ Progress list (updated after each check):
 
 | ID | State | Result |
 |---|---|---|
-| A1 | done | 822 links, 0 broken. 6 links gave 504 once (a large file on GitHub), then 200. |
+| A1 | done | 822 URLs: 819 links, 0 broken, 3 URLs in code examples. 6 links gave 504 once (a large file on GitHub), then 200. |
 | A2 | done | 246 numbers of tab 2: 228 computed again, all equal. 18 from text records, all checked. |
 | A3 | done | 6 differences, 4 fixed (1 high), 2 left as true. |
 | A4 | done | 2.2 and 2.3: 8 items fixed. 4.3, 4.6, 5.2: 6 fixed (1 high), 4 for the owner. |
@@ -22,7 +22,7 @@ Progress list (updated after each check):
 | B4 | done | 190 of 239 points taught, 49 thin, 0 named only. 1 fix (5.2). About 22 conflicts of product and guide for the owner. |
 | C1 | done | Domain 1 needs a primer of the products and a glossary. 25 stops for the owner. |
 | C2 | done | Tab 1 works for a skimmer (4.3 is the exception). Tab 2 shows the story, but not the link to the task statements. |
-| C3 | done | 5.5% and 6.5% of sentences over 25 words. 1 fix ("second design review"). 17 rewrites for the owner. |
+| C3 | done | 5.5% and 6.5% of sentences over 25 words. 2 fixes (no semicolon in the step labels, "second design review"). 17 rewrites for the owner. |
 | C4 | done | The sideways scroll hides the point of about 25 of 67 figures on a phone. Layout for the owner. |
 | C5 | done | The process convinces, the quality of the questions less. Title promise holds for steps 1 to 5. For the owner. |
 | D1 | done | Tab 1: 32 match, 2 partial. Tab 2: 16 match, 3 partial, 3 miss. 4 drawing faults fixed. |
@@ -32,15 +32,18 @@ Progress list (updated after each check):
 | E3 | done | "rules file" fixed to "rule file". The other forms are quotes, file names or flags. |
 | F1 | done | Contrast passes. 2 names fixed. nested-interactive and list for the owner. |
 | F2 | done | 67 pictures at 390 pixels. |
-| F3 | done | Tab 1 65 ms, tab 2 40 ms from disk. Cards are 329 KB of tab 1. |
+| F3 | done | Tab 1 65 ms, tab 2 40 ms from disk. The cards are 329 KB of the 407 KB of page data of tab 1. |
 | G1 | done | Three ways (copy, React page around the HTML, rewrite). 7 decisions for the owner first. |
 | G2 | done | 41 of 56 figures with popups, in the popup plan and HANDOFF. |
 
 Result (about 20:55):
 
-- All 23 checks ran, with 28 check agents (B1 5, B3 3, A4, B2, B4, D1 and D2 2 each, the other 9 checks 1 each), the scripts, 1 review agent of the plan and 1 review agent of all fixes, at most 2 at a time. No check was skipped.
+- All 23 checks ran, with 28 check agents (B1 5, B3 3, A4, B2, B4, D1 and D2 2 each, the other 10 checks 1 each: 5 + 3 + 10 + 10 = 28), the scripts, 1 review agent of the plan and 1 review agent of all fixes, at most 2 at a time. No check was skipped.
 - The list for the owner: `academy/checks/findings.md`. The fixes: `academy/checks/changes.md` (41 lines).
 - The assistant made errors on the way, and the checks found them: a fix of 2.3 went 2 words over the limit of 500 (found by `check-pages.js`, shortened), a wider viewBox of Fig. 5-2 made its numbers 11.8 pixels (found by `check-pages.js`, changed back), a fix of 5.2 put "It does not investigate first" after the wrong sentence (found by B4), and a new card reused an ID (found by the review of the fixes).
+- Two departures from the plan: C2 had 1 agent (the plan said 2), because one agent read the skim of both tabs. One agent reviewed all fixes at the end (the plan said one for each batch), and its 7 items are fixed.
+- B1 by domain: 78 of 78, 55 of 55, 60 of 60, 55 of 55, 45 of 45.
+- An independent agent checked this report against the commits and found 14 items, 1 high (the link of tab 2 to `HANDOFF.md` pointed to a blank line after the report added lines). All are fixed, and tab 2 is built again after the last change to `HANDOFF.md`.
 - The plan said "Push once, at the end". The owner's yes to the plan covers it.
 
 ## 14 October 2026, morning: the answers to the morning report
