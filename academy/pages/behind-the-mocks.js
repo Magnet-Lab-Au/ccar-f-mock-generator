@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!live()) { running = false; for (const d of dots) d.c.remove(); dots = []; for (const r of routes) r.next = null; return; }
         for (const r of routes) { if (!r.len) r.len = r.p.getTotalLength(); if (r.next === null) r.next = t + r.delay; }   // lengths now, when the figure is open; a delay orders the routes
         for (const r of routes) if (t >= r.next) { r.next = t + r.every; const c = document.createElementNS(svg.namespaceURI, 'circle'); c.setAttribute('r', 5); layer.append(c); dots.push({ c, r, t0: t }); }
-        dots = dots.filter((d) => { const s = (t - d.t0) * .3;   // 0.3 units per ms: slower than the sample (.45), on the wish of the owner if (s > d.r.len) { d.c.remove(); return false; } const pt = d.r.p.getPointAtLength(s); d.c.setAttribute('cx', pt.x); d.c.setAttribute('cy', pt.y); return true; });
+        dots = dots.filter((d) => { const s = (t - d.t0) * .3; /* 0.3 units per ms: slower than the sample (.45), on the wish of the owner */ if (s > d.r.len) { d.c.remove(); return false; } const pt = d.r.p.getPointAtLength(s); d.c.setAttribute('cx', pt.x); d.c.setAttribute('cy', pt.y); return true; });
         requestAnimationFrame(tick);
       };
       const start = () => { if (!running && live()) { running = true; requestAnimationFrame(tick); } };

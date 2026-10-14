@@ -431,9 +431,9 @@ FIG12 = stepper("ts-1-2-fig1", "1.2-1", 890, 380,
                         edge("M240 30H650", "no direct path", 445, 16, cls="is-async no-head", s="7"),
                         '<path class="ve-e no-head" data-s="7" d="M437 22l16 16M453 22l-16 16"/>',
                         # moving dots on the full picture: a test of the owner (figure plan, Motion)
-                        "".join('<path data-flow="hub" data-every="3200" data-delay="%d" d="%s"/>' % (dl, d) for dl, d in
+                        "".join('<path data-flow="hub" data-every="1600" data-delay="%d" d="%s"/>' % (dl, d) for dl, d in
                                 ((0, "M380 140V55H240"), (0, "M510 140V55H650"), (0, "M510 250V325H650"), (0, "M380 250V325H240"),
-                                 (1600, "M240 75H410V140"), (1600, "M650 75H480V140"), (1600, "M240 310H410V250"))),
+                                 (800, "M240 75H410V140"), (800, "M650 75H480V140"), (800, "M240 310H410V250"))),
                         '<g class="ve-dots" aria-hidden="true"></g>',
                         box(330, 140, 230, 110, ["Coordinator"], sub="split · select · join", cls="who-model"),
                         box(20, 20, 220, 70, ["Web search"], sub="own context", cls="who-model", a="1 3 5 7"),
