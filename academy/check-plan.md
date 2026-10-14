@@ -131,7 +131,7 @@ Time: 6 to 8 hours. A usage limit can add hours. If the time runs out, the order
 
 - No new design. No change to a decision text that the owner confirmed.
 - No model call through the API, and no API cost. Only the agents of Claude Code.
-- No change to the mocks or the mock builder: `mocks/`, `runs/`, `src/`, `tests/`, `docs/` and `marking/`. The checks only read them.
+- No change to the mocks or the mock builder: `mocks/`, `runs/`, `src/`, `tests/`, `docs/` and `marking/`. The checks only read them. No check reads `marking/*.xlsx`.
 - No change to `reference/`, the old folders, the study packs or the portal folders.
 - No personal file of the owner and no conversation transcript, also not in a prompt (rules 19 and 28).
 - At most 2 agents at the same time.
