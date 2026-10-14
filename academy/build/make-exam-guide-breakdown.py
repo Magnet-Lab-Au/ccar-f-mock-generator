@@ -187,7 +187,7 @@ def D(copy, text, page_name):
     if copy.startswith("claude-code-docs"):
         title = "Claude Code documentation, %s (copy of 14 October 2026)" % page_name.replace("Claude Code, ", "")
     else:
-        title = "Anthropic documentation, %s (copy of 14 October 2026)" % page_name
+        title = "Claude API documentation, %s (copy of 14 October 2026)" % page_name   # the three names of decision 0039, item 11
     return excerpt(SRC % copy, text, title, kind="docs")
 
 
@@ -196,10 +196,19 @@ def card(key, c):
     return key
 
 
+DOC_NAME = re.compile(r"\b([Tt])he documentation\b")
+
+
 def cf(key, c, text):
-    """A fact with its card."""
+    """A fact with its card. "the documentation" becomes the name of the set of pages of the card (decision 0039, item 11)."""
+    if c.get("kind") == "docs":
+        name = "Claude Code documentation" if c["title"].startswith("Claude Code documentation") else "Claude API documentation"
+        text = DOC_NAME.sub(lambda m: m.group(1) + "he " + name, text)
     CARD[key] = c
     return fact(key, text)
+
+
+GUIDE = ' <span class="chip guide">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
 
 
 def box(x, y, w, h, lines, sub=None, cls="", step=None, a=None, s=None):
@@ -266,7 +275,7 @@ def code_pop_text(key, label, title, copy, text, page_name, note=""):
 
 
 def beyond(items):
-    return ('<div class="callout"><span class="chip">Beyond the exam</span><p>The exam tests the points of the guide above. These facts of the documentation go further, for work in production.</p>'
+    return ('<div class="callout"><span class="chip">Beyond the exam</span><p>The exam tests the points of the guide above. These facts of the Anthropic documentation go further, for work in production.</p>'
             '<ul class="beyond">%s</ul></div>' % "".join("<li>%s</li>" % i for i in items))
 
 
@@ -368,7 +377,7 @@ PART["1.3"] = (overview("1.3", "A subagent sees none of the coordinator's conver
                    "The product renamed the tool Agent in version 2.1.63."),
                 cf("ts-1-3-c2", D(PERM, "Any other tool not listed in `allowed_tools` is still available to Claude, and a call to it that needs approval falls through to the permission mode.", "Agent SDK, Permissions"),
                    "In the current Agent SDK, allowed_tools (allowedTools in the guide) only approves a tool in advance.") + " " + cf("ts-1-3-c2b", D(PERM, "Calls that need no approval in `default` mode run whether or not you list them, such as [read-only Bash commands](/docs/en/permissions#read-only-commands), tools like `Agent` that don't ask before running", "Agent SDK, Permissions"),
-                   "The Agent tool runs even when the list does not name it. The exam uses the guide.")
+                   "The Agent tool runs even when the list does not name it.") + GUIDE
             )
             + "<p><b>Context.</b> %s %s %s %s %s</p>" % (
                 fact("ts-1-3-f5", "Only the prompt of the call reaches a subagent that is not a fork."),
@@ -480,12 +489,12 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
                    "In sample question 7 of the guide, each subagent did its task correctly. The problem was what they were given."))
             + "<p><b>Refine.</b> %s</p>" %
                 cf("ts-1-2-s3", gx("Implementing iterative refinement loops where the coordinator evaluates synthesis output for gaps, re-delegates to search and analysis subagents with targeted queries, and re-invokes synthesis until coverage is sufficient", "Exam guide, 1.2-S3"),
-                   "The coordinator checks the synthesis for gaps, sends targeted queries to the search and analysis subagents, and runs the synthesis again, until the coverage is sufficient (1.2-S3). Only the guide describes this loop.")
+                   "The coordinator checks the synthesis for gaps, sends targeted queries to the search and analysis subagents, and runs the synthesis again, until the coverage is sufficient (1.2-S3).") + GUIDE
             + exam_tests("1.2", [("Multi-agent orchestration: coordinator-subagent patterns, task decomposition, parallel subagent execution, iterative refinement loops", "Among the topics, the guide names")])
             + guide_text("1.2"), "ts-1-2")
     + level("depth",
             beyond([cf("ts-1-2-b1", D(AT, "Subagents that Claude named when it spawned them can also [message each other](/docs/en/sub-agents#what-loads-at-startup)", "Claude Code, Agent teams"),
-                       "In Claude Code, subagents that Claude named can also message each other. The guide routes all communication through the coordinator, and the exam uses the guide."),
+                       "In Claude Code, subagents that Claude named can also message each other. The guide routes all communication through the coordinator.") + GUIDE,
                     cf("ts-1-2-b2", D(SUB, "a subagent can spawn subagents of its own, so one prompt can grow into a tree of agents.", "Agent SDK, Subagents"),
                        "A subagent can start subagents of its own, so the hub can grow into a tree. The guide shows one hub with one layer."),
                     cf("ts-1-2-b3", D(O5, "Delegation pays off on genuinely independent, sizeable tracks of work, but it multiplies cost and time when applied to small tasks.", "Prompting Claude Opus 5"),
@@ -549,8 +558,8 @@ PART["1.4"] = (overview("1.4", "A required order needs a code gate, not a prompt
                 cf("ts-1-4-s2", gx("Decomposing multi-concern customer requests into distinct items, then investigating each in parallel using shared context before synthesizing a unified resolution", "Exam guide, 1.4-S2"),
                    "A request with several issues becomes distinct items. The agent investigates each one, then joins them in one resolution (1.4-S2)."),
                 cf("ts-1-4-f11", D(MAO, "Agents can act in parallel with their own isolated context", "Managed Agents, Multiagent orchestration"),
-                   "The guide says &ldquo;using shared context&rdquo;. In the documentation, agents that work in parallel have their own isolated context. The exam uses the guide."))
-            + "<p><b>The handoff.</b> %s Only the guide describes the content of a handoff.</p>" %
+                   "The guide says &ldquo;using shared context&rdquo;. In the documentation, agents that work in parallel have their own isolated context.") + GUIDE)
+            + "<p><b>The handoff.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-1-4-s3", gx("Compiling structured handoff summaries (customer ID, root cause, refund amount, recommended action) when escalating to human agents who lack access to the conversation transcript", "Exam guide, 1.4-S3"),
                    "When the agent escalates, it writes a structured summary: customer ID, root cause, refund amount and recommended action, because the human does not see the transcript (1.4-K3, 1.4-S3).")
             + exam_tests("1.4", [("Claude Agent SDK — agent definitions, agentic loops, stop_reason handling, hooks (PostToolUse, tool call interception), subagent spawning via Task tool, allowedTools configuration", "Among the technologies, the guide names")])
@@ -611,13 +620,13 @@ PART["1.5"] = (overview("1.5", "Hooks block a tool call or clean its result",
                 cf("ts-1-5-f9", D(LOOP, "a `PreToolUse` hook that rejects a tool call prevents it from executing, and Claude receives the rejection message instead.", "Agent SDK, The agent loop"),
                    "In the Agent SDK, a PreToolUse hook that rejects a call stops it, and Claude gets the rejection message instead."),
                 cf("ts-1-5-s2", gx("Implementing tool call interception hooks that block policy-violating actions (e.g., refunds exceeding $500) and redirect to alternative workflows (e.g., human escalation)", "Exam guide, 1.5-S2"),
-                   "In the guide, the hook then redirects the case, for example to a human (1.5-S2). The documentation has no redirect field: a deny gives Claude its reason (see 1.4).") + " " + cf("ts-1-5-f8", D(HOOKS, "For `PreToolUse` hooks, this is where you set `permissionDecision` (`\"allow\"`, `\"deny\"`, `\"ask\"`, or `\"defer\"`)", "Agent SDK, Hooks"),
-                   "A hook can also answer &ldquo;ask&rdquo;, to ask the user. The exam uses the guide."))
+                   "In the guide, the hook then redirects the case, for example to a human (1.5-S2). The Anthropic documentation has no redirect field: a deny gives Claude its reason (see 1.4).") + " " + cf("ts-1-5-f8", D(HOOKS, "For `PreToolUse` hooks, this is where you set `permissionDecision` (`\"allow\"`, `\"deny\"`, `\"ask\"`, or `\"defer\"`)", "Agent SDK, Hooks"),
+                   "A hook can also answer &ldquo;ask&rdquo;, to ask the user.") + GUIDE)
             + "<p><b>After the call.</b> %s %s %s</p>" % (
                 cf("ts-1-5-s1", gx("Implementing PostToolUse hooks to normalize heterogeneous data formats (Unix timestamps, ISO 8601, numeric status codes) from different MCP tools before the agent processes them", "Exam guide, 1.5-S1"),
                    "A PostToolUse hook makes the data of different MCP (Model Context Protocol) tools the same, such as Unix timestamps, ISO 8601 dates and numeric status codes, before the agent uses it (1.5-K1, 1.5-S1)."),
                 cf("ts-1-5-f4", D(HOOKS, "To replace the tool's output before Claude sees it, set `updatedToolOutput`, which works for any tool in both SDKs.", "Agent SDK, Hooks"),
-                   "The field updatedToolOutput replaces the output before Claude sees it, for any tool, not only MCP tools. The exam uses the guide."),
+                   "The field updatedToolOutput replaces the output before Claude sees it, for any tool, not only MCP tools.") + GUIDE,
                 cf("ts-1-5-f6", D(HOOKS, "A regex (`^mcp__`) triggers `mcp_audit_hook` for any MCP tool whose name starts with `mcp__`.", "Agent SDK, Hooks"),
                    "A matcher, a pattern of tool names, selects the tools, for example each MCP tool."))
             + "<p><b>A guarantee.</b> %s Part 1.4 explains this contrast. %s</p>" % (
@@ -677,7 +686,7 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                    "The Claude Code documentation advises one named session for each workstream."),
                 cf("ts-1-7-c2", D(SES, "**Resume** takes a specific session ID. You track the ID.", "Agent SDK, Sessions"),
                    "In the Agent SDK, a resume takes the session ID.") + " " + cf("ts-1-7-f1", D(CSES, "| `claude --resume <name>` | Resumes the named session directly |", "Claude Code, Sessions"),
-                   "A name works in the Claude Code CLI. The exam uses the guide."))
+                   "A name works in the Claude Code CLI.") + GUIDE)
             + "<p><b>Fork.</b> %s %s</p>" % (
                 cf("ts-1-7-s2", gx("Using fork_session to create parallel exploration branches (e.g., comparing two testing strategies or refactoring approaches from a shared codebase analysis)", "Exam guide, 1.7-S2"),
                    "fork_session makes branches from one shared analysis, for example to compare two refactoring approaches (1.7-K2, 1.7-S2)."),
@@ -691,14 +700,14 @@ PART["1.7"] = (overview("1.7", "Resume valid context, fork to compare, restart w
                    "When those tool results are stale, the guide prefers a new session with a structured summary (1.7-K4)."),
                 cf("ts-1-7-f10", D(SES, "Capture the results you need (analysis output, decisions, file diffs) as application state and pass them into a fresh session", "Agent SDK, Sessions"),
                    "For a session on another machine, the Agent SDK documentation advises to capture the results and pass them into a fresh session."))
-            + "<p><b>Changed files.</b> %s Only the guide asks for this.</p>" %
+            + "<p><b>Changed files.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-1-7-s4", gx("Informing a resumed session about specific file changes for targeted re-analysis rather than requiring full re-exploration", "Exam guide, 1.7-S4"),
                    "When the earlier context is still mostly valid, tell the resumed session which files changed, so it analyzes only those again (1.7-K3, 1.7-S4).")
             + exam_tests("1.7", [("Session management — session resumption, fork_session, named sessions, session context isolation", "Among the technologies, the guide names")])
             + guide_text("1.7"), "ts-1-7")
     + level("depth",
             beyond([cf("ts-1-7-b1", D(SES, "Forking branches the conversation history, not the filesystem. If a forked agent edits files, those changes are real and visible to any session working in the same directory.", "Agent SDK, Sessions"),
-                       "A fork branches the conversation, not the files. Two forks in one folder change the same files. The guide says &ldquo;independent branches&rdquo;, and the exam uses the guide."),
+                       "A fork branches the conversation, not the files. Two forks in one folder change the same files. The guide says &ldquo;independent branches&rdquo;.") + GUIDE,
                     cf("ts-1-7-b2", D(HREF, "For mid-session events like `PostToolUse` or `UserPromptSubmit`, when you resume with `--continue` or `--resume`, Claude Code replays the saved text rather than re-running the hook for past turns, so values like timestamps or commit SHAs become stale.", "Claude Code, Hooks reference"),
                        "A resume replays the saved output of hooks in the middle of a session, so values such as timestamps become stale. Hooks at the start of a session run again."),
                     cf("ts-1-7-b3", D(CSES, "* **Resume from summary**: runs [`/compact`](/docs/en/context-window#what-survives-compaction) immediately. Later requests carry the summary instead of the full history.", "Claude Code, Sessions"),
@@ -753,7 +762,7 @@ PART["1.6"] = (overview("1.6", "Chain fixed steps for known work, adapt for open
                 cf("ts-1-6-s2", gx("Splitting large code reviews into per-file local analysis passes plus a separate cross-file integration pass to avoid attention dilution", "Exam guide, 1.6-S2"),
                    "A large code review becomes one local pass for each file, plus a separate pass across the files (1.6-K2, 1.6-S2)."),
                 cf("ts-1-6-f10", gx("Splitting reviews into focused passes directly addresses the root cause: attention dilution when processing many files at once.", "Exam guide, sample question 12"),
-                   "The guide gives the reason: attention dilution, a loss of attention when the model processes many files at once. The documentation does not use this term, and the exam uses the guide."),
+                   "The guide gives the reason: attention dilution, a loss of attention when the model processes many files at once. The Anthropic documentation does not use this term.") + GUIDE,
                 cf("ts-1-6-f11", gx("Option C misunderstands that larger context windows don't solve attention quality issues.", "Exam guide, sample question 12"),
                    "A larger context window does not fix it."))
             + "<p><b>An adaptive plan.</b> %s %s %s</p>" % (
@@ -833,7 +842,7 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
                 cf("ts-2-1-f5", D(DEFT, "Aim for at least 3–4 sentences for each tool description, more if the tool is complex.", "Define tools"),
                    "The documentation asks for at least 3 or 4 sentences."),
                 cf("ts-2-1-c3", D(DEFT, "for tools with complex inputs, nested objects, or format-sensitive parameters, you can use the `input_examples` field to provide schema-validated examples.", "Define tools"),
-                   "For complex tools, the documentation adds a field input_examples, with example inputs, which are not the example queries of the guide."))
+                   "For complex tools, it adds a field input_examples, with example inputs, which are not the example queries of the guide."))
             + "<p><b>Overlap.</b> %s %s %s</p>" % (
                 cf("ts-2-1-k3", gx("How ambiguous or overlapping tool descriptions cause misrouting (e.g., analyze_content vs analyze_document with near-identical descriptions)", "Exam guide, 2.1-K3"),
                    "Near-identical descriptions cause misrouting (2.1-K3)."),
@@ -845,12 +854,12 @@ PART["2.1"] = (overview("2.1", "The description decides which tool Claude picks"
                 cf("ts-2-1-s3", gx("Splitting generic tools into purpose-specific tools with defined input/output contracts (e.g., splitting a generic analyze_document into extract_data_points, summarize_content, and verify_claim_against_source)", "Exam guide, 2.1-S3"),
                    "The guide splits a generic tool, such as analyze_document, into tools with one purpose and a defined input and output each (2.1-S3)."),
                 cf("ts-2-1-c1", D(DEFT, "**Consolidate related operations into fewer tools.** Rather than creating a separate tool for every action (`create_pr`, `review_pr`, `merge_pr`), group them into a single tool with an `action` parameter.", "Define tools"),
-                   "The documentation also advises to join related actions into one tool with an action parameter. The guide names both splitting and joining, and the exam uses the guide."))
+                   "The documentation also advises to join related actions into one tool with an action parameter. The guide names both splitting and joining.") + GUIDE)
             + "<p><b>The system prompt.</b> %s %s %s %s</p>" % (
                 cf("ts-2-1-f11", D(DEFT, "the API constructs a special system prompt from the tool definitions, tool configuration, and any user-specified system prompt.", "Define tools"),
                    "Claude reads the tool definitions and your system prompt in one prompt."),
                 cf("ts-2-1-k4", gx("The impact of system prompt wording on tool selection: keyword-sensitive instructions can create unintended tool associations", "Exam guide, 2.1-K4"),
-                   "The guide says that a keyword in the system prompt can tie a request to the wrong tool (2.1-K4). The documentation has no such statement, and the exam uses the guide."),
+                   "The guide says that a keyword in the system prompt can tie a request to the wrong tool (2.1-K4). The Anthropic documentation has no such statement.") + GUIDE,
                 cf("ts-2-1-s4", gx("Reviewing system prompts for keyword-sensitive instructions that might override well-written tool descriptions", "Exam guide, 2.1-S4"),
                    "So you review the system prompt for words that might override good tool descriptions (2.1-S4)."),
                 cf("ts-2-1-f13", D(PBP, "If your prompts were designed to reduce undertriggering on tools or skills, these models may now overtrigger. The fix is to dial back any aggressive language.", "Prompting best practices"),
@@ -918,7 +927,7 @@ PART["2.2"] = (overview("2.2", "Errors must say what failed and whether a retry 
                 cf("ts-2-2-s1", gx("Returning structured error metadata including errorCategory (transient/validation/permission), isRetryable boolean, and human-readable descriptions", "Exam guide, 2.2-S1"),
                    "The guide returns an errorCategory, an isRetryable flag and a description that a person can read (2.2-S1). Its three categories do not include business errors. For those, 2.2-S2 uses a flag that it names retriable: false."),
                 cf("ts-2-2-f2", D(HANDLE, "you can return the error message in the `content` along with `\"is_error\": true`:", "Handle tool calls"),
-                   "These field names are the guide's: the documentation shows the flag and an error message in the content. The exam uses the guide."))
+                   "These field names are the guide's: the documentation shows the flag and an error message in the content.") + GUIDE)
             + "<p><b>Retry or not.</b> %s %s %s</p>" % (
                 cf("ts-2-2-k4", gx("The difference between retryable and non-retryable errors, and how returning structured metadata prevents wasted retry attempts", "Exam guide, 2.2-K4"),
                    "Metadata that says whether an error is retryable prevents wasted retries (2.2-K4)."),
@@ -977,7 +986,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                 cf("ts-2-3-k1", gx("The principle that giving an agent access to too many tools (e.g., 18 instead of 4-5) degrades tool selection reliability by increasing decision complexity", "Exam guide, 2.3-K1"),
                    "Too many tools, such as 18 instead of 4 or 5, make the choice of tool less reliable (2.3-K1)."),
                 cf("ts-2-3-f1", D(TSR, "Claude's ability to pick the right tool degrades once you exceed 30–50 available tools.", "Tool search tool"),
-                   "The documentation puts the drop higher, above 30 to 50 tools. The exam uses the guide."))
+                   "The documentation puts the drop higher, above 30 to 50 tools.") + GUIDE)
             + "<p><b>Scope by role.</b> %s %s %s</p>" % (
                 cf("ts-2-3-s1", gx("Restricting each subagent's tool set to those relevant to its role, preventing cross-specialization misuse", "Exam guide, 2.3-S1"),
                    "Each subagent gets only the tools of its role (2.3-S1).") + " " + cf("ts-2-3-k2", gx("Why agents with tools outside their specialization tend to misuse them (e.g., a synthesis agent attempting web searches)", "Exam guide, 2.3-K2"),
@@ -987,9 +996,9 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                 fact("ts-1-3-f10", "In the Agent SDK, a tool that the list of a subagent leaves out is not in its session."))
             + "<p><b>Narrow tools.</b> %s %s</p>" % (
                 cf("ts-2-3-s2", gx("Replacing generic tools with constrained alternatives (e.g., replacing fetch_url with load_document that validates document URLs)", "Exam guide, 2.3-S2"),
-                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2). Part 2.1 shows that the documentation also advises to join related actions."),
+                   "A generic tool becomes a constrained one, such as load_document that checks document URLs, in place of fetch_url (2.3-S2). Part 2.1 shows that the Claude API documentation also advises to join related actions."),
                 cf("ts-2-3-s3", gx("Providing scoped cross-role tools for high-frequency needs (e.g., a verify_fact tool for the synthesis agent) while routing complex cases through the coordinator", "Exam guide, 2.3-S3"),
-                   "A narrow tool of another role serves a frequent need, and complex cases still go through the coordinator (2.3-S3). Only the guide describes these two points."))
+                   "A narrow tool of another role serves a frequent need, and complex cases still go through the coordinator (2.3-S3).") + GUIDE)
             + "<p><b>tool_choice.</b> %s %s %s %s %s %s</p>" % (
                 cf("ts-2-3-k4", gx("tool_choice configuration options: \"auto\", \"any\", and forced tool selection ({\"type\": \"tool\", \"name\": \"...\"})", "Exam guide, 2.3-K4"),
                    "The guide names three options: auto, any, and a forced tool (2.3-K4)."),
@@ -1001,7 +1010,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
                    "The documentation names four: it adds none, which blocks all tools."),
                 cf("ts-2-3-f13", D(DEFT, "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://platform.claude.com/docs/en/models/mythos-5-1/overview) | `any` and `tool` return a [400 error]", "Define tools"),
                    "Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool."),
-                "The exam uses the guide.")
+                GUIDE)
             + exam_tests("2.3", [("Claude API — tool_use with JSON schemas, tool_choice options (\"auto\", \"any\", forced tool selection), stop_reason values (\"tool_use\", \"end_turn\"), max_tokens, system prompts", "Among the technologies, the guide names")])
             + "<p>%s</p>" % cf("ts-2-3-q9", gx("Give the synthesis agent a scoped verify_fact tool for simple lookups, while complex verifications continue delegating to the web search agent through the coordinator.", "Exam guide, sample question 9, answer A"),
                                "Sample question 9 of the guide tests 2.3-S3: its correct answer is a scoped verify_fact tool.")
@@ -1054,7 +1063,7 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
                 cf("ts-2-4-f3", D(CCMCP, "User-scoped servers are stored in `~/.claude.json` and provide cross-project accessibility, making them available across all projects on your machine while remaining private to your user account.", "Claude Code, MCP"),
                    "User scope is in ~/.claude.json, for all the projects of one person (2.4-S2)."),
                 cf("ts-2-4-c1", D(CCMCP, "Local scope is the default. A local-scoped server loads only in the project where you added it and stays private to you. Claude Code stores it in `~/.claude.json` under that project's path, so the same server won't appear in your other projects. Use local scope for personal development servers, experimental configurations, or servers with credentials you don't want in version control.", "Claude Code, MCP"),
-                   "The documentation has a third scope: local, the default, also in ~/.claude.json, which it names for experimental servers. The exam uses the guide."))
+                   "The documentation has a third scope: local, the default, also in ~/.claude.json, which it names for experimental servers.") + GUIDE)
             + "<p><b>Secrets.</b> %s %s</p>" % (
                 cf("ts-2-4-k2", gx("Environment variable expansion in .mcp.json (e.g., ${GITHUB_TOKEN}) for credential management without committing secrets", "Exam guide, 2.4-K2"),
                    "In .mcp.json, a token is a variable such as ${GITHUB_TOKEN}, so the secret is never committed (2.4-K2)."),
@@ -1064,13 +1073,13 @@ PART["2.4"] = (overview("2.4", "Share MCP servers in .mcp.json, with secrets in 
                 cf("ts-2-4-f9", D(SDKM, "MCP tools follow the naming pattern `mcp__<server-name>__<tool-name>`.", "Agent SDK, MCP"),
                    "In the Agent SDK, each MCP tool name carries the name of its server: mcp__server__tool."),
                 cf("ts-2-4-c3", D(CCMCP, "Tool search is enabled by default: MCP tools are deferred and discovered on demand. Claude Code disables it when `ANTHROPIC_BASE_URL` points to a non-first-party host, since most proxies don't forward `tool_reference` blocks.", "Claude Code, MCP"),
-                   "The guide says that the tools are discovered at connection time. In Claude Code, tool search is on by default: MCP tools are deferred and discovered on demand. Claude Code turns it off when ANTHROPIC_BASE_URL points to another host, such as a proxy. The exam uses the guide."))
+                   "The guide says that the tools are discovered at connection time. In Claude Code, tool search is on by default: MCP tools are deferred and discovered on demand. Claude Code turns it off when ANTHROPIC_BASE_URL points to another host, such as a proxy.") + GUIDE)
             + "<p><b>Resources.</b> %s %s</p>" % (
                 cf("ts-2-4-s5", gx("Exposing content catalogs as MCP resources to give agents visibility into available data without requiring exploratory tool calls", "Exam guide, 2.4-S5"),
                    "The guide says that a catalog exposed as resources lets the agent see what data exists without exploratory tool calls (2.4-S5).") + " " + cf("ts-2-4-k4", gx("MCP resources as a mechanism for exposing content catalogs (e.g., issue summaries, documentation hierarchies, database schemas) to reduce exploratory tool calls", "Exam guide, 2.4-K4"),
                    "Examples are issue summaries and database schemas (2.4-K4)."),
                 cf("ts-2-4-f13", D(CCMCP, "Claude Code automatically provides tools to list and read MCP resources when servers support them", "Claude Code, MCP"),
-                   "In Claude Code, Claude itself lists and reads resources with tool calls. The exam uses the guide."))
+                   "In Claude Code, Claude itself lists and reads resources with tool calls.") + GUIDE)
             + "<p><b>Good servers.</b> %s Part 2.1 shows how. %s %s</p>" % (
                 cf("ts-2-4-s3", gx("Enhancing MCP tool descriptions to explain capabilities and outputs in detail, preventing the agent from preferring built-in tools (like Grep) over more capable MCP tools", "Exam guide, 2.4-S3"),
                    "The guide says that a detailed description of an MCP tool keeps the agent from using a built-in tool such as Grep in its place (2.4-S3)."),
@@ -1138,7 +1147,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                 cf("ts-2-5-f8", D(TREF, "The Write tool creates a new file or overwrites an existing one with the full content provided. It doesn't append or merge.", "Claude Code, Tools reference"),
                    "Write replaces the whole file."),
                 cf("ts-2-5-c2", D(TREF, "**Uniqueness**: `old_string` must appear exactly once. When it appears more than once, Claude either supplies a longer string with enough surrounding context to pin down one occurrence, or sets `replace_all: true` to replace them all.", "Claude Code, Tools reference"),
-                   "In the documentation, when the text occurs twice, Claude uses a longer text that occurs once, or replaces all occurrences. The guide reads and writes the whole file instead (2.5-K4, see Fig. 2.5-1). The exam uses the guide."))
+                   "In the documentation, when the text occurs twice, Claude uses a longer text that occurs once, or replaces all occurrences. The guide reads and writes the whole file instead (2.5-K4, see Fig. 2.5-1).") + GUIDE)
             + "<p><b>Search first.</b> %s %s Part 3.4 shows the Explore subagent, which keeps a search out of the main context.</p>" % (
                 cf("ts-2-5-f14", D(BEST, "Claude reads hundreds of files, filling the context.", "Claude Code, Best practices"),
                    "The documentation names the failure that 2.5-S4 prevents: Claude reads hundreds of files, and the context fills."),
@@ -1146,7 +1155,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                    "To trace a function through a wrapper module, the guide first lists all the names that it exports, then searches for each name (2.5-S5)."))
             + "<p><b>The platform.</b> %s</p>" %
                 cf("ts-2-5-c1", D(TREF, "On Windows, it's part of the default tool set. On macOS, Linux, and WSL, Claude Code leaves Glob and [Grep](#grep-tool-behavior) out of the default tool set, and Claude searches with `find` and `grep` through the Bash tool instead.", "Claude Code, Tools reference"),
-                   "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools. The exam uses the guide.")
+                   "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools.") + GUIDE
             + exam_tests("2.5", [("Built-in tools — Read, Write, Edit, Bash, Grep, Glob — their purposes and selection criteria", "Among the technologies, the guide names")])
             + guide_text("2.5"), "ts-2-5")
     + level("depth",
@@ -1158,7 +1167,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                             "This subagent can search and read, but not change a file.")
             + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035 (proposed)"),
-                                              "The build in Claude Code used its built-in tools, on WSL, where the documentation of today leaves Grep and Glob out by default. No record says which tool did what, so proposed decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
+                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so proposed decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1222,7 +1231,7 @@ PART["3.1"] = (overview("3.1", "Team instructions live in the project CLAUDE.md,
                 cf("ts-3-1-f16", D(MEMD, "The `/memory` command lists your CLAUDE.md, CLAUDE.local.md, and other memory file locations across user and project scopes, including user and project CLAUDE.md entries for files that don't exist yet.", "Claude Code, Memory"),
                    "In the documentation, /memory lists the locations of the files, also of files that do not exist yet."),
                 cf("ts-3-1-f17", D(MEMD, "To check which `CLAUDE.md` and rules files loaded at launch, run `/context`.", "Claude Code, Memory"),
-                   "To see which CLAUDE.md and rules files loaded, the documentation names /context. The exam uses the guide."))
+                   "To see which CLAUDE.md and rules files loaded, the documentation names /context.") + GUIDE)
             + exam_tests("3.1", [("CLAUDE.md configuration: hierarchy (user/project/directory), @import patterns, .claude/rules/ with glob patterns", "Among the topics, the guide names")])
             + guide_text("3.1"), "ts-3-1")
     + level("depth",
@@ -1281,7 +1290,7 @@ PART["3.3"] = (overview("3.3", "A rule with a glob loads only for matching files
                 cf("ts-3-3-k2", gx("How path-scoped rules load only when editing matching files, reducing irrelevant context and token usage", "Exam guide, 3.3-K2"),
                    "The guide says that a path rule loads only when Claude edits a matching file, so the context and the tokens stay small (3.3-K2)."),
                 cf("ts-3-3-f6", D(MEMD, "A path-scoped rule loads when Claude uses the Read, Write, or Edit tool on a matching file. It also loads when Claude views a matching file with a Bash command that [counts as a read](/docs/en/tools-reference#edit-tool-behavior), such as `cat` or `head` on a single file.", "Claude Code, Memory"),
-                   "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads that single file. The exam uses the guide."),
+                   "In Claude Code, a read is enough: the rule also loads on the Read tool, or when a Bash command such as cat reads that single file.") + GUIDE,
                 cf("ts-3-1-f13", D(MEMD, "Rules without [`paths` frontmatter](#path-specific-rules) are loaded at launch with the same priority as `.claude/CLAUDE.md`.", "Claude Code, Memory"),
                    "A rule with no paths loads at launch like CLAUDE.md."))
             + "<p><b>Across folders.</b> %s %s %s</p>" % (
@@ -1339,7 +1348,7 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                 cf("ts-3-2-f3", D(CDIR, "Files here apply to every project you work in and are never committed to any repository.", "Claude Code, The .claude directory"),
                    "Files in ~/.claude/ are never committed."),
                 cf("ts-3-2-c3", D(SKL, "**Custom commands have been merged into skills.** A file at `.claude/commands/deploy.md` and a skill at `.claude/skills/deploy/SKILL.md` both create `/deploy` and work the same way. Your existing `.claude/commands/` files keep working.", "Claude Code, Skills"),
-                   "Claude Code has merged commands into skills: a command file still works, and a skill in .claude/skills/ makes the same command. The exam uses the guide."))
+                   "Claude Code has merged commands into skills: a command file still works, and a skill in .claude/skills/ makes the same command.") + GUIDE)
             + "<p><b>The frontmatter.</b> %s %s</p>" % (
                 cf("ts-3-2-k2", gx("Skills in .claude/skills/ with SKILL.md files that support frontmatter configuration including context: fork, allowed-tools, and argument-hint", "Exam guide, 3.2-K2"),
                    "A skill is a SKILL.md file in .claude/skills/. Its frontmatter, a header of settings, can hold context: fork, allowed-tools and argument-hint (3.2-K2)."),
@@ -1354,7 +1363,7 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                 cf("ts-3-2-s4", gx("Using argument-hint frontmatter to prompt developers for required parameters when they invoke the skill without arguments", "Exam guide, 3.2-S4"),
                    "The guide uses argument-hint to ask for missing parameters (3.2-S4)."),
                 cf("ts-3-2-c2", D(SKL, "Hint shown during autocomplete to indicate expected arguments.", "Claude Code, Skills"),
-                   "In the documentation, it is a hint in the autocomplete. The exam uses the guide."))
+                   "In the documentation, it is a hint in the autocomplete.") + GUIDE)
             + "<p><b>Personal variants.</b> %s %s</p>" % (
                 cf("ts-3-2-k4", gx("Personal skill customization: creating personal variants in ~/.claude/skills/ with different names to avoid affecting teammates", "Exam guide, 3.2-K4"),
                    "The guide puts a personal variant in ~/.claude/skills/ with another name (3.2-K4)."),
@@ -1428,7 +1437,7 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
                 cf("ts-3-4-k3", gx("Plan mode enables safe codebase exploration and design before committing to changes, preventing costly rework", "Exam guide, 3.4-K3"),
                    "The guide says that plan mode makes the exploration safe before any change, and so prevents costly rework (3.4-K3)."),
                 cf("ts-3-4-f5", D(PMODE, "Except in interactive terminal sessions with [bypass permissions available](#skip-all-checks-with-bypasspermissions-mode), edits stay blocked until you approve the plan.", "Claude Code, Permission modes"),
-                   "In Claude Code, the edits stay blocked until you approve the plan, except in an interactive terminal session where bypass permissions mode, which skips all checks, is available. The exam uses the guide."))
+                   "In Claude Code, the edits stay blocked until you approve the plan, except in an interactive terminal session where bypass permissions mode, which skips all checks, is available.") + GUIDE)
             + "<p><b>Plan, then execute.</b> %s %s</p>" % (
                 cf("ts-3-4-s4", gx("Combining plan mode for investigation with direct execution for implementation (e.g., planning a library migration, then executing the planned approach)", "Exam guide, 3.4-S4"),
                    "Plan mode investigates, and direct execution implements, for example a planned library migration (3.4-S4)."),
@@ -1441,7 +1450,7 @@ PART["3.4"] = (overview("3.4", "Plan first when the change is big or unclear",
                 cf("ts-2-5-b2", D(CCS, "Claude delegates to Explore when it needs to search or understand a codebase without making changes. This keeps exploration results out of your main conversation context.", "Claude Code, Subagents"),
                    "Claude delegates to Explore when it searches without making changes."),
                 cf("ts-3-4-c3", D(CCS, "When you're in plan mode and Claude needs to understand your codebase, it delegates research to the Plan subagent so that exploration output stays in a separate context window while the main conversation remains read-only.", "Claude Code, Subagents"),
-                   "In plan mode, Claude Code gives the research to a different built-in subagent, Plan. The exam uses the guide."))
+                   "In plan mode, Claude Code gives the research to a different built-in subagent, Plan.") + GUIDE)
             + exam_tests("3.4", [("Plan mode vs direct execution: complexity assessment, architectural decisions, single-file changes", "Among the topics, the guide names")])
             + "<p>%s</p>" % cf("ts-3-4-q5", gx("Enter plan mode to explore the codebase, understand dependencies, and design an implementation approach before making changes.", "Exam guide, sample question 5, answer A"),
                                "Sample question 5 of the guide fits 3.4: its correct answer enters plan mode.")
@@ -1493,11 +1502,11 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                 cf("ts-3-5-k1", gx("Concrete input/output examples as the most effective way to communicate expected transformations when prose descriptions are interpreted inconsistently", "Exam guide, 3.5-K1"),
                    "The guide calls concrete input and output examples the most effective way to show a transformation when prose gives mixed results (3.5-K1)."),
                 cf("ts-3-5-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
-                   "The prompting documentation of the Claude API calls them one of the most reliable ways to steer the format, the tone and the structure. The exam uses the guide."),
+                   "The prompting documentation of the Claude API calls them one of the most reliable ways to steer the format, the tone and the structure.") + GUIDE,
                 cf("ts-3-5-s1", gx("Providing 2-3 concrete input/output examples to clarify transformation requirements when natural language descriptions produce inconsistent results", "Exam guide, 3.5-S1"),
                    "The guide gives 2 or 3 examples (3.5-S1)."),
                 cf("ts-3-5-f3", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
-                   "The documentation gives 3 to 5 for prompts in general. The exam uses the guide."))
+                   "The documentation gives 3 to 5 for prompts in general.") + GUIDE)
             + "<p><b>Tests first.</b> %s %s %s</p>" % (
                 cf("ts-3-5-s2", gx("Writing test suites covering expected behavior, edge cases, and performance requirements before implementation, then iterating by sharing test failures", "Exam guide, 3.5-S2"),
                    "The tests cover the expected behavior, the edge cases and the performance, before the code (3.5-S2).") + " " + cf("ts-3-5-s4", gx("Providing specific test cases with example input and expected output to fix edge case handling (e.g., null values in migration scripts)", "Exam guide, 3.5-S4"),
@@ -1505,16 +1514,16 @@ PART["3.5"] = (overview("3.5", "Refine with examples, failing tests and an inter
                 cf("ts-3-5-f5", D(PLIB, "Test-driven development: the tests define when the work is complete, and Claude iterates on the implementation until they pass.", "Claude Code, Prompt library"),
                    "In Claude Code, the tests define when the work is complete."),
                 cf("ts-3-5-f6", D(BEST, "Give Claude something that produces a pass or fail, and the loop closes on its own. Claude does the work, runs the check, reads the result, and iterates until the check passes.", "Claude Code, Best practices"),
-                   "In Claude Code, Claude runs the tests and reads the failures itself. The guide says only &ldquo;sharing test failures&rdquo;, and the exam uses the guide."))
+                   "In Claude Code, Claude runs the tests and reads the failures itself. The guide says only &ldquo;sharing test failures&rdquo;.") + GUIDE)
             + "<p><b>The interview.</b> %s %s %s</p>" % (
                 cf("ts-3-5-k3", gx("The interview pattern: having Claude ask questions to surface considerations the developer may not have anticipated before implementing", "Exam guide, 3.5-K3"),
                    "Claude asks questions before the work, to find what the developer did not consider (3.5-K3).") + " " + cf("ts-3-5-s3", gx("Using the interview pattern to surface design considerations (e.g., cache invalidation strategies, failure modes) before implementing solutions in unfamiliar domains", "Exam guide, 3.5-S3"),
                    "The guide uses it in an unfamiliar domain (3.5-S3)."),
                 cf("ts-3-5-f10", D(BEST, "For larger features, have Claude interview you first. Start with a minimal prompt and ask Claude to interview you using the `AskUserQuestion` tool.", "Claude Code, Best practices"),
-                   "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion. The exam uses the guide."),
+                   "The Claude Code documentation uses it for larger features, with the tool AskUserQuestion.") + GUIDE,
                 cf("ts-3-5-f11", D(BEST, "Claude asks about things you might not have considered yet, including technical implementation, UI/UX, edge cases, and tradeoffs.", "Claude Code, Best practices"),
                    "Claude asks about the implementation, edge cases and tradeoffs."))
-            + "<p><b>One message or a sequence.</b> %s Only the guide states this point.</p>" %
+            + "<p><b>One message or a sequence.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-3-5-k4", gx("When to provide all issues in a single message (interacting problems) versus fixing them sequentially (independent problems)", "Exam guide, 3.5-K4"),
                    "Problems that interact go in one message, and independent problems go one at a time (3.5-K4, 3.5-S5).")
             + exam_tests("3.5", [("Iterative refinement: input/output examples, test-driven iteration, interview pattern, sequential vs parallel issue resolution", "Among the topics, the guide names")])
@@ -1572,7 +1581,7 @@ PART["3.6"] = (overview("3.6", "In CI, run claude -p with a schema and context",
                 cf("ts-3-6-f4", D(HLESS, "To get output conforming to a specific schema, use `--output-format json` with `--json-schema` and a [JSON Schema](https://json-schema.org/) definition. The response includes metadata about the request (session ID, usage, etc.) with the structured output in the `structured_output` field.", "Claude Code, Run Claude Code programmatically"),
                    "The response then has the structured output in the field structured_output."),
                 cf("ts-3-6-c2", D(CLI, "Get validated JSON output matching a JSON Schema after the agent completes its workflow (print mode only).", "Claude Code, CLI reference"),
-                   "The documentation says that the output is validated after the run, in print mode. It says &ldquo;validated&rdquo;, not &ldquo;enforced&rdquo;, and the exam uses the guide."))
+                   "The documentation says that the output is validated after the run, in print mode. It says &ldquo;validated&rdquo;, not &ldquo;enforced&rdquo;.") + GUIDE)
             + "<p><b>Context.</b> %s %s %s</p>" % (
                 cf("ts-3-6-k3", gx("CLAUDE.md as the mechanism for providing project context (testing standards, fixture conventions, review criteria) to CI-invoked Claude Code", "Exam guide, 3.6-K3"),
                    "The guide puts the project context in CLAUDE.md: testing standards, fixtures and review criteria (3.6-K3).") + " " + cf("ts-3-6-s5", gx("Documenting testing standards, valuable test criteria, and available fixtures in CLAUDE.md to improve test generation quality and reduce low-value test output", "Exam guide, 3.6-S5"),
@@ -1580,7 +1589,7 @@ PART["3.6"] = (overview("3.6", "In CI, run claude -p with a schema and context",
                 cf("ts-3-6-f9", D(GHA, "Create a `CLAUDE.md` file in your repository root to define code style guidelines, review criteria, project-specific rules, and preferred patterns. Claude follows these guidelines when creating PRs and responding to requests.", "Claude Code, GitHub Actions"),
                    "The Claude Code GitHub Action also reads review criteria from CLAUDE.md."),
                 cf("ts-3-6-c1", D(HLESS, "Add `--bare` to reduce startup time by skipping auto-discovery of hooks, skills, custom commands, [subagents](/docs/en/sub-agents), installed plugins, MCP servers, auto memory, and CLAUDE.md.", "Claude Code, Run Claude Code programmatically"),
-                   "But --bare, the mode that the documentation recommends for scripts, skips CLAUDE.md. The exam uses the guide."))
+                   "But --bare, the mode that the documentation recommends for scripts, skips CLAUDE.md.") + GUIDE)
             + "<p><b>Re-runs and tests.</b> %s %s %s</p>" % (
                 cf("ts-3-6-s3", gx("Including prior review findings in context when re-running reviews after new commits, instructing Claude to report only new or still-unaddressed issues to avoid duplicate comments", "Exam guide, 3.6-S3"),
                    "On a new commit, the guide gives Claude the prior findings and asks only for new or open issues, so the comments do not repeat (3.6-S3)."),
@@ -1643,7 +1652,7 @@ PART["4.2"] = (overview("4.2", "Few-shot examples fix what instructions alone le
                 cf("ts-4-2-k1", gx("Few-shot examples as the most effective technique for achieving consistently formatted, actionable output when detailed instructions alone produce inconsistent results", "Exam guide, 4.2-K1"),
                    "The guide calls few-shot examples the most effective technique when detailed instructions alone give inconsistent output (4.2-K1)."),
                 cf("ts-4-2-f1", D(PBP, "Examples are one of the most reliable ways to steer Claude's output format, tone, and structure.", "Prompting best practices"),
-                   "The documentation calls them one of the most reliable ways. The exam uses the guide."),
+                   "The documentation calls them one of the most reliable ways.") + GUIDE,
                 cf("ts-4-2-f2", D(ICON, "Provide examples of your desired output. This is more effective than abstract instructions.", "Increase output consistency"),
                    "The documentation also says that an example of the output is more effective than abstract instructions."))
             + "<p><b>The format.</b> %s</p>" %
@@ -1654,7 +1663,7 @@ PART["4.2"] = (overview("4.2", "Few-shot examples fix what instructions alone le
                    "Examples show how to handle ambiguous cases, such as the choice of a tool for an unclear request (4.2-K2).") + " " + cf("ts-4-2-c3", gx("Few-shot examples (A) add token overhead without fixing the underlying issue.", "Exam guide, sample question 2"),
                    "For the choice of a tool, the guide itself puts a good tool description first (part 2.1)."),
                 cf("ts-4-2-f7", D(PBP, "Include 3–5 examples for best results.", "Prompting best practices"),
-                   "The documentation gives 3 to 5 examples, not 2 to 4. The exam uses the guide."),
+                   "The documentation gives 3 to 5 examples, not 2 to 4.") + GUIDE,
                 cf("ts-4-2-f4", D(PBP, "* **Diverse:** Cover edge cases and vary enough that Claude doesn't pick up unintended patterns.", "Prompting best practices"),
                    "The documentation advises examples that cover edge cases and vary, so that Claude does not copy a pattern by accident."))
             + "<p><b>New patterns.</b> %s %s</p>" % (
@@ -1670,7 +1679,7 @@ PART["4.2"] = (overview("4.2", "Few-shot examples fix what instructions alone le
                 cf("ts-4-2-s5", gx("Adding few-shot examples showing correct extraction from documents with varied formats to address empty/null extraction of required fields", "Exam guide, 4.2-S5"),
                    "Examples of documents with varied formats fix required fields that come back empty (4.2-S5)."),
                 cf("ts-4-2-s4", gx("Using few-shot examples to demonstrate correct handling of varied document structures (inline citations vs bibliographies, methodology sections vs embedded details)", "Exam guide, 4.2-S4"),
-                   "Examples also show how to handle varied structures, such as inline citations against a bibliography (4.2-S4). Only the guide states these four points."))
+                   "Examples also show how to handle varied structures, such as inline citations against a bibliography (4.2-S4).") + GUIDE)
             + exam_tests("4.2", [("Few-shot prompting: ambiguous scenario targeting, format consistency, false positive reduction", "Among the topics, the guide names")])
             + guide_text("4.2"), "ts-4-2")
     + level("depth",
@@ -1724,18 +1733,18 @@ PART["4.1"] = (overview("4.1", "Name what to report, not how careful to be",
                 cf("ts-4-1-k2", gx("How general instructions like \"be conservative\" or \"only report high-confidence findings\" fail to improve precision compared to specific categorical criteria", "Exam guide, 4.1-K2"),
                    "The guide says that &ldquo;be conservative&rdquo; or &ldquo;only report high-confidence findings&rdquo; does not improve precision (4.1-K2)."),
                 cf("ts-4-1-f5", D(O5, "If your review prompt says \"only report high-severity issues\" or \"be conservative,\" the model may follow that instruction literally and report less; ask it to report everything and filter in a separate pass instead.", "Prompting Claude Opus 5"),
-                   "The documentation for Claude Opus 5 gives another reason: the model may report less. It advises to report everything and to filter in a separate pass. The exam uses the guide."))
+                   "The documentation for Claude Opus 5 gives another reason: the model may report less. It advises to report everything and to filter in a separate pass.") + GUIDE)
             + "<p><b>Report and skip.</b> %s %s</p>" % (cf("ts-4-1-f9", D(CREV, "* **`REVIEW.md`**: review-only instructions, given to the agents that find and verify findings and consulted by the agents that rank and report them. Use it to say what your team wants flagged, at what severity, and how findings are reported.", "Claude Code, Code Review"), "In Code Review, a file REVIEW.md says what the team wants flagged, and at what severity."),
                 cf("ts-4-1-f10", D(CREV, "**Skip rules**: list paths, branch patterns, and finding categories where Claude should post no findings.", "Claude Code, Code Review"),
                    "Its skip rules name the paths and categories with no findings."))
-            + "<p><b>Trust.</b> %s Only the guide states this point and 4.1-S2.</p>" %
+            + "<p><b>Trust.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-4-1-k3", gx("The impact of false positive rates on developer trust: high false positive categories undermine confidence in accurate categories", "Exam guide, 4.1-K3"),
                    "A category with many false positives makes developers doubt the accurate categories too (4.1-K3).")
             + "<p><b>Severity.</b> %s %s</p>" % (
                 cf("ts-4-1-s3", gx("Defining explicit severity criteria with concrete code examples for each severity level to achieve consistent classification", "Exam guide, 4.1-S3"),
                    "The guide says that explicit severity criteria, with a code example for each level, make the classification consistent (4.1-S3)."),
                 cf("ts-4-1-f12", D(CREV, "State explicitly which classes of finding are Important and which are Nit at most.", "Claude Code, Code Review"),
-                   "The documentation says to state in REVIEW.md which classes are Important and which are Nit, and its example uses prose, with no code (see the popup). The exam uses the guide."))
+                   "The documentation says to state in REVIEW.md which classes are Important and which are Nit, and its example uses prose, with no code (see the popup).") + GUIDE)
             + '<div><h4 class="gh2">The exam tests</h4><p>No line of the appendix of the guide is for 4.1 alone. %s %s</p></div>' % (
                 cf("ts-4-1-x0", gx("You need to design prompts that provide actionable feedback and minimize false positives.", "Exam guide, scenario 5"),
                    "Scenario 5, Claude Code for continuous integration, asks for prompts that give actionable feedback and few false positives."),
@@ -1784,9 +1793,9 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                 cf("ts-4-3-k1", gx("Tool use (tool_use) with JSON schemas as the most reliable approach for guaranteed schema-compliant structured output, eliminating JSON syntax errors", "Exam guide, 4.3-K1"),
                    "The guide calls tool use with a JSON schema the most reliable way to get output that fits the schema, with no syntax errors (4.3-K1)."),
                 cf("ts-4-3-f3", D(STRICT, "Without strict mode, Claude might return incompatible types (`\"2\"` instead of `2`) or omit required fields, breaking your functions and causing runtime errors.", "Strict tool use"),
-                   "In the documentation, a tool without strict: true can return wrong types or miss required fields,"),
+                   "In the Claude API documentation, a tool without strict: true can return wrong types or miss required fields,"),
                 cf("ts-4-3-f1", D(SOUTA, "Structured outputs guarantee schema-compliant responses through constrained decoding:", "Structured outputs"),
-                   "and structured outputs, a schema in output_config.format with no tool, guarantee the form. The exam uses the guide."))
+                   "and structured outputs, a schema in output_config.format with no tool, guarantee the form.") + GUIDE)
             + "<p><b>The data.</b> %s %s</p>" % (
                 cf("ts-4-3-s1", gx("Defining extraction tools with JSON schemas as input parameters and extracting structured data from the tool_use response", "Exam guide, 4.3-S1"),
                    "An extraction tool has the schema as its input, and the data comes from the tool_use response (4.3-S1)."),
@@ -1797,7 +1806,7 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                    "With several schemas and an unknown document type, any makes Claude call one of them (4.3-S2)."),
                 cf("ts-4-3-s3", gx("Forcing a specific tool with tool_choice: {\"type\": \"tool\", \"name\": \"extract_metadata\"} to ensure a particular extraction runs before enrichment steps", "Exam guide, 4.3-S3"),
                    "A forced tool makes one extraction run first (4.3-S3)."),
-                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool. The exam uses the guide."))
+                fact("ts-2-3-f13", "But Claude Opus 5.5, Sonnet 5.5, Fable 5.1 and Mythos 5.1 return a 400 error for any and for a forced tool.") + GUIDE)
             + "<p><b>Schema design.</b> %s %s %s %s</p>" % (
                 cf("ts-4-3-k4", gx("Schema design considerations: required vs optional fields, enum fields with \"other\" + detail string patterns for extensible categories", "Exam guide, 4.3-K4"),
                    "A schema chooses between required and optional fields, and an enum can have &ldquo;other&rdquo; with a detail string (4.3-K4)."),
@@ -1806,7 +1815,7 @@ PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                 cf("ts-4-3-s5", gx("Adding enum values like \"unclear\" for ambiguous cases and \"other\" + detail fields for extensible categorization", "Exam guide, 4.3-S5"),
                    "An enum value &ldquo;unclear&rdquo; covers ambiguous cases (4.3-S5)."),
                 cf("ts-4-3-s6", gx("Including format normalization rules in prompts alongside strict output schemas to handle inconsistent source formatting", "Exam guide, 4.3-S6"),
-                   "The prompt also gives rules to normalize formats (4.3-S6). Only the guide names these patterns."))
+                   "The prompt also gives rules to normalize formats (4.3-S6).") + GUIDE)
             + exam_tests("4.3", [("Structured output via tool_use: schema design, tool_choice configuration, nullable fields to prevent hallucination", "Among the topics, the guide names")])
             + guide_text("4.3"), "ts-4-3")
     + level("depth",
@@ -1861,20 +1870,20 @@ PART["4.4"] = (overview("4.4", "Retry with the exact errors, but not for missing
                    "The documentation names a related pattern: a draft, a review against criteria, then a refinement."))
             + "<p><b>When a retry does not help.</b> %s %s</p>" % (
                 cf("ts-4-4-s2", gx("Identifying when retries will be ineffective (e.g., information exists only in an external document not provided) versus when they will succeed (format mismatches, structural output errors)", "Exam guide, 4.4-S2"),
-                   "The guide says that a retry succeeds for a format or a structure error, and fails when the information is only in a document that Claude did not get (4.4-S2). Only the guide states this limit."),
+                   "The guide says that a retry succeeds for a format or a structure error, and fails when the information is only in a document that Claude did not get (4.4-S2).") + GUIDE,
                 cf("ts-4-4-f5", D(SOUTA, "* Retry with a higher `max_tokens` value to get the complete structured output", "Structured outputs"),
                    "With structured outputs, one structural error that a retry fixes is output cut off at max_tokens, sent again with a higher limit."))
             + "<p><b>Meaning, not syntax.</b> %s %s</p>" % (
                 cf("ts-4-4-k4", gx("The difference between semantic validation errors (values don't sum, wrong field placement) and schema syntax errors (eliminated by tool use)", "Exam guide, 4.4-K4"),
                    "A schema stops syntax errors, but values that do not sum or a value in the wrong field are errors of meaning (4.4-K4)."),
-                fact("ts-4-3-f3", "In the documentation, a tool without strict: true can still miss a required field (part 4.3)."))
+                fact("ts-4-3-f3", "In the Claude API documentation, a tool without strict: true can still miss a required field (part 4.3)."))
             + "<p><b>Checks and feedback.</b> %s %s %s</p>" % (
                 cf("ts-4-4-s4", gx("Designing self-correction validation flows: extracting \"calculated_total\" alongside \"stated_total\" to flag discrepancies, adding \"conflict_detected\" booleans for inconsistent source data", "Exam guide, 4.4-S4"),
                    "The output can carry its own checks: a calculated_total next to the stated_total, and a conflict_detected flag (4.4-S4)."),
                 cf("ts-4-4-k3", gx("Feedback loop design: tracking which code constructs trigger findings (detected_pattern field) to enable systematic analysis of dismissal patterns", "Exam guide, 4.4-K3"),
                    "A detected_pattern field records which code construct caused a finding (4.4-K3),"),
                 cf("ts-4-4-s3", gx("Adding detected_pattern fields to structured findings to enable analysis of false positive patterns when developers dismiss findings", "Exam guide, 4.4-S3"),
-                   "so that the findings that developers dismiss show patterns of false positives (4.4-S3). Only the guide names these fields."))
+                   "so that the findings that developers dismiss show patterns of false positives (4.4-S3).") + GUIDE)
             + exam_tests("4.4", [("Pydantic — schema validation, semantic validation errors, validation-retry loops", "Among the technologies, the guide names")])
             + guide_text("4.4"), "ts-4-4")
     + level("depth",
@@ -1934,7 +1943,7 @@ PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                 cf("ts-4-5-k3", gx("The batch API does not support multi-turn tool calling within a single request (cannot execute tools mid-request and return results)", "Exam guide, 4.5-K3"),
                    "The guide says that a batch request cannot run tools in the middle and continue with their results (4.5-K3)."),
                 cf("ts-4-5-c1", D(BATCH, "All [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools) (web search, web fetch, code execution, MCP connectors, advisor, and tool search) work in batch requests. The batch worker runs the same server-side agentic loop as the synchronous Messages API.", "Batch processing"),
-                   "In the documentation, server tools do run their loop inside a batch request, so the point holds for your own client tools. The exam uses the guide."))
+                   "In the documentation, server tools do run their loop inside a batch request, so the point holds for your own client tools.") + GUIDE)
             + "<p><b>custom_id.</b> %s %s</p>" % (
                 cf("ts-4-5-k4", gx("custom_id fields for correlating batch request/response pairs", "Exam guide, 4.5-K4"),
                    "A custom_id links each response to its request (4.5-K4)."),
@@ -2008,7 +2017,7 @@ PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files
                 cf("ts-4-6-f3", D(BEST, "A reviewer running in a fresh [subagent](/docs/en/sub-agents) context sees only the diff and the criteria you give it, not the reasoning that produced the change, so it evaluates the result on its own terms.", "Claude Code, Best practices"),
                    "In Claude Code, a reviewer in a fresh subagent sees only the diff and the criteria."),
                 cf("ts-4-6-c2", D(ETH, "Extended thinking (`thinking.type: \"enabled\"` with `budget_tokens`) is deprecated on the Claude 4.6 models (requests using it still succeed). Claude 4.7 and later models do not support it and reject requests that use it, returning a 400 error.", "Extended thinking"),
-                   "In the Claude API documentation, the mode that the guide calls extended thinking is deprecated on the Claude 4.6 models, and Claude 4.7 and later models reject it. The exam uses the guide."))
+                   "In the Claude API documentation, the mode that the guide calls extended thinking is deprecated on the Claude 4.6 models, and Claude 4.7 and later models reject it.") + GUIDE)
             + "<p><b>Passes.</b> %s %s %s %s Part 1.6 shows the same split.</p>" % (
                 cf("ts-4-6-s2", gx("Splitting large multi-file reviews into focused per-file passes for local issues plus separate integration passes for cross-file data flow analysis", "Exam guide, 4.6-S2"),
                    "The passes for each file find local issues, and a separate integration pass follows the data flow across the files (4.6-S2)."),
@@ -2089,7 +2098,7 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                 cf("ts-5-1-s4", gx("Placing key findings summaries at the beginning of aggregated inputs and organizing detailed results with explicit section headers to mitigate position effects", "Exam guide, 5.1-S4"),
                    "so a summary of key findings goes first, with clear section headers (5.1-S4)."),
                 cf("ts-5-1-f7", D(CWIN, "As token count grows, accuracy and recall degrade, a phenomenon known as *context rot*.", "Context windows"),
-                   "The documentation names a related effect of length, context rot, not of position. The exam uses the guide."))
+                   "The documentation names a related effect of length, context rot, not of position.") + GUIDE)
             + "<p><b>Tool results.</b> %s %s</p>" % (
                 cf("ts-5-1-k3", gx("How tool results accumulate in context and consume tokens disproportionately to their relevance (e.g., 40+ fields per order lookup when only 5 are relevant)", "Exam guide, 5.1-K3"),
                    "Tool results pile up, for example more than 40 fields for each order lookup when only 5 matter (5.1-K3)."),
@@ -2156,7 +2165,7 @@ PART["5.2"] = (overview("5.2", "Escalate on explicit criteria, not on mood or co
             "<p><b>Measure it.</b> %s</p>" %
                 cf("ts-5-2-f2", D(CSUP, "Aim for an escalation accuracy of 95% or higher.", "Customer support agent"),
                    "The documentation for a support agent aims at an escalation accuracy of 95% or more.")
-            + "<p><b>A request for a human.</b> %s %s %s Only the guide states these rules.</p>" % (
+            + "<p><b>A request for a human.</b> %s %s %s <span class=\"chip guide\">Guide only</span></p>" % (
                 cf("ts-5-2-k2", gx("The distinction between escalating immediately when a customer explicitly demands it versus offering to resolve when the issue is straightforward", "Exam guide, 5.2-K2"),
                    "When a customer demands a human, the agent escalates at once. When the issue is simple, it offers to resolve it (5.2-K2)."),
                 cf("ts-5-2-s2", gx("Honoring explicit customer requests for human agents immediately without first attempting investigation", "Exam guide, 5.2-S2"),
@@ -2239,7 +2248,7 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
                 fact("ts-2-2-f6", "For an error of a client tool, the Claude API documentation also says to name what went wrong and what Claude should try next."),
                 cf("ts-5-3-f4", D(SUB, "Either way, intermediate tool calls and results stay inside the subagent; only its final message returns to the parent.", "Agent SDK, Subagents"),
                    "In the Agent SDK, only the final message of a subagent returns to its parent, so put the error context in that message."))
-            + "<p><b>Empty is not failure.</b> %s Only the guide states this point, also in 2.2.</p>" %
+            + "<p><b>Empty is not failure.</b> %s <span class=\"chip guide\">Guide only</span></p>" %
                 cf("ts-5-3-s2", gx("Distinguishing access failures from valid empty results in error reporting so the coordinator can make appropriate decisions", "Exam guide, 5.3-S2"),
                    "The report keeps an access failure apart from a valid empty result (5.3-S2).")
             + "<p><b>Two anti-patterns.</b> %s %s %s</p>" % (
@@ -2498,7 +2507,7 @@ PART["5.6"] = (overview("5.6", "Each claim keeps its source, date and conflicts"
                    "Search result blocks of the Claude API, on all active models except Claude Haiku 3, carry your source and title into citations."),
                 cf("ts-5-6-f8", D(RHAL, "Make Claude's response auditable by having it cite quotes and sources for each of its claims. You can also have Claude verify each claim by finding a supporting quote after it generates a response. If it can't find a quote, it must retract the claim.", "Reduce hallucinations"),
                    "Prompt advice of the Claude API documentation: have Claude cite a quote and a source for each claim, and retract a claim with no quote."))
-            + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the documentation covers conflicting values or dates. These rules are the guide&rsquo;s.</p>" % (
+            + "<p><b>Conflicts and dates.</b> %s %s %s %s %s No copied page of the Anthropic documentation covers conflicting values or dates. <span class=\"chip guide\">Guide only</span></p>" % (
                 cf("ts-5-6-k3", gx("How to handle conflicting statistics from credible sources: annotating conflicts with source attribution rather than arbitrarily selecting one value", "Exam guide, 5.6-K3"),
                    "When credible sources give different statistics, annotate the conflict with the sources, and do not select one value arbitrarily (5.6-K3)."),
                 cf("ts-5-6-s3", gx("Completing document analysis with conflicting values included and explicitly annotated, letting the coordinator decide how to reconcile before passing to synthesis", "Exam guide, 5.6-S3"),
@@ -2598,6 +2607,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
   <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
+  <p>The label <span class="chip guide">Guide only</span> marks a point where the exam follows the guide: the Anthropic documentation says it in a different way, or does not say it.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts, the topics that the exam covers, and the topics that it does not cover.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",

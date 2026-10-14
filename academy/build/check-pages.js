@@ -8,7 +8,7 @@
    - each step of the 9-step diagram has its part
    - each popup and preview card opens, has a title and stays inside the window
    - text contrast at least 4.5 to 1 (3 to 1 for large text), with the known exceptions of decisions 0009 and 0013
-   - the same text checks at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
+   - the same text checks in both panels of each before / after figure, and at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
    - each text at least 12 pixels high as rendered, also in the figures
    - the word limits of decision 0026: Overview at most 100 words, Explanation at most 500 words, figures not counted
    It also saves screenshots for the owner.
@@ -130,6 +130,19 @@ function inPage() {
     out.info.push('STEPPER ' + name + ': ' + (caps.length - 1) + ' steps checked');
     if (caps[0].hidden) out.fail.push('Stepper ' + name + ' does not go back to the full picture');
   }
+  // each panel of each before / after figure (plan review item 2)
+  for (const fig of document.querySelectorAll('.ve-ba')) {
+    const name = (fig.querySelector('.fig-n') || {}).textContent || 'a before / after figure';
+    const buttons = [...fig.querySelectorAll('.ve-toggle button')], panels = [...fig.querySelectorAll('.ba-panel')];
+    if (buttons.length !== 2 || panels.length !== 2) { out.fail.push('Before / after without two buttons and two panels: ' + name); continue; }
+    buttons.forEach((b, i) => {
+      b.click();
+      if (panels[i].hidden || !panels[1 - i].hidden) out.fail.push(name + ': button ' + (i + 1) + ' does not show only its panel');
+      checkText(fig, name + ', panel ' + (i + 1) + ': ');
+    });
+    buttons[1].click();
+    out.info.push('TOGGLE ' + name + ': 2 panels checked');
+  }
   // word limits (decision 0026): figures and popups are not counted
   const words = (n) => { const c = n.cloneNode(true); c.querySelectorAll('figure, details, .sources, svg').forEach((x) => x.remove()); return (c.textContent.match(/\S+/g) || []).length; };
   for (const n of document.querySelectorAll('[data-level]')) {
@@ -199,7 +212,7 @@ function inPage() {
             }
           }
           for (const x of r.info.filter((x) => x.startsWith('WORDS '))) console.log('  ' + x.slice(6));
-          for (const x of r.info.filter((x) => x.startsWith('STEPPER '))) console.log('  ' + x);
+          for (const x of r.info.filter((x) => x.startsWith('STEPPER ') || x.startsWith('TOGGLE ') || x.startsWith('LIVE '))) console.log('  ' + x);
         }
         console.log(tag + ': ' + r.fail.length + ' failures, ' + r.known.length + ' known exceptions, ' + r.pending.length + ' pending');
         for (const x of r.fail) console.log('  FAIL ' + x);
