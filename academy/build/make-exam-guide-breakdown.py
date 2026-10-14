@@ -261,7 +261,7 @@ def figure(num, svg_w, svg_h, aria, inner, cap):
 def code_pop(key, label, title, copy, first, last, page_name, note=""):
     """A button that opens the code of the documentation in a popup (decisions 0004 and 0032)."""
     c = code_block(SRC % copy, first, last, title)
-    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the documentation, %s" % page_name,
+    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the %s, %s" % ("Claude Code documentation" if copy.startswith("claude-code-docs") else "Claude API documentation", page_name),
                 "example": c["text"], "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
@@ -269,7 +269,7 @@ def code_pop(key, label, title, copy, first, last, page_name, note=""):
 def code_pop_text(key, label, title, copy, text, page_name, note=""):
     """A code popup from an exact block of a dated copy."""
     c = D(copy, text, page_name)
-    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the documentation, %s" % page_name,
+    POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the %s, %s" % ("Claude Code documentation" if copy.startswith("claude-code-docs") else "Claude API documentation", page_name),
                 "example": __import__("textwrap").dedent(text), "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
@@ -499,6 +499,9 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
                        "A subagent can start subagents of its own, so the hub can grow into a tree. The guide shows one hub with one layer."),
                     cf("ts-1-2-b3", D(O5, "Delegation pays off on genuinely independent, sizeable tracks of work, but it multiplies cost and time when applied to small tasks.", "Prompting Claude Opus 5"),
                        "Delegation multiplies cost and time when the tasks are small.")])
+            + code_pop("ts-1-2-code", "The code: a coordinator agent in Python", "A lead agent that delegates to two subagents", "anthropic-docs-multiagent-orchestration",
+                       "lead_agent = client.beta.agents.create(", "  )", "Managed Agents, Multiagent orchestration",
+                       "The system prompt of the lead agent says which subagent gets which work. The multiagent block names its two predefined subagents. Managed Agents is a beta feature of the Claude API.")
             + tab2_links("1.2", "%s Part 1.3 gives the reason." % fact("ts-1-3-d26", "The mock builder uses no subagent.")), "ts-1-2"))
 
 
