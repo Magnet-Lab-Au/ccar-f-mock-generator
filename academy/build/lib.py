@@ -210,6 +210,10 @@ def add_popups(body, specs, tab, pop):
                     break
             if not found:
                 raise SystemExit("Popup label not in Fig. %s: %r" % (sp["fig"], m))
+            first = found[0]
+            panel_end = body.find('<div class="ba-panel"', first, cap)
+            panel_end = cap if panel_end < 0 else panel_end
+            found = [first] + [x for x in found[1:] if first < body.rfind('<div class="frame narrow">', start, x) and x < panel_end]
             for pos in reversed(found):
                 tag = body.rfind("<", 0, pos)
                 while body.startswith(("<tspan", "<code"), tag):

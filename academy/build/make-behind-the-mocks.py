@@ -248,9 +248,9 @@ def phone_bars(rows, aria, mx, note=None):
         w = max(2, v * 240 / mx)
         out += ('<text x="0" y="%d">%s</text><rect class="%s" x="0" y="%d" width="%d" height="18"/><text class="hv" x="%d" y="%d">%s</text>'
                 % (y + 10, e(k), "hot" if h else "", y + 20, w, max(w, g * 240 / mx if g else 0) + 8, y + 29, e(t)))
-    if note:
-        out += '<text x="0" y="%d">%s</text>' % (len(rows) * 46 + 12, e(note))
-    return '<div class="frame narrow"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46 + (24 if note else 0), e(aria), out)
+    for j, line in enumerate(note or []):
+        out += '<text x="0" y="%d">%s</text>' % (len(rows) * 46 + 12 + j * 20, e(line))
+    return '<div class="frame narrow"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46 + 20 * len(note or []) + 4, e(aria), out)
 
 
 def small_bars(rows, aria, mx=None):
@@ -1320,7 +1320,7 @@ FIG43 = """
     "h": 5 * 34 + 30, "ly": 5 * 34 + 20, "vals": ", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), "w4": COST[3][1], "w5": COST[4][1],
     "phone": phone_bars([("Mock %d%s" % (i + 1, (", no cache: $%.2f" % c[1]) if c[2] else ""), c[0], c[2], "$%.2f" % c[0], c[1] if c[2] else None) for i, c in enumerate(COST)],
                         "Dollars per mock: %s. Mocks 4 and 5 used prompt caching. Without the cache, the same tokens would cost %.2f and %.2f dollars. The outline bar shows the cost with no cache."
-                        % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), COST[3][1], COST[4][1]), MXC, "dark: paid. outline: no cache"),
+                        % (", ".join("mock %d %.2f" % (i + 1, c[0]) for i, c in enumerate(COST)), COST[3][1], COST[4][1]), MXC, ["dark: paid.", "outline: the same tokens with no cache"]),
     "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="ghost" x="80" y="%d" width="%d" height="22"/><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">$%.2f%s</text>'
                     % (i * 34 + 16, i + 1, i * 34 + 5, c[1] * 400 / MXC, "hot" if c[2] else "", i * 34 + 5, c[0] * 400 / MXC, 88 + c[1] * 400 / MXC, i * 34 + 16, c[0],
                        (" (no cache: $%.2f)" % c[1]) if c[2] else "") for i, c in enumerate(COST)),

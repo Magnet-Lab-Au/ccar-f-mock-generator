@@ -218,8 +218,8 @@ def cf(key, c, text):
 
 GUIDE = ' <span class="chip guide" data-step="guide-only" tabindex="0" role="button" aria-expanded="false">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
 POP["guide-only"] = {"who": "Guide only", "cls": "io", "title": "What does the label mean?", "points": [], "example": None,   # academy decision 0043, item 9
-                     "sent": ["No copied page of the Anthropic documentation states this point, or the documentation states it in other words. For the exam, answer as the guide says.",
-                              "Where a fact of the product could lead to a different exam answer, a box gives both: For the exam, and The product today."]}
+                     "sent": ["No copied page of the Anthropic documentation says this point, or the documentation says it in a different way. The sentence before the label often gives the documentation.",
+                              "For the exam, answer as the guide says."]}
 
 
 def exam_box(tsid, key, exam, today, facts=None):
@@ -1390,7 +1390,7 @@ LCB = "claude-code-docs-large-codebases"
 D48 = glob.glob(os.path.join(ROOT, "docs/decisions/0048-*.md"))[0][len(ROOT) + 1:]
 RULE33 = "---\npaths:\n  - \"src/api/**/*.ts\"\n---\n\n# API Development Rules\n\n- All API endpoints must include input validation\n- Use the standard error response format\n- Include OpenAPI documentation comments"
 FIG33_PHONE = (340, 530, "".join([   # the drawing for a phone (academy decision 0043, item 3)
-    '<path class="ve-e no-head" d="M40 74V275M40 120H60M40 170H60M40 220H60M40 275H60"/>',
+    '<path class="ve-e no-head" d="M40 74V220"/>', edge("M40 120H60"), edge("M40 170H60"), edge("M40 220H60"),
     '<path class="ve-e no-head" d="M320 120H332V220M320 170H332M320 220H332"/>', edge("M332 220V305H170V325"),
     box(60, 100, 260, 40, ["src/ui/Button.test.tsx"], cls="try ok", data={"pick": "src/ui/Button.test.tsx", "match": "yes"}),
     box(60, 150, 260, 40, ["src/api/users.test.tsx"], cls="try ok", data={"pick": "src/api/users.test.tsx", "match": "yes"}),
@@ -1399,7 +1399,7 @@ FIG33_PHONE = (340, 530, "".join([   # the drawing for a phone (academy decision
     box(20, 10, 300, 64, [".claude/rules/testing.md"], sub='paths: "**/*.test.tsx"'),
     box(20, 325, 300, 70, ["Context"], sub="on an edit (guide)", cls="who-model", data={"target": "context"}),
     box(20, 420, 300, 56, ["src/ui/CLAUDE.md"], sub="only files in src/ui/"),
-    '<text class="ve-lab" x="20" y="500">a directory CLAUDE.md</text><text class="ve-lab" x="20" y="518">covers one folder only</text>']))
+    '<text class="ve-el r" x="20" y="500">a directory CLAUDE.md</text><text class="ve-el r" x="20" y="520">covers one folder only</text>']))
 FIG33 = live("3.3-1", "Choose a file", 890, 330,
                "A rule file in .claude/rules/ with paths **/*.test.tsx matches test files in several folders, such as src/ui/Button.test.tsx, src/api/users.test.tsx and lib/date.test.tsx, "
                "but not src/ui/Button.tsx. When Claude edits a matching file, the rule loads into the context (in Claude Code, a read is enough too). A CLAUDE.md in src/ui/ covers that one folder only.",
@@ -1489,12 +1489,12 @@ FIG32 = before_after("3.2-1", [
               edge("M715 160V200H150V160", "only a summary returns", 430, 192, cls="is-hot"),
               box(20, 40, 260, 120, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
               box(560, 40, 310, 120, ["New subagent"], sub="reads files, runs searches", cls="who-model")]),
-     (340, 350, "".join([edge("M40 90V260", "SKILL.md = the task", 84, 125, anchor="r"),
-                         edge("M70 90V260", "no conversation history", 84, 175, cls="is-async no-head", anchor="r"),
-                         '<path class="ve-e no-head" d="M62 207l16 16M78 207l-16 16"/>',
-                         edge("M300 260V90", "only a summary returns", 288, 225, cls="is-hot", anchor="l"),
+     (340, 390, "".join([edge("M40 96V140", "SKILL.md content = the task", 60, 120, anchor="r"),
+                         edge("M40 165V215", "no conversation history", 60, 190, cls="is-async no-head", anchor="r"),
+                         '<path class="ve-e no-head" d="M32 182l16 16M48 182l-16 16"/>',
+                         edge("M40 290V240", "only a summary returns", 60, 265, cls="is-hot", anchor="r"),
                          box(20, 10, 300, 80, ["Main", "conversation"], sub="skill descriptions only", cls="who-model"),
-                         box(20, 260, 300, 80, ["New subagent"], sub="reads files, runs searches", cls="who-model")]))),
+                         box(20, 300, 300, 80, ["New subagent"], sub="reads files, runs searches", cls="who-model")]))),
 ], "%s %s" % (cf("ts-3-2-k3", gx("The context: fork frontmatter option for running skills in an isolated sub-agent context, preventing skill outputs from polluting the main conversation", "Exam guide, 3.2-K3"),
                  "context: fork runs a skill in an isolated subagent, so its output does not fill the main conversation (3.2-K3)."),
               cf("ts-3-2-f10", D(SKL, "4. The subagent summarizes its results and returns them to your main conversation when it finishes", "Claude Code, Skills"),
@@ -1900,9 +1900,9 @@ FIG41 = before_after("4.1-1", [
               box(20, 40, 170, 70, ["Candidate", "findings"]),
               box(240, 30, 350, 90, ["Filter on confidence"], sub="be conservative · only high-confidence"),
               box(730, 30, 140, 90, ["Posted", "findings"])]),
-     (340, 300, "".join([edge("M170 70V100", cls="is-hot"), edge("M170 190V220", cls="is-hot"),
+     (340, 300, "".join([edge("M170 70V100", cls="is-hot"), edge("M170 200V220", cls="is-hot"),
                          box(20, 10, 300, 60, ["Candidate", "findings"]),
-                         box(10, 100, 320, 90, ["Filter on confidence"], sub="be conservative, high confidence"),
+                         box(10, 100, 320, 100, ["Filter on confidence"], sub="be conservative ·").replace("</g>", '<text class="sub" x="160" y="82">only high-confidence</text></g>'),
                          box(20, 220, 300, 70, ["Posted", "findings"])]))),
     ("Explicit criteria", "After: explicit criteria, and a noisy category disabled for a time", 890, 280,
      "Candidate findings pass through explicit criteria: report bugs and security issues, skip minor style. Then severity criteria, each with a code example, classify them. "
@@ -2879,6 +2879,75 @@ def domain_html(d):
                "<p>%s</p>" % summ if summ else "", "".join(ts_part(t) for t in ts)))
 
 
+# ----- the primer before domain 1 (academy decision 0043, item 2) -----
+
+OVT_P, CCW, SDKL, MCPD = "anthropic-docs-tool-use-overview", "claude-code-docs-how-claude-code-works", "claude-code-docs-agent-sdk-agent-loop", "claude-code-docs-mcp"
+FIGC = cases("C", [
+    ("info", "Your code or Anthropic", "Claude API",
+     "In the Claude API, Claude returns a tool call. Your application runs a client tool. Anthropic runs a server tool.", 150,
+     mini_box(2, 2, 236, 44, "Claude", "returns a tool call") + '<path class="ve-e" d="M60 46V60"/><path class="ve-e" d="M180 46V60"/>'
+     + mini_box(2, 62, 114, 86, "Your app", "client tool", st=True) + mini_box(124, 62, 114, 86, "Anthropic", "server tool", st=True),
+     cf("pr-api", D(OVT_P, "It then returns a structured call that your application executes (client tools) or that Anthropic executes (server tools).", "Tool use overview"),
+        "Claude returns a tool call. Your application runs a client tool, and Anthropic runs a server tool.")),
+    ("info", "Your computer", "Claude Code",
+     "Claude Code runs in your terminal. Around the model, it gives the tools and manages the context.", 150,
+     mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 86, "Claude Code", "gives the tools", st=True),
+     cf("pr-cc", D(CCW, "Claude Code is the layer around the model that provides the tools and manages the context the model sees.", "Claude Code, How Claude Code works"),
+        "Claude Code is the layer around the model that gives the tools and manages the context.") + " " +
+     cf("pr-cc2", D(CCW, "Claude Code is an agentic assistant that runs in your terminal.", "Claude Code, How Claude Code works"),
+        "It runs in your terminal.")),
+    ("info", "Your program", "Agent SDK",
+     "The Agent SDK puts the agent loop of Claude Code into your own program, with control over tools and permissions.", 150,
+     mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 86, "Your program", "runs the agent loop", st=True),
+     cf("pr-sdk", D(SDKL, "The Agent SDK lets you embed Claude Code's autonomous agent loop in your own applications. The SDK is a standalone package that gives you programmatic control over tools, permissions, cost limits, and output.", "Agent SDK, The agent loop"),
+        "The Agent SDK puts the agent loop of Claude Code into your own program, with control over tools, permissions, cost limits and output.")),
+    ("info", "An MCP server", "MCP",
+     "MCP is an open standard. An MCP server gives Claude Code access to your tools, databases and APIs.", 150,
+     mini_box(2, 2, 236, 44, "Claude Code", "calls a tool") + '<path class="ve-e" d="M120 46V60"/>'
+     + mini_box(2, 62, 236, 86, "MCP server", "tools, data, APIs", st=True),
+     cf("pr-mcp", D(MCPD, "Claude Code can connect to hundreds of external tools and data sources through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction), an open source standard for AI-tool integrations. MCP servers give Claude Code access to your tools, databases, and APIs.", "Claude Code, MCP"),
+        "MCP (Model Context Protocol) is an open standard. An MCP server gives Claude Code access to your tools, databases and APIs.")),
+], "Four products of the exam, and who runs the tools in each.")
+
+GLOSS = [
+    ("tool", cf("pr-g-tool", D(OVT_P, "Tool use (also called function calling) lets Claude call functions that you define or that Anthropic provides.", "Tool use overview"),
+                "A function that Claude can call. You define it, or Anthropic gives it. Fig. C shows who runs it.")),
+    ("built-in tool", cf("pr-g-builtin", D("claude-code-docs-tools-reference", "Claude Code has access to a set of built-in tools that help it understand and modify your codebase.", "Claude Code, Tools reference"),
+                         "A tool that comes with Claude Code, to read and change your code. Part 2.5 shows six of them.")),
+    ("session", cf("pr-g-session", D("claude-code-docs-agent-sdk-sessions", "A session is the conversation history the SDK accumulates while your agent works. It contains your prompt, every tool call the agent made, every tool result, and every response.", "Agent SDK, Sessions"),
+                   "The conversation history of one piece of work: the prompt, each tool call, each tool result and each response. Part 1.7.")),
+    ("fork", cf("pr-g-fork", D("claude-code-docs-agent-sdk-sessions", "Forking creates a new session that starts with a copy of the original's history but diverges from that point.", "Agent SDK, Sessions"),
+                "A new session that starts with a copy of the history of another session, and then goes its own way. Part 1.7.")),
+    ("subagent", cf("pr-g-sub", D("claude-code-docs-sub-agents", "Use one when a side task would flood your main conversation with search results, logs, or file contents you won't reference again: the subagent does that work in its own context and returns only the summary.", "Claude Code, Subagents"),
+                    "A separate assistant that does a side task in its own context and returns only a summary. Parts 1.2 and 1.3.")),
+    ("hook", cf("pr-g-hook", D("claude-code-docs-agent-sdk-hooks", "Hooks are callback functions that run your code in response to agent events, like a tool being called, a session starting, or execution stopping.", "Agent SDK, Hooks"),
+                "Your own code that runs at an event of the agent, such as a tool call. In the Agent SDK it is a function of your program.") + " " +
+             cf("pr-g-hook2", D("claude-code-docs-hooks-guide", "Hooks are user-defined shell commands. Claude Code runs them at specific points in its lifecycle, which gives you deterministic control: certain actions always happen rather than relying on the LLM to choose to run them.", "Claude Code, Hooks guide"),
+                "In Claude Code it is often a shell command. The action always happens, and the model does not choose it. Parts 1.4 and 1.5.")),
+    ("permission mode", cf("pr-g-perm", D("claude-code-docs-permission-modes", "A permission mode sets which actions Claude can take in a session without asking you first.", "Claude Code, Permission modes"),
+                           "The setting that says which actions Claude can take without asking you first. Part 3.4.")),
+    ("command", cf("pr-g-cmd", D("claude-code-docs-commands", "Commands control Claude Code from inside a session.", "Claude Code, Commands"),
+                   "It controls Claude Code from inside a session.") + " " +
+                cf("pr-g-cmd2", D("claude-code-docs-commands", "Type `/` to see the commands available to you", "Claude Code, Commands"),
+                   "You type it after a /, such as /memory. Part 3.2.")),
+    ("CLAUDE.md", cf("pr-g-claudemd", D("claude-code-docs-memory", "CLAUDE.md files are markdown files that give Claude persistent instructions for a project, your personal workflow, or your entire organization.", "Claude Code, Memory"),
+                     "A file of instructions that Claude reads at the start of each session, for a project, for you, or for an organization. Part 3.1.")),
+    ("skill", cf("pr-g-skill", D("claude-code-docs-skills", "Skills extend what Claude can do. Create a `SKILL.md` file with instructions, and Claude adds it to its toolkit.", "Claude Code, Skills"),
+                 "A SKILL.md file with instructions that Claude adds to what it can do. Part 3.2.")),
+    ("MCP", "The Model Context Protocol, see Fig. C. Part 2.4."),
+    ("Agent SDK", "Claude Code as a package for your own program, see Fig. C."),
+]
+
+PRIMER = """<section class="parts" id="primer" aria-label="Before you start">
+  <h2>Before you start: the products and the words</h2>
+  <p>The exam asks about four products. They differ mainly in who runs the tools that Claude calls.</p>
+  %(fig)s
+  <details class="level words" id="top-words"><summary><h2>Words on this tab</h2><span class="ve-label">%(n)d words</span></summary><div class="body"><dl class="glossary">%(gloss)s</dl>
+  <p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%(tab2)s#top-words">Words on tab 2 &rarr;</a></p></div></details>
+</section>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
+
 TITLE = "Exam guide breakdown"
 BODY = """<main>
 <header id="top">
@@ -2888,8 +2957,9 @@ BODY = """<main>
 </header>
 %(map)s
 %(breakdown)s
+%(primer)s
 %(domains)s
-</main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN,
+</main>""" % {"tab2": TAB2, "title": e(TITLE), "nts": len(TS), "map": map_html(), "breakdown": BREAKDOWN, "primer": PRIMER,
              "domains": "".join(domain_html(DOM[i]) for i in range(1, 6))}
 
 from popups import POPUPS  # noqa: E402

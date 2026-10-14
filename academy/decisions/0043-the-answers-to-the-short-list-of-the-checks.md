@@ -4,7 +4,7 @@
 - Status: accepted
 - Text confirmed by the owner: not yet. An independent agent checks it (working rule 35).
 - Diagram: none
-- Changes: decision 0039, item 10 (the label "Guide only" gets a popup). The 14 October choice that wide figures scroll sideways on a phone, for 7 figures.
+- Changes: decision 0039, item 10 (the label "Guide only" gets a popup). The choice of 14 October 2026 that wide figures scroll sideways on a phone (academy journal, 14 October 2026), for 7 figures.
 
 ## Question
 
@@ -12,10 +12,10 @@ The list of the checks (`academy/checks/findings.md`) is too long for the owner 
 
 ## Decision
 
-The owner answered one item at a time. The assistant builds all of them in one pass, after the last answer.
+The owner answered one item at a time. The assistant builds all of them after the last answer.
 
 1. The guide and the product. Done in decision 0042.
-2. A primer at the top of tab 1: one picture of the products (Claude API, Claude Code, Agent SDK, MCP) that shows who runs the tools, and a glossary of about 10 terms.
+2. A primer at the top of tab 1: one picture of the products (Claude API, Claude Code, Agent SDK, MCP) that shows who runs the tools, and a glossary of about 10 terms. The JSON example of a tool call that check C1 also asked for is not part of it.
 3. The phone layout. On a phone, 4 figures stack vertically: 2.1-1, 3.2-1 and 4.1-1 (before and after) and 3.3-1 (live). The bar charts 4-2, 4-3 and 6-2 of tab 2 shrink to the width of the screen. The other figures still scroll sideways.
 4. Tab 2 gets a short section near its end, "What this shows and what it does not": what was checked, what was not, the known limits, and the total cost. The assistant makes two of its own claims weaker. The top paragraph of the owner stays.
 5. The popups: all 45 items of check D2. 18 new popups, and 27 weak popups written again so that each answers the question that D2 named.
