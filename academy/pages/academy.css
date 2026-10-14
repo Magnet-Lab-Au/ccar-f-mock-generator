@@ -119,7 +119,7 @@ svg.has-lit text[data-ref]:not(.is-lit) { fill: var(--text-dim); }
 .ve-steps .ve-e.now { stroke: var(--accent); stroke-width: 2.75; }
 .ve-steps .ve-el.now { fill: var(--accent); }
 .ve-steps .blk.now rect { fill: var(--accent-dim); stroke: var(--accent); stroke-width: 2; }
-.js-motion .ve-steps.is-step .ve-e.now { stroke-dasharray: 1; animation: ve-draw var(--slow) var(--ease); }
+.js-motion .ve-steps.is-step .ve-e.now:not(.is-async) { stroke-dasharray: 1; animation: ve-draw var(--slow) var(--ease); }
 @keyframes ve-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 .ve-player { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-4); }
 .ve-cap { grid-column: 1 / -1; list-style: none; padding: 0; min-height: 3.2em; }
@@ -346,3 +346,4 @@ table.matrix { border-collapse: collapse; width: 100%; min-width: 36rem; }
 table.matrix th, table.matrix td { border-top: 1px solid var(--border); padding: var(--s-2) var(--s-3); text-align: left; vertical-align: middle; }
 table.matrix thead th { font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); background: var(--surface); }
 table.matrix tbody th { font-weight: 400; } table.matrix .sn { font: 600 var(--t-label) var(--font-mono); margin-right: var(--s-2); color: var(--text-dim); }
+.ve-svg .chance { fill: none; stroke: var(--text-dim); stroke-width: 1.5; stroke-dasharray: 4 3; }

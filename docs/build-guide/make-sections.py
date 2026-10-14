@@ -93,7 +93,7 @@ The writer made %d questions for 10 slots of the plan of mock 1, one call for ea
 ''' % (n_written, n_pass3, n_written, good, bad), [
     ('4.3-K1', 'Written for the extraction of data. Here: the writer fills a form, so code can read each answer. The method is structured outputs (see the deviation above).'),
     ('4.3-S3', 'Written for the extraction of data. The guide teaches a forced tool call. This build does not use it (see the deviation above).'),
-    ('4.3-K2', 'The same context. It names the three settings of a tool call. The Anthropic documentation (Define tools) says that Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1 return a 400 error for "any" and "tool". "auto" and "none" still work.'),
+    ('4.3-K2', 'The same context. It names the three settings of a tool call. The Claude API documentation (Define tools) says that Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 and Claude Mythos 5.1 return a 400 error for "any" and "tool". "auto" and "none" still work.'),
     ('4.3-S4', 'Written for the extraction of data. Here: the question can be empty when the answer is "cannot write", so the model does not invent a question for a slot that does not fit.'),
     ('4.3-S5', 'Written for a schema for the extraction of data. Here: the status "cannot_write" is an answer for a case that does not fit.'),
     ('4.3-K3', 'Written for the extraction of data. Here: a form stops format errors, but not content errors. So step 3 checks the content.'),

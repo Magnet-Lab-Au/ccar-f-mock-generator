@@ -228,7 +228,7 @@ def box(x, y, w, h, lines, sub=None, cls="", step=None, a=None, s=None, data=Non
 def edge(d, label=None, lx=0, ly=0, cls="", anchor="", a=None, s=None):
     """An arrow with its label. In a stepper, a (the steps that light it) or s (the step where it appears) draws it in (decision 0037)."""
     st = (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
-    out = '<path class="ve-e %s"%s%s d="%s"/>' % (cls, st, ' pathLength="1"' if st else "", d)
+    out = '<path class="ve-e %s"%s%s d="%s"/>' % (cls, st, ' pathLength="1"' if st and "is-async" not in cls else "", d)   # a dashed arrow keeps its dashes
     if label:
         out += '<text class="ve-el %s"%s x="%d" y="%d">%s</text>' % (anchor, st, lx, ly, e(label))
     return out
@@ -1205,9 +1205,10 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                    "The documentation names the failure that 2.5-S4 prevents: Claude reads hundreds of files, and the context fills."),
                 cf("ts-2-5-s5", gx("Tracing function usage across wrapper modules by first identifying all exported names, then searching for each name across the codebase", "Exam guide, 2.5-S5"),
                    "To trace a function through a wrapper module, the guide first lists all the names that it exports, then searches for each name (2.5-S5)."))
-            + "<p><b>The platform.</b> %s</p>" %
+            + "<p><b>The platform.</b> %s %s</p>" % (cf("ts-2-5-g0", gx("### **Task Statement 2.5: Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively**", "Exam guide, task statement 2.5"),
+                                                          "The guide names Grep and Glob among the built-in tools (2.5)."),
                 cf("ts-2-5-c1", D(TREF, "On Windows, it's part of the default tool set. On macOS, Linux, and WSL, Claude Code leaves Glob and [Grep](#grep-tool-behavior) out of the default tool set, and Claude searches with `find` and `grep` through the Bash tool instead.", "Claude Code, Tools reference"),
-                   "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools.") + GUIDE
+                   "On macOS, Linux and WSL, Claude Code leaves Grep and Glob out of its default tools, and Claude searches with find and grep through Bash. On Windows they are tools.")) + GUIDE
             + exam_tests("2.5", [("Built-in tools — Read, Write, Edit, Bash, Grep, Glob — their purposes and selection criteria", "Among the technologies, the guide names")])
             + guide_text("2.5"), "ts-2-5")
     + level("depth",
@@ -1537,7 +1538,7 @@ FIG35 = stepper("ts-3-5-fig1", "3.5-1", 890, 320,
                "If all pass, the work is done. If not, the failures go back to Claude: interacting issues in one message, independent issues one at a time.",
                "".join([edge("M210 65H260", cls="is-async", s="2"), edge("M430 65H480", s="3"), edge("M650 65H700", s="4"),
                         edge("M740 100V140H565V100", "failures", 652, 132, cls="is-hot", s="5"),
-                        '<path class="ve-e no-head is-async" data-s="5" pathLength="1" d="M565 140V190"/>',
+                        '<path class="ve-e no-head is-async" data-s="5" d="M565 140V190"/>',
                         edge("M785 100V180", "all pass", 793, 145, anchor="r", s="6"),
                         '<text class="ve-lab" data-a="9" x="20" y="305">2 or 3 input and output examples clarify a transformation</text>',
                         '<path data-flow="tdd" data-every="2600" d="M565 65H740V140H565V65"/>', '<g class="ve-dots" aria-hidden="true"></g>',
@@ -2179,13 +2180,15 @@ PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim th
                    "Compaction on demand and compaction at a token threshold are both in beta."),
                 cf("ts-5-1-s2", gx("Extracting and persisting structured issue data (order IDs, amounts, statuses) into a separate context layer for multi-issue sessions", "Exam guide, 5.1-S2"),
                    "The guide keeps the data of each issue in a separate layer (5.1-S2)."))
-            + "<p><b>Position.</b> %s %s %s</p>" % (
+            + "<p><b>Position.</b> %s %s %s %s</p>" % (
                 cf("ts-5-1-k2", gx("The \"lost in the middle\" effect: models reliably process information at the beginning and end of long inputs but may omit findings from middle sections", "Exam guide, 5.1-K2"),
                    "The guide says that a model can miss findings in the middle of a long input (5.1-K2),"),
                 cf("ts-5-1-s4", gx("Placing key findings summaries at the beginning of aggregated inputs and organizing detailed results with explicit section headers to mitigate position effects", "Exam guide, 5.1-S4"),
                    "so a summary of key findings goes first, with clear section headers (5.1-S4)."),
+                cf("ts-5-1-f7b", D(PBP, "Place your long documents and inputs near the top of your prompt, above your query, instructions, and examples.", "Prompting best practices"),
+                   "The Claude API documentation puts long inputs at the top, above the query."),
                 cf("ts-5-1-f7", D(CWIN, "As token count grows, accuracy and recall degrade, a phenomenon known as *context rot*.", "Context windows"),
-                   "The documentation names a related effect of length, context rot, not of position.") + GUIDE)
+                   "It also names context rot: accuracy falls as the input grows.") + GUIDE)
             + "<p><b>Tool results.</b> %s %s</p>" % (
                 cf("ts-5-1-k3", gx("How tool results accumulate in context and consume tokens disproportionately to their relevance (e.g., 40+ fields per order lookup when only 5 are relevant)", "Exam guide, 5.1-K3"),
                    "Tool results pile up, for example more than 40 fields for each order lookup when only 5 matter (5.1-K3)."),
@@ -2703,25 +2706,25 @@ def map_html():
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
   <h2>How we broke it down</h2>
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
-  <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The labels are ours. The guide has no labels.</span></p>
+  <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The guide numbers the task statements but not their points, so the labels of the points are ours.</span></p>
   <p>Each task statement opens in three levels: the <b>Overview</b> (about 30 seconds), the <b>Explanation</b> (about 3 minutes), with the guide&rsquo;s own text and what the exam tests, and the <b>Depth</b>, with facts beyond the exam, code in popups, and the steps of the mock builder (the program that wrote the mocks of this academy, see tab 2) and of its build in Claude Code that use the task statement.</p>
-  <p>The label <span class="chip guide">Guide only</span> ends a point where only the guide says it, or where the Anthropic documentation says it in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
-  <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts, the topics that the exam covers, and the topics that it does not cover.</p>
+  <p>The label <span class="chip guide">Guide only</span> ends a point where no copied page of the Anthropic documentation says it, or where the documentation says it in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
+  <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam, the topics that the exam covers, and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
 </section>""" % {"lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
 
 DOMAIN_SUMMARY = {}   # domain -> one or two sentences, written from the titles of its task statements (decision 0021)
-DOMAIN_SUMMARY[5] = ("Reliable systems over long work: context that keeps the facts, escalation and ambiguity, errors that travel between agents, "
+DOMAIN_SUMMARY[5] = ("Reliable systems: context that keeps the facts, escalation and ambiguity, errors that travel between agents, "
                      "context in large codebases, human review with calibrated confidence, and the provenance of each claim.")
 DOMAIN_SUMMARY[4] = ("Prompts that give reliable output: explicit criteria, few-shot examples, structured output with tool use and JSON schemas, "
                      "validation with retries, batch processing, and reviews by several instances or passes.")
 DOMAIN_SUMMARY[3] = ("Claude Code for a team: CLAUDE.md files and their levels, commands and skills, rules for some paths, "
                      "plan mode against direct work, refinement step by step, and Claude Code in a CI/CD pipeline.")
 DOMAIN_SUMMARY[2] = ("Tools that Claude can use well: descriptions that make the choice clear, errors that say what went wrong, "
-                     "the right tools for each agent and the choice of tool_choice, MCP servers, and the built-in tools of Claude Code.")
-DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents and what each subagent gets, "
+                     "the right tools for each agent and how to set tool_choice, MCP servers, and the built-in tools Read, Write, Edit, Bash, Grep and Glob.")
+DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coordinator with subagents, how subagents start and what each one gets, "
                      "workflows with enforced steps and handoffs, hooks of the Agent SDK, how to split a task, and sessions that resume or fork.")
 
 
