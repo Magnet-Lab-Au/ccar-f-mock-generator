@@ -55,7 +55,7 @@ D = {
    why='A mock has 4 scenarios. So a mock has 4 of these sets, and 8 calls in this step.'),
  'c6a': dict(title='Call 6a: the scenes', who='One model call', cls='model',
    sent=['A model call reads the 15 questions of one scenario together. It has one job: to compare the scenes of the questions.',
-         'Each call answers in a fixed form. The form is sent as structured outputs, not as a forced tool call, because the current models reject a forced tool call (decision 0040, see the diagram of step 2).',
+         'Each call answers in a fixed form. The form is sent as structured outputs, not as a forced tool call, because the newest Claude models reject a forced tool call (decision 0040, see the diagram of step 2).',
          'For each of its 2 rules it returns "pass", "fail" or "cannot decide". A finding names the questions by their IDs.'],
    points=[point('4.6-K3'), point('4.6-S2'), point('1.6-K2')],
    why='The guide wrote these points for the review of code in many files. Here a question is the file: steps 3 and 4 are the pass for each question, and this step is the pass across the questions. The guide does not say to give each call one job. That is an assumption of the assistant: one call with 4 jobs can divide its attention.'),

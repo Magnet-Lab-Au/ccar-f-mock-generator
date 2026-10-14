@@ -889,7 +889,7 @@ CARD.update({
     "s2-cost": excerpt(D10, "We accepted one disadvantage: a writer that sees one slot does not see the other questions of its scenario.", "Mock decision 0010, How we decided"),
     "s2-model": {"title": "The model of each try", "kind": "count", "text": "All %d question files of mocks 1 to 5 have the model %s. None has the status cannot_write. The script of this page counted them." % (sum(MODELS.values()), MODEL),
                  "src": "runs/mock-0N/questions/", "href": "%s/tree/%s/runs" % (REPO, TAG)},
-    "s2-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, Out-of-Scope Topics", kind="guide"),
+    "s2-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, appendix (section 17), Out-of-Scope Topics", kind="guide"),
     "s2-cache": code_block("src/step2_write.py", "# Decision 0067: the rules come first as a cached block.", "cached=[rules_for(request)])", "The rules come first, as a cached block"),
     "s2-letters": excerpt(D41, "Code mixes the options with the seed of the plan, the slot ID and the question text. So the same answer always gets the same letters.", "Mock decision 0041, Decision"),
     "s2-plan": excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0070-*.md"))[0][len(ROOT) + 1:], "2. **Step 2** (and step 5) puts the correct options at the letters of the slot.", "Mock decision 0070, Decision"),
@@ -1175,7 +1175,7 @@ CARD.update({
     "s4-batches": excerpt("reference/exam-guide.md", "The Message Batches API: 50% cost savings, up to 24-hour processing window, no guaranteed latency SLA", "Exam guide, 4.5-K1", kind="guide"),
     "s4-t24": {"title": "The test before mock 1", "kind": "count", "text": "runs/test-0024/part2.json: call 4a answered %d of %d sample questions of the guide right." % (T24["right"], T24["of"]),
                "src": "runs/test-0024/part2.json", "href": link("runs/test-0024/part2.json")},
-    "s4-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, Out-of-Scope Topics", kind="guide"),
+    "s4-exam": excerpt("reference/exam-guide.md", "Prompt caching implementation details (beyond knowing it exists)", "Exam guide, appendix (section 17), Out-of-Scope Topics", kind="guide"),
 })
 assert COST[3][2] and COST[4][2] and not any(c[2] for c in COST[:3])
 
@@ -1456,7 +1456,7 @@ FIG72 = """
   <figcaption><span class="fig-n">Fig. 7-2</span>%s</figcaption>
 </figure>""" % ("".join(
     '<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d marked</p><p class="cap">%s, round 1. Bad marks: %d. Reader: %s</p></div>'
-    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model. The owner filled the 20 marks of round 1 without reading the questions (mock decision 0069)")
+    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model. The owner filled the 20 marks of round 1 without reading the questions (mock decision 0069, academy decision 0039)")
     for m in range(5)),
     fact("s7-runs", "Over the 5 mocks, %d marks were given: %d in round 1 and %d in round 2, after a send-back. %d were bad, both in mock 5." % (MARKS_ALL, sum(ROUND1), MARKS_ALL - sum(ROUND1), sum(BAD))))
 
@@ -1809,7 +1809,7 @@ BODY = """<main>
 </section>
 <section class="parts" id="claude-code" aria-label="The build in Claude Code">
   <h2>The build in Claude Code</h2>
-  <p class="lead">The mock builder was itself built with Claude Code. The owner, the person who directed the build, gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
+  <p class="lead">The mock builder was itself built with Claude Code. The owner gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
   %(cc)s
 </section>
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),

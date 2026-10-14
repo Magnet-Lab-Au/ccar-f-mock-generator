@@ -33,6 +33,6 @@ A deviation from the exam guide is shown openly in its section: what the guide t
 
 ## What the pipeline does not use
 
-The pipeline uses no MCP server, no subagent, no hook and no session (decision 0026). Each model step is one call of the Messages API, with a system prompt, one user message and a fixed form for the answer (`src/model_call.py`). Code moves the work from step to step, and the files in `runs/` keep the state. So the build guide does not show these features at work.
+The pipeline uses no MCP server, no subagent, no hook and no session (decision 0026). Each model call is one request of the Messages API, with a system prompt, one user message and a fixed form for the answer (`src/model_call.py`). Code moves the work from step to step, and the files in `runs/` keep the state. So the build guide does not show these features at work.
 
-The reason is plain, and no exam guide point gives it: a step that exists only to show a feature makes the program worse. The questions of each mock still cover all five domains, so the mocks still test these features.
+The reason is plain, and no exam guide point gives it: a step that exists only to show a feature makes the program worse. The questions of each mock still cover all five domains.

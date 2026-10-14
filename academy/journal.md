@@ -13,6 +13,7 @@ One entry for each work session. Newest entry first.
 - An independent agent checked step 6 against 5.2-K3 and 1.6-K2: step 6 uses 1.6-K2 (a fixed chain: each question passes steps 3 and 4 before step 6) but not 5.2-K3 (only a reason about the content of the questions). The build guide table and diagram 08 got 1.6-K2 (c0472ca). Tab 2 shows no 5.2 chip on step 6.
 - The text fixes of decision 0039 are on both tabs (abf1e79). The page-wide IDs (`theme-btn`, `ve-ah`, `ve-node`, `pop*`, `steps`) stay as they are: they belong to no part, so decision 0033 does not apply to them.
 - The assistant found that its recommendation for the name of section 17 was wrong: section 17 is the appendix of the guide, not a list of topics that the exam does not test. Decision 0040 corrects it, and tab 1 uses the correct name.
+- An independent agent checked all fixes after the records (360708e to 4db3116). It found 4 medium and 8 low items, none high. 11 are fixed. Not changed: the line "The exam tests only that prompt caching exists." It is the text of academy decision 0006, and step 4 uses it too.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 

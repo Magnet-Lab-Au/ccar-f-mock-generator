@@ -111,7 +111,7 @@ The code (`src/control.py`, 733-763, `build_conditions`, L1), each cause text ex
 | P6 | Why a fingerprint: a rule alone does not make sure that nobody edits a record. | `docs/decisions/0036-...md`, 61 | "Decision 0016 says that nobody edits a file by hand. A rule alone does not make sure of that. The plain reason for the fingerprint: code can prove that the question in the mock is the question that the checks saw." | 2 |
 | P7 | The comparison is in the control (`build_conditions`), before step 8 runs; `step8_build_files.py` does not calculate a fingerprint. | `src/control.py`, 741-746; `src/step8_build_files.py`, 25-26 | `fp = fingerprint(q)` / "The control already checked steps 3 and 4 and the fingerprints." | 1 |
 | P8 | The fingerprint does not cover the `point`, `slot_id` or `status` of a record. The files take `point` from the record (F5). So a change of only the point after the checks would not change the fingerprint. (Reading of the code; no source discusses it.) | `src/control.py`, 58-63; `src/step8_build_files.py`, 78 | `data = {"question_id": ..., "question": ..., "select": ..., "options": [...]}` | 1 |
-| P9 | `build.json` stores absolute paths of this computer. | `runs/mock-01/build.json`, 2-5 (same in mocks 2 to 5) | `"mocks/mock-01.questions.json"` | 1 |
+| P9 | `build.json` stored absolute paths of this computer. On 14 October 2026 the paths became paths from the root of the repository (academy decision 0039, item 20), so the quote now shows the new path. | `runs/mock-01/build.json`, 2-5 (same in mocks 2 to 5) | `"mocks/mock-01.questions.json"` | 1 |
 
 ## 3. Task statements and points of the step
 
@@ -365,7 +365,7 @@ Side box: fingerprint of the record now = fingerprint saved by each check (steps
 4. The build guide table of step 8 does not list the time limit ("120 minutes", guide Section 3, line 43), though the file has `minutes` 120 (from decision 0003). No source says if this omission is on purpose.
 5. No source says which change put the field `minutes` into decision 0036 after the review gap "The 120 minutes are in no output file" (both are before the first commit).
 6. Not checked: that the tag `mocks-v2` is on GitHub (no network call). Checked only on this computer (e3).
-7. No source discusses that the fingerprint does not cover the point of a record (P8) or that `build.json` holds absolute local paths (P9), in a repository that becomes public (academy decision 0003).
+7. No source discusses that the fingerprint does not cover the point of a record (P8) or that `build.json` held absolute local paths until 14 October 2026 (P9), in a repository that becomes public (academy decision 0003).
 8. No converter to the portal format exists (F11), and the portal format is not known. No source says how the portal will show "Select N." or a result for each domain.
 9. No independent reviewer checked decision 0016 or 0036 (0036, 76: "No independent reviewer checked this file."); decision 0039's code had two reviews (0039, 83).
 10. `docs/lessons.md` has no entry on step 8 of this build. Its item 21 is on the first build.

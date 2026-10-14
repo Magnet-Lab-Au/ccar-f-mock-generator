@@ -2211,9 +2211,11 @@ PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a s
                                                     "Step 3 uses 5.3-K4: an error must never look like a pass."),
                                                  cf("ts-5-3-use6", excerpt(step_file(6), "Written for errors between agents. Here: a call that fails, or an answer that is not valid, never counts as a pass.", "Build guide, step 6"),
                                                     "Step 6 uses it too: a call that fails, or an answer that is not valid, never counts as a pass."))
-            + "<p>%s The guide calls the end of a whole workflow on one failure an anti-pattern (5.3-K4). The build stops anyway: the error names its cause, no retry can repair it, and the mock waits for the owner.</p>"
-              % cf("ts-5-3-c2", excerpt("src/step6_check_scenario.py", "C2 failing stops the run with an error\n    that names the cause (decision 0034): a new call cannot repair it.", "Code of step 6, rule C2"),
-                   "One stop of step 6 looks like that anti-pattern: when the questions of a scenario do not agree with the plan, the run stops with an error, and a new call cannot repair it."), "ts-5-3"))
+            + "<p>%s The guide calls the end of a whole workflow on one failure an anti-pattern (5.3-K4). The build stops anyway: the error names its cause, no retry can repair it, and %s</p>"
+              % (cf("ts-5-3-c2", excerpt("src/step6_check_scenario.py", "C2 failing stops the run with an error\n    that names the cause (decision 0034): a new call cannot repair it.", "Code of step 6, rule C2"),
+                   "One stop of step 6 looks like that anti-pattern: when the questions of a scenario do not agree with the plan, the run stops with an error, and a new call cannot repair it."),
+                 cf("ts-5-3-d34", excerpt(glob.glob(os.path.join(ROOT, "docs/decisions/0034-*.md"))[0][len(ROOT) + 1:], "If rule C1 or C2 fails, the step stops with an error that names the cause, and the mock waits for the owner.", "Mock decision 0034"),
+                    "the mock waits for the owner.")), "ts-5-3"))
 
 
 # ----- part 5.4 (facts: academy/facts/ts-5-4.md) -----
