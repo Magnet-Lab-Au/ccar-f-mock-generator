@@ -2001,7 +2001,7 @@ BODY = """<main>
   %(parts)s
 </section>
 <section class="parts" id="claude-code" aria-label="The build in Claude Code">
-  <h2>The build in Claude Code</h2>
+  <h2 class="with-icon"><img class="h-icon" src="icons/claude-code.svg" alt="" width="24" height="24">The build in Claude Code</h2>
   <p class="lead">The mock builder was itself built with Claude Code. The owner gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
   %(cc)s
 </section>

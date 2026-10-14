@@ -387,3 +387,6 @@ details.sources > ul { margin-top: var(--s-2); }
 @media print { .glossary-btn { display: none; } }
 /* tab 2: the paragraph of the owner in body size (owner, 15 October 2026) */
 .lead.intro { font-size: var(--t-body); max-width: 65ch; }
+/* the Claude Code mark next to the heading of the build in Claude Code (owner, 15 October 2026) */
+h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
+.h-icon { width: 1.3em; height: 1.3em; flex: none; }   /* the mark fills only the middle 15 of its 24 units, so 1.3em gives it about the height of the capital letters */
