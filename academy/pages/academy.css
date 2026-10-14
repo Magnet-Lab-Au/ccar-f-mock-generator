@@ -335,3 +335,9 @@ p > .chip.info[data-step$="-code"] { white-space: normal; }
 .ve-say { margin-top: var(--s-3); min-height: 1.6em; }
 svg.ve-grow rect.bar { fill: var(--border-bright); } svg.ve-grow rect.bar.hot { fill: var(--accent); }
 svg.ve-grow { max-width: 34rem; } .cases + .frame, .frame + .frame { margin-top: var(--s-4); }
+.case { min-width: 0; } .case .cap { overflow-wrap: anywhere; } .case svg.ve-bars { max-width: 20rem; }
+.ve-bars.ve-narrow, .ve-waffle { width: 100%; max-width: 22rem; height: auto; display: block; }
+.ve-bars rect.track { fill: var(--border); }
+.cases.pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } @media (max-width: 640px) { .cases.pair { grid-template-columns: minmax(0, 1fr); } }
+.strip-head { display: block; margin-top: var(--s-4); }
+.ve-bars.ve-narrow text, .ve-waffle text { font-size: 15px; }

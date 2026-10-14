@@ -154,7 +154,56 @@ document.addEventListener('DOMContentLoaded', function () {
     show(0);
   }
 
+  /* before / after (decision 0037): with no script both panels show, and the script shows one panel and two buttons */
+  for (const fig of document.querySelectorAll('.ve-ba')) {
+    const panels = [...fig.querySelectorAll('.ba-panel')];
+    if (panels.length !== 2) continue;
+    const bar = document.createElement('div');
+    bar.className = 've-toggle'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Show before or after');
+    panels.forEach((p, i) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.textContent = p.dataset.label; bar.append(b); });
+    const show = (k) => { panels.forEach((p, i) => { p.hidden = i !== k; }); [...bar.children].forEach((b, i) => b.setAttribute('aria-pressed', String(i === k))); };
+    bar.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(+b.dataset.i); });
+    fig.insertBefore(bar, fig.firstChild);
+    show(1);   // the answer first: the after panel
+  }
+
+  /* live figure (decision 0037): with no script the full picture shows, and the script adds one button for each example,
+     and a choice lights that example and says what happens to it */
+  for (const fig of document.querySelectorAll('.ve-live')) {
+    const items = [...fig.querySelectorAll('[data-pick]')], target = fig.querySelector('[data-target]'), say = fig.querySelector('.ve-say');
+    if (!items.length || !say) continue;
+    const bar = document.createElement('div');
+    bar.className = 've-toggle'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', fig.dataset.controls || 'Choose an example');
+    items.forEach((it, i) => { const b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.textContent = it.dataset.pick; bar.append(b); });
+    const all = document.createElement('button'); all.type = 'button'; all.dataset.i = -1; all.textContent = fig.dataset.allLabel || 'All'; bar.append(all);
+    const show = (k) => {
+      items.forEach((it, i) => { it.classList.toggle('sel', i === k); it.classList.toggle('dim', k >= 0 && i !== k); });
+      if (target) target.classList.toggle('on', k >= 0 && items[k].dataset.match === 'yes');
+      if (target) target.classList.toggle('dim', k >= 0 && items[k].dataset.match !== 'yes');
+      say.textContent = k >= 0 ? items[k].dataset.say : say.dataset.all;
+      [...bar.children].forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.i === k)));
+    };
+    bar.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(+b.dataset.i); });
+    fig.insertBefore(bar, fig.firstChild);
+    show(-1);   // the full picture first
+  }
+
   if (!still) {
+    /* charts grow and whole numbers count up once, when the chart comes on the screen (decision 0037) */
+    const grow = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (!en.isIntersecting) continue;
+        grow.unobserve(en.target); en.target.classList.add('grown');
+        for (const t of en.target.querySelectorAll('text.hv')) {
+          const end = t.textContent.trim(); if (!/^\d+$/.test(end) || +end === 0) continue;
+          const t0 = performance.now(), n = +end;
+          const step = (now) => { const k = Math.min(1, (now - t0) / 900); t.textContent = String(Math.round(n * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(step); else t.textContent = end; };
+          requestAnimationFrame(step);
+        }
+      }
+    }, { threshold: 0.4 });
+    for (const c of document.querySelectorAll('svg.ve-bars, svg.ve-grow')) grow.observe(c);
+
     /* flow dots (the sample, decision 0008): dots move along the route while the figure is on the screen and shows its full picture */
     for (const svg of document.querySelectorAll('svg:has([data-flow])')) {
       const layer = svg.querySelector('.ve-dots'), steps = svg.closest('.ve-steps');

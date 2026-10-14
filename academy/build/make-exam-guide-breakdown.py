@@ -245,17 +245,32 @@ def stepper(fid, num, svg_w, svg_h, aria, inner, caps, cap):
             '<figcaption><span class="fig-n">Fig. %s</span>%s</figcaption></figure>' % (fid, svg_w, svg_h, e(aria), inner, "".join(lis), num, cap))
 
 
-def strip(svg_w, svg_h, aria, inner):
-    """A second, small drawing inside the same figure, under the cards (figure plan)."""
-    return '<div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>' % (svg_w, svg_h, e(aria), inner)
+def strip(svg_w, svg_h, aria, inner, head=None):
+    """A second, small drawing inside the same figure, under the cards (figure plan), with an optional heading."""
+    return ('<span class="ve-label strip-head">%s</span>' % e(head) if head else "") + '<div class="frame"><svg class="ve-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg></div>' % (svg_w, svg_h, e(aria), inner)
+
+
+def bar_strip(rows, aria, track=False):
+    """Bars for a number, narrow enough for a phone (decision 0037): the label above each bar. rows: (label, value, shown value, hot)."""
+    mx = max(v for _, v, _, _ in rows)
+    out = []
+    for i, (label, v, shown, hot) in enumerate(rows):
+        y, w = i * 46, max(2, v * 280 // mx)
+        out.append('<text x="0" y="%d">%s</text>' % (y + 10, e(label)))
+        if track:
+            out.append('<rect class="track" x="0" y="%d" width="280" height="18"/>' % (y + 20))
+        out.append('<rect class="%s" x="0" y="%d" width="%d" height="18"/><text class="hv" x="%d" y="%d">%s</text>' % ("hot" if hot else "", y + 20, w, w + 8, y + 29, e(shown)))
+    return '<div class="frame"><svg class="ve-bars ve-narrow" viewBox="0 0 340 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 46, e(aria), "".join(out))
 
 
 def waffle(n, label_a, label_b, aria):
-    """A picture for a share: n of 100 cells (decision 0037, every number gets a picture)."""
+    """A picture for a share: n of 100 cells, labels under the grid, narrow enough for a phone (decision 0037)."""
     cells = "".join('<rect class="%s" x="%d" y="%d" width="13" height="13"/>' % ("w-a" if k < n else "w-b", 2 + (k % 10) * 16, 2 + (k // 10) * 16) for k in range(100))
-    return ('<div class="frame"><svg class="ve-svg ve-waffle" viewBox="0 0 640 164" role="img" aria-label="%s">%s'
-            '<rect class="w-a" x="190" y="34" width="13" height="13"/><text class="ve-lab" x="212" y="45">%s</text>'
-            '<rect class="w-b" x="190" y="104" width="13" height="13"/><text class="ve-lab" x="212" y="115">%s</text></svg></div>' % (e(aria), cells, e(label_a), e(label_b)))
+    la, lb = label_a.split(": ", 1), label_b.split(": ", 1)
+    return ('<div class="frame"><svg class="ve-waffle" viewBox="0 0 330 262" role="img" aria-label="%s">%s'
+            '<rect class="w-a" x="2" y="180" width="13" height="13"/><text class="ve-lab" x="24" y="191">%s</text><text class="ve-lab" x="24" y="209">%s</text>'
+            '<rect class="w-b" x="2" y="226" width="13" height="13"/><text class="ve-lab" x="24" y="237">%s</text><text class="ve-lab" x="24" y="255">%s</text></svg></div>'
+            % (e(aria), cells, e(la[0] + ":"), e(la[1]), e(lb[0] + ":"), e(lb[1])))
 
 
 def live(num, controls, svg_w, svg_h, aria, inner, say_all, cap):
@@ -1015,7 +1030,7 @@ FIG23 = figure("2.3-1", 890, 350,
                              "Each agent gets only the tools of its role, plus a narrow tool for a frequent need (2.3-K3)."),
                           cf("ts-2-3-f14", gx("Option A applies the principle of least privilege by giving the synthesis agent only what it needs for the 85% common case (simple fact verification) while preserving the existing coordination pattern for complex cases.", "Exam guide, sample question 9"),
                              "In sample question 9 of the guide, verify_fact serves the 85% of simple checks, and complex checks keep the route through the coordinator.")))
-FIG23 = FIG23.replace("<figcaption>", waffle(85, "85 of 100: simple checks, verify_fact", "the rest: complex checks, through the coordinator",
+FIG23 = FIG23.replace("<figcaption>", waffle(85, "85 of 100: simple checks, verify_fact", "the rest: complex, through the coordinator",
                                              "In sample question 9, 85 of 100 checks are simple and go to verify_fact. The rest are complex and go through the coordinator.") + "<figcaption>", 1)
 
 PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role needs",
@@ -1684,7 +1699,7 @@ ICON, FB51 = "anthropic-docs-increase-consistency", "anthropic-docs-prompting-cl
 EX42 = "\n".join(read(SRC % FB51).split("\n")[790:799])
 assert EX42.startswith("<example>") and EX42.endswith("</example>")
 EXBOX42 = ('<g class="ve-n" transform="translate(20 110)"><rect class="sh" width="250" height="170" rx="0"/>'
-           '<text x="125" y="28">&lt;examples&gt;</text><text class="sub" x="125" y="56">2 to 4 in the guide</text>'
+           '<text x="125" y="28">&lt;examples&gt;</text>'
            '<text class="sub" x="125" y="92">input: an ambiguous case</text><text class="sub" x="125" y="118">output: the fixed format</text>'
            '<text class="sub" x="125" y="144">reason: why this choice</text></g>')
 FIG42 = figure("4.2-1", 950, 300,
@@ -1761,7 +1776,7 @@ CREV = "claude-code-docs-code-review"
 REV41 = "\n".join(read(SRC % CREV).split("\n")[202:211])
 assert REV41.startswith("# Review instructions") and REV41.endswith("most.")
 FIG41 = before_after("4.1-1", [
-    ("Filter on confidence", "Before: a filter on confidence", 890, 150,
+    ("Filter on confidence", "Before: a filter on confidence", 890, 280,
      "Before: candidate findings pass a filter on confidence, such as be conservative or report only high-confidence findings, and are posted.",
      "".join([edge("M190 75H240", cls="is-hot"), edge("M590 75H730", cls="is-hot"),
               box(20, 40, 170, 70, ["Candidate", "findings"]),
@@ -1772,7 +1787,7 @@ FIG41 = before_after("4.1-1", [
      "The findings are posted. If one category gives many false positives, it loses the trust of the developers, so it is disabled for a time while its prompt improves.",
      "".join([edge("M190 75H240"), edge("M470 75H520"), edge("M680 75H730"),
               edge("M800 120V225H790"),
-              edge("M540 225H355V120", "disable, fix the prompt", 445, 216, cls="is-hot"),
+              edge("M540 225H355V120", "disable, fix the prompt", 435, 216, cls="is-hot"),
               box(20, 40, 170, 70, ["Candidate", "findings"]),
               box(240, 30, 230, 90, ["Explicit criteria"], sub="report bugs, skip style"),
               box(520, 30, 160, 90, ["Severity"], sub="code examples"),
@@ -1836,7 +1851,7 @@ FIG43 = cases("4.3-1", [
     (None, 'auto', 'Claude may answer in text',
      'tool_choice auto: Claude can call a tool or answer in text.', 120,
      mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'a tool call or text', 'Claude decides', st=True), 'The model may return text instead of calling a tool.'),
+     + mini_box(2, 66, 236, 52, 'a tool call or text', 'Claude decides', st=True), 'Claude may return text instead of calling a tool.'),
     (None, 'any', 'Claude must call a tool',
      'tool_choice any: Claude must call one tool, and picks which.', 120,
      mini_box(2, 2, 236, 44, 'Request', 'tools with schemas') + '<path class="ve-e is-st" d="M120 46V64"/>'
@@ -1851,7 +1866,7 @@ FIG43 = cases("4.3-1", [
                  "The guide says that a schema stops syntax errors, but not errors of meaning, such as line items that do not sum to the total (4.3-K3).")))
 FIG43 = FIG43.replace("<figcaption>", strip(890, 100, "The input of the tool_use block is the data, with no syntax errors, and code still checks the values.",
                                             edge("M300 50H380") + box(20, 15, 280, 70, ["tool_use input"], sub="no syntax errors (strict)", cls="who-model")
-                                            + box(380, 15, 280, 70, ["Code checks"], sub="the values", cls="try ok")) + "<figcaption>", 1)
+                                            + box(380, 15, 280, 70, ["Code checks"], sub="the values", cls="try ok"), head="After the call") + "<figcaption>", 1)
 
 PART["4.3"] = (overview("4.3", "A schema guarantees the form, not the values",
                         "Give Claude a JSON schema with structured outputs or a strict tool, and the output parses. Code must still check the values, and a field that a source can lack must be nullable, so that Claude does not invent a value.",
@@ -1981,17 +1996,16 @@ FIG45 = figure("4.5-1", 890, 330,
                         '<g class="ve-dim is-key"><path class="ext" d="M260 128V98M710 128V98"/><path class="ln" d="M260 104H710M256 108l8-8M706 108l8-8"/><text x="485" y="97">up to 24 hours</text></g>',
                         box(20, 120, 180, 90, ["Does anybody", "wait?"]),
                         box(260, 20, 220, 60, ["Messages API"], sub="pre-merge check"),
-                        box(260, 130, 220, 70, ["Message Batches"], sub="half price, custom_id", cls="who-model"),
-                        box(540, 130, 170, 70, ["Results"], sub="any order, by custom_id"),
+                        box(260, 130, 220, 70, ["Message Batches"], sub="a custom_id each", cls="who-model"),
+                        box(540, 130, 170, 70, ["Results"], sub="matched by custom_id"),
                         box(760, 130, 110, 70, ["Use"], cls="try ok"),
                         box(540, 250, 170, 60, ["Failed only"], sub="fixed if needed")]),
                "%s %s" % (cf("ts-4-5-k2", gx("Batch processing is appropriate for non-blocking, latency-tolerant workloads (overnight reports, weekly audits, nightly test generation) and inappropriate for blocking workflows (pre-merge checks)", "Exam guide, 4.5-K2"),
                              "Batches suit work that can wait, such as an overnight report, and not a blocking check before a merge (4.5-K2)."),
                           cf("ts-4-5-s3", gx("Handling batch failures: resubmitting only failed documents (identified by custom_id) with appropriate modifications (e.g., chunking documents that exceeded context limits)", "Exam guide, 4.5-S3"),
                              "Only the failed documents go again, found by custom_id, and changed where needed, for example cut into chunks (4.5-S3).")))
-FIG45 = FIG45.replace("<figcaption>", strip(640, 96, "The price of a request: the Messages API is the full price, and Message Batches is half of it.",
-                                            '<text class="ve-lab" x="0" y="30">Messages API</text><rect class="bar" x="190" y="14" width="400" height="24"/><text class="ve-lab" x="598" y="30">100%</text>'
-                                            '<text class="ve-lab" x="0" y="74">Message Batches</text><rect class="bar hot" x="190" y="58" width="200" height="24"/><text class="ve-lab" x="398" y="74">50%</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
+FIG45 = FIG45.replace("<figcaption>", bar_strip([("Messages API", 100, "100%", False), ("Message Batches", 50, "50%", True)],
+                                                "The price of a request: the Messages API is the full price, and Message Batches is half of it.") + "<figcaption>", 1)
 
 PART["4.5"] = (overview("4.5", "Batch only the work that can wait a day",
                         "The Message Batches API costs half, but a batch can take up to 24 hours with no promised time, so use it only for work that nobody waits for. "
@@ -2070,7 +2084,7 @@ FIG46 = FIG46.replace("<figcaption>", strip(890, 150, "A large review gets one p
                                                      box(20, 5, 160, 40, ["File 1: pass"]), box(20, 55, 160, 40, ["File 2: pass"]), box(20, 105, 160, 40, ["File N: pass"]),
                                                      box(260, 40, 200, 70, ["Integration pass"], sub="across the files", cls="who-model"),
                                                      box(520, 40, 170, 70, ["Verification"], sub="confidence each"),
-                                                     box(740, 40, 130, 70, ["Route"], sub="calibrated", cls="try ok")])) + "<figcaption>", 1)
+                                                     box(740, 40, 130, 70, ["Route"], sub="calibrated", cls="try ok")]), head="A large review") + "<figcaption>", 1)
 
 PART["4.6"] = (overview("4.6", "A new instance reviews each file, then the files together",
                         "The session that wrote the work keeps its reasoning, so it is less likely to question its own choices. Give the review to a new instance that sees only the work and the criteria, "
@@ -2136,7 +2150,7 @@ assert CMP51.startswith("{") and '"type": "summarize"' in CMP51 and CMP51.endswi
 FIG51 = figure("5.1-1", 890, 330,
                "One request of a long support session carries, from top to bottom: the system prompt, a block of case facts that is never summarized, a summary of the older turns where numbers can blur, "
                "the recent turns word for word, and tool results cut to the relevant fields. An order lookup with more than 40 fields is cut to the few that matter. The whole history goes to Claude on each turn.",
-               "".join([edge("M620 280H470", "keep 5", 545, 271), edge("M470 165H545V115H620", "each turn", 583, 106),
+               "".join([edge("M620 280H470", "keep 5", 545, 271), edge("M470 165H545V115H620", "each turn", 573, 106),
                         box(20, 20, 450, 40, ["System prompt"]),
                         box(20, 70, 450, 60, ["Case facts"], sub="amounts, dates, order numbers: kept as they are", cls="try ok"),
                         box(20, 140, 450, 50, ["Summary of older turns"], sub="numbers can blur here"),
@@ -2148,9 +2162,8 @@ FIG51 = figure("5.1-1", 890, 330,
                              "The guide keeps amounts, dates, order numbers and statuses in a case facts block in each prompt, outside the summary (5.1-S1)."),
                           cf("ts-5-1-s3", gx("Trimming verbose tool outputs to only relevant fields before they accumulate in context (e.g., keeping only return-relevant fields from order lookups)", "Exam guide, 5.1-S3"),
                              "It cuts each tool output to the relevant fields before it enters the context (5.1-S3).")))
-FIG51 = FIG51.replace("<figcaption>", strip(640, 96, "The example of the guide: an order lookup returns more than 40 fields, and only 5 are relevant.",
-                                            '<text class="ve-lab" x="0" y="30">order lookup</text><rect class="bar" x="190" y="14" width="400" height="24"/><text class="ve-lab" x="598" y="30">40+</text>'
-                                            '<text class="ve-lab" x="0" y="74">relevant fields</text><rect class="bar hot" x="190" y="58" width="50" height="24"/><text class="ve-lab" x="248" y="74">5</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
+FIG51 = FIG51.replace("<figcaption>", bar_strip([("order lookup", 40, "40+", False), ("relevant fields", 5, "5", True)],
+                                                "The example of the guide: an order lookup returns more than 40 fields, and only 5 are relevant.") + "<figcaption>", 1)
 
 PART["5.1"] = (overview("5.1", "Pin exact facts outside the summary, and trim the rest",
                         "A summary of a long conversation blurs numbers, dates and promises, so keep these facts in a separate block that each request carries word for word. "
@@ -2228,9 +2241,9 @@ FIG52 = cases("5.2-1", [
      mini_box(2, 2, 236, 44, 'Customer message', 'frustrated') + '<path class="ve-e is-st" d="M120 46V64"/>'
      + mini_box(2, 66, 236, 52, 'resolve the case', 'acknowledge the frustration', st=True), 'Sentiment does not show how complex a case is.'),
     (None, 'Not a trigger', 'Own confidence',
-     'The model reports a low confidence of its own. That is not a trigger.', 120,
+     'The agent reports a low confidence of its own. That is not a trigger, so check the three triggers.', 120,
      mini_box(2, 2, 236, 44, 'The agent', 'low confidence of its own') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'no escalation', 'not a trigger', st=True), 'Self-reported confidence does not show how complex a case is.'),
+     + mini_box(2, 66, 236, 52, 'not a trigger', 'check the three triggers', st=True), 'Self-reported confidence does not show how complex a case is.'),
 ], "%s %s %s" % (cf("ts-5-2-k1", gx("Appropriate escalation triggers: customer requests for a human, policy exceptions/gaps (not just complex cases), and inability to make meaningful progress", "Exam guide, 5.2-K1"),
                     "The three triggers of the guide are a request for a human, a gap or exception in the policy, and no meaningful progress (5.2-K1)."),
                  cf("ts-5-2-k3", gx("Why sentiment-based escalation and self-reported confidence scores are unreliable proxies for actual case complexity", "Exam guide, 5.2-K3"),
@@ -2307,7 +2320,7 @@ FIG53 = cases("5.3-1", [
     (None, 'Access failure', 'The query fails',
      'An access failure is first retried in the subagent. If it is not resolved, the subagent returns structured error context: the failure type, the query, the partial results and the alternatives.', 120,
      mini_box(2, 2, 236, 44, 'Subagent', 'access failure') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'error context', 'type, query, partial results, alternatives', st=True), 'Retry it locally first. If it is not resolved, return the error context.'),
+     + mini_box(2, 66, 236, 52, 'error context', 'type, query, partial results', st=True), 'Retry it locally first. If it is not resolved, return the failure type, the query, the partial results and the alternatives.'),
 ], "%s %s" % (cf("ts-5-3-k1", gx("Structured error context (failure type, attempted query, partial results, alternative approaches) as enabling intelligent coordinator recovery decisions", "Exam guide, 5.3-K1"),
                  "Structured error context lets the coordinator decide how to recover (5.3-K1)."),
               cf("ts-5-3-k2", gx("The distinction between access failures (timeouts needing retry decisions) and valid empty results (successful queries with no matches)", "Exam guide, 5.3-K2"),
@@ -2315,7 +2328,7 @@ FIG53 = cases("5.3-1", [
 FIG53 = FIG53.replace("<figcaption>", strip(890, 100, "The coordinator gets the error context, decides to retry, change the plan or go on, and the synthesis marks the gaps.",
                                             edge("M240 50H300") + edge("M540 50H600") + box(20, 15, 220, 70, ["Error context"])
                                             + box(300, 15, 240, 70, ["Coordinator"], sub="retry, change, go on", cls="who-model")
-                                            + box(600, 15, 270, 70, ["Synthesis"], sub="gaps marked")) + "<figcaption>", 1)
+                                            + box(600, 15, 270, 70, ["Synthesis"], sub="gaps marked"), head="After an access failure") + "<figcaption>", 1)
 
 PART["5.3"] = (overview("5.3", "A failed subagent reports what failed, never a silent empty",
                         "A subagent retries a transient failure itself. If it cannot fix it, it tells the coordinator the failure type, the query, the partial results and the alternatives, "
@@ -2379,7 +2392,7 @@ FIG54 = cases("5.4-1", [
     (None, 'Subagents', 'Questions to subagents',
      'The main agent keeps the high-level view and sends a specific question, such as finding all test files, to a subagent, which keeps the verbose output and sends back a summary.', 120,
      mini_box(2, 2, 236, 44, 'Main agent', 'high-level view') + '<path class="ve-e is-st" d="M120 46V64"/>'
-     + mini_box(2, 66, 236, 52, 'subagent: test files', 'verbose output stays', st=True), 'A subagent answers one specific question and sends back a summary.'),
+     + mini_box(2, 66, 236, 52, 'subagent: test files', 'verbose output stays', st=True), 'A subagent answers one specific question, such as all test files or the refund flow, and sends back a summary.'),
     (None, 'Scratchpad', 'Key findings in a file',
      'The main agent writes key findings to a scratchpad file and reads it for later questions.', 120,
      mini_box(2, 2, 236, 44, 'Main agent', 'write, then read') + '<path class="ve-e is-st" d="M120 46V64"/>'
@@ -2399,7 +2412,7 @@ FIG54 = cases("5.4-1", [
                     cf("ts-5-4-s4c", gx("Designing crash recovery using structured agent state exports (manifests) that the coordinator loads on resume and injects into agent prompts", "Exam guide, 5.4-S4"),
                        "The coordinator loads the manifest of the state exports on resume (5.4-S4)."),
                     cf("ts-5-4-s5c", gx("Using /compact to reduce context usage during extended exploration sessions when context fills with verbose discovery output", "Exam guide, 5.4-S5"),
-                       "/compact reduces the context when discovery output fills it (5.4-S5).")), cls="two")
+                       "/compact reduces the context when discovery output fills it (5.4-S5).")), cls="pair")
 
 PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in subagents",
                         "A long exploration fills the context, and then the answers get worse. Send verbose searches to subagents that return summaries, "
@@ -2480,9 +2493,8 @@ FIG55 = figure("5.5-1", 890, 330,
                              "Confidence scores for each field, calibrated on labeled validation sets, route the review (5.5-K3)."),
                           cf("ts-5-5-k2", gx("Stratified random sampling for measuring error rates in high-confidence extractions and detecting novel error patterns", "Exam guide, 5.5-K2"),
                              "A stratified random sample of the high-confidence extractions measures their error rate and finds new error patterns (5.5-K2).")))
-FIG55 = FIG55.replace("<figcaption>", strip(640, 60, "97% overall can hide a weak segment. The guide gives no numbers for each segment.",
-                                            '<text class="ve-lab" x="0" y="30">overall accuracy</text><rect class="bar hot" x="190" y="14" width="388" height="24"/><text class="ve-lab" x="586" y="30">97%</text>'
-                                            '<text class="ve-lab" x="0" y="56">can hide a weak segment</text>').replace('class="ve-svg"', 'class="ve-svg ve-grow"', 1) + "<figcaption>", 1)
+FIG55 = FIG55.replace("<figcaption>", bar_strip([("overall: can hide a weak segment", 97, "97%", True)],
+                                                "97% overall can hide a weak segment. The guide gives no numbers for each segment.", track=True) + "<figcaption>", 1)
 
 PART["5.5"] = (overview("5.5", "Trust confidence scores only after labeled data calibrates them",
                         "One total accuracy can hide a weak document type or field, so measure each segment before you cut human review. "
@@ -2557,13 +2569,13 @@ FIG56 = figure("5.6-1", 890, 330,
                "".join([edge("M190 55H230"), edge("M550 55H590"), edge("M720 55H740"), edge("M805 90V130"),
                         box(20, 20, 170, 70, ["Subagents"], sub="search, analysis", cls="who-model"),
                         REC56,
-                        box(590, 20, 130, 70, ["Coordinator"], sub="reconciles", cls="who-model"),
+                        box(590, 20, 130, 70, ["Coordinator", "decides how"], sub="to reconcile", cls="who-model"),
                         box(740, 20, 130, 70, ["Synthesis"], sub="merges", cls="who-model"),
                         '<text class="ve-lab" x="590" y="124">Report</text>',
                         box(590, 130, 280, 45, ["Well-established"]),
                         box(590, 185, 280, 55, ["Contested"], sub="both values, each with its source", cls="try ok"),
                         box(590, 250, 280, 45, ["Coverage gaps"], sub="a point of 5.3-S4")]),
-               "%s %s A summary without the sources loses the attribution. To pick one value is wrong, and a finding with no date can make an older figure look like a contradiction. Each content type keeps its format: financial data as tables, news as prose, technical findings as lists." % (
+               "%s %s A summary without the sources loses the attribution. To pick one value arbitrarily is wrong, and a finding with no date can make an older figure look like a contradiction. Each content type keeps its format: financial data as tables, news as prose, technical findings as lists." % (
                    cf("ts-5-6-s1", gx("Requiring subagents to output structured claim-source mappings (source URLs, document names, relevant excerpts) that downstream agents preserve through synthesis", "Exam guide, 5.6-S1"),
                       "Subagents output structured claim-source mappings, and the agents after them keep the mappings through the synthesis (5.6-S1)."),
                    cf("ts-5-6-s2", gx("Structuring reports with explicit sections distinguishing well-established findings from contested ones, preserving original source characterizations and methodological context", "Exam guide, 5.6-S2"),

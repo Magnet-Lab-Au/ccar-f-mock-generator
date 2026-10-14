@@ -198,13 +198,14 @@ GL_CLAUDE = "M8 0v16M0 8h16M2.5 2.5l11 11M13.5 2.5l-11 11"
 GL_OWNER = "M8 1a3.2 3.2 0 1 1 0 6.4a3.2 3.2 0 1 1 0-6.4M1.5 16c0-4 3-6 6.5-6s6.5 2 6.5 6"
 
 
-def box(x, y, w, h, lines, sub=None, cls="", glyph=None, href=None, step=None, card=None, num=None):
-    """A node: square corners, one or two title lines, an optional sub line."""
-    attrs = ""
+def box(x, y, w, h, lines, sub=None, cls="", glyph=None, href=None, step=None, card=None, num=None, a=None, s=None):
+    """A node: square corners, one or two title lines, an optional sub line. In a stepper, a lights it at those steps,
+    and s makes it appear at that step (decision 0037)."""
+    attrs = (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
     if step:
-        attrs = ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step
+        attrs += ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step
     if card:
-        attrs = ' data-card="%s" tabindex="0" role="button" aria-expanded="false"' % card
+        attrs += ' data-card="%s" tabindex="0" role="button" aria-expanded="false"' % card
     out = '<g class="ve-n %s"%s transform="translate(%d %d)"><rect class="sh" width="%d" height="%d" rx="0"/>' % (cls, attrs, x, y, w, h)
     if glyph:
         out += '<path class="gl" transform="translate(10 10) scale(.85)" d="%s"/>' % glyph
@@ -222,11 +223,29 @@ def box(x, y, w, h, lines, sub=None, cls="", glyph=None, href=None, step=None, c
     return out
 
 
-def edge(d, label=None, lx=0, ly=0, cls="", anchor=""):
-    out = '<path class="ve-e %s" d="%s"/>' % (cls, d)
+def edge(d, label=None, lx=0, ly=0, cls="", anchor="", a=None, s=None):
+    st = (' data-a="%s"' % a if a else "") + (' data-s="%s"' % s if s else "")
+    out = '<path class="ve-e %s"%s%s d="%s"/>' % (cls, st, ' pathLength="1"' if st else "", d)
     if label:
-        out += '<text class="ve-el %s" x="%d" y="%d">%s</text>' % (anchor, lx, ly, e(label))
+        out += '<text class="ve-el %s"%s x="%d" y="%d">%s</text>' % (anchor, st, lx, ly, e(label))
     return out
+
+
+def small_bars(rows, aria, mx=None):
+    """A small bar chart for a number in a figure (decision 0037, every number gets a picture). rows: (label, value, hot)."""
+    mx = mx or max(v for _, v, _ in rows) or 1
+    bars = "".join('<text x="0" y="%d">%s</text><rect class="%s" x="170" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
+                   % (i * 30 + 14, e(k), "hot" if h else "", i * 30 + 4, max(2, v * 380 // mx), 180 + max(2, v * 380 // mx), i * 30 + 14, v)
+                   for i, (k, v, h) in enumerate(rows))
+    return '<div class="frame"><svg class="ve-bars" viewBox="0 0 640 %d" role="img" aria-label="%s">%s</svg></div>' % (len(rows) * 30 + 6, e(aria), bars)
+
+
+def player(caps):
+    """The arrows and captions of a stepper, in the form of Fig. 1.1-1 of tab 1 (decision 0037). caps[0] is the full picture."""
+    n = len(caps) - 1
+    lis = ['<li data-n="%d steps">%s</li>' % (n, caps[0])] + ['<li data-n="%d/%d">%s</li>' % (i, n, c) for i, c in enumerate(caps[1:], 1)]
+    return ('<div class="ve-player"><ol class="ve-cap" aria-live="polite">%s</ol>'
+            '<button data-go="-1" aria-label="Previous step">&larr;</button><button data-go="1" aria-label="Next step">&rarr;</button></div>' % "".join(lis))
 
 
 # Fig. 1: the 9 steps (facts: top-of-tab-2.md, sections 1 and 2)
@@ -248,10 +267,13 @@ FULL[7] = "The questions are marked"   # tab 2 only: a Claude model marked mocks
 POS = {0: (20, 20), 1: (20, 160), 2: (250, 160), 3: (480, 160), 4: (710, 160), 5: (480, 310), 6: (710, 460), 7: (480, 460), 8: (250, 460)}
 
 
+STEP_A = {0: "1", 1: "2", 2: "3 5", 3: "4", 4: "4", 5: "5 6", 6: "7", 7: "8", 8: "9"}   # the steps of Fig. A that light each box
+
+
 def step_node(s):
     x, y = POS[s]
     who, cls = WHO[s]
-    return box(x, y, W, H, NAMES[s], sub=who, cls=cls, href="#step-%d" % s, num=s)
+    return box(x, y, W, H, NAMES[s], sub=who, cls=cls, href="#step-%d" % s, num=s, a=STEP_A[s])
 
 
 LEGEND = ('<g transform="translate(250 22)">'
@@ -264,37 +286,50 @@ LEGEND = ('<g transform="translate(250 22)">'
           '<path class="ve-e is-hot" d="M420 76H460"/><text class="ve-lab" x="470" y="80">the automatic loop</text></g>')
 
 FIG1 = """
-<figure data-figure="builder" id="top-fig-a">
+<figure class="ve-steps" data-figure="builder" id="top-fig-a">
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 880 570" role="img" aria-label="The 9 steps of the mock builder. Step 0 prepares the guide records once for each version of the exam guide. Step 1 plans 60 slots. Step 2 writes a question, step 3 checks it by code and step 4 by a model. A try that fails goes to step 5 and is checked again. When all 60 slots pass, step 6 checks the complete mock, step 7 marks the questions, and step 8 builds the files after the owner accepts. Dashed arrows are decisions of the owner: more tries or a new point for an open slot, a rewrite after step 6 or after the marks, a bad mark, and accept. A rewrite with a new point goes to step 2.">
       %(edges)s
+      <path data-flow="pass" data-every="2000" d="M325 206H785"/><path data-flow="fail" data-every="4400" data-delay="1000" d="M555 206V356H585V206"/>
+      <g class="ve-dots" aria-hidden="true"></g>
       %(nodes)s
-      <g class="ve-n who-owner"><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
+      <g class="ve-n who-owner" data-a="6"><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
       %(legend)s
     </svg>
   </div>
+  %(player)s
   <figcaption><span class="fig-n">Fig. A</span>Code moves each try through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, and a call that fails 3 times. Since mock decision 0045, %(rw)s also waits for the owner. %(rwp)s The owner %(acc)s before step 8.</figcaption>
   <section class="sources" aria-label="Sources of the top"><p class="ve-label">Sources of the top of this tab</p><ul>@SOURCES_TOP@</ul></section>
 </figure>
 """ % {
     "nodes": "".join(step_node(s) for s in range(9)),
+    "player": player(["The 9 steps of the mock builder. Use the arrow buttons to go through them one at a time. Each box links to its step below.",
+                      "Step 0 prepares the guide records, once for each version of the exam guide.",
+                      "Step 1 plans %d slots." % SLOTS,
+                      "Step 2: a Claude model writes a question for one slot.",
+                      "Step 3 checks the try by code, and step 4 by a model. A try that passes both is done.",
+                      "A try that fails step 3 or step 4 goes to step 5, where the writer tries again by itself.",
+                      "After 3 tries in one start, the slot is open and waits for the owner: more tries or a new point.",
+                      "When all %d slots pass, step 6 checks the complete mock." % SLOTS,
+                      "Then the questions are marked in step 7. A bad mark or a finding of step 6 can lead to a rewrite, which waits for the owner.",
+                      "The owner accepts the mock, and step 8 builds the files."]),
     "legend": LEGEND,
     "edges": "".join([
-        edge("M95 112V160", "guide records", 103, 141, anchor="r"),
-        edge("M170 206H250", "%d slots" % SLOTS, 210, 197),
-        edge("M400 206H480", "question", 440, 197),
-        edge("M630 206H710", "passes", 670, 197),
-        edge("M525 252V310", "fails", 517, 286, cls="is-hot", anchor="l"),
-        edge("M760 252V356H630", cls="is-hot") + '<text class="ve-el l" x="752" y="298">fails or</text><text class="ve-el l" x="752" y="316">cannot decide</text>',
-        edge("M585 310V252", "new try", 593, 278, cls="is-hot", anchor="r"),
-        edge("M480 340H380", "3 tries", 430, 331),
-        edge("M380 380H480", "more tries", 430, 372, cls="is-async"),
-        edge("M305 310V252", "new point", 313, 286, cls="is-async", anchor="r"),
-        edge("M820 252V460", "all %d pass" % SLOTS, 812, 384, anchor="l"),
-        edge("M710 506H630", "then", 670, 497),
-        edge("M480 506H400", "accepts", 440, 497, cls="is-async"),
-        edge("M780 460V420H615V402", "rewrite", 700, 411, cls="is-async"),
-        edge("M525 460V402", "bad mark, rewrite", 533, 446, cls="is-async", anchor="r"),
+        edge("M95 112V160", "guide records", 103, 141, anchor="r", s="1"),
+        edge("M170 206H250", "%d slots" % SLOTS, 210, 197, s="2"),
+        edge("M400 206H480", "question", 440, 197, s="3"),
+        edge("M630 206H710", "passes", 670, 197, s="4"),
+        edge("M525 252V310", "fails", 517, 286, cls="is-hot", anchor="l", a="5"),
+        edge("M760 252V356H630", cls="is-hot", a="5") + '<text class="ve-el l" data-a="5" x="752" y="298">fails or</text><text class="ve-el l" data-a="5" x="752" y="316">cannot decide</text>',
+        edge("M585 310V252", "new try", 593, 278, cls="is-hot", anchor="r", a="5"),
+        edge("M480 340H380", "3 tries", 430, 331, s="6"),
+        edge("M380 380H480", "more tries", 430, 372, cls="is-async", s="6"),
+        edge("M305 310V252", "new point", 313, 286, cls="is-async", anchor="r", s="6"),
+        edge("M820 252V460", "all %d pass" % SLOTS, 812, 384, anchor="l", s="7"),
+        edge("M710 506H630", "then", 670, 497, s="8"),
+        edge("M780 460V420H615V402", "rewrite", 700, 411, cls="is-async", s="8"),
+        edge("M525 460V402", "bad mark, rewrite", 533, 446, cls="is-async", anchor="r", s="8"),
+        edge("M480 506H400", "accepts", 440, 497, cls="is-async", s="9"),
     ]),
     "auto": fact("c-auto", "A try that fails step 3 or step 4 goes to step 5, where the writer of step 2 tries again by itself"),
     "wait": fact("c-wait", "Each other way back waits for a decision of the owner"),
@@ -305,34 +340,45 @@ FIG1 = """
 
 # Fig. 5-1: the loop of step 5 (facts: step-5.md, sections 2.1 to 2.3)
 FIG51 = """
-<figure>
+<figure class="ve-steps" id="step-5-fig1">
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 890 400" role="img" aria-label="The writer, a Claude model, writes a try. Step 3 checks it by code and step 4 by a model. A pass stops the loop. A try that fails goes back to the writer with a new request: the request of step 2, the failed try and its findings. After %(t)d failed tries in one start, the slot is open and waits for the owner.">
       %(edges)s
       %(nodes)s
-      <g class="ve-dim"><path class="ext" d="M20 300V330M640 300V330"/><path class="ln" d="M20 320H640M16 324l8-8M636 324l8-8"/><text x="330" y="312">at most %(t)d tries in one start</text></g>
-      <g class="ve-n who-owner"><rect class="sh" x="20" y="340" width="620" height="44" rx="0"/><text x="330" y="362">after the last failed try: an open slot, the owner decides</text></g>
+      <g class="ve-dim" data-a="7"><path class="ext" d="M20 300V330M640 300V330"/><path class="ln" d="M20 320H640M16 324l8-8M636 324l8-8"/><text x="330" y="312">at most %(t)d tries in one start</text></g>
+      <g class="ve-n who-owner" data-a="7"><rect class="sh" x="20" y="340" width="620" height="44" rx="0"/><text x="330" y="362">after the last failed try: an open slot, the owner decides</text></g>
     </svg>
   </div>
+  %(player)s
   <figcaption><span class="fig-n">Fig. 5-1</span>%(pass)s The limit of %(t)d tries is only a guard. %(open)s</figcaption>
 </figure>
 """ % {
     "t": TRIES,
     "nodes": "".join([
-        box(20, 30, 160, 80, ["Writer"], sub="Claude", cls="who-model"),
-        box(250, 30, 160, 80, ["Step 3"], sub="check by code"),
-        box(480, 30, 160, 80, ["Step 4"], sub="check by a model", cls="who-model"),
-        box(710, 30, 160, 80, ["passed"], sub="the loop stops", cls="try ok"),
-        box(250, 180, 390, 90, ["new request of step 5"], sub="step 2 + failed try + findings", cls="is-key"),
+        box(20, 30, 160, 80, ["Writer"], sub="Claude", cls="who-model", a="1 6"),
+        box(250, 30, 160, 80, ["Step 3"], sub="check by code", a="2"),
+        box(480, 30, 160, 80, ["Step 4"], sub="check by a model", cls="who-model", a="3"),
+        box(710, 30, 160, 80, ["passed"], sub="the loop stops", cls="try ok", a="4"),
+        box(250, 180, 390, 90, ["new request of step 5"], sub="step 2 + failed try + findings", cls="is-key", a="5"),
     ]),
     "edges": "".join([
-        edge("M180 70H250", "a try", 215, 61),
-        edge("M410 70H480", "passes", 445, 61),
-        edge("M640 70H710", "passes", 675, 61),
-        edge("M330 110V180", "fails", 338, 150, cls="is-hot", anchor="r"),
-        edge("M560 110V180", "fails", 568, 150, cls="is-hot", anchor="r"),
-        edge("M250 225H100V110", "tries again", 175, 216, cls="is-hot"),
+        edge("M180 70H250", "a try", 215, 61, s="1"),
+        edge("M410 70H480", "passes", 445, 61, s="3"),
+        edge("M640 70H710", "passes", 675, 61, s="4"),
+        edge("M330 110V180", "fails", 338, 150, cls="is-hot", anchor="r", a="5"),
+        edge("M560 110V180", "fails", 568, 150, cls="is-hot", anchor="r", a="5"),
+        edge("M250 225H100V110", "tries again", 175, 216, cls="is-hot", a="6"),
+        '<path data-flow="pass" data-every="2600" d="M100 70H790"/><path data-flow="retry" data-every="4200" data-delay="1300" d="M100 70H330V225H100V70"/>',
+        '<g class="ve-dots" aria-hidden="true"></g>',
     ]),
+    "player": player(["The loop of one slot. Use the arrow buttons to go through it one step at a time.",
+                      "The writer, a Claude model, writes a try.",
+                      "Step 3 checks the try by code.",
+                      "If it passes, step 4 checks it by a model.",
+                      "A pass of step 4 stops the loop: the slot has passed.",
+                      "A try that fails step 3 or step 4 becomes a new request of step 5: the request of step 2, the failed try and its findings.",
+                      "The writer tries again with the new request.",
+                      "After %d failed tries in one start, the slot is open, and the owner decides." % TRIES]),
     "pass": fact("s5-pass", "A pass stops the loop."),
     "open": fact("s5-open", "A slot that stops is open, and the owner decides: more tries, a new point, or a new plan."),
 }
@@ -395,30 +441,38 @@ FIG53 = FIG53_T % (fact("a-reviews", "A first design review found %d serious ite
 
 
 def tbox(t, x, lines, sub, cls):
-    return box(x, 60, 150, 80, lines, sub=sub, cls="try " + cls)
+    return box(x, 60, 150, 80, lines, sub=sub, cls="try " + cls, a=str(t))
 
 
 FIG54 = """
-<figure>
+<figure class="ve-steps" id="step-5-fig4">
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 890 250" role="img" aria-label="Question M5-S38 of mock 5. Tries 1 to 3 fail rule B9. The owner gives more tries with a reason. Try 4 gets the reason, puts a custom ID into its correct options and fails rule B9, because it repeats questions of mocks 1 and 3. Try 5 does not get the reason, writes the old problem again and passes.">
       %(edges)s
       %(nodes)s
-      <g class="ve-n who-owner"><rect class="sh" x="500" y="2" width="200" height="36" rx="0"/><text x="600" y="20">owner: more tries</text></g>
-      <g class="ve-dim"><path class="ext" d="M530 150V190M870 150V190"/><path class="ln" d="M530 180H870M526 184l8-8M866 184l8-8"/><text x="700" y="172">a new start</text></g>
-      <text class="ve-lab" x="20" y="230">B9: the question repeats the problem of a question of an earlier mock.</text>
+      <g class="ve-n who-owner" data-a="4"><rect class="sh" x="500" y="2" width="200" height="36" rx="0"/><text x="600" y="20">owner: more tries</text></g>
+      <g class="ve-dim" data-a="4"><path class="ext" d="M530 150V190M870 150V190"/><path class="ln" d="M530 180H870M526 184l8-8M866 184l8-8"/><text x="700" y="172">a new start</text></g>
+      <text class="ve-lab" data-a="1" x="20" y="230">B9: the question repeats the problem of a question of an earlier mock.</text>
     </svg>
   </div>
+  %(player)s
   <figcaption><span class="fig-n">Fig. 5-4</span>The reason of the owner reached try 4, but not try 5. Try 5 is the question in mock 5.</figcaption>
 </figure>
 """ % {
     "nodes": "".join([tbox(1, 20, ["Try 1"], "fails B9", "bad"), tbox(2, 190, ["Try 2"], "fails B9", "bad"),
                       tbox(3, 360, ["Try 3"], "fails B9", "bad"),
-                      box(530, 60, 150, 80, ["Try 4"], sub="custom ID: fails B9", cls="try bad", card="b-t4"),
-                      box(720, 60, 150, 80, ["Try 5"], sub="no reason: passes", cls="try ok", card="b-t5")]),
-    "edges": "".join([edge("M170 100H190"), edge("M340 100H360"), edge("M510 100H530"), edge("M680 100H720"),
-                      edge("M600 38V60", "the reason", 608, 52, anchor="r"),
-                      '<path class="chance" d="M700 30H795V60"/><text class="ve-el r" x="803" y="44">not sent</text>']),
+                      box(530, 60, 150, 80, ["Try 4", "custom ID"], sub="fails B9", cls="try bad", card="b-t4", a="5"),
+                      box(720, 60, 150, 80, ["Try 5", "no reason"], sub="passes", cls="try ok", card="b-t5", a="6")]),
+    "edges": "".join([edge("M170 100H190", s="2"), edge("M340 100H360", s="3"), edge("M510 100H530", s="5"), edge("M680 100H720", s="6"),
+                      edge("M600 38V60", "the reason", 608, 52, anchor="r", s="5"),
+                      '<path class="chance" data-s="6" d="M700 30H795V60"/><text class="ve-el r" data-s="6" x="803" y="44">not sent</text>']),
+    "player": player(["The tries of slot M5-S38. Use the arrow buttons to go through them one at a time.",
+                      "Try 1 fails rule B9: it repeats the problem of a question of an earlier mock.",
+                      "Try 2 fails B9.",
+                      "Try 3 fails B9, so the slot waits for the owner.",
+                      "The owner gives more tries with a reason. This is a new start.",
+                      "Try 4 gets the reason, puts a custom ID into its correct options, and fails B9.",
+                      "Try 5 does not get the reason, writes the old problem again, and passes. It is the question in mock 5."]),
 }
 
 # ----- the text of step 5 -----
@@ -775,8 +829,10 @@ FIG11 = """
       %(rules)s
     </svg>
   </div>
+  %(dbars)s
   <figcaption><span class="fig-n">Fig. 1-1</span>%(cap)s</figcaption>
 </figure>""" % {
+    "dbars": small_bars([("domain %d" % (i + 1), v, v == max(DC)) for i, v in enumerate(DC)], "Questions of each domain in each plan: %s for domains 1 to 5." % ", ".join(map(str, DC))),
     "dc": ", ".join(map(str, DC)), "nts": N_TS, "sc": SCEN_IN_MOCK, "ps": PER_SCEN, "mr": MR_PER, "n": SLOTS,
     "nodes": "".join([
         box(20, 30, 170, 56, ["guide records"]), box(20, 100, 170, 56, ["ideas"], sub="%d groups of points" % len(PG)),
@@ -1053,9 +1109,11 @@ FIG31 = """
       %(nodes)s
     </svg>
   </div>
+  %(pbars)s
   <figcaption><span class="fig-n">Fig. 3-1</span>%(cap)s</figcaption>
 </figure>""" % {
     "p": V3["pass"], "f": V3["fail"],
+    "pbars": small_bars([("passed step 3", V3["pass"], False), ("failed step 3", V3["fail"], True)], "Tries in mocks 1 to 5: %d passed step 3 and %d failed." % (V3["pass"], V3["fail"])),
     "cells": "".join('<g class="blk"><rect x="%d" y="%d" width="138" height="56" rx="0"/><text x="%d" y="%d"><tspan class="role">%s</tspan></text><text x="%d" y="%d">%s</text></g>'
                      % (36 + (i % 4) * 146, 56 + (i // 4) * 72, 46 + (i % 4) * 146, 72 + (i // 4) * 72, r, 46 + (i % 4) * 146, 94 + (i // 4) * 72, e(t))
                      for i, (r, t) in enumerate(RULES_A)),
@@ -1180,24 +1238,31 @@ CARD.update({
 assert COST[3][2] and COST[4][2] and not any(c[2] for c in COST[:3])
 
 FIG41 = """
-<figure>
+<figure class="ve-steps" id="step-4-fig1">
   <div class="frame">
     <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 4. Call 4a, a new Claude call, answers the question with no answer key. Then call 4b checks the 9 rules B1 to B9 with the answer key. Code compares the letters, searches the feature names in the guide records, and makes the verdict: on a pass the slot has passed, and a fail or cannot decide goes to step 5.">
       %(edges)s
       %(nodes)s
     </svg>
   </div>
+  %(player)s
   <figcaption><span class="fig-n">Fig. 4-1</span>%(cap)s</figcaption>
 </figure>""" % {
-    "nodes": "".join([box(20, 110, 150, 80, ["question"], sub="passed step 3"),
-                      box(240, 30, 180, 90, ["call 4a"], sub="no answer key", cls="who-model"),
-                      box(240, 180, 180, 90, ["call 4b"], sub="9 rules, the key", cls="who-model"),
-                      box(500, 105, 160, 90, ["code"], sub="makes the verdict", cls="is-key"),
-                      box(730, 30, 140, 80, ["pass"], sub="slot passed", cls="try ok"),
-                      box(730, 190, 140, 80, ["fail or", "cannot decide"], sub="to step 5", cls="try bad")]),
-    "edges": "".join([edge("M170 150H205V75H240"), edge("M330 120V180", "then", 338, 155, anchor="r"),
-                      edge("M420 75H460V135H500", "letters", 470, 66, anchor="r"), edge("M420 225H460V165H500", "results", 470, 250, anchor="r"),
-                      edge("M660 135H695V70H730"), edge("M660 165H695V230H730")]),
+    "nodes": "".join([box(20, 110, 150, 80, ["question"], sub="passed step 3", a="1"),
+                      box(240, 30, 180, 90, ["call 4a"], sub="no answer key", cls="who-model", a="2"),
+                      box(240, 180, 180, 90, ["call 4b"], sub="9 rules, the key", cls="who-model", a="3"),
+                      box(500, 105, 160, 90, ["code"], sub="makes the verdict", cls="is-key", a="4"),
+                      box(730, 30, 140, 80, ["pass"], sub="slot passed", cls="try ok", a="5"),
+                      box(730, 190, 140, 80, ["fail or", "cannot decide"], sub="to step 5", cls="try bad", a="5")]),
+    "edges": "".join([edge("M170 150H205V75H240", s="2"), edge("M330 120V180", "then", 338, 155, anchor="r", s="3"),
+                      edge("M420 75H460V135H500", "letters", 470, 66, anchor="r", s="4"), edge("M420 225H460V165H500", "results", 470, 250, anchor="r", s="4"),
+                      edge("M660 135H695V70H730", s="5"), edge("M660 165H695V230H730", s="5")]),
+    "player": player(["The two calls of step 4 and the verdict of code. Use the arrow buttons to go through them one step at a time.",
+                      "The question has passed step 3.",
+                      "Call 4a, a new Claude call, answers the question with no answer key.",
+                      "Then call 4b checks the 9 rules B1 to B9 with the answer key.",
+                      "Code compares the letters, searches the feature names in the guide records, and makes the verdict.",
+                      "On a pass, the slot has passed. A fail or &ldquo;cannot decide&rdquo; goes to step 5."]),
     "cap": fact("s4-what", "Some rules need judgment, so a model checks them, in two calls.") + " " + fact("s4-verdict", "Code checks the answer of each call and makes the verdict. A model does not make the verdict."),
 }
 
@@ -1208,9 +1273,11 @@ FIG42 = """
   <div class="frame">
     <svg class="ve-bars" viewBox="0 0 600 %(h)d" role="img" aria-label="Findings of step 4 per rule in mocks 1 to 5: %(vals)s.">%(bars)s</svg>
   </div>
+  %(pbars)s
   <figcaption><span class="fig-n">Fig. 4-2</span>%(cap)s</figcaption>
 </figure>""" % {
     "h": len(R4) * 30 + 6, "vals": ", ".join("%s %d" % kv for kv in R4),
+    "pbars": small_bars([("passed step 4", V4["pass"], False), ("failed step 4", V4["fail"], True)], "Checks of step 4 in mocks 1 to 5: %d passed and %d failed." % (V4["pass"], V4["fail"])),
     "bars": "".join('<text x="0" y="%d">%s</text><rect class="%s" x="60" y="%d" width="%d" height="20"/><text class="hv" x="%d" y="%d">%d</text>'
                     % (i * 30 + 14, k, "hot" if v == MX4 else "", i * 30 + 4, max(2, v * 440 // MX4), 70 + max(2, v * 440 // MX4), i * 30 + 14, v) for i, (k, v) in enumerate(R4)),
     "cap": fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9, a repeat of an earlier question." % (sum(V4.values()), V4["pass"], V4["fail"])) + " Mock 1 had rules B1 to B7. B8 and B9 came during mock 2.",
@@ -1429,16 +1496,28 @@ CARD.update({
 })
 lines_of("docs/diagrams/09-step-7-the-owner-marks-the-questions.html", "A person who sees a verdict tends to agree with it.")
 
+COLS71 = [(["question"], "code"), (["its points"], "code"), (["answer key"], "code"), (["reasons"], "code"), (["good", "or bad"], "reader"), (["reason for", "a bad mark"], "reader")]
 FIG71 = """
 <figure>
   <div class="frame">
-    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 7. Code writes a marking file with the questions, their points, the answer key and the reasons, but no verdict of a checker. A reader marks each question good or bad, with a reason for a bad mark. Code reads the file. A good mark keeps the question. A bad mark sends the question to step 5. Too many bad marks stop the mock.">
+    <svg class="ve-svg" viewBox="0 0 890 190" role="img" aria-label="The marking file, close up. Code writes four columns: the question, its points, the answer key and the reasons. The reader fills two columns: good or bad, and a reason for a bad mark. The file has no column for the verdict of a checker.">
+      <text class="ve-lab" x="20" y="22">written by code</text><text class="ve-lab" x="600" y="22">filled by the reader</text>
+      %(cols)s
+      <g class="ve-n guard"><rect class="sh" x="20" y="120" width="850" height="50" rx="0" style="stroke-dasharray:6 5"/><text x="445" y="150">no column for the verdict of a checker</text></g>
+    </svg>
+  </div>
+  <div class="frame">
+    <svg class="ve-svg" viewBox="0 0 890 300" role="img" aria-label="Step 7. A reader marks each question good or bad, with a reason for a bad mark. Code reads the file. A good mark keeps the question. A bad mark sends the question to step 5. Too many bad marks stop the mock.">
       %(edges)s
       %(nodes)s
     </svg>
   </div>
   <figcaption><span class="fig-n">Fig. 7-1</span>%(cap)s</figcaption>
 </figure>""" % {
+    "cols": "".join('<g class="ve-n%s"><rect class="sh" x="%d" y="34" width="134" height="64" rx="0"/>%s</g>'
+                    % (" is-key" if who == "reader" else "", 20 + i * 143,
+                       "".join('<text x="%d" y="%d">%s</text>' % (87 + i * 143, 70 - (len(name) - 1) * 10 + k * 20, e(t)) for k, t in enumerate(name)))
+                    for i, (name, who) in enumerate(COLS71)),
     "nodes": "".join([box(20, 100, 170, 100, ["marking file"], sub="no verdict shown"),
                       box(260, 100, 170, 100, ["a reader"], sub="good or bad"),
                       box(500, 100, 150, 100, ["code"], sub="reads the file"),
@@ -1452,11 +1531,15 @@ FIG71 = """
 
 FIG72 = """
 <figure>
-  <div class="cases">%s</div>
+  <div class="cases two">%s</div>
   <figcaption><span class="fig-n">Fig. 7-2</span>%s</figcaption>
 </figure>""" % ("".join(
-    '<div class="case"><span class="ve-label">Mock %d</span><p class="kpi-n">%d marked</p><p class="cap">%s, round 1. Bad marks: %d. Reader: %s</p></div>'
-    % (m + 1, ROUND1[m], "all" if ROUND1[m] == SLOTS else "a sample", BAD[m], "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model. The owner filled the 20 marks of round 1 without reading the questions (mock decision 0069, academy decision 0039)")
+    '<div class="case"><span class="ve-label">Mock %d</span><svg class="ve-bars" viewBox="0 0 240 70" role="img" aria-label="Mock %d: %d marked in round 1, %d bad marks">'
+    '<text x="0" y="16">marked</text><rect x="70" y="4" width="%d" height="20"/><text class="hv" x="%d" y="16">%d</text>'
+    '<text x="0" y="52">bad</text><rect class="hot" x="70" y="40" width="%d" height="20"/><text class="hv" x="%d" y="52">%d</text></svg>'
+    '<p class="cap">%s, round 1. Reader: %s</p></div>'
+    % (m + 1, m + 1, ROUND1[m], BAD[m], max(2, ROUND1[m] * 130 // SLOTS), 78 + max(2, ROUND1[m] * 130 // SLOTS), ROUND1[m],
+       max(2, BAD[m] * 130 // SLOTS), 78 + max(2, BAD[m] * 130 // SLOTS), BAD[m], "all" if ROUND1[m] == SLOTS else "a sample", "the owner" if m < 3 else "a Claude model" if m == 4 else "a Claude model. The owner filled the 20 marks of round 1 without reading the questions (mock decision 0069, academy decision 0039)")
     for m in range(5)),
     fact("s7-runs", "Over the 5 mocks, %d marks were given: %d in round 1 and %d in round 2, after a send-back. %d were bad, both in mock 5." % (MARKS_ALL, sum(ROUND1), MARKS_ALL - sum(ROUND1), sum(BAD))))
 
@@ -1657,8 +1740,10 @@ FIGCC = """
       %(nodes)s
     </svg>
   </div>
+  %(gbars)s
   <figcaption><span class="fig-n">Fig. C-4.6-1</span>%(cap)s</figcaption>
 </figure>""" % {"g2": GAPS2, "g3": GAPS3,
+                "gbars": small_bars([("check 2: gaps", GAPS2, True), ("check 3: gaps", GAPS3, False)], "Gaps found: check 2 found %d and check 3 found %d. Check 1 has no count in the journal." % (GAPS2, GAPS3)).replace("</svg>", '<text class="ve-lab" x="0" y="74">check 1: no count in the journal</text></svg>').replace('viewBox="0 0 640 66"', 'viewBox="0 0 640 84"'),
                 "nodes": "".join([box(20, 50, 170, 90, ["check 1"], sub="gaps, no count", cls="who-model"),
                                   box(260, 50, 170, 90, ["check 2"], sub="%d gaps, more files" % GAPS2, cls="who-model"),
                                   box(500, 50, 170, 90, ["check 3"], sub="%d smaller gaps" % GAPS3, cls="who-model"),
