@@ -341,3 +341,8 @@ svg.ve-grow { max-width: 34rem; } .cases + .frame, .frame + .frame { margin-top:
 .cases.pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } @media (max-width: 640px) { .cases.pair { grid-template-columns: minmax(0, 1fr); } }
 .strip-head { display: block; margin-top: var(--s-4); }
 .ve-bars.ve-narrow text, .ve-waffle text { font-size: 15px; }
+.table-scroll { overflow-x: auto; }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 36rem; }
+table.matrix th, table.matrix td { border-top: 1px solid var(--border); padding: var(--s-2) var(--s-3); text-align: left; vertical-align: middle; }
+table.matrix thead th { font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); background: var(--surface); }
+table.matrix tbody th { font-weight: 400; } table.matrix .sn { font: 600 var(--t-label) var(--font-mono); margin-right: var(--s-2); color: var(--text-dim); }

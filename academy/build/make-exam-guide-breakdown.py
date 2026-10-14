@@ -2672,8 +2672,9 @@ def map_col(d):
 
 
 def scen_row(s):
-    return ('<li><span class="sn">%d</span>%s <span class="ve-label">primary domains %s</span></li>'
-            % (s["id"], fact("m-s%d" % s["id"], e(s["name"])), ", ".join(str(x) for x in sorted(s["primary_domains"]))))
+    """One row of the table of scenarios (figure plan, Fig. B): a chip in each column of a primary domain."""
+    cells = "".join('<td>%s</td>' % ('<span class="chip ok">primary</span>' if d in s["primary_domains"] else "") for d in range(1, 6))
+    return '<tr><th scope="row"><span class="sn">%d</span>%s</th>%s</tr>' % (s["id"], fact("m-s%d" % s["id"], e(s["name"])), cells)
 
 
 def map_html():
@@ -2685,7 +2686,7 @@ def map_html():
     <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s Each task statement shows its takeaway heading and opens below.</figcaption>
   </figure>
   <figure>
-    <ol class="scen">%(scen)s</ol>
+    <div class="table-scroll"><table class="matrix"><thead><tr><th scope="col">Scenario</th>%(dhead)s</tr></thead><tbody>%(scen)s</tbody></table></div>
     <figcaption><span class="fig-n">Fig. B</span>%(scap)s</figcaption>
   </figure>
 </section>""" % {"what": fact("m-what", "The exam guide is the official reference for the CCAR-F exam: it lists the domains and the task statements that the exam tests."),
@@ -2695,7 +2696,8 @@ def map_html():
                  "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "nts": len(TS),
                  "weights": fact("m-weights", "A weight is the approximate share of the scored questions."),
                  "scen": "".join(scen_row(s) for s in SCEN),
-                 "scap": "The 6 scenarios of the guide, each with its primary domains."}
+                 "dhead": "".join('<th scope="col"><a href="#domain-%d">Domain %d</a></th>' % (d, d) for d in range(1, 6)),
+                 "scap": "The 6 scenarios of the guide. Each scenario has 2 or 3 primary domains."}
 
 
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
