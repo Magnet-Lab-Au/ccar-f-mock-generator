@@ -107,7 +107,7 @@ CARD = {
     "w-slot": excerpt("docs/build-guide/step-1-plan-the-mock.md", "Before a model writes a question, code makes the plan of the mock: a list of 60 slots. Each slot says what one question must be", "Build guide, step 1"),
     "w-owner": excerpt("HANDOFF.md", "| The owner | The person who directs this work. The owner passed the CCAR-F exam. |", "HANDOFF.md, the words of the project"),
     "w-b9": excerpt(D66, "The question does not have the same problem as an earlier question on the same idea, also in another setting (another tool, team, product or data).", "Mock decision 0066, the text of rule B9"),
-    "w-forced": excerpt("docs/sources/2026-10-07-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://anthropic.com/glasswing)", "Anthropic documentation, Define tools, copy of 7 October 2026 (the live page agreed on 13 October 2026)", kind="docs"),
+    "w-forced": excerpt("docs/sources/2026-10-07-anthropic-docs-define-tools.md", "| Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and [Claude Mythos 5.1](https://anthropic.com/glasswing)", "Claude API documentation, Define tools, copy of 7 October 2026 (the live page agreed on 13 October 2026)", kind="docs"),
     "w-guide": excerpt("reference/exam-guide.md", "Using tool_choice forced selection to ensure a specific tool is called first", "Exam guide, task statement 4.3", kind="guide"),
     "c-s6": excerpt("src/step6_check_scenario.py", "Step 6 sends no question\nback. Each finding goes to the owner (decision 0038, part 3).", "The code of step 6", kind="code"),
     "c-s7": excerpt(S7, "For mocks 1 to 3 the reader is the owner. For mocks 4 and 5 it is the second review in Cowork, also a Claude model", "Build guide, step 7"),
@@ -183,7 +183,7 @@ POP = {
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-4-3": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
               "sent": ["How step 5 uses the point:", table_use("4.3-K1"), "The step names, but does not use:", table_use("4.3-S3"),
-                       "Why: " + DEVIATION + " The Anthropic documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 14 October 2026 in academy/sources/).",
+                       "Why: " + DEVIATION + " The Claude API documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models (copy of 14 October 2026 in academy/sources/).",
                        EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
 }
@@ -1020,7 +1020,7 @@ STEP2 = (level("overview",
                  '<h4 class="story">In a test, a bad mark became an instruction and a check</h4>'
                  '<p>In the first test of the writer, the owner marked one question bad: &ldquo;%s&rdquo; %s %s %s because of that question, step 4 got rule B7 to check it.</p>'
                  '<h4 class="story">The design forced a tool call</h4>'
-                 '<p>%s Before the code was written, the documentation showed that the newest models reject it. So %s The code never had a forced tool call, and %s</p>'
+                 '<p>%s Before the code was written, the Claude API documentation showed that the newest models reject it. So %s The code never had a forced tool call, and %s</p>'
                  % (fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options."),
                     fact("s2-m1", "the correct answer checks the stop reason and continues while Claude asks for a tool."),
                     fact("s2-m2a", "the correct answer again continues while Claude asks for a tool."),
@@ -1076,7 +1076,7 @@ CARD.update({
     "s3-cheap": excerpt(D11, "the code check comes before the model check, to save model calls", "Mock decision 0011"),
     "s3-split": excerpt(D30, "code checks a rule that has one correct answer, and a model checks a rule that needs judgment.", "Mock decision 0030"),
     "s3-count": excerpt(D29, "So the design does not rely on the form for a count. The code check of step 3 checks the number of options and the number of correct answers.", "Mock decision 0029, Reason"),
-    "s3-docs": excerpt(DOC_SO, "Array constraints beyond `minItems` of 0 or 1", "Anthropic documentation, Structured outputs, JSON Schema limitations, not supported (copy of 7 October 2026, the live page agreed on 14 October 2026)", kind="docs"),
+    "s3-docs": excerpt(DOC_SO, "Array constraints beyond `minItems` of 0 or 1", "Claude API documentation, Structured outputs, JSON Schema limitations, not supported (copy of 7 October 2026, the live page agreed on 14 October 2026)", kind="docs"),
     "s3-ask": code_block("src/step2_write.py", '"Write %d options. Mark exactly %d of them correct."', '"Write %d options. Mark exactly %d of them correct."', "What the writer is told"),
     "s3-a2": code_block("src/step3_check_code.py", 'found.append(finding("A2", "The question has %d options.', 'found.append(finding("A2", "The question has %d options.', "Rule A2 in the code"),
     "s3-six": jexcerpt("runs/mock-04/questions/M4-S27-T3.json", next(o["text"] for o in T6["options"] if o["letter"] == "F"), "M4-S27, try 3, option F: the sixth option"),
@@ -1161,7 +1161,7 @@ STEP3 = (level("overview",
                  + '<p><b>Why the form does not count.</b> %s %s Later, %s</p>'
                    % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
-                      fact("s3-docs", "the documentation showed that a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
+                      fact("s3-docs", "the Claude API documentation showed that a JSON schema for structured outputs cannot limit the number of items in a list, beyond a minimum of 0 or 1."))
                  + '<div class="callout"><span class="chip">Beyond the exam</span><p>The limit of a list in a JSON schema. The exam guide does not name this limit of the API.</p></div>'
                  + ts_block(3))
          + level("depth", DEPTH3)
@@ -1224,8 +1224,8 @@ CARD.update({
                 "src": "runs/mock-0N/usage/, src/model_call.py", "href": "%s/tree/%s/runs" % (REPO, TAG)},
     "s4-46": excerpt("reference/exam-guide.md", "Independent review instances (without prior reasoning context) are more effective at catching subtle issues than self-review instructions or extended thinking", "Exam guide, 4.6-K2", kind="guide"),
     "s4-blocking": excerpt("reference/exam-guide.md", "inappropriate for blocking workflows (pre-merge checks)", "Exam guide, 4.5-K2", kind="guide"),
-    "s4-write": excerpt("academy/sources/2026-10-14-anthropic-docs-prompt-caching.md", "5-minute cache write tokens are 1.25 times the base input tokens price", "Anthropic documentation, Prompt caching (copy of 14 October 2026)", kind="docs"),
-    "s4-read": excerpt("academy/sources/2026-10-14-anthropic-docs-prompt-caching.md", "Cache hits and refreshes on Claude Opus 5.5 and Claude Sonnet 5.5 are priced at 0.05x the base input price.", "Anthropic documentation, Prompt caching (copy of 14 October 2026)", kind="docs"),
+    "s4-write": excerpt("academy/sources/2026-10-14-anthropic-docs-prompt-caching.md", "5-minute cache write tokens are 1.25 times the base input tokens price", "Claude API documentation, Prompt caching (copy of 14 October 2026)", kind="docs"),
+    "s4-read": excerpt("academy/sources/2026-10-14-anthropic-docs-prompt-caching.md", "Cache hits and refreshes on Claude Opus 5.5 and Claude Sonnet 5.5 are priced at 0.05x the base input price.", "Claude API documentation, Prompt caching (copy of 14 October 2026)", kind="docs"),
     "s4-changed": excerpt(D67, "The same 2 questions, checked once more with no cache and the guide in the user text, both passed.", "Mock decision 0067"),
     "s4-limit": excerpt(D32, "A limit: only call 4a is blind.", "Mock decision 0032, Reason"),
     "s4-one": excerpt(D32, "The test of call 4a covers questions with one answer only, because all 12 sample questions have one answer.", "Mock decision 0032"),
@@ -1752,10 +1752,21 @@ FIGCC = """
                 "cap": fact("cc-d78", "The owner asked for a check by an agent that had not written the documents.") + " " + fact("cc-c2", "Check 2, also independent, found %d gaps," % GAPS2) + " " + fact("cc-c3", "and check 3 found %d." % GAPS3) + " " + fact("cc-stop", "After the fixes of check 3, the owner stopped the checks.")}
 
 
+TAKE = re.compile(r'<h4 class="takeaway">(.*?)</h4>')
+
+
+def take_out(body):
+    """The takeaway of a part goes into its closed heading (academy decision 0039, item 4), and leaves the Overview."""
+    m = TAKE.search(body)
+    return (m.group(1), body[:m.start()] + body[m.end():]) if m else (None, body)
+
+
 def cc_part(pid, num, title, who, body):
+    take, body = take_out(body)
+    head, line = (take, e(title) + " · " + e(who)) if take else (e(title), e(who))
     return ('<details class="part" id="%s"><summary><span class="pn">%s</span><span><h3>%s</h3><span class="who">%s</span></span>'
             '<span class="mm"><span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
-            % (pid, num, e(title), e(who), body))
+            % (pid, num, head, line, body))
 
 
 def cc_ts(tsid, key):
@@ -1848,9 +1859,11 @@ def part(s):
     ts = ts_of(s)
     who += (" · task statement%s " % ("s" if len(ts) > 1 else "") + ", ".join(ts)) if ts else " · no task statement of the exam guide"
     body = step5_html if s == 5 else PART_HTML.get(s, '<p class="pending">This step comes in slice %d.</p>' % SLICE.get(s, 2))
+    take, body = take_out(body)
+    head, line = (take, e(FULL[s]) + " · " + e(who)) if take else (e(FULL[s]), e(who))
     return ('<details class="part" id="step-%d"><summary><span class="pn">%d</span><span><h3>%s</h3><span class="who">%s</span></span>'
             '<span class="mm">%s<span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
-            % (s, s, e(FULL[s]), e(who), MINI[s], body))
+            % (s, s, head, line, MINI[s], body))
 
 
 PARAGRAPH = read("academy/decisions/0010-two-tabs-each-one-page-with-an-exploded-view.md")
