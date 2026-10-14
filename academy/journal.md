@@ -17,6 +17,7 @@ One entry for each work session. Newest entry first.
 - `main` is pushed to GitHub (79c7e28, decision 0039, item 27). A scan of the commits found no API key and no personal file of the owner.
 - The owner made the repository public. All 155 distinct GitHub links of both tabs return HTTP 200 (checked with curl, without the line anchors).
 - The owner accepted decision 0040.
+- On the yes of the owner: the two record commits are pushed, and the merged branch `fix-owner-reason` and its worktree `~/ccar-f-fix-owner-reason` are deleted. All of its commits are in `main`.
 
 ## 12 and 13 October 2026, the start of the MVP discussion
 
