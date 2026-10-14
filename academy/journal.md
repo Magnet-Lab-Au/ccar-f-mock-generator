@@ -14,20 +14,20 @@ Progress list (updated after each check):
 |---|---|---|
 | A1 | done | 822 links, 0 broken. 6 links gave 504 once (a large file on GitHub), then 200. |
 | A2 | done | 246 numbers of tab 2: 228 computed again, all equal. 18 from text records, all checked. |
-| A3 | running |  |
+| A3 | done | 6 differences, 4 fixed (1 high), 2 left as true. |
 | A4 | done | 2.2 and 2.3: 8 items fixed. 4.3, 4.6, 5.2: 6 fixed (1 high), 4 for the owner. |
 | B1 | done | 293 questions: 293 correct with a quote of the page. 4 needed own knowledge. Notes for the owner. |
-| B2 | open | |
+| B2 | running | domains 1 to 3 |
 | B3 | open | |
 | B4 | open | |
-| C1 | open | |
+| C1 | done | Domain 1 needs a primer of the products and a glossary. 25 stops for the owner. |
 | C2 | open | |
 | C3 | script done | agent open |
 | C4 | open | |
 | C5 | open | |
 | D1 | open | |
-| D2 | running | tab 1 agent |
-| E1 | open | |
+| D2 | done | Tab 1: 20 weak, 10 missing. Tab 2: 7 weak, 9 missing. 4 popups fixed ("marks" for the answer key), the rest for the owner. |
+| E1 | running | seed 20261014 |
 | E2 | open | |
 | E3 | done | "rules file" fixed to "rule file". The other forms are quotes, file names or flags. |
 | F1 | done | Contrast passes. 2 names fixed. nested-interactive and list for the owner. |

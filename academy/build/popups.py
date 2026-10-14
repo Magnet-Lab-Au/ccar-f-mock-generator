@@ -695,8 +695,8 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'call 4a',
   'title': 'What does call 4a see?',
-  'sent': ['Call 4a gets the task statements and points of the guide, the story and the question with its options, but no marks and no reasons. It answers as '
-           'a candidate does. That a checker who sees the marks can tend to agree with them is an assumption of the assistant.'],
+  'sent': ['Call 4a gets the task statements and points of the guide, the story and the question with its options, but no answer key and no reasons. It answers as '
+           'a candidate does. That a checker who sees the answer key can tend to agree with it is an assumption of the assistant.'],
   'points': [],
   'source': 'step-4.md A1, A2, A3, A7'},
  {'tab': 2,
@@ -715,7 +715,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'code',
   'title': 'When is it a fail?',
-  'sent': ['A fail: the letters of call 4a differ from the marks, a rule fails, or code does not find a feature name in the guide records. If not, "cannot '
+  'sent': ['A fail: the letters of call 4a differ from the answer key, a rule fails, or code does not find a feature name in the guide records. If not, "cannot '
            'decide" when call 4a or a rule cannot decide. If not, a pass.'],
   'points': [],
   'source': 'step-4.md V3'},
@@ -794,7 +794,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'call 6a',
   'title': 'What is "the same scene"?',
-  'sent': ['"The same scene" has an exact definition: the same problem and the same correct action. Call 6a sees each question with its marks and reasons, but '
+  'sent': ['"The same scene" has an exact definition: the same problem and the same correct action. Call 6a sees each question with its answer key and reasons, but '
            'no text of the exam guide.'],
   'points': ['4.1-K1'],
   'source': 'step-6.md rule table D1, E4, E6, section 3 (4.1-K1)'},
@@ -893,7 +893,7 @@ POPUPS = [{'tab': 1,
   'text_el': False,
   'who': 'fingerprints',
   'title': 'What does a fingerprint cover?',
-  'sent': ['It covers what a participant sees: the question ID, the question, the field `select`, and each option with its letter, text, mark and reason. The '
+  'sent': ['It covers what a participant sees: the question ID, the question, the field `select`, and each option with its letter, its text, whether it is correct, and its reason. The '
            'date and the model are not in it, because they do not change what a participant sees.'],
   'points': [],
   'source': 'step-8.md P1, P2'},
