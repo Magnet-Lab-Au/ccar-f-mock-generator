@@ -2972,7 +2972,8 @@ PUZZLE_ICON = ('<svg class="h-icon h-puzzle" viewBox="62 95 490 427" aria-hidden
 
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
   <h2 class="with-icon">How we broke it down%(puzzle)s</h2>
-  <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
+  <p>The guide gives each task statement two lists of points. <span class="kw-k">Knowledge of</span> points say what you must know: a fact, a distinction or a reason. For example, %(k2)s is the difference between the three tool_choice settings. <span class="kw-s">Skills in</span> points say what you must be able to do in a situation. For example, %(s2)s is setting tool_choice to &ldquo;any&rdquo; when the document type is unknown.</p>
+  <p>The guide puts each point in one of the two lists. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2.</span></p>
   <p>The guide numbers the task statements but not their points, so the labels of the points are ours.</p>
   <p>Each task statement opens in three levels:</p>
@@ -2985,7 +2986,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
   <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. The line <b>For the exam</b> gives the answer of the guide. The line <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
   <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam. It also lists the topics that the exam covers and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
-</section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
+</section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "k2": lab("4.3-K2"), "s2": lab("4.3-S2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}

@@ -418,3 +418,6 @@ ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width:
 @media (max-width: 59.99rem) { .exam-lines { display: none; } .exam-top { justify-items: start; margin-bottom: var(--s-4); } }
 /* the two axes of a question, before the table of scenarios (owner, 15 October 2026) */
 .ax-dot { fill: var(--border-bright); } .ax-hot { fill: var(--accent); stroke: var(--bg); stroke-width: 2; } .ax-line { fill: none; stroke: var(--text-dim); stroke-width: 1.5; }
+/* "Knowledge of" and "Skills in" in running text, in the colours of the K and S labels (owner, 15 October 2026) */
+.kw-k, .kw-s { font-weight: 600; padding: 0 .3rem; border-radius: var(--r-1); }
+.kw-k { background: var(--k); color: var(--on-k); } .kw-s { background: var(--s); color: var(--on-s); }
