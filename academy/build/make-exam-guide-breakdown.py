@@ -3022,7 +3022,8 @@ def domain_html(d):
 
 
 # the hero image of each domain, drawn for the academy, on top of its section (owner, 15 October 2026).
-# The pages use the web copies (1,600 pixels wide); the originals are in images/domains/originals.
+# The pages use web copies cut to the drawing (1,400 pixels wide); the originals are in images/domains/originals.
+HERO_SIZE = {1: (1400, 560), 2: (1400, 591), 3: (1400, 574), 4: (1400, 517), 5: (1400, 419)}   # the web copies, cut to their drawing (owner, 15 October 2026)
 HERO_ALT = {
     1: "A person sends work to three agents. Each agent uses its own tools, and the results come back as checked steps.",
     2: "A person with the built-in tools Read, Write, Edit, Bash, Grep and Glob, connected through MCP to databases, the web, apps and the cloud.",
@@ -3033,7 +3034,7 @@ HERO_ALT = {
 
 
 def hero(d):
-    w, h = (1600, 800) if d["id"] <= 3 else (1600, 900)
+    w, h = HERO_SIZE[d["id"]]
     return ('<img class="domain-hero" src="images/domains/domain-%d.webp" width="%d" height="%d" loading="lazy" decoding="async" alt="%s">'
             % (d["id"], w, h, e(HERO_ALT[d["id"]])))
 
