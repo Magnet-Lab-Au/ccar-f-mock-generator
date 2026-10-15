@@ -2873,10 +2873,17 @@ def axes_figure():
                       % (x0 - 22, y0 + dy * j + 4, sc["id"], e(say), sc["id"]))
         for d in range(1, 6):
             cx, cy = x0 + dx * (d - 1), y0 + dy * j
-            if d in prim:
-                dots.append('<circle class="ax-p" cx="%d" cy="%d" r="8" data-pick="Scenario %d"><title>Scenario %d, domain %d: primary</title></circle>' % (cx, cy, sc["id"], sc["id"], d))
-            else:
-                dots.append('<circle class="ax-dot" cx="%d" cy="%d" r="3"/>' % (cx, cy))
+            # each pair opens a small popup (owner, 15 October 2026); a clear circle around the dot makes it easy to hit
+            key = "ax-s%d-d%d" % (sc["id"], d)
+            dom = DOM[d]["name"]
+            POP[key] = {"who": "Scenario %d \u00b7 Domain %d" % (sc["id"], d), "cls": "io", "points": [], "example": None,
+                        "title": "%s and %s" % (sc["name"], dom),
+                        "sent": ["The guide names domain %d, %s, as a primary domain of scenario %d." % (d, dom, sc["id"]) if d in prim else
+                                 "The guide does not name domain %d, %s, as a primary domain of scenario %d." % (d, dom, sc["id"])]}
+            dot = ('<circle class="ax-p" cx="%d" cy="%d" r="8" data-pick="Scenario %d"/>' % (cx, cy, sc["id"]) if d in prim
+                   else '<circle class="ax-dot" cx="%d" cy="%d" r="3"/>' % (cx, cy))
+            dots.append('<g class="ax-hit" data-step="%s" tabindex="0" role="button" aria-expanded="false" aria-label="Scenario %d, domain %d">%s<circle class="hit" cx="%d" cy="%d" r="14"/></g>'
+                        % (key, sc["id"], d, dot, cx, cy))
     xl = "".join('<text class="ve-lab" x="%d" y="%d" text-anchor="middle">%d</text>' % (x0 + dx * i, y0 + dy * 6 + 6, i + 1) for i in range(5))
     say_all = "Each large dot is a primary domain of a scenario. Choose a scenario to see its primary domains."
     return ('<div class="ve-live ax-live" data-controls="Choose a scenario" data-all-label="All scenarios"><div class="frame">'
