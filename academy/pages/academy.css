@@ -435,8 +435,10 @@ section[data-level="overview"] .gtitle { font-size: var(--t-small); }
 section[data-level="overview"] > .ov-head { margin-bottom: var(--s-2); } section[data-level="overview"] > .gtitle { margin: var(--s-2) 0 var(--s-3); }
 /* the hero image of each domain on tab 1 (owner, 15 October 2026) */
 .domain-hero { display: block; height: 8.5rem; width: auto; max-width: 100%; object-fit: contain; border-radius: var(--r-2); }   /* the same height for each domain (owner, 15 October 2026) */
-@media (prefers-color-scheme: dark) { :root:not(.light) .domain-hero { background: #fff; padding: var(--s-2); } }
-:root.dark .domain-hero { background: #fff; padding: var(--s-2); }   /* the drawings have dark lines, so in dark mode they stand on white */
+/* one copy of each domain image for each colour scheme (owner, 15 October 2026) */
+.domain-hero.hero-dark { display: none; }
+@media (prefers-color-scheme: dark) { :root:not(.light) .domain-hero.hero-light { display: none; } :root:not(.light) .domain-hero.hero-dark { display: block; } }
+:root.dark .domain-hero.hero-light { display: none; } :root.dark .domain-hero.hero-dark { display: block; }
 .domain-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-5); align-items: center; margin: var(--s-3) 0 var(--s-4); }   /* the summary of a domain, and its image on the right (owner, 15 October 2026) */
 @media (max-width: 48rem) { .domain-intro { grid-template-columns: minmax(0, 1fr); } .domain-intro .domain-hero { order: -1; height: auto; width: 100%; } }
 /* each domain opens and closes, with a large arrow that turns (owner, 15 October 2026) */

@@ -3038,8 +3038,10 @@ HERO_ALT = {
 
 def hero(d):
     w, h = HERO_SIZE[d["id"]]
-    return ('<img class="domain-hero" src="images/domains/domain-%d.webp" width="%d" height="%d" loading="lazy" decoding="async" alt="%s">'
-            % (d["id"], w, h, e(HERO_ALT[d["id"]])))
+    # a copy for each colour scheme: the dark copy has cream outlines, made from the original by a script (owner, 15 October 2026)
+    return ('<img class="domain-hero hero-light" src="images/domains/domain-%d.webp" width="%d" height="%d" loading="lazy" decoding="async" alt="%s">'
+            '<img class="domain-hero hero-dark" src="images/domains/domain-%d-dark.webp" width="%d" height="%d" loading="lazy" decoding="async" alt="%s">'
+            % (d["id"], w, h, e(HERO_ALT[d["id"]]), d["id"], w, h, e(HERO_ALT[d["id"]])))
 
 
 # ----- the primer before domain 1 (academy decision 0043, item 2) -----
