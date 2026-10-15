@@ -636,9 +636,9 @@ PART["1.2"] = (overview("1.2", "The coordinator splits the work and routes every
 # ----- part 1.4 (facts: academy/facts/ts-1-4.md) -----
 
 HOOKS, HG, MEMD, MAO = "claude-code-docs-agent-sdk-hooks", "claude-code-docs-hooks-guide", "claude-code-docs-memory", "anthropic-docs-multiagent-orchestration"
-def mini_box(x, y, w, h, title, sub=None, st=False):
-    return ('<g class="ve-n%s"><rect class="sh" x="%d" y="%d" width="%d" height="%d" rx="0"/><text x="%d" y="%d">%s</text>%s</g>'
-            % (" is-st" if st else "", x, y, w, h, x + w / 2, y + (h / 2 - 10 if sub else h / 2), e(title),
+def mini_box(x, y, w, h, title, sub=None, st=False, step=None):
+    return ('<g class="ve-n%s"%s><rect class="sh" x="%d" y="%d" width="%d" height="%d" rx="0"/><text x="%d" y="%d">%s</text>%s</g>'
+            % (" is-st" if st else "", ' data-step="%s" tabindex="0" role="button" aria-expanded="false"' % step if step else "", x, y, w, h, x + w / 2, y + (h / 2 - 10 if sub else h / 2), e(title),
                '<text class="sub" x="%d" y="%d">%s</text>' % (x + w / 2, y + h / 2 + 12, e(sub)) if sub else ""))
 
 
@@ -3035,7 +3035,7 @@ FIGC = cases("C", [
     ("info", "Your code or Anthropic", "Claude API",
      "In the Claude API, Claude returns a tool call. Your code runs a client tool. Anthropic runs a server tool.", 150,
      mini_box(2, 2, 236, 44, "Claude", "returns a tool call") + '<path class="ve-e" d="M60 46V60"/><path class="ve-e" d="M180 46V60"/>'
-     + mini_box(2, 62, 114, 86, "Your code", "client tool", st=True) + mini_box(124, 62, 114, 86, "Anthropic", "server tool", st=True),
+     + mini_box(2, 62, 114, 86, "Your code", "client tool", st=True, step="pr-pop-client") + mini_box(124, 62, 114, 86, "Anthropic", "server tool", st=True, step="pr-pop-server"),
      cf("pr-api", D(OVT_P, "It then returns a structured call that your application executes (client tools) or that Anthropic executes (server tools).", "Tool use overview"),
         "Claude returns a tool call. Your code runs a client tool, and Anthropic runs a server tool.") + " " +
      cf("pr-api2", D(OVT_P, "**Client tools** (including user-defined tools and tools with Anthropic-defined schemas, such as `bash` and `text_editor`) run in your application.", "Tool use overview"),
@@ -3043,7 +3043,7 @@ FIGC = cases("C", [
     ("info", "Your computer, by default", "Claude Code",
      "Claude Code is the layer around the model. It gives the tools and runs them, by default on your computer.", 150,
      mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "Claude Code", "runs the tools", st=True),
+     + mini_box(2, 62, 236, 86, "Claude Code", "runs the tools", st=True, step="pr-pop-cc"),
      cf("pr-cc", D(CCW, "Claude Code is the layer around the model that provides the tools and manages the context the model sees.", "Claude Code, How Claude Code works"),
         "Claude Code is the layer around the model that gives the tools and manages the context.") + " " +
      cf("pr-cc3", D(CCW, "| **Local** | Your machine | Default. Full access to your files, tools, and environment |", "Claude Code, How Claude Code works"),
@@ -3051,7 +3051,7 @@ FIGC = cases("C", [
     ("info", "Your code", "Agent SDK",
      "The Agent SDK puts the agentic loop of Claude Code into your own code. The SDK runs each tool that Claude asks for.", 150,
      mini_box(2, 2, 236, 44, "Claude", "the model reasons") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "Your code, with the SDK", "runs the tools", st=True),
+     + mini_box(2, 62, 236, 86, "Your code, with the SDK", "runs the tools", st=True, step="pr-pop-sdk"),
      cf("pr-sdk", D(SDKL, "The Agent SDK lets you embed Claude Code's autonomous agent loop in your own applications. The SDK is a standalone package that gives you programmatic control over tools, permissions, cost limits, and output.", "Agent SDK, The agent loop"),
         "The Agent SDK puts the agentic loop of Claude Code into your own code, with control over tools, permissions, cost limits and output.") + " " +
      cf("pr-sdk2", D(SDKL, "The SDK runs each requested tool and collects the results.", "Agent SDK, The agent loop"),
@@ -3059,12 +3059,33 @@ FIGC = cases("C", [
     ("info", "An MCP server", "MCP, a protocol",
      "MCP is an open source standard. An MCP server gives Claude Code or an agent of the Agent SDK access to your tools, databases and APIs.", 150,
      mini_box(2, 2, 236, 44, "Claude Code or SDK", "calls a tool") + '<path class="ve-e" d="M120 46V60"/>'
-     + mini_box(2, 62, 236, 86, "MCP server", "runs the tool", st=True),
+     + mini_box(2, 62, 236, 86, "MCP server", "runs the tool", st=True, step="pr-pop-mcp"),
      cf("pr-mcp", D(MCPD, "Claude Code can connect to hundreds of external tools and data sources through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction), an open source standard for AI-tool integrations. MCP servers give Claude Code access to your tools, databases, and APIs.", "Claude Code, MCP"),
         "MCP (Model Context Protocol) is an open source standard. An MCP server gives Claude Code access to your tools, databases and APIs.") + " " +
      cf("pr-mcp2", D("claude-code-docs-agent-sdk-mcp", "With MCP, your agent can query databases, integrate with APIs like Slack and GitHub, and connect to other services without writing custom tool implementations.", "Agent SDK, MCP"),
         "An agent of the Agent SDK can use MCP too.")),
 ], "Three products and one protocol of the exam, and who runs the tools in each.")
+
+# the popups of Fig. C: what "runs the tool" means in practice, with a link to the part that teaches it (owner, 15 October 2026)
+# sources (academy/sources/2026-10-14-*): tool-use-overview 141; claude-code-docs-permission-modes 9; claude-code-docs-how-claude-code-works 87;
+# claude-code-docs-agent-sdk-agent-loop 25; claude-code-docs-agent-sdk-hooks 9; claude-code-docs-mcp 9 and its .mcp.json section
+def pr_pop(who, title, sent, part):
+    return {"who": who, "cls": "io", "title": title, "sent": sent, "points": [], "example": None,
+            "links": [{"text": "Part %s &rarr;" % part, "href": "#ts-%s" % part.replace(".", "-")}]}
+
+
+POP.update({
+    "pr-pop-client": pr_pop("Your code", "What does your code do with a client tool?",
+                            ["Claude answers with a tool_use block. Your code runs the function and sends back a tool_result."], "1.1"),
+    "pr-pop-server": pr_pop("Anthropic", "What is a server tool?",
+                            ["Anthropic runs it on its own systems, for example web search. The result comes back without code of yours."], "1.1"),
+    "pr-pop-cc": pr_pop("Claude Code", "Where do the tools of Claude Code run?",
+                        ["Built-in tools such as Read, Edit and Bash run on your computer by default. A permission mode sets which actions need your approval."], "2.5"),
+    "pr-pop-sdk": pr_pop("Agent SDK", "What does the SDK do with a tool call?",
+                         ["The SDK runs each tool that Claude asks for, inside your program. A hook of your code can block a call before it runs."], "1.5"),
+    "pr-pop-mcp": pr_pop("MCP server", "What does an MCP server do?",
+                         ["The server runs the tool and returns the result. A team shares its servers in the file .mcp.json of the project."], "2.4"),
+})
 
 GLOSS = [
     ("tool", cf("pr-g-tool", D(OVT_P, "Tool use (also called function calling) lets Claude call functions that you define or that Anthropic provides.", "Tool use overview"),
