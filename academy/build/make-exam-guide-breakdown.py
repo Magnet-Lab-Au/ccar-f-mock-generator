@@ -3016,9 +3016,26 @@ def domain_html(d):
     ts = sorted((t for t in TS if TS[t]["domain"] == d["id"]), key=lambda x: int(x.split(".")[1]))
     summ = DOMAIN_SUMMARY.get(d["id"], "")
     return ('<section class="parts" id="domain-%d" aria-label="Domain %d"><h2>Domain %d: %s</h2>'
-            '<p class="ve-label">%s of the scored questions &middot; %d task statements</p>%s%s</section>'
+            '<p class="ve-label">%s of the scored questions &middot; %d task statements</p>%s%s%s</section>'
             % (d["id"], d["id"], d["id"], e(d["name"]), fact("m-d%d" % d["id"], "about %d%%" % d["weight"]), len(ts),
-               "<p>%s</p>" % summ if summ else "", "".join(ts_part(t) for t in ts)))
+               hero(d), "<p>%s</p>" % summ if summ else "", "".join(ts_part(t) for t in ts)))
+
+
+# the hero image of each domain, drawn for the academy, on top of its section (owner, 15 October 2026).
+# The pages use the web copies (1,600 pixels wide); the originals are in images/domains/originals.
+HERO_ALT = {
+    1: "A person sends work to three agents. Each agent uses its own tools, and the results come back as checked steps.",
+    2: "A person with the built-in tools Read, Write, Edit, Bash, Grep and Glob, connected through MCP to databases, the web, apps and the cloud.",
+    3: "A person at a laptop with CLAUDE.md files for the team, commands, skills and path rules, plan mode or direct work, CI/CD, and teammates.",
+    4: "A prompt with criteria and examples, a JSON schema and tool use, validation with a retry, batches of output, and a review by people.",
+    5: "Facts, context and history, an escalation, errors between agents, a codebase, a review with confidence, and claims that keep their provenance.",
+}
+
+
+def hero(d):
+    w, h = (1600, 800) if d["id"] <= 3 else (1600, 900)
+    return ('<img class="domain-hero" src="images/domains/domain-%d.webp" width="%d" height="%d" loading="lazy" decoding="async" alt="%s">'
+            % (d["id"], w, h, e(HERO_ALT[d["id"]])))
 
 
 # ----- the primer before domain 1 (academy decision 0043, item 2) -----
