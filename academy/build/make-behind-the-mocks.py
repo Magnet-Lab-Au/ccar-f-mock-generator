@@ -355,7 +355,7 @@ FIG1 = """
     </svg>
   </div>
   %(player)s
-  <figcaption><span class="fig-n">Fig. A</span>The 9 steps. The form of each box shows who does the step: code, a Claude model, or the owner. Each box opens a short note.</figcaption>
+  <figcaption><span class="fig-n">Fig. A</span>The form of each box shows who does the step: code, a Claude model, or the owner.</figcaption>
   <section class="sources" aria-label="Sources of the top"><p class="ve-label">Sources of the top of this tab</p><ul>@SOURCES_TOP@</ul></section>
 </figure>
 """ % {
