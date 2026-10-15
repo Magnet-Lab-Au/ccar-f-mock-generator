@@ -550,8 +550,8 @@ STEP5 = """
     <p><b>The limits.</b> %(guard)s A start is the first try of a slot, or the first try after a decision of the owner. The other slots continue.</p>
     <p><b>The record.</b> %(file)s</p>
     %(fig52)s
-    <p class="gh">The task statements that step 5 uses</p>
-    <div class="tslist">%(ts)s</div>
+    <p class="gh">What this teaches for the exam</p>
+    <div class="tslist">%(ts)s</div>@TEACH5@
   </div>
 </details>
 <details class="level" data-level="depth">
@@ -653,6 +653,9 @@ def step_file(n):
     return os.path.relpath(glob.glob(os.path.join(ROOT, "docs/build-guide/step-%d-*.md" % n))[0], ROOT)
 
 
+RAW_USE = {}   # (step, point) -> the text of the table row as it is in the build guide, for its card
+
+
 def table_rows(n):
     """The rows of the table of guide points of a step: (point, how the step uses it) (decision 0024)."""
     out, ctx = [], ""
@@ -660,6 +663,7 @@ def table_rows(n):
         m = re.match(r"^\| ([1-5]\.[0-9]-[KS][0-9]+) \|", l)
         if m:
             use = l.split(" | ")[-1].rstrip(" |")
+            RAW_USE[(n, m.group(1))] = use
             w = re.match(r"(Written for [^.]*\.)", use)
             if w:
                 ctx = w.group(1)
@@ -688,7 +692,19 @@ def ts_block(n, extra=None):
         chips.append('<div class="tsrow"><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">Task statement %s</span> '
                      '<span>%s</span> <a href="%s#ts-%s">Exam guide breakdown %s &rarr;</a></div>'
                      % (key, tsid, e(TS[tsid]["title"]), TAB1, tsid.replace(".", "-"), tsid))
-    return '<p class="gh">The task statements that step %d uses</p><div class="tslist">%s</div>' % (n, "".join(chips))
+    return ('<p class="gh">What this teaches for the exam</p><div class="tslist">%s</div>%s' % ("".join(chips), teach_list(n)))
+
+
+def teach_list(n):
+    """What this teaches for the exam (owner, 16 October 2026): each point that the step uses, and how, from the table of the build guide."""
+    rows, items = table_rows(n), []
+    for pnt, use in rows:
+        if "This build does not use it" in use:
+            continue
+        key = "teach-%d-%s" % (n, pnt.lower().replace(".", "-"))
+        CARD[key] = excerpt(step_file(n), RAW_USE[(n, pnt)], "Build guide, step %d, the table of guide points, %s" % (n, pnt))
+        items.append('<li><a class="v4-pt" href="%s#ts-%s">%s</a> %s</li>' % (TAB1, pnt.split("-")[0].replace(".", "-"), pnt, fact(key, e(use))))
+    return ('<p class="v4-teach-lead">How this step uses each point of the guide:</p><ul class="v4-teach">%s</ul>' % "".join(items)) if items else ""
 
 
 def with_sources(n, html, extra=""):
@@ -1080,16 +1096,16 @@ STEP2 = (level("overview",
                   fact("s2-earlier", "Now it gets the earlier questions on its idea, each with its answer key.")))
          + level("explanation",
                  FIG21
-                 + '<p><b>The rules come first.</b> %s Today the writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
+                 + '<p><b>The rules come first.</b> %s %s</p>'
                    % (fact("s2-cache", "From mock 4, the list of rules is a separate first block, cached, so a repeated list costs less (mock decision 0067)."), fact("s2-model", "Each of the %d tries of the 5 mocks used Claude Opus 5.5." % sum(MODELS.values())))
-                 + '<div class="callout"><span class="chip">Beyond the exam</span><p>The cached block of rules. %s</p></div>' % fact("s2-exam", "The exam tests only that prompt caching exists.")
-                 + '<p><b>The form.</b> %s %s %s</p>'
-                   % (fact("s2-fields", "The writer answers in a fixed form: the question, and each option as correct or wrong, with a reason. It can also answer &ldquo;cannot write&rdquo;."),
-                      fact("s2-form", DEVIATION), e(EXAM_43))
+                 + '<div class="callout"><span class="chip">Beyond the exam</span><p>%s</p></div>' % fact("s2-exam", "The exam tests only that prompt caching exists.")
+                 + '<p><b>The form.</b> Claude Opus 5.5, the model of this build, rejects a forced tool call (4.3-K2 below). %s %s</p>'
+                   % (fact("s2-form", "So the build sends its form as a JSON schema, as structured outputs."),
+                      "For the exam, the answer is tool use with a JSON schema (4.3-K1).")
                  + '<p><b>The letters.</b> %s So %s</p>'
                    % (fact("s2-samplea", "In the %d sample questions of the guide, the correct answer is A %d times and B %d times. A model can copy that (an assumption, not checked)." % (len(REC["sample_questions"]), SAMPLE_A["A"], SAMPLE_A["B"])),
-                      fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "The mix alone did not balance the letters (see step 8). From mock 5, the correct options take the letters that the plan sets."))
-                 + '<p><b>The cost of one call per slot.</b> %s Step 6 checks the questions of a scenario together.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
+                      fact("s2-letters", "code mixes the options and gives the letters.") + " " + fact("s2-plan", "The mix alone did not balance the letters. From mock 5, the plan sets the letters of the correct options."))
+                 + '<p><b>The cost of one call per slot.</b> %s Step 6 checks a scenario as a whole.</p>' % fact("s2-cost", "The writer sees one slot, so it cannot see the other questions of its scenario.")
                  + ts_block(2))
          + level("depth",
                  '<h4 class="story">The writer did not know the earlier mocks</h4>'
@@ -2019,6 +2035,13 @@ def ts_of(s):
     ids = re.findall(r"(?m)^\| ([1-5]\.[0-9])-[KS][0-9]+ \|", read(os.path.relpath(f, ROOT)))
     return list(dict.fromkeys(ids))
 
+
+# step 5 gets its list here, after the helpers exist, and its sources list gets the cards of the list
+_t5 = teach_list(5)
+step5_html = step5_html.replace("@TEACH5@", _t5, 1)
+step5_html = step5_html.replace('<section class="sources" aria-label="Sources of step 5">', '<section class="sources" aria-label="Sources of step 5">@T5@', 1)
+step5_html = re.sub(r'@T5@(.*?)</ul>', lambda m: m.group(1) + sources(re.findall(r'data-card="(teach-5-[^"]+)"', _t5)) + '</ul>', step5_html, count=1, flags=re.S)
+assert "@TEACH5@" not in step5_html and "@T5@" not in step5_html
 
 # ===== VERSION 4 (owner, 15 October 2026): each closed step shows its principle, the task statements of the principle,
 # and a short line on what the step does (academy decision 0046, item 7). The takeaway of the step leaves the page.

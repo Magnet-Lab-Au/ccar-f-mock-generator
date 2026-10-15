@@ -14,3 +14,7 @@ p.v4-bridge { margin-bottom: var(--s-5); max-width: 65ch; }
 .theme-btn { position: fixed; z-index: 40; }
 /* two paragraphs of an Overview keep a gap (owner, 16 October 2026) */
 section[data-level="overview"] p + p { margin-top: var(--s-3); }
+/* what this teaches for the exam (owner, 16 October 2026): each point that a step uses, and how */
+ul.v4-teach { list-style: none; padding: 0; margin: var(--s-3) 0 0; display: grid; gap: var(--s-2); }
+ul.v4-teach li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-3); }
+a.v4-pt { font: 600 var(--t-label) var(--font-mono); padding-top: .2rem; }
