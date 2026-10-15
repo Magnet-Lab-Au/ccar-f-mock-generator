@@ -28,18 +28,19 @@ Tone:
 
 The truth section:
 9. Three stages in one figure (Fig. S): mock v1 used the guide, the documentation and the CCAR-F course as sources. The present builder uses the guide only (mock decision 0008). The academy pages check the documentation of a fixed date and mark each difference that could change an exam answer (academy decision 0042). The form shows the role of each source. Each stage opens a popup.
-10. One difference side by side (1.3-K1: the Task tool, now called Agent), the count of 23 boxes in 15 parts on tab 1, and a link to them.
-11. The source of stage 1 is the document "How These Mocks Were Made" of mock v1, 30 September 2026. The owner said that it may be inaccurate. It is not in this repository, and the page says so on the stage and in its popup. The page does not quote the course.
-12. Long-term goal of the owner: a separate tab collects the differences between the guide and the products, and later checks by itself how they drift apart. It is not built yet.
+10. Why the guide: this is an exam, the exam tests the guide, and the only sample questions of the exam are the 12 in the guide. They became the benchmark: the guide alone answers 4 that the assistant checked (mock decision 0008), call 4a answered all 12 right before mock 1, and rule B8 stops a close copy of one of them. The owner gave this reason after seeing version 3: "it is because this is an exam and the only sample questions we have is from the guide."
+11. One difference side by side (1.3-K1: the Task tool, now called Agent), the count of 23 boxes in 15 parts on tab 1, and a link to them.
+12. The source of stage 1 is the document "How These Mocks Were Made" of mock v1, 30 September 2026. The owner said that it may be inaccurate. It is not in this repository, and the page says so on the stage and in its popup. The page does not quote the course.
+13. Long-term goal of the owner: a separate tab collects the differences between the guide and the products, and later checks by itself how they drift apart. It is not built yet.
 
 The tools section:
-13. Three choices tell how we decided: no subagents (mock decision 0012), no MCP, hooks or sessions (mock decision 0026), and no Message Batches API but prompt caching (mock decision 0067).
-14. A map of the 30 task statements in 5 domain columns (Fig. M). Each tile shows by its form if the build used it, used the idea only, or did not need it, and where: the mock builder or the build in Claude Code. Each tile opens a popup with what we did or why the job did not need it.
-15. One agent drafted the map from the records (`academy/facts/task-statement-use-draft.json`), and an independent agent reviewed it (`academy/facts/task-statement-use-review.md`). The page reads `academy/facts/task-statement-use.json`, and the build stops if a quote is not on its stated line.
+14. Three choices tell how we decided: no subagents (mock decision 0012), no MCP, hooks or sessions (mock decision 0026), and no Message Batches API but prompt caching (mock decision 0067).
+15. A map of the 30 task statements in 5 domain columns (Fig. M). Each tile shows by its form if the build used it, used the idea only, or did not need it, and where: the mock builder or the build in Claude Code. Each tile opens a popup with what we did or why the job did not need it.
+16. One agent drafted the map from the records (`academy/facts/task-statement-use-draft.json`), and an independent agent reviewed it (`academy/facts/task-statement-use-review.md`). The page reads `academy/facts/task-statement-use.json`, and the build stops if a quote is not on its stated line.
 
 ## Built (15 October 2026)
 
-Version 3 has items 3 to 6 and 8 to 15. Item 7 is not built yet. The review of the map changed 13 entries and made 8 claims weaker. The map now shows 10 task statements used, 11 as an idea only, and 9 not used. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`.
+Version 3 has items 3 to 6 and 8 to 16. Item 7 is not built yet. The review of the map changed 13 entries and made 8 claims weaker. The map now shows 10 task statements used, 11 as an idea only, and 9 not used. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`.
 
 Open for the owner, from the review:
 - 1.2 and 1.3 show "idea only". The fact sheet of 1.2 says that a decision of the owner is necessary to cite the fact agents and review agents as 1.2.

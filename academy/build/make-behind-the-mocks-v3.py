@@ -2142,12 +2142,18 @@ TRUTH_FIG = """<figure class="v3-fig">
     % (key, date, name, "".join('<li class="v3-src%s"><span>%s</span><span class="v3-role">%s</span></li>' % (SRC_MARK[m], s, SRC_SAY[m]) for s, m in srcs), say)
     for date, name, srcs, say, key, *_ in STAGES)
 
-TRUTH_CARDS = ["v3-guide13", "v3-docs13", "v3-0008a", "v3-0008b", "v3-0042"]
+CARD.update({
+    "v3-0008c": excerpt(D08, "The exam tests the guide.", "Mock decision 0008, Reason"),
+    "v3-0008d": excerpt(D08, "The guide alone is sufficient for its own sample questions: the assistant checked four of the twelve (1, 2, 3 and 10).", "Mock decision 0008, Reason"),
+    "v3-b8": excerpt("src/step4_check_model.py", "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.", "The code of step 4, rule B8", kind="code"),
+})
+TRUTH_CARDS = ["v3-guide13", "v3-docs13", "v3-0008a", "v3-0008b", "v3-0008c", "v3-0008d", "s4-t24", "v3-b8", "v3-0042"]
 TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
   <h2 id="truth-h">First, we settled what is true</h2>
   <p>A mock is only as good as its answer key, so we first had to know what a correct answer is. For mock v1, we read the exam guide, the Claude documentation and the CCAR-F course side by side. We observed that they did not always agree. The guide names %(g13)s. %(d13)s A candidate who learned the product could choose the wrong answer in the exam.</p>
   %(fig)s
   <p>So we chose one rule. %(r1)s We also saw that a source can go out of date. %(r2)s</p>
+  <p>Why the guide? This is an exam, and %(w1)s The only sample questions of the exam that we had were the 12 in the guide. They became our benchmark. %(w2)s %(w3)s And %(w4)s</p>
   <div class="exambox-v3"><p class="ve-label">One difference, side by side</p>
     <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works in settings and agent definitions.</dd></dl></div>
   <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
@@ -2158,6 +2164,11 @@ TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
     "fig": TRUTH_FIG,
     "r1": fact("v3-0008a", "Where the documentation and the guide disagree, the answer of the guide is the answer of the exam."),
     "r2": fact("v3-0008b", "Each added source adds a step that can fail and that becomes old."),
+    # why the guide (owner, 15 October 2026): this is an exam, and the only sample questions are in the guide
+    "w1": fact("v3-0008c", "the exam tests the guide."),
+    "w2": fact("v3-0008d", "Before the first mock, we checked that the guide alone is enough to answer 4 of them."),
+    "w3": fact("s4-t24", "Then our checker, with no answer key, answered all 12 right."),
+    "w4": fact("v3-b8", "a rule of step 4 stops any question that is a close copy of one of them."),
     "n42": fact("v3-0042", "23 boxes in 15 parts"),
     "tab1": TAB1, "src": "@SRC_TRUTH@",
 }

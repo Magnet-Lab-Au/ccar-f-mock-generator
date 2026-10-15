@@ -2,6 +2,7 @@
    The story before Fig. A: how we settled what is true (Fig. S), and what we chose to use (Fig. M). */
 .v3-sec { margin: var(--s-7) 0; }
 .v3-sec > p { max-width: 65ch; }
+.v3-sec > p + p { margin-top: var(--s-4); }
 .v3-sec h2 { margin-bottom: var(--s-4); }
 .v3-sec > .v3-fig { margin: var(--s-6) 0; }
 
