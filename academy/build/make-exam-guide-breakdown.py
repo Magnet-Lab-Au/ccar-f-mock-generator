@@ -3018,7 +3018,8 @@ def domain_html(d):
     return ('<section class="parts" id="domain-%d" aria-label="Domain %d"><h2>Domain %d: %s</h2>'
             '<p class="ve-label">%s of the scored questions &middot; %d task statements</p>%s%s%s</section>'
             % (d["id"], d["id"], d["id"], e(d["name"]), fact("m-d%d" % d["id"], "about %d%%" % d["weight"]), len(ts),
-               hero(d), "<p>%s</p>" % summ if summ else "", "".join(ts_part(t) for t in ts)))
+               # the summary on the left and the image on the right (owner, 15 October 2026)
+               '<div class="domain-intro"><p>%s</p>%s</div>' % (summ, hero(d)), "", "".join(ts_part(t) for t in ts)))
 
 
 # the hero image of each domain, drawn for the academy, on top of its section (owner, 15 October 2026).
