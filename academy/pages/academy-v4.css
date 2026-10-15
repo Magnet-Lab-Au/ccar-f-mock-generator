@@ -2,3 +2,5 @@
    Each closed step shows its principle, the task statements of the principle, and a short line on what the step does. */
 details.part > summary .v4-ts { display: inline-block; vertical-align: .15em; margin-left: var(--s-2); padding: 0 var(--s-2); border: 1px solid var(--info); font: 600 var(--t-label) var(--font-mono); color: var(--text); }
 details.part > summary .v4-what { display: block; font-size: var(--t-small); color: color-mix(in srgb, var(--info) 55%, var(--text)); margin-top: var(--s-1); }   /* the teal of the task statement chip, mixed with the text so that it keeps its contrast (owner, 15 October 2026) */
+/* the bridge of a section keeps space from the boxes or parts under it (owner, 15 October 2026) */
+p.v4-bridge { margin-bottom: var(--s-5); max-width: 65ch; }
