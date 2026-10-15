@@ -812,14 +812,14 @@ FIG01 = """
 STEP0 = (level("overview",
                '<h4 class="takeaway">A script copies the exam guide into records, once for each version of the guide</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s So %s %s %s %s</p><p>The result: %s, and %s</p>'
+               '<p>%s So %s %s %s %s</p><p>The result: %s. %s</p>'
                % (fact("s0-risk", "The exam guide names the risk itself: the link to a source gets lost when findings are summarized and compressed."),
                   fact("s0-what", "no model copies the guide. A script copies it into one file of records,"),
                   fact("s0-once", "once per version of the guide."),
                   fact("s0-fail", "It stops if a count is wrong"), fact("s0-exact", "or a text is not exactly in the guide.")
                   + " " + fact("s0-slice", "Each later step takes its text from this file, by ID."),
-                  fact("s0-keep", "all %d questions of the 5 mocks have a point that is in the guide records" % TOTAL_Q),
-                  fact("s0-pdf", "the Markdown copy of the guide matches the official PDF word for word.")))
+                  fact("s0-keep", "each of the %d questions has a point in the guide records" % TOTAL_Q),
+                  fact("s0-pdf", "The Markdown copy of the guide matches the official PDF word for word.")))
          + level("explanation",
                  '<p><b>The file.</b> %s</p>' % fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"])))
                  + FIG01
@@ -1048,6 +1048,7 @@ CARD.update({
     "s2-m2b": jexcerpt("runs/mock-02/questions/M2-S08-T2.json", cor(Q_M2B), "M2-S08, try 2, the correct option (mock 2)"),
     "s2-d001": jexcerpt("runs/mock-02/owner-decisions.json", D2_001["reason"], "The rewrite of the owner, mock 2"),
     "s2-did": excerpt(D56, "In mock 2, the writer did not know mock 1. On a shared idea it wrote the most obvious scene again, often with the same wrong options.", "Mock decision 0056, Reason"),
+    "s2-b9": excerpt(D56, "New rule B9 in call 4b: \"The question is not a repeat of an earlier question on the same idea", "Mock decision 0056, Decision"),
     "s2-earlier": excerpt(D56, "When the idea of a slot is in an earlier mock, the writer gets the earlier questions on that idea, with the mark of each option", "Mock decision 0056, Decision"),
     "s2-bad": excerpt(D43, "The question is confusing and needs calrification. I had to read the question more than one time. Use one name for the actor, not 'the subagent' and 'Claude'.", "Mock decision 0043, Question"),
     "s2-first": excerpt(D43, "The assistant first recommended an instruction only. The owner asked if that is enough.", "Mock decision 0043, How we decided"),
@@ -1086,13 +1087,13 @@ FIG21 = """
 STEP2 = (level("overview",
                '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s %s %s %s</p><p>Mock 2 taught us one more rule. %s %s</p>'
+               '<p>%s %s %s %s</p><p>%s %s</p>'
                % (fact("s2-what", "For each slot, one new Claude call writes one question."),
                   fact("s2-fields", "It answers in a fixed form: the question, and each option as correct or wrong, with a reason."),
                   fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question."),
                   fact("s2-letters", "Code, not the model, mixes the options and gives the letters."),
                   fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea, it wrote the most obvious scene again."),
-                  fact("s2-earlier", "Now it gets the earlier questions on its idea, each with its answer key.")))
+                  fact("s2-earlier", "Now it gets the earlier questions on its idea, each with its answer key,") + " " + fact("s2-b9", "and rule B9 of step 4 fails a repeat.")))
          + level("explanation",
                  FIG21
                  + '<p><b>The rules come first.</b> %s %s</p>'
@@ -1230,7 +1231,7 @@ FIG32 = """
     "h": 5 * 34 + 30, "vals": ", ".join(map(str, LONG)), "cx": 80 + 13 * 400 // MAXL, "cxt": 84 + 13 * 400 // MAXL, "ch": 5 * 34, "ch2": 5 * 34 + 18,
     "bars": "".join('<text x="0" y="%d">Mock %d</text><rect class="%s" x="80" y="%d" width="%d" height="22"/><text class="hv" x="%d" y="%d">%d</text>'
                     % (i * 34 + 16, i + 1, "hot" if i == 0 else "", i * 34 + 5, v * 400 // MAXL, 540, i * 34 + 16, v) for i, v in enumerate(LONG)),
-    "cap": fact("s3-long", "One-answer questions whose correct option is the longest: %d of 52 in mock 1, then %s." % (LONG[0], ", ".join(map(str, LONG[1:])))) + " Chance is 13.",
+    "cap": fact("s3-long", "One-answer questions whose correct option is the longest: %d of 52 in mock 1, then %s." % (LONG[0], ", ".join(map(str, LONG[1:])))) + " By chance, about 13 would be.",
 }
 
 DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
@@ -1240,7 +1241,7 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
              fact("s3-d005", "&ldquo;The last try failed on the form (rules A1 and A2), not on B9.&rdquo;"))
           + '<h4 class="story">The longest option was too often correct</h4>' + FIG32
           + '<p>%s Each question passed rule A7, which looks at one question only. The build did not choose a rule that the correct option is never the longest. %s Instead, %s So from mock 2, step 1 allows a correct longest option on 13 of the 52 one-answer slots and 3 of the 8 two-answer slots. %s</p>'
-          % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
+          % (fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. By chance, about 13 would be."),
              fact("s3-never", "With that rule, a participant learns that the longest option is always wrong."),
              fact("s3-gain", "a participant who always selects the longest option must not gain from it."),
              fact("s3-a12", "On each other slot, rule A12 fails a question where a correct option is as long as or longer than each wrong option.")))
@@ -1248,11 +1249,11 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
 STEP3 = (level("overview",
                '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s %s %s</p><p>One rule shows why. %s %s %s</p>'
+               '<p>%s %s %s</p><p>%s %s %s</p>'
                % (fact("s3-split", "A rule with one correct answer needs no judgment, so code checks it, not a model."),
                   fact("s3-what", "Today code checks each try against 12 such rules, A1 to A12."),
                   fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"])),
-                  fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
+                  fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. By chance, about 13 would be."),
                   fact("s3-a12", "Rule A12 now fails a question where a correct option is as long as or longer than each wrong option."),
                   fact("s3-long", "In mocks 2 to 5, the count was %s." % ", ".join(map(str, LONG[1:])))))
          + level("explanation",
@@ -1439,11 +1440,11 @@ STEP4 = (level("overview",
                '<h4 class="takeaway">Two new Claude calls: one answers blind, one checks 9 rules, and code decides</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
                '<p>%s So a new call checks each question, not the writer. %s %s %s</p><p>%s</p>'
-               % (fact("s4-46", "The guide says that a reviewer without the reasoning of the writer catches subtle issues better than self-review (4.6-K2)."),
-                  fact("s4-calls", "Call 4a answers the question with no answer key. Today call 4b checks the 9 rules B1 to B9 with the key."),
+               % (fact("s4-46", "The guide says that a reviewer with no prior reasoning catches subtle issues better than self-review (4.6-K2)."),
+                  fact("s4-calls", "Call 4a answers with no answer key. Call 4b checks the 9 rules B1 to B9 with the key."),
                   fact("s4-compare", "Code compares the letters of call 4a with the answer key."),
                   fact("s4-verdict", "Code also checks the feature names and makes the verdict."),
-                  fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9 (%d of %d)." % (sum(V4.values()), V4["pass"], V4["fail"], RULE4["B9"], sum(RULE4.values())))))
+                  fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. A failed check can name more than one rule: %d findings, %d of them rule B9." % (sum(V4.values()), V4["pass"], V4["fail"], sum(RULE4.values()), RULE4["B9"]))))
          + level("explanation",
                  FIG41
                  + '<p><b>Why two calls.</b> %s %s So code enforces the order, not an instruction.</p>'
@@ -1681,11 +1682,11 @@ STEP7 = (level("overview",
                '<h4 class="takeaway">A reader marks the questions in a file good or bad, and the file shows no verdict</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
                '<p>%s %s %s</p><p>%s %s</p>'
-               % (fact("s7-what", "Before this step, code or a model checked each question. A reader who marks them shows if those checks are right. For mocks 1 to 3 the reader was the owner, and for mocks 4 and 5 a Claude model."),
+               % (fact("s7-what", "A reader who marks the questions shows if the checks before were right. For mocks 1 to 3 the reader was the owner, and for mocks 4 and 5 a Claude model."),
                   fact("s7-tend", "A person who sees a verdict tends to agree with it."),
                   fact("s7-file", "So the file shows no verdict of a checker. The reader marks good or bad, with a reason for a bad mark."),
                   fact("s7-bad", "A bad mark sends the question to step 5, with the reason as the finding."),
-                  fact("s7-stop", "Too many bad marks stop the mock.")))
+                  fact("s7-stop", "Too many bad marks stop the mock.") + " " + fact("s7-runs", "Over the 5 mocks, readers gave %d marks, and %d were bad." % (MARKS_ALL, sum(BAD)))))
          + level("explanation",
                  FIG71
                  + '<p><b>Which questions.</b> %s %s</p>' % (fact("s7-which", "Mock 1 and mock 5 put all 60 questions in the file. Mocks 2 to 4 put a random sample of 20, 5 from each scenario."), fact("s7-refuse", "Code refuses a file with a missing mark, or a bad mark with no reason."))
@@ -1979,12 +1980,12 @@ CC_HTML = "".join([
            + " " + fact("cc-d01", "The first decision of the build also names 5.4-K2 for the same files:") + " " + fact("cc-54k2", "files that keep key findings across context boundaries."))
         + cc_ts("1.7", "cc-1-7-ts"),
         '<h4 class="story">The summary was not read</h4><p>%s</p>'
-        % (fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not.") + " " + fact("cc-six", "It read them, and changed six points of the plan.")), "how the build used it")),
+        % (fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names. The owner asked if it had read them. It had not.") + " " + fact("cc-six", "It read them, and changed six points of the plan.")))),
     cc_part("cc-4-6", "4.6", "A new agent reviews each file", "task statement 4.6", cc_body("cc-4-6",
         '<h4 class="takeaway">A file is checked by an agent that did not write it</h4>'
         # the story tone (owner, 16 October 2026): the risk, what we built, and the result
         '<p>%s %s</p><p>The result: %s</p>'
-        % (fact("cc-46k1", "The exam guide names the risk: a model that keeps the reasoning of its own work is less likely to question its own decisions in the same session (4.6-K1)."),
+        % (fact("cc-46k1", "The exam guide names the risk (4.6-K1). A model that keeps the reasoning of its own work is less likely to question its own decisions in the same session."),
            fact("cc-r15", "A rule of the owner: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
            fact("cc-code", "on 7 October 2026, two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs.")),
         '<p>%s %s %s</p>'
@@ -1998,7 +1999,7 @@ CC_HTML = "".join([
         % (fact("cc-c1", "an independent agent checked all documents, and the assistant fixed the gaps."),
            fact("cc-c2", "A second independent check, over more files, found %d gaps." % GAPS2),
            fact("cc-c3", "A third check found %d smaller gaps." % GAPS3),
-           fact("cc-stop", "No reviewer checked the last 20 fixes. The owner stopped the checks there.")), "how the build used it")),
+           fact("cc-stop", "No reviewer checked the last 20 fixes. The owner stopped the checks there.")))),
     cc_part("cc-3-4", "3.4", "Discuss first, not plan mode", "task statement 3.4 · no example in the build", cc_body("cc-3-4",
         '<h4 class="takeaway">The build used a rule to discuss first, not plan mode</h4>'
         # the story tone (owner, 16 October 2026): the risk, what we built, and the result
@@ -2014,7 +2015,7 @@ CC_HTML = "".join([
         + cc_ts("3.4", "cc-3-4-ts"),
         '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'
         % (fact("cc-soon", "During the plan of the two tabs of this academy, the assistant moved to the build too soon, and the owner stopped it."),
-           fact("cc-doc-context", "As the part on CLAUDE.md above says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")), "how the build used it")),
+           fact("cc-doc-context", "As the part on CLAUDE.md above says, a rule in CLAUDE.md is context, not enforced configuration, so the rule only asked the assistant to wait.")))),
 ])
 
 # ----- the parts -----
@@ -2138,7 +2139,7 @@ LIMITS = """<details class="domain parts" id="limits" open><summary><span class=
     <div class="callout"><span class="chip ok">The records show</span><ul class="beyond">
       <li>%(s3)s <a href="#step-3">Step 3 &rarr;</a></li>
       <li>%(s4)s %(t24a)s <a href="#step-4">Step 4 &rarr;</a></li>
-      <li>%(spread)s <a href="#step-1">Step 1 &rarr;</a></li>
+      <li>%(fp)s <a href="#step-8">Step 8 &rarr;</a></li>
       <li>%(s33)s <a href="#step-7">Step 7 &rarr;</a></li>
       <li>%(cost)s <a href="#step-4">Step 4 &rarr;</a></li>
     </ul></div>
@@ -2156,8 +2157,9 @@ LIMITS = """<details class="domain parts" id="limits" open><summary><span class=
     "t24a": fact("s4-t24", "Before mock 1, call 4a answered %d of the %d sample questions of the guide right." % (T24["right"], T24["of"])),
     "spread": fact("s1-spread", "%d of the %d ideas are in 2 to 4 mocks." % (sum(SPREAD[k] for k in (2, 3, 4)), len(PG))),
     "s33": fact("lim-s33", "The reader of step 7 found that M5-S33 was a copy of a question of mock 2, and the question was written again."),
-    "cost": fact("lim-cost", "The program runs of the %d mocks cost %.2f dollars, for all steps. The tests and the build sessions are not in this sum." % (len(COST), sum(c[0] for c in COST))),
-    "blind": fact("s4-runs", "Call 4a was never tested with a wrong answer key. In the %d checks of the 5 mocks, it never selected letters other than the answer key." % sum(V4.values())),
+    "cost": fact("lim-cost", "The program runs of the %d mocks cost $%.2f, for all steps. The tests and the build sessions are not in this sum." % (len(COST), sum(c[0] for c in COST))),
+    "fp": fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints of a checked question still equals its question record." % FP_ALL),
+    "blind": fact("s4-runs", "No test checked if call 4a finds a question whose answer key is wrong. In the %d checks of the 5 mocks, it never selected letters other than the answer key." % sum(V4.values())),
     "t24": fact("lim-t24", "A test before mock 1 gave call 4b alone two questions with a wrong answer key and swapped reasons, and call 4b failed both."),
     "m4": fact("lim-m4", "31 of the 60 questions of mock 4 are close to a question of an earlier mock,"),
     "m5": fact("lim-m5", "and 46 of the 60 of mock 5."),
@@ -2237,6 +2239,7 @@ CARD.update({
     "v3-0012": excerpt(D12, "The owner asked if the pipeline needs subagents, because single calls are independent already. That is correct.", "Mock decision 0012, How we decided"),
     "v3-0012b": excerpt(D12, "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends", "Mock decision 0012, How we decided"),
     "v3-0026": excerpt(D26, "The pipeline uses no MCP, no subagent, no hook and no session.", "Mock decision 0026, Question"),
+    "v3-0026r": excerpt(D26, "A step that exists only to show a feature makes the program worse.", "Mock decision 0026, Reason"),
     "v3-0026b": excerpt(D26, "The owner said: \"I accept no MCP and subagents\". The assistant asked again for hooks and sessions. The owner said: \"Sure\".", "Mock decision 0026, How we decided"),
     "v3-batch": excerpt("academy/sources/2026-10-14-anthropic-docs-batch-processing.md", "All usage is charged at 50% of the standard API prices.", "Claude API documentation, Batch processing (copy of 14 October 2026)", kind="docs"),
     "v3-0067a": excerpt(D67, "The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067, Options"),
@@ -2299,7 +2302,7 @@ TRUTH = """<details class="domain parts v3-sec" id="truth" open><summary><span c
     "r2": fact("v3-0008b", "Each added source adds a step that can fail and that becomes old."),
     # why the guide (owner, 15 October 2026): this is an exam, and the only sample questions are in the guide
     "w1": fact("v3-0008c", "the exam tests the guide."),
-    "w2": fact("v3-0008d", "Before the first mock, we checked that the guide alone is enough to answer 4 of them."),
+    "w2": fact("v3-0008d", "Before the first mock, we checked 4 of them, and the guide alone was enough to answer each one."),
     "w3": fact("s4-t24", "Then our checker, with no answer key, answered all 12 right."),
     "w4": fact("v3-b8", "a rule of step 4 stops any question that is a close copy of one of them."),
     "n42": fact("v3-0042", "23 boxes in 15 parts"),
@@ -2369,7 +2372,7 @@ TOOLS = """<details class="domain parts v3-sec" id="tools" open><summary><span c
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
     <li><b>No subagents in the pipeline<a class="v3-ast" href="#v3-note-sub" aria-label="See the note">*</a>.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
-    <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
+    <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s Our reason: %(c2r)s</li>
     <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
   </ol>
   <p class="v3-note" id="v3-note-sub">* The build itself used subagents in Claude Code, for facts and reviews. Each one got a written brief with all the context it needed. See <a href="#cc-4-6">part 4.6 of The build in Claude Code</a>.</p>
@@ -2381,12 +2384,13 @@ TOOLS = """<details class="domain parts v3-sec" id="tools" open><summary><span c
     "c1b": fact("v3-0012b", "A plain API call already has its own context, and it sees only what the program sends."),
     "c2": fact("v3-0026", "The pipeline uses no MCP, no subagent, no hook and no session."),
     "c2b": fact("v3-0026b", "We accepted that, first for MCP and subagents, then for hooks and sessions."),
+    "c2r": fact("v3-0026r", "a step that exists only to show a feature makes the program worse."),
     "c3": fact("v3-batch", "The Message Batches API charges 50% of the standard prices."),
     "c3a": fact("v3-0067a", "We rejected it, because each round of the pipeline would wait for its batch."),
     "c3b": fact("v3-0067b", "In a test on 10 questions, the check calls cost $0.58 with caching, against $1.72 without."),
     "fig": MAP_FIG, "msrc": MAP_SRC,
 }
-TOOLS_CARDS = ["v3-0012", "v3-0012b", "v3-0026", "v3-0026b", "v3-batch", "v3-0067a", "v3-0067b"]
+TOOLS_CARDS = ["v3-0012", "v3-0012b", "v3-0026", "v3-0026b", "v3-0026r", "v3-batch", "v3-0067a", "v3-0067b"]
 V3_INTRO = TRUTH + TOOLS
 # ===== end of version 3 =====
 
@@ -2396,6 +2400,7 @@ BODY = """<main>
   <h1>%(title)s</h1>
   <p class="lead intro">%(para)s</p>
   <div class="callout newcomer"><p><b>New to the exam guide?</b> Read <a href="%(tab1)s">Exam guide breakdown</a> first. It explains the domains, the task statements and their points.</p></div>
+  <nav class="v4-jump" aria-label="Sections of this page"><a href="#truth">First, the truth</a><a href="#tools">Next, the tools</a><a href="#steps">Then, the 9 steps</a><a href="#claude-code">The build in Claude Code</a><a href="#limits">Finally, what we can claim</a></nav>
 </header>
 %(v3)s
 <!-- each big section opens and closes, open at the start (owner, 15 October 2026). Version 4: the overview and the 9 steps are one section -->
