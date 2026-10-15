@@ -1,0 +1,9 @@
+/* Tab 2, version 2 (owner, 15 October 2026): only behind-the-mocks-v2.html loads this file, after academy.css */
+/* 2. the sentence before Fig. A */
+.v2-intro { max-width: 65ch; }
+/* 3. the icon in each step box of Fig. A */
+.step-icon { color: var(--text-dim); pointer-events: none; }
+/* 7. the live Fig. 4-2: the chosen rule lights. The other bars lose their colour, and all text keeps its colour */
+.ve-bars rect.rule-bar.sel { fill: var(--accent); }
+.ve-bars text.sel { font-weight: 700; }
+.ve-bars rect.rule-bar.dim { fill: var(--border); }
