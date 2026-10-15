@@ -2,6 +2,15 @@
 
 One entry for each work session. Newest entry first.
 
+## 15 October 2026, evening: tab 2 tells a story before the steps (decision 0046, a fork of the main session)
+
+- This session is a fork of the main session of 15 October 2026. It works in the worktree `.claude/worktrees/behind-mocks-v3`, on the branch `behind-mocks-v3`, so that it does not change the files of the main session.
+- The owner asked if tab 2 shows the schema of the request to Claude. It does not: step 2 names the JSON schema in `output_config.format` but does not show it. The owner then asked if snippets had gone missing. They had not: tab 2 has 9 code cards, and the git history shows that the number of code cards never went down. They are hard to find, because the dotted line shows only under the pointer (decision 0044) and 6 of them are in the closed Depth. The owner left both items for later.
+- The owner said that the introduction of tab 2 is weak. The discussion set the purpose of the tab and the order of its top (decision 0046). The owner shared a prototype from mock v1, `How These Mocks Were Made.docx` (30 September 2026). It is not committed. The assistant took concepts from it, not text.
+- Built version 3, a copy of version 2 with two new sections under the paragraph of the owner: "First, we settled what is true" (Fig. S, three stages of the sources) and "Then, we used only what the job needed" (three choices, and Fig. M, the map of the 30 task statements).
+- The map: one agent drafted it from the records (15 used, 6 idea only, 9 not used). An independent agent reviewed it and changed 13 entries, mostly to weaker claims: 10 used, 11 idea only, 9 not used. The build checks that each evidence quote is on its stated line. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`. Nobody has reviewed the new sections of the page as a whole.
+- Open for the owner: 1.2 and 1.3 ("idea only" until the owner decides), and 2.5 and 3.2 on the map against academy decision 0035.
+
 ## 14 October 2026, night: the box "For the exam" and "The product today" (decision 0042)
 
 - The owner asked where the open items of the checks are. They are in `academy/checks/findings.md`. The owner said that the list is too long to read. The assistant now brings the items one at a time, with one recommendation each.

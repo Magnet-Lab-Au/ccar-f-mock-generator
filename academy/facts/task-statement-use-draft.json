@@ -1,0 +1,667 @@
+[
+  {
+    "id": "1.1",
+    "title": "Design and implement agentic loops for autonomous task execution",
+    "state": "idea",
+    "levels": [
+      "builder"
+    ],
+    "what": "Step 5 stopped a slot when a question passed, and used the limit of 3 tries only as a guard. It had no tool loop.",
+    "where": "step 5",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-5-try-again.md",
+        "line": 42,
+        "quote": "Here: the limit of 3 tries is a guard, not the main way to stop."
+      },
+      {
+        "path": "docs/decisions/0033-the-design-of-step-5-the-new-try.md",
+        "line": 115,
+        "quote": "The main way to stop is a question that passes the checks."
+      },
+      {
+        "path": "src/model_call.py",
+        "line": 130,
+        "quote": "stop = getattr(response, \"stop_reason\", None)"
+      }
+    ]
+  },
+  {
+    "id": "1.2",
+    "title": "Orchestrate multi-agent systems with coordinator-subagent patterns",
+    "state": "used",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The assistant started a fact agent and a review agent for each part of the academy pages and used their reports.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "academy/decisions/0012-two-agents-for-each-part.md",
+        "line": 14,
+        "quote": "Two new agents for each part."
+      },
+      {
+        "path": "academy/decisions/0012-two-agents-for-each-part.md",
+        "line": 18,
+        "quote": "the fact sheet: each fact with its file and line, and each conflict"
+      },
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 19,
+        "quote": "The build guide does not show MCP, subagents, hooks or sessions at work. The pipeline uses none."
+      }
+    ]
+  },
+  {
+    "id": "1.3",
+    "title": "Configure subagent invocation, context passing, and spawning",
+    "state": "used",
+    "levels": [
+      "builder",
+      "claude-code"
+    ],
+    "what": "The assistant gave each fact agent a written brief as its context. Step 0 kept the ID of each guide record for later steps.",
+    "where": "step 0 and the build in Claude Code",
+    "evidence": [
+      {
+        "path": "academy/facts/brief-for-tab-1.md",
+        "line": 3,
+        "quote": "The assistant gives this brief to each fact agent of tab 1"
+      },
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 164,
+        "quote": "A Claude Code subagent does not get the conversation, so the prompt must carry the task"
+      },
+      {
+        "path": "docs/build-guide/step-0-prepare-the-guide-records.md",
+        "line": 29,
+        "quote": "each record keeps its ID, so each later step and each question keeps the link to its source."
+      }
+    ]
+  },
+  {
+    "id": "1.4",
+    "title": "Implement multi-step workflows with enforcement and handoff patterns",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "The program enforced the order of the steps in code, not in prompts, and sent an open slot to a person.",
+    "where": "steps 1 to 4",
+    "evidence": [
+      {
+        "path": "docs/decisions/0002-a-program-with-the-api-and-the-agent-sdk.md",
+        "line": 23,
+        "quote": "code must enforce a rule that must always hold (1.4)"
+      },
+      {
+        "path": "docs/build-guide/step-3-check-by-code.md",
+        "line": 30,
+        "quote": "Here: a rule with one exact answer is checked by code, not by a model."
+      },
+      {
+        "path": "docs/decisions/0013-step-5-a-failed-question-goes-back-to-the-writer-with-the-findings.md",
+        "line": 26,
+        "quote": "an open slot goes to a person"
+      }
+    ]
+  },
+  {
+    "id": "1.5",
+    "title": "Apply Agent SDK hooks for tool call interception and data normalization",
+    "state": "not-used",
+    "levels": [],
+    "what": "The builder called the plain Claude API without the Agent SDK, so it had no hooks. Plain code enforced each rule.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 10,
+        "quote": "The pipeline uses no MCP, no subagent, no hook and no session."
+      },
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 23,
+        "quote": "A step that exists only to show a feature makes the program worse."
+      }
+    ]
+  },
+  {
+    "id": "1.6",
+    "title": "Design task decomposition strategies for complex workflows",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "Step 1 fixed the plan of a mock before the writing started, because the work of a mock was known in advance.",
+    "where": "step 1",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-1-plan-the-mock.md",
+        "line": 63,
+        "quote": "Here only one idea is used: the work of a mock is known before it starts."
+      },
+      {
+        "path": "docs/decisions/0009-step-1-code-makes-the-plan-of-a-mock.md",
+        "line": 26,
+        "quote": "The work is known before it starts."
+      }
+    ]
+  },
+  {
+    "id": "1.7",
+    "title": "Manage session state, resumption, and forking",
+    "state": "used",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "Each new session started fresh from HANDOFF.md and the journal, not from a resumed or forked session.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "CLAUDE.md",
+        "line": 5,
+        "quote": "Read `HANDOFF.md` first. It says where the work stopped and what the next step is."
+      },
+      {
+        "path": "HANDOFF.md",
+        "line": 3,
+        "quote": "This file gives a new session what it needs to continue."
+      },
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 10,
+        "quote": "The pipeline uses no MCP, no subagent, no hook and no session."
+      }
+    ]
+  },
+  {
+    "id": "2.1",
+    "title": "Design effective tool interfaces with clear descriptions and boundaries",
+    "state": "not-used",
+    "levels": [],
+    "what": "The model steps sent no tools, so no tool needed a description. The schema description went into the request text.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 15,
+        "quote": "Structured outputs: the request carries the JSON schema in `output_config.format`, and the API makes the answer agree with it. No tool."
+      },
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 22,
+        "quote": "The description goes into the request text."
+      }
+    ]
+  },
+  {
+    "id": "2.2",
+    "title": "Implement structured error responses for MCP tools",
+    "state": "not-used",
+    "levels": [],
+    "what": "The builder used no MCP server, so no MCP tool returned an error. Code only sorted API errors into retryable and fatal.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 27,
+        "quote": "The owner said: \"I accept no MCP and subagents\"."
+      },
+      {
+        "path": "src/model_call.py",
+        "line": 47,
+        "quote": "RETRYABLE = {\"RateLimitError\", \"InternalServerError\", \"APIConnectionError\", \"APITimeoutError\"}"
+      }
+    ]
+  },
+  {
+    "id": "2.3",
+    "title": "Distribute tools appropriately across agents and configure tool choice",
+    "state": "not-used",
+    "levels": [],
+    "what": "No model step had tools to choose from, and the current models rejected a forced tool call, so tool_choice was not needed.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 10,
+        "quote": "The current Claude models do not accept a forced tool call."
+      },
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 15,
+        "quote": "No tool."
+      }
+    ]
+  },
+  {
+    "id": "2.4",
+    "title": "Integrate MCP servers into Claude Code and agent workflows",
+    "state": "not-used",
+    "levels": [],
+    "what": "The builder called only the Claude API and read local files, so it needed no MCP server.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "academy/decisions/0002-behind-the-mocks-uses-the-pipeline-and-the-build-in-claude-code.md",
+        "line": 19,
+        "quote": "the pipeline uses no MCP server, because it calls only the Claude API and reads local files."
+      },
+      {
+        "path": "docs/decisions/0026-the-build-guide-does-not-show-mcp-subagents-hooks-or-sessions-at-work.md",
+        "line": 10,
+        "quote": "The pipeline uses no MCP, no subagent, no hook and no session."
+      }
+    ]
+  },
+  {
+    "id": "2.5",
+    "title": "Select and apply built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively",
+    "state": "used",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The assistant made every edit and commit with the built-in tools of Claude Code, but no record shows which tool did what.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 298,
+        "quote": "The build used built-in tools (every edit and every commit went through them), but no record in the repository says which tool did what"
+      }
+    ]
+  },
+  {
+    "id": "3.1",
+    "title": "Configure CLAUDE.md files with appropriate hierarchy, scoping, and modular organization",
+    "state": "used",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The project CLAUDE.md imported WORKING-RULES.md, so each session loaded the rules of the owner.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "CLAUDE.md",
+        "line": 9,
+        "quote": "@WORKING-RULES.md"
+      },
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 50,
+        "quote": "Verdict: the link holds, on 3.1-K3 (fully) and 3.1-S2 (in part)."
+      }
+    ]
+  },
+  {
+    "id": "3.2",
+    "title": "Create and configure custom slash commands and skills",
+    "state": "idea",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The assistant read the Claude API skill before it wrote the model steps. The project created no custom skill or command.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 72,
+        "quote": "The assistant read the skill of the Claude API before it wrote the code of the model steps."
+      },
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 32,
+        "quote": "no project skills, no `.claude/commands/`"
+      }
+    ]
+  },
+  {
+    "id": "3.3",
+    "title": "Apply path-specific rules for conditional convention loading",
+    "state": "not-used",
+    "levels": [],
+    "what": "The project had one root CLAUDE.md for all files, so it needed no path-specific rule files.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 32,
+        "quote": "The repository has no `.claude/` folder: no `.claude/rules/`, no project skills, no `.claude/commands/`, no project settings. The only instruction file is the root `CLAUDE.md`."
+      }
+    ]
+  },
+  {
+    "id": "3.4",
+    "title": "Determine when to use plan mode vs direct execution",
+    "state": "idea",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The assistant discussed each design and showed one proposal before any code, under a working rule, not in plan mode.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "WORKING-RULES.md",
+        "line": 23,
+        "quote": "8. Discuss first. Do not write a document, a diagram or code before the owner asks for it."
+      },
+      {
+        "path": "WORKING-RULES.md",
+        "line": 60,
+        "quote": "the assistant shows one proposal with all details of the step."
+      },
+      {
+        "path": "docs/journal.md",
+        "line": 339,
+        "quote": "3.4-K1 is not in the list of exam guide points, because the decision does not use plan mode."
+      }
+    ]
+  },
+  {
+    "id": "3.5",
+    "title": "Apply iterative refinement techniques for progressive improvement",
+    "state": "idea",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The code improved in rounds of independent review, fix and test, but no record shows tests first or the interview pattern.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "docs/journal.md",
+        "line": 189,
+        "quote": "Two independent reviewers checked the code, the tests and decision 0039."
+      },
+      {
+        "path": "docs/journal.md",
+        "line": 189,
+        "quote": "For each fix, the assistant removed the fix in a copy of the code and saw a test fail."
+      }
+    ]
+  },
+  {
+    "id": "3.6",
+    "title": "Integrate Claude Code into CI/CD pipelines",
+    "state": "not-used",
+    "levels": [],
+    "what": "A person started the program from the command line, and it called the Claude API directly, so no CI/CD pipeline was needed.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0002-a-program-with-the-api-and-the-agent-sdk.md",
+        "line": 19,
+        "quote": "A person starts it from the command line."
+      },
+      {
+        "path": "academy/decisions/0002-behind-the-mocks-uses-the-pipeline-and-the-build-in-claude-code.md",
+        "line": 10,
+        "quote": "It uses no task statement of domain 2 or domain 3. This is a deliberate choice."
+      }
+    ]
+  },
+  {
+    "id": "4.1",
+    "title": "Design prompts with explicit criteria to improve precision and reduce false positives",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "The writer and the checkers got exact rules, and the checker gave one result for each rule.",
+    "where": "steps 2, 4 and 6",
+    "evidence": [
+      {
+        "path": "docs/decisions/0030-the-13-rules-for-a-good-question.md",
+        "line": 72,
+        "quote": "**Exact rules, not vague rules.**"
+      },
+      {
+        "path": "src/step4_check_model.py",
+        "line": 35,
+        "quote": "Give one result for each rule: pass, fail or cannot_decide."
+      },
+      {
+        "path": "docs/build-guide/step-2-write-the-question.md",
+        "line": 51,
+        "quote": "Here: the writer gets exact rules, not vague ones."
+      }
+    ]
+  },
+  {
+    "id": "4.2",
+    "title": "Apply few-shot prompting to improve output consistency and quality",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "The writer request carried 3 sample questions of the guide as examples of the form of a question.",
+    "where": "step 2",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-2-write-the-question.md",
+        "line": 11,
+        "quote": "3 sample questions of the guide as examples of the form"
+      },
+      {
+        "path": "docs/build-guide/step-2-write-the-question.md",
+        "line": 49,
+        "quote": "Here: 3 sample questions show the writer the form of a good question."
+      }
+    ]
+  },
+  {
+    "id": "4.3",
+    "title": "Enforce structured output using tool use and JSON schemas",
+    "state": "idea",
+    "levels": [
+      "builder"
+    ],
+    "what": "Each model step sent its JSON schema as structured outputs, not as a forced tool call, and code then checked the content.",
+    "where": "steps 2, 4, 5 and 6",
+    "evidence": [
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 20,
+        "quote": "send their form as a JSON schema in `output_config.format`"
+      },
+      {
+        "path": "docs/decisions/0040-the-model-steps-use-structured-outputs-not-a-forced-tool-call.md",
+        "line": 10,
+        "quote": "The current Claude models do not accept a forced tool call."
+      }
+    ]
+  },
+  {
+    "id": "4.4",
+    "title": "Implement validation, retry, and feedback loops for extraction quality",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "A failed question went back to the writer with the exact findings of the checks, for at most 3 tries.",
+    "where": "steps 3 and 5",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-5-try-again.md",
+        "line": 9,
+        "quote": "The writer gets the request of step 2, plus the failed question with the letters that the checker saw, and the exact findings."
+      },
+      {
+        "path": "docs/build-guide/step-5-try-again.md",
+        "line": 39,
+        "quote": "Here: the findings of the checks go back to the writer with the failed question."
+      }
+    ]
+  },
+  {
+    "id": "4.5",
+    "title": "Design efficient batch processing strategies",
+    "state": "not-used",
+    "levels": [],
+    "what": "The owner rejected the Message Batches API, because each round of the pipeline waited for the round before it.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0067-prompt-caching-of-the-guide-text.md",
+        "line": 15,
+        "quote": "2. The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch."
+      }
+    ]
+  },
+  {
+    "id": "4.6",
+    "title": "Design multi-instance and multi-pass review architectures",
+    "state": "used",
+    "levels": [
+      "builder",
+      "claude-code"
+    ],
+    "what": "A new model call checked each question without the reasoning of the writer, and a new agent reviewed each file that it did not write.",
+    "where": "steps 4 and 6, and the build in Claude Code",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-4-check-by-a-model.md",
+        "line": 58,
+        "quote": "Here: the call that wrote a question does not check it."
+      },
+      {
+        "path": "docs/build-guide/step-6-check-the-complete-mock.md",
+        "line": 38,
+        "quote": "Here: steps 3 and 4 are the pass for each question, and this step is the pass across the questions."
+      },
+      {
+        "path": "WORKING-RULES.md",
+        "line": 36,
+        "quote": "The reviewer is a new agent that did not make the file."
+      }
+    ]
+  },
+  {
+    "id": "5.1",
+    "title": "Manage conversation context to preserve critical information across long interactions",
+    "state": "not-used",
+    "levels": [],
+    "what": "Each model step was one stateless call with only the text that the program sent, so no long conversation needed management.",
+    "where": "",
+    "evidence": [
+      {
+        "path": "docs/decisions/0012-step-4-an-independent-model-call-checks-each-question.md",
+        "line": 34,
+        "quote": "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends"
+      }
+    ]
+  },
+  {
+    "id": "5.2",
+    "title": "Design effective escalation and ambiguity resolution patterns",
+    "state": "idea",
+    "levels": [
+      "builder"
+    ],
+    "what": "A slot that got the verdict \"cannot decide\" two times went to the owner. The builder had no customer to escalate.",
+    "where": "step 4",
+    "evidence": [
+      {
+        "path": "docs/decisions/0023-the-checker-has-a-third-verdict-cannot-decide.md",
+        "line": 20,
+        "quote": "If one slot gets \"cannot decide\" two times, the slot goes to the owner."
+      }
+    ]
+  },
+  {
+    "id": "5.3",
+    "title": "Implement error propagation strategies across multi-agent systems",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "A failed call or an answer that was not valid never counted as a pass, and the control wrote an error record.",
+    "where": "steps 3 and 6",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-3-check-by-code.md",
+        "line": 34,
+        "quote": "Here: an error must never look like a pass."
+      },
+      {
+        "path": "docs/build-guide/step-6-check-the-complete-mock.md",
+        "line": 42,
+        "quote": "Here: a call that fails, or an answer that is not valid, never counts as a pass."
+      }
+    ]
+  },
+  {
+    "id": "5.4",
+    "title": "Manage context effectively in large codebase exploration",
+    "state": "used",
+    "levels": [
+      "claude-code"
+    ],
+    "what": "The decision files, the journal and HANDOFF.md kept key findings across sessions as scratchpad files.",
+    "where": "the build in Claude Code",
+    "evidence": [
+      {
+        "path": "docs/decisions/0001-record-decisions-and-diagrams-as-we-go.md",
+        "line": 30,
+        "quote": "5.4-K2, 5.4-K4, 5.6-K2"
+      },
+      {
+        "path": "academy/facts/claude-code.md",
+        "line": 105,
+        "quote": "5.4-K2: \"The role of scratchpad files for persisting key findings across context boundaries\""
+      }
+    ]
+  },
+  {
+    "id": "5.5",
+    "title": "Design human review workflows and confidence calibration",
+    "state": "used",
+    "levels": [
+      "builder"
+    ],
+    "what": "The owner marked all 60 questions of mock 1, then a stratified sample of 20 questions of each later mock.",
+    "where": "step 7",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-7-the-owner-marks-the-questions.md",
+        "line": 25,
+        "quote": "Here: a person marks questions that passed all checks."
+      },
+      {
+        "path": "src/control.py",
+        "line": 500,
+        "quote": "Mock 1: all 60. A later mock: 20, 5 from each scenario, with each domain."
+      }
+    ]
+  },
+  {
+    "id": "5.6",
+    "title": "Preserve information provenance and handle uncertainty in multi-source synthesis",
+    "state": "used",
+    "levels": [
+      "builder",
+      "claude-code"
+    ],
+    "what": "Step 0 kept the exact guide text with an ID for each point, and each fact sheet gave each fact with its file and line.",
+    "where": "step 0 and the build in Claude Code",
+    "evidence": [
+      {
+        "path": "docs/build-guide/step-0-prepare-the-guide-records.md",
+        "line": 30,
+        "quote": "Here: the records keep the exact guide text, so no summary loses the source."
+      },
+      {
+        "path": "src/step0_prepare_guide_records.py",
+        "line": 216,
+        "quote": "need(text and text in raw, \"text is not exactly in the guide: \" + text[:60])"
+      },
+      {
+        "path": "academy/facts/ts-1-2.md",
+        "line": 40,
+        "quote": "| # | Fact | Source and lines | Exact quote | Level | Points |"
+      }
+    ]
+  }
+]

@@ -8,6 +8,12 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
+### State on 15 October 2026, evening: tab 2 version 3 (academy decision 0046, branch `behind-mocks-v3`)
+
+- A fork of the main session works in the worktree `.claude/worktrees/behind-mocks-v3`, on the branch `behind-mocks-v3`. The main branch does not have this work yet.
+- The owner and the assistant set the purpose of tab 2: first teach, then show leaders a careful design, then trust. Version 3 (`academy/pages/behind-the-mocks-v3.html`) adds a story under the paragraph of the owner: how we settled what is true (Fig. S), and what we chose to use (three choices and Fig. M, the map of the 30 task statements from `academy/facts/task-statement-use.json`).
+- Next step: the owner looks at version 3. Then the owner decides the two open items of decision 0046, and the discussion continues top down with the overview and the step headings as principles (decision 0046, item 7).
+
 ### State on 14 October 2026, night: the exam box (academy decision 0042)
 
 - The owner finds `academy/checks/findings.md` too long to read. The assistant brings its items one at a time, with one recommendation each. Item 1 is done: where a product fact could lead to a different exam answer, a box on tab 1 gives "For the exam" and "The product today", and the detail moved to a list in the Depth. 23 boxes in 15 parts.

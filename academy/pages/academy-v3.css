@@ -1,0 +1,49 @@
+/* Tab 2, version 3 (owner, 15 October 2026): only behind-the-mocks-v3.html loads this file, after academy.css and academy-v2.css.
+   The story before Fig. A: how we settled what is true (Fig. S), and what we chose to use (Fig. M). */
+.v3-sec { margin: var(--s-7) 0; }
+.v3-sec > p { max-width: 65ch; }
+.v3-sec h2 { margin-bottom: var(--s-4); }
+.v3-sec > .v3-fig { margin: var(--s-6) 0; }
+
+/* Fig. S: three stages. The form shows the role of each source: a solid box is a source, a dashed box is a dated check,
+   and a struck name is no longer a source */
+.v3-stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+.v3-stage { position: relative; display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-4); background: var(--surface); border: 1px solid var(--border-bright); cursor: pointer; min-width: 0; }
+.v3-stage:hover { border-color: var(--accent); }
+.v3-stage + .v3-stage::before { content: '\2192'; position: absolute; left: calc(-1 * var(--s-6) + .35rem); top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: var(--t-lead); }
+.v3-stage b { font-size: var(--t-body); }
+.v3-srcs { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); }
+.v3-src { display: flex; justify-content: space-between; gap: var(--s-2); padding: 2px var(--s-2); border: 1.5px solid var(--text); font: 500 var(--t-small) var(--font-mono); }
+.v3-src .v3-role { color: var(--text-dim); font-size: var(--t-label); align-self: center; }
+.v3-src.is-check { border-style: dashed; border-color: var(--text-dim); }
+.v3-src.is-gone { border-color: transparent; color: var(--text-dim); }
+.v3-src.is-gone > span:first-child { text-decoration: line-through; }
+.v3-say { font-size: var(--t-small); }
+.exambox-v3 { max-width: 65ch; margin: var(--s-5) 0; }
+@media (max-width: 48rem) {
+  .v3-stages { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+  .v3-stage + .v3-stage::before { content: '\2193'; left: 50%; top: calc(-1 * var(--s-5)); transform: translateX(-50%); }
+}
+
+/* the three choices */
+.v3-choices { max-width: 65ch; display: grid; gap: var(--s-3); margin: var(--s-4) 0 var(--s-5); }
+
+/* Fig. M: the 30 task statements in 5 domain columns. The form shows the state: solid and filled is used, dashed is the idea only,
+   a thin dotted line is not used */
+.v3-map { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-4); }
+.v3-col { min-width: 0; }
+.v3-col ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); }
+.v3-dom { margin: 0 0 var(--s-2); font-weight: 600; font-size: var(--t-small); line-height: 1.3; min-height: 3.2em; display: flex; flex-direction: column; }
+.v3-tile { display: grid; gap: 2px; padding: var(--s-2); cursor: pointer; border: 1px dotted var(--border-bright); color: var(--text-dim); font-size: var(--t-small); line-height: 1.3; min-width: 0; }
+.v3-tile:hover { border-color: var(--accent); }
+.v3-tile .v3-tid { font: 600 var(--t-label) var(--font-mono); }
+.v3-tile.is-used { border: 2px solid var(--text); background: var(--surface); color: var(--text); }
+.v3-tile.is-idea { border: 2px dashed var(--text-dim); color: var(--text); }
+.v3-lv { font: 500 var(--t-label) var(--font-mono); color: var(--text-dim); }
+.v3-key { list-style: none; margin: var(--s-4) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); font-size: var(--t-small); color: var(--text-dim); }
+.v3-key li { display: flex; align-items: center; gap: var(--s-2); }
+.v3-sw { width: 1.4rem; height: .9rem; border: 1px dotted var(--border-bright); }
+.v3-sw.is-used { border: 2px solid var(--text); background: var(--surface); }
+.v3-sw.is-idea { border: 2px dashed var(--text-dim); }
+@media (max-width: 60rem) { .v3-map { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 30rem) { .v3-map { grid-template-columns: minmax(0, 1fr); } .v3-dom { min-height: 0; } }
