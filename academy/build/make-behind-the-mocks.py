@@ -290,15 +290,20 @@ POS = {0: (20, 20), 1: (20, 160), 2: (250, 160), 3: (480, 160), 4: (710, 160), 5
 
 STEP_A = {0: "1", 1: "2", 2: "3 5", 3: "4", 4: "4", 5: "5 6", 6: "7", 7: "8", 8: "9"}   # the steps of Fig. A that light each box
 
+# The popups on the boxes of Fig. A (owner, 15 October 2026). False brings back the figure in which each box links to its step.
+FIG_A_POPUPS = True
+
 
 def step_node(s):
     x, y = POS[s]
     who, cls = WHO[s]
+    if FIG_A_POPUPS:
+        return box(x, y, W, H, NAMES[s], sub=who, cls=cls, step="top-a-s%d" % s, num=s, a=STEP_A[s])
     return box(x, y, W, H, NAMES[s], sub=who, cls=cls, href="#step-%d" % s, num=s, a=STEP_A[s])
 
 
 LEGEND = ('<g transform="translate(250 22)">'
-          '<text class="ve-lab" x="0" y="10">Each box links to its step below.</text>'
+          '<text class="ve-lab" x="0" y="10">' + ("Each box opens a short note, with a link to its step." if FIG_A_POPUPS else "Each box links to its step below.") + '</text>'
           '<g class="ve-n"><rect class="sh" x="0" y="30" width="28" height="18" rx="0"/></g><text class="ve-lab" x="36" y="44">code</text>'
           '<g class="ve-n who-model"><rect class="sh" x="110" y="30" width="28" height="18" rx="0"/></g><text class="ve-lab" x="146" y="44">a Claude model</text>'
           '<g class="ve-n who-owner"><rect class="sh" x="290" y="30" width="28" height="18" rx="0"/></g><text class="ve-lab" x="326" y="44">the owner</text>'
@@ -314,7 +319,7 @@ FIG1 = """
       <path data-flow="pass" data-every="2000" d="M325 206H785"/><path data-flow="fail" data-every="4400" data-delay="1000" d="M525 206V356H585V206"/>
       <g class="ve-dots" aria-hidden="true"></g>
       %(nodes)s
-      <g class="ve-n who-owner" data-a="6"><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
+      <g class="ve-n who-owner" data-a="6"%(open_attrs)s><rect class="sh" x="230" y="310" width="150" height="92" rx="0"/><text x="305" y="344">open slot</text><text class="sub" x="305" y="368">waits for owner</text></g>
       %(legend)s
     </svg>
   </div>
@@ -324,7 +329,9 @@ FIG1 = """
 </figure>
 """ % {
     "nodes": "".join(step_node(s) for s in range(9)),
-    "player": player(["The 9 steps of the mock builder. Use the arrow buttons to go through them one at a time. Each box links to its step below.",
+    "open_attrs": ' data-step="top-a-open" tabindex="0" role="button" aria-expanded="false"' if FIG_A_POPUPS else "",
+    "player": player(["The 9 steps of the mock builder. Use the arrow buttons to go through them one at a time. "
+                      + ("Each box opens a short note, with a link to its step." if FIG_A_POPUPS else "Each box links to its step below."),
                       "Step 0 prepares the guide records, once for each version of the exam guide.",
                       "Step 1 plans %d slots." % SLOTS,
                       "Step 2: a Claude model writes a question for one slot.",
@@ -1992,6 +1999,56 @@ LIMITS = """<section class="parts" id="limits" aria-label="What this shows and w
 # the steps mark of the owner (academy/pages/icons/steps.svg): its shape is drawn inline in the colour of the text, so it shows in both colour schemes (owner, 15 October 2026)
 STEPS_ICON = '<svg class="h-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><polygon fill="currentColor" points="%s"/></svg>' % " ".join(
     re.search(r'points="([^"]+)"', read("academy/pages/icons/steps.svg")).group(1).split())
+# ----- the popups on the boxes of Fig. A (owner, 15 October 2026) -----
+def fig_a_pop(n, title, sent):
+    """One popup of Fig. A: what the step takes in and gives out, one fact of the records, the task statements that the step uses
+    (from its table in the build guide), and a link to the step."""
+    used = list(dict.fromkeys(p.split("-")[0] for p, u in table_rows(n) if "This build does not use it" not in u)) if n is not None else []
+    links = ([{"text": "Task statement %s &rarr;" % t, "href": "%s#ts-%s" % (TAB1, t.replace(".", "-"))} for t in sorted(used, key=lambda t: tuple(map(int, t.split("."))))]
+             + ([{"text": "Read step %d &rarr;" % n, "href": "#step-%d" % n}] if n is not None else [{"text": "Read step 5 &rarr;", "href": "#step-5"}]))
+    return {"who": "Step %d" % n if n is not None else "Open slot", "cls": "model" if n is not None and "who-model" in WHO[n][1] else ("owner" if n is None else "io"),
+            "title": title, "sent": sent + (["Uses the task statements below."] if used else []), "points": [], "example": None, "links": links}
+
+
+if FIG_A_POPUPS:
+    POP.update({
+        "top-a-s0": fig_a_pop(0, "What are the guide records?", [
+            "Code reads the copy of the exam guide and writes it as records. The records hold the domains, the scenarios, the task statements, their points and the sample questions.",
+            "Each later step reads its part of the records.",
+            "The records hold %d task statements with %d points." % (len(TS), N_PTS)]),
+        "top-a-s1": fig_a_pop(1, "What does the plan hold?", [
+            "Code plans %d slots. Each slot has a scenario, a task statement, one point and the question type." % SLOTS,
+            "The file of point groups puts the %d points into %d ideas. Step 1 spreads the ideas over the mocks." % (N_PTS, len(PG))]),
+        "top-a-s2": fig_a_pop(2, "How is a question written?", [
+            "A Claude call writes one question for one slot, in a fixed form, with a reason for each option. Code then mixes the options and gives the letters.",
+            "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)]),
+        "top-a-s3": fig_a_pop(3, "What does code check?", [
+            "Code checks the rules that have one exact answer, such as the number of options and the length of the text. No model works in this step.",
+            "In mocks 1 to 5, %d tries passed and %d failed." % (V3["pass"], V3["fail"])]),
+        "top-a-s4": fig_a_pop(4, "What does the model check?", [
+            "Call 4a answers the question with no answer key. Today call 4b checks the rules B1 to B9 with the answer key. Code compares the letters of call 4a with the answer key, and makes the verdict.",
+            "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed." % (sum(V4.values()), V4["pass"], V4["fail"])]),
+        "top-a-s5": fig_a_pop(5, "What happens to a failed try?", [
+            "The writer of step 2 gets the failed try and its findings, and writes a new try. One start of a slot has at most %d tries." % TRIES,
+            "In mocks 1 to 5, %d of the %d slots needed more than one try." % (sum(x["more"] for x in MOCKS), 5 * SLOTS)]),
+        "top-a-s6": fig_a_pop(6, "What does the check of the complete mock find?", [
+            "When all %d slots pass, code counts the mock against the plan and compares all %d texts." % (SLOTS, SLOTS),
+            "Two Claude calls read the questions of each scenario together. Each finding goes to the owner.",
+            "Step 6 ran %d times over mocks 1 to 5 and made %d findings. The owner rewrote a question for %d of them." % (sum(RUNS6.values()), N6, len(RW6))]),
+        "top-a-s7": fig_a_pop(7, "Who marks the questions?", [
+            "A reader marks the questions good or bad: all 60 in mocks 1 and 5, and a sample of 20 in mocks 2 to 4. The reader was the owner for mocks 1 to 3, and a Claude model for mocks 4 and 5.",
+            "A bad mark sends the question back. Over the 5 mocks, %d marks were given, and %d were bad." % (MARKS_ALL, sum(BAD))]),
+        "top-a-s8": fig_a_pop(8, "What does the build make?", [
+            "After the owner accepts the mock, code writes a questions file and a separate answers file.",
+            "Before it writes, it checks that each question still equals the one that the checks saw.",
+            "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL]),
+        "top-a-open": fig_a_pop(None, "What does the owner decide?", [
+            "After %d failed tries in one start, the slot waits for the owner. The owner gives more tries, a new point, or a new plan." % TRIES,
+            # the popup of the plan of 14 October 2026 on this box (popups.py), joined here
+            "A slot also opens after 2 results \"cannot decide\" of step 4 in one start, or at once when the writer answers \"cannot write\". Neither happened in the 5 mocks.",
+            "In mocks 1 to 5, the owner decided %d times on an open slot." % TOTAL_OPENED]),
+    })
+
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
@@ -2017,7 +2074,7 @@ BODY = """<main>
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
 TOP = BODY.split('<section class="parts" id="steps"')[0] + WORDS   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
-BODY = add_popups(BODY, POPUPS, 2, POP)   # the popups of the boxes (academy/popup-plan.md)
+BODY = add_popups(BODY, [x for x in POPUPS if not (FIG_A_POPUPS and x['tab'] == 2 and x['fig'] == 'A')], 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
 BODY = code_font(BODY)   # academy decision 0038
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)

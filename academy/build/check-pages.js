@@ -74,7 +74,10 @@ function inPage() {
   const map = document.querySelector('[data-figure="builder"]');
   if (map) for (let s = 0; s <= 8; s++) {
     const a = map.querySelector('a[href="#step-' + s + '"]');
-    if (!a) out.fail.push('The 9-step diagram has no link to step ' + s);
+    // with the popups of Fig. A (owner, 15 October 2026) the link to the step is inside the popup of the box
+    const pops = (window.ACADEMY && window.ACADEMY.pop) || {};
+    const inPop = [...map.querySelectorAll('[data-step]')].some((n) => ((pops[n.dataset.step] || {}).links || []).some((l) => l.href === '#step-' + s));
+    if (!a && !inPop) out.fail.push('The 9-step diagram has no link to step ' + s);
     else if (!document.getElementById('step-' + s)) out.fail.push('Step ' + s + ' has no part');
   }
   // text: contrast and size, HTML and SVG

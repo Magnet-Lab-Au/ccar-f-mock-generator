@@ -396,3 +396,4 @@ h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
 :root.dark .h-puzzle .pz-face { fill: var(--text); } :root.dark .h-puzzle .pz-line { fill: var(--bg); stroke: var(--bg); }
 .h-icon.h-page { width: 1.3em; height: 1.75em; transform: rotate(-10deg); overflow: visible; }   /* the notepad mark of the owner keeps its own colours and its tall shape, tilted a little (owner, 15 October 2026) */
 .h-icon.h-tools { width: 1.3em; height: 1.3em; }   /* a toolbox, drawn for the primer in the colour of the text (owner, 15 October 2026) */
+.poplinks { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); font-size: var(--t-small); }   /* the links in a popup of Fig. A (owner, 15 October 2026) */

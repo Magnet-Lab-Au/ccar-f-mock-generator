@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('poptitle').textContent = d.title;
     const s = document.getElementById('popbody'); s.textContent = '';
     d.sent.forEach((t) => s.appendChild(el('p', null, t)));
+    if (d.links && d.links.length) { const lp = el('p', 'poplinks'); d.links.forEach((l) => { const a = el('a'); a.innerHTML = l.text; a.href = l.href; lp.appendChild(a); }); s.appendChild(lp); }   /* links of a popup, such as the popups of Fig. A of tab 2 */
     if (d.example) { s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example)); if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote)); }
     if (d.points && d.points.length) {
       s.appendChild(el('h3', null, 'The exam guide says')); const key = el('p', 'key');
