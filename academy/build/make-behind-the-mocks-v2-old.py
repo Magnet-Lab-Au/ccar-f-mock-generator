@@ -1,7 +1,7 @@
 """OLD (owner, 15 October 2026): version 4 is tab 2 now, in make-behind-the-mocks.py. This builder writes an old version, kept for comparison. It has a banner that links to the current tab 2.
 
 TAB 2, VERSION 2 (owner, 15 October 2026): a separate copy of make-behind-the-mocks.py with the changes that follow the
-changes of tab 1. It writes behind-the-mocks-v2.html, behind-the-mocks-v2.js and uses academy-v2.css on top of academy.css.
+changes of tab 1. It wrote behind-the-mocks-v2.html and .js until decision 0047, and now writes behind-the-mocks-v2-old.html and .js. It uses academy-v2.css on top of academy.css.
 The original tab 2 does not change.
 
 Make tab 2, "Behind the mocks": academy/pages/behind-the-mocks.html and behind-the-mocks.js.

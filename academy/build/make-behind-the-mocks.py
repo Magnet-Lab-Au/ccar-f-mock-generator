@@ -1,7 +1,7 @@
 """TAB 2 (owner, 15 October 2026): version 4 is tab 2. The older versions are make-behind-the-mocks-v1-old.py to -v3-old.py.
 
 TAB 2, VERSION 4 (owner, 15 October 2026): a copy of version 3 in which each closed step shows its principle (academy decision
-0046, item 7). It writes behind-the-mocks-v4.html and behind-the-mocks-v4.js, and uses academy-v4.css on top of academy-v3.css.
+0046, item 7). It wrote behind-the-mocks-v4.html and behind-the-mocks-v4.js until decision 0047, and now writes behind-the-mocks.html and behind-the-mocks.js, and uses academy-v4.css on top of academy-v3.css.
 
 TAB 2, VERSION 3 (owner, 15 October 2026): a copy of version 2 with a story before Fig. A, how we settled what is true and
 what we chose to use. It writes behind-the-mocks-v3.html and behind-the-mocks-v3.js, and uses academy-v3.css on top of academy-v2.css.
