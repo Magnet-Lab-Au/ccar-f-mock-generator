@@ -2232,7 +2232,7 @@ TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   <h2 id="tools-h">Then, we used only what the job needed</h2>
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
-    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
+    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is one plain call. We did use subagents to build the pipeline in Claude Code, where each one got a written brief with all the context it needed (1.3 on the map).</li>
     <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
     <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
   </ol>

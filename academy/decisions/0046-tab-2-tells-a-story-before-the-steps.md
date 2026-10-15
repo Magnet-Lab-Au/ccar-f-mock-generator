@@ -42,8 +42,9 @@ The tools section:
 
 Version 3 has items 3 to 6 and 8 to 16. Item 7 is not built yet. The review of the map changed 13 entries and made 8 claims weaker. The map now shows 10 task statements used, 11 as an idea only, and 9 not used. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`.
 
+The owner decided 1.2 and 1.3: "yes, make 1.3 used and keep 1.2 idea". 1.3 is used at the level of the build in Claude Code, because each subagent got a written brief with its context. 1.2 stays "idea only", because the main session started agents one at a time, with no coordinator that splits, routes and joins the work. Choice 1 of the tools section now says that the pipeline uses no subagents, but the build in Claude Code did. The map now shows 11 used, 10 idea only and 9 not used.
+
 Open for the owner, from the review:
-- 1.2 and 1.3 show "idea only". The fact sheet of 1.2 says that a decision of the owner is necessary to cite the fact agents and review agents as 1.2.
 - The map shows 2.5 and 3.2 as "idea only", but academy decision 0035 removed their entries from tab 2.
 
 ## Reason

@@ -46,11 +46,11 @@
  {
   "id": "1.3",
   "title": "Configure subagent invocation, context passing, and spawning",
-  "state": "idea",
+  "state": "used",
   "levels": [
    "claude-code"
   ],
-  "what": "The assistant gave each fact agent a written brief, because a subagent does not get the conversation. The builder passed no context between agents.",
+  "what": "The assistant gave each fact agent a written brief, because a subagent does not get the conversation. The pipeline itself used no subagents.",
   "where": "the build in Claude Code",
   "evidence": [
    {
