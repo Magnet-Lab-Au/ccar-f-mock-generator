@@ -1959,8 +1959,7 @@ CARD.update({
                "src": "runs/mock-05/checks/M5-S38-T*-step4.json", "href": "%s/tree/%s/runs/mock-05/checks" % (REPO, TAG)},
     "lim-s33": excerpt("runs/mock-05/marks/round-1.json", "Copy of M2-S34", "The marks of mock 5, round 1"),
 })
-LIMITS = """<section class="parts" id="limits" aria-label="What this shows and what it does not">
-  <h2>What this shows and what it does not</h2>
+LIMITS = """<details class="domain parts" id="limits" open><summary><span class="dom-title"><h2>What this shows and what it does not</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   <p class="lead">The records show how the questions were checked. They show less about how good the questions are.</p>
   <div class="limits">
     <div class="callout"><span class="chip ok">The records show</span><ul class="beyond">
@@ -1978,7 +1977,7 @@ LIMITS = """<section class="parts" id="limits" aria-label="What this shows and w
       <li>Nobody compared the difficulty or the style of the mocks with the real exam. The mocks follow the task statements and the scenarios of the guide. %(owner)s</li>
     </ul></div>
   </div>
-</section>""" % {
+</div></details>""" % {
     "s3": fact("s3-what", "Today, code checks 12 rules that have one exact answer. Mock 1 had 11."),
     "s4": fact("s4-what", "A model checks the rules that need judgment, in two calls, and code makes the verdict."),
     "t24a": fact("s4-t24", "Before mock 1, call 4a answered %d of the %d sample questions of the guide right." % (T24["right"], T24["of"])),
@@ -2056,15 +2055,14 @@ BODY = """<main>
   <p class="lead intro">%(para)s</p>
 </header>
 %(fig1)s
-<section class="parts" id="steps" aria-label="The 9 steps">
-  <h2 class="with-icon">The 9 steps%(steps_icon)s</h2>
+<!-- each big section opens and closes, open at the start (owner, 15 October 2026) -->
+<details class="domain parts" id="steps" open><summary><span class="dom-title"><h2 class="with-icon">The 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   %(parts)s
-</section>
-<section class="parts" id="claude-code" aria-label="The build in Claude Code">
-  <h2 class="with-icon">The build in Claude Code<img class="h-icon" src="icons/claude-code.svg" alt="" width="24" height="24"></h2>
+</div></details>
+<details class="domain parts" id="claude-code" open><summary><span class="dom-title"><h2 class="with-icon">The build in Claude Code<img class="h-icon" src="icons/claude-code.svg" alt="" width="24" height="24"></h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   <p class="lead">The mock builder was itself built with Claude Code. The owner gave the assistant rules in a file of the repository. These parts show where that build used a task statement of the exam, and one where it did not.</p>
   %(cc)s
-</section>
+</div></details>
 %(limits)s
 %(words)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
@@ -2072,7 +2070,7 @@ BODY = """<main>
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
-TOP = BODY.split('<section class="parts" id="steps"')[0] + WORDS   # the glossary is in the panel at the end, and its cards belong to the introduction
+TOP = BODY.split('<details class="domain parts" id="steps"')[0] + WORDS   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, [x for x in POPUPS if not (FIG_A_POPUPS and x['tab'] == 2 and x['fig'] == 'A')], 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6

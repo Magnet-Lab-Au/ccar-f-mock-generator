@@ -155,6 +155,14 @@ document.addEventListener('DOMContentLoaded', function () {
     show(0);
   }
 
+  /* the scenarios of tab 1: the name opens the text of the guide under its row (owner, 15 October 2026) */
+  for (const b of document.querySelectorAll('.scen-toggle')) {
+    const row = document.getElementById(b.getAttribute('aria-controls'));
+    if (!row) continue;
+    row.hidden = true;
+    b.addEventListener('click', () => { const on = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', String(on)); row.hidden = !on; });
+  }
+
   /* the glossary panel at the side (owner, 15 October 2026): a fixed button opens and closes it */
   const gBtn = document.querySelector('.glossary-btn'), gPan = document.getElementById('top-words');
   if (gBtn && gPan) {
