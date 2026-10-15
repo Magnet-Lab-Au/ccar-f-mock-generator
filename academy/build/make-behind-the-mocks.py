@@ -744,6 +744,7 @@ CARD.update({
     "s0-same": {"title": "The history of the records file", "kind": "count", "text": "git log of reference/guide-records.json has one commit: %s. So the file has not changed since the first commit of the repository." % _log[0],
                 "src": "git log -- reference/guide-records.json", "href": link("reference/guide-records.json")},
     "s0-what": excerpt(S0, "Before the program plans a mock, a script copies the parts of the exam guide that the later steps need into one file, `reference/guide-records.json` (decision 0028). No model copies text.", "Build guide, step 0"),
+    "s0-risk": excerpt(D17, "source attribution is lost during summarization steps when findings are compressed without preserving claim-source mappings", "Mock decision 0017, Reason: the risk in the words of the guide (5.6-K1)"),
     "s0-slice": excerpt(S0, "The file is the one source of guide text for the code. A later step takes a slice of it by ID.", "Build guide, step 0"),
     "s0-once": excerpt(D17, "It runs one time for each version of the guide, not one time for each mock.", "Mock decision 0017, Decision"),
     "s0-ids": excerpt(S0, "Each point gets an ID that the guide does not have: the task statement, then K (knowledge) or S (skill), then the number of the bullet.", "Build guide, step 0"),
@@ -790,13 +791,18 @@ FIG01 = """
 
 STEP0 = (level("overview",
                '<h4 class="takeaway">A script copies the exam guide into records, once for each version of the guide</h4>'
-               '<p>%s %s %s %s</p>'
-               % (fact("s0-what", "Before the first mock, a script copies the parts of the exam guide that the later steps need into one file of records. No model copies text."),
-                  fact("s0-once", "It runs once for each version of the guide, not once for each mock."),
-                  fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"]))),
-                  fact("s0-slice", "A later step takes the parts that it needs from the file, by ID.")))
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s So %s %s %s %s</p><p>The result: %s, and %s</p>'
+               % (fact("s0-risk", "The exam guide names the risk itself: the link to a source gets lost when text is copied and compressed."),
+                  fact("s0-what", "no model copies the guide. A script copies it into one file of records,"),
+                  fact("s0-once", "once for each version of the guide."),
+                  fact("s0-fail", "It stops if a count is wrong"), fact("s0-exact", "or if a text is not exactly in the guide.")
+                  + " " + fact("s0-slice", "Each later step takes its text from this file, by ID."),
+                  fact("s0-keep", "all %d questions of the 5 mocks keep the ID of their point" % TOTAL_Q),
+                  fact("s0-pdf", "the copy matches the official PDF of the guide word for word.")))
          + level("explanation",
-                 FIG01
+                 '<p><b>The file.</b> %s</p>' % fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"])))
+                 + FIG01
                  + '<p><b>Labels.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
                    % (fact("s0-ids", "Each point gets a label that the guide does not have. The label is the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
                       fact("s0-keep", "Every question of the 5 mocks keeps the ID of its point: %d of %d." % (KEPT, TOTAL_Q)))
