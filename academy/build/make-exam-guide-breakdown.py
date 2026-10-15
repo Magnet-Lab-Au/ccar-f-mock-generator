@@ -3015,9 +3015,11 @@ DOMAIN_SUMMARY[1] = ("Agents that run themselves: the loop of tool calls, a coor
 def domain_html(d):
     ts = sorted((t for t in TS if TS[t]["domain"] == d["id"]), key=lambda x: int(x.split(".")[1]))
     summ = DOMAIN_SUMMARY.get(d["id"], "")
-    return ('<section class="parts" id="domain-%d" aria-label="Domain %d"><h2>Domain %d: %s</h2>'
-            '<p class="ve-label">%s of the scored questions &middot; %d task statements</p>%s%s%s</section>'
-            % (d["id"], d["id"], d["id"], e(d["name"]), fact("m-d%d" % d["id"], "about %d%%" % d["weight"]), len(ts),
+    # each domain is a section that opens and closes, with a large arrow (owner, 15 October 2026)
+    return ('<details class="domain parts" id="domain-%d"><summary><span class="dom-title"><h2>Domain %d: %s</h2>'
+            '<span class="ve-label">%s of the scored questions &middot; %d task statements</span></span><span class="dom-arrow" aria-hidden="true"></span></summary>'
+            '<div class="dom-body">%s%s%s</div></details>'
+            % (d["id"], d["id"], e(d["name"]), fact("m-d%d" % d["id"], "about %d%%" % d["weight"]), len(ts),
                # the summary on the left and the image on the right (owner, 15 October 2026)
                '<div class="domain-intro"><p>%s</p>%s</div>' % (summ, hero(d)), "", "".join(ts_part(t) for t in ts)))
 

@@ -439,3 +439,15 @@ section[data-level="overview"] > .ov-head { margin-bottom: var(--s-2); } section
 :root.dark .domain-hero { background: #fff; padding: var(--s-2); }   /* the drawings have dark lines, so in dark mode they stand on white */
 .domain-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-5); align-items: center; margin: var(--s-3) 0 var(--s-4); }   /* the summary of a domain, and its image on the right (owner, 15 October 2026) */
 @media (max-width: 48rem) { .domain-intro { grid-template-columns: minmax(0, 1fr); } .domain-intro .domain-hero { order: -1; height: auto; width: 100%; } }
+/* each domain opens and closes, with a large arrow that turns (owner, 15 October 2026) */
+details.domain { border-top: 1.5px solid var(--border-bright); background: var(--bg); }
+details.domain > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding: var(--s-4) var(--s-5); cursor: pointer; background: var(--surface); border-radius: var(--r-2); }
+details.domain > summary::-webkit-details-marker { display: none; }
+details.domain > summary:hover, details.domain > summary:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+details.domain[open] > summary { border-bottom: 1px solid var(--border); border-radius: var(--r-2) var(--r-2) 0 0; }
+.dom-title { display: grid; gap: var(--s-1); min-width: 0; }
+.dom-title h2 { margin: 0; }
+.dom-arrow { flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--accent); position: relative; }
+.dom-arrow::after { content: ''; position: absolute; left: 50%; top: 45%; width: .8rem; height: .8rem; border-right: 3px solid var(--bg); border-bottom: 3px solid var(--bg); transform: translate(-50%, -50%) rotate(45deg); transition: transform var(--fast) var(--ease); }
+details.domain[open] .dom-arrow::after { top: 55%; transform: translate(-50%, -50%) rotate(-135deg); }
+.dom-body { padding: var(--s-3) 0 var(--s-4); }   /* no side padding, so the figures keep their full width and their labels stay at 12 px or more */
