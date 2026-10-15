@@ -12,7 +12,8 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 
 - A fork of the main session works in the worktree `.claude/worktrees/behind-mocks-v3`, on the branch `behind-mocks-v3`. The main branch does not have this work yet.
 - The owner and the assistant set the purpose of tab 2: first teach, then show leaders a careful design, then trust. Version 3 (`academy/pages/behind-the-mocks-v3.html`) adds a story under the paragraph of the owner: how we settled what is true (Fig. S), and what we chose to use (three choices and Fig. M, the map of the 30 task statements from `academy/facts/task-statement-use.json`).
-- Next step: the owner looks at version 3. Then the owner decides the two open items of decision 0046, and the discussion continues top down with the overview and the step headings as principles (decision 0046, item 7).
+- Version 4 (`academy/pages/behind-the-mocks-v4.html`, built by `academy/build/make-behind-the-mocks-v4.py`) is version 3 with principles: each of the 9 steps and the 4 parts of "The build in Claude Code" shows an approved principle, a short teal line and its name. The overview and the last section have headings in the story sequence: "First…", "Next…", "Then, we built it in 9 steps", "Finally, what we can claim and what we cannot". The owner approved all the principles.
+- Next step: the owner looks at version 4 as a whole and says if v4 replaces tab 2. Then the branch `behind-mocks-v3` is merged into main, and a push needs the yes of the owner. Left for later: the schema of the request to Claude, and a chip that shows where a sentence has a code card.
 
 ### State on 14 October 2026, night: the exam box (academy decision 0042)
 

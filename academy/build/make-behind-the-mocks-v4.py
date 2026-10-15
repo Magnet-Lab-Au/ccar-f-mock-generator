@@ -2051,8 +2051,8 @@ CARD.update({
                "src": "runs/mock-05/checks/M5-S38-T*-step4.json", "href": "%s/tree/%s/runs/mock-05/checks" % (REPO, TAG)},
     "lim-s33": excerpt("runs/mock-05/marks/round-1.json", "Copy of M2-S34", "The marks of mock 5, round 1"),
 })
-LIMITS = """<details class="domain parts" id="limits" open><summary><span class="dom-title"><h2>What this shows and what it does not</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
-  <p class="lead">The records show how the questions were checked. They show less about how good the questions are.</p>
+LIMITS = """<details class="domain parts" id="limits" open><summary><span class="dom-title"><h2>Finally, what we can claim and what we cannot</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
+  <p class="v4-bridge">A careful build still has limits. Here is what the records prove, and what they do not. The records show how the questions were checked. They show less about how good the questions are.</p>
   <div class="limits">
     <div class="callout"><span class="chip ok">The records show</span><ul class="beyond">
       <li>%(s3)s <a href="#step-3">Step 3 &rarr;</a></li>

@@ -52,6 +52,8 @@ Version 4 (owner, 15 October 2026), built by `academy/build/make-behind-the-mock
 
 The build in Claude Code, version 4 (owner, 15 October 2026): no new map. Fig. M is the map of this section, because its 4 parts (3.1, 1.7, 4.6, 3.4) are tiles marked "Claude Code". The section opens with a bridge: "We built the pipeline itself with Claude Code, under the same discipline. These 4 parts are tiles marked "Claude Code" in Fig. M." Each part has the same form as the 9 steps: a principle, a short teal line, and its name with its state on the map. The 4 principles: "Write the rules once, and load them into every session" (3.1), "Each new session starts from a written summary" (1.7), "A file that others rely on gets an independent reviewer" (4.6), "Discuss first, then act" (3.4, in part). The tiles of these 4 task statements in Fig. M link to their part. The owner asked to think first about a second map, and then said "yes, build it in v4". The owner approved the 4 principles: "yes, approve them".
 
+The last section, version 4 (owner, 15 October 2026): the heading "Finally, what we can claim and what we cannot" ends the sequence of the story. Its bridge: "A careful build still has limits. Here is what the records prove, and what they do not." The old lead follows, and the two boxes stay as they are. The concept "Where the process failed" of the document of mock v1 is not added, because the Depth of each step holds its failures.
+
 Settled from the review:
 - 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
 
