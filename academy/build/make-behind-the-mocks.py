@@ -592,7 +592,7 @@ step5_html = STEP5 % {
     "again": f("s5-again", "The new try goes through steps 3 and 4 again."),
     "pass": f("s5-pass", "A try that passes stops the loop."),
     # the story tone (owner, 16 October 2026): the loop and its limit
-    "guard1": f("s5-guard", "Each start of a slot has at most %d tries." % TRIES),
+    "guard1": f("s5-guard", "A slot has at most %d tries." % TRIES),
     "open": f("s5-open", "Then the slot is open, and the owner decides: more tries, a new point, or a new plan."),
     "counts": f("s5-counts", "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)),
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
@@ -797,13 +797,13 @@ STEP0 = (level("overview",
                '<h4 class="takeaway">A script copies the exam guide into records, once for each version of the guide</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
                '<p>%s So %s %s %s %s</p><p>The result: %s, and %s</p>'
-               % (fact("s0-risk", "The exam guide names the risk itself: the link to a source gets lost when text is copied and compressed."),
+               % (fact("s0-risk", "The exam guide names the risk itself: the link to a source gets lost when findings are summarized and compressed."),
                   fact("s0-what", "no model copies the guide. A script copies it into one file of records,"),
-                  fact("s0-once", "once for each version of the guide."),
-                  fact("s0-fail", "It stops if a count is wrong"), fact("s0-exact", "or if a text is not exactly in the guide.")
+                  fact("s0-once", "once per version of the guide."),
+                  fact("s0-fail", "It stops if a count is wrong"), fact("s0-exact", "or a text is not exactly in the guide.")
                   + " " + fact("s0-slice", "Each later step takes its text from this file, by ID."),
-                  fact("s0-keep", "all %d questions of the 5 mocks keep the ID of their point" % TOTAL_Q),
-                  fact("s0-pdf", "the copy matches the official PDF of the guide word for word.")))
+                  fact("s0-keep", "all %d questions of the 5 mocks have a point that is in the guide records" % TOTAL_Q),
+                  fact("s0-pdf", "the Markdown copy of the guide matches the official PDF word for word.")))
          + level("explanation",
                  '<p><b>The file.</b> %s</p>' % fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"])))
                  + FIG01
@@ -959,7 +959,7 @@ assert SHARED[1:] == [0, 0, 0, 0]
 STEP1 = (level("overview",
                '<h4 class="takeaway">Code plans all %d questions before a model writes one</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s So %s</p><p>The plan also learned from mock 1, which repeated itself. %s %s</p>'
+               '<p>%s So %s</p><p>Mock 1 taught us one more rule. %s %s</p>'
                % (SLOTS, fact("s1-why", "A mock must hold its counts each time. A model that makes the plan can make an error in a count."),
                   fact("s1-what", "before any model writes, code makes the plan: a list of %d slots. Each slot names the scenario, the task statement, one point, the question type and the number of answers." % SLOTS),
                   fact("s1-rule", "Code now stops a plan with two slots on one idea."),
@@ -1071,12 +1071,12 @@ FIG21 = """
 STEP2 = (level("overview",
                '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s It does not start from a blank page. %s %s %s</p><p>We also learned that a writer needs examples. %s %s</p>'
+               '<p>%s %s %s %s</p><p>Mock 2 taught us one more rule. %s %s</p>'
                % (fact("s2-what", "For each slot, one new Claude call writes one question."),
                   fact("s2-fields", "It answers in a fixed form: the question, and each option as correct or wrong, with a reason."),
                   fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question."),
                   fact("s2-letters", "Code, not the model, mixes the options and gives the letters."),
-                  fact("s2-did", "In mock 2, the writer did not know mock 1, and wrote the most obvious scene again."),
+                  fact("s2-did", "In mock 2, the writer did not know mock 1. On a shared idea, it wrote the most obvious scene again."),
                   fact("s2-earlier", "Now it gets the earlier questions on its idea, each with its answer key.")))
          + level("explanation",
                  FIG21
@@ -1233,11 +1233,12 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
 STEP3 = (level("overview",
                '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
-               '<p>%s %s %s</p><p>One rule shows why. %s A rule of code now checks the length. %s</p>'
+               '<p>%s %s %s</p><p>One rule shows why. %s %s %s</p>'
                % (fact("s3-split", "A rule with one correct answer needs no judgment, so code checks it, not a model."),
-                  fact("s3-what", "Today code checks each try against 12 such rules, such as the number of options and the length of the text."),
+                  fact("s3-what", "Today code checks each try against 12 such rules, A1 to A12."),
                   fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"])),
                   fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
+                  fact("s3-a12", "Rule A12 now fails a question where a correct option is as long as or longer than each wrong option."),
                   fact("s3-long", "In mocks 2 to 5, the count was %s." % ", ".join(map(str, LONG[1:])))))
          + level("explanation",
                  FIG31
@@ -1424,11 +1425,11 @@ STEP4 = (level("overview",
                '<h4 class="takeaway">Two new Claude calls: one answers blind, one checks 9 rules, and code decides</h4>'
                # the story tone (owner, 16 October 2026): the risk, what we built, and the result
                '<p>%s So a new call checks each question, not the writer. %s %s %s</p><p>%s</p>'
-               % (fact("s4-46", "The guide says that a reviewer without the reasoning of the writer catches more than self-review (4.6-K2)."),
+               % (fact("s4-46", "The guide says that a reviewer without the reasoning of the writer catches subtle issues better than self-review (4.6-K2)."),
                   fact("s4-calls", "Call 4a answers the question with no answer key. Today call 4b checks the 9 rules B1 to B9 with the key."),
                   fact("s4-compare", "Code compares the letters of call 4a with the answer key."),
                   fact("s4-verdict", "Code also checks the feature names and makes the verdict."),
-                  fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9, a repeat of an earlier question." % (sum(V4.values()), V4["pass"], V4["fail"]))))
+                  fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9 (%d of %d)." % (sum(V4.values()), V4["pass"], V4["fail"], RULE4["B9"], sum(RULE4.values())))))
          + level("explanation",
                  FIG41
                  + '<p><b>Why two calls.</b> %s %s So code enforces the order, not an instruction.</p>'
@@ -1461,7 +1462,7 @@ opt = lambda q, l: next(o["text"] for o in q["options"] if o["letter"] == l)
 CARD.update({
     "s6-what": excerpt(S6, "Steps 3 and 4 look at one question. Some defects show only when many questions are read together.", "Build guide, step 6"),
     "s6-why": excerpt(S6, "Each writer call sees only its own slot, so two calls can write the same scene.", "Build guide, step 6"),
-    "s6-calls": excerpt("src/step6_check_scenario.py", "Then two model calls read the 15 questions together: call\n6a (rules D1 and D4) and call 6b (rules D2 and D3).", "The code of step 6", kind="code"),
+    "s6-calls": excerpt("src/step6_check_scenario.py", "The control already checked rule C1: it starts step 6 only when each slot has\nthe status passed. Then two model calls read the 15 questions together: call\n6a (rules D1 and D4) and call 6b (rules D2 and D3).", "The code of step 6", kind="code"),
     "s6-back": excerpt("src/step6_check_scenario.py", "Step 6 sends no question\nback. Each finding goes to the owner (decision 0038, part 3).", "The code of step 6", kind="code"),
     "s6-rules": code_block("src/step6_check_scenario.py", 'RULES_6A = """D1.', "D3. At most one wrong option of the scenario", "The rules of calls 6a and 6b"),
     "s6-person": excerpt(D34, "A finding of this step names two questions or more, so a person selects which one to write again, or none.", "Mock decision 0034, Reason"),
@@ -1719,7 +1720,7 @@ CARD.update({
     "s8-item10": excerpt(D39, "Step 8 starts only after the command `accept` of the owner, and only when:", "Mock decision 0039, Item 10"),
     "s8-plan5": excerpt(D70, "Option 1, from mock 5.", "Mock decision 0070, Decision"),
     "s8-what": excerpt(S8, "Code builds the two files of a mock from the stored question records. Nobody edits the files by hand.", "Build guide, step 8"),
-    "s8-two": excerpt("src/step8_build_files.py", "the 60 questions, with no answers and no reasons", "The code of step 8", kind="code"),
+    "s8-two": excerpt("src/step8_build_files.py", "the 60 questions, with no answers and no reasons\n    mocks/mock-01.answers.json     the correct letters, and the reason of each option", "The code of step 8", kind="code"),
     "s8-accept": code_block("src/control.py", "def accept(self", '"""Command of the owner: accept the mock.', "The command accept of the owner"),
     "s8-cond": code_block("src/control.py", 'raise Refused("Step 8 cannot start: "', 'raise Refused("Step 8 cannot start: "', "The code lists each cause and builds no file"),
     "s8-one": excerpt(D16, "If a question exists in two places and a person can edit one of them, the two can disagree, and nobody knows which one the checks saw.", "Mock decision 0016, Reason"),
