@@ -2849,8 +2849,9 @@ def exam_tree():
     The lines show only when the five columns stand side by side."""
     # straight lines with right angles (owner, 15 October 2026); each line leaves the box at its own point and turns at its own
     # height, so no two lines share a segment and each thickness stays visible
-    start, turn = {0: 460, 1: 480, 2: 500, 3: 520, 4: 540}, {0: 22, 1: 44, 2: 44, 3: 44, 4: 22}
-    lines = "".join('<path d="M%d 0 V%d H%d V84" stroke-width="%.1f"/>' % (start[i], turn[i], 100 + 200 * i, DOM[i + 1]["weight"] / 6) for i in range(5))
+    # one trunk from the box and one bar across, both thin, and one drop to each column as thick as its weight (owner, 15 October 2026)
+    lines = '<path d="M500 0 V40 M100 40 H900" stroke-width="2"/>' + "".join(
+        '<path d="M%d 40 V84" stroke-width="%.1f"/>' % (100 + 200 * i, DOM[i + 1]["weight"] / 6) for i in range(5))
     return ('<div class="exam-top"><p class="exam-node">Claude Certified Architect &ndash; Foundations <span class="ve-label">CCAR-F</span></p>'
             '<svg class="exam-lines" viewBox="0 0 1000 84" preserveAspectRatio="none" aria-hidden="true" focusable="false">%s</svg></div>' % lines)
 
@@ -2946,13 +2947,14 @@ def map_html():
   <figure>
     %(axes)s
     <div class="table-scroll"><table class="matrix"><thead><tr><th scope="col">Scenario</th>%(dhead)s</tr></thead><tbody>%(scen)s</tbody></table></div>
-    <figcaption><span class="fig-n">Fig. B</span>%(scap)s A chip &ldquo;primary&rdquo; marks a domain that the guide names as primary for the scenario. Open a scenario to read its text in the guide.</figcaption>
+    <figcaption><span class="fig-n">Fig. B</span>Each scenario draws on 2 or 3 primary domains, and no scenario covers all 5. Domain 5 is primary in %(d5)d scenarios, but domain 4 in only %(d4)d (scenarios %(d4s)s). A chip &ldquo;primary&rdquo; marks a domain that the guide names as primary for the scenario. Open a scenario to read its text in the guide.</figcaption>
   </figure>
 </section>""" % {"notepad": NOTEPAD_ICON, "what": fact("m-what", "The exam guide is the official reference for the CCAR-F exam: it lists the domains and the task statements that the exam tests."),
                  "items": fact("m-items", "The exam has 60 questions"),
                  "format": fact("m-format", "and each question states how many answers to select."),
                  "struct": fact("m-struct", "Each exam uses 4 of the 6 scenarios of the guide."),
-                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "tree": exam_tree(), "axes": AXES, "nts": len(TS),
+                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "tree": exam_tree(), "axes": AXES, "d5": sum(5 in x["primary_domains"] for x in SCEN), "d4": sum(4 in x["primary_domains"] for x in SCEN),
+                 "d4s": " and ".join(str(x["id"]) for x in SCEN if 4 in x["primary_domains"]), "nts": len(TS),
                  "weights": fact("m-weights", "A weight is the approximate share of the scored questions."),
                  "scen": "".join(scen_row(s) for s in SCEN),
                  "dhead": "".join('<th scope="col"><a href="#domain-%d">Domain %d</a></th>' % (d, d) for d in range(1, 6)),
