@@ -1,6 +1,6 @@
 /* Tab 2, version 3 (owner, 15 October 2026): only behind-the-mocks-v3.html loads this file, after academy.css and academy-v2.css.
    The story before Fig. A: how we settled what is true (Fig. S), and what we chose to use (Fig. M). */
-.v3-sec { margin: var(--s-5) 0 0; }   /* main is a grid: its gap adds to this margin, and margins do not collapse */
+.v3-sec { margin: 0; }   /* main is a grid: its gap of 34 pixels is the space, as between the other blocks of the page */
 .v3-sec > p { max-width: 65ch; }
 .v3-sec > p + p { margin-top: var(--s-4); }
 .v3-sec h2 { margin-bottom: var(--s-4); }
