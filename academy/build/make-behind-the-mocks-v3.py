@@ -2103,19 +2103,19 @@ CARD.update({
     "v3-0012": excerpt(D12, "The owner asked if the pipeline needs subagents, because single calls are independent already. That is correct.", "Mock decision 0012, How we decided"),
     "v3-0012b": excerpt(D12, "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends", "Mock decision 0012, How we decided"),
     "v3-0026": excerpt(D26, "The pipeline uses no MCP, no subagent, no hook and no session.", "Mock decision 0026, Question"),
-    "v3-0026b": excerpt(D26, "The owner said: \"I accept no MCP and subagents\".", "Mock decision 0026, How we decided"),
+    "v3-0026b": excerpt(D26, "The owner said: \"I accept no MCP and subagents\". The assistant asked again for hooks and sessions. The owner said: \"Sure\".", "Mock decision 0026, How we decided"),
     "v3-batch": excerpt("academy/sources/2026-10-14-anthropic-docs-batch-processing.md", "All usage is charged at 50% of the standard API prices.", "Claude API documentation, Batch processing (copy of 14 October 2026)", kind="docs"),
     "v3-0067a": excerpt(D67, "The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067, Options"),
-    "v3-0067b": excerpt(D67, "The calls cost $0.58 with caching. The same tokens with no caching cost $1.72.", "Mock decision 0067, Decision"),
+    "v3-0067b": excerpt(D67, "calls 4a and 4b checked 10 questions of mock 3 again. The calls cost $0.58 with caching. The same tokens with no caching cost $1.72.", "Mock decision 0067, Decision"),
 })
 
 STAGES = [
     ("September 2026", "Mock v1", [("guide", "src"), ("documentation", "src"), ("course", "src")],
-     "We compared all three, and saw that they disagree.", "v3-s1",
+     "We compared all three, and saw that they disagree. Source: the notes of mock v1, not in this repository.", "v3-s1",
      "Mock v1: three sources side by side",
      ["We built mock v1 from the exam guide, the Claude documentation and the CCAR-F course of the Anthropic learning portal.",
       "A separate agent checked each quote against its source. It found one sentence that no source contained, and we removed it.",
-      "The source of this stage is the build notes of mock v1, 30 September 2026. They are not in this repository."], []),
+      "The source of this stage is the document \"How These Mocks Were Made\" of mock v1, 30 September 2026. It is not in this repository, and it may not be exact."], []),
     ("6 October 2026", "The present builder", [("guide", "src"), ("documentation", "gone"), ("course", "gone")],
      "We chose one source of truth: the guide.", "v3-s2",
      "The present builder: the guide alone",
@@ -2123,10 +2123,11 @@ STAGES = [
       "The reason: the exam tests the guide, and each added source adds a step that can fail and that becomes old."],
      [{"text": "Mock decision 0008 &rarr;", "href": link(D08)}]),
     ("14 October 2026", "The academy pages", [("guide", "src"), ("documentation", "check"), ("course", "gone")],
-     "We check the product, and mark each gap with its date.", "v3-s3",
+     "We check the product, and mark each gap that could change an exam answer.", "v3-s3",
      "The academy pages: the product as a dated check",
      ["We compared each part of tab 1 with a copy of the documentation of 14 October 2026.",
-      "Where a product fact could lead to a different exam answer, a box gives the answer of the guide and the product today: 23 boxes in 15 parts."],
+      "Tab 1 has 23 boxes in 15 parts. Each box stands where a product fact could lead to a different exam answer.",
+      "Each box gives the answer of the guide and the product today."],
      [{"text": "Academy decision 0042 &rarr;", "href": link(A42)}, {"text": "The boxes of part 1.3 &rarr;", "href": "%s#ts-1-3" % TAB1}]),
 ]
 SRC_MARK = {"src": "", "gone": " is-gone", "check": " is-check"}
@@ -2144,12 +2145,12 @@ TRUTH_FIG = """<figure class="v3-fig">
 TRUTH_CARDS = ["v3-guide13", "v3-docs13", "v3-0008a", "v3-0008b", "v3-0042"]
 TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
   <h2 id="truth-h">First, we settled what is true</h2>
-  <p>Before we wrote a single question, we had to know what a correct answer is. We read the exam guide, the Claude documentation and the CCAR-F course side by side. We observed that they did not always agree. The guide names %(g13)s. %(d13)s A candidate who learned the product could choose the wrong answer in the exam.</p>
+  <p>A mock is only as good as its answer key, so we first had to know what a correct answer is. For mock v1, we read the exam guide, the Claude documentation and the CCAR-F course side by side. We observed that they did not always agree. The guide names %(g13)s. %(d13)s A candidate who learned the product could choose the wrong answer in the exam.</p>
   %(fig)s
   <p>So we chose one rule. %(r1)s We also saw that a source can go out of date. %(r2)s</p>
   <div class="exambox-v3"><p class="ve-label">One difference, side by side</p>
-    <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works.</dd></dl></div>
-  <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these marks show what has changed since the guide was written. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
+    <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works in settings and agent definitions.</dd></dl></div>
+  <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
   <section class="sources" aria-label="Sources of the truth"><p class="ve-label">Sources</p><ul>%(src)s</ul></section>
 </section>""" % {
     "g13": fact("v3-guide13", "the Task tool as the way to start a subagent"),
@@ -2218,22 +2219,22 @@ MAP_SRC = "".join('<li><a href="%s">%s, task statement %s</a> <span class="ve-la
                   for u in sorted(USE.values(), key=lambda u: tuple(map(int, u["id"].split(".")))) for ev in u["evidence"])
 TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   <h2 id="tools-h">Then, we used only what the job needed</h2>
-  <p>The guide teaches 30 task statements. We did not try to use them all. For each one, we asked whether this job needed it. Three of those choices show how we decided.</p>
+  <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
-    <li><b>No subagents.</b> %(c1)s %(c1b)s So each check is a plain call with a fresh context, and no subagent was needed.</li>
-    <li><b>No MCP, no hooks, no sessions.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
+    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is a plain call with a fresh context, and no subagent was needed.</li>
+    <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
     <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
   </ol>
-  <p>The map shows the result of all 30 choices. An empty tile is a choice too: the job did not need it.</p>
+  <p>After the build, we checked all 30 task statements against the records. The map shows the result. An empty tile means that the job did not need it.</p>
   %(fig)s
   <section class="sources" aria-label="Sources of the map"><p class="ve-label">Sources</p><ul>@SRC_TOOLS@%(msrc)s</ul></section>
 </section>""" % {
     "c1": fact("v3-0012", "We asked if the pipeline needs subagents, because single calls are already independent. They are."),
     "c1b": fact("v3-0012b", "A plain API call already has a separate context. Each call sees only what the program sends."),
-    "c2": fact("v3-0026", "The pipeline needed no MCP, no subagent, no hook and no session."),
-    "c2b": fact("v3-0026b", "So we accepted none of them."),
+    "c2": fact("v3-0026", "The pipeline uses no MCP, no subagent, no hook and no session."),
+    "c2b": fact("v3-0026b", "We accepted that, first for MCP and subagents, then for hooks and sessions."),
     "c3": fact("v3-batch", "The Message Batches API charges 50% of the standard prices."),
-    "c3a": fact("v3-0067a", "We rejected it, because each round of the pipeline would wait for a whole batch."),
+    "c3a": fact("v3-0067a", "We rejected it, because each round of the pipeline would wait for its batch."),
     "c3b": fact("v3-0067b", "In a test on 10 questions, the check calls cost $0.58 with caching, against $1.72 without."),
     "fig": MAP_FIG, "msrc": MAP_SRC,
 }

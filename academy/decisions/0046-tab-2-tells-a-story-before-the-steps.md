@@ -27,9 +27,9 @@ Tone:
 8. The new sections tell the story as it happened, with "we" and the past tense, for example "we observed that the guide differed from the product". The facts stay exact and come from the records.
 
 The truth section:
-9. Three stages in one figure (Fig. S): mock v1 used the guide, the documentation and the CCAR-F course as sources. The present builder uses the guide only (mock decision 0008). The academy pages check the documentation of a fixed date and mark each difference (academy decision 0042). The form shows the role of each source. Each stage opens a popup.
+9. Three stages in one figure (Fig. S): mock v1 used the guide, the documentation and the CCAR-F course as sources. The present builder uses the guide only (mock decision 0008). The academy pages check the documentation of a fixed date and mark each difference that could change an exam answer (academy decision 0042). The form shows the role of each source. Each stage opens a popup.
 10. One difference side by side (1.3-K1: the Task tool, now called Agent), the count of 23 boxes in 15 parts on tab 1, and a link to them.
-11. The source of stage 1 is the build notes of mock v1, 30 September 2026. They are not in this repository, and the page says so. The page does not quote the course.
+11. The source of stage 1 is the document "How These Mocks Were Made" of mock v1, 30 September 2026. The owner said that it may be inaccurate. It is not in this repository, and the page says so on the stage and in its popup. The page does not quote the course.
 12. Long-term goal of the owner: a separate tab collects the differences between the guide and the products, and later checks by itself how they drift apart. It is not built yet.
 
 The tools section:
