@@ -427,3 +427,9 @@ ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width:
 #primer .case svg.ve-mini { margin-inline: auto; }
 .callout.newcomer { max-width: 65ch; border-color: var(--gold); }
 .matrix .chip[data-step] { cursor: pointer; }
+/* the Overview of each part of tab 1: a heading like the Explanation and the Depth, the answer in body size, the title of the guide small (owner, 15 October 2026) */
+.ov-head { display: flex; align-items: baseline; gap: var(--s-3); }
+.ov-head h4 { font-size: var(--t-lead); font-weight: 600; }
+.lead.ov-answer { font-size: var(--t-body); color: var(--text); max-width: 65ch; }
+section[data-level="overview"] .gtitle { font-size: var(--t-small); }
+section[data-level="overview"] > .ov-head { margin-bottom: var(--s-2); } section[data-level="overview"] > .gtitle { margin: var(--s-2) 0 var(--s-3); }

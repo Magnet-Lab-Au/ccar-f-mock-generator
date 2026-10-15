@@ -94,7 +94,8 @@ def level(kind, body, pid):
         body = ('<div class="callout"><span class="chip">The product today</span><p>Here facts of the Anthropic documentation of 14 October 2026 differ from points of the guide. '
                 'For the exam, answer as the guide says.</p><ul class="beyond today-list">%s</ul></div>' % "".join(TODAY[pid])) + body
     if kind == "overview":
-        return '<section data-level="overview" aria-label="Overview"><p class="lvl1">Overview &middot; 30 seconds</p>%s</section>' % body
+        # the heading has the style of the Explanation and the Depth, then the answer, then the title of the guide (owner, 15 October 2026)
+        return '<section data-level="overview" aria-label="Overview"><div class="ov-head"><h4>Overview</h4><span class="ve-label">30 seconds</span></div>%s</section>' % body
     if kind == "explanation":
         return ('<details class="level" data-level="explanation"><summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>'
                 '<div class="body">%s</div></details>' % body)
@@ -190,8 +191,8 @@ def overview(tsid, takeaway, answer, fig=""):
     TAKEAWAY[tsid] = takeaway
     key = "ts-%s-title" % tsid.replace(".", "-")
     CARD[key] = gx("### **Task Statement %s: %s**" % (tsid, TS[tsid]["title"]), "Exam guide, task statement %s" % tsid)
-    return level("overview", '<p class="gtitle">%s</p><p class="lead">%s</p>%s'
-                 % (fact(key, "&ldquo;%s&rdquo;" % e(TS[tsid]["title"])), answer, fig), "ts-" + tsid.replace(".", "-"))
+    return level("overview", '<p class="lead ov-answer">%s</p><p class="gtitle">The guide: %s</p>%s'
+                 % (answer, fact(key, "&ldquo;%s&rdquo;" % e(TS[tsid]["title"])), fig), "ts-" + tsid.replace(".", "-"))
 
 
 
