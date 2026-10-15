@@ -2837,10 +2837,27 @@ def map_col(d):
             % (d["id"], d["id"], e(d["name"]), d["weight"], d["weight"] * 3, fact("m-d%d" % d["id"], "%d%%" % d["weight"]), lis))
 
 
+def scen_text(s):
+    """The text of a scenario in the guide, word for word, as paragraphs: the story, then the primary domains."""
+    eg = read(EG)
+    i = eg.index("### Scenario %d: %s" % (s["id"], s["name"]))
+    j = eg.index("\n", eg.index("Primary domains:", i))
+    a, b = eg[:i].count("\n") + 1, eg[:j].count("\n") + 1
+    body = re.sub(r"<!--.*?-->", "", eg[eg.index("\n", i):j], flags=re.S)
+    paras = [x.strip() for x in body.split("\n\n") if x.strip()]
+    assert paras[-1].startswith("Primary domains:") and len(paras) == 2, s["id"]
+    story, dom = paras
+    doms = dom[len("Primary domains:"):].strip().split(", ")
+    return ('<p>%s</p><p class="gh">Primary domains</p><ul class="scen-doms">%s</ul><p class="ve-label"><a href="%s">Exam guide, section 5, lines %d to %d &rarr;</a></p>'
+            % (e(story), "".join("<li>%s</li>" % e(d) for d in doms), e(link(EG, a, b)), a, b))
+
+
 def scen_row(s):
-    """One row of the table of scenarios (figure plan, Fig. B): a chip in each column of a primary domain."""
+    """One row of the table of scenarios (figure plan, Fig. B): a chip in each column of a primary domain. The name opens a panel
+    under the row with the text of the guide (owner, 15 October 2026)."""
     cells = "".join('<td>%s</td>' % ('<span class="chip ok">primary</span>' if d in s["primary_domains"] else "") for d in range(1, 6))
-    return '<tr><th scope="row"><span class="sn">%d</span>%s</th>%s</tr>' % (s["id"], fact("m-s%d" % s["id"], e(s["name"])), cells)
+    return ('<tr><th scope="row"><button type="button" class="scen-toggle" aria-expanded="false" aria-controls="scen-%d"><span class="sn">%d</span>%s</button></th>%s</tr>'
+            '<tr class="scen-detail" id="scen-%d"><td colspan="6">%s</td></tr>' % (s["id"], s["id"], e(s["name"]), cells, s["id"], scen_text(s)))
 
 
 def notepad_icon():
@@ -2899,8 +2916,14 @@ PUZZLE_ICON = ('<svg class="h-icon h-puzzle" viewBox="62 95 490 427" aria-hidden
 BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
   <h2 class="with-icon">How we broke it down%(puzzle)s</h2>
   <p>The guide gives each task statement two lists of points: &ldquo;Knowledge of&rdquo; and &ldquo;Skills in&rdquo;. %(count)s</p>
-  <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2. The guide numbers the task statements but not their points, so the labels of the points are ours.</span></p>
-  <p>Each task statement opens in three levels. The <b>Overview</b> takes about 30 seconds. The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests. The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</p>
+  <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2.</span></p>
+  <p>The guide numbers the task statements but not their points, so the labels of the points are ours.</p>
+  <p>Each task statement opens in three levels:</p>
+  <ul class="levels">
+    <li>The <b>Overview</b> takes about 30 seconds.</li>
+    <li>The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests.</li>
+    <li>The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</li>
+  </ul>
   <p>The label <span class="chip guide">Guide only</span> ends a point that no copied page of the Anthropic documentation says. It also ends a point that the documentation says in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
   <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. The line <b>For the exam</b> gives the answer of the guide. The line <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
   <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>

@@ -397,3 +397,12 @@ h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
 .h-icon.h-page { width: 1.3em; height: 1.75em; transform: rotate(-10deg); overflow: visible; }   /* the notepad mark of the owner keeps its own colours and its tall shape, tilted a little (owner, 15 October 2026) */
 .h-icon.h-tools { width: 1.3em; height: 1.3em; }   /* a toolbox, drawn for the primer in the colour of the text (owner, 15 October 2026) */
 .poplinks { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); font-size: var(--t-small); }   /* the links in a popup of Fig. A (owner, 15 October 2026) */
+/* the scenario rows that open the text of the guide, and the list of the three levels (owner, 15 October 2026) */
+.scen-toggle { display: inline-flex; align-items: baseline; gap: var(--s-2); background: none; border: 0; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.scen-toggle::after { content: '+'; font: 600 var(--t-label) var(--font-mono); color: var(--text-dim); margin-left: var(--s-2); }
+.scen-toggle[aria-expanded="true"]::after { content: '\2212'; }
+.scen-toggle:hover { text-decoration: underline; text-decoration-color: var(--gold); }
+tr.scen-detail td { background: var(--surface); padding: var(--s-3) var(--s-4) var(--s-4); }
+tr.scen-detail p { max-width: 65ch; margin-bottom: var(--s-2); }
+.scen-doms { padding-left: var(--s-5); margin-bottom: var(--s-2); }
+ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width: 65ch; }
