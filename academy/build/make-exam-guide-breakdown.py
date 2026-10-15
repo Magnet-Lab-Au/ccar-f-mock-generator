@@ -3208,5 +3208,12 @@ for k, v in POP.items():
 write("exam-guide-breakdown.html", page("Exam guide breakdown: the CCAR-F exam guide, task statement by task statement", BODY,
                                         "exam-guide-breakdown.js", "The CCAR-F exam guide in 5 domains and 30 task statements, each in three levels."))
 script_file("exam-guide-breakdown.js", POP, CARD)
+# paragraphs as wide as the figures (owner, 15 October 2026). False brings back the limit of 65 characters
+WIDE_TEXT = True
+if WIDE_TEXT:
+    _p = os.path.join(ROOT, "academy/pages/exam-guide-breakdown.html")
+    _t = open(_p, encoding="utf-8").read()
+    assert _t.count('<link rel="stylesheet" href="academy.css">') == 1
+    open(_p, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-tab1-wide.css">'))
 print("Wrote academy/pages/exam-guide-breakdown.html and exam-guide-breakdown.js: %d preview cards, %d popups, %d of %d task statements written."
       % (len(CARD), len(POP), len(PART), len(TS)))

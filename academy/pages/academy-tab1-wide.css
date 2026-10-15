@@ -1,0 +1,4 @@
+/* Tab 1 (owner, 15 October 2026): the paragraphs and lists use the full width of the figures, in place of the limit of
+   65 characters, as in version 4 of tab 2. Only exam-guide-breakdown.html loads this file, last. To undo it, set
+   WIDE_TEXT = False in academy/build/make-exam-guide-breakdown.py and build again. Headings keep their own limits. */
+main :is(p, .lead, figcaption, ul.levels, ol.checks, .callout.newcomer, dl.glossary, .glist li) { max-width: none !important; }
