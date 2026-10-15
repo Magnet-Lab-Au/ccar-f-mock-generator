@@ -10,3 +10,5 @@ p.v4-bridge { margin-bottom: var(--s-5); max-width: 65ch; }
 .v3-sec > .dom-body > .v3-fig { margin: var(--s-6) 0; }
 .v3-sec > .dom-body > p.v3-note { font-size: var(--t-small); color: var(--text-dim); margin: 0 0 var(--s-5); }
 .v3-sec > .dom-body > p + figure { margin-top: var(--s-5); }
+/* the dark mode button stays on the screen while the reader scrolls, like the Glossary button (owner, 15 October 2026). The open glossary panel (layer 50) covers it */
+.theme-btn { position: fixed; z-index: 40; }
