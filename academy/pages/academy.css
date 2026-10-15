@@ -315,7 +315,7 @@ ol.checks { display: grid; gap: var(--s-2); padding-left: 1.5rem; max-width: 65c
 #ts-1-1 .cases { grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr)); }
 #primer .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 34rem) { #primer .cases { grid-template-columns: minmax(0, 1fr); } }
-#map, #breakdown, #primer { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+#map, #breakdown > .sec-body, #primer > .sec-body { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
 section.parts[id^="domain-"] > p { margin-bottom: var(--s-4); }
 .beyond { padding-left: var(--s-5); display: grid; gap: var(--s-2); }
 .ve-e.no-head { marker-end: none; }

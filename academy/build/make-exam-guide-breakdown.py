@@ -2975,8 +2975,8 @@ PUZZLE_ICON = ('<svg class="h-icon h-puzzle" viewBox="62 95 490 427" aria-hidden
                '<path class="pz-face" d="%s"/>'   # the faces: empty in light mode, solid cream in dark mode (owner, 15 October 2026)
                '<path class="pz-line" d="%s" stroke-width="9" stroke-linejoin="round"/></svg>' % (PUZZLE_FACE[0], PUZZLE_DARK[0]))
 
-BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it down">
-  <h2 class="with-icon">How we broke it down%(puzzle)s</h2>
+BREAKDOWN = """<details class="domain parts" id="breakdown" open><summary><span class="dom-title">
+  <h2 class="with-icon">How we broke it down%(puzzle)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body sec-body">
   <p>The guide gives each task statement two lists of points. <span class="kw-k">Knowledge of</span> points say what you must know: a fact, a distinction or a reason. For example, %(k2)s is the difference between the three tool_choice settings. <span class="kw-s">Skills in</span> points say what you must be able to do in a situation. For example, %(s2)s is setting tool_choice to &ldquo;any&rdquo; when the document type is unknown.</p>
   <p>The guide puts each point in one of the two lists. %(count)s</p>
   <p class="key"><span class="tag-k">K = Knowledge of</span><span class="tag-s">S = Skills in</span><span>%(lab)s = domain 1 &middot; task statement 1.1 &middot; Knowledge of, point 2.</span></p>
@@ -2999,7 +2999,7 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
     <li>The sample questions of the guide for the task statement.</li>
     <li>How many questions of the 5 mocks test it.</li>
   </ul>
-</section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "k2": lab("4.3-K2"), "s2": lab("4.3-S2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
+</div></details>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "k2": lab("4.3-K2"), "s2": lab("4.3-S2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
                    "src": "reference/guide-records.json", "href": link("reference/guide-records.json")}
@@ -3148,8 +3148,8 @@ GLOSS = [
 
 GLOSSARY = glossary_panel('<dl class="glossary">%s</dl>' % "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS),
                           '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%s#top-words">Glossary of tab 2 &rarr;</a></p>' % TAB2)
-PRIMER = """<section class="parts" id="primer" aria-label="Before you start: who runs the tools in each product">
-  <h2 class="with-icon">Before you start: who runs the tools in each product<svg class="h-icon h-tools" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg></h2>
+PRIMER = """<details class="domain parts" id="primer" open><summary><span class="dom-title">
+  <h2 class="with-icon">Before you start: who runs the tools in each product<svg class="h-icon h-tools" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg></h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body sec-body">
   <p>The exam asks about three products and one protocol:</p>
   <ul class="levels">
     <li><b>Claude API</b>, a product</li>
@@ -3159,7 +3159,7 @@ PRIMER = """<section class="parts" id="primer" aria-label="Before you start: who
   </ul>
   <p>Fig. C shows who runs the tools in each. The button Glossary at the right edge of the screen explains the words of this tab.</p>
   %(fig)s
-</section>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
+</div></details>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
 
 TITLE = "Exam guide breakdown"
 BODY = """<main>
