@@ -46,6 +46,8 @@ The owner decided 1.2 and 1.3: "yes, make 1.3 used and keep 1.2 idea". 1.3 is us
 
 The owner asked what "idea only" means. It covered two cases: done in another way than the guide names (for example 4.3), and done in part (for example 2.5 and 3.2). The owner said: "yes, rename it to in part". The label on the page is now "In part", with the key "in part, or in another way than the guide names". The value in `academy/facts/task-statement-use.json` stays "idea". The caption of Fig. M now says: "Of the 30 task statements, the build used 11, used 10 in part, and did not use 9."
 
+The overview (owner, 15 October 2026): the three headings are one sequence, "First, we settled what is true", "Next, we used only what the job needed" and "Then, we built it in 9 steps". The new heading stands above Fig. A, with a bridge in the story tone: "With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step." The owner accepted the bridge with "Code runs most of them". The assistant changed it, because code runs only 4 of the 9 steps alone. Fig. A, its caption and the section "The 9 steps" stay as they are.
+
 Settled from the review:
 - 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
 

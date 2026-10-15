@@ -2229,7 +2229,7 @@ MAP_SRC = "".join('<li><a href="%s">%s, task statement %s</a> <span class="ve-la
                   % (e(link(ev["path"], ev["line"])), e(ev["path"].rsplit("/", 1)[-1]), u["id"], ev["path"], ev["line"])
                   for u in sorted(USE.values(), key=lambda u: tuple(map(int, u["id"].split(".")))) for ev in u["evidence"])
 TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
-  <h2 id="tools-h">Then, we used only what the job needed</h2>
+  <h2 id="tools-h">Next, we used only what the job needed</h2>
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
     <li><b>No subagents in the pipeline<a class="v3-ast" href="#v3-note-sub" aria-label="See the note">*</a>.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
@@ -2262,7 +2262,10 @@ BODY = """<main>
   <div class="callout newcomer"><p><b>New to the exam guide?</b> Read <a href="%(tab1)s">Exam guide breakdown</a> first. It explains the domains, the task statements and their points.</p></div>
 </header>
 %(v3)s
-<p class="v2-intro">The mock builder makes a mock in 9 steps. In Fig. A, the form of each box shows who does the step: code, a Claude model, or the owner.</p>
+<section class="v3-sec" id="overview" aria-labelledby="overview-h">
+  <h2 id="overview-h">Then, we built it in 9 steps</h2>
+  <p class="v2-intro">With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step.</p>
+</section>
 %(fig1)s
 <!-- each big section opens and closes, open at the start (owner, 15 October 2026) -->
 <details class="domain parts" id="steps" open><summary><span class="dom-title"><h2 class="with-icon">The 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
@@ -2284,7 +2287,7 @@ BODY = """<main>
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
-TOP = BODY.split('<p class="v2-intro">')[1].split('<details class="domain parts" id="steps"')[0] + WORDS   # v3: the new sections have their own sources   # the glossary is in the panel at the end, and its cards belong to the introduction
+TOP = BODY.split('<section class="v3-sec" id="overview"')[1].split('<details class="domain parts" id="steps"')[0] + WORDS   # v3: the new sections have their own sources   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, [x for x in POPUPS if not (FIG_A_POPUPS and x['tab'] == 2 and x['fig'] == 'A')], 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
