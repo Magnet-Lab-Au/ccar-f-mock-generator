@@ -2829,12 +2829,35 @@ for s in SCEN:
     CARD["m-s%d" % s["id"]] = gx(_eg[_i:_j], "Exam guide, section 5, scenario %d" % s["id"])
 
 
+# a line icon for each domain, drawn in the colour of the text (owner, 15 October 2026)
+DOMAIN_ICON = {
+    1: '<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7.5V17M10.5 7l-4.5 10M13.5 7l4.5 10"/>',
+    2: '<path d="M9 3v4M15 3v4"/><rect x="7" y="7" width="10" height="6" rx="1"/><path d="M12 13v3a3 3 0 0 1-3 3H6"/>',
+    3: '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M7 10l3 2-3 2M12 15h5"/>',
+    4: '<path d="M6 3h9l3 3v15H6z"/><path d="M10.5 10c-1 0-1 .8-1 1.6s0 1.4-1 1.4c1 0 1 .6 1 1.4s0 1.6 1 1.6M13.5 10c1 0 1 .8 1 1.6s0 1.4 1 1.4c-1 0-1 .6-1 1.4s0 1.6-1 1.6"/>',
+    5: '<path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>',
+}
+
+
+def domain_icon(n):
+    return ('<svg class="d-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round" stroke-linejoin="round">%s</svg>' % DOMAIN_ICON[n])
+
+
+def exam_tree():
+    """The exam on top, and one line to each domain column, as thick as the weight of the domain (owner, 15 October 2026).
+    The lines show only when the five columns stand side by side."""
+    lines = "".join('<path d="M500 0 C500 50 %d 34 %d 84" stroke-width="%.1f"/>' % (100 + 200 * i, 100 + 200 * i, DOM[i + 1]["weight"] / 3) for i in range(5))
+    return ('<div class="exam-top"><p class="exam-node">Claude Certified Architect &ndash; Foundations <span class="ve-label">CCAR-F</span></p>'
+            '<svg class="exam-lines" viewBox="0 0 1000 84" preserveAspectRatio="none" aria-hidden="true" focusable="false">%s</svg></div>' % lines)
+
+
 def map_col(d):
     lis = "".join('<li><a href="#ts-%s"><span class="pid">%s</span> <span>%s</span></a></li>' % (t.replace(".", "-"), t, e(TAKEAWAY.get(t, TS[t]["title"])))
                   for t in sorted(TS, key=lambda x: (int(x.split(".")[0]), int(x.split(".")[1]))) if TS[t]["domain"] == d["id"])
-    return ('<div class="tcol"><p class="ve-label"><a href="#domain-%d">Domain %d</a></p><p class="tname">%s</p>'
-            '<div class="tbar" role="img" aria-label="Weight %d%%"><span style="width:%d%%"></span></div><p class="tw">%s</p><ol class="tlist">%s</ol></div>'
-            % (d["id"], d["id"], e(d["name"]), d["weight"], d["weight"] * 3, fact("m-d%d" % d["id"], "%d%%" % d["weight"]), lis))
+    return ('<div class="tcol"><p class="tw">%s</p>%s<p class="ve-label"><a href="#domain-%d">Domain %d</a></p><p class="tname">%s</p>'
+            '<p class="tsum">%s</p><ol class="tlist">%s</ol></div>'
+            % (fact("m-d%d" % d["id"], "%d%%" % d["weight"]), domain_icon(d["id"]), d["id"], d["id"], e(d["name"]), e(DOMAIN_SUMMARY[d["id"]].split(":")[0]) + ".", lis))
 
 
 def scen_text(s):
@@ -2885,9 +2908,11 @@ def map_html():
     return """<section class="parts" id="map" aria-label="The map of the exam guide">
   <h2 class="with-icon">The exam guide on one page%(notepad)s</h2>
   <p>%(what)s %(items)s, %(format)s %(struct)s</p>
+  <p>The guide divides the exam into 5 domains. Each domain has a weight, and is split into task statements.</p>
   <figure data-figure="map">
+    %(tree)s
     <div class="tmap">%(cols)s</div>
-    <figcaption><span class="fig-n">Fig. A</span>The 5 domains of the guide, with their %(nts)d task statements. %(weights)s Each task statement shows its takeaway heading and opens below.</figcaption>
+    <figcaption><span class="fig-n">Fig. A</span>The exam, its 5 domains and their %(nts)d task statements. Each line is as thick as the weight of its domain. %(weights)s Each task statement shows its takeaway heading and opens below.</figcaption>
   </figure>
   <figure>
     <div class="table-scroll"><table class="matrix"><thead><tr><th scope="col">Scenario</th>%(dhead)s</tr></thead><tbody>%(scen)s</tbody></table></div>
@@ -2897,7 +2922,7 @@ def map_html():
                  "items": fact("m-items", "The exam has 60 questions"),
                  "format": fact("m-format", "and each question states how many answers to select."),
                  "struct": fact("m-struct", "Each exam uses 4 of the 6 scenarios of the guide."),
-                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "nts": len(TS),
+                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "tree": exam_tree(), "nts": len(TS),
                  "weights": fact("m-weights", "A weight is the approximate share of the scored questions."),
                  "scen": "".join(scen_row(s) for s in SCEN),
                  "dhead": "".join('<th scope="col"><a href="#domain-%d">Domain %d</a></th>' % (d, d) for d in range(1, 6)),

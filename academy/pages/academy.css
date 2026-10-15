@@ -406,3 +406,13 @@ tr.scen-detail td { background: var(--surface); padding: var(--s-3) var(--s-4) v
 tr.scen-detail p { max-width: 65ch; margin-bottom: var(--s-2); }
 .scen-doms { padding-left: var(--s-5); margin-bottom: var(--s-2); }
 ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width: 65ch; }
+/* Fig. A of tab 1: the exam on top, a line to each domain as thick as its weight, and an icon for each domain (owner, 15 October 2026) */
+.exam-top { display: grid; justify-items: center; }
+.exam-node { font-family: var(--font-display); font-weight: 600; font-size: var(--t-lead); padding: var(--s-3) var(--s-5); background: var(--surface); border: 1.5px solid var(--border-bright); border-radius: var(--r-2); text-align: center; max-width: none; }
+.exam-node .ve-label { display: block; margin-top: var(--s-1); }
+.exam-lines { display: block; width: 100%; height: 3.5rem; overflow: visible; }
+.exam-lines path { fill: none; stroke: var(--gold); vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.d-icon { width: 1.75rem; height: 1.75rem; color: var(--text); }
+.tcol .tsum { font-size: var(--t-small); color: var(--text-dim); line-height: 1.4; }
+@media (min-width: 60rem) { .tmap { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (max-width: 59.99rem) { .exam-lines { display: none; } .exam-top { justify-items: start; margin-bottom: var(--s-4); } }
