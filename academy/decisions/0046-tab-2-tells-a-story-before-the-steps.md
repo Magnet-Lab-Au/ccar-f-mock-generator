@@ -54,6 +54,8 @@ The build in Claude Code, version 4 (owner, 15 October 2026): no new map. Fig. M
 
 The last section, version 4 (owner, 15 October 2026): the heading "Finally, what we can claim and what we cannot" ends the sequence of the story. Its bridge: "A careful build still has limits. Here is what the records prove, and what they do not." The old lead follows, and the two boxes stay as they are. We did not add the concept "Where the process failed" of the document of mock v1, because the Depth of each step holds its failures.
 
+Sections that open and close, version 4 (owner, 15 October 2026): "First, we settled what is true" and "Next, we used only what the job needed" open and close like the other big sections, and start open. The overview and "The 9 steps" are one section, "Then, we built it in 9 steps", with the stairs icon. It holds the bridge, Fig. A and the 9 steps. The page has 5 big sections in one form. The owner said: "yes, merge them and build it in v4 but put the icon in the new merged heading".
+
 Settled from the review:
 - 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
 

@@ -4,3 +4,9 @@ details.part > summary .v4-ts { display: inline-block; vertical-align: .15em; ma
 details.part > summary .v4-what { display: block; font-size: var(--t-small); color: color-mix(in srgb, var(--info) 55%, var(--text)); margin-top: var(--s-1); }   /* the teal of the task statement chip, mixed with the text so that it keeps its contrast (owner, 15 October 2026) */
 /* the bridge of a section keeps space from the boxes or parts under it (owner, 15 October 2026) */
 p.v4-bridge { margin-bottom: var(--s-5); max-width: 65ch; }
+/* the story sections open and close like the other big sections (owner, 15 October 2026): the rules of academy-v3.css for their paragraphs and figures, inside the body */
+.v3-sec > .dom-body > p { max-width: 65ch; }
+.v3-sec > .dom-body > p + p { margin-top: var(--s-4); }
+.v3-sec > .dom-body > .v3-fig { margin: var(--s-6) 0; }
+.v3-sec > .dom-body > p.v3-note { font-size: var(--t-small); color: var(--text-dim); margin: 0 0 var(--s-5); }
+.v3-sec > .dom-body > p + figure { margin-top: var(--s-5); }

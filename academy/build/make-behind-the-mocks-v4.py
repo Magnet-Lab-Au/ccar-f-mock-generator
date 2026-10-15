@@ -2201,8 +2201,7 @@ CARD.update({
     "v3-b8": excerpt("src/step4_check_model.py", "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.", "The code of step 4, rule B8", kind="code"),
 })
 TRUTH_CARDS = ["v3-guide13", "v3-docs13", "v3-0008a", "v3-0008b", "v3-0008c", "v3-0008d", "s4-t24", "v3-b8", "v3-0042"]
-TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
-  <h2 id="truth-h">First, we settled what is true</h2>
+TRUTH = """<details class="domain parts v3-sec" id="truth" open><summary><span class="dom-title"><h2 id="truth-h">First, we settled what is true</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   <p>A mock is only as good as its answer key, so we first had to know what a correct answer is. For mock v1, we read the exam guide, the Claude documentation and the CCAR-F course side by side. We observed that they did not always agree. The guide names %(g13)s. %(d13)s A candidate who learned the product could choose the wrong answer in the exam.</p>
   %(fig)s
   <p>So we chose one rule. %(r1)s We also saw that a source can go out of date. %(r2)s</p>
@@ -2211,7 +2210,7 @@ TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
     <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works in settings and agent definitions.</dd></dl></div>
   <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
   <section class="sources" aria-label="Sources of the truth"><p class="ve-label">Sources</p><ul>%(src)s</ul></section>
-</section>""" % {
+</div></details>""" % {
     "g13": fact("v3-guide13", "the Task tool as the way to start a subagent"),
     "d13": fact("v3-docs13", "The documentation says that the Task tool was renamed to Agent."),
     "fig": TRUTH_FIG,
@@ -2285,8 +2284,7 @@ MAP_FIG = """<figure class="v3-fig" id="fig-m">
 MAP_SRC = "".join('<li><a href="%s">%s, task statement %s</a> <span class="ve-label">%s, line %d</span></li>'
                   % (e(link(ev["path"], ev["line"])), e(ev["path"].rsplit("/", 1)[-1]), u["id"], ev["path"], ev["line"])
                   for u in sorted(USE.values(), key=lambda u: tuple(map(int, u["id"].split(".")))) for ev in u["evidence"])
-TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
-  <h2 id="tools-h">Next, we used only what the job needed</h2>
+TOOLS = """<details class="domain parts v3-sec" id="tools" open><summary><span class="dom-title"><h2 id="tools-h">Next, we used only what the job needed</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
     <li><b>No subagents in the pipeline<a class="v3-ast" href="#v3-note-sub" aria-label="See the note">*</a>.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
@@ -2297,7 +2295,7 @@ TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   <p>After the build, we checked all 30 task statements against the records. The map shows the result. An empty tile means that the job did not need it.</p>
   %(fig)s
   <section class="sources" aria-label="Sources of the map"><p class="ve-label">Sources</p><ul>@SRC_TOOLS@%(msrc)s</ul></section>
-</section>""" % {
+</div></details>""" % {
     "c1": fact("v3-0012", "We asked whether the pipeline needed subagents, and found that it did not."),
     "c1b": fact("v3-0012b", "A plain API call already has its own context, and it sees only what the program sends."),
     "c2": fact("v3-0026", "The pipeline uses no MCP, no subagent, no hook and no session."),
@@ -2319,13 +2317,10 @@ BODY = """<main>
   <div class="callout newcomer"><p><b>New to the exam guide?</b> Read <a href="%(tab1)s">Exam guide breakdown</a> first. It explains the domains, the task statements and their points.</p></div>
 </header>
 %(v3)s
-<section class="v3-sec" id="overview" aria-labelledby="overview-h">
-  <h2 id="overview-h">Then, we built it in 9 steps</h2>
+<!-- each big section opens and closes, open at the start (owner, 15 October 2026). Version 4: the overview and the 9 steps are one section -->
+<details class="domain parts v3-sec" id="steps" open><summary><span class="dom-title"><h2 class="with-icon" id="steps-h">Then, we built it in 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   <p class="v2-intro">With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step.</p>
-</section>
 %(fig1)s
-<!-- each big section opens and closes, open at the start (owner, 15 October 2026) -->
-<details class="domain parts" id="steps" open><summary><span class="dom-title"><h2 class="with-icon">The 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
   %(parts)s
 </div></details>
 <details class="domain parts" id="claude-code" open><summary><span class="dom-title"><h2 class="with-icon">The build in Claude Code<img class="h-icon" src="icons/claude-code.svg" alt="" width="24" height="24"></h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
@@ -2339,7 +2334,7 @@ BODY = """<main>
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
-TOP = BODY.split('<section class="v3-sec" id="overview"')[1].split('<details class="domain parts" id="steps"')[0] + WORDS   # v3: the new sections have their own sources   # the glossary is in the panel at the end, and its cards belong to the introduction
+TOP = BODY.split('<p class="v2-intro">')[1].split('<details class="part" id="step-0"')[0] + WORDS   # v3: the new sections have their own sources   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, [x for x in POPUPS if not (FIG_A_POPUPS and x['tab'] == 2 and x['fig'] == 'A')], 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
