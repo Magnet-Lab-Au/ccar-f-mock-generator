@@ -540,7 +540,7 @@ STEP5 = """
 <section data-level="overview" aria-label="Overview">
   <div class="ov-head"><h4>Overview</h4><span class="ve-label">30 seconds</span></div>
   <h4 class="takeaway">A failed try goes back to the writer with its findings</h4>
-  <p>%(what)s %(again)s %(one)s %(pass)s</p>
+  <p>%(what)s %(again)s %(pass)s %(one)s</p><p>So the loop has a limit. %(guard1)s %(open)s %(counts)s</p>
 </section>
 <details class="level" data-level="explanation">
   <summary><h4>Explanation</h4><span class="ve-label">3 minutes</span></summary>
@@ -591,6 +591,10 @@ step5_html = STEP5 % {
     "what": f("s5-what", "A try that fails step 3 or step 4 goes back to the writer, with its exact findings."),
     "again": f("s5-again", "The new try goes through steps 3 and 4 again."),
     "pass": f("s5-pass", "A try that passes stops the loop."),
+    # the story tone (owner, 16 October 2026): the loop and its limit
+    "guard1": f("s5-guard", "Each start of a slot has at most %d tries." % TRIES),
+    "open": f("s5-open", "Then the slot is open, and the owner decides: more tries, a new point, or a new plan."),
+    "counts": f("s5-counts", "The 5 mocks needed %d tries for %d questions." % (TOTAL_TRIES, 5 * SLOTS)),
     "one": f("c-auto", "This is the one automatic loop of the mock builder."),
     "fig51": FIG51,
     "short": f("s5-short", "The writer does not see older tries, so the request stays short."),
@@ -953,9 +957,13 @@ FIG13 = """
 assert SHARED[1:] == [0, 0, 0, 0]
 
 STEP1 = (level("overview",
-               '<h4 class="takeaway">Code plans all %d questions before a model writes one</h4><p>%s %s</p>'
-               % (SLOTS, fact("s1-what", "Before a model writes a question, code makes the plan of the mock: a list of %d slots. Each slot says what one question must be: the scenario, the task statement, one point, the question type and the number of answers." % SLOTS),
-                  fact("s1-why", "The counts of a mock must hold each time, and a model that makes the plan can make an error in a count.")))
+               '<h4 class="takeaway">Code plans all %d questions before a model writes one</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s So %s</p><p>The plan also learned from mock 1, which repeated itself. %s %s</p>'
+               % (SLOTS, fact("s1-why", "A mock must hold its counts each time. A model that makes the plan can make an error in a count."),
+                  fact("s1-what", "before any model writes, code makes the plan: a list of %d slots. Each slot names the scenario, the task statement, one point, the question type and the number of answers." % SLOTS),
+                  fact("s1-rule", "Code now stops a plan with two slots on one idea."),
+                  fact("s1-shared", "Ideas with two or more slots in one plan: %d in mock 1, then %s." % (SHARED[0], " and ".join(sorted(set(map(str, SHARED[1:])))) if len(set(SHARED[1:])) == 1 else ", ".join(map(str, SHARED[1:]))))))
          + level("explanation",
                  FIG11
                  + '<p><b>The counts.</b> %s The weights of the guide give the domain counts. Each slot gets one point of its task statement. %s %s</p>'
@@ -1061,10 +1069,15 @@ FIG21 = """
 }
 
 STEP2 = (level("overview",
-               '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4><p>%s %s Code builds the request from the guide records and the plan, and %s</p>'
-               % (fact("s2-what", "For each slot of the plan, one call of the Claude API writes one question. The call is new each time, and it does not know the other questions of the mock."),
-                  fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question, and a failed try is written again alone."),
-                  fact("s2-letters", "code, not the model, mixes the options and gives the letters.")))
+               '<h4 class="takeaway">One new Claude call writes each question, from a request that code builds</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s It does not start from a blank page. %s %s %s</p><p>We also learned that a writer needs examples. %s %s</p>'
+               % (fact("s2-what", "For each slot, one new Claude call writes one question."),
+                  fact("s2-fields", "It answers in a fixed form: the question, and each option as correct or wrong, with a reason."),
+                  fact("s2-why", "One call makes one record, so each later verdict connects to exactly one question."),
+                  fact("s2-letters", "Code, not the model, mixes the options and gives the letters."),
+                  fact("s2-did", "In mock 2, the writer did not know mock 1, and wrote the most obvious scene again."),
+                  fact("s2-earlier", "Now it gets the earlier questions on its idea, each with its answer key.")))
          + level("explanation",
                  FIG21
                  + '<p><b>The rules come first.</b> %s Today the writer gets the 21 rules that steps 3 and 4 check, so each of them is also checked. Two other instructions to the writer have no check. %s</p>'
@@ -1218,10 +1231,14 @@ DEPTH3 = ('<h4 class="story">The writer wrote 6 options for a slot of 5</h4>'
              fact("s3-a12", "On each other slot, rule A12 fails a question where a correct option is as long as or longer than each wrong option.")))
 
 STEP3 = (level("overview",
-               '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4><p>%s %s %s</p>'
-               % (fact("s3-what", "Today code checks each try against 12 rules that have one exact answer, such as the number of options and the length of the text."),
-                  fact("s3-cheap", "Code runs before step 4, so a try with a simple defect does not use a step 4 model call."),
-                  fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"]))))
+               '<h4 class="takeaway">Code checks 12 exact rules before a model checks the question</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s %s %s</p><p>One rule shows why. %s A rule of code now checks the length. %s</p>'
+               % (fact("s3-split", "A rule with one correct answer needs no judgment, so code checks it, not a model."),
+                  fact("s3-what", "Today code checks each try against 12 such rules, such as the number of options and the length of the text."),
+                  fact("s3-runs", "In mocks 1 to 5, %d of %d tries passed, and %d failed." % (V3["pass"], sum(V3.values()), V3["fail"])),
+                  fact("s3-long1", "In the built mock 1, the correct option was the longest in 37 of the 52 one-answer questions. Chance is 13."),
+                  fact("s3-long", "In mocks 2 to 5, the count was %s." % ", ".join(map(str, LONG[1:])))))
          + level("explanation",
                  FIG31
                  + '<p><b>Code or a model.</b> %s</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
@@ -1404,10 +1421,14 @@ DEPTH4 = ('<div class="callout"><span class="chip">Beyond the exam</span><p>%s</
              fact("s4-one", "All of them have one correct answer, so the test did not cover two-answer questions.")))
 
 STEP4 = (level("overview",
-               '<h4 class="takeaway">Two new Claude calls: one answers blind, one checks 9 rules, and code decides</h4><p>%s %s %s</p>'
-               % (fact("s4-calls", "Call 4a answers the question with no answer key. Today call 4b checks the 9 rules B1 to B9 with the key."),
-                  fact("s4-compare", "Code compares the letters of call 4a with the answer key.") + " " + fact("s4-verdict", "Code also searches the feature names in the guide records, and makes the verdict. A model does not make the verdict."),
-                  fact("s4-runs", "In mocks 1 to 5, %d of %d checks passed." % (V4["pass"], sum(V4.values())))))
+               '<h4 class="takeaway">Two new Claude calls: one answers blind, one checks 9 rules, and code decides</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s So a new call checks each question, not the writer. %s %s %s</p><p>%s</p>'
+               % (fact("s4-46", "The guide says that a reviewer without the reasoning of the writer catches more than self-review (4.6-K2)."),
+                  fact("s4-calls", "Call 4a answers the question with no answer key. Today call 4b checks the 9 rules B1 to B9 with the key."),
+                  fact("s4-compare", "Code compares the letters of call 4a with the answer key."),
+                  fact("s4-verdict", "Code also checks the feature names and makes the verdict."),
+                  fact("s4-runs", "In mocks 1 to 5, step 4 made %d checks: %d passed and %d failed. Most findings were rule B9, a repeat of an earlier question." % (sum(V4.values()), V4["pass"], V4["fail"]))))
          + level("explanation",
                  FIG41
                  + '<p><b>Why two calls.</b> %s %s So code enforces the order, not an instruction.</p>'
@@ -1502,10 +1523,14 @@ FIG62 = """
 }
 
 STEP6 = (level("overview",
-               '<h4 class="takeaway">Two calls read each scenario as a whole, and the owner decides each finding</h4><p>%s %s %s</p>'
+               '<h4 class="takeaway">Two calls read each scenario as a whole, and the owner decides each finding</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s %s So %s</p><p>%s %s</p>'
                % (fact("s6-what", "Steps 3 and 4 look at one question. Some defects show only when many questions are read together."),
-                  fact("s6-calls", "When all 60 slots have passed, two model calls read the 15 questions of each scenario together."),
-                  fact("s6-back", "Step 6 sends no question back: each finding goes to the owner.")))
+                  fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."),
+                  fact("s6-calls", "when all 60 slots have passed, two model calls read the 15 questions of each scenario together."),
+                  fact("s6-back", "Step 6 sends no question back: each finding goes to the owner."),
+                  fact("s6-runs", "Step 6 ran %d times over mocks 1 to 5 and made %d findings. The owner rewrote a question for %d of them." % (sum(RUNS6.values()), N6, len(RW6)))))
          + level("explanation",
                  FIG61
                  + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong option in too many questions."))
@@ -1638,8 +1663,12 @@ FIG72 = """
     fact("s7-runs", "Over the 5 mocks, %d marks were given: %d in round 1 and %d in round 2, after a send-back. %d were bad, both in mock 5." % (MARKS_ALL, sum(ROUND1), MARKS_ALL - sum(ROUND1), sum(BAD))))
 
 STEP7 = (level("overview",
-               '<h4 class="takeaway">A reader marks the questions in a file good or bad, and the file shows no verdict</h4><p>%s %s %s</p>'
-               % (fact("s7-what", "The checks before this step are code or a model. The build guide says that a reader who marks the questions shows if those checks are right. For mocks 1 to 3 the reader was the owner. For mocks 4 and 5 it was a Claude model, the second review."),
+               '<h4 class="takeaway">A reader marks the questions in a file good or bad, and the file shows no verdict</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s %s %s</p><p>%s %s</p>'
+               % (fact("s7-what", "Before this step, code or a model checked each question. A reader who marks them shows if those checks are right. For mocks 1 to 3 the reader was the owner, and for mocks 4 and 5 a Claude model."),
+                  fact("s7-tend", "A person who sees a verdict tends to agree with it."),
+                  fact("s7-file", "So the file shows no verdict of a checker. The reader marks good or bad, with a reason for a bad mark."),
                   fact("s7-bad", "A bad mark sends the question to step 5, with the reason as the finding."),
                   fact("s7-stop", "Too many bad marks stop the mock.")))
          + level("explanation",
@@ -1747,10 +1776,14 @@ FIG82 = """
     fact("s8-count", "The correct letters of the 52 one-answer questions in each built mock. The dashed line is 13, the chance number.") + " " + fact("s8-letters", "In mock 4, D was the answer %d times." % LETTERS[3][3]))
 
 STEP8 = (level("overview",
-               '<h4 class="takeaway">Code builds the mock files from the question records, only after the owner accepts</h4><p>%s %s %s</p>'
-               % (fact("s8-what", "Code builds the two files of a mock from the stored question records. Nobody edits the files by hand."),
-                  fact("s8-two", "One file has the 60 questions with no answers and no reasons. The other has the answers."),
-                  fact("s8-accept", "The step starts only when the owner accepts the mock with a command, and code checks the conditions first.")))
+               '<h4 class="takeaway">Code builds the mock files from the question records, only after the owner accepts</h4>'
+               # the story tone (owner, 16 October 2026): the risk, what we built, and the result
+               '<p>%s So %s %s %s</p><p>The result: %s</p>'
+               % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree."),
+                  fact("s8-accept", "the step starts only when the owner accepts the mock with a command, and code checks the conditions first."),
+                  fact("s8-what", "Then code builds the two files of the mock from the stored question records. Nobody edits the files by hand."),
+                  fact("s8-two", "One file has the questions with no answers, and the other has the answers."),
+                  fact("s8-fp", "in the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL)))
          + level("explanation",
                  FIG81
                  + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw."),
