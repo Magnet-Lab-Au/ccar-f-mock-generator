@@ -231,7 +231,7 @@ def cf(key, c, text):
 
 GUIDE = ' <span class="chip guide" data-step="guide-only" tabindex="0" role="button" aria-expanded="false">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
 POP["guide-only"] = {"who": "Guide only", "cls": "io", "title": "What does the label mean?", "points": [], "example": None,   # academy decision 0043, item 9
-                     "sent": ["No copied page of the Anthropic documentation says this point, or the documentation says it in a different way. The sentence before the label often gives the documentation.",
+                     "sent": ["The Anthropic documentation does not state this point, or states it differently. The sentence before the label often says what the documentation says.",
                               "For the exam, answer as the guide says."]}
 
 
@@ -2982,8 +2982,11 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
     <li>The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests.</li>
     <li>The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</li>
   </ul>
-  <p>The label <span class="chip guide">Guide only</span> ends a point that no copied page of the Anthropic documentation says. It also ends a point that the documentation says in a different way. The sentence before the label often gives the documentation. For the exam, follow the guide.</p>
-  <p>Where a fact of the product could lead to a different exam answer, a box gives both answers. The line <b>For the exam</b> gives the answer of the guide. The line <b>The product today</b> gives the documentation of 14 October 2026. The detail is in the Depth.</p>
+  <p>Two marks show where the guide and the Anthropic documentation differ:</p>
+  <ul class="levels">
+    <li><span class="chip guide">Guide only</span> ends a point that the documentation does not state, or states differently. The sentence before it often says what the documentation says. For the exam, answer as the guide says.</li>
+    <li>A box with <b>For the exam</b> and <b>The product today</b> appears where the difference could change your answer. It gives both answers side by side.</li>
+  </ul>
   <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
   <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam. It also lists the topics that the exam covers and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
 </section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "k2": lab("4.3-K2"), "s2": lab("4.3-S2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
