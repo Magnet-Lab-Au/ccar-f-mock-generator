@@ -2861,25 +2861,32 @@ def exam_tree():
             '<svg class="exam-lines" viewBox="0 0 1000 84" preserveAspectRatio="none" aria-hidden="true" focusable="false">%s</svg></div>' % lines)
 
 
-# the two axes of a question: its domain across, its scenario up the side, with one example (owner, 15 October 2026)
+# the two axes of a question: its domain across, its scenario up the side (owner, 15 October 2026). A live figure (visual-explainer):
+# the reader picks a scenario, and its primary domains light up. A large dot marks a primary domain, a small dot any other pair.
 def axes_figure():
-    x0, y0, dx, dy = 150, 20, 70, 26
-    grid = "".join('<circle class="ax-dot" cx="%d" cy="%d" r="3"/>' % (x0 + dx * i, y0 + dy * j) for i in range(5) for j in range(6))
+    x0, y0, dx, dy = 170, 20, 80, 30
+    labels, dots = [], []
+    for j, sc in enumerate(SCEN):
+        prim = sc["primary_domains"]
+        say = "Scenario %d, %s: primary domains %s." % (sc["id"], sc["name"], " and ".join(", ".join(map(str, prim)).rsplit(", ", 1)))
+        labels.append('<text class="ax-lab" x="%d" y="%d" text-anchor="end" data-pick="Scenario %d" data-say="%s">%d</text>'
+                      % (x0 - 22, y0 + dy * j + 4, sc["id"], e(say), sc["id"]))
+        for d in range(1, 6):
+            cx, cy = x0 + dx * (d - 1), y0 + dy * j
+            if d in prim:
+                dots.append('<circle class="ax-p" cx="%d" cy="%d" r="8" data-pick="Scenario %d"><title>Scenario %d, domain %d: primary</title></circle>' % (cx, cy, sc["id"], sc["id"], d))
+            else:
+                dots.append('<circle class="ax-dot" cx="%d" cy="%d" r="3"/>' % (cx, cy))
     xl = "".join('<text class="ve-lab" x="%d" y="%d" text-anchor="middle">%d</text>' % (x0 + dx * i, y0 + dy * 6 + 6, i + 1) for i in range(5))
-    yl = "".join('<text class="ve-lab" x="%d" y="%d" text-anchor="end">%d</text>' % (x0 - 22, y0 + dy * j + 4, j + 1) for j in range(6))
-    ex, ey = x0 + dx * 4, y0
-    return ('<div class="frame"><svg class="ve-svg" viewBox="0 0 760 230" role="img" aria-label="Two axes. Across: the 5 domains, what a question tests. '
-            'Up the side: the 6 scenarios, where it happens. One example question, on escalation, sits at scenario 1 and domain 5.">'
-            '<path class="ax-line" d="M%d %dH%d M%d %dV%d"/>' % (x0 - 12, y0 + dy * 5 + 14, x0 + dx * 4 + 14, x0 - 12, y0 - 10, y0 + dy * 5 + 14)
-            + grid + xl + yl
-            + '<text class="ve-el" x="%d" y="%d">domain: what it tests</text>' % (x0 + dx * 2, y0 + dy * 6 + 28)
-            + '<text class="ve-el" x="%d" y="%d" transform="rotate(-90 %d %d)">scenario: where</text>' % (60, y0 + dy * 2.5, 60, y0 + dy * 2.5)
-            + '<circle class="ax-hot" cx="%d" cy="%d" r="8"/>' % (ex, ey)
-            + '<path class="ve-e no-head" d="M%d %dH%d"/>' % (ex + 10, ey, ex + 40)
-            + '<text class="ve-el r" x="%d" y="%d">a question on escalation</text>' % (ex + 48, ey - 4)
-            + '<text class="ve-el r" x="%d" y="%d">scenario 1, domain 5</text>' % (ex + 48, ey + 16)
-            + '</svg></div>')
-
+    say_all = "Each large dot is a primary domain of a scenario. Choose a scenario to see its primary domains."
+    return ('<div class="ve-live ax-live" data-controls="Choose a scenario" data-all-label="All scenarios"><div class="frame">'
+            '<svg class="ve-svg" viewBox="0 0 760 250" role="img" aria-label="Two axes. Across: the 5 domains, what a question tests. Up the side: the 6 scenarios, where it happens. '
+            'A large dot marks each primary domain of a scenario.">'
+            '<path class="ax-line" d="M%d %dH%d M%d %dV%d"/>' % (x0 - 12, y0 + dy * 5 + 16, x0 + dx * 4 + 16, x0 - 12, y0 - 12, y0 + dy * 5 + 16)
+            + "".join(labels) + "".join(dots) + xl
+            + '<text class="ve-el" x="%d" y="%d">domain: what it tests</text>' % (x0 + dx * 2, y0 + dy * 6 + 30)
+            + '<text class="ve-el" x="%d" y="%d" transform="rotate(-90 %d %d)">scenario: where</text>' % (70, y0 + dy * 2.5, 70, y0 + dy * 2.5)
+            + '</svg></div><p class="ve-say" aria-live="polite" data-all="%s">%s</p></div>' % (e(say_all), e(say_all)))
 
 AXES = None
 

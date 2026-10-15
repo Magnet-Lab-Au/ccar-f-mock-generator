@@ -452,3 +452,9 @@ details.domain > summary:focus-visible { outline: 2px solid var(--accent); outli
 details.domain[open] .dom-arrow::after { top: 62%; transform: translate(-50%, -50%) rotate(-135deg); }
 details.domain > summary:hover .dom-arrow::after { border-color: var(--text); }
 .dom-body { padding: var(--s-3) 0 0; }
+/* the live graph of scenarios and domains (owner, 15 October 2026) */
+.ax-p { fill: var(--ok); stroke: var(--bg); stroke-width: 2; transition: opacity var(--fast) var(--ease); }
+.ax-p.sel { fill: var(--accent); stroke: var(--text); stroke-width: 2.5; }
+.ax-p.dim { opacity: .25; }
+.ax-lab { fill: var(--text-dim); font: 500 13px var(--font-mono); }
+.ax-lab.sel { fill: var(--text); font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); }   /* text keeps its contrast: no fading, no orange text */
