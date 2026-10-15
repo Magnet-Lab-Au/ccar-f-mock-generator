@@ -1845,7 +1845,27 @@ def take_out(body):
     return (m.group(1), body[:m.start()] + body[m.end():]) if m else (None, body)
 
 
+# version 4: each part shows a principle, a short teal line, and its name with its state on the map (Fig. M)
+CC_PRINCIPLE = {
+    "cc-3-1": ("Write the rules once, and load them into every session", "One short file loads the working rules into each session", "used"),
+    "cc-1-7": ("Each new session starts from a written summary", "A new session reads the summary of the last one", "used"),
+    "cc-4-6": ("A file that others rely on gets an independent reviewer", "An agent that did not write a file checks it", "used"),
+    "cc-3-4": ("Discuss first, then act", "A working rule to discuss first, not plan mode", "in part"),
+}
+for _k, (_p, _w, _st) in CC_PRINCIPLE.items():
+    assert len(_w.split()) <= 10, (_k, _w)
+
+
 def cc_part(pid, num, title, who, body):
+    principle, what, state = CC_PRINCIPLE[pid]
+    _take, body = take_out(body)
+    return ('<details class="part" id="%s"><summary><span class="pn">%s</span><span><h3>%s</h3><span class="v4-what">%s</span>'
+            '<span class="who">%s &middot; %s on the map</span></span>'
+            '<span class="mm"><span class="more" aria-hidden="true"></span></span></summary><div class="body">%s</div></details>'
+            % (pid, num, e(principle), e(what), e(title), state, body))
+
+
+def cc_part_v3(pid, num, title, who, body):
     take, body = take_out(body)
     head, line = (take, e(title) + " · " + e(who)) if take else (e(title), e(who))
     return ('<details class="part" id="%s"><summary><span class="pn">%s</span><span><h3>%s</h3><span class="who">%s</span></span>'
@@ -2237,6 +2257,8 @@ def map_tile(tid):
     m = re.match(r"step (\d)$", where)
     if m:
         links.append({"text": "Read step %s &rarr;" % m.group(1), "href": "#step-%s" % m.group(1)})
+    elif "cc-" + tid.replace(".", "-") in CC_PRINCIPLE:   # version 4: the tile links to its part
+        links.append({"text": "Part %s of The build in Claude Code &rarr;" % tid, "href": "#cc-" + tid.replace(".", "-")})
     elif "Claude Code" in where:
         links.append({"text": "The build in Claude Code &rarr;", "href": "#claude-code"})
     POP[key] = {"who": "%s \u00b7 %s" % (tid, STATE_SAY[u["state"]]), "cls": "io", "title": TSR[tid]["title"],
@@ -2249,7 +2271,9 @@ def map_tile(tid):
                '<span class="v3-lv">%s</span>' % " + ".join(tags) if tags else ""))
 
 
-MAP_FIG = """<figure class="v3-fig">
+for _k, (_p, _w, _st) in CC_PRINCIPLE.items():   # the state of each part agrees with the map
+    assert {"used": "used", "in part": "idea"}[_st] == USE[_k[3:].replace("-", ".")]["state"], _k
+MAP_FIG = """<figure class="v3-fig" id="fig-m">
   <div class="v3-map" role="group" aria-label="The 30 task statements of the exam guide in 5 domains. %(nu)d used, %(ni)d used in part, %(nn)d not used.">%(cols)s</div>
   <ul class="v3-key" aria-hidden="true"><li><span class="v3-sw is-used"></span>used, and a record shows it</li><li><span class="v3-sw is-idea"></span>in part, or in another way than the guide names</li><li><span class="v3-sw is-not-used"></span>not used: the job did not need it</li></ul>
   <figcaption><span class="fig-n">Fig. M</span>Of the 30 task statements, the build used %(nu)d, used %(ni)d in part, and did not use %(nn)d. The mocks still test all 30. Each tile opens a short note.</figcaption>
@@ -2305,12 +2329,7 @@ BODY = """<main>
   %(parts)s
 </div></details>
 <details class="domain parts" id="claude-code" open><summary><span class="dom-title"><h2 class="with-icon">The build in Claude Code<img class="h-icon" src="icons/claude-code.svg" alt="" width="24" height="24"></h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
-  <p>The mock builder was itself built with Claude Code. These parts show:</p>
-  <ul class="levels">
-    <li>the rules that the owner gave the assistant, in a file of the repository</li>
-    <li>where that build used a task statement of the exam</li>
-    <li>one place where it did not</li>
-  </ul>
+  <p class="v4-bridge">We built the pipeline itself with Claude Code, under the same discipline. These 4 parts are tiles marked &ldquo;Claude Code&rdquo; in <a href="#fig-m">Fig. M</a>.</p>
   %(cc)s
 </div></details>
 %(limits)s
