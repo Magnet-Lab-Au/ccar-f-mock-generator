@@ -21,7 +21,7 @@ Order of the top of tab 2, top down:
 4. "First, we settled what is true": how the guide became the one source of truth.
 5. "Then, we used only what the job needed": three choices, and a map of the 30 task statements.
 6. Then Fig. A and the 9 steps.
-7. Later in version 3: each step heading becomes a principle with its task statement. The owner wants to see it before a decision on the words.
+7. In version 4, a copy of version 3 (owner, 15 October 2026: "I think this is where we need a v4"): each step heading becomes a principle with its task statement. The owner wants to see it before a decision on the words.
 
 Tone:
 8. The new sections tell the story as it happened, with "we" and the past tense, for example "we observed that the guide differed from the product". The facts stay exact and come from the records.
@@ -40,13 +40,15 @@ The tools section:
 
 ## Built (15 October 2026)
 
-Version 3 has items 3 to 6 and 8 to 16. Item 7 is not built yet. The review of the map changed 13 entries and made 8 claims weaker. The map now shows 10 task statements used, 11 as an idea only, and 9 not used. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`.
+Version 3 has items 3 to 6 and 8 to 16. Item 7 goes into version 4. The review of the map changed 13 entries and made 8 claims weaker. The map now shows 10 task statements used, 11 as an idea only, and 9 not used. `check-pages.js` printed "All checks passed." for `behind-the-mocks-v3.html`.
 
 The owner decided 1.2 and 1.3: "yes, make 1.3 used and keep 1.2 idea". 1.3 is used at the level of the build in Claude Code, because each subagent got a written brief with its context. 1.2 stays "idea only", because the main session started agents one at a time, with no coordinator that splits, routes and joins the work. Choice 1 of the tools section now says that the pipeline uses no subagents, but the build in Claude Code did. The map now shows 11 used, 10 idea only and 9 not used.
 
 The owner asked what "idea only" means. It covered two cases: done in another way than the guide names (for example 4.3), and done in part (for example 2.5 and 3.2). The owner said: "yes, rename it to in part". The label on the page is now "In part", with the key "in part, or in another way than the guide names". The value in `academy/facts/task-statement-use.json` stays "idea". The caption of Fig. M now says: "Of the 30 task statements, the build used 11, used 10 in part, and did not use 9."
 
 The overview (owner, 15 October 2026): the three headings are one sequence, "First, we settled what is true", "Next, we used only what the job needed" and "Then, we built it in 9 steps". The new heading stands above Fig. A, with a bridge in the story tone: "With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step." The owner accepted the bridge with "Code runs most of them". The assistant changed it, because code runs only 4 of the 9 steps alone. Fig. A, its caption and the section "The 9 steps" stay as they are.
+
+Version 4 (owner, 15 October 2026), built by `academy/build/make-behind-the-mocks-v4.py` as `academy/pages/behind-the-mocks-v4.html`: each closed step shows its principle with the task statements of its build guide table, a short line of at most 10 words on what the step does, and the name of the step and who does it. The owner asked "I wonder if we can have both somehow" for the principle and the old heading, and said "yes, build it in v4". The words of the 9 principles are not approved yet.
 
 Settled from the review:
 - 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
