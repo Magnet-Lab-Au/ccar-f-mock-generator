@@ -31,7 +31,7 @@
 .v3-ast { text-decoration: none; color: var(--text); margin-left: 1px; }
 .v3-sec > p.v3-note { font-size: var(--t-small); color: var(--text-dim); margin: 0 0 var(--s-5); }
 
-/* Fig. M: the 30 task statements in 5 domain columns. The form shows the state: solid and filled is used, dashed is the idea only,
+/* Fig. M: the 30 task statements in 5 domain columns. The form shows the state: solid and filled is used, dashed is in part,
    a thin dotted line is not used */
 .v3-map { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-4); }
 .v3-col { min-width: 0; }

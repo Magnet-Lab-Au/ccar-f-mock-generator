@@ -2186,7 +2186,7 @@ assert sorted(USE) == sorted(SHORT), sorted(set(USE) ^ set(SHORT))
 for _u in USE.values():
     for _ev in _u["evidence"]:   # each quote is exactly on its line
         assert _ev["quote"] in read(_ev["path"]).split("\n")[_ev["line"] - 1], (_u["id"], _ev)
-STATE_SAY = {"used": "Used", "idea": "Idea only", "not-used": "Not used"}
+STATE_SAY = {"used": "Used", "idea": "In part", "not-used": "Not used"}   # the state "idea" shows as "In part" (owner, 15 October 2026)
 LEVEL_SAY = {"builder": "the mock builder", "claude-code": "the build in Claude Code"}
 LEVEL_TAG = {"builder": "builder", "claude-code": "Claude Code"}
 N_USED = sum(u["state"] == "used" for u in USE.values())
@@ -2217,9 +2217,9 @@ def map_tile(tid):
 
 
 MAP_FIG = """<figure class="v3-fig">
-  <div class="v3-map" role="group" aria-label="The 30 task statements of the exam guide in 5 domains. %(nu)d used, %(ni)d used as an idea only, %(nn)d not used.">%(cols)s</div>
-  <ul class="v3-key" aria-hidden="true"><li><span class="v3-sw is-used"></span>used, and a record shows it</li><li><span class="v3-sw is-idea"></span>the idea, not the exact tool</li><li><span class="v3-sw is-not-used"></span>not used: the job did not need it</li></ul>
-  <figcaption><span class="fig-n">Fig. M</span>%(nu)d of the 30 task statements were used, %(ni)d as an idea only, and %(nn)d were not used. The mocks still test all 30. Each tile opens a short note.</figcaption>
+  <div class="v3-map" role="group" aria-label="The 30 task statements of the exam guide in 5 domains. %(nu)d used, %(ni)d used in part, %(nn)d not used.">%(cols)s</div>
+  <ul class="v3-key" aria-hidden="true"><li><span class="v3-sw is-used"></span>used, and a record shows it</li><li><span class="v3-sw is-idea"></span>in part, or in another way than the guide names</li><li><span class="v3-sw is-not-used"></span>not used: the job did not need it</li></ul>
+  <figcaption><span class="fig-n">Fig. M</span>Of the 30 task statements, the build used %(nu)d, used %(ni)d in part, and did not use %(nn)d. The mocks still test all 30. Each tile opens a short note.</figcaption>
 </figure>""" % {"nu": N_USED, "ni": N_IDEA, "nn": N_NOT,
                 "cols": "".join('<div class="v3-col"><p class="v3-dom"><span class="ve-label">Domain %d</span>%s</p><ol>%s</ol></div>'
                                 % (d["id"], e(d["name"]), "".join(map_tile(t) for t in sorted(USE, key=lambda t: int(t.split(".")[1])) if t.startswith("%d." % d["id"])))

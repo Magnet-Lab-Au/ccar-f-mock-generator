@@ -35,7 +35,7 @@ The truth section:
 
 The tools section:
 14. Three choices tell how we decided: no subagents (mock decision 0012), no MCP, hooks or sessions (mock decision 0026), and no Message Batches API but prompt caching (mock decision 0067).
-15. A map of the 30 task statements in 5 domain columns (Fig. M). Each tile shows by its form if the build used it, used the idea only, or did not need it, and where: the mock builder or the build in Claude Code. Each tile opens a popup with what we did or why the job did not need it.
+15. A map of the 30 task statements in 5 domain columns (Fig. M). Each tile shows by its form if the build used it, used it in part (or in another way than the guide names), or did not need it, and where: the mock builder or the build in Claude Code. Each tile opens a popup with what we did or why the job did not need it.
 16. One agent drafted the map from the records (`academy/facts/task-statement-use-draft.json`), and an independent agent reviewed it (`academy/facts/task-statement-use-review.md`). The page reads `academy/facts/task-statement-use.json`, and the build stops if a quote is not on its stated line.
 
 ## Built (15 October 2026)
@@ -44,8 +44,10 @@ Version 3 has items 3 to 6 and 8 to 16. Item 7 is not built yet. The review of t
 
 The owner decided 1.2 and 1.3: "yes, make 1.3 used and keep 1.2 idea". 1.3 is used at the level of the build in Claude Code, because each subagent got a written brief with its context. 1.2 stays "idea only", because the main session started agents one at a time, with no coordinator that splits, routes and joins the work. Choice 1 of the tools section now says that the pipeline uses no subagents, but the build in Claude Code did. The map now shows 11 used, 10 idea only and 9 not used.
 
-Open for the owner, from the review:
-- The map shows 2.5 and 3.2 as "idea only", but academy decision 0035 removed their entries from tab 2.
+The owner asked what "idea only" means. It covered two cases: done in another way than the guide names (for example 4.3), and done in part (for example 2.5 and 3.2). The owner said: "yes, rename it to in part". The label on the page is now "In part", with the key "in part, or in another way than the guide names". The value in `academy/facts/task-statement-use.json` stays "idea". The caption of Fig. M now says: "Of the 30 task statements, the build used 11, used 10 in part, and did not use 9."
+
+Settled from the review:
+- 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
 
 ## Reason
 
