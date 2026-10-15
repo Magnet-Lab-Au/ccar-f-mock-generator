@@ -1,4 +1,4 @@
 /* Tab 2, version 4 (owner, 15 October 2026): only behind-the-mocks-v4.html loads this file, after academy-v3.css.
    Each closed step shows its principle, the task statements of the principle, and a short line on what the step does. */
 details.part > summary .v4-ts { display: inline-block; vertical-align: .15em; margin-left: var(--s-2); padding: 0 var(--s-2); border: 1px solid var(--info); font: 600 var(--t-label) var(--font-mono); color: var(--text); }
-details.part > summary .v4-what { display: block; font-size: var(--t-body); color: var(--text-dim); margin-top: var(--s-1); }
+details.part > summary .v4-what { display: block; font-size: var(--t-small); color: color-mix(in srgb, var(--info) 55%, var(--text)); margin-top: var(--s-1); }   /* the teal of the task statement chip, mixed with the text so that it keeps its contrast (owner, 15 October 2026) */
