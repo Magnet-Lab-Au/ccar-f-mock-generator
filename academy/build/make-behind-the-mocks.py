@@ -823,9 +823,8 @@ STEP0 = (level("overview",
          + level("explanation",
                  '<p><b>The file.</b> %s</p>' % fact("s0-has", "The file has the %d domains, %d scenarios, %d task statements, %d points and %d sample questions of the guide." % (len(REC["domains"]), len(REC["scenarios"]), len(REC["task_statements"]), N_PTS, len(REC["sample_questions"])))
                  + FIG01
-                 + '<p><b>Labels.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4. %s</p>'
-                   % (fact("s0-ids", "Each point gets a label that the guide does not have. The label is the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet."),
-                      fact("s0-keep", "Every question of the 5 mocks keeps the ID of its point: %d of %d." % (KEPT, TOTAL_Q)))
+                 + '<p><b>Labels.</b> %s So 1.4-K2 is the second &ldquo;Knowledge of&rdquo; bullet of task statement 1.4.</p>'
+                   % fact("s0-ids", "Each point gets a label that the guide does not have. The label is the task statement, then K (Knowledge of) or S (Skills in), then the number of the bullet.")
                  + '<p><b>Checks.</b> %s %s and %s, or it writes no file. Then three checks:</p>'
                    '<ol class="checks"><li>%s</li><li>%s</li><li>%s</li></ol>'
                    % (fact("s0-pages", "The script leaves out the %d page headers of the PDF, so that no list is cut in two." % PAGE_MARKS), fact("s0-fail", "It checks the counts"), fact("s0-exact", "that each text is exactly in the guide"),
@@ -1258,7 +1257,6 @@ STEP3 = (level("overview",
                   fact("s3-long", "In mocks 2 to 5, the count was %s." % ", ".join(map(str, LONG[1:])))))
          + level("explanation",
                  FIG31
-                 + '<p><b>Code or a model.</b> %s</p>' % fact("s3-split", "Code checks a rule that has one correct answer, and a model checks a rule that needs judgment.")
                  + '<p><b>Why the form does not count.</b> %s %s Later, %s</p>'
                    % (fact("s3-count", "The design never relied on the form of the writer for a count: step 3 counts the options and the correct answers."),
                       fact("s3-ask", "The writer is told the number of options in words only."),
@@ -1450,7 +1448,7 @@ STEP4 = (level("overview",
                  FIG41
                  + '<p><b>Why two calls.</b> %s %s So code enforces the order, not an instruction.</p>'
                    % (fact("s4-first", "Two calls with code between them make sure that the blind answer always comes first."), fact("s4-order", "The guide says that prompt instructions alone have a non-zero failure rate (1.4-K2)."))
-                 + '<p><b>Why a new call.</b> The checker is a new call, not the writer. %s %s</p>' % (fact("s4-46", "The guide says that review instances without prior reasoning context catch more than self-review (4.6-K2)."), fact("s4-limit", "A limit: only call 4a is blind. Call 4b gets the reasons that the writer gave."))
+                 + '<p><b>A limit.</b> %s</p>' % fact("s4-limit", "Only call 4a is blind. Call 4b gets the reasons that the writer gave.")
                  + '<p><b>A rule in code.</b> %s</p>' % fact("s4-b6", "For rule B6, the model lists each feature name, and code searches it in the guide records. A name that is not there fails the question.")
                  + FIG42 + ts_block(4))
          + level("depth", DEPTH4)
@@ -1550,7 +1548,7 @@ STEP6 = (level("overview",
                   fact("s6-runs", "Step 6 ran %d times over mocks 1 to 5 and made %d findings. The owner rewrote a question for %d of them." % (sum(RUNS6.values()), N6, len(RW6)))))
          + level("explanation",
                  FIG61
-                 + '<p><b>Why a step for the whole mock.</b> %s %s</p>' % (fact("s6-why", "Each writer call sees only its own slot, so two calls can write the same scene."), fact("s6-rules", "So call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong option in too many questions."))
+                 + '<p><b>What the two calls look for.</b> %s</p>' % (fact("s6-rules", "Call 6a looks for the same scene twice, and a question that gives away another answer, in one scenario. Call 6b reads only the wrong options of the scenario, to find one wrong option in too many questions."))
                  + '<p><b>Why the owner decides.</b> %s %s</p>' % (fact("s6-person", "A finding can name more than one question, so a person selects which one to write again, or none."), fact("s6-rule", "From the second run of mock 2, the owner ignored the findings of a question that gives away another answer. The owner recorded one wrong option in too many questions as a known limit of the mock."))
                  + FIG62 + ts_block(6))
          + level("depth",
@@ -1803,9 +1801,9 @@ STEP8 = (level("overview",
                   fact("s8-fp", "in the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL)))
          + level("explanation",
                  FIG81
-                 + '<p><b>One true copy.</b> %s %s %s</p>' % (fact("s8-one", "If a question exists in two places and a person can edit one of them, the two can disagree. Then nobody knows which one the checks saw."),
+                 + '<p><b>One true copy.</b> %s Then nobody knows which question the checks saw. %s%s</p>' % ("Two copies of a question can disagree.",
                                                           fact("s8-fpdef", "Each check saves a fingerprint of the question: a code of 64 characters that code calculates from its text. Before the build, code calculates it again and compares."),
-                                                          fact("s8-fp", "In the 5 built mocks, each of the %d fingerprints still equals its question record." % FP_ALL))
+                                                          "")
                  + '<p class="gh">The task statements that step 8 uses</p><p>%s The reason for one true copy is plain engineering, and no point of the guide gives it. The exam format has three facts. Each question states how many answers to select. The questions are in groups by scenario, and each question has its domain for a result by domain.</p>'
                    % fact("s8-nopoint", "None. The step uses three facts of the exam format, not a point of a task statement."))
          + level("depth",
@@ -1961,7 +1959,7 @@ CC_HTML = "".join([
            fact("cc-records", "CLAUDE.md has %d lines, and WORKING-RULES.md has %d rules." % (CC_LINES, N_RULES)),
            fact("cc-doc-context", "Claude Code treats CLAUDE.md as context, not as enforced configuration.")),
         '<p>%s This keeps CLAUDE.md short and the working rules in one file that the owner can change. %s</p>' % (fact("cc-doc-import", "An import is expanded and loaded at the start of the session."), fact("cc-31k3", "The guide names this: the @import syntax keeps CLAUDE.md modular (3.1-K3)."))
-        + '<p><b>A limit.</b> %s A rule in CLAUDE.md guides the assistant. It does not block an action.</p>' % fact("cc-doc-context", "Claude Code treats CLAUDE.md as context, not as enforced configuration.")
+        + '<p>So a rule in CLAUDE.md guides the assistant. It does not block an action.</p>'
         + cc_ts("3.1", "cc-3-1-ts"),
         '<h4 class="story">A file that was not in git</h4><p>%s %s</p>'
         % (fact("cc-blind", "The owner's blind marking file of mock 1 was not in git: only the empty file of the mock builder was committed. The owner had sent it to the chat of the second review before that review, and it came back unchanged."),
@@ -1976,7 +1974,7 @@ CC_HTML = "".join([
            fact("cc-notread", "In a session of 7 October 2026, the assistant showed a plan before it read all files that HANDOFF.md names."),
            fact("cc-six", "When it read them, it changed six points of the plan.")),
         '<p>%s %s %s</p>'
-        % (fact("cc-r25", "The journal has one entry for each session,") + " " + fact("cc-r12", "and each decision of the owner is a file. Both are rules of the owner."), fact("cc-check", "The end-of-session check of CLAUDE.md asks for a journal entry, the decision files and an update of HANDOFF.md."),
+        % (fact("cc-r25", "The journal has one entry for each session,") + " " + fact("cc-r12", "and each decision of the owner is a file. Both are rules of the owner."), "",
            fact("cc-17k4", "The guide says that a new session with a structured summary is more reliable than one that resumes with stale tool results (1.7-K4).")
            + " " + fact("cc-d01", "The first decision of the build also names 5.4-K2 for the same files:") + " " + fact("cc-54k2", "files that keep key findings across context boundaries."))
         + cc_ts("1.7", "cc-1-7-ts"),
@@ -1990,7 +1988,7 @@ CC_HTML = "".join([
            fact("cc-r15", "A rule of the owner: an independent reviewer checks each file that a new session or a participant will rely on. The reviewer is a new agent that did not make the file."),
            fact("cc-code", "on 7 October 2026, two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs.")),
         '<p>%s %s %s</p>'
-        % (fact("cc-46k1", "The exam guide gives the reason: a model that keeps the reasoning of its own work is less likely to question its decisions (4.6-K1).") + " " + fact("cc-46s1", "So the guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
+        % (fact("cc-46s1", "The guide teaches a second, independent Claude instance that reviews without the reasoning of the writer (4.6-S1)."),
            fact("cc-doc-fresh", "In Claude Code, a subagent that is not a fork starts with a fresh context. So it does not see the conversation that made the file."),
            fact("cc-code", "On 7 October 2026, two independent reviewers checked the code, the tests and decision 0039. The first found 4 serious and 6 minor bugs. The second found 1 serious and 3 minor bugs in the fixes.") + " " + fact("cc-r14", "Another rule of the owner: a check must not depend on the memory or the judgment of the assistant alone."))
         + '<p>This tab was built the same way. %s %s %s</p>' % (fact("cc-a12", "It had a fact agent and a review agent for each part,"), fact("cc-a15", "then a whole-picture agent after each group of parts."), fact("cc-46k3", "This matches the multi-pass review of the guide: a pass for each part, plus a pass over the whole (4.6-K3)."))
@@ -2010,10 +2008,8 @@ CC_HTML = "".join([
            fact("cc-r8", "Discuss first, and do not write a document, a diagram or code before the owner asks for it."),
            fact("cc-r30", "A later rule: for each step of the mock builder, the assistant shows one proposal, and the owner accepts it or names a change."),
            fact("cc-soon", "During the plan of the two tabs of this academy, the assistant moved to the build too soon, and the owner stopped it.")),
-        '<p>%s %s The build had a different method. %s %s</p>'
-        % (fact("cc-34k1", "The guide teaches plan mode for complex tasks with large changes and architectural decisions (3.4-K1)."),
-           fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
-           fact("cc-r30", "For the design of a step of the mock builder, the assistant showed one proposal with all details. The owner accepted it or named a change (see step 0)."),
+        '<p>%s The rule of the owner did the same work in another way. %s</p>'
+        % (fact("cc-doc-plan", "Plan mode lets Claude research and propose changes without making them."),
            fact("cc-r12", "Each decision of the owner became a file on the same day.") + " So the discussion did the work of plan mode: a proposal first, and a change only after the owner agreed.")
         + cc_ts("3.4", "cc-3-4-ts"),
         '<h4 class="story">In the academy work, a rule in context was not a block</h4><p>%s %s</p>'
