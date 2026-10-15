@@ -27,7 +27,9 @@
 }
 
 /* the three choices */
-.v3-choices { max-width: 65ch; display: grid; gap: var(--s-3); margin: var(--s-4) 0 var(--s-5); }
+.v3-choices { max-width: 65ch; display: grid; gap: var(--s-3); margin: var(--s-4) 0 var(--s-3); }
+.v3-ast { text-decoration: none; color: var(--text); margin-left: 1px; }
+.v3-sec > p.v3-note { font-size: var(--t-small); color: var(--text-dim); margin: 0 0 var(--s-5); }
 
 /* Fig. M: the 30 task statements in 5 domain columns. The form shows the state: solid and filled is used, dashed is the idea only,
    a thin dotted line is not used */

@@ -2232,10 +2232,11 @@ TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   <h2 id="tools-h">Then, we used only what the job needed</h2>
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
-    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is one plain call. We did use subagents to build the pipeline in Claude Code, where each one got a written brief with all the context it needed (1.3 on the map).</li>
+    <li><b>No subagents in the pipeline<a class="v3-ast" href="#v3-note-sub" aria-label="See the note">*</a>.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
     <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
     <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
   </ol>
+  <p class="v3-note" id="v3-note-sub">* The build itself used subagents in Claude Code, for facts and reviews. Each one got a written brief with all the context it needed. See <a href="#cc-4-6">part 4.6 of The build in Claude Code</a>.</p>
   <p>After the build, we checked all 30 task statements against the records. The map shows the result. An empty tile means that the job did not need it.</p>
   %(fig)s
   <section class="sources" aria-label="Sources of the map"><p class="ve-label">Sources</p><ul>@SRC_TOOLS@%(msrc)s</ul></section>
