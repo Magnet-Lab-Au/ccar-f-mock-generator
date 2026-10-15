@@ -355,7 +355,7 @@ FIG1 = """
     </svg>
   </div>
   %(player)s
-  <figcaption><span class="fig-n">Fig. A</span>Code moves each try through the steps. %(auto)s. %(wait)s: an open slot, a finding of step 6, a bad mark, and a call that fails 3 times. Since mock decision 0045, %(rw)s also waits for the owner. %(rwp)s The owner %(acc)s before step 8.</figcaption>
+  <figcaption><span class="fig-n">Fig. A</span>The 9 steps. The form of each box shows who does the step: code, a Claude model, or the owner. Each box opens a short note.</figcaption>
   <section class="sources" aria-label="Sources of the top"><p class="ve-label">Sources of the top of this tab</p><ul>@SOURCES_TOP@</ul></section>
 </figure>
 """ % {
@@ -638,7 +638,9 @@ EXTRA5 = ('<li><a href="%s">Build guide, step 5, the table of guide points</a> <
           '<li><a href="%s">The exam guide as records</a> <span class="ve-label">reference/guide-records.json</span></li>'
           % (e(link(S5, *lines_of(S5, "| 4.4-K1 |"))) , S5, lines_of(S5, "| 4.4-K1 |")[0], lines_of(S5, "| 4.3-S3 |")[0],
              e(link("reference/guide-records.json"))))
+step5_html = step5_html.replace('<section class="sources" aria-label="Sources of step 5">', '<p><b>Not drawn in Fig. A.</b> %s</p>\n    <section class="sources" aria-label="Sources of step 5">' % fact("c-rwp", "Fig. A draws the new point of an open slot. It does not draw a rewrite with a new point, which also starts again at step 2, or the choice of a new plan."), 1)
 step5_html = step5_html.replace("<ul></ul>", "<ul>%s%s</ul>" % (sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', step5_html)))), EXTRA5))
+assert 'data-card="c-rwp"' in step5_html, "the note on what Fig. A does not draw is not in step 5"
 
 # ----- shared helpers for each step -----
 
@@ -1652,7 +1654,8 @@ STEP7 = (level("overview",
                     fact("s7-set", "Each question was good on its own, so steps 3 and 4 had not failed."),
                     fact("s7-runs", "Over the 5 mocks, %d of the %d rewrites of the owner changed a question that had a good mark. The other %d had no mark." % (RW_GOOD, N_RW, N_RW - RW_GOOD))))
          ).replace("@N@", "7")
-PART_HTML[7] = with_sources(7, STEP7)
+PART_HTML[7] = with_sources(7, STEP7.replace('<section class="sources" aria-label="Sources of step 7">', '<p><b>Rewrites after the marks.</b> %s</p><section class="sources" aria-label="Sources of step 7">' % fact("c-rw", "Since mock decision 0045, a rewrite after the marks also waits for the owner."), 1))
+assert 'data-card="c-rw"' in PART_HTML[7], "the rewrite after the marks is not in step 7"
 
 # ----- step 8: build the files (facts: academy/facts/step-8.md) -----
 
@@ -2321,7 +2324,7 @@ BODY = """<main>
 %(v3)s
 <!-- each big section opens and closes, open at the start (owner, 15 October 2026). Version 4: the overview and the 9 steps are one section -->
 <details class="domain parts v3-sec" id="steps" open><summary><span class="dom-title"><h2 class="with-icon" id="steps-h">Then, we built it in 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
-  <p class="v2-intro">With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step.</p>
+  <p class="v2-intro">With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. We let code move each try through the steps, and a Claude model write and check. Only one way back is automatic: %(b_auto)s, %(b_tries)s. %(b_wait)s, and %(b_acc)s.</p>
 %(fig1)s
   %(parts)s
 </div></details>
@@ -2332,7 +2335,12 @@ BODY = """<main>
 %(limits)s
 %(words)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "v3": V3_INTRO, "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "steps_icon": STEPS_ICON, "cc": CC_HTML, "limits": LIMITS}
+             "v3": V3_INTRO, "fig1": FIG1,
+             # the overview of the 9 steps (owner, 16 October 2026): the claim of the old caption of Fig. A, with its cards
+             "b_auto": fact("c-auto", "a try that fails step 3 or step 4 goes to step 5, where the writer tries again"),
+             "b_tries": fact("s5-guard", "up to 3 times"),
+             "b_wait": fact("c-wait", "Every other way back waits for a decision of the owner"),
+             "b_acc": fact("c-acc", "the owner accepts the mock before step 8"), "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "steps_icon": STEPS_ICON, "cc": CC_HTML, "limits": LIMITS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
