@@ -3046,7 +3046,7 @@ BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><span aria-current="page">Exam guide breakdown</span><a href="%(tab2)s">Behind the mocks</a></nav>
   <h1>%(title)s</h1>
-  <p class="lead">The CCAR-F exam guide, broken down into its 5 domains and %(nts)d task statements. Each task statement opens in three levels: a short answer, an explanation with the guide&rsquo;s own text, and facts beyond the exam.</p>
+  <p class="lead">This page breaks the CCAR-F exam guide into its 5 domains and %(nts)d task statements. For each task statement, it explains what the exam expects, quotes the guide&rsquo;s own words, and shows where the product goes further. Use it to study one task statement at a time.</p>
 </header>
 %(map)s
 %(breakdown)s
