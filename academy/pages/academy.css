@@ -459,3 +459,5 @@ details.domain > summary:hover .dom-arrow::after { border-color: var(--text); }
 .ax-lab { fill: var(--text-dim); font: 500 13px var(--font-mono); }
 .ax-lab.sel { fill: var(--text); font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); }   /* text keeps its contrast: no fading, no orange text */
 .ax-hit { cursor: pointer; } .ax-hit .hit { fill: transparent; } .ax-hit:hover .ax-dot, .ax-hit:focus-visible .ax-dot { fill: var(--text); } .ax-hit:focus-visible { outline: none; } .ax-hit:focus-visible .hit { stroke: var(--accent); stroke-width: 2; }   /* each dot of the graph opens a popup (owner, 15 October 2026) */
+/* tab 1 only (the page with the domain sections): the dark mode button stays on the screen while the reader scrolls, like the Glossary button (owner, 15 October 2026) */
+body:has(#domain-1) .theme-btn { position: fixed; z-index: 40; }
