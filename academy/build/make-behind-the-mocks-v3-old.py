@@ -1,4 +1,9 @@
-"""TAB 2, VERSION 2 (owner, 15 October 2026): a separate copy of make-behind-the-mocks.py with the changes that follow the
+"""OLD (owner, 15 October 2026): version 4 is tab 2 now, in make-behind-the-mocks.py. This builder writes an old version, kept for comparison. It has a banner that links to the current tab 2.
+
+TAB 2, VERSION 3 (owner, 15 October 2026): a copy of version 2 with a story before Fig. A, how we settled what is true and
+what we chose to use. It writes behind-the-mocks-v3.html and behind-the-mocks-v3.js, and uses academy-v3.css on top of academy-v2.css.
+
+TAB 2, VERSION 2 (owner, 15 October 2026): a separate copy of make-behind-the-mocks.py with the changes that follow the
 changes of tab 1. It writes behind-the-mocks-v2.html, behind-the-mocks-v2.js and uses academy-v2.css on top of academy.css.
 The original tab 2 does not change.
 
@@ -2084,6 +2089,173 @@ if FIG_A_POPUPS:
             "In mocks 1 to 5, the owner decided %d times on an open slot." % TOTAL_OPENED]),
     })
 
+# ===== VERSION 3 (owner, 15 October 2026): a story before Fig. A. First how we settled what is true,
+# then what we chose to use, as a map of the 30 task statements. Tell it as it happened, with "we", in the past tense.
+D08 = glob.glob(os.path.join(ROOT, "docs/decisions/0008-*.md"))[0][len(ROOT) + 1:]
+D12 = glob.glob(os.path.join(ROOT, "docs/decisions/0012-*.md"))[0][len(ROOT) + 1:]
+D26 = glob.glob(os.path.join(ROOT, "docs/decisions/0026-*.md"))[0][len(ROOT) + 1:]
+D67 = glob.glob(os.path.join(ROOT, "docs/decisions/0067-*.md"))[0][len(ROOT) + 1:]
+A42 = glob.glob(os.path.join(ROOT, "academy/decisions/0042-*.md"))[0][len(ROOT) + 1:]
+CARD.update({
+    "v3-guide13": excerpt("reference/exam-guide.md", "The Task tool as the mechanism for spawning subagents, and the requirement that allowedTools must include \"Task\" for a coordinator to invoke subagents", "Exam guide, 1.3-K1", kind="guide"),
+    "v3-docs13": excerpt("academy/sources/2026-10-14-claude-code-docs-sub-agents.md", "In version 2.1.63, the Task tool was renamed to Agent.", "Claude Code documentation, Subagents (copy of 14 October 2026)", kind="docs"),
+    "v3-0008a": excerpt(D08, "The exam tests the guide. Where the documentation and the guide disagree, the answer of the guide is the answer of the exam.", "Mock decision 0008, Reason"),
+    "v3-0008b": excerpt(D08, "Each added source adds a step that can fail and that becomes old.", "Mock decision 0008, Reason"),
+    "v3-0042": excerpt(A42, "23 boxes in 15 parts", "Academy decision 0042, The places"),
+    "v3-0012": excerpt(D12, "The owner asked if the pipeline needs subagents, because single calls are independent already. That is correct.", "Mock decision 0012, How we decided"),
+    "v3-0012b": excerpt(D12, "A plain API call already has a separate context: the Messages API is stateless, and each call sees only what the program sends", "Mock decision 0012, How we decided"),
+    "v3-0026": excerpt(D26, "The pipeline uses no MCP, no subagent, no hook and no session.", "Mock decision 0026, Question"),
+    "v3-0026b": excerpt(D26, "The owner said: \"I accept no MCP and subagents\". The assistant asked again for hooks and sessions. The owner said: \"Sure\".", "Mock decision 0026, How we decided"),
+    "v3-batch": excerpt("academy/sources/2026-10-14-anthropic-docs-batch-processing.md", "All usage is charged at 50% of the standard API prices.", "Claude API documentation, Batch processing (copy of 14 October 2026)", kind="docs"),
+    "v3-0067a": excerpt(D67, "The Message Batches API. The owner rejected it: the rounds of the pipeline would wait for each batch.", "Mock decision 0067, Options"),
+    "v3-0067b": excerpt(D67, "calls 4a and 4b checked 10 questions of mock 3 again. The calls cost $0.58 with caching. The same tokens with no caching cost $1.72.", "Mock decision 0067, Decision"),
+})
+
+STAGES = [
+    ("September 2026", "Mock v1", [("guide", "src"), ("documentation", "src"), ("course", "src")],
+     "We compared all three, and saw that they disagree. Source: the notes of mock v1, not in this repository.", "v3-s1",
+     "Mock v1: three sources side by side",
+     ["We built mock v1 from the exam guide, the Claude documentation and the CCAR-F course of the Anthropic learning portal.",
+      "A separate agent checked each quote against its source. It found one sentence that no source contained, and we removed it.",
+      "The source of this stage is the document \"How These Mocks Were Made\" of mock v1, 30 September 2026. It is not in this repository, and it may not be exact."], []),
+    ("6 October 2026", "The present builder", [("guide", "src"), ("documentation", "gone"), ("course", "gone")],
+     "We chose one source of truth: the guide.", "v3-s2",
+     "The present builder: the guide alone",
+     ["Mock decision 0008: the program reads the exam guide only.",
+      "The reason: the exam tests the guide, and each added source adds a step that can fail and that becomes old."],
+     [{"text": "Mock decision 0008 &rarr;", "href": link(D08)}]),
+    ("14 October 2026", "The academy pages", [("guide", "src"), ("documentation", "check"), ("course", "gone")],
+     "We check the product, and mark each gap that could change an exam answer.", "v3-s3",
+     "The academy pages: the product as a dated check",
+     ["We compared each part of tab 1 with a copy of the documentation of 14 October 2026.",
+      "Tab 1 has 23 boxes in 15 parts. Each box stands where a product fact could lead to a different exam answer.",
+      "Each box gives the answer of the guide and the product today."],
+     [{"text": "Academy decision 0042 &rarr;", "href": link(A42)}, {"text": "The boxes of part 1.3 &rarr;", "href": "%s#ts-1-3" % TAB1}]),
+]
+SRC_MARK = {"src": "", "gone": " is-gone", "check": " is-check"}
+SRC_SAY = {"src": "a source", "gone": "not a source", "check": "a dated check"}
+for _date, _name, _srcs, _say, _key, _title, _sent, _links in STAGES:
+    POP[_key] = {"who": _date, "cls": "io", "title": _title, "sent": _sent, "points": [], "example": None, "links": _links}
+TRUTH_FIG = """<figure class="v3-fig">
+  <ol class="v3-stages" role="group" aria-label="Three stages. September 2026, mock v1: the guide, the documentation and the course were all sources. 6 October 2026, the present builder: the guide is the only source. 14 October 2026, the academy pages: the guide is the source, and the documentation is a dated check.">%s</ol>
+  <figcaption><span class="fig-n">Fig. S</span>The sources narrowed from three to one. The documentation came back as a check, not as a source. Each stage opens a short note.</figcaption>
+</figure>""" % "".join(
+    '<li class="v3-stage" data-step="%s" tabindex="0" role="button" aria-expanded="false"><span class="ve-label">%s</span><b>%s</b><ul class="v3-srcs">%s</ul><span class="v3-say">%s</span></li>'
+    % (key, date, name, "".join('<li class="v3-src%s"><span>%s</span><span class="v3-role">%s</span></li>' % (SRC_MARK[m], s, SRC_SAY[m]) for s, m in srcs), say)
+    for date, name, srcs, say, key, *_ in STAGES)
+
+CARD.update({
+    "v3-0008c": excerpt(D08, "The exam tests the guide.", "Mock decision 0008, Reason"),
+    "v3-0008d": excerpt(D08, "The guide alone is sufficient for its own sample questions: the assistant checked four of the twelve (1, 2, 3 and 10).", "Mock decision 0008, Reason"),
+    "v3-b8": excerpt("src/step4_check_model.py", "B8. The question is not a close copy of a sample question of the exam guide: not the same scene with the same correct action.", "The code of step 4, rule B8", kind="code"),
+})
+TRUTH_CARDS = ["v3-guide13", "v3-docs13", "v3-0008a", "v3-0008b", "v3-0008c", "v3-0008d", "s4-t24", "v3-b8", "v3-0042"]
+TRUTH = """<section class="v3-sec" id="truth" aria-labelledby="truth-h">
+  <h2 id="truth-h">First, we settled what is true</h2>
+  <p>A mock is only as good as its answer key, so we first had to know what a correct answer is. For mock v1, we read the exam guide, the Claude documentation and the CCAR-F course side by side. We observed that they did not always agree. The guide names %(g13)s. %(d13)s A candidate who learned the product could choose the wrong answer in the exam.</p>
+  %(fig)s
+  <p>So we chose one rule. %(r1)s We also saw that a source can go out of date. %(r2)s</p>
+  <p>Why the guide? This is an exam, and %(w1)s The only sample questions of the exam that we had were the 12 in the guide. They became our benchmark. %(w2)s %(w3)s And %(w4)s</p>
+  <div class="exambox-v3"><p class="ve-label">One difference, side by side</p>
+    <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works in settings and agent definitions.</dd></dl></div>
+  <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
+  <section class="sources" aria-label="Sources of the truth"><p class="ve-label">Sources</p><ul>%(src)s</ul></section>
+</section>""" % {
+    "g13": fact("v3-guide13", "the Task tool as the way to start a subagent"),
+    "d13": fact("v3-docs13", "The documentation says that the Task tool was renamed to Agent."),
+    "fig": TRUTH_FIG,
+    "r1": fact("v3-0008a", "Where the documentation and the guide disagree, the answer of the guide is the answer of the exam."),
+    "r2": fact("v3-0008b", "Each added source adds a step that can fail and that becomes old."),
+    # why the guide (owner, 15 October 2026): this is an exam, and the only sample questions are in the guide
+    "w1": fact("v3-0008c", "the exam tests the guide."),
+    "w2": fact("v3-0008d", "Before the first mock, we checked that the guide alone is enough to answer 4 of them."),
+    "w3": fact("s4-t24", "Then our checker, with no answer key, answered all 12 right."),
+    "w4": fact("v3-b8", "a rule of step 4 stops any question that is a close copy of one of them."),
+    "n42": fact("v3-0042", "23 boxes in 15 parts"),
+    "tab1": TAB1, "src": "@SRC_TRUTH@",
+}
+
+# ----- the map of the 30 task statements: what the build used (owner, 15 October 2026) -----
+SHORT = {"1.1": "Agentic loops", "1.2": "Multi-agent coordination", "1.3": "Subagent setup", "1.4": "Enforced workflows",
+         "1.5": "SDK hooks", "1.6": "Task decomposition", "1.7": "Session state", "2.1": "Tool descriptions", "2.2": "MCP error responses",
+         "2.3": "Tool distribution", "2.4": "MCP servers", "2.5": "Built-in tools", "3.1": "CLAUDE.md", "3.2": "Commands and skills",
+         "3.3": "Path rules", "3.4": "Plan mode", "3.5": "Iterative refinement", "3.6": "CI/CD", "4.1": "Explicit criteria",
+         "4.2": "Few-shot examples", "4.3": "Structured output", "4.4": "Validation and retry", "4.5": "Batch processing",
+         "4.6": "Multi-pass review", "5.1": "Long-conversation context", "5.2": "Escalation", "5.3": "Error propagation",
+         "5.4": "Codebase context", "5.5": "Human review", "5.6": "Provenance"}
+USE = {u["id"]: u for u in json.loads(read("academy/facts/task-statement-use.json"))}
+assert sorted(USE) == sorted(SHORT), sorted(set(USE) ^ set(SHORT))
+for _u in USE.values():
+    for _ev in _u["evidence"]:   # each quote is exactly on its line
+        assert _ev["quote"] in read(_ev["path"]).split("\n")[_ev["line"] - 1], (_u["id"], _ev)
+STATE_SAY = {"used": "Used", "idea": "In part", "not-used": "Not used"}   # the state "idea" shows as "In part" (owner, 15 October 2026)
+LEVEL_SAY = {"builder": "the mock builder", "claude-code": "the build in Claude Code"}
+LEVEL_TAG = {"builder": "builder", "claude-code": "Claude Code"}
+N_USED = sum(u["state"] == "used" for u in USE.values())
+N_IDEA = sum(u["state"] == "idea" for u in USE.values())
+N_NOT = sum(u["state"] == "not-used" for u in USE.values())
+TSR = {t["id"]: t for t in json.loads(read("reference/guide-records.json"))["task_statements"]}
+DOMS = json.loads(read("reference/guide-records.json"))["domains"]
+
+
+def map_tile(tid):
+    u = USE[tid]
+    key = "v3-m-" + tid.replace(".", "-")
+    where = u.get("where") or ""
+    links = [{"text": "Task statement %s on tab 1 &rarr;" % tid, "href": "%s#ts-%s" % (TAB1, tid.replace(".", "-"))}]
+    m = re.match(r"step (\d)$", where)
+    if m:
+        links.append({"text": "Read step %s &rarr;" % m.group(1), "href": "#step-%s" % m.group(1)})
+    elif "Claude Code" in where:
+        links.append({"text": "The build in Claude Code &rarr;", "href": "#claude-code"})
+    POP[key] = {"who": "%s \u00b7 %s" % (tid, STATE_SAY[u["state"]]), "cls": "io", "title": TSR[tid]["title"],
+                "sent": [u["what"]] + (["Where: %s." % " and ".join(LEVEL_SAY[x] for x in u["levels"])] if u["levels"] and u["state"] != "not-used" else []),
+                "points": [], "example": None, "links": links}
+    tags = [LEVEL_TAG[x] for x in u["levels"]] if u["state"] != "not-used" else []
+    return ('<li class="v3-tile is-%s" data-step="%s" tabindex="0" role="button" aria-expanded="false" aria-label="%s, %s: %s">'
+            '<span class="v3-tid">%s</span><span class="v3-tname">%s</span>%s</li>'
+            % (u["state"], key, tid, e(SHORT[tid]), STATE_SAY[u["state"]].lower(), tid, e(SHORT[tid]),
+               '<span class="v3-lv">%s</span>' % " + ".join(tags) if tags else ""))
+
+
+MAP_FIG = """<figure class="v3-fig">
+  <div class="v3-map" role="group" aria-label="The 30 task statements of the exam guide in 5 domains. %(nu)d used, %(ni)d used in part, %(nn)d not used.">%(cols)s</div>
+  <ul class="v3-key" aria-hidden="true"><li><span class="v3-sw is-used"></span>used, and a record shows it</li><li><span class="v3-sw is-idea"></span>in part, or in another way than the guide names</li><li><span class="v3-sw is-not-used"></span>not used: the job did not need it</li></ul>
+  <figcaption><span class="fig-n">Fig. M</span>Of the 30 task statements, the build used %(nu)d, used %(ni)d in part, and did not use %(nn)d. The mocks still test all 30. Each tile opens a short note.</figcaption>
+</figure>""" % {"nu": N_USED, "ni": N_IDEA, "nn": N_NOT,
+                "cols": "".join('<div class="v3-col"><p class="v3-dom"><span class="ve-label">Domain %d</span>%s</p><ol>%s</ol></div>'
+                                % (d["id"], e(d["name"]), "".join(map_tile(t) for t in sorted(USE, key=lambda t: int(t.split(".")[1])) if t.startswith("%d." % d["id"])))
+                                for d in DOMS)}
+
+MAP_SRC = "".join('<li><a href="%s">%s, task statement %s</a> <span class="ve-label">%s, line %d</span></li>'
+                  % (e(link(ev["path"], ev["line"])), e(ev["path"].rsplit("/", 1)[-1]), u["id"], ev["path"], ev["line"])
+                  for u in sorted(USE.values(), key=lambda u: tuple(map(int, u["id"].split(".")))) for ev in u["evidence"])
+TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
+  <h2 id="tools-h">Next, we used only what the job needed</h2>
+  <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
+  <ol class="v3-choices">
+    <li><b>No subagents in the pipeline<a class="v3-ast" href="#v3-note-sub" aria-label="See the note">*</a>.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
+    <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
+    <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
+  </ol>
+  <p class="v3-note" id="v3-note-sub">* The build itself used subagents in Claude Code, for facts and reviews. Each one got a written brief with all the context it needed. See <a href="#cc-4-6">part 4.6 of The build in Claude Code</a>.</p>
+  <p>After the build, we checked all 30 task statements against the records. The map shows the result. An empty tile means that the job did not need it.</p>
+  %(fig)s
+  <section class="sources" aria-label="Sources of the map"><p class="ve-label">Sources</p><ul>@SRC_TOOLS@%(msrc)s</ul></section>
+</section>""" % {
+    "c1": fact("v3-0012", "We asked whether the pipeline needed subagents, and found that it did not."),
+    "c1b": fact("v3-0012b", "A plain API call already has its own context, and it sees only what the program sends."),
+    "c2": fact("v3-0026", "The pipeline uses no MCP, no subagent, no hook and no session."),
+    "c2b": fact("v3-0026b", "We accepted that, first for MCP and subagents, then for hooks and sessions."),
+    "c3": fact("v3-batch", "The Message Batches API charges 50% of the standard prices."),
+    "c3a": fact("v3-0067a", "We rejected it, because each round of the pipeline would wait for its batch."),
+    "c3b": fact("v3-0067b", "In a test on 10 questions, the check calls cost $0.58 with caching, against $1.72 without."),
+    "fig": MAP_FIG, "msrc": MAP_SRC,
+}
+TOOLS_CARDS = ["v3-0012", "v3-0012b", "v3-0026", "v3-0026b", "v3-batch", "v3-0067a", "v3-0067b"]
+V3_INTRO = TRUTH + TOOLS
+# ===== end of version 3 =====
+
 BODY = """<main>
 <header id="top">
   <nav class="tabs" aria-label="Tabs"><a href="%(tab1)s">Exam guide breakdown</a><span aria-current="page">Behind the mocks</span></nav>
@@ -2091,7 +2263,11 @@ BODY = """<main>
   <p class="lead intro">%(para)s</p>
   <div class="callout newcomer"><p><b>New to the exam guide?</b> Read <a href="%(tab1)s">Exam guide breakdown</a> first. It explains the domains, the task statements and their points.</p></div>
 </header>
-<p class="v2-intro">The mock builder makes a mock in 9 steps. In Fig. A, the form of each box shows who does the step: code, a Claude model, or the owner.</p>
+%(v3)s
+<section class="v3-sec" id="overview" aria-labelledby="overview-h">
+  <h2 id="overview-h">Then, we built it in 9 steps</h2>
+  <p class="v2-intro">With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step.</p>
+</section>
 %(fig1)s
 <!-- each big section opens and closes, open at the start (owner, 15 October 2026) -->
 <details class="domain parts" id="steps" open><summary><span class="dom-title"><h2 class="with-icon">The 9 steps%(steps_icon)s</h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body">
@@ -2109,15 +2285,16 @@ BODY = """<main>
 %(limits)s
 %(words)s
 </main>""" % {"tab1": TAB1, "title": e(TITLE), "para": e(PARAGRAPH).replace("&#x27;", "&rsquo;").replace("'", "&rsquo;"),
-             "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "steps_icon": STEPS_ICON, "cc": CC_HTML, "limits": LIMITS}
+             "v3": V3_INTRO, "fig1": FIG1, "parts": "".join(part(s) for s in range(9)), "words": glossary_panel(WORDS), "steps_icon": STEPS_ICON, "cc": CC_HTML, "limits": LIMITS}
 
 # an SVG keeps its drawn size on a narrow screen, and its frame scrolls, so no label is below 12 pixels
 BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 0 (\d+) ', lambda m: '<svg class="%s" style="min-width:%spx" viewBox="0 0 %s ' % (m.group(1), m.group(2), m.group(2)), BODY)
-TOP = BODY.split('<details class="domain parts" id="steps"')[0] + WORDS   # the glossary is in the panel at the end, and its cards belong to the introduction
+TOP = BODY.split('<section class="v3-sec" id="overview"')[1].split('<details class="domain parts" id="steps"')[0] + WORDS   # v3: the new sections have their own sources   # the glossary is in the panel at the end, and its cards belong to the introduction
 from popups import POPUPS  # noqa: E402
 BODY = add_popups(BODY, [x for x in POPUPS if not (FIG_A_POPUPS and x['tab'] == 2 and x['fig'] == 'A')], 2, POP)   # the popups of the boxes (academy/popup-plan.md)
 BODY = group_roles(BODY)   # academy decision 0043, item 6
 BODY = code_font(BODY)   # academy decision 0038
+BODY = BODY.replace("@SRC_TRUTH@", sources(TRUTH_CARDS), 1).replace("@SRC_TOOLS@", sources(TOOLS_CARDS), 1)
 BODY = BODY.replace("@SOURCES_TOP@", sources(list(dict.fromkeys(re.findall(r'data-card="([^"]+)"', TOP)))), 1)
 BODY = fold_sources(BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
@@ -2128,13 +2305,13 @@ POP = {k: v for k, v in POP.items() if 'data-step="%s"' % k in BODY}
 # 6. the K and S of each point label in the text, in the colours of tab 1 (only in text, not in attributes)
 BODY = re.sub(r">([^<>]+)<", lambda m: ">" + re.sub(r"(?<![\w-])([1-5]\.[0-9])-([KS])([0-9]+)\b",
               lambda n: '%s-<span class="%s">%s</span>%s' % (n.group(1), "lk" if n.group(2) == "K" else "ls", n.group(2), n.group(3)), m.group(1)) + "<", BODY)
-write("behind-the-mocks-v2.html", page("Behind the mocks: " + TITLE, BODY, "behind-the-mocks-v2.js",
+write("behind-the-mocks-v3-old.html", page("Behind the mocks: " + TITLE, BODY.replace("<main>", "<main>\n<div class=\"callout old-banner\"><p><b>Old version.</b> The current tab 2 is <a href=\"behind-the-mocks.html\">Behind the mocks</a>.</p></div>", 1), "behind-the-mocks-v3-old.js",
                                     "How the mock builder of the CCAR-F mocks works, step by step."))
-script_file("behind-the-mocks-v2.js", POP, CARD)
-_v2 = os.path.join(ROOT, "academy/pages/behind-the-mocks-v2.html")
+script_file("behind-the-mocks-v3-old.js", POP, CARD)
+_v2 = os.path.join(ROOT, "academy/pages/behind-the-mocks-v3-old.html")
 _t = open(_v2, encoding="utf-8").read()
 assert _t.count('<link rel="stylesheet" href="academy.css">') == 1
-open(_v2, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-v2.css">'))
-print("Wrote academy/pages/behind-the-mocks-v2.html and behind-the-mocks-v2.js: %d preview cards, %d popups." % (len(CARD), len(POP)))
+open(_v2, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-v2.css">\n<link rel="stylesheet" href="academy-v3.css">'))
+print("Wrote academy/pages/behind-the-mocks-v3-old.html and behind-the-mocks-v3-old.js: %d preview cards, %d popups." % (len(CARD), len(POP)))
 print("Numbers: tries %s (total %d), more than one try %s, opened %s, cannot decide or cannot write %d, tests %d."
       % ([x["tries"] for x in MOCKS], TOTAL_TRIES, [x["more"] for x in MOCKS], [x["opened"] for x in MOCKS], TOTAL_CANNOT, TESTS))
