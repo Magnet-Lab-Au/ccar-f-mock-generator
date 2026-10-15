@@ -2232,7 +2232,7 @@ TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   <h2 id="tools-h">Then, we used only what the job needed</h2>
   <p>The guide teaches 30 task statements. We did not try to use them all. Each time a tool or a pattern came up in the design, we asked whether this job needed it. Three of those choices show how we decided.</p>
   <ol class="v3-choices">
-    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is a plain call with a fresh context, and no subagent was needed.</li>
+    <li><b>No subagents in the pipeline.</b> %(c1)s %(c1b)s So each model check is one plain call.</li>
     <li><b>No MCP, hooks or sessions in the pipeline.</b> %(c2)s %(c2b)s We did not add them only to show more task statements.</li>
     <li><b>No batches, but prompt caching.</b> %(c3)s %(c3a)s We chose prompt caching instead. %(c3b)s</li>
   </ol>
@@ -2240,8 +2240,8 @@ TOOLS = """<section class="v3-sec" id="tools" aria-labelledby="tools-h">
   %(fig)s
   <section class="sources" aria-label="Sources of the map"><p class="ve-label">Sources</p><ul>@SRC_TOOLS@%(msrc)s</ul></section>
 </section>""" % {
-    "c1": fact("v3-0012", "We asked if the pipeline needs subagents, because single calls are already independent. They are."),
-    "c1b": fact("v3-0012b", "A plain API call already has a separate context. Each call sees only what the program sends."),
+    "c1": fact("v3-0012", "We asked whether the pipeline needed subagents, and found that it did not."),
+    "c1b": fact("v3-0012b", "A plain API call already has its own context, and it sees only what the program sends."),
     "c2": fact("v3-0026", "The pipeline uses no MCP, no subagent, no hook and no session."),
     "c2b": fact("v3-0026b", "We accepted that, first for MCP and subagents, then for hooks and sessions."),
     "c3": fact("v3-batch", "The Message Batches API charges 50% of the standard prices."),
