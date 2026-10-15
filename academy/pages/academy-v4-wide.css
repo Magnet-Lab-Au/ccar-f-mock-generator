@@ -1,0 +1,4 @@
+/* Tab 2, version 4, a trial (owner, 15 October 2026): the paragraphs and lists use the full width of the figures, in place of
+   the limit of 65 characters. Only behind-the-mocks-v4.html loads this file, last. To undo it, set WIDE_TEXT = False in
+   academy/build/make-behind-the-mocks-v4.py and build again. Headings keep their own limits. */
+main :is(p, .lead, figcaption, ul.levels, ol.checks, .exambox-v3, .v3-choices, .callout.newcomer, dl.glossary) { max-width: none !important; }

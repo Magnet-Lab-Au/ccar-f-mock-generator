@@ -2356,7 +2356,10 @@ script_file("behind-the-mocks-v4.js", POP, CARD)
 _v2 = os.path.join(ROOT, "academy/pages/behind-the-mocks-v4.html")
 _t = open(_v2, encoding="utf-8").read()
 assert _t.count('<link rel="stylesheet" href="academy.css">') == 1
-open(_v2, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-v2.css">\n<link rel="stylesheet" href="academy-v3.css">\n<link rel="stylesheet" href="academy-v4.css">'))
+# a trial (owner, 15 October 2026): paragraphs as wide as the figures. False brings back the limit of 65 characters
+WIDE_TEXT = True
+open(_v2, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-v2.css">\n<link rel="stylesheet" href="academy-v3.css">\n<link rel="stylesheet" href="academy-v4.css">'
+                                                                 + ('\n<link rel="stylesheet" href="academy-v4-wide.css">' if WIDE_TEXT else '')))
 print("Wrote academy/pages/behind-the-mocks-v4.html and behind-the-mocks-v4.js: %d preview cards, %d popups." % (len(CARD), len(POP)))
 print("Numbers: tries %s (total %d), more than one try %s, opened %s, cannot decide or cannot write %d, tests %d."
       % ([x["tries"] for x in MOCKS], TOTAL_TRIES, [x["more"] for x in MOCKS], [x["opened"] for x in MOCKS], TOTAL_CANNOT, TESTS))
