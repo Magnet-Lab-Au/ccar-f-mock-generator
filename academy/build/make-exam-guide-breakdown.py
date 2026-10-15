@@ -2852,7 +2852,8 @@ def exam_tree():
     # one trunk from the box and one bar across, both thin, and one drop to each column as thick as its weight (owner, 15 October 2026)
     lines = '<path d="M500 0 V40 M100 40 H900" stroke-width="2"/>' + "".join(
         '<path d="M%d 40 V84" stroke-width="%.1f"/>' % (100 + 200 * i, DOM[i + 1]["weight"] / 6) for i in range(5))
-    return ('<div class="exam-top"><p class="exam-node">Claude Certified Architect &ndash; Foundations <span class="ve-label">CCAR-F</span></p>'
+    return ('<div class="exam-top"><p class="exam-node"><img class="exam-badge" src="icons/ccar-f-badge.png" alt="The badge of the Claude Certified Architect &ndash; Foundations" width="340" height="340">'
+            '<span>Claude Certified Architect &ndash; Foundations <span class="ve-label">CCAR-F</span></span></p>'
             '<svg class="exam-lines" viewBox="0 0 1000 84" preserveAspectRatio="none" aria-hidden="true" focusable="false">%s</svg></div>' % lines)
 
 
@@ -2987,8 +2988,13 @@ BREAKDOWN = """<section class="parts" id="breakdown" aria-label="How we broke it
     <li><span class="chip guide">Guide only</span> ends a point that the documentation does not state, or states differently. The sentence before it often says what the documentation says. For the exam, answer as the guide says.</li>
     <li>A box with <b>For the exam</b> and <b>The product today</b> appears where the difference could change your answer. It gives both answers side by side.</li>
   </ul>
-  <p>New to the Claude API or Claude Code? Read <a href="#primer">Before you start</a> first.</p>
-  <p>&ldquo;The exam tests&rdquo; quotes the appendix of the guide (its section 17). The appendix lists the technologies and concepts that might appear on the exam. It also lists the topics that the exam covers and the topics that it does not cover. The block also names the sample questions of the guide for the task statement, and how many questions of the 5 mocks test it.</p>
+  <div class="callout newcomer"><p><b>New to the Claude API or Claude Code?</b> Read <a href="#primer">Before you start</a> first. It shows the products of the exam and who runs the tools in each.</p></div>
+  <p>The block &ldquo;The exam tests&rdquo; in each part shows:</p>
+  <ul class="levels">
+    <li>The lines of the appendix of the guide (its section 17) for the task statement. The appendix lists the technologies and concepts that might appear on the exam, and the topics that the exam covers and does not cover.</li>
+    <li>The sample questions of the guide for the task statement.</li>
+    <li>How many questions of the 5 mocks test it.</li>
+  </ul>
 </section>""" % {"puzzle": PUZZLE_ICON, "lab": lab("1.1-K2"), "k2": lab("4.3-K2"), "s2": lab("4.3-S2"), "count": fact("m-count", "The guide has %d task statements with %d points: %d Knowledge of and %d Skills in." % (len(TS), N_PTS, N_K, N_S))}
 CARD["m-count"] = {"title": "The exam guide as records", "kind": "count",
                    "text": "reference/guide-records.json has %d task statements and %d points: %d of kind knowledge and %d of kind skill. The script of this page counted them." % (len(TS), N_PTS, N_K, N_S),
@@ -3098,7 +3104,14 @@ GLOSSARY = glossary_panel('<dl class="glossary">%s</dl>' % "".join("<dt>%s</dt><
                           '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%s#top-words">Glossary of tab 2 &rarr;</a></p>' % TAB2)
 PRIMER = """<section class="parts" id="primer" aria-label="Before you start: who runs the tools in each product">
   <h2 class="with-icon">Before you start: who runs the tools in each product<svg class="h-icon h-tools" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg></h2>
-  <p>The exam asks about three products and one protocol. Fig. C shows who runs the tools in each. The button Glossary at the right edge of the screen explains the words of this tab.</p>
+  <p>The exam asks about three products and one protocol:</p>
+  <ul class="levels">
+    <li><b>Claude API</b>, a product</li>
+    <li><b>Claude Code</b>, a product</li>
+    <li><b>Agent SDK</b>, a product</li>
+    <li><b>MCP</b> (Model Context Protocol), a protocol</li>
+  </ul>
+  <p>Fig. C shows who runs the tools in each. The button Glossary at the right edge of the screen explains the words of this tab.</p>
   %(fig)s
 </section>""" % {"fig": FIGC, "n": len(GLOSS), "tab2": TAB2, "gloss": "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS)}
 

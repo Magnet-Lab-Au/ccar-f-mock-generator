@@ -315,7 +315,7 @@ ol.checks { display: grid; gap: var(--s-2); padding-left: 1.5rem; max-width: 65c
 #ts-1-1 .cases { grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr)); }
 #primer .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 34rem) { #primer .cases { grid-template-columns: minmax(0, 1fr); } }
-#map, #breakdown { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+#map, #breakdown, #primer { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
 section.parts[id^="domain-"] > p { margin-bottom: var(--s-4); }
 .beyond { padding-left: var(--s-5); display: grid; gap: var(--s-2); }
 .ve-e.no-head { marker-end: none; }
@@ -399,8 +399,8 @@ h2.with-icon { display: flex; align-items: center; gap: var(--s-3); }
 .poplinks { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); font-size: var(--t-small); }   /* the links in a popup of Fig. A (owner, 15 October 2026) */
 /* the scenario rows that open the text of the guide, and the list of the three levels (owner, 15 October 2026) */
 .scen-toggle { display: inline-flex; align-items: baseline; gap: var(--s-2); background: none; border: 0; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
-.scen-toggle::after { content: '+'; font: 600 var(--t-label) var(--font-mono); color: var(--text-dim); margin-left: var(--s-2); }
-.scen-toggle[aria-expanded="true"]::after { content: '\2212'; }
+.scen-toggle::after { content: ''; width: .55rem; height: .55rem; margin-left: var(--s-3); border-right: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: translateY(-.15rem) rotate(45deg); transition: transform var(--fast) var(--ease); flex: none; align-self: center; }
+.scen-toggle[aria-expanded="true"]::after { transform: translateY(.1rem) rotate(-135deg); }   /* a dropdown arrow, which turns when the row is open (owner, 15 October 2026) */
 .scen-toggle:hover { text-decoration: underline; text-decoration-color: var(--gold); }
 tr.scen-detail td { background: var(--surface); padding: var(--s-3) var(--s-4) var(--s-4); }
 tr.scen-detail p { max-width: 65ch; margin-bottom: var(--s-2); }
@@ -421,3 +421,8 @@ ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width:
 /* "Knowledge of" and "Skills in" in running text, in the colours of the K and S labels (owner, 15 October 2026) */
 .kw-k, .kw-s { font-weight: 600; padding: 0 .3rem; border-radius: var(--r-1); }
 .kw-k { background: var(--k); color: var(--on-k); } .kw-s { background: var(--s); color: var(--on-s); }
+/* batch 2 of the notes of the owner (15 October 2026): the badge in the exam box, the drawings of Fig. C in the middle of their cards, the box for newcomers */
+.exam-node { display: flex; align-items: center; gap: var(--s-4); text-align: left; }
+.exam-badge { width: 4.5rem; height: 4.5rem; flex: none; }
+#primer .case svg.ve-mini { margin-inline: auto; }
+.callout.newcomer { max-width: 65ch; border-color: var(--gold); }
