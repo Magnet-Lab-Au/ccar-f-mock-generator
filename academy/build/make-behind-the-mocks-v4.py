@@ -2,10 +2,10 @@
 0046, item 7). It writes behind-the-mocks-v4.html and behind-the-mocks-v4.js, and uses academy-v4.css on top of academy-v3.css.
 
 TAB 2, VERSION 3 (owner, 15 October 2026): a copy of version 2 with a story before Fig. A, how we settled what is true and
-what we chose to use. It writes behind-the-mocks-v4.html and behind-the-mocks-v4.js, and uses academy-v3.css on top of academy-v2.css.
+what we chose to use. It writes behind-the-mocks-v3.html and behind-the-mocks-v3.js, and uses academy-v3.css on top of academy-v2.css.
 
 TAB 2, VERSION 2 (owner, 15 October 2026): a separate copy of make-behind-the-mocks.py with the changes that follow the
-changes of tab 1. It writes behind-the-mocks-v4.html, behind-the-mocks-v4.js and uses academy-v2.css on top of academy.css.
+changes of tab 1. It writes behind-the-mocks-v2.html, behind-the-mocks-v2.js and uses academy-v2.css on top of academy.css.
 The original tab 2 does not change.
 
 Make tab 2, "Behind the mocks": academy/pages/behind-the-mocks.html and behind-the-mocks.js.

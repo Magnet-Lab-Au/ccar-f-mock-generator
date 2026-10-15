@@ -1,10 +1,10 @@
 # 0046: Tab 2 tells a story before the steps
 
 - Date: 15 October 2026
-- Status: accepted. Built as version 3, `academy/pages/behind-the-mocks-v3.html`. The original tab 2 and version 2 do not change.
+- Status: accepted. Built as version 3, `academy/pages/behind-the-mocks-v3.html`, and version 4, `academy/pages/behind-the-mocks-v4.html`. The original tab 2 and version 2 do not change.
 - Text confirmed by the owner: not yet. An independent agent checks it (working rule 35).
 - Diagram: none
-- Changes: decision 0010, tab 2, item 1 (what comes under the title and the paragraph of the owner)
+- Changes: decision 0010, tab 2, item 1 (what comes under the title and the paragraph of the owner). In version 4, decision 0010, tab 2, items 3 and 4 (the closed state of each step and of each part of the build in Claude Code).
 
 ## Question
 
@@ -19,7 +19,7 @@ Purpose:
 Order of the top of tab 2, top down:
 3. The title and the paragraph of the owner stay as they are.
 4. "First, we settled what is true": how the guide became the one source of truth.
-5. "Then, we used only what the job needed": three choices, and a map of the 30 task statements.
+5. "Next, we used only what the job needed": three choices, and a map of the 30 task statements. (The overview changed "Then" to "Next".)
 6. Then Fig. A and the 9 steps.
 7. In version 4, a copy of version 3 (owner, 15 October 2026: "I think this is where we need a v4"): each step heading becomes a principle with its task statement. The owner wants to see it before a decision on the words.
 
@@ -28,10 +28,10 @@ Tone:
 
 The truth section:
 9. Three stages in one figure (Fig. S): mock v1 used the guide, the documentation and the CCAR-F course as sources. The present builder uses the guide only (mock decision 0008). The academy pages check the documentation of a fixed date and mark each difference that could change an exam answer (academy decision 0042). The form shows the role of each source. Each stage opens a popup.
-10. Why the guide: this is an exam, the exam tests the guide, and the only sample questions of the exam are the 12 in the guide. They became the benchmark: the guide alone answers 4 that the assistant checked (mock decision 0008), call 4a answered all 12 right before mock 1, and rule B8 stops a close copy of one of them. The owner gave this reason after seeing version 3: "it is because this is an exam and the only sample questions we have is from the guide."
+10. Why the guide: this is an exam, the exam tests the guide, and the only sample questions of the exam are the 12 in the guide. They became the benchmark. The guide alone answers 4 that the assistant checked (mock decision 0008). Call 4a answered all 12 right before mock 1. Rule B8 stops a close copy of one of them. The owner gave this reason after seeing version 3: "it is because this is an exam and the only sample questions we have is from the guide."
 11. One difference side by side (1.3-K1: the Task tool, now called Agent), the count of 23 boxes in 15 parts on tab 1, and a link to them.
 12. The source of stage 1 is the document "How These Mocks Were Made" of mock v1, 30 September 2026. The owner said that it may be inaccurate. It is not in this repository, and the page says so on the stage and in its popup. The page does not quote the course.
-13. Long-term goal of the owner: a separate tab collects the differences between the guide and the products, and later checks by itself how they drift apart. It is not built yet.
+13. Long-term goal of the owner: a separate tab collects the differences between the guide and the products, and later checks by itself how they drift apart. We did not build it yet.
 
 The tools section:
 14. Three choices tell how we decided: no subagents (mock decision 0012), no MCP, hooks or sessions (mock decision 0026), and no Message Batches API but prompt caching (mock decision 0067).
@@ -46,13 +46,13 @@ The owner decided 1.2 and 1.3: "yes, make 1.3 used and keep 1.2 idea". 1.3 is us
 
 The owner asked what "idea only" means. It covered two cases: done in another way than the guide names (for example 4.3), and done in part (for example 2.5 and 3.2). The owner said: "yes, rename it to in part". The label on the page is now "In part", with the key "in part, or in another way than the guide names". The value in `academy/facts/task-statement-use.json` stays "idea". The caption of Fig. M now says: "Of the 30 task statements, the build used 11, used 10 in part, and did not use 9."
 
-The overview (owner, 15 October 2026): the three headings are one sequence, "First, we settled what is true", "Next, we used only what the job needed" and "Then, we built it in 9 steps". The new heading stands above Fig. A, with a bridge in the story tone: "With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step." The owner accepted the bridge with "Code runs most of them". The assistant changed it, because code runs only 4 of the 9 steps alone. Fig. A, its caption and the section "The 9 steps" stay as they are.
+The overview (owner, 15 October 2026): the three headings are one sequence, "First, we settled what is true", "Next, we used only what the job needed" and "Then, we built it in 9 steps". The new heading stands above Fig. A, with a bridge in the story tone: "With the truth settled and the tools chosen, we built the pipeline. It makes a mock in 9 steps. Code moves each try through the steps, a Claude model writes and checks, and the owner decides where judgment is needed. In Fig. A, the form of each box shows who does the step." The owner accepted the bridge with "Code runs most of them". The assistant changed it, because code runs only 4 of the 9 steps alone. In version 3, Fig. A, its caption and the section "The 9 steps" stay as they are. Version 4 changes the closed steps (see below).
 
-Version 4 (owner, 15 October 2026), built by `academy/build/make-behind-the-mocks-v4.py` as `academy/pages/behind-the-mocks-v4.html`: each closed step shows its principle with the task statements of its build guide table, a short line of at most 10 words on what the step does, and the name of the step and who does it. The owner asked "I wonder if we can have both somehow" for the principle and the old heading, and said "yes, build it in v4". The owner approved the 9 principles after seeing version 4: "Yes much cleaner than before".
+Version 4 (owner, 15 October 2026) is built by `academy/build/make-behind-the-mocks-v4.py` as `academy/pages/behind-the-mocks-v4.html`. Each closed step shows its principle and the task statements of that principle, taken from the table of the step in the build guide. Step 8 has none. Under the principle, a short line of at most 10 words says what the step does. The last line gives the name of the step and who does it. The takeaway of each step leaves the page. The owner asked "I wonder if we can have both somehow" for the principle and the old heading, and said "yes, build it in v4". The owner approved the 9 principles after seeing version 4: "Yes much cleaner than before".
 
-The build in Claude Code, version 4 (owner, 15 October 2026): no new map. Fig. M is the map of this section, because its 4 parts (3.1, 1.7, 4.6, 3.4) are tiles marked "Claude Code". The section opens with a bridge: "We built the pipeline itself with Claude Code, under the same discipline. These 4 parts are tiles marked "Claude Code" in Fig. M." Each part has the same form as the 9 steps: a principle, a short teal line, and its name with its state on the map. The 4 principles: "Write the rules once, and load them into every session" (3.1), "Each new session starts from a written summary" (1.7), "A file that others rely on gets an independent reviewer" (4.6), "Discuss first, then act" (3.4, in part). The tiles of these 4 task statements in Fig. M link to their part. The owner asked to think first about a second map, and then said "yes, build it in v4". The owner approved the 4 principles: "yes, approve them".
+The build in Claude Code, version 4 (owner, 15 October 2026): no new map. Fig. M is the map of this section, because its 4 parts (3.1, 1.7, 4.6, 3.4) are tiles marked "Claude Code". The section opens with a bridge: "We built the pipeline itself with Claude Code, under the same discipline. These 4 parts are tiles marked "Claude Code" in Fig. M." Each part has the form of the 9 steps: a principle, a short teal line, and its name. In place of who does it, the part gives its state on the map. The 4 principles: "Write the rules once, and load them into every session" (3.1), "Each new session starts from a written summary" (1.7), "A file that others rely on gets an independent reviewer" (4.6), "Discuss first, then act" (3.4, in part). The tiles of these 4 task statements in Fig. M link to their part. The owner asked to think first about a second map, and then said "yes, build it in v4". The owner approved the 4 principles: "yes, approve them".
 
-The last section, version 4 (owner, 15 October 2026): the heading "Finally, what we can claim and what we cannot" ends the sequence of the story. Its bridge: "A careful build still has limits. Here is what the records prove, and what they do not." The old lead follows, and the two boxes stay as they are. The concept "Where the process failed" of the document of mock v1 is not added, because the Depth of each step holds its failures.
+The last section, version 4 (owner, 15 October 2026): the heading "Finally, what we can claim and what we cannot" ends the sequence of the story. Its bridge: "A careful build still has limits. Here is what the records prove, and what they do not." The old lead follows, and the two boxes stay as they are. We did not add the concept "Where the process failed" of the document of mock v1, because the Depth of each step holds its failures.
 
 Settled from the review:
 - 2.5 and 3.2: academy decision 0035 removed their entries from the section "The build in Claude Code", because their examples are weak. The map must show all 30, so they stay as "in part", and their popups say what the records show and do not show.
