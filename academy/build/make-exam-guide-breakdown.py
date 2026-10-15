@@ -2847,9 +2847,35 @@ def domain_icon(n):
 def exam_tree():
     """The exam on top, and one line to each domain column, as thick as the weight of the domain (owner, 15 October 2026).
     The lines show only when the five columns stand side by side."""
-    lines = "".join('<path d="M500 0 C500 50 %d 34 %d 84" stroke-width="%.1f"/>' % (100 + 200 * i, 100 + 200 * i, DOM[i + 1]["weight"] / 3) for i in range(5))
+    # straight lines with right angles (owner, 15 October 2026); each line leaves the box at its own point and turns at its own
+    # height, so no two lines share a segment and each thickness stays visible
+    start, turn = {0: 460, 1: 480, 2: 500, 3: 520, 4: 540}, {0: 22, 1: 44, 2: 44, 3: 44, 4: 22}
+    lines = "".join('<path d="M%d 0 V%d H%d V84" stroke-width="%.1f"/>' % (start[i], turn[i], 100 + 200 * i, DOM[i + 1]["weight"] / 6) for i in range(5))
     return ('<div class="exam-top"><p class="exam-node">Claude Certified Architect &ndash; Foundations <span class="ve-label">CCAR-F</span></p>'
             '<svg class="exam-lines" viewBox="0 0 1000 84" preserveAspectRatio="none" aria-hidden="true" focusable="false">%s</svg></div>' % lines)
+
+
+# the two axes of a question: its domain across, its scenario up the side, with one example (owner, 15 October 2026)
+def axes_figure():
+    x0, y0, dx, dy = 150, 20, 70, 26
+    grid = "".join('<circle class="ax-dot" cx="%d" cy="%d" r="3"/>' % (x0 + dx * i, y0 + dy * j) for i in range(5) for j in range(6))
+    xl = "".join('<text class="ve-lab" x="%d" y="%d" text-anchor="middle">%d</text>' % (x0 + dx * i, y0 + dy * 6 + 6, i + 1) for i in range(5))
+    yl = "".join('<text class="ve-lab" x="%d" y="%d" text-anchor="end">%d</text>' % (x0 - 22, y0 + dy * j + 4, j + 1) for j in range(6))
+    ex, ey = x0 + dx * 4, y0
+    return ('<div class="frame"><svg class="ve-svg" viewBox="0 0 760 230" role="img" aria-label="Two axes. Across: the 5 domains, what a question tests. '
+            'Up the side: the 6 scenarios, where it happens. One example question, on escalation, sits at scenario 1 and domain 5.">'
+            '<path class="ax-line" d="M%d %dH%d M%d %dV%d"/>' % (x0 - 12, y0 + dy * 5 + 14, x0 + dx * 4 + 14, x0 - 12, y0 - 10, y0 + dy * 5 + 14)
+            + grid + xl + yl
+            + '<text class="ve-el" x="%d" y="%d">domain: what it tests</text>' % (x0 + dx * 2, y0 + dy * 6 + 28)
+            + '<text class="ve-el" x="%d" y="%d" transform="rotate(-90 %d %d)">scenario: where</text>' % (60, y0 + dy * 2.5, 60, y0 + dy * 2.5)
+            + '<circle class="ax-hot" cx="%d" cy="%d" r="8"/>' % (ex, ey)
+            + '<path class="ve-e no-head" d="M%d %dH%d"/>' % (ex + 10, ey, ex + 40)
+            + '<text class="ve-el r" x="%d" y="%d">a question on escalation</text>' % (ex + 48, ey - 4)
+            + '<text class="ve-el r" x="%d" y="%d">scenario 1, domain 5</text>' % (ex + 48, ey + 16)
+            + '</svg></div>')
+
+
+AXES = None
 
 
 def map_col(d):
@@ -2904,6 +2930,8 @@ def notepad_icon():
 
 NOTEPAD_ICON = notepad_icon()
 
+AXES = axes_figure()
+
 def map_html():
     return """<section class="parts" id="map" aria-label="The map of the exam guide">
   <h2 class="with-icon">The exam guide on one page%(notepad)s</h2>
@@ -2914,15 +2942,17 @@ def map_html():
     <div class="tmap">%(cols)s</div>
     <figcaption><span class="fig-n">Fig. A</span>The exam, its 5 domains and their %(nts)d task statements. Each line is as thick as the weight of its domain. %(weights)s Each task statement shows its takeaway heading and opens below.</figcaption>
   </figure>
+  <p>A scenario is a realistic production setting that frames a group of questions. Each exam picks 4 of the 6 scenarios. So each question sits on two axes: its domain says what it tests, and its scenario says where it happens.</p>
   <figure>
+    %(axes)s
     <div class="table-scroll"><table class="matrix"><thead><tr><th scope="col">Scenario</th>%(dhead)s</tr></thead><tbody>%(scen)s</tbody></table></div>
-    <figcaption><span class="fig-n">Fig. B</span>%(scap)s</figcaption>
+    <figcaption><span class="fig-n">Fig. B</span>%(scap)s A chip &ldquo;primary&rdquo; marks a domain that the guide names as primary for the scenario. Open a scenario to read its text in the guide.</figcaption>
   </figure>
 </section>""" % {"notepad": NOTEPAD_ICON, "what": fact("m-what", "The exam guide is the official reference for the CCAR-F exam: it lists the domains and the task statements that the exam tests."),
                  "items": fact("m-items", "The exam has 60 questions"),
                  "format": fact("m-format", "and each question states how many answers to select."),
                  "struct": fact("m-struct", "Each exam uses 4 of the 6 scenarios of the guide."),
-                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "tree": exam_tree(), "nts": len(TS),
+                 "cols": "".join(map_col(DOM[i]) for i in range(1, 6)), "tree": exam_tree(), "axes": AXES, "nts": len(TS),
                  "weights": fact("m-weights", "A weight is the approximate share of the scored questions."),
                  "scen": "".join(scen_row(s) for s in SCEN),
                  "dhead": "".join('<th scope="col"><a href="#domain-%d">Domain %d</a></th>' % (d, d) for d in range(1, 6)),
