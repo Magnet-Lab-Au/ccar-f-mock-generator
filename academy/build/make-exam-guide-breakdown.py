@@ -230,6 +230,9 @@ def cf(key, c, text):
 
 
 GUIDE = ' <span class="chip guide" data-step="guide-only" tabindex="0" role="button" aria-expanded="false">Guide only</span>'   # the label of decision 0039, item 10: the exam follows the guide here
+POP["primary"] = {"who": "primary", "cls": "io", "title": "What does \u201cprimary\u201d mean?", "points": [], "example": None,   # owner, 15 October 2026
+                  "sent": ["The guide names 2 or 3 primary domains for each scenario, but it does not define the word.",
+                           "The reading of this page: the questions of this scenario come mainly from these domains."]}
 POP["guide-only"] = {"who": "Guide only", "cls": "io", "title": "What does the label mean?", "points": [], "example": None,   # academy decision 0043, item 9
                      "sent": ["The Anthropic documentation does not state this point, or states it differently. The sentence before the label often says what the documentation says.",
                               "For the exam, answer as the guide says."]}
@@ -2906,7 +2909,7 @@ def scen_text(s):
 def scen_row(s):
     """One row of the table of scenarios (figure plan, Fig. B): a chip in each column of a primary domain. The name opens a panel
     under the row with the text of the guide (owner, 15 October 2026)."""
-    cells = "".join('<td>%s</td>' % ('<span class="chip ok">primary</span>' if d in s["primary_domains"] else "") for d in range(1, 6))
+    cells = "".join('<td>%s</td>' % ('<span class="chip ok" data-step="primary" tabindex="0" role="button" aria-expanded="false">primary</span>' if d in s["primary_domains"] else "") for d in range(1, 6))
     return ('<tr><th scope="row"><button type="button" class="scen-toggle" aria-expanded="false" aria-controls="scen-%d"><span class="sn">%d</span>%s</button></th>%s</tr>'
             '<tr class="scen-detail" id="scen-%d"><td colspan="6">%s</td></tr>' % (s["id"], s["id"], e(s["name"]), cells, s["id"], scen_text(s)))
 

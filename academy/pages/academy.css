@@ -426,3 +426,4 @@ ul.levels { padding-left: var(--s-5); display: grid; gap: var(--s-1); max-width:
 .exam-badge { width: 4.5rem; height: 4.5rem; flex: none; }
 #primer .case svg.ve-mini { margin-inline: auto; }
 .callout.newcomer { max-width: 65ch; border-color: var(--gold); }
+.matrix .chip[data-step] { cursor: pointer; }
