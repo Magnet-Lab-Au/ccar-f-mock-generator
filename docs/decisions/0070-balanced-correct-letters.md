@@ -1,7 +1,7 @@
 # 0070: Balanced correct letters
 
 - Date: 9 October 2026
-- Status: accepted
+- Status: accepted. Academy decision 0055 changes item 4: the converter mixes the options once, and a random order on each attempt is later work.
 - Text confirmed by the owner: 9 October 2026
 - Diagram: `docs/diagrams/02-step-1-plan-the-mock.html` (step 1). Diagram 04 (step 2) shows how the writer's options get their letters.
 

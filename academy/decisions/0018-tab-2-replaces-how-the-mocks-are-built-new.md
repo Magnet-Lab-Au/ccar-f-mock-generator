@@ -1,7 +1,7 @@
 # 0018: Tab 2 replaces the page "How the Mocks Are Built New"
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0057 says that the old page is obsolete, so the removal step no longer applies.
 - Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 

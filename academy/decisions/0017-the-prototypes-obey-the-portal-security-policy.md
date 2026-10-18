@@ -1,7 +1,7 @@
 # 0017: The prototypes obey the security policy of the portal
 
 - Date: 13 October 2026
-- Status: accepted
+- Status: accepted. Decision 0050 makes the move a copy by a script. Decision 0053 gives the portal the font as a package. Decision 0051 adds a React page, scoped CSS and a page body.
 - Text confirmed by the owner: 13 October 2026 (working rule 35)
 - Diagram: none
 

@@ -1,7 +1,7 @@
 # 0010: Two tabs, each one page with an exploded view
 
 - Date: 13 October 2026
-- Status: accepted. Decision 0031 changes the story of the 26 document gaps. Decision 0019 says what each level holds. Decision 0023 changes the table of the build in Claude Code.
+- Status: accepted. Decision 0031 changes the story of the 26 document gaps. Decision 0019 says what each level holds. Decision 0023 changes the table of the build in Claude Code. Decision 0050 changes the section "Where the pages are made": a copy script moves the built pages.
 - Text confirmed by the owner: 13 October 2026
 - Diagram: none
 - Changes: decision 0002 (one entry for each task statement), decision 0004 (the levels of "Behind the mocks", and one visual in each Overview)

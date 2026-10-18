@@ -2,6 +2,20 @@
 
 One entry for each work session. Newest entry first.
 
+## 16 to 19 October 2026: the plan to put the mocks of version 2 and the two tabs into the portal (decisions 0050 to 0057)
+
+- The owner asked for a plan to put the mocks of version 2, tab 1 and tab 2 into the real portal (`~/magnetlab-academy`), and asked whether the assistant had looked at that repository properly. It had not. Two read-only agents then studied the portal: one the mocks, one the pages and the rules. The assistant checked their main claims in the files. The portal had not changed since 30 September 2026. This repository is public, and the portal repository is private.
+- The owner decided one item at a time, in plan mode. The plan is in `/home/triggger/.claude/plans/have-you-looked-at-linked-newell.md`. The decisions:
+  - 0050: `academy/` stays here, and the portal gets a copy of the built pages from a script. The owner first chose to move `academy/` into the portal and discussed six ramifications. Then the owner chose to keep it here, after the assistant listed what the reversal costs.
+  - 0051: way B, a React page that shows the built page. The assistant first wrote "about 2,000 popups" for way C without a count, and corrected it to about 1,000 source cards and 143 drawings.
+  - 0052: two sidebar entries under "Mocks". 0053: the font package `@fontsource/ibm-plex-mono`.
+  - 0054: all page links point to a fixed tag, and the build reads the tag on GitHub, not the local folder. The owner asked to see a real card, and the assistant showed `teach-5-1-1-s3` of step 5 on tab 2. The assistant also corrected its earlier claim that `mocks-v2` is a branch: it is a tag.
+  - 0055: the mocks of version 2 in the portal: a fifth option, " Select TWO.", the reasons, one fixed mix of the options, version 2 as the default, the missing fields, `point` and `question_id`, and the converter in the portal.
+  - 0056: three pull requests in the portal, and a new session inside `~/magnetlab-academy` for the work there. The assistant checked in the official documentation that a session does not load the `CLAUDE.md` of a folder next to its start folder.
+  - 0057: the old page "How the Mocks Are Built New" was in Cowork and is obsolete.
+- Status lines changed (working rule 26): academy decisions 0008, 0010, 0017 and 0018, and mock decisions 0036 and 0070.
+- An independent agent checked the texts of 0050 to 0057 and the status lines: 2 high, 6 medium, 9 low. All are fixed, except item 16 (the change to working rule 18 waits for the yes of the owner). The high ones: 0054 kept the links to `mocks-v2`, and its "How we decided" now says why. 0055 changes mock decision 0070, item 4, and now says so. The agent also found that the link counts covered only the HTML. The counts in 0054 now cover the HTML and the scripts.
+
 ## 15 October 2026, evening: tab 2 tells a story before the steps (decision 0046, a fork of the main session)
 
 - This session is a fork of the main session of 15 October 2026. It works in the worktree `.claude/worktrees/behind-mocks-v3`, on the branch `behind-mocks-v3`, so that it does not change the files of the main session.
