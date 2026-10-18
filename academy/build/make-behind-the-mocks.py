@@ -1494,7 +1494,7 @@ CARD.update({
     "s6-f6": {"title": "The finding of call 6b, mock 2, scenario 5", "kind": "excerpt", "text": "Finding M2-SC5-R1-F6, rule D3, names M2-S41-T1.",
               "src": "runs/mock-02/checks/M2-scenario-5-step6-run1.json, line %d" % lines_of("runs/mock-02/checks/M2-scenario-5-step6-run1.json", '"id": "M2-SC5-R1-F6"')[0],
               "href": link("runs/mock-02/checks/M2-scenario-5-step6-run1.json", lines_of("runs/mock-02/checks/M2-scenario-5-step6-run1.json", '"id": "M2-SC5-R1-F6"')[0])},
-    "s6-t2": jexcerpt("runs/mock-02/questions/M2-S41-T2.json", opt(S41[2], "B"), "M2-S41, try 2, option B, the correct one (in the built mock 2)"),
+    "s6-t2": jexcerpt("runs/mock-02/questions/M2-S41-T2.json", opt(S41[2], "B"), "M2-S41, try 2, the correct option (in the built mock 2)"),
     "s6-d014": jexcerpt("runs/mock-02/owner-decisions.json", D2_014["reason"], "The rewrite of the owner on finding M2-SC5-R1-F6"),
     "s6-date": excerpt(D06, "This is ruling 2 of the owner, of 29 September 2026.", "Mock decision 0006"),
     "s6-writer": excerpt(D10, "It cannot prevent two questions with the same scene, and it cannot count for ruling 2 (decision 0006).", "Mock decision 0010"),
