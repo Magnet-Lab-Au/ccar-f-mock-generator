@@ -39,7 +39,7 @@ If a rule and a later instruction of the owner disagree, the later instruction i
 
 16. Do not change original files. Do not change the study packs.
 17. Build work goes into this folder. The Claude project "CPN Learning path" is for learning only.
-18. Do not change the portal page "How the Mocks Are Built New" until the owner says so.
+18. Do not change the portal page "How the Mocks Are Built New" until the owner says so. (No longer applies, see rule 38.)
 19. Content for the portal must not include the personal files of the owner: `responses.json`, the Study Edition, study notes, the progress tracker, the error log, the refresher, and exam scores.
 
 ## Part B. Rules that the assistant suggested (the owner confirmed them on 6 October 2026)
@@ -65,3 +65,4 @@ If a rule and a later instruction of the owner disagree, the later instruction i
 35. From 13 October 2026: a decision counts as confirmed when the owner accepted it in the discussion and an independent agent checked its text. The assistant then shows the owner only the fixes that change what a text means. The owner does not need to read each decision file.
 36. One night only, 14 October 2026, 00:45 to 09:30: the owner sleeps and accepted `academy/night-plan.md`. For that night, the assistant can choose a design decision that needs the owner. It takes its recommendation, writes the decision file with the status "proposed, chosen by the assistant at night", and puts it in the morning report. Rule 32 applies again after the night.
 37. From 16 October 2026: before the assistant changes the text of a page, a figure or a decision, it shows the old text and the new text in the chat and waits for a yes of the owner. This is also true for fixes that a review found. Rule 32 still permits a change of style or layout without a yes, when the owner already asked for it.
+38. From 19 October 2026 (academy decision 0057): rule 18 no longer applies. The page "How the Mocks Are Built New" was in Cowork, from the time of the first handoff of this repository, and it is obsolete.
