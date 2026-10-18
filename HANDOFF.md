@@ -6,6 +6,14 @@ Date: 5 October 2026. Updated on 9 October 2026, and on 13 and 14 October 2026 f
 
 From 12 October 2026 the sessions build the teaching pages of the portal: "Exam guide breakdown" and "Behind the mocks". This work has its own records in `academy/` (academy decision 0007): `academy/README.md`, `academy/brief.md`, `academy/journal.md` and `academy/decisions/`. For this work, the records of the checklist in `CLAUDE.md` are the files in `academy/`, not `docs/journal.md` and `docs/decisions/`.
 
+### State on 19 October 2026: the move into the portal is planned (academy decisions 0050 to 0057)
+
+- The owner decided how the mocks of version 2, tab 1 and tab 2 go into the portal (`~/magnetlab-academy`, a private repository). The decisions are 0050 to 0057. `academy/` stays in this public repository. The portal gets a converted copy of the mocks and a copy of the built pages.
+- Done here: the page build reads each file at a tag from GitHub, and all page links that pointed to `main` point to the tag `pages-v1` (decision 0054). `check-pages.js` checks each card's quote on its linked line at the tag. Both pages: "All checks passed.", reading from GitHub. `main` and `pages-v1` are on GitHub.
+- The start note and the draft plan section for the portal: `academy/portal-plan.md`. An independent agent reviewed it, and its 15 points are fixed.
+- Next step: the owner starts a new session inside `~/magnetlab-academy` and tells it to read `/home/triggger/ccar-f-mock-generator/academy/portal-plan.md`, Part B. That session does PR 4 (the mocks) first.
+- Open here, in this repository, before PR 5 (the pages): the portal form of the two pages and a new tag (`academy/portal-plan.md`, "Needs from `ccar-f-mock-generator` before PR 5").
+
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
 ### State on 15 October 2026, evening: tab 2 version 3 (academy decision 0046, branch `behind-mocks-v3`)
