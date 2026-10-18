@@ -7,38 +7,74 @@ import html
 import json
 import os
 import re
+import subprocess
+import urllib.error
+import urllib.parse
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PAGES = os.path.join(ROOT, "academy", "pages")
 REPO = "https://github.com/Magnet-Lab-Au/ccar-f-mock-generator"
+RAW = "https://raw.githubusercontent.com/Magnet-Lab-Au/ccar-f-mock-generator"
 TAG = "mocks-v2"          # the files of the mock builder as they were when the 5 mocks were built
-BRANCH = "main"           # for files that came after the tag
+PAGES_TAG = "pages-v1"    # the files that the pages read and cite (decision 0054); a new tag for a new build of the pages
+BRANCH = PAGES_TAG         # the old name, kept for the page scripts that import it (it was "main" before decision 0054)
 e = html.escape
+
+# Decision 0054: the build reads each file from GitHub at a tag, not from the local folder, so that a quote and its link
+# always come from the same file. A tag never moves, so a copy in .cache stays right.
+# ACADEMY_SOURCE=git reads the same tag from the local git instead, for a test before the tag is on GitHub.
+CACHE = os.path.join(ROOT, "academy", "build", ".cache")
+SOURCE = os.environ.get("ACADEMY_SOURCE", "github")
 
 # the security policy of the portal (magnetlab-academy/frontend/public/_headers), minus the parts that a meta tag cannot set
 CSP = ("default-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; script-src 'self'; "
        "style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self'")
 
+_TEXT = {}
+
+
+def fetch(ref, path):
+    """The text of the file at the tag ref, or None if the file is not at that tag. Line ends as in Python text mode."""
+    key = (ref, path)
+    if key not in _TEXT:
+        local = os.path.join(CACHE, ref, path)
+        data = None
+        if SOURCE == "github" and os.path.exists(local):
+            with open(local, "rb") as f:
+                data = f.read()
+        elif SOURCE == "github":
+            try:
+                with urllib.request.urlopen("%s/%s/%s" % (RAW, ref, urllib.parse.quote(path)), timeout=60) as r:
+                    data = r.read()
+            except urllib.error.HTTPError as err:
+                if err.code != 404:
+                    raise
+            if data is not None:
+                os.makedirs(os.path.dirname(local), exist_ok=True)
+                with open(local, "wb") as f:
+                    f.write(data)
+        else:
+            r = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (ref, path)], capture_output=True)
+            data = r.stdout if r.returncode == 0 else None
+        _TEXT[key] = None if data is None else data.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return _TEXT[key]
+
 
 def read(path):
-    with open(os.path.join(ROOT, path), encoding="utf-8") as f:
-        return f.read()
-
-
-_SAME = {}
+    text = fetch(PAGES_TAG, path)
+    if text is None:
+        raise SystemExit("Not at the tag %s: %s" % (PAGES_TAG, path))
+    return text
 
 
 def in_tag(path):
-    """True if the file is at the tag with the same text as today, so a line number of today is right at the tag."""
-    if path not in _SAME:
-        import subprocess
-        r = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (TAG, path)], capture_output=True)
-        _SAME[path] = r.returncode == 0 and r.stdout.decode("utf-8", "replace") == read(path)
-    return _SAME[path]
+    """True if the file has the same text at the tag of the mocks as at the tag of the pages, so a line number is right at both."""
+    return fetch(TAG, path) == read(path)
 
 
 def link(path, a=None, b=None):
-    ref = TAG if in_tag(path) else BRANCH
+    ref = TAG if in_tag(path) else PAGES_TAG
     plain = "?plain=1" if path.endswith(".md") else ""
     if a is None:
         return "%s/blob/%s/%s" % (REPO, ref, path)
@@ -65,8 +101,10 @@ def code_block(path, first, last, title, ref=None):
     """The lines from the line with first to the line with last, as they are in the file.
     With ref (a tag or a commit), the lines as they were at that ref, and the link goes to that ref."""
     if ref:
-        import subprocess
-        lines = subprocess.run(["git", "-C", ROOT, "show", "%s:%s" % (ref, path)], capture_output=True, check=True).stdout.decode("utf-8").split("\n")
+        text = fetch(ref, path)
+        if text is None:
+            raise SystemExit("Not at the tag %s: %s" % (ref, path))
+        lines = text.split("\n")
     else:
         lines = read(path).split("\n")
     a = next(i for i, l in enumerate(lines) if first in l)

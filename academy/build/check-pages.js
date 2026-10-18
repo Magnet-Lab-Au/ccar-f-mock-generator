@@ -11,6 +11,7 @@
    - the same text checks in both panels of each before / after figure, for each choice of each live figure, and at each step of each stepper, with the opacity of each part and its parents, and each step shows only its own caption
    - each text at least 12 pixels high as rendered, also in the figures
    - the word limits of decision 0026: Overview at most 100 words, Explanation at most 500 words, figures not counted
+   - each card that quotes a file of this repository: the quote is on the linked lines at the tag of the link (decision 0054)
    It also saves screenshots for the owner.
 
    Needs playwright-core and the headless shell of Chromium. Run from the folder ccar-f-mock-generator:
@@ -174,13 +175,76 @@ function inPage() {
   return out;
 }
 
+/* Decision 0054: each card that quotes a file of this repository links to the lines of its quote at a tag.
+   Read each linked file at its tag (from GitHub, or from the local git with ACADEMY_SOURCE=git) and confirm that the quote
+   is on the linked lines. A card of the kind "count" states a result, not a quote, so it is not checked here. */
+const REPO_BLOB = 'https://github.com/Magnet-Lab-Au/ccar-f-mock-generator/blob/';
+const RAW = 'https://raw.githubusercontent.com/Magnet-Lab-Au/ccar-f-mock-generator/';
+const CACHE = path.join(__dirname, '.cache');
+const ROOT = path.join(__dirname, '..', '..');
+const tagText = {};
+async function atTag(ref, file) {
+  const key = ref + ':' + file;
+  if (!(key in tagText)) {
+    let data = null;
+    const local = path.join(CACHE, ref, file);
+    if (process.env.ACADEMY_SOURCE === 'git') {
+      try { data = require('child_process').execFileSync('git', ['-C', ROOT, 'show', ref + ':' + file], { maxBuffer: 1 << 28 }); } catch (e) { data = null; }
+    } else if (fs.existsSync(local)) {
+      data = fs.readFileSync(local);
+    } else {
+      const r = await fetch(RAW + ref + '/' + file.split('/').map(encodeURIComponent).join('/'));
+      if (r.ok) { data = Buffer.from(await r.arrayBuffer()); fs.mkdirSync(path.dirname(local), { recursive: true }); fs.writeFileSync(local, data); }
+      else if (r.status !== 404) throw new Error('GitHub ' + r.status + ' for ' + key);
+    }
+    tagText[key] = data === null ? null : data.toString('utf8').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  }
+  return tagText[key];
+}
+async function checkQuotes(name) {
+  const fail = [], summary = [];
+  let checked = 0;
+  const src = fs.readFileSync(path.join(PAGES, name.replace('.html', '.js')), 'utf8');
+  const i = src.indexOf('window.ACADEMY =');
+  const ctx = { window: {} };
+  require('vm').runInNewContext(src.slice(i, src.indexOf('\n', i)), ctx);
+  for (const [id, c] of Object.entries(ctx.window.ACADEMY.card)) {
+    if (c.kind === 'count' || !c.href || !c.href.startsWith(REPO_BLOB)) continue;
+    const m = c.href.slice(REPO_BLOB.length).match(/^([^/]+)\/([^?#]+)(?:\?plain=1)?#L(\d+)(?:-L(\d+))?$/);
+    if (!m) continue;
+    const [, ref, file, a, b] = m;
+    if (ref !== 'mocks-v2' && !/^pages-/.test(ref)) { fail.push('Card ' + id + ' links to ' + ref + ', not to a tag'); continue; }
+    const text = await atTag(ref, decodeURIComponent(file));
+    if (text === null) { fail.push('Card ' + id + ': ' + file + ' is not at the tag ' + ref); continue; }
+    const lines = text.split('\n').slice(+a - 1, +(b || a));
+    const block = lines.join('\n');
+    // the forms of a quote: word for word; inside a JSON string; code with its indent removed; the points of a task statement
+    const asJson = JSON.stringify(c.text).slice(1, -1);
+    const indent = Math.min(...lines.filter((l) => l.trim()).map((l) => l.length - l.trimStart().length));
+    let ok = block.includes(c.text) || block.includes(asJson) || lines.map((l) => l.slice(indent)).join('\n') === c.text;
+    if (!ok && c.kind === 'guide' && c.text.includes(' points: ')) ok = c.text.split(' points: ')[1].split(' / ').every((p) => block.includes(p));
+    // a summary card names a record by its ID, and its link goes to the line of that ID
+    if (!ok && (c.text.match(/\b[A-Z0-9]+(?:-[A-Z0-9]+){2,}\b/g) || []).some((x) => block.includes('"' + x + '"'))) { summary.push(id); checked++; continue; }
+    if (!ok) fail.push('Card ' + id + ': the quote is not on ' + file + ' lines ' + a + (b ? ' to ' + b : '') + ' at ' + ref);
+    checked++;
+  }
+  return { fail, checked, summary };
+}
+
 (async () => {
   const pages = process.argv.slice(2);
+  let quoteFailures = 0;
+  for (const name of pages) {
+    const q = await checkQuotes(name);
+    console.log(name + ' quotes: ' + q.checked + ' cards checked at their tag, ' + q.fail.length + ' failures. ' + q.summary.length + ' of the checked cards are summaries, found at the line of their ID' + (q.summary.length ? ': ' + q.summary.join(', ') : '') + '.');
+    for (const x of q.fail) console.log('  FAIL ' + x);
+    quoteFailures += q.fail.length;
+  }
   const srv = await serve();
   const base = 'http://127.0.0.1:' + srv.address().port + '/';
   const browser = await chromium.launch({ executablePath: process.env.CHROME });
   fs.mkdirSync(SHOTS, { recursive: true });
-  let failures = 0;
+  let failures = quoteFailures;
   for (const name of pages) {
     for (const scheme of ['light', 'dark']) {
       for (const width of [1280, 390]) {
