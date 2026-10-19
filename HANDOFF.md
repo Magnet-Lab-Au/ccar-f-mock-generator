@@ -6,13 +6,15 @@ Date: 5 October 2026. Updated on 9 October 2026, and on 13 and 14 October 2026 f
 
 From 12 October 2026 the sessions build the teaching pages of the portal: "Exam guide breakdown" and "Behind the mocks". This work has its own records in `academy/` (academy decision 0007): `academy/README.md`, `academy/brief.md`, `academy/journal.md` and `academy/decisions/`. For this work, the records of the checklist in `CLAUDE.md` are the files in `academy/`, not `docs/journal.md` and `docs/decisions/`.
 
-### State on 19 October 2026: the move into the portal is planned (academy decisions 0050 to 0057)
+### State on 19 October 2026: the mocks of version 2 and the two tabs are live in the portal (academy decisions 0050 to 0057)
 
 - The owner decided how the mocks of version 2, tab 1 and tab 2 go into the portal (`~/magnetlab-academy`, a private repository). The decisions are 0050 to 0057. `academy/` stays in this public repository. The portal gets a converted copy of the mocks and a copy of the built pages.
 - Done here: the page build reads each file at a tag from GitHub, and all page links that pointed to `main` point to the tag `pages-v1` (decision 0054). `check-pages.js` checks each card's quote on its linked line at the tag. Both pages: "All checks passed.", reading from GitHub. `main` and `pages-v1` are on GitHub.
 - The start note and the draft plan section for the portal: `academy/portal-plan.md`. An independent agent reviewed it, and its 15 points are fixed.
 - The plan PR (#30) and PR 4 (the mocks of version 2, #31 to `staging` and #32 to `main`) are merged in the portal. The owner checked staging and production. The mocks of version 2 are live.
-- The portal form of the two pages is built in `academy/pages/portal/` and checked (`academy/portal-plan.md`, "The portal form as built"). Next step: the tag `pages-v2` and its push, with the yes of the owner. Then the portal session starts PR 5 with that tag.
+- The portal form of the two pages is built in `academy/pages/portal/` and checked (`academy/portal-plan.md`, "The portal form as built"). The tag `pages-v2` (commit ddbaf96) is on GitHub.
+- PR 5 (the two pages) is live in the portal: #33 to `staging` and #34 to `main` (merge commit 4759b23). The owner checked staging and production. The 19 copied files in the portal are the same as the tag `pages-v2`.
+- Next step, at the next update of the pages: `academy/build/academy.js` scrolls to the `#hash` only at the end of `academyStart()`, after it hides the rows and panels above the target. Today the portal calls `stop.open(id)` after `start()` to fix this, so nothing is broken. The fix needs a new tag `pages-v3` and a new copy into the portal.
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 
