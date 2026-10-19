@@ -103,8 +103,8 @@ html.dark .academy-page.ap-behind-the-mocks { color-scheme: dark; }
 .academy-page.ap-behind-the-mocks .guard .sh { stroke-dasharray: 6 5; stroke: var(--warn); filter: none; }
 .academy-page.ap-behind-the-mocks .bar { fill: var(--border-bright); }
 .academy-page.ap-behind-the-mocks .ve-n .sub.r { text-anchor: start; }
-.academy-page.ap-behind-the-mocks .ve-ref { text-decoration: underline dotted var(--text-dim) 1px; text-underline-offset: .22em; border-radius: var(--r-1); transition: background var(--fast) var(--ease); }
-.academy-page.ap-behind-the-mocks .ve-ref.is-lit { background: var(--accent-dim); text-decoration-color: var(--accent); }
+.academy-page.ap-behind-the-mocks .ve-ref { background: color-mix(in srgb, var(--accent-dim) 50%, transparent); border-radius: var(--r-1); transition: background var(--fast) var(--ease); }
+.academy-page.ap-behind-the-mocks .ve-ref.is-lit { background: var(--accent-dim); }
 .academy-page.ap-behind-the-mocks svg.has-lit path[data-ref]:not(.is-lit), .academy-page.ap-behind-the-mocks svg.has-lit g[data-ref]:not(.is-lit) .sh { opacity: .25; }
 .academy-page.ap-behind-the-mocks svg.has-lit text[data-ref]:not(.is-lit) { fill: var(--text-dim); }
 .academy-page.ap-behind-the-mocks .ve-e.is-lit { stroke: var(--accent); }

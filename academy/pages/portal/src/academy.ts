@@ -34,15 +34,20 @@ function academyStart(root, data) {
   })();
 
   /* a link opens its part: the closed details that hold the target open, then the page scrolls to it */
+  let opens = 0;   // counts the scrolls of openTo, so that the late scroll after the fonts load does not undo a later one
   const openTo = (id, scroll) => {
     const t = id && document.getElementById(id);
     if (!t || !root.contains(t)) return;
     for (let d = t; d && d !== root; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
-    if (scroll) t.scrollIntoView({ block: 'start', behavior: still ? 'auto' : 'smooth' });
+    if (!scroll) return;
+    opens++;
+    /* with motion on, a block that has not come on the screen sits 1rem lower (academy.css, .js-motion): show it at once, so that the scroll measures its final place */
+    const box = t.closest('main > *, .ap-main > *');
+    if (box && root.classList.contains('js-motion') && !box.classList.contains('in')) { box.style.transition = 'none'; box.classList.add('in'); box.getBoundingClientRect(); box.style.transition = ''; }
+    t.scrollIntoView({ block: 'start', behavior: still ? 'auto' : 'smooth' });
   };
   const fromHash = () => { try { openTo(decodeURIComponent(location.hash.slice(1)), true); } catch (e) {} };
   addEventListener('hashchange', fromHash, on);
-  fromHash();
   root.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
     if (a && a.getAttribute('href') === location.hash) openTo(a.getAttribute('href').slice(1), true);
@@ -172,14 +177,14 @@ function academyStart(root, data) {
 
   /* the glossary panel at the side (owner, 15 October 2026): a fixed button opens and closes it */
   const gBtn = $('.glossary-btn'), gPan = $('#top-words');
+  let gHash = () => {};
   if (gBtn && gPan) {
     const gSet = (v) => { gPan.hidden = !v; gBtn.setAttribute('aria-expanded', String(v)); if (v) gPan.querySelector('.gp-close').focus(); };
     gBtn.addEventListener('click', () => gSet(gPan.hidden), on);
     gPan.querySelector('.gp-close').addEventListener('click', () => { gSet(false); gBtn.focus(); }, on);
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !gPan.hidden) { gSet(false); gBtn.focus(); } }, on);
-    const gHash = () => { if (location.hash === '#top-words') gSet(true); };
+    gHash = () => { if (location.hash === '#top-words') gSet(true); };
     addEventListener('hashchange', gHash, on);
-    gHash();
   }
 
   /* before / after (decision 0037): with no script both panels show, and the script shows one panel and two buttons */
@@ -256,6 +261,18 @@ function academyStart(root, data) {
     root.classList.add('js-motion');
     const io = watch((entries) => { for (const en of entries) if (en.isIntersecting) { io.unobserve(en.target); en.target.classList.add('in'); } }, { rootMargin: '0px 0px -10% 0px' });
     for (const x of $$('main > *, .ap-main > *')) io.observe(x);
+  }
+
+  /* the hash last, when the steppers, the before and after panels and the scenario rows are in their final state:
+     an earlier scroll lands too far down, because the content above the part gets shorter after it (the portal session, 19 October 2026).
+     If the fonts still load, the text above the part gets taller when they arrive, so the page scrolls again then. */
+  fromHash();
+  gHash();
+  if (document.fonts && document.fonts.status !== 'loaded') {
+    /* not if the reader moved the page, or if a link or stop.open scrolled again in the meantime */
+    let moved = false; const n = opens;
+    for (const ev of ['wheel', 'touchstart', 'keydown', 'pointerdown']) addEventListener(ev, () => { moved = true; }, { once: true, passive: true, signal: ac.signal });
+    document.fonts.ready.then(() => { if (!stopped && !moved && opens === n) fromHash(); });
   }
 
   /* stop: remove what start added, so that a page can start again on the same element */

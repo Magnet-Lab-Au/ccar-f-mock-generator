@@ -247,6 +247,17 @@ async function checkQuotes(name) {
   return { fail, checked, summary };
 }
 
+// a link lands on its part: when the scroll has stopped, the top of the part is at its scroll margin, or the page is at its end
+async function landing(q, id) {
+  return q.evaluate(async (i) => {
+    let last = -1;
+    for (let n = 0; n < 60 && scrollY !== last; n++) { last = scrollY; await new Promise((ok) => setTimeout(ok, 100)); }
+    const t = document.getElementById(i), top = t.getBoundingClientRect().top, margin = parseFloat(getComputedStyle(t).scrollMarginTop) || 0;
+    const end = scrollY >= document.documentElement.scrollHeight - innerHeight - 2;
+    return Math.abs(top - margin) <= 2 || (end && top >= margin - 2 && top < innerHeight) ? null : 'The link #' + i + ' lands ' + Math.round(top - margin) + ' px from its part';
+  }, id);
+}
+
 (async () => {
   const pages = process.argv.slice(2);
   let quoteFailures = 0;
@@ -327,6 +338,7 @@ async function checkQuotes(name) {
             await q.goto(base + name + '#' + id, { waitUntil: 'networkidle' });
             const open = await q.evaluate((i) => document.getElementById(i).open, id);
             if (!open) r.fail.push('The link #' + id + ' does not open its part');
+            const land = await landing(q, id); if (land) r.fail.push(land);
             await q.close();
           }
           const local = r.info.filter((x) => x.startsWith('LOCAL ')).map((x) => x.slice(6));
@@ -343,6 +355,16 @@ async function checkQuotes(name) {
           }
           for (const x of r.info.filter((x) => x.startsWith('WORDS '))) console.log('  ' + x.slice(6));
           for (const x of r.info.filter((x) => x.startsWith('STEPPER ') || x.startsWith('TOGGLE ') || x.startsWith('LIVE '))) console.log('  ' + x);
+        }
+        // with motion on, the scroll is smooth: the first, a middle and the last part must still land on their part
+        if (motion) {
+          const anchors = await p.evaluate(() => [...document.querySelectorAll('details.part[id]')].map((d) => d.id));
+          for (const id of new Set([anchors[0], anchors[anchors.length >> 1], anchors[anchors.length - 1]].filter(Boolean))) {
+            const q = await ctx.newPage();
+            await q.goto(base + name + '#' + id, { waitUntil: 'networkidle' });
+            const land = await landing(q, id); if (land) r.fail.push(land + ' (motion on)');
+            await q.close();
+          }
         }
         console.log(tag + ': ' + r.fail.length + ' failures, ' + r.known.length + ' known exceptions, ' + r.pending.length + ' pending');
         for (const x of r.fail) console.log('  FAIL ' + x);

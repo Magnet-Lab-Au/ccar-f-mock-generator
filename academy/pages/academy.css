@@ -105,8 +105,8 @@ figcaption { color: var(--text-dim); margin-top: var(--s-3); max-width: 65ch; }
 .ve-n .sub.r { text-anchor: start; }
 
 /* linked highlighting */
-.ve-ref { text-decoration: underline dotted var(--text-dim) 1px; text-underline-offset: .22em; border-radius: var(--r-1); transition: background var(--fast) var(--ease); }
-.ve-ref.is-lit { background: var(--accent-dim); text-decoration-color: var(--accent); }
+.ve-ref { background: color-mix(in srgb, var(--accent-dim) 50%, transparent); border-radius: var(--r-1); transition: background var(--fast) var(--ease); }   /* a faint tint, no dotted line: it is not a card (owner, 19 October 2026) */
+.ve-ref.is-lit { background: var(--accent-dim); }
 svg.has-lit path[data-ref]:not(.is-lit), svg.has-lit g[data-ref]:not(.is-lit) .sh { opacity: .25; }
 svg.has-lit text[data-ref]:not(.is-lit) { fill: var(--text-dim); }
 .ve-e.is-lit { stroke: var(--accent); } .ve-n.is-lit .sh { stroke: var(--accent); }
