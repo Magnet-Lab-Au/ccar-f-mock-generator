@@ -203,6 +203,57 @@ async function atTag(ref, file) {
   }
   return tagText[key];
 }
+// the form that the portal relies on (the portal session, 19 October 2026). If a change of the form is intended,
+// write it in academy/portal-plan.md, "The portal form as built", change this check, and tell the portal session,
+// so that it changes its React page in the same round.
+const TABS = ['exam-guide-breakdown', 'behind-the-mocks'];
+function checkForm() {
+  const fail = [], dir = path.join(PAGES, 'portal'), read = (f) => fs.readFileSync(path.join(dir, f), 'utf8');
+  const want = ['src/academy.ts', ...TABS.flatMap((t) => ['.body.html', '.data.ts', '.css'].map((x) => 'src/' + t + x))];
+  for (const f of want) if (!fs.existsSync(path.join(dir, f))) fail.push('Missing file: ' + f);
+  for (const f of fs.readdirSync(path.join(dir, 'src'))) if (!want.includes('src/' + f)) fail.push('A file that the portal does not know: src/' + f);
+  if (!fs.existsSync(path.join(dir, 'public', 'academy'))) fail.push('Missing folder: public/academy/');
+  for (const f of fs.readdirSync(path.join(dir, 'public'))) if (f !== 'academy') fail.push('A file outside public/academy/: public/' + f);
+  if (fail.length) return fail;
+  const ts = read('src/academy.ts');
+  for (const [what, re] of [
+    ['export { academyStart as start }', /^export \{ academyStart as start \};$/m],
+    ['function academyStart(root, data)', /^function academyStart\(root, data\) \{$/m],
+    ['start returns stop', /^  return stop;$/m],
+    ['stop.open(id)', /^  stop\.open = \(id\) => /m],
+  ]) if (!re.test(ts)) fail.push('academy.ts lacks ' + what);
+  if ((ts.match(/^export /gm) || []).length !== 1) fail.push('academy.ts has more than one export');
+  for (const t of TABS) {
+    const data = read('src/' + t + '.data.ts'), css = read('src/' + t + '.css'), body = read('src/' + t + '.body.html');
+    if (!/^export default data;$/m.test(data) || (data.match(/^export /gm) || []).length !== 1) fail.push(t + '.data.ts: the only export must be export default data');
+    if (/@font-face/.test(css)) fail.push(t + '.css has @font-face rules: the portal loads the fonts');
+    // each style rule is scoped to the root classes academy-page ap-<tab>
+    const scope = '.academy-page.ap-' + t;
+    const flat = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '');
+    for (const m of flat.matchAll(/([^{}@;]+)\{[^{}]*\}/g)) {
+      const sel = m[1].trim();
+      if (!sel || /^(from|to|\d+%)/.test(sel)) continue;
+      // split at the top-level commas only, not the commas inside :is(...) or :not(...)
+      const parts = []; let depth = 0, cur = '';
+      for (const ch of sel) { if (ch === '(') depth++; if (ch === ')') depth--; if (ch === ',' && !depth) { parts.push(cur); cur = ''; } else cur += ch; }
+      parts.push(cur);
+      for (const one of parts) if (!one.includes(scope)) { fail.push(t + '.css: a rule outside ' + scope + ': ' + one.trim().slice(0, 80)); break; }
+    }
+    // links to the other tab go through the routes of the portal, and images live under /academy/
+    for (const [f, text] of [[t + '.body.html', body], [t + '.data.ts', data]]) {
+      // in the data, "src" names the source of a card, so only "href" is a link there
+      const urls = [...text.matchAll(/(?:href|src)=\\?"([^"\\]*)|"href": ?"([^"\\]*)/g)].map((m) => m[1] ?? m[2]);
+      for (const u of new Set(urls)) {
+        if (/^(#|https:\/\/|mailto:|data:)/.test(u)) continue;
+        if (/^\/(exam-guide-breakdown|behind-the-mocks)(#[\w.-]+)?$/.test(u)) continue;
+        if (/^\/academy\/[\w./-]+$/.test(u)) { if (!fs.existsSync(path.join(dir, 'public', u))) fail.push(f + ': missing image ' + u); continue; }
+        fail.push(f + ': a link or image in a form that the portal does not know: ' + u);
+      }
+    }
+  }
+  return fail;
+}
+
 async function checkQuotes(name) {
   const fail = [], summary = [];
   let checked = 0;
@@ -268,6 +319,12 @@ async function landing(q, id) {
     else console.log(name + ' quotes: ' + q.checked + ' cards checked at their tag, ' + q.fail.length + ' failures. ' + q.summary.length + ' of the checked cards are summaries, found at the line of their ID' + (q.summary.length ? ': ' + q.summary.join(', ') : '') + '.');
     for (const x of q.fail) console.log('  FAIL ' + x);
     quoteFailures += q.fail.length;
+  }
+  if (pages.some((n) => n.startsWith('portal/'))) {
+    const form = checkForm();
+    console.log('The form for the portal: ' + form.length + ' failures');
+    for (const x of form) console.log('  FAIL ' + x + ' (a change of the form needs a note for the portal session)');
+    quoteFailures += form.length;
   }
   const srv = await serve();
   const base = 'http://127.0.0.1:' + srv.address().port + '/';
