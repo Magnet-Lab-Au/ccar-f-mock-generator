@@ -2454,3 +2454,6 @@ open(_v2, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="styl
 print("Wrote academy/pages/behind-the-mocks.html and behind-the-mocks.js: %d preview cards, %d popups." % (len(CARD), len(POP)))
 print("Numbers: tries %s (total %d), more than one try %s, opened %s, cannot decide or cannot write %d, tests %d."
       % ([x["tries"] for x in MOCKS], TOTAL_TRIES, [x["more"] for x in MOCKS], [x["opened"] for x in MOCKS], TOTAL_CANNOT, TESTS))
+
+import portal_form  # noqa: E402  the portal form of this tab (academy decisions 0050 and 0051)
+print("Portal form: " + portal_form.make("behind-the-mocks"))

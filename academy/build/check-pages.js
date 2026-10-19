@@ -24,12 +24,14 @@ const { chromium } = require('playwright-core');
 
 const PAGES = path.join(__dirname, '..', 'pages');
 const SHOTS = path.join(__dirname, '..', 'screenshots');
-const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.woff2': 'font/woff2', '.png': 'image/png' };
+const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.ts': 'text/javascript', '.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
 
 function serve() {
   return new Promise((resolve) => {
     const srv = http.createServer((req, res) => {
-      const f = path.join(PAGES, decodeURIComponent(req.url.split('?')[0].split('#')[0]));
+      let u = decodeURIComponent(req.url.split('?')[0].split('#')[0]);
+      if (u.startsWith('/academy/')) u = '/portal/public' + u;   // the images of the portal form, at /academy/ as in the portal
+      const f = path.join(PAGES, u);
       if (!f.startsWith(PAGES) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
       res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream' });
       fs.createReadStream(f).pipe(res);
@@ -204,6 +206,20 @@ async function atTag(ref, file) {
 async function checkQuotes(name) {
   const fail = [], summary = [];
   let checked = 0;
+  if (name.startsWith('portal/')) {
+    // the portal form: the same cards and popups as the page that opens alone, apart from the routes between the tabs
+    const tab = path.basename(name, '.html');
+    const load = (code, key) => { const c = { window: {} }; require('vm').runInNewContext(code, c); return c.window[key]; };
+    const alone = fs.readFileSync(path.join(PAGES, tab + '.js'), 'utf8'), k = alone.indexOf('window.ACADEMY =');
+    const a = load(alone.slice(k, alone.indexOf('\n', k)), 'ACADEMY');
+    const ts = fs.readFileSync(path.join(PAGES, 'portal', 'src', tab + '.data.ts'), 'utf8'), m = ts.indexOf('const data = ');
+    const b = load('window.D = ' + ts.slice(m + 13, ts.lastIndexOf('export default')), 'D');
+    const route = (s) => s.replace(/(exam-guide-breakdown|behind-the-mocks)\.html/g, '/$1');
+    for (const part of ['card', 'pop']) for (const id of new Set([...Object.keys(a[part]), ...Object.keys(b[part] || {})])) {
+      if (route(JSON.stringify(a[part][id])) !== JSON.stringify((b[part] || {})[id])) fail.push('The portal form differs in ' + part + ' ' + id); else checked++;
+    }
+    return { fail, checked, summary, same: true };
+  }
   const src = fs.readFileSync(path.join(PAGES, name.replace('.html', '.js')), 'utf8');
   const i = src.indexOf('window.ACADEMY =');
   const ctx = { window: {} };
@@ -236,7 +252,8 @@ async function checkQuotes(name) {
   let quoteFailures = 0;
   for (const name of pages) {
     const q = await checkQuotes(name);
-    console.log(name + ' quotes: ' + q.checked + ' cards checked at their tag, ' + q.fail.length + ' failures. ' + q.summary.length + ' of the checked cards are summaries, found at the line of their ID' + (q.summary.length ? ': ' + q.summary.join(', ') : '') + '.');
+    if (q.same) console.log(name + ': ' + q.checked + ' cards and popups the same as in the page that opens alone, ' + q.fail.length + ' failures');
+    else console.log(name + ' quotes: ' + q.checked + ' cards checked at their tag, ' + q.fail.length + ' failures. ' + q.summary.length + ' of the checked cards are summaries, found at the line of their ID' + (q.summary.length ? ': ' + q.summary.join(', ') : '') + '.');
     for (const x of q.fail) console.log('  FAIL ' + x);
     quoteFailures += q.fail.length;
   }
@@ -287,10 +304,12 @@ async function checkQuotes(name) {
           }
           const local = r.info.filter((x) => x.startsWith('LOCAL ')).map((x) => x.slice(6));
           for (const h of [...new Set(local)]) {
-            const [file, hash] = h.split('#');
+            let [file, hash] = h.split('#');
+            if (/^\/(exam-guide-breakdown|behind-the-mocks)$/.test(file)) file = 'portal/preview' + file + '.html';   // a route of the portal form
+            else if (name.includes('/')) file = path.posix.join(path.posix.dirname(name), file);
             if (!fs.existsSync(path.join(PAGES, file))) { r.pending.push('Link to a page that is not built yet: ' + h); continue; }
             if (hash) {
-              const q = await ctx.newPage(); await q.goto(base + h, { waitUntil: 'networkidle' });
+              const q = await ctx.newPage(); await q.goto(base + file + '#' + hash, { waitUntil: 'networkidle' });
               if (!(await q.evaluate((i) => !!document.getElementById(i), hash))) r.fail.push('Link to a missing anchor: ' + h);
               await q.close();
             }

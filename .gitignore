@@ -5,3 +5,4 @@ claude-code-brand-kit/
 
 # The copies of the tagged files that the page build reads from GitHub (academy decision 0054).
 academy/build/.cache/
+academy/pages/portal/preview/preflight.css

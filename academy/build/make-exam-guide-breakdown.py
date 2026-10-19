@@ -3217,3 +3217,6 @@ if WIDE_TEXT:
     open(_p, "w", encoding="utf-8", newline="\n").write(_t.replace('<link rel="stylesheet" href="academy.css">', '<link rel="stylesheet" href="academy.css">\n<link rel="stylesheet" href="academy-tab1-wide.css">'))
 print("Wrote academy/pages/exam-guide-breakdown.html and exam-guide-breakdown.js: %d preview cards, %d popups, %d of %d task statements written."
       % (len(CARD), len(POP), len(PART), len(TS)))
+
+import portal_form  # noqa: E402  the portal form of this tab (academy decisions 0050 and 0051)
+print("Portal form: " + portal_form.make("exam-guide-breakdown"))
