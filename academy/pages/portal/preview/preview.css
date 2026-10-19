@@ -6,9 +6,10 @@
 @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(../../fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); }
 @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url(../../fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); }
 @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600; font-display: swap; src: url(../../fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2'); }
-html { font-size: 16px; }
-body { margin: 0; background: #fff; }
-html.dark body { background: #11293d; }
+html { font-size: 16px; color-scheme: light; }
+html.dark { color-scheme: dark; }
+body { margin: 0; background: #fff; color: #11293d; font-family: Sora, sans-serif; -webkit-font-smoothing: antialiased; }
+html.dark body { background: #11293d; color: #fff; }
 .shell { display: flex; min-height: 100vh; }
 .side { display: none; width: 256px; flex: none; background: #f7f4e2; }
 html.dark .side { background: #1a3e5c; }
@@ -17,4 +18,4 @@ html.dark .side { background: #1a3e5c; }
 @media (min-width: 1024px) { .side { display: block; } .content { padding: 40px; } }
 .bare .side { display: none !important; } .bare .content { padding: 0 !important; }
 /* with ?shell=0, the side padding of the page that opens alone, for the comparison of screenshots */
-.bare .academy-page .ap-main { padding-left: 25.5px; padding-right: 25.5px; }
+.bare .academy-page.academy-page .ap-main { padding-left: 25.5px; padding-right: 25.5px; }

@@ -263,21 +263,48 @@ async function checkQuotes(name) {
   fs.mkdirSync(SHOTS, { recursive: true });
   let failures = quoteFailures;
   for (const name of pages) {
-    for (const scheme of ['light', 'dark']) {
-      for (const width of [1280, 390]) {
-        const ctx = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 900 }, reducedMotion: 'reduce' });
+    const portal = name.startsWith('portal/');
+    if (portal && !fs.existsSync(path.join(PAGES, 'portal', 'preview', 'preflight.css'))) { console.log('  FAIL ' + name + ': no preflight.css, so the test page lacks the base styles of the portal'); failures++; }
+    // the portal form also at 1024 px, where the side bar of the portal leaves the page least room, and once with motion on
+    const runs = [];
+    for (const scheme of ['light', 'dark']) for (const width of portal ? [1280, 1024, 390] : [1280, 390]) runs.push({ scheme, width, motion: false });
+    if (portal) runs.push({ scheme: 'light', width: 1280, motion: true });
+    for (const { scheme, width, motion } of runs) {
+      {
+        const ctx = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 900 }, reducedMotion: motion ? 'no-preference' : 'reduce' });
         const p = await ctx.newPage();
         const errors = [];
         p.on('console', (m) => { if (m.type() === 'error') errors.push('Console: ' + m.text()); });
         p.on('pageerror', (e) => errors.push('Page error: ' + e.message));
         await p.goto(base + name, { waitUntil: 'networkidle' });
-        const tag = name.replace('.html', '') + ' ' + scheme + ' ' + width;
+        const tag = name.replace('.html', '') + ' ' + scheme + ' ' + width + (motion ? ' motion' : '');
         if (width === 1280) await p.screenshot({ path: path.join(SHOTS, tag.replace(/ /g, '-') + '-top.png') });
         // open every part and level
         await p.evaluate(() => document.querySelectorAll('details').forEach((d) => { d.open = true; }));
-        const r = await p.evaluate(inPage);
+        let r = await p.evaluate(inPage);
+        // with motion on, a part that has not come on the screen is still hidden, so only the errors and the overflow count
+        if (motion) r = { fail: [], known: [], pending: [], info: [] };
         const overflow = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         if (overflow > 1) r.fail.push('Sideways overflow of ' + overflow + ' px');
+        if (portal) {
+          // nothing may reach out of the page element into the padding of the portal, except inside a scroll box or a fixed box
+          let out = await p.evaluate(() => {
+            const ap = document.getElementById('ap'), edge = ap.getBoundingClientRect().right + 1, res = [], tilted = [];
+            for (const n of ap.querySelectorAll('*')) {
+              const b = n.getBoundingClientRect();
+              if (b.width === 0 || b.right <= edge) continue;
+              let skip = false, turn = false;
+              for (let q = n; q && q !== ap; q = q.parentElement) { const s = getComputedStyle(q); if (s.position === 'fixed' || s.overflowX !== 'visible') { skip = true; break; } if (s.transform !== 'none') turn = true; }
+              // a tilted mark, such as the notepad of tab 1, has a turned box whose corner may pass the edge by a few pixels
+              if (!skip) (turn && b.right - edge < 8 ? tilted : res).push((n.id ? '#' + n.id : n.tagName.toLowerCase() + (n.className && n.className.baseVal === undefined ? '.' + String(n.className).split(' ')[0] : '')) + ' by ' + Math.round(b.right - edge + 1) + ' px');
+            }
+            return { res, tilted };
+          });
+          for (const x of new Set(out.tilted)) r.known.push('A tilted mark passes the page edge: ' + x);
+          out = out.res;
+          for (const x of [...new Set(out)].slice(0, 10)) r.fail.push('Reaches out of the page element: ' + x);
+          if (out.length > 10) r.fail.push('Reaches out of the page element: ' + (out.length - 10) + ' more');
+        }
         // popups and preview cards
         const pops = await p.evaluate(async () => {
           const res = []; const pop = document.getElementById('pop'); if (!pop) return res;
@@ -293,7 +320,7 @@ async function checkQuotes(name) {
         });
         r.fail.push(...pops, ...errors);
         // a link opens its part: load the page at each part anchor with all parts closed
-        if (width === 1280 && scheme === 'light') {
+        if (width === 1280 && scheme === 'light' && !motion) {
           const anchors = await p.evaluate(() => [...document.querySelectorAll('details.part[id]')].map((d) => d.id));
           for (const id of anchors) {
             const q = await ctx.newPage();

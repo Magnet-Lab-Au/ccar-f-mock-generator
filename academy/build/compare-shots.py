@@ -1,8 +1,9 @@
-"""Count the pixels that differ between each pair of screenshots of compare-portal-form.js.
+"""Count the pixels that differ between the screenshots of compare-portal-form.js.
 
 Usage: python3 academy/build/compare-shots.py <folder>
-It prints, for each pair, the sizes and the number of pixels that differ, and writes <tag>-diff.png with the
-differing pixels in red. Exit code 0 means every pair is the same.
+For each tab, mode and width, it compares the height of the page and each screen of the page that opens alone with the
+same screen of the portal form, and writes <tag>-diff-<n>.png with the differing pixels in red. Exit code 0 means every
+screen is the same.
 """
 import glob
 import os
@@ -11,27 +12,27 @@ import sys
 from PIL import Image, ImageChops
 
 folder = sys.argv[1]
-bad = 0
-pairs = sorted(glob.glob(os.path.join(folder, "*-alone.png")))
-if not pairs:
+tags = sorted({os.path.basename(f)[:-len("-alone.height")] for f in glob.glob(os.path.join(folder, "*-alone.height"))})
+if not tags:
     sys.exit("No screenshots in " + folder)
-for alone in pairs:
-    tag = os.path.basename(alone)[:-len("-alone.png")]
-    a = Image.open(alone).convert("RGB")
-    b = Image.open(os.path.join(folder, tag + "-portal.png")).convert("RGB")
-    if a.size != b.size:
-        print("%s: the size differs, %dx%d alone and %dx%d in the portal form" % (tag, a.size[0], a.size[1], b.size[0], b.size[1]))
+bad = 0
+for tag in tags:
+    ha, hb = (open(os.path.join(folder, "%s-%s.height" % (tag, s))).read() for s in ("alone", "portal"))
+    if ha != hb:
+        print("%s: the height differs, %s px alone and %s px in the portal form" % (tag, ha, hb))
         bad += 1
-        w, h = min(a.size[0], b.size[0]), min(a.size[1], b.size[1])
-        a, b = a.crop((0, 0, w, h)), b.crop((0, 0, w, h))
-    diff = ImageChops.difference(a, b).convert("L").point(lambda v: 255 if v > 0 else 0)
-    n = sum(1 for v in diff.getdata() if v)
-    print("%s: %d pixels differ" % (tag, n))
-    if n:
-        bad += 1
-        box = diff.getbbox()
-        print("   first and last row that differ: %d to %d" % (box[1], box[3]))
-        red = Image.new("RGB", a.size, (255, 0, 0))
-        Image.composite(red, a, diff).save(os.path.join(folder, tag + "-diff.png"))
+        continue
+    screens = sorted(glob.glob(os.path.join(folder, tag + "-alone-*.png")))
+    differ = []
+    for a_path in screens:
+        n = a_path[-8:-4]
+        a = Image.open(a_path).convert("RGB")
+        b = Image.open(os.path.join(folder, "%s-portal-%s.png" % (tag, n))).convert("RGB")
+        diff = ImageChops.difference(a, b).convert("L").point(lambda v: 255 if v > 0 else 0)
+        if diff.getbbox():
+            differ.append(n)
+            Image.composite(Image.new("RGB", a.size, (255, 0, 0)), a, diff).save(os.path.join(folder, "%s-diff-%s.png" % (tag, n)))
+    print("%s: height %s px, %d screens, %d differ%s" % (tag, ha, len(screens), len(differ), (": " + ", ".join(differ)) if differ else ""))
+    bad += bool(differ)
 print("All pairs are the same." if not bad else "Pairs that differ: %d" % bad)
 sys.exit(1 if bad else 0)

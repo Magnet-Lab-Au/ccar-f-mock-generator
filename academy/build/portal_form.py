@@ -18,7 +18,8 @@ from lib import PAGES, ROOT
 
 OUT = os.path.join(PAGES, "portal")
 TABS = ("exam-guide-breakdown", "behind-the-mocks")
-SCOPE = ".academy-page"
+SCOPE = ".academy-page"   # make() sets the scope of its tab: ".academy-page.ap-<tab>", so two tabs never share a rule
+CONTAINER = "academy"
 BASE_PX = 17      # the page that opens alone sets html { font-size: 17px }; the portal keeps 16 px
 HEAD = "Made by academy/build/portal_form.py in ccar-f-mock-generator. Do not edit here: change the source there and copy again."
 
@@ -125,7 +126,16 @@ def scope_css(css):
                 continue                           # the portal loads the fonts (decision 0053)
             if name == "@media" and "prefers-color-scheme" in head:
                 continue                           # the portal decides dark mode with .dark on html (decision 0051)
+            if name == "@media" and re.fullmatch(r"\s*\((?:min|max)-width:\s*[\d.]+(?:rem|px)\)(?:\s*and\s*\((?:min|max)-width:\s*[\d.]+(?:rem|px)\))*\s*", head[len("@media"):]):
+                # a width rule measures the page, not the window: in the portal the side bar and the padding take room
+                body = scope_css(inner)
+                if re.search(r"(^|\n)%s \{" % re.escape(SCOPE), body):
+                    raise SystemExit("A width rule styles the root of the page, which a container rule cannot: " + head)
+                out.append("@container %s%s {\n%s}" % (CONTAINER, head[len("@media"):], body))
+                continue
             if name in ("@keyframes", "@-webkit-keyframes") or inner is None:
+                if inner is not None:
+                    head = head.split()[0] + " academy-" + head.split()[1]      # a page animation has its own name in the portal
                 out.append(head + ("{%s}" % inner if inner is not None else ";"))
                 continue
             body = scope_css(inner)
@@ -142,18 +152,30 @@ def scope_css(css):
     return "\n".join(out) + "\n"
 
 
+def _animations(css):
+    """The animations use the renamed keyframes."""
+    for name in set(re.findall(r"@keyframes academy-([\w-]+)", css)):
+        css = re.sub(r"(animation(?:-name)?:[^;}]*?)(?<![\w-])%s(?![\w-])" % re.escape(name), r"\1academy-" + name, css)
+    return css
+
+
 # Inside the page, undo the base styles of the portal (Tailwind's preflight), so that each element starts from the
 # browser's own style, as on the page that opens alone. A drawing keeps the attributes of its shapes, and an image keeps
 # the size of its width and height attributes, so only the base styles of the portal for svg and img are undone there.
 BASE = """/* the base styles of the portal do not reach the page */
-.academy-page :where(*:not(svg, svg *, img)), .academy-page :where(*:not(svg, svg *, img))::before, .academy-page :where(*:not(svg, svg *, img))::after { all: revert; }
-.academy-page svg, .academy-page img { display: revert; vertical-align: revert; }
-.academy-page img { max-width: revert; }
-.academy-page { tab-size: 8; }
+{s} :where(*:not(svg, svg *, img)), {s} :where(*:not(svg, svg *, img))::before, {s} :where(*:not(svg, svg *, img))::after {{ all: revert; }}
+{s} svg, {s} img {{ display: revert; vertical-align: revert; }}
+{s} img {{ max-width: revert; }}
+{s} {{ tab-size: 8; container: {c} / inline-size; }}
 """
 # The main area of the portal has its own padding, so the page does not add its own at the sides.
 END = """/* the portal pads its main area */
-.academy-page .ap-main { padding-left: 0; padding-right: 0; }
+{s} .ap-main {{ padding-left: 0; padding-right: 0; }}
+/* the layers of the portal: its top bar (z-index 40, under 1024 px) and its drawer (50) */
+{s} #pop {{ z-index: 45; }}
+{s} .glossary-btn {{ z-index: 41; }}
+{s} #top-words {{ z-index: 42; }}
+@media (max-width: 1023.98px) {{ {s} [id] {{ scroll-margin-top: 72px; }} }}
 """
 
 
@@ -181,11 +203,14 @@ def make(tab):
         f.write("<!-- %s -->\n%s" % (HEAD, body.strip() + "\n"))
     with open(os.path.join(OUT, "src", tab + ".data.ts"), "w", encoding="utf-8") as f:
         f.write("// @ts-nocheck\n/* eslint-disable */\n/* %s */\nconst data = %s;\nexport default data;\n" % (HEAD, data))
-    css = BASE
+    global SCOPE
+    SCOPE = ".academy-page.ap-" + tab
+    css = BASE.format(s=SCOPE, c=CONTAINER)
     for name in css_files:
         with open(os.path.join(PAGES, name), encoding="utf-8") as f:
             css += "/* from %s */\n%s" % (name, scope_css(f.read()))
-    css += END
+    css += END.format(s=SCOPE)
+    css = _animations(css)
     with open(os.path.join(OUT, "src", tab + ".css"), "w", encoding="utf-8") as f:
         f.write("/* %s */\n%s" % (HEAD, css))
 
@@ -214,21 +239,26 @@ def preview():
     d = os.path.join(OUT, "preview")
     os.makedirs(d, exist_ok=True)
     if os.path.exists(PREFLIGHT):
-        shutil.copyfile(PREFLIGHT, os.path.join(d, "preflight.css"))      # not in git (.gitignore)
+        # in a layer, as Tailwind 4 loads it, with the base rule of the portal's index.css; not in git (.gitignore)
+        with open(PREFLIGHT, encoding="utf-8") as f:
+            pre = f.read()
+        with open(os.path.join(d, "preflight.css"), "w", encoding="utf-8") as f:
+            f.write("@layer theme, base, components, utilities;\n@layer base {\n%s\n* { border-color: #e0e0e0; }\n}\n" % pre)
     elif not os.path.exists(os.path.join(d, "preflight.css")):
-        print("Note: no preflight.css, so the test page does not have the base styles of the portal")
+        print("Note: no preflight.css, so the test page does not have the base styles of the portal, and check-pages.js fails")
     from lib import CSP, e
     fonts = re.findall(r"@font-face[^}]*}", open(os.path.join(PAGES, "academy.css"), encoding="utf-8").read())
     files = {
         "preview.css": "/* The frame of the portal for the test pages (not for the portal). */\n"
                        + "\n".join(f.replace("url(fonts/", "url(../../fonts/") for f in fonts)
-                       + "\nhtml { font-size: 16px; }\nbody { margin: 0; background: #fff; }\nhtml.dark body { background: #11293d; }\n"
+                       + "\nhtml { font-size: 16px; color-scheme: light; }\nhtml.dark { color-scheme: dark; }\n"
+                         "body { margin: 0; background: #fff; color: #11293d; font-family: Sora, sans-serif; -webkit-font-smoothing: antialiased; }\nhtml.dark body { background: #11293d; color: #fff; }\n"
                          ".shell { display: flex; min-height: 100vh; }\n.side { display: none; width: 256px; flex: none; background: #f7f4e2; }\n"
                          "html.dark .side { background: #1a3e5c; }\n.content { flex: 1; min-width: 0; padding: 16px; }\n"
                          "@media (min-width: 640px) { .content { padding: 24px; } }\n@media (min-width: 1024px) { .side { display: block; } .content { padding: 40px; } }\n"
                          ".bare .side { display: none !important; } .bare .content { padding: 0 !important; }\n"
                          "/* with ?shell=0, the side padding of the page that opens alone, for the comparison of screenshots */\n"
-                         ".bare .academy-page .ap-main { padding-left: %spx; padding-right: %spx; }\n" % (1.5 * BASE_PX, 1.5 * BASE_PX),
+                         ".bare .academy-page.academy-page .ap-main { padding-left: %spx; padding-right: %spx; }\n" % (1.5 * BASE_PX, 1.5 * BASE_PX),
         "theme.js": "/* as the portal's theme-init.js: dark from the device setting when nothing is stored */\n"
                     "if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');\n"
                     "if (new URLSearchParams(location.search).get('shell') === '0') document.documentElement.classList.add('bare');\n",
@@ -249,9 +279,11 @@ def preview():
         with open(os.path.join(d, tab + ".html"), "w", encoding="utf-8") as f:
             f.write('<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
                     '<meta http-equiv="Content-Security-Policy" content="%s">\n<title>%s</title>\n<link rel="stylesheet" href="preflight.css">\n'
-                    '<link rel="stylesheet" href="preview.css">\n<link rel="stylesheet" href="../src/%s.css">\n<script src="theme.js"></script>\n'
+                    '<link rel="stylesheet" href="preview.css">\n%s\n<script src="theme.js"></script>\n'
                     '<script type="module" src="preview.js"></script>\n</head>\n<body data-tab="%s">\n<div class="shell"><div class="side"></div>'
-                    '<main class="content"><div class="academy-page" id="ap"></div></main></div>\n</body>\n</html>\n' % (CSP, e(title), tab, tab))
+                    '<main class="content"><div class="academy-page ap-%s" id="ap"></div></main></div>\n</body>\n</html>\n'
+                    # the styles of both tabs, as in the portal after a reader has opened both
+                    % (CSP, e(title), "\n".join('<link rel="stylesheet" href="../src/%s.css">' % x for x in TABS), tab, tab))
 
 
 if __name__ == "__main__":

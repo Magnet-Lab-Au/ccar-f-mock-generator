@@ -110,6 +110,25 @@ The build there must write the portal form of each page, next to the page that o
 
 `check-pages.js` checks both forms there.
 
+### The portal form as built (19 October 2026, for PR 5)
+
+This part is not in the portal's `PLAN.md`. It records what the build in `ccar-f-mock-generator` delivers, so that PR 5 builds against it.
+
+- **Where:** `academy/pages/portal/` in `ccar-f-mock-generator`, at the tag `pages-v2`. `src/` goes to `frontend/src/academy/`, and `public/academy/` goes to `frontend/public/academy/`. `preview/` stays there: it is the test page that imitates the portal.
+- **Files:** `src/academy.ts` (shared), and for each tab `src/<tab>.body.html`, `src/<tab>.data.ts` and `src/<tab>.css`. Each file says at the top that it is made there.
+- **The root element:** the React element must have both classes `academy-page` and `ap-<tab>` (for example `academy-page ap-behind-the-mocks`). Each tab's styles are scoped to its own class, so the styles of the two tabs never mix after a reader opens both. `start()` does not add these classes. React must not change the class of the element after start, because `start()` adds `js-motion` to it.
+- **The body:** import it with `?raw` (for example `import body from './academy/behind-the-mocks.body.html?raw'`), and set it on the root element. Render nothing else inside the root: the page undoes the portal's base styles inside it.
+- **The data:** `export default data` in `<tab>.data.ts`.
+- **The script:** `start(root, data)` binds the page inside `root` and returns `stop`. `stop()` removes every listener, observer, timer and added element, so start, stop and start on the same element works (React StrictMode). `stop.open(id)` opens the part with that id and scrolls to it: call it after a router change of the hash, which fires no `hashchange` event.
+- **Links:** between the tabs, `/exam-guide-breakdown#id` and `/behind-the-mocks#id`, in the body and in the popups that the script makes inside `#pop` (56 in tab 2). The click handler of the router must catch both, and skip `target="_blank"` and clicks with a modifier key. Images are at `/academy/...`.
+- **Width:** the width rules of the page are container rules on its root (`container: academy / inline-size`), so the page lays out by its own width, not by the window. The sides of the page have no padding, because the portal's main area has its own. The top keeps 51 px.
+- **Layers:** the popup is at z-index 45, the glossary button at 41 and the glossary panel at 42: above the portal's top bar (40) and under its drawer (50). Under 1024 px, each element with an id has a scroll margin of 72 px at the top, for the top bar.
+- **Fonts:** IBM Plex Mono at weights 400, 500 and 600 (the page sets `font-synthesis: none`, so a missing weight shows). Sora at 400 to 700.
+- **Size:** the chunk of tab 1 is about 1.1 MB, so Vite warns about its size. The build does not fail.
+- **Tests:** the script uses `matchMedia` and `IntersectionObserver`, which jsdom does not have. Test the pages with Playwright, not with vitest. Leave `src/academy/**` out of the coverage count, or it counts at 0 %.
+- **Escape:** when a popup or the glossary is open, Escape closes it. A portal dialog over the page also gets Escape.
+- **Checked there:** both test pages pass `check-pages.js`, light and dark, at 1280, 1024 and 390 px, once with motion on, with the base styles of Tailwind in their layer and both tabs' styles loaded. Nothing reaches out of the page element, except the tilted notepad mark of tab 1, by up to 4 px at 390 px, into the padding of the portal (listed as a known exception). Screenshots of each portal form without the side bar, taken one screen at a time (1,218 screens), match the page that opens alone pixel for pixel. An independent agent reviewed the form and found 12 points. All are fixed, or are notes in this list.
+
 ## Order of work and hand-offs
 
 | When | Who | What |

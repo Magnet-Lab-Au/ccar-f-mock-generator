@@ -12,7 +12,7 @@ From 12 October 2026 the sessions build the teaching pages of the portal: "Exam 
 - Done here: the page build reads each file at a tag from GitHub, and all page links that pointed to `main` point to the tag `pages-v1` (decision 0054). `check-pages.js` checks each card's quote on its linked line at the tag. Both pages: "All checks passed.", reading from GitHub. `main` and `pages-v1` are on GitHub.
 - The start note and the draft plan section for the portal: `academy/portal-plan.md`. An independent agent reviewed it, and its 15 points are fixed.
 - The plan PR (#30) and PR 4 (the mocks of version 2, #31 to `staging` and #32 to `main`) are merged in the portal. The owner checked staging and production. The mocks of version 2 are live.
-- Open here, in this repository, before PR 5 (the pages): the portal form of the two pages and a new tag (`academy/portal-plan.md`, "Needs from `ccar-f-mock-generator` before PR 5"). The plan PR (#30) is merged. The owner chose one track at a time: this work starts only after PR 4 is done, so that only one session asks the owner questions (19 October 2026).
+- The portal form of the two pages is built in `academy/pages/portal/` and checked (`academy/portal-plan.md`, "The portal form as built"). Next step: the tag `pages-v2` and its push, with the yes of the owner. Then the portal session starts PR 5 with that tag.
 
 - State on 13 October 2026: the plan is decided and confirmed in academy decisions 0001 to 0033. An independent review of the plan found 24 items, and all are decided or fixed. An independent agent checked the texts of 0016 to 0033 (working rule 35).
 

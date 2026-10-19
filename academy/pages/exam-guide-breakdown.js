@@ -3,7 +3,9 @@ window.ACADEMY = {"pop": {"primary": {"who": "primary", "cls": "io", "title": "W
 /* The shared behavior of the academy pages: the light and dark button, popups and preview cards, linked
    highlighting, steppers, and the closed parts that a link opens (decisions 0010, 0017 and 0033).
    academyStart(root, data) binds everything inside root and returns a function that removes it again, so that the
-   portal can start and stop a page on one element (academy decisions 0050 and 0051). The page that opens alone puts
+   portal can start and stop a page on one element (academy decisions 0050 and 0051). That function also has
+   open(id): it opens the part with that id and scrolls to it, for a router that changes the hash without a
+   hashchange event. The page that opens alone puts
    window.ACADEMY = {pop: {...}, card: {...}} in front of this code and starts it on the body (the end of this file),
    so each tab has one script file and no inline script. */
 function academyStart(root, data) {
@@ -162,7 +164,7 @@ function academyStart(root, data) {
   /* the scenarios of tab 1: the name opens the text of the guide under its row (owner, 15 October 2026) */
   for (const b of $$('.scen-toggle')) {
     const row = document.getElementById(b.getAttribute('aria-controls'));
-    if (!row) continue;
+    if (!row || !root.contains(row)) continue;
     row.hidden = b.getAttribute('aria-expanded') !== 'true';
     b.addEventListener('click', () => { const v = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', String(v)); row.hidden = !v; }, on);
   }
@@ -256,9 +258,11 @@ function academyStart(root, data) {
   }
 
   /* stop: remove what start added, so that a page can start again on the same element */
-  return () => {
+  const stop = () => {
     stopped = true;
     ac.abort();
+    if (current) current.setAttribute('aria-expanded', 'false');
+    if (gBtn && gPan) { gPan.hidden = true; gBtn.setAttribute('aria-expanded', 'false'); }
     for (const o of observers) o.disconnect();
     for (const t of timers) clearTimeout(t);
     for (const n of added) n.remove();
@@ -266,6 +270,8 @@ function academyStart(root, data) {
     if (pop) pop.hidden = true;
     root.classList.remove('js-motion');
   };
+  stop.open = (id) => openTo(id, true);
+  return stop;
 }
 
 /* the page that opens alone */

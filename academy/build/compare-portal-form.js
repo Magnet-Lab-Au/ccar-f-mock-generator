@@ -1,7 +1,7 @@
 /* Compare each page that opens alone with its portal form (academy decisions 0050 and 0051).
 
-   For each tab, in light and in dark mode, at 1280 and 390 pixels wide, with every part open, it takes a full-page
-   screenshot of the page that opens alone (without its theme button, which the portal does not have) and of the test
+   For each tab, in light and in dark mode, at 1280 and 390 pixels wide, with every part open, it takes screenshots, one screen
+   at a time, of the page that opens alone (without its theme button, which the portal does not have) and of the test
    page of the portal form with ?shell=0 (no side bar, no padding). The two must match pixel for pixel, or the scoped
    styles, the sizes in pixels or the dark mode of the portal form differ from the page. compare-shots.py counts the pixels.
 
@@ -27,14 +27,22 @@ const srv = http.createServer((req, res) => {
 });
 
 async function shot(browser, url, scheme, width, file) {
+  // one screen at a time: a single full-page screenshot of a very tall page leaves parts unpainted in Chromium
   const ctx = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 900 }, reducedMotion: 'reduce' });
   const p = await ctx.newPage();
   await p.goto(url, { waitUntil: 'networkidle' });
   await p.waitForFunction(() => !!document.getElementById('pop'));
   await p.evaluate(async () => { document.querySelectorAll('details').forEach((d) => { d.open = true; }); await document.fonts.ready; });
-  await p.addStyleTag({ content: '#theme-btn { display: none !important; }' });
+  await p.addStyleTag({ content: '#theme-btn { display: none !important; } html { scroll-behavior: auto !important; }' });
   await p.waitForTimeout(300);
-  await p.screenshot({ path: file, fullPage: true });
+  const height = await p.evaluate(() => document.documentElement.scrollHeight);
+  let i = 0;
+  for (let y = 0; y < height; y += 900, i++) {
+    await p.evaluate((v) => window.scrollTo(0, v), y);
+    await p.waitForTimeout(30);
+    await p.screenshot({ path: file.replace('.png', '-' + String(i).padStart(4, '0') + '.png') });
+  }
+  fs.writeFileSync(file.replace('.png', '.height'), String(height));
   await ctx.close();
 }
 
