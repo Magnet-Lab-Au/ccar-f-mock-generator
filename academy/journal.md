@@ -2,6 +2,15 @@
 
 One entry for each work session. Newest entry first.
 
+## 19 October 2026, evening: the portal form names the two tabs that the portal makes (decision 0059)
+
+- This entry was written by the portal session (`~/magnetlab-academy`), which made the change here with the yes of the owner.
+- The owner gave the portal session a brief for a fourth tab, "Exam traps", and chose to build it in the portal, as "Study with Claude". The brief asks for one tab bar on all four tabs. The owner chose that only the portal form of the first two tabs gets the two new tabs. The pages that open alone keep their two tabs, because the two new pages are not in this repository. The assistant showed the old and the new tab bar (working rule 37), and the owner said "yes".
+- Built: `academy/build/portal_form.py` adds "Study with Claude" (`/study-with-claude`) and "Exam traps" (`/exam-traps`) to the end of the tab bar of the portal form (`PORTAL_TABS`). `academy/build/check-pages.js` accepts the two routes, and does not follow them. `academy/portal-plan.md` names the two routes. Only the two body files of the portal form changed. The pages that open alone did not change.
+- The portal routes the two links with no reload (`AcademyPage.tsx`, portal PR #50, on `staging` of the portal, not yet on `main`).
+- Checks: `check-pages.js` printed "All checks passed." for the portal form of both tabs (in the Playwright container of the portal, because the headless browser does not start in this WSL). The cards and popups are the same as in the pages that open alone: 857 on tab 1 and 410 on tab 2. A second run of `portal_form.py` gave the same files.
+- One independent agent reviewed the change: no high, 2 medium, 4 low. Fixed: the next step and the last tag in `HANDOFF.md`, the router note in `academy/portal-plan.md`, and "on `staging`" for portal PR #50. For the portal: the test `e2e/study-with-claude.spec.ts` expects two tabs on the copied pages, and the copy PR changes it.
+
 ## 16 to 19 October 2026: the plan to put the mocks of version 2 and the two tabs into the portal (decisions 0050 to 0057)
 
 - The owner asked for a plan to put the mocks of version 2, tab 1 and tab 2 into the real portal (`~/magnetlab-academy`), and asked whether the assistant had looked at that repository properly. It had not. Two read-only agents then studied the portal: one the mocks, one the pages and the rules. The assistant checked their main claims in the files. The portal had not changed since 30 September 2026. This repository is public, and the portal repository is private.

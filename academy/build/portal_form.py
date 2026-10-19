@@ -18,6 +18,9 @@ from lib import PAGES, ROOT
 
 OUT = os.path.join(PAGES, "portal")
 TABS = ("exam-guide-breakdown", "behind-the-mocks")
+# The tabs that the portal makes itself (academy decision 0059). Only the tab bar of the portal form names them:
+# the pages that open alone keep two tabs, because these pages are not in this repository.
+PORTAL_TABS = (("study-with-claude", "Study with Claude"), ("exam-traps", "Exam traps"))
 SCOPE = ".academy-page"   # make() sets the scope of its tab: ".academy-page.ap-<tab>", so two tabs never share a rule
 CONTAINER = "academy"
 BASE_PX = 17      # the page that opens alone sets html { font-size: 17px }; the portal keeps 16 px
@@ -29,6 +32,15 @@ def _route(text):
     for tab in TABS:
         text = re.sub(r'(["\'])%s\.html(#[^"\']*)?\1' % re.escape(tab), lambda m: "%s/%s%s%s" % (m.group(1), tab, m.group(2) or "", m.group(1)), text)
     text = re.sub(r'(src=")(images/|icons/)', r"\1/academy/\2", text)
+    return text
+
+
+def _portal_tabs(text):
+    """The tab bar of the portal form ends with the tabs that the portal makes itself."""
+    extra = "".join('<a href="/%s">%s</a>' % t for t in PORTAL_TABS)
+    text, n = re.subn(r'(<nav class="tabs" aria-label="Tabs">.*?)(</nav>)', lambda m: m.group(1) + extra + m.group(2), text, count=1)
+    if n != 1:
+        raise SystemExit("No tab bar in the body")
     return text
 
 
@@ -192,7 +204,7 @@ def make(tab):
     body = body.replace("<main>", '<div class="ap-main">').replace("</main>", "</div>")
     if "<main" in body:
         raise SystemExit("A main element with attributes is in the body of " + tab)
-    body = _route(body)
+    body = _portal_tabs(_route(body))
     with open(os.path.join(PAGES, tab + ".js"), encoding="utf-8") as f:
         js = f.read()
     start = js.index("window.ACADEMY = ") + len("window.ACADEMY = ")

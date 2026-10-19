@@ -246,6 +246,7 @@ function checkForm() {
       for (const u of new Set(urls)) {
         if (/^(#|https:\/\/|mailto:|data:)/.test(u)) continue;
         if (/^\/(exam-guide-breakdown|behind-the-mocks)(#[\w.-]+)?$/.test(u)) continue;
+        if (/^\/(study-with-claude|exam-traps)$/.test(u)) continue;   // the tabs that the portal makes itself (decision 0059)
         if (/^\/academy\/[\w./-]+$/.test(u)) { if (!fs.existsSync(path.join(dir, 'public', u))) fail.push(f + ': missing image ' + u); continue; }
         fail.push(f + ': a link or image in a form that the portal does not know: ' + u);
       }
@@ -402,6 +403,7 @@ async function landing(q, id) {
           const local = r.info.filter((x) => x.startsWith('LOCAL ')).map((x) => x.slice(6));
           for (const h of [...new Set(local)]) {
             let [file, hash] = h.split('#');
+            if (/^\/(study-with-claude|exam-traps)$/.test(file)) continue;   // a tab that only the portal has (decision 0059)
             if (/^\/(exam-guide-breakdown|behind-the-mocks)$/.test(file)) file = 'portal/preview' + file + '.html';   // a route of the portal form
             else if (name.includes('/')) file = path.posix.join(path.posix.dirname(name), file);
             if (!fs.existsSync(path.join(PAGES, file))) { r.pending.push('Link to a page that is not built yet: ' + h); continue; }
