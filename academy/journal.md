@@ -2,6 +2,15 @@
 
 One entry for each work session. Newest entry first.
 
+## 20 October 2026: "Start here" goes first in the tab bar of the portal form (decision 0060)
+
+- This entry was written by the portal session (`~/magnetlab-academy`), which made the change here with the yes of the owner.
+- The owner gave the portal session a brief for a fifth tab, "Start here", the first tab of the Academy. The portal's plan (Post-MVP 4) follows the choices for "Exam traps" (decision 0059). The assistant showed the old and the new tab bar (working rule 37), and the owner said "yes".
+- Built: `academy/build/portal_form.py` puts "Start here" (`/start-here`) first in the tab bar of the portal form (`PORTAL_TABS_FIRST`). `academy/build/check-pages.js` accepts the route, and does not follow it. `academy/portal-plan.md` names the route. Only the two body files of the portal form changed. The pages that open alone did not change.
+- The portal routes the link with no reload (`AcademyPage.tsx`, portal PR #57, to `staging` of the portal).
+- Checks: `check-pages.js` printed "All checks passed." for the portal form of both tabs, run in the Playwright container of the portal. The cards and popups are the same as in the pages that open alone: 857 on tab 1 and 410 on tab 2. A second run of `portal_form.py` gave the same files.
+- One independent agent reviewed the change: no high, 2 medium, 3 low. Fixed: this entry now has the checks and the review, and `HANDOFF.md` has the full next step and a clearer name for the fifth tab. For the portal: the tests `e2e/exam-traps.spec.ts` and `e2e/study-with-claude.spec.ts` expect four tabs on the copied pages, and the copy PR changes them.
+
 ## 19 October 2026, evening: the portal form names the two tabs that the portal makes (decision 0059)
 
 - This entry was written by the portal session (`~/magnetlab-academy`), which made the change here with the yes of the owner.

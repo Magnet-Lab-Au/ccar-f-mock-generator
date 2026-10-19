@@ -18,8 +18,9 @@ from lib import PAGES, ROOT
 
 OUT = os.path.join(PAGES, "portal")
 TABS = ("exam-guide-breakdown", "behind-the-mocks")
-# The tabs that the portal makes itself (academy decision 0059). Only the tab bar of the portal form names them:
-# the pages that open alone keep two tabs, because these pages are not in this repository.
+# The tabs that the portal makes itself (academy decisions 0059 and 0060). Only the tab bar of the portal form names
+# them: the pages that open alone keep two tabs, because these pages are not in this repository.
+PORTAL_TABS_FIRST = (("start-here", "Start here"),)
 PORTAL_TABS = (("study-with-claude", "Study with Claude"), ("exam-traps", "Exam traps"))
 SCOPE = ".academy-page"   # make() sets the scope of its tab: ".academy-page.ap-<tab>", so two tabs never share a rule
 CONTAINER = "academy"
@@ -36,9 +37,10 @@ def _route(text):
 
 
 def _portal_tabs(text):
-    """The tab bar of the portal form ends with the tabs that the portal makes itself."""
+    """The tab bar of the portal form starts and ends with the tabs that the portal makes itself."""
+    first = "".join('<a href="/%s">%s</a>' % t for t in PORTAL_TABS_FIRST)
     extra = "".join('<a href="/%s">%s</a>' % t for t in PORTAL_TABS)
-    text, n = re.subn(r'(<nav class="tabs" aria-label="Tabs">.*?)(</nav>)', lambda m: m.group(1) + extra + m.group(2), text, count=1)
+    text, n = re.subn(r'(<nav class="tabs" aria-label="Tabs">)(.*?)(</nav>)', lambda m: m.group(1) + first + m.group(2) + extra + m.group(3), text, count=1)
     if n != 1:
         raise SystemExit("No tab bar in the body")
     return text
