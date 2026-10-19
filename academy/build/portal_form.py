@@ -18,10 +18,12 @@ from lib import PAGES, ROOT
 
 OUT = os.path.join(PAGES, "portal")
 TABS = ("exam-guide-breakdown", "behind-the-mocks")
-# The tabs that the portal makes itself (academy decisions 0059 and 0060). Only the tab bar of the portal form names
-# them: the pages that open alone keep two tabs, because these pages are not in this repository.
-PORTAL_TABS_FIRST = (("start-here", "Start here"),)
-PORTAL_TABS = (("study-with-claude", "Study with Claude"), ("exam-traps", "Exam traps"))
+# The tab bar of the portal form: all five Academy tabs, in the owner's order (academy decisions 0059 to 0061).
+# Three of them are made by the portal itself, so only the portal form names them: the pages that open alone
+# keep their two tabs, because those pages are not in this repository.
+PORTAL_TAB_BAR = (("start-here", "Start here"), ("exam-guide-breakdown", "Exam guide breakdown"),
+                  ("study-with-claude", "Study with Claude"), ("exam-traps", "Exam traps"),
+                  ("behind-the-mocks", "Behind the mocks"))
 SCOPE = ".academy-page"   # make() sets the scope of its tab: ".academy-page.ap-<tab>", so two tabs never share a rule
 CONTAINER = "academy"
 BASE_PX = 17      # the page that opens alone sets html { font-size: 17px }; the portal keeps 16 px
@@ -36,11 +38,11 @@ def _route(text):
     return text
 
 
-def _portal_tabs(text):
-    """The tab bar of the portal form starts and ends with the tabs that the portal makes itself."""
-    first = "".join('<a href="/%s">%s</a>' % t for t in PORTAL_TABS_FIRST)
-    extra = "".join('<a href="/%s">%s</a>' % t for t in PORTAL_TABS)
-    text, n = re.subn(r'(<nav class="tabs" aria-label="Tabs">)(.*?)(</nav>)', lambda m: m.group(1) + first + m.group(2) + extra + m.group(3), text, count=1)
+def _portal_tabs(text, tab):
+    """The tab bar of the portal form: the five tabs of PORTAL_TAB_BAR, with the current tab as a span."""
+    bar = "".join('<span aria-current="page">%s</span>' % name if slug == tab else '<a href="/%s">%s</a>' % (slug, name)
+                  for slug, name in PORTAL_TAB_BAR)
+    text, n = re.subn(r'(<nav class="tabs" aria-label="Tabs">).*?(</nav>)', lambda m: m.group(1) + bar + m.group(2), text, count=1)
     if n != 1:
         raise SystemExit("No tab bar in the body")
     return text
@@ -206,7 +208,7 @@ def make(tab):
     body = body.replace("<main>", '<div class="ap-main">').replace("</main>", "</div>")
     if "<main" in body:
         raise SystemExit("A main element with attributes is in the body of " + tab)
-    body = _portal_tabs(_route(body))
+    body = _portal_tabs(_route(body), tab)
     with open(os.path.join(PAGES, tab + ".js"), encoding="utf-8") as f:
         js = f.read()
     start = js.index("window.ACADEMY = ") + len("window.ACADEMY = ")

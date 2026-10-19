@@ -2,6 +2,15 @@
 
 One entry for each work session. Newest entry first.
 
+## 20 October 2026, later: the tab bar of the portal form in the owner's order (decision 0061)
+
+- This entry was written by the portal session (`~/magnetlab-academy`), which made the change here with the yes of the owner.
+- The owner reordered the portal sidebar and the Academy tab bars. Every tab bar uses one order: Start here, Exam guide breakdown, Study with Claude, Exam traps, Behind the mocks. The assistant showed the old and the new tab bar (working rule 37). The owner said "yes, go ahead", also for the push after the checks and the review.
+- Built: `academy/build/portal_form.py` writes the whole tab bar of the portal form from one list, `PORTAL_TAB_BAR`. Only the two body files of the portal form changed, and only in their tab bar. The pages that open alone did not change.
+- In the portal, the tabs that the portal makes got the same order (portal PR #63, merged into `staging` of the portal).
+- Checks: `check-pages.js` printed "All checks passed." for the portal form of both tabs, run in the Playwright container of the portal. The cards and popups are the same as in the pages that open alone: 857 on tab 1 and 410 on tab 2. A second run of `portal_form.py` gave the same files.
+- One independent agent reviewed the change: no high, no medium, 1 low and 2 notes. Fixed in decision 0061: "Behind the mocks" was third in the old tab bar, not second, the "Changes" line names the items of 0059 and 0060, and PR #63 is marked as merged into `staging`. For the portal: the tests `e2e/exam-traps.spec.ts` and `e2e/study-with-claude.spec.ts` expect the old order on the copied pages, and the copy PR changes them.
+
 ## 20 October 2026: "Start here" goes first in the tab bar of the portal form (decision 0060)
 
 - This entry was written by the portal session (`~/magnetlab-academy`), which made the change here with the yes of the owner.
