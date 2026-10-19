@@ -6,3 +6,4 @@ root.innerHTML = body;
 window.ACADEMY = data.default;   // only for check-pages.js, which reads the popups of Fig. A there
 let stop = start(root, data.default);
 stop(); stop = start(root, data.default);   // twice, as React StrictMode does
+try { stop.open(decodeURIComponent(location.hash.slice(1))); } catch (e) {}   // as the portal calls it right after start (AcademyPage.tsx)

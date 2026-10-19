@@ -33,13 +33,13 @@ function academyStart(root, data) {
   })();
 
   /* a link opens its part: the closed details that hold the target open, then the page scrolls to it */
-  let opens = 0;   // counts the scrolls of openTo, so that the late scroll after the fonts load does not undo a later one
+  let last = null;   // the id of the last scroll of openTo: the late scroll after the fonts load runs only if it is still the part of the hash
   const openTo = (id, scroll) => {
     const t = id && document.getElementById(id);
     if (!t || !root.contains(t)) return;
     for (let d = t; d && d !== root; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
     if (!scroll) return;
-    opens++;
+    last = id;
     /* with motion on, a block that has not come on the screen sits 1rem lower (academy.css, .js-motion): show it at once, so that the scroll measures its final place */
     const box = t.closest('main > *, .ap-main > *');
     if (box && root.classList.contains('js-motion') && !box.classList.contains('in')) { box.style.transition = 'none'; box.classList.add('in'); box.getBoundingClientRect(); box.style.transition = ''; }
@@ -268,10 +268,11 @@ function academyStart(root, data) {
   fromHash();
   gHash();
   if (document.fonts && document.fonts.status !== 'loaded') {
-    /* not if the reader moved the page, or if a link or stop.open scrolled again in the meantime */
-    let moved = false; const n = opens;
+    /* not if the reader moved the page, or if a link or stop.open scrolled to another part in the meantime.
+       stop.open with the same part, as the portal calls it right after start, does not stop it (the portal session, 19 October 2026) */
+    let moved = false; const first = last;
     for (const ev of ['wheel', 'touchstart', 'keydown', 'pointerdown']) addEventListener(ev, () => { moved = true; }, { once: true, passive: true, signal: ac.signal });
-    document.fonts.ready.then(() => { if (!stopped && !moved && opens === n) fromHash(); });
+    document.fonts.ready.then(() => { if (!stopped && !moved && last === first) fromHash(); });
   }
 
   /* stop: remove what start added, so that a page can start again on the same element */

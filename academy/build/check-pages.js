@@ -250,6 +250,7 @@ async function checkQuotes(name) {
 // a link lands on its part: when the scroll has stopped, the top of the part is at its scroll margin, or the page is at its end
 async function landing(q, id) {
   return q.evaluate(async (i) => {
+    await document.fonts.ready;
     let last = -1;
     for (let n = 0; n < 60 && scrollY !== last; n++) { last = scrollY; await new Promise((ok) => setTimeout(ok, 100)); }
     const t = document.getElementById(i), top = t.getBoundingClientRect().top, margin = parseFloat(getComputedStyle(t).scrollMarginTop) || 0;
@@ -356,14 +357,20 @@ async function landing(q, id) {
           for (const x of r.info.filter((x) => x.startsWith('WORDS '))) console.log('  ' + x.slice(6));
           for (const x of r.info.filter((x) => x.startsWith('STEPPER ') || x.startsWith('TOGGLE ') || x.startsWith('LIVE '))) console.log('  ' + x);
         }
-        // with motion on, the scroll is smooth: the first, a middle and the last part must still land on their part
-        if (motion) {
+        // with motion on, the scroll is smooth: the first, a middle and the last part must still land on their part,
+        // also when the fonts arrive 2 seconds late, in a new context with the scheme and motion of this run
+        if (motion || (portal && width === 1280 && scheme === 'light')) {
           const anchors = await p.evaluate(() => [...document.querySelectorAll('details.part[id]')].map((d) => d.id));
-          for (const id of new Set([anchors[0], anchors[anchors.length >> 1], anchors[anchors.length - 1]].filter(Boolean))) {
-            const q = await ctx.newPage();
-            await q.goto(base + name + '#' + id, { waitUntil: 'networkidle' });
-            const land = await landing(q, id); if (land) r.fail.push(land + ' (motion on)');
-            await q.close();
+          for (const slow of [false, true]) {
+            const c2 = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 900 }, reducedMotion: motion ? 'no-preference' : 'reduce' });
+            if (slow) await c2.route('**/*.woff2', async (rt) => { await new Promise((ok) => setTimeout(ok, 2000)); await rt.continue(); });
+            for (const id of new Set([anchors[0], anchors[anchors.length >> 1], anchors[anchors.length - 1]].filter(Boolean))) {
+              const q = await c2.newPage();
+              await q.goto(base + name + '#' + id, { waitUntil: 'networkidle' });
+              const land = await landing(q, id); if (land) r.fail.push(land + (motion ? ' (motion on' : ' (motion off') + (slow ? ', fonts 2 s late)' : ')'));
+              await q.close();
+            }
+            await c2.close();
           }
         }
         console.log(tag + ': ' + r.fail.length + ' failures, ' + r.known.length + ' known exceptions, ' + r.pending.length + ' pending');

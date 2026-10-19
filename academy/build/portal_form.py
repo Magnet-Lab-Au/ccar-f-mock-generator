@@ -269,7 +269,8 @@ def preview():
                       "root.innerHTML = body;\n"
                       "window.ACADEMY = data.default;   // only for check-pages.js, which reads the popups of Fig. A there\n"
                       "let stop = start(root, data.default);\n"
-                      "stop(); stop = start(root, data.default);   // twice, as React StrictMode does\n",
+                      "stop(); stop = start(root, data.default);   // twice, as React StrictMode does\n"
+                      "try { stop.open(decodeURIComponent(location.hash.slice(1))); } catch (e) {}   // as the portal calls it right after start (AcademyPage.tsx)\n",
     }
     for name, text in files.items():
         with open(os.path.join(d, name), "w", encoding="utf-8") as f:
