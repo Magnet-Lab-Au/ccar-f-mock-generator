@@ -1180,7 +1180,7 @@ PART["2.3"] = (overview("2.3", "Give each agent only the tools that its role nee
             + code_pop_text("ts-2-3-code", "The code: a subagent with a list of tools", "A Claude Code subagent with an allowlist", CCS, YAML23, "Claude Code, Subagents",
                             "The field tools lists the only tools of the subagent.")
             + tab2_links("2.3", cf("ts-2-3-d40", excerpt(D40, "The current Claude models do not accept a forced tool call.", "Mock decision 0040"),
-                                   "No step gives an agent a set of tools. Step 2 of tab 2 tells why the build sends no forced tool call. Claude Opus 5.5, the model of the build, does not accept one.")
+                                   "No step gives an agent a set of tools. Step 2 in Behind the mocks tells why the build sends no forced tool call. Claude Opus 5.5, the model of the build, does not accept one.")
                          + ' <a href="%s#step-2">Step 2, Write the question &rarr;</a>' % TAB2), "ts-2-3"))
 
 
@@ -1327,7 +1327,7 @@ PART["2.5"] = (overview("2.5", "Grep finds content, Glob finds files, Edit needs
                             "This subagent can search and read, but not change a file.")
             + tab2_links("2.5", "%s %s" % (cf("ts-2-5-a02", excerpt(A02, "The pipeline sends no tool definitions to the API.", "Academy decision 0002"), "The mock builder sends no tool definitions to the API, so no model in it gets these tools."),
                                            cf("ts-2-5-a35", excerpt(A35, "No record in the repository says which tool did what.", "Academy decision 0035"),
-                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so academy decision 0035 leaves 2.5 out of tab 2."))), "ts-2-5"))
+                                              "The build in Claude Code used its built-in tools, on WSL, where the Claude Code documentation of today leaves Grep and Glob out by default. No record says which tool did what, so academy decision 0035 leaves 2.5 out of Behind the mocks."))), "ts-2-5"))
 
 
 # ----- part 3.1 (facts: academy/facts/ts-3-1.md) -----
@@ -1583,7 +1583,7 @@ PART["3.2"] = (overview("3.2", "Share skills through the repository, and set how
                             "The Explore agent runs the task, and $ARGUMENTS takes the words after the command.")
             + tab2_links("3.2", "%s %s %s" % (fact("ts-3-1-a02", "Its build guide uses no task statement of domain 2 or 3, by choice."), cf("ts-g1", excerpt("academy/facts/claude-code.md", "The pipeline itself is a Python program that calls the API. It is not Claude Code.", "Fact sheet of the build in Claude Code"), "The mock builder is a Python program that calls the Claude API. It is not Claude Code."),
                                            cf("ts-3-2-a35", excerpt(A35, "3.2: the link holds only weakly.", "Academy decision 0035"),
-                                              "Academy decision 0035 leaves 3.2 out of the build in Claude Code on tab 2, because the link to the records is weak."))), "ts-3-2"))
+                                              "Academy decision 0035 leaves 3.2 out of the build in Claude Code in Behind the mocks, because the link to the records is weak."))), "ts-3-2"))
 
 
 # ----- part 3.4 (facts: academy/facts/ts-3-4.md) -----
@@ -2634,7 +2634,7 @@ PART["5.4"] = (overview("5.4", "Keep findings in files, keep exploration in suba
             + tab2_links("5.4", cf("ts-5-4-d01b", excerpt(D01, "Keep one file for each decision, one HTML file for each diagram and a journal.", "Mock decision 0001"),
                                    "Mock decision 0001 keeps one file for each decision, and a journal.") + " "
                          + cf("ts-5-4-d01", excerpt(D01, "5.4-K2, 5.4-K4, 5.6-K2", "Mock decision 0001"),
-                                   "It links them to 5.4-K2 and 5.4-K4. Tab 2 shows them under 1.7.")
+                                   "It links them to 5.4-K2 and 5.4-K4. Behind the mocks shows them under 1.7.")
                          + ' <a href="%s#cc-1-7">The build in Claude Code, 1.7 &rarr;</a>' % TAB2), "ts-5-4"))
 
 # ----- part 5.5 (facts: academy/facts/ts-5-5.md) -----
@@ -2999,7 +2999,7 @@ BREAKDOWN = """<details class="domain parts" id="breakdown" open><summary><span 
   <ul class="levels">
     <li>The <b>Overview</b> takes about 30 seconds.</li>
     <li>The <b>Explanation</b> takes about 3 minutes, with the guide&rsquo;s own text and what the exam tests.</li>
-    <li>The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (tab 2).</li>
+    <li>The <b>Depth</b> has facts beyond the exam and code in popups. It also has the steps of the mock builder and of its build in Claude Code that use the task statement. The mock builder is the program that wrote the mocks of this academy (Behind the mocks).</li>
   </ul>
   <p>Two marks show where the guide and the Anthropic documentation differ:</p>
   <ul class="levels">
@@ -3163,7 +3163,7 @@ GLOSS = [
 ]
 
 GLOSSARY = glossary_panel('<dl class="glossary">%s</dl>' % "".join("<dt>%s</dt><dd>%s</dd>" % (e(k), v) for k, v in GLOSS),
-                          '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of tab 2. <a href="%s#top-words">Glossary of tab 2 &rarr;</a></p>' % TAB2)
+                          '<p>The blocks &ldquo;In the mock builder&rdquo; use the words of Behind the mocks. <a href="%s#top-words">Glossary of Behind the mocks &rarr;</a></p>' % TAB2)
 PRIMER = """<details class="domain parts" id="primer" open><summary><span class="dom-title">
   <h2 class="with-icon">Before you start: who runs the tools in each product<svg class="h-icon h-tools" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 12h18"/><path d="M10 12v2h4v-2"/></svg></h2></span><span class="dom-arrow" aria-hidden="true"></span></summary><div class="dom-body sec-body">
   <p>The exam asks about three products and one protocol:</p>

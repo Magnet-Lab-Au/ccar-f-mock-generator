@@ -2092,7 +2092,7 @@ WORDS = """<dl class="glossary">
 <dt>Slot</dt><dd>%(slot)s</dd>
 <dt>Try</dt><dd>One question that the writer writes for a slot. A slot can have more than one try. The last try that passes goes into the mock.</dd>
 <dt>Finding</dt><dd>A problem that a check names, with its rule, such as rule B9.</dd>
-<dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. <a href="%(tab1)s#breakdown">Tab 1 explains them &rarr;</a></dd>
+<dt>Point</dt><dd>One &ldquo;Knowledge of&rdquo; or &ldquo;Skills in&rdquo; point of a task statement of the exam guide, such as 4.4-S1. <a href="%(tab1)s#breakdown">The Exam guide breakdown explains them &rarr;</a></dd>
 <dt>Mark</dt><dd>In step 7, a reader marks each question good or bad. A bad mark sends the question back.</dd>
 <dt>The owner</dt><dd>%(owner)s</dd>
 <dt>IDs and labels</dt><dd>The ID M4-S27-T3 is mock 4, slot 27, try 3. The label 1.4-K2 is a point of the exam guide.</dd>
@@ -2292,7 +2292,7 @@ TRUTH = """<details class="domain parts v3-sec" id="truth" open><summary><span c
   <p>Why the guide? This is an exam, and %(w1)s The only sample questions of the exam that we had were the 12 in the guide. They became our benchmark. %(w2)s %(w3)s And %(w4)s</p>
   <div class="exambox-v3"><p class="ve-label">One difference, side by side</p>
     <dl class="exambox"><dt class="exam">The guide</dt><dd>A coordinator starts a subagent with the Task tool, and its allowedTools must include &ldquo;Task&rdquo;. (1.3-K1)</dd><dt class="today">The product today</dt><dd>The Task tool is now called Agent. The old name still works in settings and agent definitions.</dd></dl></div>
-  <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s on tab 1 give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
+  <p>The product still matters to a practitioner, so we did not ignore it. %(n42)s in the Exam guide breakdown give the answer of the guide and the product today, side by side. Anthropic changes its products fast, and these boxes show where the product today differs from the guide. <a href="%(tab1)s#ts-1-3">See the boxes of part 1.3 &rarr;</a></p>
   <section class="sources" aria-label="Sources of the truth"><p class="ve-label">Sources</p><ul>%(src)s</ul></section>
 </div></details>""" % {
     "g13": fact("v3-guide13", "the Task tool as the way to start a subagent"),

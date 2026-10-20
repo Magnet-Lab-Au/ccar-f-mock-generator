@@ -2,6 +2,14 @@
 
 One entry for each work session. Newest entry first.
 
+## 20 October 2026, late night: tab names in place of "tab 1" and "tab 2" (decision 0063, pages-v10)
+
+- This entry was written by the portal session (`~/magnetlab-academy`), which made the change here after the owner's yes to the text (item 17 of the full review of the portal).
+- Changed in `academy/build/make-exam-guide-breakdown.py` (7 places) and `academy/build/make-behind-the-mocks.py` (2 places): "tab 1" becomes "the Exam guide breakdown" and "tab 2" becomes "Behind the mocks", as listed in decision 0063. Both forms were built again with the make scripts and `portal_form.py`.
+- Checks: `check-pages.js` printed "All checks passed." on both tabs, in both forms (in the Playwright container of the portal). The quotes: 695 cards on tab 1 and 266 on tab 2 checked at their tag, 0 failures.
+- One independent agent reviewed the change: no findings. The 9 replacements match the table byte for byte in both forms, nothing else in the pages changed, and the links are as before.
+- Not changed yet: three texts in the script of Behind the mocks still say "tab 1" (the popup sentences "We compared each part of tab 1 ..." and "Tab 1 has 23 boxes in 15 parts ...", and 30 links "Task statement N.N on tab 1 →"). They wait for the owner's yes.
+
 ## 20 October 2026, night: one sentence of a tab 2 popup (pages-v9)
 
 - This entry was written by the portal session (`~/magnetlab-academy`), which made the change here on the owner's instruction.
