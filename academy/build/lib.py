@@ -307,3 +307,59 @@ def glossary_panel(dl, extra=""):
     return ('<button type="button" class="glossary-btn" aria-controls="top-words" aria-expanded="false">Glossary</button>'
             '<aside class="glossary-panel" id="top-words" aria-label="Glossary" hidden><div class="gp-head"><h2>Glossary</h2>'
             '<button type="button" class="gp-close">Close</button></div>%s%s</aside>' % (dl, extra))
+
+# ----- the docs quotes and the files of the dated copies (the owner's review of 20 October 2026, academy decision 0062) -----
+# - a Markdown link inside a docs quote becomes a real link ("html", which the script shows in place of "text"), opened in a
+#   new tab. A /docs/ path goes to the live site of its documentation, and a #heading to that heading of the live page;
+# - the file and line of a dated copy leave the visible source line, and stay in the page source as data-source.
+# "text" stays as it is, so the check of each quote on its linked lines still reads it.
+MD_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
+COPY = "academy/sources/2026-10-14-%s.md"
+# A heading that the live documentation moved since the copy of 14 October 2026 (checked on 20 October 2026).
+MOVED = {"https://code.claude.com/docs/en/code-review#review-md": "https://code.claude.com/docs/en/code-review-customize#use-review-md-for-review-only-rules"}
+
+
+def live_page(copy):
+    """The live address of the page of a dated copy. API copies name it in their front matter; Claude Code copies by their name."""
+    if copy.startswith("claude-code-docs-"):
+        return "https://code.claude.com/docs/en/" + re.sub(r"^agent-sdk-", "agent-sdk/", copy[len("claude-code-docs-"):])
+    m = re.search(r"^url: (\S+)$", read(COPY % copy), re.M)
+    if not m:
+        raise SystemExit("No live address for the copy " + copy)
+    return m.group(1)
+
+
+def quote_html(c):
+    copy = re.match(r"academy/sources/2026-10-14-(.+)\.md,", c["src"]).group(1)
+    host = "https://code.claude.com" if c["title"].startswith("Claude Code documentation") else "https://platform.claude.com"
+    out, last = [], 0
+    for m in MD_LINK.finditer(c["text"]):
+        href = m.group(2)
+        if href.startswith("/docs/"):
+            href = host + href
+        elif href.startswith("#"):
+            href = live_page(copy) + href
+        elif not href.startswith("https://"):
+            raise SystemExit("A link in a quote that the page cannot open: " + href)
+        href = MOVED.get(href, href)
+        out.append(e(c["text"][last:m.start()]))
+        out.append('<a href="%s" target="_blank" rel="noopener">%s</a>' % (e(href), e(m.group(1))))
+        last = m.end()
+    return "".join(out) + e(c["text"][last:])
+
+
+def source_item(d):
+    """One item of a source list. The file of a dated docs copy stays in the page source only."""
+    if d["src"].startswith("academy/sources/"):
+        return '<li data-source="%s"><a href="%s">%s</a></li>' % (e(d["src"]), e(d["href"]), e(d["title"]))
+    return '<li><a href="%s">%s</a> <span class="ve-label">%s</span></li>' % (e(d["href"]), e(d["title"]), e(d["src"]))
+
+
+def docs_cards_tidy(cards, body):
+    """Real links in the docs quotes, and the file of each dated copy from src to source; data-source on each card trigger."""
+    for c in cards.values():
+        if c["kind"] == "docs" and MD_LINK.search(c["text"]):
+            c["html"] = quote_html(c)
+        if c["src"].startswith("academy/sources/"):
+            c["source"] = c.pop("src")
+    return re.sub(r'data-card="([^"]+)"', lambda m: m.group(0) + (' data-source="%s"' % e(cards[m.group(1)]["source"]) if "source" in cards[m.group(1)] else ""), body)

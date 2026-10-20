@@ -30,7 +30,7 @@ import sys
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import (BRANCH, fold_sources, glossary_panel, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
+from lib import (BRANCH, docs_cards_tidy, source_item, fold_sources, glossary_panel, group_roles, REPO, ROOT, TAG, add_popups, code_block, code_font, e, excerpt, fact, lines_of, link, number, page, read,  # noqa: E402
                  script_file, write)
 
 TAB1 = "exam-guide-breakdown.html"
@@ -634,7 +634,7 @@ def sources(cards):
         if key in seen:
             continue
         seen.add(key)
-        items.append('<li><a href="%s">%s</a> <span class="ve-label">%s</span></li>' % (e(d["href"]), e(d["title"]), e(d["src"])))
+        items.append(source_item(d))
     return "".join(items)
 
 
@@ -2436,6 +2436,7 @@ BODY = fold_sources(BODY)
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)
 CARD = {k: v for k, v in CARD.items() if k in USED}
+BODY = docs_cards_tidy(CARD, BODY)   # the owner's review of 20 October 2026 (academy decision 0062)
 POP = {k: v for k, v in POP.items() if 'data-step="%s"' % k in BODY}
 
 # 6. the K and S of each point label in the text, in the colours of tab 1 (only in text, not in attributes)
