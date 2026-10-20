@@ -194,7 +194,7 @@ POP = {
               "sent": ["How step 5 uses the point:", table_use("1.1-S3")], "points": pts("1.1-S3")},
     "ts-4-3": {"who": "Task statement 4.3", "cls": "model", "title": TS["4.3"]["title"],
               "sent": ["How step 5 uses the point:", table_use("4.3-K1"), "The step names, but does not use:", table_use("4.3-S3"),
-                       "Why: " + DEVIATION + " The Claude API documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models. Its copy of 14 October 2026 is in academy/sources/.",
+                       "Why: " + DEVIATION + " The Claude API documentation, page \"Define tools\", says that a forced tool call returns a 400 error on these models. We kept a copy, dated 14 October 2026.",
                        EXAM_43],
               "points": pts("4.3-K1", "4.3-S3")},
 }

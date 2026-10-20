@@ -2,6 +2,11 @@
 
 One entry for each work session. Newest entry first.
 
+## 20 October 2026, night: one sentence of a tab 2 popup (pages-v9)
+
+- This entry was written by the portal session (`~/magnetlab-academy`), which made the change here on the owner's instruction.
+- The owner changed the last sentence of the popup on the forced tool call of tab 2: "Its copy of 14 October 2026 is in academy/sources/." became "We kept a copy, dated 14 October 2026." (`academy/build/make-behind-the-mocks.py`). Now no text of tab 2 names the folder `academy/sources/`. The old page scripts (`-v1-old` to `-v3-old`) did not change.
+
 ## 20 October 2026, evening: docs quotes with real links, and the file of the copy out of sight (decision 0062)
 
 - This entry was written by the portal session (`~/magnetlab-academy`), which made the change here from the owner's brief "Portal fixes from the review of 20 October 2026" (items 1 and 10).
