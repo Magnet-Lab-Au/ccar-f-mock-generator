@@ -65,7 +65,7 @@ function academyStart(root, data) {
     const s = $('#popbody'); s.textContent = '';
     d.sent.forEach((t) => s.appendChild(el('p', null, t)));
     if (d.links && d.links.length) { const lp = el('p', 'poplinks'); d.links.forEach((l) => { const a = el('a'); a.innerHTML = l.text; a.href = l.href; lp.appendChild(a); }); s.appendChild(lp); }   /* links of a popup, such as the popups of Fig. A of tab 2 */
-    if (d.example) { s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example)); if (d.examplenote) s.appendChild(el('p', 'exnote', d.examplenote)); }
+    if (d.example) { s.appendChild(el('h3', null, d.examplehead)); s.appendChild(el('pre', null, d.example)); if (d.examplenote) { const n = el('p', 'exnote', d.examplenote); if (d.source) n.dataset.source = d.source; s.appendChild(n); } }
     if (d.points && d.points.length) {
       s.appendChild(el('h3', null, 'The exam guide says')); const key = el('p', 'key');
       if (d.points.some((p) => p.id.includes('-K'))) key.appendChild(el('span', 'tag-k', 'K = Knowledge of'));
@@ -81,8 +81,9 @@ function academyStart(root, data) {
     who.textContent = KIND[c.kind] || 'Source';
     $('#poptitle').textContent = c.title;
     const s = $('#popbody'); s.textContent = '';
-    if (c.kind === 'code') s.appendChild(el('pre', null, c.text)); else { const q = el('blockquote'); q.textContent = c.text; s.appendChild(q); }
-    s.appendChild(el('p', 'csrc', c.src));
+    if (c.kind === 'code') s.appendChild(el('pre', null, c.text));
+    else { const q = el('blockquote'); if (c.html) q.innerHTML = c.html; else q.textContent = c.text; if (c.source) q.dataset.source = c.source; s.appendChild(q); }   /* html: a docs quote with its links (made by the build, escaped) */
+    if (c.src) s.appendChild(el('p', 'csrc', c.src));   /* a docs card keeps its file in data-source only */
     if (c.href) { const a = el('a', 'open', c.kind === 'docs' ? 'Open the page' : 'Open in the repository'); a.href = c.href; a.target = '_blank'; a.rel = 'noopener'; s.appendChild(a); }
   }
   function place() {

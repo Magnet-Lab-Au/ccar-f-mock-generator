@@ -2248,7 +2248,7 @@ CARD.update({
 
 STAGES = [
     ("September 2026", "Mock v1", [("guide", "src"), ("documentation", "src"), ("course", "src")],
-     "We compared all three, and saw that they disagree. Source: the notes of mock v1, not in this repository.", "v3-s1",
+     "We compared all three, and saw that they disagree. Source: the notes of mock v1.", "v3-s1",
      "Mock v1: three sources side by side",
      ["We built mock v1 from the exam guide, the Claude documentation and the CCAR-F course of the Anthropic learning portal.",
       "A separate agent checked each quote against its source. It found one sentence that no source contained, and we removed it.",

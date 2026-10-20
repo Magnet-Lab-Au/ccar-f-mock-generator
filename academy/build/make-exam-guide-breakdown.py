@@ -112,7 +112,10 @@ def sources(cards):
         if key in seen:
             continue
         seen.add(key)
-        items.append('<li><a href="%s">%s</a> <span class="ve-label">%s</span></li>' % (e(d["href"]), e(d["title"]), e(d["src"])))
+        if d["src"].startswith("academy/sources/"):   # the file of a dated docs copy stays in the page source only (owner, 20 October 2026)
+            items.append('<li data-source="%s"><a href="%s">%s</a></li>' % (e(d["src"]), e(d["href"]), e(d["title"])))
+        else:
+            items.append('<li><a href="%s">%s</a> <span class="ve-label">%s</span></li>' % (e(d["href"]), e(d["title"]), e(d["src"])))
     return "".join(items)
 
 
@@ -359,7 +362,7 @@ def code_pop(key, label, title, copy, first, last, page_name, note=""):
     """A button that opens the code of the documentation in a popup (decisions 0004 and 0032)."""
     c = code_block(SRC % copy, first, last, title)
     POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the %s, %s" % ("Claude Code documentation" if copy.startswith("claude-code-docs") else "Claude API documentation", page_name),
-                "example": c["text"], "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
+                "example": c["text"], "examplenote": "Copy of 14 October 2026", "source": c["src"]}   # the file of the copy in data-source only (decision 0062)
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
 
@@ -367,7 +370,7 @@ def code_pop_text(key, label, title, copy, text, page_name, note=""):
     """A code popup from an exact block of a dated copy."""
     c = D(copy, text, page_name)
     POP[key] = {"who": "Code", "cls": "code", "title": title, "sent": [note] if note else [], "examplehead": "From the %s, %s" % ("Claude Code documentation" if copy.startswith("claude-code-docs") else "Claude API documentation", page_name),
-                "example": __import__("textwrap").dedent(text), "examplenote": "%s (copy of 14 October 2026)" % c["src"]}
+                "example": __import__("textwrap").dedent(text), "examplenote": "Copy of 14 October 2026", "source": c["src"]}   # as code_pop
     return '<p><span class="chip info" data-step="%s" tabindex="0" role="button" aria-expanded="false">%s</span></p>' % (key, e(label))
 
 
@@ -451,9 +454,9 @@ def note11():
              ["Each turn stays in the context window, so the conversation grows until it comes near the limit of tokens. Part 5.1 shows how to keep the exact facts when the history gets shorter."])):
         POP["ts-1-1-" + k] = dict(POP["ts-1-1-" + k], title=title, sent=sent)
     POP["ts-1-1-send"] = dict(POP["ts-1-1-send"])
-    POP["ts-1-1-send"]["examplenote"] = ("Based on the Claude API documentation, page \"Build a tool-using agent\", Ring 3 (copy of 14 October 2026, "
-                                         "academy/sources/2026-10-14-anthropic-docs-build-a-tool-using-agent.md, lines 2190 to 2225). "
+    POP["ts-1-1-send"]["examplenote"] = ("Based on the Claude API documentation, page \"Build a tool-using agent\", Ring 3 (copy of 14 October 2026). "
                                          "That page uses max_tokens=1024 and passes json.dumps of the result. The exam guide has no code.")
+    POP["ts-1-1-send"]["source"] = "academy/sources/2026-10-14-anthropic-docs-build-a-tool-using-agent.md, lines 2190 to 2225"   # decision 0062
 
 
 PART["1.1"] = (overview("1.1", "The loop runs while Claude asks for tools", from_sample(LEAD11), from_sample(FIG11).replace('data-step="ts-1-1-convo" tabindex="0"', 'data-step="ts-1-1-convo" aria-label="The conversation grows" tabindex="0"'))
@@ -3201,6 +3204,54 @@ BODY = re.sub(r'<svg class="(ve-svg|ve-bars)" viewBox="0 (\d+) (\d+) ', lambda m
 USED = set(re.findall(r'data-card="([^"]+)"', BODY))
 assert USED <= set(CARD), USED - set(CARD)
 CARD = {k: v for k, v in CARD.items() if k in USED}
+
+# The docs quotes of the cards (the owner's review of 20 October 2026):
+# - a Markdown link inside a quote becomes a real link ("html", which the script shows in place of "text"), opened in a
+#   new tab. A /docs/ path goes to the live site of its documentation, and a #heading to that heading of the live page;
+# - the file and line of the dated copy leave the visible source line, and stay in the page source as data-source.
+# "text" stays as it is, so the check of each quote on its linked lines still reads it.
+MD_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
+
+
+# A heading that the live documentation moved since the copy of 14 October 2026 (checked on 20 October 2026).
+MOVED = {"https://code.claude.com/docs/en/code-review#review-md": "https://code.claude.com/docs/en/code-review-customize#use-review-md-for-review-only-rules"}
+
+
+def live_page(copy):
+    """The live address of the page of a dated copy. API copies name it in their front matter; Claude Code copies by their name."""
+    if copy.startswith("claude-code-docs-"):
+        return "https://code.claude.com/docs/en/" + re.sub(r"^agent-sdk-", "agent-sdk/", copy[len("claude-code-docs-"):])
+    m = re.search(r"^url: (\S+)$", read(SRC % copy), re.M)
+    if not m:
+        raise SystemExit("No live address for the copy " + copy)
+    return m.group(1)
+
+
+def quote_html(c):
+    copy = re.match(r"academy/sources/2026-10-14-(.+)\.md,", c["src"]).group(1)
+    host = "https://code.claude.com" if c["title"].startswith("Claude Code documentation") else "https://platform.claude.com"
+    out, last = [], 0
+    for m in MD_LINK.finditer(c["text"]):
+        href = m.group(2)
+        if href.startswith("/docs/"):
+            href = host + href
+        elif href.startswith("#"):
+            href = live_page(copy) + href
+        elif not href.startswith("https://"):
+            raise SystemExit("A link in a quote that the page cannot open: " + href)
+        href = MOVED.get(href, href)
+        out.append(e(c["text"][last:m.start()]))
+        out.append('<a href="%s" target="_blank" rel="noopener">%s</a>' % (e(href), e(m.group(1))))
+        last = m.end()
+    return "".join(out) + e(c["text"][last:])
+
+
+for c in CARD.values():
+    if c["kind"] == "docs" and MD_LINK.search(c["text"]):
+        c["html"] = quote_html(c)
+    if c["src"].startswith("academy/sources/"):
+        c["source"] = c.pop("src")
+BODY = re.sub(r'data-card="([^"]+)"', lambda m: m.group(0) + (' data-source="%s"' % e(CARD[m.group(1)]["source"]) if "source" in CARD[m.group(1)] else ""), BODY)
 POP = {k: v for k, v in POP.items() if 'data-step="%s"' % k in BODY}
 for k, v in POP.items():
     v.setdefault("example", None)
