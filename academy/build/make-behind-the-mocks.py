@@ -2262,8 +2262,8 @@ STAGES = [
     ("14 October 2026", "The academy pages", [("guide", "src"), ("documentation", "check"), ("course", "gone")],
      "We check the product, and mark each gap that could change an exam answer.", "v3-s3",
      "The academy pages: the product as a dated check",
-     ["We compared each part of tab 1 with a copy of the documentation of 14 October 2026.",
-      "Tab 1 has 23 boxes in 15 parts. Each box stands where a product fact could lead to a different exam answer.",
+     ["We compared each part of the Exam guide breakdown with a copy of the documentation of 14 October 2026.",
+      "The Exam guide breakdown has 23 boxes in 15 parts. Each box stands where a product fact could lead to a different exam answer.",
       "Each box gives the answer of the guide and the product today."],
      [{"text": "Academy decision 0042 &rarr;", "href": link(A42)}, {"text": "The boxes of part 1.3 &rarr;", "href": "%s#ts-1-3" % TAB1}]),
 ]
@@ -2336,7 +2336,7 @@ def map_tile(tid):
     u = USE[tid]
     key = "v3-m-" + tid.replace(".", "-")
     where = u.get("where") or ""
-    links = [{"text": "Task statement %s on tab 1 &rarr;" % tid, "href": "%s#ts-%s" % (TAB1, tid.replace(".", "-"))}]
+    links = [{"text": "Task statement %s in the Exam guide breakdown &rarr;" % tid, "href": "%s#ts-%s" % (TAB1, tid.replace(".", "-"))}]
     m = re.match(r"step (\d)$", where)
     if m:
         links.append({"text": "Read step %s &rarr;" % m.group(1), "href": "#step-%s" % m.group(1)})

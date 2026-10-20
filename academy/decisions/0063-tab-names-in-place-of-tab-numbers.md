@@ -25,6 +25,9 @@ The portal now has five Academy tabs, in the order Start here, Exam guide breakd
    | Exam guide breakdown | "Glossary of tab 2 →" | "Glossary of Behind the mocks →" |
    | Behind the mocks | "on tab 1 give the answer" | "in the Exam guide breakdown give the answer" |
    | Behind the mocks | "Tab 1 explains them →" | "The Exam guide breakdown explains them →" |
+   | Behind the mocks (popup) | "We compared each part of tab 1 with a copy of the documentation of 14 October 2026." | "We compared each part of the Exam guide breakdown with a copy of the documentation of 14 October 2026." |
+   | Behind the mocks (popup) | "Tab 1 has 23 boxes in 15 parts." | "The Exam guide breakdown has 23 boxes in 15 parts." |
+   | Behind the mocks (30 links) | "Task statement 1.1 on tab 1 →" | "Task statement 1.1 in the Exam guide breakdown →" |
 
 2. Code comments, the records and the old page builders (`-v1-old` to `-v3-old`) keep "tab 1" and "tab 2". Readers do not see them.
 3. The change goes to the portal as the tag `pages-v10`.
@@ -35,7 +38,7 @@ A number no longer says which tab is meant: the portal has five tabs, and the nu
 
 ## How we decided
 
-The full review of the portal on 20 October 2026 (four agents) found the tab numbers. The portal session listed each place with its old and new text, and the owner said yes to the text. The search covered the visible text of both forms, with tags and scripts taken out. Three more texts with "tab 1" are in the script of Behind the mocks (a popup and the links "Task statement N.N on tab 1 →"). They were not in the list the owner saw, so they wait for the owner's yes, as rule 37 asks.
+The full review of the portal on 20 October 2026 (four agents) found the tab numbers. The portal session listed each place with its old and new text, and the owner said yes to the text. The search covered the visible text of both forms, with tags and scripts taken out. Three more texts with "tab 1" are in the script of Behind the mocks: two popup sentences and the links "Task statement N.N on tab 1 →". They were not in the first list, so the portal session showed them to the owner separately, as rule 37 asks. The owner said yes to them too, the same day.
 
 ## Exam guide points
 
